@@ -1,0 +1,86 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:dialogTheme">@style/MyDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
+    </style>
+
+    <!--        Welcome     -->
+
+    <style name="welcome_navButtons">
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="nav_name" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="row_name" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="row_body1" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <style name="row_body2" parent="@style/TextAppearance.AppCompat.Body2">
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <!--        List view        -->
+    <style name="listView">
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+    </style>
+
+    <!--        Debugging        -->
+    <style name="debug_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="debug_title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <style name="debug_text">
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+</resources>

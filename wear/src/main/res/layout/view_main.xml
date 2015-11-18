@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.wearable.view.BoxInsetLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/main_background"
+        android:layout_width="match_parent"
+        android:background="@drawable/splash_background"
+        android:layout_height="match_parent"
+        >
+
+            <RelativeLayout android:id="@+id/relative_container"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/name_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Loading!!"
+                    android:textSize="15sp"
+                    android:textColor="#FFFFFF"
+                    android:gravity="bottom"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</android.support.wearable.view.BoxInsetLayout>

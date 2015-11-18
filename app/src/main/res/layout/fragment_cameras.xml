@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/debugLayout"
+        style="@style/debug_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/debugTitle"
+            style="@style/debug_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/debug_textview_title" />
+
+        <TextView
+            android:id="@+id/debugText"
+            style="@style/debug_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/errorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/errorImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/sad_smiley" />
+
+        <TextView
+            android:id="@+id/errorTextOops"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="OOPS!"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            android:id="@+id/errorTextWrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorTextOops"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="Something went wrong"
+            android:textSize="@dimen/text_size_medium" />
+
+        <TextView
+            android:id="@+id/errorTextMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorTextWrong"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="Error: No network connection available"
+            android:textColor="@color/light_gray"
+            android:textSize="@dimen/text_size_small" />
+
+    </RelativeLayout>
+
+</LinearLayout>

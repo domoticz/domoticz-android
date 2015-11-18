@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="gray">#898989</color>
+    <color name="fade">#464646</color>
+    <color name="blue_light">#5493fc</color>
+    <color name="blue">#0a5ae1</color>
+    <color name="blue_dark">#0846af</color>
+
+    <color name="dot_color">@color/white</color>
+    <color name="dot_color_selected">@color/gray</color>
+</resources>

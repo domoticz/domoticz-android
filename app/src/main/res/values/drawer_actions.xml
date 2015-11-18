@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_actions">
+        <item>Dashboard</item>
+        <item>Scenes</item>
+        <item>Switches</item>
+        <item>Utilities</item>
+        <item>Temperature</item>
+        <item>Weather</item>
+        <item>Cameras</item>
+        <item>Plans</item>
+        <item>Logs</item>
+    </string-array>
+
+    <string-array name="drawer_fragments" translatable="false">
+        <item>nl.hnogames.domoticz.Fragments.Dashboard</item>
+        <item>nl.hnogames.domoticz.Fragments.Scenes</item>
+        <item>nl.hnogames.domoticz.Fragments.Switches</item>
+        <item>nl.hnogames.domoticz.Fragments.Utilities</item>
+        <item>nl.hnogames.domoticz.Fragments.Temperature</item>
+        <item>nl.hnogames.domoticz.Fragments.Weather</item>
+        <item>nl.hnogames.domoticz.Fragments.Cameras</item>
+        <item>nl.hnogames.domoticz.Fragments.Plans</item>
+        <item>nl.hnogames.domoticz.Fragments.Logs</item>
+    </string-array>
+
+    <array name="drawer_icons">
+        <item>@drawable/ic_dashboard</item>
+        <item>@drawable/ic_scenes</item>
+        <item>@drawable/ic_switch</item>
+        <item>@drawable/ic_utilities</item>
+        <item>@drawable/ic_temperature</item>
+        <item>@drawable/ic_weather</item>
+        <item>@drawable/ic_cameras</item>
+        <item>@drawable/ic_plan</item>
+        <item>@drawable/ic_logs</item>
+    </array>
+</resources>

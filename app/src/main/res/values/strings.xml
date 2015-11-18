@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name_domoticz">Domoticz</string>
+    <string name="domoticz_url">http://www.domoticz.com/</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_navigation_title">Select category</string>
+
+    <string name="msg_please_wait">Please wait...</string>
+    <string name="msg_connectionSettingsIncomplete_title">Connection settings incomplete</string>
+    <string name="msg_connectionSettingsIncomplete_msg1">
+        The connection settings for the Domoticz server are incomplete.</string>
+    <string name="msg_connectionSettingsIncomplete_msg2">
+        Please review connection settings.</string>
+    <string name="msg_connectionUrlMalformed_title">Server address error</string>
+    <string name="msg_connectionUrlMalformed_msg">Specified server address is incorrect.</string>
+
+    <string name="button_state_on">On</string>
+    <string name="button_state_off">Off</string>
+    <string name="button_status_log">Log</string>
+    <string name="button_status_timer">Timer</string>
+    <string name="button_status_notifications">Notifications</string>
+
+    <string name="last_update">Last seen</string>
+    <string name="level">Level</string>
+    <string name="signal_level">Signal level</string>
+    <string name="battery_level">Battery level</string>
+    <string name="data">Data: </string>
+    <string name="hardware">Hardware: </string>
+    <string name="temperature">Temperature: </string>
+    <string name="status">Status</string>
+    <string name="set_point">Set point</string>
+    <string name="action_success">Action successful</string>
+    <string name="action_failed">Action failed</string>
+    <string name="action_unknown">Action result unknown</string>
+
+    <string name="debug_textview_title">Debugging info</string>
+
+    <string name="msg_copiedToClipboard">Text copied to clipboard</string>
+    <string name="favorite">Favorite</string>
+
+    <string name="timer_before_sunset">Before Sunset</string>
+    <string name="timer_after_sunset">After Sunset</string>
+    <string name="timer_ontime">On Time</string>
+    <string name="timer_before_sunrise">Before Sunrise</string>
+    <string name="timer_after_sunrise">After Sunrise</string>
+    <string name="timer_fixed">Fixed DateTime</string>
+
+    <string name="timer_every_days">Every Day</string>
+    <string name="timer_working_days">Working Days</string>
+    <string name="timer_weekend">Weekend</string>
+    <string name="timer_other">Other</string>
+
+    <string name="geofence">Geofencing</string>
+    <string name="title_geofence">Enable Geofencing</string>
+    <string name="description_geofence">Enable and config Geofences</string>
+    <string name="title_geofence_notifications">Enable Notifications</string>
+    <string name="description_geofence_notifications">Enable notifications for triggering events</string>
+
+</resources>

@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_height="match_parent"
+android:layout_width="match_parent"
+    android:background="@color/white"
+tools:deviceIds="wear">
+
+<android.support.wearable.view.DelayedConfirmationView
+    android:id="@+id/delayed_confirm"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_stop"
+    android:layout_centerInParent="true"
+    style="@style/ActionButton" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/delayed_confirm"
+    android:layout_centerHorizontal="true"
+    android:text="Sending Message"
+    style="@style/TextView.Small.Light.Action" />
+
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Material design colors -->
+    <color name="primary">#263238</color>
+    <color name="primary_dark">#22272B</color>
+    <color name="accent">#22272B</color>
+
+    <color name="welcome1_background">@color/black</color>
+    <color name="welcome2_background">@color/default_background_color_light</color>
+    <color name="welcome3_background">@color/default_background_color_light</color>
+    <color name="welcome4_background">@color/default_background_color_light</color>
+
+    <color name="default_text_color_light">#575757</color>
+    <color name="default_background_color_light">@android:color/background_light</color>
+
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="darker_gray">@android:color/darker_gray</color>
+    <color name="light_gray">@android:color/secondary_text_dark</color>
+
+    <color name="material_teal_200">#80CBC4</color>
+    <color name="material_teal_300">#4DB6AC</color>
+    <color name="material_teal_400">#26A69A</color>
+    <color name="material_teal_500">#009688</color>
+    <color name="material_teal_700">#00796B</color>
+
+    <color name="material_gray_300">#E0E0E0</color>
+    <color name="material_gray_400">#BDBDBD</color>
+    <color name="material_gray_500">#9E9E9E</color>
+
+    <color name="material_red_400">#EF5350</color>
+
+    <color name="material_indigo_200">#90CAF9</color>
+    <color name="material_indigo_300">#64B5F6</color>
+    <color name="material_indigo_400">#42A5F5</color>
+    <color name="material_indigo_500">#2196F3</color>
+    <color name="material_indigo_600">#1E88E5</color>
+    <color name="material_indigo_700">#1976D2</color>
+
+</resources>

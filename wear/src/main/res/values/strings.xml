@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Domoticz</string>
+    <string name="triggered">Switch Triggered!</string>
+
+</resources>

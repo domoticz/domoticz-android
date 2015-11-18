@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mtm_accept_cert">Onbekend certificaat accepteren?</string>
+    <string name="mtm_accept_servername">Verkeerde combinatie in server naam accepteren?</string>
+    <string name="mtm_cert_details">Certificaat details:</string>
+    <string name="mtm_cert_expired">Server certificaat verlopen.</string>
+    <string name="mtm_connect_anyway">Toch verbinden?</string>
+    <string name="mtm_decision_abort">Annuleren</string>
+    <string name="mtm_decision_always">Altijd</string>
+    <string name="mtm_decision_once">Eenmaal</string>
+    <string name="mtm_hostname_mismatch">Server kon niet geauthenticeerd worden als \&quot;%s\&quot;. Certificaat is alleen geldig voor:</string>
+    <string name="mtm_notification">Certificaat verificatie</string>
+    <string name="mtm_trust_anchor">Server certificaat is niet ondertekend door een bekende certificaat autoriteit.</string>
+</resources>

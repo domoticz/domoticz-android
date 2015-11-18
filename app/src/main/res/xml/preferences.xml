@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/category_generic">
+        <ListPreference
+            android:entries="@array/drawer_actions"
+            android:entryValues="@array/drawer_actions"
+            android:key="startup_screen"
+            android:title="@string/startup_screen">
+        </ListPreference>
+        <MultiSelectListPreference
+            android:entries="@array/drawer_actions"
+            android:entryValues="@array/drawer_actions"
+            android:defaultValue="@array/drawer_actions"
+            android:key="enable_items"
+            android:title="@string/enable_items">
+        </MultiSelectListPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_server">
+        <Preference android:title="@string/server_settings">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="nl.hnogames.domoticz.ServerSettingsActivity"
+                android:targetPackage="nl.hnogames.domoticz" />
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Config Geofencing">
+        <Preference android:title="Config Geofencing">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="nl.hnogames.domoticz.GeoSettingsActivity"
+                android:targetPackage="nl.hnogames.domoticz" />
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_info">
+        <EditTextPreference
+            android:key="version"
+            android:persistent="false"
+            android:selectable="false"
+            android:shouldDisableView="false"
+            android:summary="Version 1.0.2"
+            android:title="@string/info_version"></EditTextPreference>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/category_debug">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="debugging"
+            android:summaryOff="@string/debug_switch_summary_off"
+            android:summaryOn="@string/debug_switch_summary_on"
+            android:title="@string/debug_switch_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

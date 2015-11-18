@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextView.Small.Light.Action">
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
+
+    <style name="TextView.Medium.Light.Action">
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
+
+    <style name="ActionButton">
+        <item name="circle_border_color">@color/blue_light</item>
+        <item name="circle_border_width">10dp</item>
+        <item name="circle_radius">55dp</item>
+        <item name="circle_color">@color/white</item>
+    </style>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_add_location">Add Location</string>
+    <string name="locationaddress">Address</string>
+    <string name="locationname">Name</string>
+    <string name="locationaddresshint">Streetname Number City Country</string>
+    <string name="getlocation">GET</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="connectedswitch">Connected switch</string>
+
+</resources>
