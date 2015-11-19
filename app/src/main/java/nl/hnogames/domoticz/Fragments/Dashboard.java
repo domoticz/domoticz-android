@@ -104,31 +104,38 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
-        supportedSwitches=new ArrayList<>();
-        final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
-        final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
+
+        if(switches==null)
+            return;
+
         SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-        for (DevicesInfo mExtendedStatusInfo : switches) {
-            String name = mExtendedStatusInfo.getName();
-            int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-            String switchType = mExtendedStatusInfo.getSwitchType();
-
-            if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                    (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
-                    (switchType == null || switchType.equals(null) || switchType.length() <= 0))//utilities
-            {
-                supportedSwitches.add(mExtendedStatusInfo);
-            }
-        }
-
         try {
+            supportedSwitches=new ArrayList<>();
+            final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
+            final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
+
+            for (DevicesInfo mExtendedStatusInfo : switches) {
+                String name = mExtendedStatusInfo.getName();
+                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                String switchType = mExtendedStatusInfo.getSwitchType();
+
+                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                        (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
+                        (switchType == null || switchType.equals(null) || switchType.length() <= 0))//utilities
+                {
+                    supportedSwitches.add(mExtendedStatusInfo);
+                }
+            }
+
             final switchesClickListener listener = this;
             adapter = new DevicesAdapter(mActivity, supportedSwitches, listener);
             listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             mSwipeRefreshLayout.setRefreshing(false);
+
         } catch (Exception ex) {
+            errorHandling(ex);
         }
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -137,8 +144,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 processDashboard();
             }
         });
-
         hideProgressDialog();
+
     }
 
     @Override

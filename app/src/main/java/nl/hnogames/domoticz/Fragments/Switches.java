@@ -116,44 +116,48 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private void createListView(ArrayList<ExtendedStatusInfo> switches) {
         SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-        supportedSwitches= new ArrayList<>();
-        final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
-        final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
+        try {
+            supportedSwitches = new ArrayList<>();
+            final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
+            final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
-        for (ExtendedStatusInfo mExtendedStatusInfo : switches) {
-            String name = mExtendedStatusInfo.getName();
-            int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-            String switchType = mExtendedStatusInfo.getSwitchType();
+            for (ExtendedStatusInfo mExtendedStatusInfo : switches) {
+                String name = mExtendedStatusInfo.getName();
+                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                String switchType = mExtendedStatusInfo.getSwitchType();
 
-            if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                    appSupportedSwitchesValues.contains(switchTypeVal) &&
-                    appSupportedSwitchesNames.contains(switchType)) {
-                supportedSwitches.add(mExtendedStatusInfo);
+                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                        appSupportedSwitchesValues.contains(switchTypeVal) &&
+                        appSupportedSwitchesNames.contains(switchType)) {
+                    supportedSwitches.add(mExtendedStatusInfo);
+                }
             }
+
+            final switchesClickListener listener = this;
+            adapter = new SwitchesAdapter(mActivity, supportedSwitches, listener);
+            listView = (ListView) getView().findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                               int index, long id) {
+                    showInfoDialog(supportedSwitches.get(index));
+                    return true;
+                }
+            });
+
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getSwitchesData();
+                }
+            });
         }
-
-        final switchesClickListener listener = this;
-
-        adapter = new SwitchesAdapter(mActivity, supportedSwitches, listener);
-        listView = (ListView) getView().findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                           int index, long id) {
-                showInfoDialog(supportedSwitches.get(index));
-                return true;
-            }
-        });
-
-        mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getSwitchesData();
-            }
-        });
-
+        catch(Exception ex)
+        {
+            errorHandling(ex);
+        }
         hideProgressDialog();
     }
 
@@ -275,29 +279,31 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
 
-        int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+        if(clickedSwitch!=null) {
+            int jsonAction;
+            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
-        if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-            if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
-            else jsonAction = Domoticz.Device.Switch.Action.ON;
-        } else {
-            if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-            else jsonAction = Domoticz.Device.Switch.Action.OFF;
+            if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                    clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
+                else jsonAction = Domoticz.Device.Switch.Action.ON;
+            } else {
+                if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
+                else jsonAction = Domoticz.Device.Switch.Action.OFF;
+            }
+
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         }
-
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
     }
 
     @Override

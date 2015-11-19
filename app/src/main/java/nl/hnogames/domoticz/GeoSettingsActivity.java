@@ -266,16 +266,17 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mSharedPrefs.isGeofenceEnabled())
-            getMenuInflater().inflate(R.menu.menu_geo, menu);
-
+        try {
+            if (mSharedPrefs.isGeofenceEnabled())
+                getMenuInflater().inflate(R.menu.menu_geo, menu);
+        }
+        catch(Exception ex){}
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case android.R.id.home:
                 finish();
                 return true;

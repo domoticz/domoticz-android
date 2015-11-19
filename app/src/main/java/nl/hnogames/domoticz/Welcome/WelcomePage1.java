@@ -32,4 +32,5 @@ public class WelcomePage1 extends Fragment {
 
         return v;
     }
+
 }

@@ -1,5 +1,6 @@
 package nl.hnogames.domoticz;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private int selectedFragment = 0;
     private SearchView searchViewAction;
 
+    private final int iWelcomeResultCode = 885;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,22 +61,43 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
-            welcomeWizard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                    Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(welcomeWizard);
+           // welcomeWizard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+             //       Intent.FLAG_ACTIVITY_CLEAR_TASK |
+               //     Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-            if (mSharedPrefs.isWelcomeWizardSuccess()) {
-                addDrawerItems();
-                addFragment();
-            } else {
-                Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
-                welcomeWizard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(welcomeWizard);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            buildScreen();
+        }
+    }
+
+    private void buildScreen()
+    {
+        if (mSharedPrefs.isWelcomeWizardSuccess()) {
+            addDrawerItems();
+            addFragment();
+        } else {
+            Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
+            //welcomeWizard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+             //       Intent.FLAG_ACTIVITY_CLEAR_TASK |
+              //      Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivityForResult(welcomeWizard, iWelcomeResultCode);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+    }
+
+    /* Called when the second activity's finished */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data!=null && resultCode == RESULT_OK) {
+            switch(requestCode) {
+                case iWelcomeResultCode:
+                    Bundle res = data.getExtras();
+                    if (!res.getBoolean("RESULT", false))
+                        this.finish();
+                    else {
+                        buildScreen();
+                    }
+                    break;
             }
         }
     }
@@ -81,9 +106,10 @@ public class MainActivity extends AppCompatActivity {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         selectedFragment = screenIndex;
-        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this,  getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
-        tx.commit();
+        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
+        tx.commitAllowingStateLoss();
     }
+
 
     /**
      * Adds the items to the drawer and registers a click listener on the items
@@ -132,11 +158,9 @@ public class MainActivity extends AppCompatActivity {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                         selectedFragment = recyclerView.getChildPosition(child) - 1;
                         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[recyclerView.getChildPosition(child) - 1]));
-                        tx.commit();
-
+                        tx.commitAllowingStateLoss();
                     } catch (Exception e) {
                     }
-
 
                     invalidateOptionsMenu();
                     mDrawer.closeDrawer(Gravity.LEFT);
@@ -257,18 +281,35 @@ public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        try {
+            switch (item.getItemId()) {
+                case R.id.action_settings:
+                    startActivity(new Intent(this, SettingsActivity.class));
+                    return true;
+            }
 
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+            // Activate the navigation drawer toggle
+            if (mDrawerToggle.onOptionsItemSelected(item)) {
                 return true;
+            }
         }
-
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        catch(Exception ex)
+        {}
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        MainActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 }

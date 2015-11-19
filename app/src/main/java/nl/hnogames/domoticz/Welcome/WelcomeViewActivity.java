@@ -30,12 +30,14 @@ public class WelcomeViewActivity extends FragmentActivity
     private static final int WELCOME_WIZARD = 1;
     @SuppressWarnings("unused")
     private static final int SETTINGS = 2;
+
     private static final String[] INITIAL_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
     private static final int INITIAL_REQUEST = 1337;
     private final List<Fragment> fList = new ArrayList<>();
     private WelcomePageAdapter mAdapter;
@@ -51,18 +53,12 @@ public class WelcomeViewActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        /*
-        * Asking for permissions
-        */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!canAccessLocation()) {
+            if (!canAccessLocation() || !canAccessStorage()) {
                 requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
             }
         }
 
-        /*
-        * Setting this makes sure we draw fullscreen, and have a transparent task bar
-        */
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -75,19 +71,30 @@ public class WelcomeViewActivity extends FragmentActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        ;
         switch (requestCode) {
             case INITIAL_REQUEST:
-                if (!canAccessLocation()) {
-                    this.finish();
+                if (!canAccessLocation() || !canAccessStorage()) {
+                    finishWithResult(false);
                 }
-
                 break;
         }
     }
 
+    private void finishWithResult(boolean success)
+    {
+        Bundle conData = new Bundle();
+        conData.putBoolean("RESULT", success);
+        Intent intent = new Intent();
+        intent.putExtras(conData);
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
+
     private boolean canAccessLocation() {
         return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+    }
+    private boolean canAccessStorage() {
+        return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE));
     }
 
     private boolean hasPermission(String perm) {
@@ -99,15 +106,12 @@ public class WelcomeViewActivity extends FragmentActivity
 
     @Override
     public void onBackPressed() {
-
         if (mPager.getCurrentItem() > 0) {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
             disableFinishButton(false);
         } else {
-            // Back button pressed while on page 0, exit app
-            super.onBackPressed();
+            finishWithResult(false);
         }
-
     }
 
     private void setUpBackgroundColors() {
@@ -150,18 +154,15 @@ public class WelcomeViewActivity extends FragmentActivity
     }
 
     private List<Fragment> getFragments() {
-
         fList.add(WelcomePage1.newInstance());
         fList.add(WelcomePage2.newInstance());
         fList.add(WelcomePage3.newInstance(WELCOME_WIZARD));
         fList.add(WelcomePage4.newInstance());
-
         return fList;
     }
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.btn_next:
                 if (mPager.getCurrentItem() < fList.size() - 1) {
@@ -188,10 +189,7 @@ public class WelcomeViewActivity extends FragmentActivity
     }
 
     private void endWelcomeWizard() {
-        Intent main = new Intent(this, MainActivity.class);
-        main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(main);
-        this.finish();
+        finishWithResult(true);
     }
 
     @Override
@@ -229,4 +227,5 @@ public class WelcomeViewActivity extends FragmentActivity
             disableFinishButton(false);
         }
     }
+
 }

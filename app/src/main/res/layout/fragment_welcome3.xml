@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/welcome_top_margin"
+    android:fadeScrollbars="false"
     android:windowSoftInputMode="adjustPan">
 
     <LinearLayout
