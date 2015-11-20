@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.DeviceInfoDialog;
+import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
@@ -34,6 +38,14 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private int planID = 0;
     private String planName = "";
+
+    @Override
+    public void refreshFragment() {
+        if(mSwipeRefreshLayout!=null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
+        processDashboard();
+    }
 
     public void selectedPlan(int plan, String name) {
         planID = plan;
@@ -101,6 +113,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         createListView(extendedStatusSwitches);
     }
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
@@ -108,9 +122,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if(switches==null)
             return;
 
-        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
         try {
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+
             supportedSwitches=new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
             final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
@@ -132,19 +146,72 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             adapter = new DevicesAdapter(mActivity, supportedSwitches, listener);
             listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
-            mSwipeRefreshLayout.setRefreshing(false);
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
+                    showInfoDialog(supportedSwitches.get(index));
+                    return true;
+                }
+            });
 
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    processDashboard();
+                }
+            });
         } catch (Exception ex) {
             errorHandling(ex);
         }
+        hideProgressDialog();
+    }
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+    private void showInfoDialog(final DevicesInfo mSwitch) {
+        DeviceInfoDialog infoDialog = new DeviceInfoDialog(
+                getActivity(),
+                mSwitch,
+                R.layout.dialog_switch_info);
+        infoDialog.setIdx(String.valueOf(mSwitch.getIdx()));
+        infoDialog.setLastUpdate(mSwitch.getLastUpdate());
+        infoDialog.setSignalLevel(String.valueOf(mSwitch.getSignalLevel()));
+        infoDialog.setBatteryLevel(String.valueOf(mSwitch.getBatteryLevel()));
+        infoDialog.setIsFavorite(mSwitch.getFavoriteBoolean());
+        infoDialog.show();
+        infoDialog.onDismissListener(new DeviceInfoDialog.DismissListener() {
             @Override
-            public void onRefresh() {
-                processDashboard();
+            public void onDismiss(boolean isChanged, boolean isFavorite) {
+                if (isChanged) {
+                    changeFavorite(mSwitch, isFavorite);
+                    processDashboard();
+                }
             }
         });
-        hideProgressDialog();
+    }
+
+    private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
+        addDebugText("changeFavorite");
+        addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
+
+        int jsonAction;
+        int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
+
+        if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
+        else jsonAction = Domoticz.Device.Favorite.OFF;
+
+        mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                successHandling(result, false);
+                mSwitch.setFavoriteBoolean(isFavorite);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
 
     }
 
@@ -154,30 +221,29 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("Set idx " + idx + " to " + checked);
 
         DevicesInfo clickedSwitch = getDevice(idx);
+        if(clickedSwitch!=null) {
+            int jsonAction;
+            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+            if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                    clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
+                else jsonAction = Domoticz.Device.Switch.Action.ON;
+            } else {
+                if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
+                else jsonAction = Domoticz.Device.Switch.Action.OFF;
+            }
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                }
 
-        int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-
-        if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-            if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
-            else jsonAction = Domoticz.Device.Switch.Action.ON;
-        } else {
-            if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-            else jsonAction = Domoticz.Device.Switch.Action.OFF;
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         }
-
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
     }
 
     private DevicesInfo getDevice(int idx) {

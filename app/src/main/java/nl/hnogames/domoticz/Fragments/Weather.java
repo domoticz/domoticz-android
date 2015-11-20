@@ -31,6 +31,13 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private ListView listView;
     private WeatherAdapter adapter;
 
+    @Override
+    public void refreshFragment() {
+        if(mSwipeRefreshLayout!=null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
+        processWeather();
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -38,7 +45,6 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         mActivity = activity;
         getActionBar().setTitle(R.string.title_weather);
     }
-
 
     @Override
     public void Filter(String text) {
@@ -58,13 +64,14 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         processWeather();
     }
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private void processWeather()
     {
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
-                SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
                 successHandling(mWeatherInfos.toString(), false);
                 Weather.this.mWeatherInfos = mWeatherInfos;

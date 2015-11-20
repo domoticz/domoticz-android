@@ -28,6 +28,7 @@ import java.util.List;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchViewAction;
 
     private final int iWelcomeResultCode = 885;
+    private final int iSettingsResultCode = 995;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
-           // welcomeWizard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-             //       Intent.FLAG_ACTIVITY_CLEAR_TASK |
-               //     Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
             addFragment();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
-            //welcomeWizard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-             //       Intent.FLAG_ACTIVITY_CLEAR_TASK |
-              //      Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
@@ -96,6 +93,15 @@ public class MainActivity extends AppCompatActivity {
                         this.finish();
                     else {
                         buildScreen();
+                    }
+                    break;
+                case iSettingsResultCode:
+                    Fragment f =getVisibleFragment();
+                    if (f instanceof DomoticzFragment) {
+                        ((DomoticzFragment)f).refreshFragment();
+                    }
+                    else if (f instanceof DomoticzCardFragment)
+                        ((DomoticzCardFragment)f).refreshFragment();{
                     }
                     break;
             }
@@ -150,17 +156,14 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         searchViewAction.setQuery("", false);
                         searchViewAction.clearFocus();
-
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                         selectedFragment = recyclerView.getChildPosition(child) - 1;
                         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[recyclerView.getChildPosition(child) - 1]));
                         tx.commitAllowingStateLoss();
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) { }
 
                     invalidateOptionsMenu();
                     mDrawer.closeDrawer(Gravity.LEFT);
@@ -237,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 if (fragment != null && fragment.isVisible())
                     return fragment;
             }
+
             return null;
         } catch (Exception ex) {
             return null;
@@ -284,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             switch (item.getItemId()) {
                 case R.id.action_settings:
-                    startActivity(new Intent(this, SettingsActivity.class));
+                    startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
                     return true;
             }
 

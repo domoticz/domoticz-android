@@ -93,11 +93,10 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg())).into(holder.iconRow);
 
         holder.name.setText(mTemperatureInfo.getName());
-        holder.data.append(mTemperatureInfo.getData());
-        holder.hardware.append(mTemperatureInfo.getHardwareName());
+        holder.data.append(": "+mTemperatureInfo.getData());
+        holder.hardware.append(": "+mTemperatureInfo.getHardwareName());
 
         convertView.setTag(holder);
-
         return convertView;
     }
 

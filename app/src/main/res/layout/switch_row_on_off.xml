@@ -60,10 +60,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />
-
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/extra_panel_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -83,7 +83,6 @@
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/button_status"
                 android:text="@string/button_status_timer" />
-
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

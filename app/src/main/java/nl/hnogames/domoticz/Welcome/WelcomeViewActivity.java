@@ -126,7 +126,6 @@ public class WelcomeViewActivity extends FragmentActivity
     }
 
     private void buildLayout() {
-
         List<Fragment> fragments = getFragments();
         mAdapter = new WelcomePageAdapter(getFragmentManager(), fragments);
 

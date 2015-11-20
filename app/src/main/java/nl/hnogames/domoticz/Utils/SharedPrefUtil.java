@@ -7,10 +7,18 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
@@ -21,6 +29,7 @@ import nl.hnogames.domoticz.R;
 @SuppressWarnings("unused")
 public class SharedPrefUtil {
 
+    public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
@@ -96,11 +105,15 @@ public class SharedPrefUtil {
     }
 
     public String[] getNavigationFragments() {
+        if(!prefs.contains(PREF_NAVIGATION_ITEMS))
+            setNavigationDefaults();
+
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allValues =  mContext.getResources().getStringArray(R.array.drawer_fragments);
         String[] allNames =  mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        if (selections == null) return null;
+        if (selections == null)
+            return allValues;
         else {
             String[] selectionValues = new String[selections.size()];
             int i = 0;
@@ -122,11 +135,15 @@ public class SharedPrefUtil {
     }
 
     public String[] getNavigationActions() {
+        if(!prefs.contains(PREF_NAVIGATION_ITEMS))
+            setNavigationDefaults();
+
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allValues =  mContext.getResources().getStringArray(R.array.drawer_fragments);
         String[] allNames =  mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        if (selections == null) return null;
+        if (selections == null) //default
+            return allNames;
         else {
             String[] selectionValues = new String[selections.size()];
             int i = 0;
@@ -154,7 +171,6 @@ public class SharedPrefUtil {
     }
 
     public int[] getNavigationIcons() {
-
         if(!prefs.contains(PREF_NAVIGATION_ITEMS))
             setNavigationDefaults();
 
@@ -162,7 +178,6 @@ public class SharedPrefUtil {
             Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
             String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
             int[] selectedICONS = new int[selections.size()];
-
             int iconIndex = 0;
             int index = 0;
             for (String v : allNames) {
@@ -196,6 +211,10 @@ public class SharedPrefUtil {
 
     public boolean isDebugEnabled() {
         return prefs.getBoolean(PREF_DEBUGGING, false);
+    }
+
+    public boolean showExtraData() {
+        return prefs.getBoolean(PREF_EXTRA_DATA, true);
     }
 
     /*
@@ -440,8 +459,76 @@ public class SharedPrefUtil {
                 if (l.getID() == location.getID())
                     locations.remove(l);
             }
-
             saveLocations(context, locations);
         }
+    }
+
+    public boolean saveSharedPreferencesToFile(File dst) {
+        boolean res = false;
+        ObjectOutputStream output = null;
+
+        try {
+            output = new ObjectOutputStream(new FileOutputStream(dst));
+            output.writeObject(this.prefs.getAll());
+            res = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    public boolean loadSharedPreferencesFromFile(File src) {
+        boolean res = false;
+        ObjectInputStream input = null;
+        try {
+            input = new ObjectInputStream(new FileInputStream(src));
+            editor.clear();
+            Map<String, ?> entries = (Map<String, ?>) input.readObject();
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                Object v = entry.getValue();
+                String key = entry.getKey();
+
+                if (v instanceof Boolean)
+                    editor.putBoolean(key, ((Boolean) v).booleanValue());
+                else if (v instanceof Float)
+                    editor.putFloat(key, ((Float) v).floatValue());
+                else if (v instanceof Integer)
+                    editor.putInt(key, ((Integer) v).intValue());
+                else if (v instanceof Long)
+                    editor.putLong(key, ((Long) v).longValue());
+                else if (v instanceof String)
+                    editor.putString(key, ((String) v));
+            }
+            editor.commit();
+            res = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
     }
 }

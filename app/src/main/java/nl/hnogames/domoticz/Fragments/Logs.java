@@ -27,6 +27,12 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener{
     private ProgressDialog progressDialog;
     private Activity mActivity;
 
+    @Override
+    public void refreshFragment() {
+        if(mSwipeRefreshLayout!=null)
+            mSwipeRefreshLayout.setRefreshing(true);
+        processLogs();
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -74,8 +80,9 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener{
         });
     }
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private void createListView() {
-        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
         listView = (ListView) getView().findViewById(R.id.listView);
         listView.setAdapter(adapter);

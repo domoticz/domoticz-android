@@ -31,6 +31,13 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private ListView listView;
     private TemperatureAdapter adapter;
 
+    @Override
+    public void refreshFragment() {
+        if(mSwipeRefreshLayout!=null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
+        processTemperature();
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -57,6 +64,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         processTemperature();
     }
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private void processTemperature()
     {
         mDomoticz.getTemperatures(new TemperatureReceiver() {
@@ -65,7 +73,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 successHandling(mTemperatureInfos.toString(), false);
                 Temperature.this.mTemperatureInfos = mTemperatureInfos;
-                SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
                 adapter = new TemperatureAdapter(mActivity, mTemperatureInfos);
                 listView = (ListView) getView().findViewById(R.id.listView);

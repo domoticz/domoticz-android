@@ -277,7 +277,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) +
+        text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -323,7 +323,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) +
+        text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -382,7 +382,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
         holder.switch_status.setText(text);
 
-        text = context.getString(R.string.data) +
+        text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -428,7 +428,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) +
+        text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -461,7 +461,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 }
             }
         });
-
         if (holder.isProtected) holder.dimmer.setEnabled(false);
         holder.dimmer.setProgress(mExtendedStatusInfo.getLevel());
         holder.dimmer.setMax(mExtendedStatusInfo.getMaxDimLevel());

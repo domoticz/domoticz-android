@@ -44,7 +44,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                              Bundle savedInstanceState) {
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
+    @Override
+    public void refreshFragment() {
+        getCameras();
     }
 
     @Override

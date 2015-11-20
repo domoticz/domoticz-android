@@ -214,8 +214,10 @@ public class DevicesInfo {
     public void setFavorite(int favorite) {
         Favorite = favorite;
     }
-
-    ;
+    public void setFavoriteBoolean(boolean favorite) {
+        if (favorite) this.Favorite = 1;
+        else this.Favorite = 0;
+    }
 
     public int getHardwareID() {
         return HardwareID;
