@@ -140,8 +140,8 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
 
             holder.name.setText(mUtilitiesInfo.getName());
-            holder.data.append(mUtilitiesInfo.getData());
-            holder.hardware.append(mUtilitiesInfo.getHardwareName());
+            holder.data.append(": " + mUtilitiesInfo.getData());
+            holder.hardware.append(": "+mUtilitiesInfo.getHardwareName());
 
             Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg())).into(holder.iconRow);
         }

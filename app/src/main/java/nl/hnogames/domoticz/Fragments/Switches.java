@@ -46,6 +46,14 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
 
     @Override
+    public void refreshFragment() {
+        if(mSwipeRefreshLayout!=null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
+        getSwitchesData();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = activity;
@@ -111,12 +119,14 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         }
     }
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<ExtendedStatusInfo> switches) {
-        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
         try {
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+
             supportedSwitches = new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
             final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();

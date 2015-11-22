@@ -34,6 +34,15 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private ProgressDialog progressDialog;
     private Activity mActivity;
 
+
+    @Override
+    public void refreshFragment() {
+        if(mSwipeRefreshLayout!=null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
+        processUtilities();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -83,8 +92,9 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         });
     }
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private void createListView() {
-        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
         listView = (ListView) getView().findViewById(R.id.listView);
         listView.setAdapter(adapter);

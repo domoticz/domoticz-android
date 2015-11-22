@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
@@ -28,31 +28,31 @@
         app:flw_labelTextColor="@color/default_text_color_light"
         app:flw_labelTextSize="@dimen/text_size_medium" />
 
-            <Button
-                android:id="@+id/get_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/button_status"
-                android:text="@string/getlocation" />
+    <Button
+        android:id="@+id/get_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_status"
+        android:text="@string/getlocation" />
 
-            <EditText
-                android:id="@+id/latitude"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                style="@style/row_body1"
-                android:padding="2dp"
-                android:text="@string/latitude" />
+    <EditText
+        android:id="@+id/latitude"
+        style="@style/row_body1"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:padding="2dp"
+        android:text="@string/latitude" />
 
-            <EditText
-                android:id="@+id/longitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                style="@style/row_body1"
-                android:text="@string/longitude" />
+    <EditText
+        android:id="@+id/longitude"
+        style="@style/row_body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="@string/longitude" />
 
 </LinearLayout>

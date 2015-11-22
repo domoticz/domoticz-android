@@ -15,6 +15,12 @@
             android:key="enable_items"
             android:title="@string/enable_items">
         </MultiSelectListPreference>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="extradata"
+            android:summaryOff="@string/show_extra_data_off"
+            android:summaryOn="@string/show_extra_data_on"
+            android:title="@string/extra_data_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server">
@@ -34,6 +40,13 @@
         </Preference>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_export">
+        <Preference android:title="@string/export_settings"
+            android:key="export_settings" />
+        <Preference android:title="@string/import_settings"
+            android:key="import_settings" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_info">
         <EditTextPreference
             android:key="version"
@@ -42,6 +55,13 @@
             android:shouldDisableView="false"
             android:summary="Version 1.0.2"
             android:title="@string/info_version"></EditTextPreference>
+        <EditTextPreference
+            android:key="version_domoticz"
+            android:persistent="false"
+            android:selectable="false"
+            android:shouldDisableView="false"
+            android:summary="Version 1.0.2"
+            android:title="@string/info_domoticz_version"></EditTextPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_debug">

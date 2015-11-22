@@ -37,6 +37,9 @@ public class DomoticzCardFragment extends Fragment {
     public DomoticzCardFragment() {
     }
 
+    public void refreshFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,

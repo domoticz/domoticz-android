@@ -25,9 +25,9 @@
     <string name="level">Level</string>
     <string name="signal_level">Signal level</string>
     <string name="battery_level">Battery level</string>
-    <string name="data">Data: </string>
-    <string name="hardware">Hardware: </string>
-    <string name="temperature">Temperature: </string>
+    <string name="data">Data</string>
+    <string name="hardware">Hardware</string>
+    <string name="temperature">Temperature</string>
     <string name="status">Status</string>
     <string name="set_point">Set point</string>
     <string name="action_success">Action successful</string>

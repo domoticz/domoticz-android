@@ -1,5 +1,6 @@
 package nl.hnogames.domoticz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
@@ -22,10 +23,24 @@ public class SettingsActivity extends ActionBarActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                // NavUtils.navigateUpFromSameTask(this);
-                finish();
+                finishWithResult(true);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishWithResult(true);
+    }
+
+    private void finishWithResult(boolean success)
+    {
+        Bundle conData = new Bundle();
+        conData.putBoolean("RESULT", success);
+        Intent intent = new Intent();
+        intent.putExtras(conData);
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 }

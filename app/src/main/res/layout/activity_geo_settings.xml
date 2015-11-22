@@ -18,8 +18,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/geofence_onoff"
@@ -50,8 +50,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/geofence_notifications_onoff"
@@ -85,8 +85,8 @@
         style="@style/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         android:layout_marginTop="10dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 </LinearLayout>

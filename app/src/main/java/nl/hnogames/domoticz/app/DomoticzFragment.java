@@ -37,6 +37,9 @@ public class DomoticzFragment extends Fragment {
     public DomoticzFragment() {
     }
 
+    public void refreshFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,

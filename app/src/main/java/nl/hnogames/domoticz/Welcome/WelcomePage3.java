@@ -87,7 +87,6 @@ public class WelcomePage3 extends Fragment {
         remote_username_input = (FloatingLabelEditText) v.findViewById(R.id.remote_username_input);
         remote_password_input = (FloatingLabelEditText) v.findViewById(R.id.remote_password_input);
         remote_protocol_spinner = (Spinner) v.findViewById(R.id.remote_protocol_spinner);
-
         local_server_input = (FloatingLabelEditText) v.findViewById(R.id.local_server_input);
         local_port_input = (FloatingLabelEditText) v.findViewById(R.id.local_port_input);
         local_username_input = (FloatingLabelEditText) v.findViewById(R.id.local_username_input);
