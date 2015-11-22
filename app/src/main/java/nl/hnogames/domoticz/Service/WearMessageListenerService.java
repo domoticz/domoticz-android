@@ -2,6 +2,7 @@ package nl.hnogames.domoticz.Service;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -37,6 +38,9 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private static final String TAG = "WEARLISTENER";
     private static final String SEND_DATA = "/send_data";
     private static final String RECEIVE_DATA = "/receive_data";
+    private static final String SEND_ERROR = "/error";
+
+    private static final String ERROR_NO_SWITCHES = "NO_SWITCHES";
     private static GoogleApiClient mApiClient;
 
     private static final String SEND_SWITCH = "/send_switch";
@@ -161,11 +165,13 @@ public class WearMessageListenerService extends WearableListenerService implemen
                 supportedSwitches.add(mExtendedStatusInfo);
             }
         }
-        if(supportedSwitches.size()>0)
-        {
+        if (supportedSwitches.size() > 0) {
             String parsedData = new Gson().toJson(supportedSwitches);
-            Log.v(TAG, "Sending data: "+parsedData);
+            Log.v(TAG, "Sending data: " + parsedData);
             sendMessage(SEND_DATA, parsedData);
+        } else {
+            Log.v(TAG, "Sending error to wearable: no switches on dashboard");
+            sendMessage(SEND_ERROR, ERROR_NO_SWITCHES);
         }
     }
 

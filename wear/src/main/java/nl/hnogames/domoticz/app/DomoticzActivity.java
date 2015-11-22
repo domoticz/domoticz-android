@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -23,6 +24,8 @@ public class DomoticzActivity extends Activity implements
     public final String TAG = "WEARDEVICE";
     public final String SEND_DATA = "/send_data";
     public final String RECEIVE_DATA = "/receive_data";
+    public final String SEND_ERROR = "/error";
+    public final String ERROR_NO_SWITCHES = "NO_SWTICHES";
     public GoogleApiClient mApiClient;
     public final String PREF_SWITCH = "SWITCHES";
     public final String SEND_SWITCH = "/send_switch";
@@ -50,16 +53,11 @@ public class DomoticzActivity extends Activity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.view_main);
-        initGoogleApiClient();//request new data
+        initGoogleApiClient();                              //request new data
     }
 
     @Override
     public void onMessageReceived( final MessageEvent messageEvent ) {
-        if (messageEvent.getPath().equalsIgnoreCase(SEND_DATA)) {
-            String rawData = new String(messageEvent.getData());
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            prefs.edit().putString(PREF_SWITCH, rawData).apply();
-        }
     }
 
     @Override
@@ -81,6 +79,7 @@ public class DomoticzActivity extends Activity implements
                         Log.v(TAG, "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
                     } else {
                         Log.v(TAG, "ERROR: failed to send Message");
+                        Toast.makeText(getApplicationContext(), "Connection to phone failed", Toast.LENGTH_LONG).show();
                     }
                 }
             }
