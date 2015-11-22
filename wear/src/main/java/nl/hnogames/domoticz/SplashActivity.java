@@ -1,22 +1,17 @@
 package nl.hnogames.domoticz;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
-import com.google.android.gms.wearable.Wearable;
 
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
-public class SplashActicity extends DomoticzActivity implements
+public class SplashActivity extends DomoticzActivity implements
         MessageApi.MessageListener {
 
     @Override
@@ -27,6 +22,7 @@ public class SplashActicity extends DomoticzActivity implements
 
     @Override
     public void onMessageReceived( final MessageEvent messageEvent ) {
+        super.onMessageReceived(messageEvent);
         if (messageEvent.getPath().equalsIgnoreCase(this.SEND_DATA)) {
             String rawData = new String(messageEvent.getData());
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -35,6 +31,13 @@ public class SplashActicity extends DomoticzActivity implements
             Intent intent = new Intent(this, WearActivity.class);
             startActivity(intent);
             this.finish();
+        } else if (messageEvent.getPath().equalsIgnoreCase(SEND_ERROR)) {
+            String errorMessage = new String(messageEvent.getData());
+            if (errorMessage.equals(ERROR_NO_SWITCHES)) {
+                Intent intent = new Intent(this, ErrorActivity.class);
+                startActivity(intent);
+                this.finish();
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
         android:theme="@android:style/Theme.DeviceDefault">
 
         <activity
-            android:name=".SplashActicity"
+            android:name=".SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +20,11 @@
 
         <activity
             android:name=".WearActivity"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".ErrorActivity"
             android:label="@string/app_name">
         </activity>
 
