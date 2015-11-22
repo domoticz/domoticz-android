@@ -298,7 +298,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                successHandling(result, true);
+                successHandling(result, false);
             }
 
             @Override
