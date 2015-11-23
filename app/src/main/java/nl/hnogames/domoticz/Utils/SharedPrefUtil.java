@@ -3,7 +3,9 @@ package nl.hnogames.domoticz.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.nfc.Tag;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -28,6 +30,9 @@ import nl.hnogames.domoticz.R;
 
 @SuppressWarnings("unused")
 public class SharedPrefUtil {
+
+    public static final String PREF_CUSTOM_WEAR = "enablewearitems";
+    public static final String PREF_CUSTOM_WEAR_ITEMS = "wearitems";
 
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
@@ -102,6 +107,21 @@ public class SharedPrefUtil {
             }
             return i;
         }
+    }
+
+    public String[] getWearSwitches() {
+        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS))
+            return null;
+
+        Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
+        String[] selectionValues = new String[selections.size()];
+
+        int i=0;
+        for (String s : selections) {
+            selectionValues[i] = s;
+            i++;
+        }
+        return selectionValues;
     }
 
     public String[] getNavigationFragments() {
@@ -216,6 +236,10 @@ public class SharedPrefUtil {
     public boolean showExtraData() {
         return prefs.getBoolean(PREF_EXTRA_DATA, true);
     }
+    public boolean showCustomWear() {
+        return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
+    }
+
 
     /*
      *      Remote server settings
@@ -511,6 +535,10 @@ public class SharedPrefUtil {
                     editor.putLong(key, ((Long) v).longValue());
                 else if (v instanceof String)
                     editor.putString(key, ((String) v));
+                else if (v instanceof Set)
+                    editor.putStringSet(key, ((Set<String>) v));
+                else
+                    Log.v("Settings", "Could not load pref: "+key+ " | " +v.getClass());
             }
             editor.commit();
             res = true;

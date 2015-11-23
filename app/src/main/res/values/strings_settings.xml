@@ -6,6 +6,7 @@
 
 
     <!--        Categories                   -->
+    <string name="category_wear">Android Wear</string>
     <string name="category_generic">Generic</string>
     <string name="category_server">Server</string>
     <string name="category_info">Information</string>
@@ -19,6 +20,11 @@
     <string name="extra_data_title">Extra Data on Dashboard</string>
     <string name="show_extra_data_on">Show extra data on Dashboard</string>
     <string name="show_extra_data_off">Hide extra data on Dashboard</string>
+    <string name="enable_wear_select">Enable Android Wear</string>
+    <string name="custom_wear_select">Select Wear Switches</string>
+    <string name="custom_wear_select_desc">Select which switches you like on your wear device</string>
+    <string name="wear_custom_on">Enable Android Wear custom items</string>
+    <string name="wear_custom_off">Disable Android Wear custom items</string>
 
 
     <!--        Preference screens      -->

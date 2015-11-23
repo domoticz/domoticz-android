@@ -367,14 +367,18 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.onOffSwitch.setEnabled(false);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
-        holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx());
-        holder.onOffSwitch.setChecked(mExtendedStatusInfo.getStatusBoolean());
-        holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                handleOnOffSwitchClick(compoundButton.getId(), checked);
-            }
-        });
+
+        if(holder.onOffSwitch!=null) {
+            holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx());
+            holder.onOffSwitch.setChecked(mExtendedStatusInfo.getStatusBoolean());
+            holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    handleOnOffSwitchClick(compoundButton.getId(), checked);
+                }
+            });
+        }
+
         if(holder.buttonLog!=null)
         {
             holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
@@ -407,6 +411,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
         holder.buttonOn.setId(mExtendedStatusInfo.getIdx());
+
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
             holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));

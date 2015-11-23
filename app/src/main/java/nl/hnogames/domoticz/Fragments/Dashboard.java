@@ -124,7 +124,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
         try {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
             supportedSwitches=new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
             final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
@@ -162,8 +161,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 }
             });
         } catch (Exception ex) {
-            errorHandling(ex);
         }
+
         hideProgressDialog();
     }
 

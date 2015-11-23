@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customPreference="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/category_generic">
         <ListPreference
@@ -21,6 +22,26 @@
             android:summaryOff="@string/show_extra_data_off"
             android:summaryOn="@string/show_extra_data_on"
             android:title="@string/extra_data_title" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/category_wear">
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="enablewearitems"
+        android:summaryOff="@string/wear_custom_on"
+        android:summaryOn="@string/wear_custom_off"
+        android:title="@string/enable_wear_select" />
+    <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
+        android:key="wearitems"
+        android:dependency="enablewearitems"
+        android:title="@string/custom_wear_select"
+        android:dialogTitle="@string/custom_wear_select"
+        android:summary="@string/custom_wear_select_desc"
+        android:entries="@array/empty_array"
+        android:entryValues="@array/empty_array"
+        android:defaultValue="@array/empty_array"
+        customPreference:selectAllValuesByDefault="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server">
