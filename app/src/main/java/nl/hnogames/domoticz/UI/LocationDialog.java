@@ -24,8 +24,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private Context mContext;
-    private LatLng foundlocation;
-    private Button getLocation;
+    private LatLng foundLocation;
     private FloatingLabelEditText editAddress;
     private FloatingLabelEditText editName;
     private EditText txtLatitude;
@@ -38,9 +37,10 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
+        //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel);
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel);
 
         mdb.dismissListener(this);
         mdb.onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -48,21 +48,20 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
             public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                 String name = editName.getInputWidgetText().toString();
 
-                if (name == null || name.length() <= 0)
-                    Toast.makeText(mContext, "No location name specified.", Toast.LENGTH_SHORT).show();
-                else if (foundlocation == null)
-                    Toast.makeText(mContext, "No location found.", Toast.LENGTH_SHORT).show();
-                else
-                {
+                if (name.isEmpty() || name.length() <= 0)
+                    Toast.makeText(mContext, R.string.location_name, Toast.LENGTH_SHORT).show();
+                else if (foundLocation == null)
+                    Toast.makeText(mContext, R.string.location_not_found, Toast.LENGTH_SHORT).show();
+                else {
                     try {
                         if (dismissListener != null)
                             dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(),
                                     new LatLng(Double.parseDouble(txtLatitude.getText().toString().replace(mContext.getString(R.string.latitude) + ": ", "")),
                                             Double.parseDouble(txtLongitude.getText().toString().replace(mContext.getString(R.string.longitude) + ": ", "")))));
 
-                    }catch(Exception ex){
+                    } catch(Exception ex){
                         if (dismissListener != null)
-                            dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(), foundlocation));
+                            dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(), foundLocation));
                     }
                 }
             }
@@ -74,7 +73,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        getLocation = (Button)view.findViewById(R.id.get_address);
+        Button getLocation = (Button) view.findViewById(R.id.get_address);
         txtLatitude = (EditText)view.findViewById(R.id.latitude);
         txtLongitude = (EditText)view.findViewById(R.id.longitude);
         editAddress = (FloatingLabelEditText)view.findViewById(R.id.address);
@@ -83,12 +82,12 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                foundlocation = getLocationFromAddress(mContext, String.valueOf(editAddress.getInputWidgetText().toString()));
-                if (foundlocation == null)
-                    Toast.makeText(mContext, "Could not find location, please try again.", Toast.LENGTH_SHORT).show();
+                foundLocation = getLocationFromAddress(mContext, String.valueOf(editAddress.getInputWidgetText().toString()));
+                if (foundLocation == null)
+                    Toast.makeText(mContext, R.string.could_not_find_location, Toast.LENGTH_SHORT).show();
                 else {
-                    txtLatitude.setText(mContext.getString(R.string.latitude) + ": " + foundlocation.latitude);
-                    txtLongitude.setText(mContext.getString(R.string.longitude) + ": " + foundlocation.longitude);
+                    txtLatitude.setText(mContext.getString(R.string.latitude) + ": " + foundLocation.latitude);
+                    txtLongitude.setText(mContext.getString(R.string.longitude) + ": " + foundLocation.longitude);
                 }
             }
         });
