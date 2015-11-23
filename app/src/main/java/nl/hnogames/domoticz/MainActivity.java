@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
@@ -41,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPrefUtil mSharedPrefs;
 
     private RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    private RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
+    private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
+
     private Menu menu;
     private int selectedFragment = 0;
     private SearchView searchViewAction;
@@ -103,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     else if (f instanceof DomoticzCardFragment)
                         ((DomoticzCardFragment)f).refreshFragment();{
                     }
+
+                    updateDrawerItems();
                     break;
+
             }
         }
     }
@@ -116,12 +121,17 @@ public class MainActivity extends AppCompatActivity {
         tx.commitAllowingStateLoss();
     }
 
+    private void updateDrawerItems() {
+        String[] drawerActions = mSharedPrefs.getNavigationActions();
+        fragments =mSharedPrefs.getNavigationFragments();
+        int ICONS[] = mSharedPrefs.getNavigationIcons();
+        mAdapter.updateData(drawerActions, ICONS);
+    }
 
     /**
      * Adds the items to the drawer and registers a click listener on the items
      */
     private void addDrawerItems() {
-
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         fragments =mSharedPrefs.getNavigationFragments();
         int ICONS[] = mSharedPrefs.getNavigationIcons();

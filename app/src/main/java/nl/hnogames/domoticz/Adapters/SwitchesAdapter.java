@@ -292,7 +292,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-
         holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
         holder.buttonLog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,7 +324,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
 
-
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
 
@@ -349,7 +347,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     handleOnButtonClick(v.getId(), false);
             }
         });
-
 
         holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
         holder.buttonLog.setOnClickListener(new View.OnClickListener() {
@@ -383,7 +380,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
-
 
         if (holder.isProtected) holder.buttonUp.setEnabled(false);
         holder.buttonUp.setId(mExtendedStatusInfo.getIdx());

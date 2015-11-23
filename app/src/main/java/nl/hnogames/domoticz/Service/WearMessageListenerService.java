@@ -25,6 +25,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
 /**
@@ -34,6 +35,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     private String responseDetails = "";
     private Domoticz domoticz;
+    private SharedPrefUtil mSharedPrefs;
 
     private static final String TAG = "WEARLISTENER";
     private static final String SEND_DATA = "/send_data";
@@ -52,6 +54,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
     public void onMessageReceived(MessageEvent messageEvent) {
         if (messageEvent.getPath().equalsIgnoreCase(RECEIVE_DATA)) {
             Log.v("WEAR SERVICE", "Get data from Domoticz");
+            mSharedPrefs=new SharedPrefUtil(this);
             if (mApiClient == null || mApiClient.equals(null)) {
                 Log.v("WEAR SERVICE", "Init Google Wear API");
                 initGoogleApiClient();
@@ -112,8 +115,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
 
     private void getSwitches() {
-        extendedStatusSwitches = new ArrayList<>();
 
+        extendedStatusSwitches = new ArrayList<>();
         currentSwitch = 1;
         domoticz = new Domoticz(getApplicationContext());
         domoticz.getSwitches(new SwitchesReceiver() {
@@ -153,18 +156,43 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
         ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
 
-        for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
-            String name = mExtendedStatusInfo.getName();
-            int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-            String switchType = mExtendedStatusInfo.getSwitchType();
+        if(!mSharedPrefs.showCustomWear() && mSharedPrefs.getWearSwitches()!=null  && mSharedPrefs.getWearSwitches().length>0) {
+            for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
+                String name = mExtendedStatusInfo.getName();
+                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                String switchType = mExtendedStatusInfo.getSwitchType();
 
-            if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                    appSupportedSwitchesValues.contains(switchTypeVal) &&
-                    appSupportedSwitchesNames.contains(switchType) &&
-                    mExtendedStatusInfo.getFavoriteBoolean()) {//only dashboard switches..
-                supportedSwitches.add(mExtendedStatusInfo);
+                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                        appSupportedSwitchesValues.contains(switchTypeVal) &&
+                        appSupportedSwitchesNames.contains(switchType) &&
+                        mExtendedStatusInfo.getFavoriteBoolean()) {//only dashboard switches..
+                    supportedSwitches.add(mExtendedStatusInfo);
+                }
             }
         }
+        else{
+            String[] filterSwitches = mSharedPrefs.getWearSwitches();
+            for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
+                String name = mExtendedStatusInfo.getName();
+                String idx = mExtendedStatusInfo.getIdx()+"";
+                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                String switchType = mExtendedStatusInfo.getSwitchType();
+
+                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                        appSupportedSwitchesValues.contains(switchTypeVal) &&
+                        appSupportedSwitchesNames.contains(switchType)) {
+
+                    for(String f: filterSwitches)
+                    {
+                        if(f.equals(idx))
+                        {
+                            supportedSwitches.add(mExtendedStatusInfo);
+                        }
+                    }
+                }
+            }
+        }
+
         if (supportedSwitches.size() > 0) {
             String parsedData = new Gson().toJson(supportedSwitches);
             Log.v(TAG, "Sending data: " + parsedData);

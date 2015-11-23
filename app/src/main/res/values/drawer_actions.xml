@@ -12,6 +12,9 @@
         <item>Logs</item>
     </string-array>
 
+    <string-array name="empty_array">
+    </string-array>
+
     <string-array name="drawer_fragments" translatable="false">
         <item>nl.hnogames.domoticz.Fragments.Dashboard</item>
         <item>nl.hnogames.domoticz.Fragments.Scenes</item>

@@ -41,6 +41,14 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         mContext = context;
     }
 
+    public boolean updateData(String Titles[], int Icons[]) {
+        mNavTitles = Titles;
+        mIcons = Icons;
+        this.notifyDataSetChanged();
+        return true;
+    }
+
+
     @Override
     public NavigationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
