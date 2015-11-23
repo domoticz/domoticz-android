@@ -108,7 +108,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
             case Domoticz.Device.Type.Value.X10SIREN:
             case Domoticz.Device.Type.Value.DOORLOCK:
-            case Domoticz.Device.Type.Value.BLINDS:
             case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                 row = setOnOffSwitchRowId(holder);
                 break;
@@ -118,11 +117,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.DUSKSENSOR:
                 row = setMotionSwitchRowId(holder);
                 break;
-/*
+
             case Domoticz.Device.Type.Value.BLINDS:
                 row = setBlindsRowId(holder);
                 break;
-*/
+
             case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
             case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
             case Domoticz.Device.Type.Value.DOORBELL:
@@ -238,7 +237,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.CONTACT:
             case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
-            case Domoticz.Device.Type.Value.BLINDS:
             case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                 setOnOffSwitchRowData(mExtendedStatusInfo, holder);
                 break;
@@ -252,11 +250,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
                 setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, false);
                 break;
-/*
+
             case Domoticz.Device.Type.Value.BLINDS:
                 setBlindsRowData(mExtendedStatusInfo, holder);
                 break;
-*/
+
             case Domoticz.Device.Type.Value.DIMMER:
                 setDimmerRowData(mExtendedStatusInfo, holder);
                 break;
