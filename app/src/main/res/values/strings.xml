@@ -52,9 +52,21 @@
     <string name="timer_other">Other</string>
 
     <string name="geofence">Geofencing</string>
-    <string name="title_geofence">Enable Geofencing</string>
-    <string name="description_geofence">Enable and config Geofences</string>
-    <string name="title_geofence_notifications">Enable Notifications</string>
+    <string name="title_geofence">Enable geofencing</string>
+    <string name="description_geofence">Enable and config geofences</string>
+    <string name="title_geofence_notifications">Enable notifications</string>
     <string name="description_geofence_notifications">Enable notifications for triggering events</string>
+    <string name="geofence_provider_msg">Please enable %1$s to find your location</string>
+    <string name="google_play_services_unavailable">Google Play services unavailable.</string>
+    <string name="geofence_place">Place: %s</string>
+    <string name="location_name">No location name specified.</string>
+    <string name="location_not_found">No location found.</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="could_not_find_location">Could not find location, please try again.</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 
 </resources>

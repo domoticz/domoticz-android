@@ -1,5 +1,6 @@
 package nl.hnogames.domoticz;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +9,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
+// import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -54,18 +55,22 @@ import nl.hnogames.domoticz.UI.SwitchsDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
-public class GeoSettingsActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GeoSettingsActivity extends AppCompatActivity
+        implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private final String TAG = "GeoSettings";
-    private final int BESTAVAILABLEPROVIDERCODE = 111;
-    private final int BESTPROVIDERCODE = 222;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int BEST_AVAILABLE_PROVIDER_CODE = 111;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int BEST_PROVIDER_CODE = 222;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
     private GoogleMap map;
     private LocationManager locationManager;
     private SharedPrefUtil mSharedPrefs;
 
     private Domoticz domoticz;
-    private ListView listView;
 
     // Stores the PendingIntent used to request geofence monitoring.
     private PendingIntent mGeofenceRequestIntent;
@@ -80,8 +85,9 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
             if (resultCode == RESULT_OK) {
                 // The user picked a place.
                 Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                Toast.makeText(this,
+                        String.format(getString(R.string.geofence_place), place.getName()),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -89,28 +95,28 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_geo_settings);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
-        domoticz=new Domoticz(this);
+        domoticz = new Domoticz(this);
 
         if (!isGooglePlayServicesAvailable()) {
-            Toast.makeText(this, "Google Play services unavailable.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    R.string.google_play_services_unavailable,
+                    Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        mApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
-        mApiClient.connect();
-
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         mSharedPrefs = new SharedPrefUtil(this);
-        getCurrentLocationOnMapFromProvider();
+
+        createListView();
+        initSwitches();
+    }
+
+    private void initSwitches() {
 
         Switch notSwitch = (Switch) findViewById(R.id.switch_notifications_button);
         Switch geoSwitch = (Switch) findViewById(R.id.switch_button);
@@ -131,14 +137,41 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
                 mSharedPrefs.setGeofenceNotificationsEnabled(isChecked);
             }
         });
-
-        createListView();
     }
 
-    public void showSwitchesDialog(final LocationInfo selectedLocation, ArrayList<SwitchInfo> switches)
-    {
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mApiClient.isConnected()) mApiClient.disconnect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mApiClient != null) {
+            mApiClient.connect();
+        } else {
+            mApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+
+            mApiClient.connect();
+        }
+        if (map == null)
+            map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        getCurrentLocationOnMapFromProvider();
+    }
+
+    public void showSwitchesDialog(
+            final LocationInfo selectedLocation,
+            ArrayList<SwitchInfo> switches) {
+
         SwitchsDialog infoDialog = new SwitchsDialog(
-                GeoSettingsActivity.this,switches,
+                GeoSettingsActivity.this, switches,
                 R.layout.dialog_switch_logs);
         infoDialog.onDismissListener(new SwitchsDialog.DismissListener() {
             @Override
@@ -158,12 +191,12 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
 
     private void createListView() {
         locations = mSharedPrefs.getLocations(this);
-        mGeofenceList=new ArrayList<>();
+        mGeofenceList = new ArrayList<>();
 
-        if(locations!=null)
-        for(LocationInfo l : locations)
-            if(l.getEnabled())
-                mGeofenceList.add(l.toGeofence());
+        if (locations != null)
+            for (LocationInfo locationInfo : locations)
+                if (locationInfo.getEnabled())
+                    mGeofenceList.add(locationInfo.toGeofence());
 
         adapter = new LocationAdapter(this, locations, new LocationClickListener() {
             @Override
@@ -187,12 +220,13 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
                     }
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
-                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                builder.setMessage(getString(R.string.are_you_sure))
+                        .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                        .setNegativeButton(getString(R.string.no), dialogClickListener).show();
             }
         });
 
-        listView = (ListView)findViewById(R.id.listView);
+        ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -214,6 +248,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
     }
 
     public void getCurrentLocationOnMapFromProvider() {
+
         Criteria criteria = new Criteria();
         criteria.setSpeedRequired(false);
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -222,25 +257,31 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
         criteria.setAltitudeRequired(false);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // finding best provider without fulfilling the criteria
         String bestProvider = locationManager.getBestProvider(criteria, false);
+        // finding best provider which fulfills the criteria
         String bestAvailableProvider = locationManager.getBestProvider(criteria, true);
 
         if (bestProvider == null) {
         } else if (bestAvailableProvider != null && bestAvailableProvider.equals(bestAvailableProvider)) {
-            boolean enabled = locationManager.isProviderEnabled(bestAvailableProvider);
-            if (!enabled) {
-                Toast.makeText(this, " Please enable " + bestAvailableProvider + " to find your location", Toast.LENGTH_LONG).show();
+            if (!locationManager.isProviderEnabled(bestAvailableProvider)) {
+                Log.d(TAG, "Best available provider not enabled" + bestAvailableProvider);
+                Toast.makeText(this,
+                        String.format(getString(R.string.geofence_provider_msg), bestAvailableProvider),
+                        Toast.LENGTH_LONG).show();
                 Intent mainIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(mainIntent, BESTAVAILABLEPROVIDERCODE);
+                startActivityForResult(mainIntent, BEST_AVAILABLE_PROVIDER_CODE);
             } else {
                 getLocation(bestAvailableProvider);
             }
         } else {
-            boolean enabled = locationManager.isProviderEnabled(bestProvider);
-            if (!enabled) {
-                Toast.makeText(this, " Please enable " + bestProvider + " to find your location", Toast.LENGTH_LONG).show();
+            if (!locationManager.isProviderEnabled(bestProvider)) {
+                Log.d(TAG, "Best provider not enabled" + bestProvider);
+                Toast.makeText(this,
+                        String.format(getString(R.string.geofence_provider_msg), bestProvider),
+                        Toast.LENGTH_LONG).show();
                 Intent mainIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(mainIntent, BESTPROVIDERCODE);
+                startActivityForResult(mainIntent, BEST_PROVIDER_CODE);
             } else {
                 getLocation(bestProvider);
             }
@@ -248,18 +289,20 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
     }
 
     public void getLocation(String usedLocationService) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.requestLocationUpdates(usedLocationService, 0, 0, this);
+        //locationManager.requestLocationUpdates(usedLocationService, 0, 0, this);
 
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         setMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+
     }
 
     private void setMarker(LatLng currentLatLng) {
-        Marker currentLocation = map.addMarker(new MarkerOptions().position(currentLatLng));
+        // Marker currentLocation =
+        map.addMarker(new MarkerOptions().position(currentLatLng));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
         map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
@@ -269,8 +312,9 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
         try {
             if (mSharedPrefs.isGeofenceEnabled())
                 getMenuInflater().inflate(R.menu.menu_geo, menu);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        catch(Exception ex){}
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -289,8 +333,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
     }
 
 
-    public void showAddLocationDialog()
-    {
+    public void showAddLocationDialog() {
         LocationDialog infoDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
@@ -307,12 +350,12 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
                 mSharedPrefs.addLocation(GeoSettingsActivity.this, location);
                 locations = mSharedPrefs.getLocations(GeoSettingsActivity.this);
 
-                mGeofenceList=new ArrayList<>();//reset values
+                mGeofenceList = new ArrayList<>();//reset values
 
-                if(locations!=null)
-                    for(LocationInfo l : locations)
-                    if(l.getEnabled())
-                        mGeofenceList.add(l.toGeofence());
+                if (locations != null)
+                    for (LocationInfo l : locations)
+                        if (l.getEnabled())
+                            mGeofenceList.add(l.toGeofence());
 
                 setGeoFenceService();
                 createListView();
@@ -325,7 +368,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
         });
         infoDialog.show();
     }
-
+/*
     @Override
     public void onLocationChanged(Location location) {
         Log.d("Location Found", location.getLatitude() + " " + location.getLongitude());
@@ -345,10 +388,11 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d(TAG, "Status: " + status);
     }
-
+*/
 
     /**
      * Checks if Google Play services is available.
+     *
      * @return true if it is.
      */
     private boolean isGooglePlayServicesAvailable() {
@@ -386,8 +430,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements LocationLi
         );*/
 
             mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
-            LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
-            //Toast.makeText(this, "Starting Geofence Service", Toast.LENGTH_SHORT).show();
+            LocationServices.GeofencingApi
+                    .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+            if (domoticz.isDebugEnabled())
+                Toast.makeText(this, "Starting Geofence Service", Toast.LENGTH_SHORT).show();
         }
     }
 
