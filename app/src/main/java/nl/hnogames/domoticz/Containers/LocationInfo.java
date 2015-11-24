@@ -13,7 +13,7 @@ public class LocationInfo {
     boolean enabled = false;
 
 
-    public LocationInfo(int i, String n, LatLng l) {
+    public LocationInfo(int i, String n, LatLng l, int radius) {
         this.Name = n;
         this.Location = l;
         this.id = i;

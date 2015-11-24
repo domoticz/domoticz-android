@@ -28,6 +28,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
@@ -301,6 +302,10 @@ public class Domoticz {
                 url = Url.Category.SWITCHTIMER;
                 break;
 
+            case Json.Url.Request.UPDATE:
+                url = Url.System.UPDATE;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -513,10 +518,19 @@ public class Domoticz {
                 url);
     }
 
+    public void getUpdate(UpdateReceiver receiver) {
+        UpdateParser parser = new UpdateParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.UPDATE);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.SCENES);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -526,7 +540,7 @@ public class Domoticz {
     public void getPlans(PlansReceiver receiver) {
         PlanParser parser = new PlanParser(receiver);
         String url = constructGetUrl(Json.Url.Request.PLANS);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -537,7 +551,7 @@ public class Domoticz {
         CameraParser parser = new CameraParser(receiver);
         String url = constructGetUrl(Json.Url.Request.CAMERAS);
 
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -547,7 +561,7 @@ public class Domoticz {
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = constructGetUrl(Json.Url.Request.SWITCHES);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -559,7 +573,7 @@ public class Domoticz {
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.SWITCHLOG) + String.valueOf(idx);
         ;
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -571,7 +585,7 @@ public class Domoticz {
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.SWITCHTIMER) + String.valueOf(idx);
         ;
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -597,7 +611,7 @@ public class Domoticz {
         String url = constructGetUrl(Json.Get.STATUS) + String.valueOf(idx);
         logger("for idx: " + String.valueOf(idx));
 
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -607,7 +621,7 @@ public class Domoticz {
     public void getUtilities(UtilitiesReceiver receiver) {
         UtilitiesParser parser = new UtilitiesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UTILITIES);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -617,7 +631,7 @@ public class Domoticz {
     public void getTemperatures(TemperatureReceiver receiver) {
         TemperaturesParser parser = new TemperaturesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.TEMPERATURE);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -627,7 +641,7 @@ public class Domoticz {
     public void getWeathers(WeatherReceiver receiver) {
         WeatherParser parser = new WeatherParser(receiver);
         String url = constructGetUrl(Json.Url.Request.WEATHER);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -641,7 +655,7 @@ public class Domoticz {
         if (plan > 0)
             url += "&plan=" + plan;
 
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -651,7 +665,7 @@ public class Domoticz {
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.LOG);
-        RequestUtil.makeJsonGetRequest(parser,
+        RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url,
@@ -856,6 +870,7 @@ public class Domoticz {
                 int LOG = 13;
                 int SWITCHLOG = 14;
                 int SWITCHTIMER = 15;
+                int UPDATE = 16;
             }
 
             interface Set {
@@ -955,6 +970,10 @@ public class Domoticz {
 
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
+        }
+
+        interface System {
+            String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
         }
     }
 

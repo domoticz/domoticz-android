@@ -73,6 +73,7 @@ public class LocationAdapter extends BaseAdapter {
 
         holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
         holder.name = (TextView) convertView.findViewById(R.id.location_name);
+        holder.radius = (TextView) convertView.findViewById(R.id.location_radius);
         holder.longitude = (TextView) convertView.findViewById(R.id.location_longitude);
         holder.latitude = (TextView) convertView.findViewById(R.id.location_latitude);
         holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedswitch);
@@ -81,6 +82,7 @@ public class LocationAdapter extends BaseAdapter {
         holder.name.setText(mLocationInfo.getName());
         holder.latitude.setText(context.getString(R.string.latitude) + ": " + mLocationInfo.getLocation().latitude);
         holder.longitude.setText(context.getString(R.string.longitude) + ": " + mLocationInfo.getLocation().longitude);
+        holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRange());
 
         if(mLocationInfo.getSwitchidx()>0)
             holder.connectedSwitch.setText(context.getString(R.string.connectedswitch) + ": " + mLocationInfo.getSwitchidx());
@@ -125,6 +127,7 @@ public class LocationAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView name;
         TextView latitude;
+        TextView radius;
         TextView longitude;
         TextView connectedSwitch;
         CheckBox enable;

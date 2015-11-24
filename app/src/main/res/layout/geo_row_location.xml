@@ -52,13 +52,22 @@
                 android:layout_below="@+id/location_latitude" />
 
             <TextView
-                android:id="@+id/location_connectedswitch"
+                android:id="@+id/location_radius"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/location_longitude" />
+
+            <TextView
+                android:id="@+id/location_connectedswitch"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/location_radius" />
 
             <Button
                 android:id="@+id/remove_button"

@@ -87,20 +87,24 @@ public class Preference extends PreferenceFragment {
         domoticz.getVersion(new VersionReceiver() {
             @Override
             public void onReceiveVersion(String version) {
-                domoticzversion.setSummary(version);
-            }
+                try {
+                    String sVersion = version;
+                    String sUpdateVersion = mSharedPrefs.getUpdateAvailable();
+                    if (sUpdateVersion != null && sUpdateVersion.length() > 0)
+                        sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
 
+                    domoticzversion.setSummary(sVersion);
+                }
+                catch(Exception ex){}
+            }
             @Override
             public void onError(Exception error) {}
         });
     }
 
     private void setStartUpScreenDefaultValue() {
-
         int defaultValue = mSharedPrefs.getStartupScreenIndex();
-
         ListPreference startup_screen = (ListPreference) findPreference("startup_screen");
         startup_screen.setValueIndex(defaultValue);
-
     }
 }

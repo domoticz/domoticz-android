@@ -33,7 +33,7 @@ public class SharedPrefUtil {
 
     public static final String PREF_CUSTOM_WEAR = "enablewearitems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearitems";
-
+    public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_items";
@@ -43,8 +43,10 @@ public class SharedPrefUtil {
     public static final String PREF_DEBUGGING = "debugging";
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
+
     private static final String http = "http://";
     private static final String https = "https://";
+
     private static final String REMOTE_SERVER_USERNAME = "remote_server_username";
     private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
     private static final String REMOTE_SERVER_URL = "remote_server_url";
@@ -52,6 +54,7 @@ public class SharedPrefUtil {
     private static final String REMOTE_SERVER_SECURE = "remote_server_secure";
     private static final String REMOTE_SERVER_AUTHENTICATION_METHOD =
             "remote_server_authentication_method";
+
     private static final String IS_LOCAL_SERVER_ADDRESS_DIFFERENT = "local_server_different_address";
     private static final String LOCAL_SERVER_USERNAME = "local_server_username";
     private static final String LOCAL_SERVER_PASSWORD = "local_server_password";
@@ -60,11 +63,13 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_SECURE = "local_server_secure";
     private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
             "local_server_authentication_method";
+
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
 
     Context mContext;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+
 
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
@@ -260,6 +265,14 @@ public class SharedPrefUtil {
         editor.putString(REMOTE_SERVER_PASSWORD, password).apply();
     }
 
+    public void setUpdateAvailable(String version) {
+        editor.putString(PREF_UPDATE_VERSION, version).apply();
+    }
+
+    public String getUpdateAvailable() {
+       return prefs.getString(PREF_UPDATE_VERSION, "");
+    }
+
     public String getDomoticzRemoteUrl() {
         return prefs.getString(REMOTE_SERVER_URL, "");
     }
@@ -401,7 +414,6 @@ public class SharedPrefUtil {
      * Method for setting local server addresses the same as the remote server addresses
      */
     public void setLocalSameAddressAsRemote() {
-
         setDomoticzLocalUsername(getDomoticzRemoteUsername());
         setDomoticzLocalPassword(getDomoticzRemotePassword());
         setDomoticzLocalUrl(getDomoticzRemoteUrl());
@@ -418,12 +430,9 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
-
-
     public ArrayList<LocationInfo> getLocations(Context context) {
         SharedPreferences settings;
         List<LocationInfo> locations;
-
         if (prefs.contains(PREF_GEOFENCE_LOCATIONS)) {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
             Gson gson = new Gson();
@@ -439,7 +448,6 @@ public class SharedPrefUtil {
 
     public LocationInfo getLocation(Context context, int id) {
         List<LocationInfo> locations = getLocations(context);
-
         for(LocationInfo l: locations)
         {
             if(l.getID() == id)
@@ -448,7 +456,6 @@ public class SharedPrefUtil {
 
         return null;
     }
-
 
     public void addLocation(Context context, LocationInfo location) {
         List<LocationInfo> locations = getLocations(context);
@@ -472,17 +479,21 @@ public class SharedPrefUtil {
             }
             i++;
         }
-
         saveLocations(context, locations);
     }
 
     public void removeLocation(Context context, LocationInfo location) {
         ArrayList<LocationInfo> locations = getLocations(context);
+        ArrayList<LocationInfo> removelocations = new ArrayList<>();
         if (locations != null) {
             for (LocationInfo l : locations) {
                 if (l.getID() == location.getID())
-                    locations.remove(l);
+                    removelocations.add(l);
             }
+            for (LocationInfo l : removelocations) {
+                locations.remove(l);
+            }
+
             saveLocations(context, locations);
         }
     }

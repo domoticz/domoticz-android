@@ -122,25 +122,26 @@ public class WearMessageListenerService extends WearableListenerService implemen
         domoticz.getSwitches(new SwitchesReceiver() {
             @Override
             public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                for (SwitchInfo switchInfo : switches) {
-                    int idx = switchInfo.getIdx();
-                    final int totalNumberOfSwitches = switches.size();
+                if(switches!=null)
+                    for (SwitchInfo switchInfo : switches) {
+                        int idx = switchInfo.getIdx();
+                        final int totalNumberOfSwitches = switches.size();
 
-                    domoticz.getStatus(idx, new StatusReceiver() {
-                        @Override
-                        public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
-                            extendedStatusSwitches.add(extendedStatusInfo);     // Add to array
-                            if (currentSwitch == totalNumberOfSwitches) {
-                                processAllSwitches(extendedStatusSwitches);         // All extended info is in
-                            } else currentSwitch++;                               // Not there yet
-                        }
+                        domoticz.getStatus(idx, new StatusReceiver() {
+                            @Override
+                            public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
+                                extendedStatusSwitches.add(extendedStatusInfo);     // Add to array
+                                if (currentSwitch == totalNumberOfSwitches) {
+                                    processAllSwitches(extendedStatusSwitches);         // All extended info is in
+                                } else currentSwitch++;                               // Not there yet
+                            }
 
-                        @Override
-                        public void onError(Exception error) {
-                            Log.e(TAG, error.getMessage());
-                        }
-                    });
-                }
+                            @Override
+                            public void onError(Exception error) {
+                                Log.e(TAG, error.getMessage());
+                            }
+                        });
+                    }
             }
 
             @Override
