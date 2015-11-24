@@ -39,6 +39,15 @@
         android:background="@drawable/button_status"
         android:text="@string/getlocation" />
 
+
+    <EditText
+        android:id="@+id/radius"
+        style="@style/row_body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="@string/radius" />
+
     <EditText
         android:id="@+id/latitude"
         style="@style/row_body1"

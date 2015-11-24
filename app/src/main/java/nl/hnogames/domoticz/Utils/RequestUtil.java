@@ -69,14 +69,50 @@ public class RequestUtil {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    public static void makeJsonGetRequest(@Nullable final JSONParserInterface parser,
+                                              final String username,
+                                              final String password,
+                                              String url) {
+
+        JsonObjectRequest jsonObjReq =
+                new JsonObjectRequest(Request.Method.GET,
+                        url, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (parser != null)
+                            parser.parseResult(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        errorHandling(volleyError);
+                        if (parser != null) parser.onError(volleyError);
+                    }
+                }) {
+
+                    @Override
+                    // HTTP basic authentication
+                    // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return createBasicAuthHeader(username, password);
+                    }
+
+                };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
     /**
      * Method to get json object request where json response starts with {
      */
-    public static void makeJsonGetRequest(@Nullable final JSONParserInterface parser,
-                                          final String username,
-                                          final String password,
-                                          String url,
-                                          Boolean secure) {
+    public static void makeJsonGetResultRequest(@Nullable final JSONParserInterface parser,
+                                                final String username,
+                                                final String password,
+                                                String url,
+                                                Boolean secure) {
 
         if (secure) {
 

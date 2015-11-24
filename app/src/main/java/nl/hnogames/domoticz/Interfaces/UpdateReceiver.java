@@ -1,8 +1,8 @@
 package nl.hnogames.domoticz.Interfaces;
 
-public interface VersionReceiver {
+public interface UpdateReceiver {
 
-    void onReceiveVersion(String version);
+    void onReceiveUpdate(String version);
     void onError(Exception error);
 
 }

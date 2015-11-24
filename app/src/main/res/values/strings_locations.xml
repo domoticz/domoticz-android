@@ -8,6 +8,7 @@
     <string name="getlocation">GET</string>
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
+    <string name="radius">Radius (meter)</string>
     <string name="connectedswitch">Connected switch</string>
 
 </resources>

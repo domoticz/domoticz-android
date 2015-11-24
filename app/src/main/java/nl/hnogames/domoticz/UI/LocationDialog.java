@@ -29,6 +29,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private FloatingLabelEditText editName;
     private EditText txtLatitude;
     private EditText txtLongitude;
+    private EditText txtRadius;
 
     private DismissListener dismissListener;
 
@@ -57,11 +58,11 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                         if (dismissListener != null)
                             dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(),
                                     new LatLng(Double.parseDouble(txtLatitude.getText().toString().replace(mContext.getString(R.string.latitude) + ": ", "")),
-                                            Double.parseDouble(txtLongitude.getText().toString().replace(mContext.getString(R.string.longitude) + ": ", "")))));
-
+                                            Double.parseDouble(txtLongitude.getText().toString().replace(mContext.getString(R.string.longitude) + ": ", ""))),
+                                    Integer.parseInt(txtRadius.getText().toString().replace(mContext.getString(R.string.radius) + ": ", ""))));
                     } catch(Exception ex){
                         if (dismissListener != null)
-                            dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(), foundLocation));
+                            dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(), foundLocation, 120));
                     }
                 }
             }
@@ -75,10 +76,11 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         Button getLocation = (Button) view.findViewById(R.id.get_address);
         txtLatitude = (EditText)view.findViewById(R.id.latitude);
+        txtRadius = (EditText)view.findViewById(R.id.radius);
+        txtRadius.setText(mContext.getString(R.string.radius )+ ": 120");
         txtLongitude = (EditText)view.findViewById(R.id.longitude);
         editAddress = (FloatingLabelEditText)view.findViewById(R.id.address);
         editName = (FloatingLabelEditText)view.findViewById(R.id.name);
-
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +118,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         }
         return p1;
     }
-
 
     @Override
     public void onDismiss(DialogInterface dialog) {

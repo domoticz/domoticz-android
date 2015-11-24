@@ -294,10 +294,8 @@ public class GeoSettingsActivity extends AppCompatActivity
             return;
         }
         //locationManager.requestLocationUpdates(usedLocationService, 0, 0, this);
-
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         setMarker(new LatLng(location.getLatitude(), location.getLongitude()));
-
     }
 
     private void setMarker(LatLng currentLatLng) {
@@ -331,7 +329,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
 
     public void showAddLocationDialog() {
         LocationDialog infoDialog = new LocationDialog(
@@ -368,27 +365,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
         infoDialog.show();
     }
-/*
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d("Location Found", location.getLatitude() + " " + location.getLongitude());
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.d(TAG, "Disabled: " + provider);
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.d(TAG, "Enabled: " + provider);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d(TAG, "Status: " + status);
-    }
-*/
 
     /**
      * Checks if Google Play services is available.
@@ -424,11 +400,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     public void setGeoFenceService() {
         if (mGeofenceList != null && mGeofenceList.size() > 0) {
-        /*LocationServices.GeofencingApi.removeGeofences(
-                mApiClient,
-                getGeofenceTransitionPendingIntent()
-        );*/
-
             mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
             LocationServices.GeofencingApi
                     .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);

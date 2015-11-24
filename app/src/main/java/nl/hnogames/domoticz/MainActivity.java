@@ -23,10 +23,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -78,6 +81,26 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             addDrawerItems();
             addFragment();
+
+            //get latest update version
+            Domoticz domoticz = new Domoticz(this);
+            domoticz.getUpdate(new UpdateReceiver() {
+                @Override
+                public void onReceiveUpdate(String version) {
+                    if(version!=null && version.length()>0) {
+                        String prefVersion = mSharedPrefs.getUpdateAvailable();
+                        if (!prefVersion.equals(version)) {
+                            Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.update_available) + ": " + version, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    mSharedPrefs.setUpdateAvailable(version);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Toast.makeText(MainActivity.this, "Could not check for updates:"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
