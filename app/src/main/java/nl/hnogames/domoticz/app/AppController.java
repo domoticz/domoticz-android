@@ -23,7 +23,6 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
-
 @SuppressWarnings("unused")
 public class AppController extends Application {
 

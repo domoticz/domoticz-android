@@ -34,8 +34,7 @@ public class SettingsActivity extends ActionBarActivity {
         finishWithResult(true);
     }
 
-    private void finishWithResult(boolean success)
-    {
+    private void finishWithResult(boolean success) {
         Bundle conData = new Bundle();
         conData.putBoolean("RESULT", success);
         Intent intent = new Intent();

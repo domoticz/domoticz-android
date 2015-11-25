@@ -29,28 +29,26 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
     private Domoticz mDomoticz;
-
+    private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
+    private int currentSwitch = 1;
     public WearMultiSelectListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);
         selectAllValuesByDefault = typedArray.getBoolean(R.styleable.CustomListPreference_selectAllValuesByDefault, false);
         typedArray.recycle();
-        mContext=context;
-        mDomoticz=new Domoticz(context);
+        mContext = context;
+        mDomoticz = new Domoticz(context);
         initSwitches();
     }
 
-    private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
-    private int currentSwitch = 1;
-
-    private void initSwitches () {
+    private void initSwitches() {
         extendedStatusSwitches = new ArrayList<>();
         currentSwitch = 1;
-            mDomoticz.getSwitches(new SwitchesReceiver() {
-                @Override
-                public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                    for (SwitchInfo switchInfo : switches) {
-                        int idx = switchInfo.getIdx();
+        mDomoticz.getSwitches(new SwitchesReceiver() {
+            @Override
+            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+                for (SwitchInfo switchInfo : switches) {
+                    int idx = switchInfo.getIdx();
                     final int totalNumberOfSwitches = switches.size();
 
                     mDomoticz.getStatus(idx, new StatusReceiver() {
@@ -74,7 +72,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                                         }
                                     }
 
-                                    if(supportedSwitches.size()>0)
+                                    if (supportedSwitches.size() > 0)
                                         processSwitches(supportedSwitches);
                                 }
                             } else currentSwitch++;                               // Not there yet
@@ -85,27 +83,27 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                             Log.e(TAG, error.getMessage());
                         }
                     });
-                    }
                 }
+            }
 
-                @Override
-                public void onError(Exception error) {}
-            });
+            @Override
+            public void onError(Exception error) {
+            }
+        });
     }
 
 
-    private void processSwitches (ArrayList<ExtendedStatusInfo> switches) {
+    private void processSwitches(ArrayList<ExtendedStatusInfo> switches) {
         mEntries = getEntries();
         mEntryValues = getEntryValues();
 
-        if (switches != null ) {
+        if (switches != null) {
             List<String> entries = new ArrayList<>();
             List<String> entryValues = new ArrayList<>();
 
-            for(ExtendedStatusInfo s:switches)
-            {
-                entryValues.add(s.getIdx()+"");
-                entries.add(s.getIdx()+ " - " +s.getName());
+            for (ExtendedStatusInfo s : switches) {
+                entryValues.add(s.getIdx() + "");
+                entries.add(s.getIdx() + " - " + s.getName());
             }
 
             if (entries != null && entryValues != null && !entries.isEmpty() && !entryValues.isEmpty()) {
@@ -121,12 +119,12 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                     CharSequence[] fullEntryValuesList = new CharSequence[mEntryValues.length + dynamicEntryValues.length];
 
                     int i = 0, j = 0;
-                    for (i = 0 ; i <= mEntries.length - 1 ; i++) {
+                    for (i = 0; i <= mEntries.length - 1; i++) {
                         fullEntriesList[i] = mEntries[i];
                         fullEntryValuesList[i] = mEntryValues[i];
                     }
 
-                    for (i = mEntries.length, j = 0 ; j <= dynamicEntries.length - 1 ; i++, j++) {
+                    for (i = mEntries.length, j = 0; j <= dynamicEntries.length - 1; i++, j++) {
                         fullEntriesList[i] = dynamicEntries[j];
                         fullEntryValuesList[i] = dynamicEntryValues[j];
                     }

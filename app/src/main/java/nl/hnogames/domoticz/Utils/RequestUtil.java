@@ -70,9 +70,9 @@ public class RequestUtil {
     }
 
     public static void makeJsonGetRequest(@Nullable final JSONParserInterface parser,
-                                              final String username,
-                                              final String password,
-                                              String url) {
+                                          final String username,
+                                          final String password,
+                                          String url) {
 
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,

@@ -20,7 +20,6 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
-import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
@@ -38,10 +37,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private int planID = 0;
     private String planName = "";
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
         processDashboard();
@@ -78,8 +78,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         processDashboard();
     }
 
-    private void processDashboard()
-    {
+    private void processDashboard() {
         mDomoticz = new Domoticz(mActivity);
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
@@ -113,18 +112,16 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         createListView(extendedStatusSwitches);
     }
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
 
-        if(switches==null)
+        if (switches == null)
             return;
 
         try {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-            supportedSwitches=new ArrayList<>();
+            supportedSwitches = new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
             final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
@@ -220,7 +217,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("Set idx " + idx + " to " + checked);
 
         DevicesInfo clickedSwitch = getDevice(idx);
-        if(clickedSwitch!=null) {
+        if (clickedSwitch != null) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||

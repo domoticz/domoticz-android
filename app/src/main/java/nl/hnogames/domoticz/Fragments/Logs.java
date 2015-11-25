@@ -15,7 +15,7 @@ import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Logs extends DomoticzFragment implements DomoticzFragmentListener{
+public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     private Domoticz mDomoticz;
     private ArrayList<LogInfo> mLogInfos;
@@ -26,10 +26,11 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener{
     private LogAdapter adapter;
     private ProgressDialog progressDialog;
     private Activity mActivity;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         processLogs();
     }
@@ -59,8 +60,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener{
         processLogs();
     }
 
-    private void processLogs()
-    {
+    private void processLogs() {
         mDomoticz.getLogs(new LogsReceiver() {
             @Override
             public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
@@ -80,7 +80,6 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener{
         });
     }
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private void createListView() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 

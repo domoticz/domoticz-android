@@ -2,7 +2,6 @@ package nl.hnogames.domoticz.Service;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -33,43 +32,58 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
  */
 public class WearMessageListenerService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks {
 
-    private String responseDetails = "";
-    private Domoticz domoticz;
-    private SharedPrefUtil mSharedPrefs;
-
     private static final String TAG = "WEARLISTENER";
     private static final String SEND_DATA = "/send_data";
     private static final String RECEIVE_DATA = "/receive_data";
     private static final String SEND_ERROR = "/error";
-
     private static final String ERROR_NO_SWITCHES = "NO_SWITCHES";
-    private static GoogleApiClient mApiClient;
-
     private static final String SEND_SWITCH = "/send_switch";
+    private static GoogleApiClient mApiClient;
+    private String responseDetails = "";
+    private Domoticz domoticz;
+    private SharedPrefUtil mSharedPrefs;
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
 
     private int currentSwitch = 1;
+
+    public static void sendMessage(final String path, final String text) {
+        Log.d("WEAR Message", "Send: " + text);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
+                for (Node node : nodes.getNodes()) {
+                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                            mApiClient, node.getId(), path, text.getBytes()).await();
+
+                    if (result.getStatus().isSuccess()) {
+                        Log.v("WEAR", "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
+                    } else {
+                        Log.v("WEAR", "ERROR: failed to send Message");
+                    }
+                }
+            }
+        }).start();
+    }
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         if (messageEvent.getPath().equalsIgnoreCase(RECEIVE_DATA)) {
             Log.v("WEAR SERVICE", "Get data from Domoticz");
-            mSharedPrefs=new SharedPrefUtil(this);
+            mSharedPrefs = new SharedPrefUtil(this);
             if (mApiClient == null || mApiClient.equals(null)) {
                 Log.v("WEAR SERVICE", "Init Google Wear API");
                 initGoogleApiClient();
-            }
-            else
+            } else
                 getSwitches();
-        } else  if (messageEvent.getPath().equalsIgnoreCase(SEND_SWITCH)) {
+        } else if (messageEvent.getPath().equalsIgnoreCase(SEND_SWITCH)) {
             Log.v("WEAR SERVICE", "Toggle Switch request received");
             String data = new String(messageEvent.getData());
             try {
                 ExtendedStatusInfo selectedSwitch = new ExtendedStatusInfo(new JSONObject(data));
-                domoticz=new Domoticz(getApplicationContext());
+                domoticz = new Domoticz(getApplicationContext());
 
-                if(selectedSwitch!=null)
-                {
+                if (selectedSwitch != null) {
                     switch (selectedSwitch.getSwitchTypeVal()) {
                         case Domoticz.Device.Type.Value.ON_OFF:
                         case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -106,13 +120,10 @@ public class WearMessageListenerService extends WearableListenerService implemen
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             super.onMessageReceived(messageEvent);
         }
     }
-
-
 
     private void getSwitches() {
 
@@ -122,7 +133,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         domoticz.getSwitches(new SwitchesReceiver() {
             @Override
             public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                if(switches!=null)
+                if (switches != null)
                     for (SwitchInfo switchInfo : switches) {
                         int idx = switchInfo.getIdx();
                         final int totalNumberOfSwitches = switches.size();
@@ -133,7 +144,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
                                 extendedStatusSwitches.add(extendedStatusInfo);     // Add to array
                                 if (currentSwitch == totalNumberOfSwitches) {
                                     processAllSwitches(extendedStatusSwitches);         // All extended info is in
-                                } else currentSwitch++;                               // Not there yet
+                                } else
+                                    currentSwitch++;                               // Not there yet
                             }
 
                             @Override
@@ -157,7 +169,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
         ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
 
-        if(!mSharedPrefs.showCustomWear() && mSharedPrefs.getWearSwitches()!=null  && mSharedPrefs.getWearSwitches().length>0) {
+        if (!mSharedPrefs.showCustomWear() && mSharedPrefs.getWearSwitches() != null && mSharedPrefs.getWearSwitches().length > 0) {
             for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 String name = mExtendedStatusInfo.getName();
                 int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
@@ -170,12 +182,11 @@ public class WearMessageListenerService extends WearableListenerService implemen
                     supportedSwitches.add(mExtendedStatusInfo);
                 }
             }
-        }
-        else{
+        } else {
             String[] filterSwitches = mSharedPrefs.getWearSwitches();
             for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 String name = mExtendedStatusInfo.getName();
-                String idx = mExtendedStatusInfo.getIdx()+"";
+                String idx = mExtendedStatusInfo.getIdx() + "";
                 int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                 String switchType = mExtendedStatusInfo.getSwitchType();
 
@@ -183,10 +194,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
                         appSupportedSwitchesValues.contains(switchTypeVal) &&
                         appSupportedSwitchesNames.contains(switchType)) {
 
-                    for(String f: filterSwitches)
-                    {
-                        if(f.equals(idx))
-                        {
+                    for (String f : filterSwitches) {
+                        if (f.equals(idx)) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         }
                     }
@@ -202,26 +211,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
             Log.v(TAG, "Sending error to wearable: no switches on dashboard");
             sendMessage(SEND_ERROR, ERROR_NO_SWITCHES);
         }
-    }
-
-    public static void sendMessage(final String path, final String text) {
-        Log.d("WEAR Message", "Send: " + text);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
-                for (Node node : nodes.getNodes()) {
-                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                            mApiClient, node.getId(), path, text.getBytes()).await();
-
-                    if (result.getStatus().isSuccess()) {
-                        Log.v("WEAR", "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
-                    } else {
-                        Log.v("WEAR", "ERROR: failed to send Message");
-                    }
-                }
-            }
-        }).start();
     }
 
     private void initGoogleApiClient() {
@@ -240,7 +229,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
 
     public void onSwitchToggle(ExtendedStatusInfo toggledDevice) {

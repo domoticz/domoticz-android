@@ -28,6 +28,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     private Activity mActivity;
     private Domoticz mDomoticz;
     private SceneAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void Filter(String text) {
@@ -41,7 +42,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
         processScenes();
@@ -55,8 +56,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         processScenes();
     }
 
-    private void processScenes()
-    {
+    private void processScenes() {
         mDomoticz.getScenes(new ScenesReceiver() {
 
             @Override
@@ -72,7 +72,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         });
     }
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     public void createListView(final ArrayList<SceneInfo> scenes) {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);

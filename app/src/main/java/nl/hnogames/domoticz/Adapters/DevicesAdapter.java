@@ -53,7 +53,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         super();
 
-        mSharedPrefs=new SharedPrefUtil(context);
+        mSharedPrefs = new SharedPrefUtil(context);
 
         this.context = context;
         domoticz = new Domoticz(context);
@@ -151,14 +151,14 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
 
     private View setOnOffSwitchRowId(ViewHolder holder) {
-        if(mSharedPrefs.showExtraData())
+        if (mSharedPrefs.showExtraData())
             layoutResourceId = R.layout.switch_row_on_off;
         else layoutResourceId = R.layout.switch_row_on_off_small;
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
-        holder.extrapanel = (LinearLayout)row.findViewById(R.id.extra_panel);
+        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.onOffSwitch = (Switch) row.findViewById(R.id.switch_button);
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
@@ -168,16 +168,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
-        if(holder.buttonLog!=null)
+        if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
-        if(holder.buttonTimer!=null)
+        if (holder.buttonTimer != null)
             holder.buttonTimer.setVisibility(View.GONE);
 
         return row;
     }
 
     private View setMotionSwitchRowId(ViewHolder holder) {
-        if(mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_motion;
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_motion;
         else layoutResourceId = R.layout.switch_row_motion_small;
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -192,15 +192,15 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
-        if(holder.buttonLog!=null)
+        if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
-        if(holder.buttonTimer!=null)
+        if (holder.buttonTimer != null)
             holder.buttonTimer.setVisibility(View.GONE);
         return row;
     }
 
     private View setDefaultRowId(ViewHolder holder) {
-        if(mSharedPrefs.showExtraData()) layoutResourceId = R.layout.dashboard_row_default;
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.dashboard_row_default;
         else layoutResourceId = R.layout.dashboard_row_default_small;
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -215,7 +215,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private View setPushOnOffSwitchRowId(ViewHolder holder) {
-        if(mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_pushon;
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_pushon;
         else layoutResourceId = R.layout.switch_row_pushon_small;
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -230,9 +230,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
-        if(holder.buttonLog!=null)
+        if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
-        if(holder.buttonTimer!=null)
+        if (holder.buttonTimer != null)
             holder.buttonTimer.setVisibility(View.GONE);
 
         return row;
@@ -240,7 +240,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private View setBlindsRowId(ViewHolder holder) {
 
-        if(mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_blinds;
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_blinds;
         else layoutResourceId = R.layout.switch_row_blinds_small;
 
 
@@ -260,7 +260,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private View setDimmerRowId(ViewHolder holder) {
 
-        if(mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_dimmer;
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_dimmer;
         else layoutResourceId = R.layout.switch_row_dimmer_small;
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -277,9 +277,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
-        if(holder.buttonLog!=null)
+        if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
-        if(holder.buttonTimer!=null)
+        if (holder.buttonTimer != null)
             holder.buttonTimer.setVisibility(View.GONE);
 
         return row;
@@ -314,9 +314,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, false);
                     break;
 
-            case Domoticz.Device.Type.Value.BLINDS:
-                setBlindsRowData(mExtendedStatusInfo, holder);
-                break;
+                case Domoticz.Device.Type.Value.BLINDS:
+                    setBlindsRowData(mExtendedStatusInfo, holder);
+                    break;
 
                 case Domoticz.Device.Type.Value.DIMMER:
                     setDimmerRowData(mExtendedStatusInfo, holder);
@@ -331,17 +331,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private void setDefaultRowData(DevicesInfo mExtendedStatusInfo,
                                    ViewHolder holder) {
         holder.isProtected = mExtendedStatusInfo.isProtected();
-        if(holder.switch_name!=null)
+        if (holder.switch_name != null)
             holder.switch_name.setText(mExtendedStatusInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
     }
@@ -350,17 +350,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                        ViewHolder holder) {
 
         holder.isProtected = mExtendedStatusInfo.isProtected();
-        if(holder.switch_name!=null)
+        if (holder.switch_name != null)
             holder.switch_name.setText(mExtendedStatusInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
         if (holder.isProtected)
@@ -368,7 +368,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
 
-        if(holder.onOffSwitch!=null) {
+        if (holder.onOffSwitch != null) {
             holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx());
             holder.onOffSwitch.setChecked(mExtendedStatusInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -379,8 +379,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        if(holder.buttonLog!=null)
-        {
+        if (holder.buttonLog != null) {
             holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
             holder.buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -393,17 +392,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setPushOnOffSwitchRowData(DevicesInfo mExtendedStatusInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mExtendedStatusInfo.isProtected();
-        if(holder.switch_name!=null)
+        if (holder.switch_name != null)
             holder.switch_name.setText(mExtendedStatusInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
         if (holder.isProtected)
@@ -430,7 +429,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     handleOnButtonClick(v.getId(), false);
             }
         });
-        if(holder.buttonLog!=null) {
+        if (holder.buttonLog != null) {
             holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
             holder.buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -445,22 +444,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                   ViewHolder holder) {
         holder.isProtected = mExtendedStatusInfo.isProtected();
 
-        if(holder.switch_name!=null)
+        if (holder.switch_name != null)
             holder.switch_name.setText(mExtendedStatusInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
                 mExtendedStatusInfo.getStatus();
-        if(holder.switch_status!=null)
+        if (holder.switch_status != null)
             holder.switch_status.setText(text);
 
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
 
@@ -499,17 +498,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.isProtected = mExtendedStatusInfo.isProtected();
 
-        if(holder.switch_name!=null)
+        if (holder.switch_name != null)
             holder.switch_name.setText(mExtendedStatusInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
         holder.switch_dimmer_level.setId(mExtendedStatusInfo.getIdx() + ID_TEXTVIEW);
@@ -580,7 +579,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.dimmer.setVisibility(View.VISIBLE);
         }
 
-        if( holder.buttonLog!=null) {
+        if (holder.buttonLog != null) {
             holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
             holder.buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override

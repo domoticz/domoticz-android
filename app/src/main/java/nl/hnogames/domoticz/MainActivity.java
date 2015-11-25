@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
@@ -37,24 +36,20 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final int iWelcomeResultCode = 885;
+    private final int iSettingsResultCode = 995;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawer;
     private String[] fragments;
     private String TAG = MainActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
-
     private RecyclerView mRecyclerView;                           // Declaring RecyclerView
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-
     private Menu menu;
     private int selectedFragment = 0;
     private SearchView searchViewAction;
-
-    private final int iWelcomeResultCode = 885;
-    private final int iSettingsResultCode = 995;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void buildScreen()
-    {
+    private void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             addDrawerItems();
             addFragment();
@@ -87,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {
-                    if(version!=null && version.length()>0) {
+                    if (version != null && version.length() > 0) {
                         String prefVersion = mSharedPrefs.getUpdateAvailable();
                         if (!prefVersion.equals(version)) {
                             Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.update_available) + ": " + version, Toast.LENGTH_SHORT).show();
@@ -98,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(MainActivity.this, "Could not check for updates:"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Could not check for updates:" + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -110,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
     /* Called when the second activity's finished */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data!=null && resultCode == RESULT_OK) {
-            switch(requestCode) {
+        if (data != null && resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case iWelcomeResultCode:
                     Bundle res = data.getExtras();
                     if (!res.getBoolean("RESULT", false))
@@ -121,16 +115,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
-                    Fragment f =getVisibleFragment();
+                    Fragment f = getVisibleFragment();
                     if (f instanceof DomoticzFragment) {
-                        ((DomoticzFragment)f).refreshFragment();
-                    }
-                    else if (f instanceof DomoticzCardFragment)
-                        ((DomoticzCardFragment)f).refreshFragment();{
-                    }
+                        ((DomoticzFragment) f).refreshFragment();
+                    } else if (f instanceof DomoticzCardFragment)
+                        ((DomoticzCardFragment) f).refreshFragment();
+                {
+                }
 
-                    updateDrawerItems();
-                    break;
+                updateDrawerItems();
+                break;
 
             }
         }
@@ -146,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateDrawerItems() {
         String[] drawerActions = mSharedPrefs.getNavigationActions();
-        fragments =mSharedPrefs.getNavigationFragments();
+        fragments = mSharedPrefs.getNavigationFragments();
         int ICONS[] = mSharedPrefs.getNavigationIcons();
         mAdapter.updateData(drawerActions, ICONS);
     }
@@ -156,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void addDrawerItems() {
         String[] drawerActions = mSharedPrefs.getNavigationActions();
-        fragments =mSharedPrefs.getNavigationFragments();
+        fragments = mSharedPrefs.getNavigationFragments();
         int ICONS[] = mSharedPrefs.getNavigationIcons();
 
         String NAME = getString(R.string.app_name_domoticz);
@@ -189,14 +183,16 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         searchViewAction.setQuery("", false);
                         searchViewAction.clearFocus();
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                         selectedFragment = recyclerView.getChildPosition(child) - 1;
                         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[recyclerView.getChildPosition(child) - 1]));
                         tx.commitAllowingStateLoss();
-                    } catch (Exception e) { }
+                    } catch (Exception e) {
+                    }
 
                     invalidateOptionsMenu();
                     mDrawer.closeDrawer(Gravity.LEFT);
@@ -329,9 +325,8 @@ public class MainActivity extends AppCompatActivity {
             if (mDrawerToggle.onOptionsItemSelected(item)) {
                 return true;
             }
+        } catch (Exception ex) {
         }
-        catch(Exception ex)
-        {}
 
         return super.onOptionsItemSelected(item);
     }

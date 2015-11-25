@@ -135,6 +135,11 @@ public class DevicesInfo {
         return favorite;
     }
 
+    public void setFavoriteBoolean(boolean favorite) {
+        if (favorite) this.Favorite = 1;
+        else this.Favorite = 0;
+    }
+
     public String getTimers() {
         return Timers;
     }
@@ -199,6 +204,8 @@ public class DevicesInfo {
         return Name;
     }
 
+    ;
+
     public void setName(String name) {
         Name = name;
     }
@@ -209,14 +216,8 @@ public class DevicesInfo {
         return Favorite;
     }
 
-    ;
-
     public void setFavorite(int favorite) {
         Favorite = favorite;
-    }
-    public void setFavoriteBoolean(boolean favorite) {
-        if (favorite) this.Favorite = 1;
-        else this.Favorite = 0;
     }
 
     public int getHardwareID() {

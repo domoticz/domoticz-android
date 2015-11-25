@@ -44,10 +44,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private ListView listView;
 
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
         getSwitchesData();
@@ -78,8 +79,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         getSwitchesData();
     }
 
-    private void getSwitchesData()
-    {
+    private void getSwitchesData() {
         mDomoticz.getSwitches(new SwitchesReceiver() {
             @Override
             public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
@@ -118,8 +118,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             });
         }
     }
-
-    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
@@ -163,9 +161,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     getSwitchesData();
                 }
             });
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             errorHandling(ex);
         }
         hideProgressDialog();
@@ -289,7 +285,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
 
-        if(clickedSwitch!=null) {
+        if (clickedSwitch != null) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 

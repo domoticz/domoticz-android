@@ -102,7 +102,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     // This method returns the number of items present in the list
     @Override
     public int getItemCount() {
-        if(mNavTitles!=null)
+        if (mNavTitles != null)
             return mNavTitles.length + 1; // the number of items in the list will be +1 the titles including the header view.
         else
             return 0;

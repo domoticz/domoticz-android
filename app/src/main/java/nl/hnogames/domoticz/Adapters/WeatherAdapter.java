@@ -2,6 +2,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,8 +92,28 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.hardware = (TextView) convertView.findViewById(R.id.weather_hardware);
 
         holder.name.setText(mWeatherInfo.getName());
+        holder.hardware.append(": " + mWeatherInfo.getHardwareName());
+
+        holder.data.setEllipsize(TextUtils.TruncateAt.END);
+        holder.data.setMaxLines(3);
         holder.data.append(mWeatherInfo.getData());
-        holder.hardware.append(": "+mWeatherInfo.getHardwareName());
+
+        if (mWeatherInfo.getForecastStr() != null && mWeatherInfo.getForecastStr().length() > 0)
+            holder.data.append(", " + mWeatherInfo.getForecastStr());
+        if (mWeatherInfo.getSpeed() != null && mWeatherInfo.getSpeed().length() > 0)
+            holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed());
+        if (mWeatherInfo.getDewPoint() > 0)
+            holder.data.append(", " + context.getString(R.string.drewpoint) + ": " + mWeatherInfo.getDewPoint());
+        if (mWeatherInfo.getTemp() > 0)
+            holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp());
+        if (mWeatherInfo.getBarometer() > 0)
+            holder.data.append(", " + context.getString(R.string.barometer) + ": " + mWeatherInfo.getBarometer());
+        if (mWeatherInfo.getChill() != null && mWeatherInfo.getChill().length() > 0)
+            holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill());
+        if (mWeatherInfo.getDirectionStr() != null && mWeatherInfo.getDirectionStr().length() > 0)
+            holder.data.append(", " + context.getString(R.string.direction) + ": " + mWeatherInfo.getDirectionStr());
+        if (mWeatherInfo.getHumidityStatus() != null && mWeatherInfo.getHumidityStatus().length() > 0)
+            holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
 
         convertView.setTag(holder);
         Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg())).into(holder.iconRow);

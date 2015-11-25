@@ -21,7 +21,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 
 public class WelcomeViewActivity extends FragmentActivity
@@ -80,8 +79,7 @@ public class WelcomeViewActivity extends FragmentActivity
         }
     }
 
-    private void finishWithResult(boolean success)
-    {
+    private void finishWithResult(boolean success) {
         Bundle conData = new Bundle();
         conData.putBoolean("RESULT", success);
         Intent intent = new Intent();
@@ -93,6 +91,7 @@ public class WelcomeViewActivity extends FragmentActivity
     private boolean canAccessLocation() {
         return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
     }
+
     private boolean canAccessStorage() {
         return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE));
     }

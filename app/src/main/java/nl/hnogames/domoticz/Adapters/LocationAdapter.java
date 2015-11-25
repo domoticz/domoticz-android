@@ -23,9 +23,8 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 public class LocationAdapter extends BaseAdapter {
 
     private static final String TAG = LocationAdapter.class.getSimpleName();
-
-    Context context;
     public ArrayList<LocationInfo> data = null;
+    Context context;
     private SharedPrefUtil prefs;
 
     private LocationClickListener listener;
@@ -42,7 +41,7 @@ public class LocationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(data==null)
+        if (data == null)
             return 0;
 
         return data.size();
@@ -84,7 +83,7 @@ public class LocationAdapter extends BaseAdapter {
         holder.longitude.setText(context.getString(R.string.longitude) + ": " + mLocationInfo.getLocation().longitude);
         holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRange());
 
-        if(mLocationInfo.getSwitchidx()>0)
+        if (mLocationInfo.getSwitchidx() > 0)
             holder.connectedSwitch.setText(context.getString(R.string.connectedswitch) + ": " + mLocationInfo.getSwitchidx());
         else
             holder.connectedSwitch.setText(context.getString(R.string.connectedswitch) + ": N/A");
