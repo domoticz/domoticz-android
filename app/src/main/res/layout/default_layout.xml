@@ -24,6 +24,54 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/errorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/errorImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/sad_smiley"
+            android:contentDescription="Error image" />
+
+        <TextView
+            android:id="@+id/errorTextOops"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorImage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="@string/oops"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            android:id="@+id/errorTextWrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorTextOops"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="@string/something_went_wrong"
+            android:textSize="@dimen/text_size_medium" />
+
+        <TextView
+            android:id="@+id/errorTextMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorTextWrong"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/no_network_available"
+            android:textColor="@color/light_gray"
+            android:textSize="@dimen/text_size_small" />
+
+    </RelativeLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
@@ -37,52 +85,5 @@
             android:layout_weight="1" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <RelativeLayout
-        android:id="@+id/errorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/errorImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/sad_smiley" />
-
-        <TextView
-            android:id="@+id/errorTextOops"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/errorImage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="OOPS!"
-            android:textSize="@dimen/text_size_large" />
-
-        <TextView
-            android:id="@+id/errorTextWrong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/errorTextOops"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:text="Something went wrong"
-            android:textSize="@dimen/text_size_medium" />
-
-        <TextView
-            android:id="@+id/errorTextMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/errorTextWrong"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:text="Error: No network connection available"
-            android:textColor="@color/light_gray"
-            android:textSize="@dimen/text_size_small" />
-
-    </RelativeLayout>
 
 </LinearLayout>
