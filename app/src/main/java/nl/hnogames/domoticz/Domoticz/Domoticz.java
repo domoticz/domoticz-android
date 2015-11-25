@@ -1,11 +1,8 @@
 package nl.hnogames.domoticz.Domoticz;
 
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +31,12 @@ import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.RequestUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.VolleyUtil;
 
-@SuppressWarnings("unused")
 public class Domoticz {
 
     public static final int batteryLevelMax = 100;
@@ -50,7 +45,6 @@ public class Domoticz {
     public static final String HIDDEN_CHARACTER = "$";
 
     public static final String UTILITIES_TYPE_THERMOSTAT = "Thermostat";
-    public static final String[] ITEMS_UTILITIES = {UTILITIES_TYPE_THERMOSTAT};
     /*
     *  Log tag
     */
@@ -135,18 +129,6 @@ public class Domoticz {
 
         }
         return result;
-    }
-
-    public void errorToast(Exception error) {
-
-        String cause;
-
-        if (debug) {
-            cause = error.toString();
-        } else {
-            cause = getErrorMessage(error);
-        }
-        Toast.makeText(mContext, cause, Toast.LENGTH_LONG).show();
     }
 
     public String getErrorMessage(Exception error) {
@@ -461,29 +443,6 @@ public class Domoticz {
         return fullString;
     }
 
-    /**
-     * Shows a dialog where the users is warned for missing connection settings and
-     * gives the ability to redirect the user to the app settings
-     */
-    public void showConnectionSettingsMissingDialog() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext)
-                .setTitle(R.string.msg_connectionSettingsIncomplete_title)
-                .setCancelable(false)
-                .setMessage(mContext.getString(
-                        R.string.msg_connectionSettingsIncomplete_msg1) + "\n\n" +
-                        mContext.getString(R.string.msg_connectionSettingsIncomplete_msg2))
-                .setPositiveButton(R.string.settingsActivity_name, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mContext.startActivity(new Intent(mContext, SettingsActivity.class));
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert);
-
-        AlertDialog emptyCredentialsAlertDialog = alertDialogBuilder.create();
-        emptyCredentialsAlertDialog.show();
-    }
-
     public String getUserCredentials(String credential) {
 
         if (credential.equals(Authentication.USERNAME)
@@ -533,8 +492,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getPlans(PlansReceiver receiver) {
@@ -543,8 +501,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getCameras(CameraReceiver receiver) {
@@ -554,8 +511,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -564,32 +520,29 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.SWITCHLOG) + String.valueOf(idx);
-        ;
+
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.SWITCHTIMER) + String.valueOf(idx);
-        ;
+
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void setAction(int idx,
@@ -614,8 +567,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getUtilities(UtilitiesReceiver receiver) {
@@ -624,8 +576,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getTemperatures(TemperatureReceiver receiver) {
@@ -634,8 +585,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getWeathers(WeatherReceiver receiver) {
@@ -644,8 +594,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getDevices(DevicesReceiver receiver, int plan) {
@@ -658,8 +607,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public void getLogs(LogsReceiver receiver) {
@@ -668,8 +616,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url,
-                mSharedPrefUtil.isDomoticzLocalSecure());
+                url);
     }
 
     public int getDrawableIcon(String type) {
@@ -800,6 +747,7 @@ public class Domoticz {
         }
 
         interface Type {
+            @SuppressWarnings("unused")
             interface Value {
                 int DOORBELL = 1;
                 int CONTACT = 2;
@@ -818,6 +766,7 @@ public class Domoticz {
                 int BLINDPERCENTAGE = 13;
             }
 
+            @SuppressWarnings("unused")
             interface Name {
                 String DOORBELL = "Doorbell";
                 String CONTACT = "Contact";
@@ -841,9 +790,6 @@ public class Domoticz {
             int ON = 208;
             int OFF = 209;
         }
-
-        interface Utility {
-        }
     }
 
     public interface Json {
@@ -854,6 +800,7 @@ public class Domoticz {
         }
 
         interface Url {
+            @SuppressWarnings("unused")
             interface Request {
                 int DASHBOARD = 1;
                 int SCENES = 2;
@@ -899,6 +846,7 @@ public class Domoticz {
     }
 
     private interface Url {
+        @SuppressWarnings("unused")
         interface Action {
             String ON = "On";
             String OFF = "Off";
@@ -909,6 +857,7 @@ public class Domoticz {
             String MIN = "Min";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface Category {
             String DEVICES = "/json.htm?type=devices";
             String VERSION = "/json.htm?type=command&param=getversion";
@@ -924,6 +873,7 @@ public class Domoticz {
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
         }
 
+        @SuppressWarnings({"SpellCheckingInspection", "unused"})
         interface Switch {
             String DIM_LEVEL = "Set%20Level&level=";
             String GET = "/json.htm?type=command&param=switchlight&idx=";
@@ -931,15 +881,18 @@ public class Domoticz {
             String LEVEL = "&level=";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface Scene {
             String GET = "/json.htm?type=command&param=switchscene&idx=";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface Temp {
             String GET = "/json.htm?type=command&param=udevice&idx=";
             String VALUE = "&nvalue=0&svalue=";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface Favorite {
             String GET = "/json.htm?type=command&param=makefavorite&idx=";
             String VALUE = "&isfavorite=";
@@ -950,28 +903,34 @@ public class Domoticz {
             String HTTPS = "https://";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface Device {
             String STATUS = "/json.htm?type=devices&rid=";
         }
 
+        @SuppressWarnings("unused")
         interface Sunrise {
             String GET = "/json.htm?type=command&param=getSunRiseSet";
         }
 
+        @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Plan {
             String GET = "/json.htm?type=plans";
             String DEVICES = "/json.htm?type=command&param=getplandevices&idx=";
         }
 
+        @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Log {
             String GET_LOG = "/json.htm?type=command&param=getlog";
             String GET_FROMLASTLOGTIME = "/json.htm?type=command&param=getlog&lastlogtime=";
         }
 
+        @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface System {
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
         }

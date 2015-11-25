@@ -68,5 +68,8 @@
     <string name="could_not_find_location">Could not find location, please try again.</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="no_network_available">Error: No network connection available</string>
+    <string name="oops">OOPS!</string>
 
 </resources>

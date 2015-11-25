@@ -20,7 +20,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
 @SuppressWarnings("unused")
@@ -30,7 +29,6 @@ public class AppController extends Application {
     private static AppController mInstance;
     int socketTimeout = 1000 * 5;               // 5 seconds
     private RequestQueue mRequestQueue;
-    private SharedPrefUtil mSharedPref;
 
     public static synchronized AppController getInstance() {
         return mInstance;
@@ -44,7 +42,6 @@ public class AppController extends Application {
         Mint.initAndStartSession(this, "a61b1e35");
 
         mInstance = this;
-        mSharedPref = new SharedPrefUtil(getApplicationContext());
     }
 
     public RequestQueue getRequestQueue() {
@@ -52,8 +49,6 @@ public class AppController extends Application {
             // register MemorizingTrustManager for HTTPS
             Context context = getApplicationContext();
 
-            //TODO Maybe only load when SSL is needed
-            //TODO Keep in mind when user changes settings to SSL mtm has to be initialized!
             try {
                 Log.d(TAG, "Initializing SSL");
                 SSLContext sc = SSLContext.getInstance("TLS");

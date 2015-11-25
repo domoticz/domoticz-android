@@ -111,12 +111,7 @@ public class RequestUtil {
     public static void makeJsonGetResultRequest(@Nullable final JSONParserInterface parser,
                                                 final String username,
                                                 final String password,
-                                                String url,
-                                                Boolean secure) {
-
-        if (secure) {
-
-        }
+                                                String url) {
 
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
