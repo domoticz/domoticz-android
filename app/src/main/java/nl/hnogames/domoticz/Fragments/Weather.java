@@ -30,10 +30,11 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private ArrayList<WeatherInfo> mWeatherInfos;
     private ListView listView;
     private WeatherAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
         processWeather();
@@ -64,9 +65,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         processWeather();
     }
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private void processWeather()
-    {
+    private void processWeather() {
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
@@ -109,10 +108,8 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         WeatherInfoDialog infoDialog = new WeatherInfoDialog(
                 getActivity(),
                 mWeatherInfo,
-                R.layout.dialog_utilities_info);
-        infoDialog.setIdx(String.valueOf(mWeatherInfo.getIdx()));
-        infoDialog.setLastUpdate(mWeatherInfo.getLastUpdate());
-        infoDialog.setIsFavorite(mWeatherInfo.getFavoriteBoolean());
+                R.layout.dialog_weather);
+        infoDialog.setWeatherInfo(mWeatherInfo);
         infoDialog.show();
         infoDialog.onDismissListener(new WeatherInfoDialog.DismissListener() {
             @Override

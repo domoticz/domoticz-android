@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/IDX_title"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/idx" />
+
+            <TextView
+                android:id="@+id/LastUpdate_title"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/last_update" />
+
+            <TextView
+                android:id="@+id/weather_forcast"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/forcast" />
+
+            <TextView
+                android:id="@+id/weather_humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/humidity" />
+
+            <TextView
+                android:id="@+id/weather_drewpoint"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/drewpoint" />
+
+            <TextView
+                android:id="@+id/weather_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/temp" />
+
+            <TextView
+                android:id="@+id/weather_barometer"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/barometer"/>
+
+            <TextView
+                android:id="@+id/weather_chill"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/chill" />
+
+            <TextView
+                android:id="@+id/weather_direction"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/direction" />
+
+            <TextView
+                android:id="@+id/weather_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:padding="2dp"
+                android:text="@string/speed" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/IDX_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/idx_valuePlaceholder" />
+
+            <TextView
+                android:id="@+id/LastUpdate_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/placeholder_lastUpdate" />
+
+            <TextView
+                android:id="@+id/weather_forcast_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/forcast" />
+
+            <TextView
+                android:id="@+id/weather_humidity_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/humidity" />
+
+            <TextView
+                android:id="@+id/weather_drewpoint_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/drewpoint" />
+
+            <TextView
+                android:id="@+id/weather_temperature_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/temp" />
+
+            <TextView
+                android:id="@+id/weather_barometer_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/barometer"/>
+
+            <TextView
+                android:id="@+id/weather_chill_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/chill" />
+
+            <TextView
+                android:id="@+id/weather_direction_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/direction" />
+
+            <TextView
+                android:id="@+id/weather_speed_value"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/speed" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/favorite_title"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="@string/favorite" />
+
+        <Switch
+            android:id="@+id/favorite_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

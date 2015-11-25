@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 

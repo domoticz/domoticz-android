@@ -24,7 +24,7 @@ public class LogInfo {
     public String toString() {
         return "LogInfo{" +
                 "level=" + level +
-                ", message='" + message +'}';
+                ", message='" + message + '}';
     }
 
     public int getLevel() {

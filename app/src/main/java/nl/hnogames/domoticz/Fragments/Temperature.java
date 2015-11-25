@@ -30,10 +30,11 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private ArrayList<TemperatureInfo> mTemperatureInfos;
     private ListView listView;
     private TemperatureAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
         processTemperature();
@@ -64,9 +65,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         processTemperature();
     }
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private void processTemperature()
-    {
+    private void processTemperature() {
         mDomoticz.getTemperatures(new TemperatureReceiver() {
 
             @Override

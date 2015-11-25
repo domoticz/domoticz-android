@@ -69,12 +69,15 @@ public class CameraInfo {
     public String getImageURL() {
         return ImageURL;
     }
+
     public String getUsername() {
         return Username;
     }
+
     public String getPassword() {
         return Password;
     }
+
     public String getPort() {
         return Port;
     }
@@ -88,25 +91,25 @@ public class CameraInfo {
     }
 
 
-    public String getFullURL(){
+    public String getFullURL() {
         String combinedUserName = "";
-        if(getUsername()!=null && getUsername().length()>0) {
+        if (getUsername() != null && getUsername().length() > 0) {
             combinedUserName += getUsername();
             if (getPassword() != null && getPassword().length() > 0)
-                combinedUserName += ":"+getPassword();
+                combinedUserName += ":" + getPassword();
         }
 
         String combinedUrl = "";
-        if(combinedUserName.length()>0)
-            combinedUrl = combinedUserName+"@";
+        if (combinedUserName.length() > 0)
+            combinedUrl = combinedUserName + "@";
 
-        if(getAddress()!=null && !getAddress().startsWith("http://"))
-            combinedUrl = "http://" +combinedUrl;
+        if (getAddress() != null && !getAddress().startsWith("http://"))
+            combinedUrl = "http://" + combinedUrl;
 
-        combinedUrl+=getAddress();
+        combinedUrl += getAddress();
 
-        if(getPort()!=null && getPort().length()>0)
-            combinedUrl+= ":"+getPort();
+        if (getPort() != null && getPort().length() > 0)
+            combinedUrl += ":" + getPort();
 
         combinedUrl += "/" + getImageURL();
         return combinedUrl;

@@ -33,11 +33,11 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private UtilityAdapter adapter;
     private ProgressDialog progressDialog;
     private Activity mActivity;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void refreshFragment() {
-        if(mSwipeRefreshLayout!=null)
+        if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
         processUtilities();
@@ -49,7 +49,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         mActivity = activity;
         getActionBar().setTitle(R.string.title_utilities);
     }
-
 
     @Override
     public void Filter(String text) {
@@ -69,8 +68,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         processUtilities();
     }
 
-    private void processUtilities()
-    {
+    private void processUtilities() {
         final thermostatClickListener listener = this;
         mDomoticz.getUtilities(new UtilitiesReceiver() {
 
@@ -92,7 +90,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         });
     }
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private void createListView() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 

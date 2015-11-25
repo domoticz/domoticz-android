@@ -3,7 +3,6 @@ package nl.hnogames.domoticz.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.nfc.Tag;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -114,110 +113,6 @@ public class SharedPrefUtil {
         }
     }
 
-    public String[] getWearSwitches() {
-        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS))
-            return null;
-
-        Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
-        String[] selectionValues = new String[selections.size()];
-
-        int i=0;
-        for (String s : selections) {
-            selectionValues[i] = s;
-            i++;
-        }
-        return selectionValues;
-    }
-
-    public String[] getNavigationFragments() {
-        if(!prefs.contains(PREF_NAVIGATION_ITEMS))
-            setNavigationDefaults();
-
-        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-        String[] allValues =  mContext.getResources().getStringArray(R.array.drawer_fragments);
-        String[] allNames =  mContext.getResources().getStringArray(R.array.drawer_actions);
-
-        if (selections == null)
-            return allValues;
-        else {
-            String[] selectionValues = new String[selections.size()];
-            int i = 0;
-
-            int index=0;
-            for (String v: allNames) {
-                for (String s : selections)
-                {
-                    if(s.equals(v))
-                    {
-                        selectionValues[i] = allValues[index];
-                        i++;
-                    }
-                }
-                index++;
-            }
-            return selectionValues;
-        }
-    }
-
-    public String[] getNavigationActions() {
-        if(!prefs.contains(PREF_NAVIGATION_ITEMS))
-            setNavigationDefaults();
-
-        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-        String[] allValues =  mContext.getResources().getStringArray(R.array.drawer_fragments);
-        String[] allNames =  mContext.getResources().getStringArray(R.array.drawer_actions);
-
-        if (selections == null) //default
-            return allNames;
-        else {
-            String[] selectionValues = new String[selections.size()];
-            int i = 0;
-            for (String v: allNames)
-            {
-                int index = 0;
-                for(String s: selections)
-                {
-                    if(s.equals(v))
-                    {
-                        selectionValues[i]=v;
-                        i++;
-                    }
-                    index++;
-                }
-            }
-            return selectionValues;
-        }
-    }
-
-    public void setNavigationDefaults() {
-        String[] allNames =  mContext.getResources().getStringArray(R.array.drawer_actions);
-        Set<String> selections= new HashSet<String>(Arrays.asList(allNames));
-        editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
-    }
-
-    public int[] getNavigationIcons() {
-        if(!prefs.contains(PREF_NAVIGATION_ITEMS))
-            setNavigationDefaults();
-
-            TypedArray ICONS = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
-            Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-            String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
-            int[] selectedICONS = new int[selections.size()];
-            int iconIndex = 0;
-            int index = 0;
-            for (String v : allNames) {
-                for (String s : selections) {
-                    if (s.equals(v)) {
-                        selectedICONS[iconIndex] = ICONS.getResourceId(index, 0);
-                        iconIndex++;
-                    }
-                }
-                index++;
-            }
-
-        return selectedICONS;
-    }
-
     public void setStartupScreenIndex(int position) {
 
         String[] startupScreenValues =
@@ -234,6 +129,105 @@ public class SharedPrefUtil {
         editor.putString(PREF_STARTUP_SCREEN, startupScreenValue).apply();
     }
 
+    public String[] getWearSwitches() {
+        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS))
+            return null;
+
+        Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
+        String[] selectionValues = new String[selections.size()];
+
+        int i = 0;
+        for (String s : selections) {
+            selectionValues[i] = s;
+            i++;
+        }
+        return selectionValues;
+    }
+
+    public String[] getNavigationFragments() {
+        if (!prefs.contains(PREF_NAVIGATION_ITEMS))
+            setNavigationDefaults();
+
+        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+        String[] allValues = mContext.getResources().getStringArray(R.array.drawer_fragments);
+        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+
+        if (selections == null)
+            return allValues;
+        else {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+
+            int index = 0;
+            for (String v : allNames) {
+                for (String s : selections) {
+                    if (s.equals(v)) {
+                        selectionValues[i] = allValues[index];
+                        i++;
+                    }
+                }
+                index++;
+            }
+            return selectionValues;
+        }
+    }
+
+    public String[] getNavigationActions() {
+        if (!prefs.contains(PREF_NAVIGATION_ITEMS))
+            setNavigationDefaults();
+
+        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+        String[] allValues = mContext.getResources().getStringArray(R.array.drawer_fragments);
+        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+
+        if (selections == null) //default
+            return allNames;
+        else {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+            for (String v : allNames) {
+                int index = 0;
+                for (String s : selections) {
+                    if (s.equals(v)) {
+                        selectionValues[i] = v;
+                        i++;
+                    }
+                    index++;
+                }
+            }
+            return selectionValues;
+        }
+    }
+
+    public void setNavigationDefaults() {
+        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+        Set<String> selections = new HashSet<String>(Arrays.asList(allNames));
+        editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
+    }
+
+    public int[] getNavigationIcons() {
+        if (!prefs.contains(PREF_NAVIGATION_ITEMS))
+            setNavigationDefaults();
+
+        TypedArray ICONS = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
+        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+        int[] selectedICONS = new int[selections.size()];
+        int iconIndex = 0;
+        int index = 0;
+        for (String v : allNames) {
+            for (String s : selections) {
+                if (s.equals(v)) {
+                    selectedICONS[iconIndex] = ICONS.getResourceId(index, 0);
+                    iconIndex++;
+                }
+            }
+            index++;
+        }
+
+        return selectedICONS;
+    }
+
     public boolean isDebugEnabled() {
         return prefs.getBoolean(PREF_DEBUGGING, false);
     }
@@ -241,6 +235,7 @@ public class SharedPrefUtil {
     public boolean showExtraData() {
         return prefs.getBoolean(PREF_EXTRA_DATA, true);
     }
+
     public boolean showCustomWear() {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
     }
@@ -265,12 +260,12 @@ public class SharedPrefUtil {
         editor.putString(REMOTE_SERVER_PASSWORD, password).apply();
     }
 
-    public void setUpdateAvailable(String version) {
-        editor.putString(PREF_UPDATE_VERSION, version).apply();
+    public String getUpdateAvailable() {
+        return prefs.getString(PREF_UPDATE_VERSION, "");
     }
 
-    public String getUpdateAvailable() {
-       return prefs.getString(PREF_UPDATE_VERSION, "");
+    public void setUpdateAvailable(String version) {
+        editor.putString(PREF_UPDATE_VERSION, version).apply();
     }
 
     public String getDomoticzRemoteUrl() {
@@ -448,9 +443,8 @@ public class SharedPrefUtil {
 
     public LocationInfo getLocation(Context context, int id) {
         List<LocationInfo> locations = getLocations(context);
-        for(LocationInfo l: locations)
-        {
-            if(l.getID() == id)
+        for (LocationInfo l : locations) {
+            if (l.getID() == id)
                 return l;
         }
 
@@ -470,11 +464,9 @@ public class SharedPrefUtil {
         if (locations == null)
             locations = new ArrayList<LocationInfo>();
 
-        int i =0;
-        for (LocationInfo l : locations)
-        {
-            if (l.getID() == location.getID())
-            {
+        int i = 0;
+        for (LocationInfo l : locations) {
+            if (l.getID() == location.getID()) {
                 locations.set(i, location);
             }
             i++;
@@ -510,8 +502,7 @@ public class SharedPrefUtil {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (output != null) {
                     output.flush();
@@ -524,7 +515,7 @@ public class SharedPrefUtil {
         return res;
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public boolean loadSharedPreferencesFromFile(File src) {
         boolean res = false;
         ObjectInputStream input = null;
@@ -549,7 +540,7 @@ public class SharedPrefUtil {
                 else if (v instanceof Set)
                     editor.putStringSet(key, ((Set<String>) v));
                 else
-                    Log.v("Settings", "Could not load pref: "+key+ " | " +v.getClass());
+                    Log.v("Settings", "Could not load pref: " + key + " | " + v.getClass());
             }
             editor.commit();
             res = true;
@@ -559,7 +550,7 @@ public class SharedPrefUtil {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (input != null) {
                     input.close();

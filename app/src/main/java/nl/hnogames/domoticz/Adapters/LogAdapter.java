@@ -76,25 +76,23 @@ public class LogAdapter extends BaseAdapter implements Filterable {
         String dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
         String message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
 
-            layoutResourceId = R.layout.logs_row_default;
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId, parent, false);
+        layoutResourceId = R.layout.logs_row_default;
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, parent, false);
 
         holder.name = (TextView) convertView.findViewById(R.id.logs_name);
         holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);
         holder.message = (TextView) convertView.findViewById(R.id.logs_message);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
-        if(message.indexOf(":")>0) {
+        if (message.indexOf(":") > 0) {
             holder.name.setText(message.substring(0, message.indexOf(":")).trim());
             holder.message.setText(message.substring(message.indexOf(":") + 1).trim());
-        }
-        else{
-            if(message.startsWith("(")) {
-                holder.name.setText(message.substring(0, message.indexOf(")")).replace("(","").trim());
+        } else {
+            if (message.startsWith("(")) {
+                holder.name.setText(message.substring(0, message.indexOf(")")).replace("(", "").trim());
                 holder.message.setText(message.substring(message.indexOf(")") + 1).trim());
-            }
-            else
+            } else
                 holder.name.setText(message);
         }
 

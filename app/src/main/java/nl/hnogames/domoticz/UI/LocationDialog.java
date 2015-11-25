@@ -60,7 +60,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                                     new LatLng(Double.parseDouble(txtLatitude.getText().toString().replace(mContext.getString(R.string.latitude) + ": ", "")),
                                             Double.parseDouble(txtLongitude.getText().toString().replace(mContext.getString(R.string.longitude) + ": ", ""))),
                                     Integer.parseInt(txtRadius.getText().toString().replace(mContext.getString(R.string.radius) + ": ", ""))));
-                    } catch(Exception ex){
+                    } catch (Exception ex) {
                         if (dismissListener != null)
                             dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(), foundLocation, 120));
                     }
@@ -75,12 +75,12 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
 
         Button getLocation = (Button) view.findViewById(R.id.get_address);
-        txtLatitude = (EditText)view.findViewById(R.id.latitude);
-        txtRadius = (EditText)view.findViewById(R.id.radius);
-        txtRadius.setText(mContext.getString(R.string.radius )+ ": 120");
-        txtLongitude = (EditText)view.findViewById(R.id.longitude);
-        editAddress = (FloatingLabelEditText)view.findViewById(R.id.address);
-        editName = (FloatingLabelEditText)view.findViewById(R.id.name);
+        txtLatitude = (EditText) view.findViewById(R.id.latitude);
+        txtRadius = (EditText) view.findViewById(R.id.radius);
+        txtRadius.setText(mContext.getString(R.string.radius) + ": 120");
+        txtLongitude = (EditText) view.findViewById(R.id.longitude);
+        editAddress = (FloatingLabelEditText) view.findViewById(R.id.address);
+        editName = (FloatingLabelEditText) view.findViewById(R.id.name);
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +97,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         md.show();
     }
 
-    public LatLng getLocationFromAddress(Context context,String strAddress) {
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
         Geocoder coder;
         coder = new Geocoder(context);
         List<Address> address;
@@ -112,7 +112,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
             location.getLatitude();
             location.getLongitude();
 
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -131,6 +131,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(LocationInfo location);
+
         void onDismissEmpty();
     }
 }

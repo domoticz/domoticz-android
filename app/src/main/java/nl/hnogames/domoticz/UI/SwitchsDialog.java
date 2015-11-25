@@ -38,7 +38,8 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {}
+    public void onDismiss(DialogInterface dialog) {
+    }
 
     public void show() {
         mdb.title("Connect Switch");
@@ -51,11 +52,11 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if(dismissListener!=null)
-                   dismissListener.onDismiss(info.get(position).getIdx());
+                if (dismissListener != null)
+                    dismissListener.onDismiss(info.get(position).getIdx());
 
                 md.dismiss();
-        }
+            }
         });
 
         listView.setAdapter(adapter);
@@ -66,7 +67,7 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
         String[] listData = new String[info.size()];
         int counter = 0;
         for (SwitchInfo s : info) {
-            String log = s.getIdx()+" | "+ s.getName();
+            String log = s.getIdx() + " | " + s.getName();
             listData[counter] = log;
             counter++;
         }

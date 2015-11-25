@@ -9,7 +9,6 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
-// import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -54,6 +53,8 @@ import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchsDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
+// import android.location.LocationListener;
+
 
 public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
@@ -76,6 +77,8 @@ public class GeoSettingsActivity extends AppCompatActivity
     private PendingIntent mGeofenceRequestIntent;
     private GoogleApiClient mApiClient;
     private List<Geofence> mGeofenceList;
+    private ArrayList<LocationInfo> locations;
+    private LocationAdapter adapter;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,9 +188,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
         infoDialog.show();
     }
-
-    private ArrayList<LocationInfo> locations;
-    private LocationAdapter adapter;
 
     private void createListView() {
         locations = mSharedPrefs.getLocations(this);

@@ -82,7 +82,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                     Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
 
                     if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                        sendNotification("Leaving " + locationFound.getName(), "Entering one of the locations");
+                        sendNotification("Leaving " + locationFound.getName(), "Leaving one of the locations");
 
                     if (locationFound.getSwitchidx() > 0) {
                         handleSwitch(locationFound.getSwitchidx(), false);

@@ -36,12 +36,11 @@ public class WelcomePage2 extends Fragment {
                 if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
                     Toast.makeText(getActivity(), "Settings Imported, we need to restart Domoticz!!", Toast.LENGTH_LONG).show();
                     System.exit(99);
-                }
-                else
+                } else
                     Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
             }
         });
-        if(!SettingsFile.exists()) {
+        if (!SettingsFile.exists()) {
             importButton.setVisibility(View.GONE);
         }
         return v;

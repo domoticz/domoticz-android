@@ -20,19 +20,46 @@ public class LocationInfo {
     }
 
 
-    public String getName() {return Name;}
-    public boolean getEnabled() {return enabled;}
-    public int getID() {return id;}
-    public int getSwitchidx() {return switchidx;}
-    public int getRange() {return range;}
-    public void setSwitchidx(int idx) {switchidx = idx;}
-    public void setEnabled(boolean e) {enabled = e;}
-    public void setRange(int e) {range = e;}
-    public LatLng getLocation() {return Location;}
+    public String getName() {
+        return Name;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean e) {
+        enabled = e;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public int getSwitchidx() {
+        return switchidx;
+    }
+
+    public void setSwitchidx(int idx) {
+        switchidx = idx;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int e) {
+        range = e;
+    }
+
+    public LatLng getLocation() {
+        return Location;
+    }
 
 
     /**
      * Creates a Location Services Geofence object from a SimpleGeofence.
+     *
      * @return A Geofence object.
      */
     public Geofence toGeofence() {

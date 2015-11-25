@@ -35,32 +35,31 @@ public class Preference extends PreferenceFragment {
         handleImportExportButtons();
     }
 
-    private void handleImportExportButtons()
-    {
+    private void handleImportExportButtons() {
         final File SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
         final String sPath = SettingsFile.getPath().substring(0, SettingsFile.getPath().lastIndexOf("/"));
         new File(sPath).mkdirs();
 
-        android.preference.Preference exportButton = (android.preference.Preference)findPreference("export_settings");
+        android.preference.Preference exportButton = (android.preference.Preference) findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                Log.v("Export Settings", "Exporting settings to: "+SettingsFile.getPath());
-                if(mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
+                Log.v("Export Settings", "Exporting settings to: " + SettingsFile.getPath());
+                if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
                     Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
-        android.preference.Preference importButton = (android.preference.Preference)findPreference("import_settings");
+        android.preference.Preference importButton = (android.preference.Preference) findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                Log.v("Import Settings", "Importing settings from: "+SettingsFile.getPath());
+                Log.v("Import Settings", "Importing settings from: " + SettingsFile.getPath());
                 mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
 
-                if(mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
+                if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
                     Toast.makeText(getActivity(), "Settings Imported, please restart Domoticz.", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
@@ -94,11 +93,13 @@ public class Preference extends PreferenceFragment {
                         sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
 
                     domoticzversion.setSummary(sVersion);
+                } catch (Exception ex) {
                 }
-                catch(Exception ex){}
             }
+
             @Override
-            public void onError(Exception error) {}
+            public void onError(Exception error) {
+            }
         });
     }
 
