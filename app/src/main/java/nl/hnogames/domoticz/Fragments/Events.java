@@ -7,23 +7,23 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Adapters.LogAdapter;
-import nl.hnogames.domoticz.Containers.LogInfo;
+import nl.hnogames.domoticz.Adapters.EventsAdapter;
+import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
+import nl.hnogames.domoticz.Containers.EventInfo;
+import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.LogsReceiver;
+import nl.hnogames.domoticz.Interfaces.EventReceiver;
+import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
+public class Events extends DomoticzFragment implements DomoticzFragmentListener {
 
     private Domoticz mDomoticz;
-    private ArrayList<LogInfo> mLogInfos;
-
-    private long thermostatSetPointValue;
-
+    private ArrayList<EventInfo> mEventInfos;
     private ListView listView;
-    private LogAdapter adapter;
+    private EventsAdapter adapter;
     private ProgressDialog progressDialog;
     private Activity mActivity;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -32,14 +32,14 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        processLogs();
+        processUserVariables();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = activity;
-        getActionBar().setTitle(R.string.title_logs);
+        getActionBar().setTitle(R.string.title_events);
     }
 
     @Override
@@ -55,29 +55,29 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     @Override
     public void onConnectionOk() {
         showProgressDialog();
-
         mDomoticz = new Domoticz(mActivity);
-        processLogs();
+        processUserVariables();
     }
 
-    private void processLogs() {
-        mDomoticz.getLogs(new LogsReceiver() {
+    private void processUserVariables() {
+        mDomoticz.getEvents(new EventReceiver() {
             @Override
-            public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
-                successHandling(mLogInfos.toString(), false);
+            public void onReceiveEvents(ArrayList<EventInfo> mEventInfos) {
+                Events.this.mEventInfos = mEventInfos;
+                successHandling(mEventInfos.toString(), false);
 
-                Logs.this.mLogInfos = mLogInfos;
-                adapter = new LogAdapter(mActivity, mLogInfos);
+                adapter = new EventsAdapter(mActivity, mEventInfos);
 
                 createListView();
                 hideProgressDialog();
             }
 
             @Override
-            public void onError(Exception error) {
+            public void onError(Exception error)  {
                 errorHandling(error);
             }
         });
+
     }
 
     private void createListView() {
@@ -91,12 +91,11 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    processLogs();
+                    processUserVariables();
                 }
             });
         }
     }
-
 
     /**
      * Notifies the list view adapter the data has changed and refreshes the list view

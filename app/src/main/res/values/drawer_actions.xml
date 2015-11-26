@@ -10,6 +10,8 @@
         <item>Cameras</item>
         <item>Plans</item>
         <item>Logs</item>
+        <item>Events</item>
+        <item>User Variables</item>
     </string-array>
 
     <string-array name="empty_array">
@@ -25,6 +27,8 @@
         <item>nl.hnogames.domoticz.Fragments.Cameras</item>
         <item>nl.hnogames.domoticz.Fragments.Plans</item>
         <item>nl.hnogames.domoticz.Fragments.Logs</item>
+        <item>nl.hnogames.domoticz.Fragments.Events</item>
+        <item>nl.hnogames.domoticz.Fragments.UserVariables</item>
     </string-array>
 
     <array name="drawer_icons">
@@ -37,5 +41,7 @@
         <item>@drawable/ic_cameras</item>
         <item>@drawable/ic_plan</item>
         <item>@drawable/ic_logs</item>
+        <item>@drawable/ic_event</item>
+        <item>@drawable/ic_vars</item>
     </array>
 </resources>

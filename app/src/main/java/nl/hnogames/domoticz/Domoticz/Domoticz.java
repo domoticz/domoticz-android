@@ -3,6 +3,7 @@ package nl.hnogames.domoticz.Domoticz;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.service.voice.AlwaysOnHotwordDetector;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
@@ -26,6 +28,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
@@ -164,7 +167,6 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
-
         return switchesSupported;
     }
 
@@ -184,7 +186,6 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(Device.Type.Name.DOORLOCK);
         switchesSupported.add(Device.Type.Name.DOORBELL);
-
         return switchesSupported;
     }
 
@@ -192,6 +193,7 @@ public class Domoticz {
         List<Integer> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Value.ON_OFF);
         switchesSupported.add(Device.Type.Value.PUSH_ON_BUTTON);
+        switchesSupported.add(Device.Type.Value.DIMMER);
         switchesSupported.add(Device.Type.Value.PUSH_OFF_BUTTON);
         switchesSupported.add(Device.Type.Value.MEDIAPLAYER);
         switchesSupported.add(Device.Type.Value.SMOKE_DETECTOR);
@@ -206,6 +208,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.ON_OFF);
         switchesSupported.add(Device.Type.Name.PUSH_ON_BUTTON);
         switchesSupported.add(Device.Type.Name.PUSH_OFF_BUTTON);
+        switchesSupported.add(Device.Type.Name.DIMMER);
         switchesSupported.add(Device.Type.Name.MEDIAPLAYER);
         switchesSupported.add(Device.Type.Name.SMOKE_DETECTOR);
         switchesSupported.add(Device.Type.Name.X10SIREN);
@@ -288,6 +291,14 @@ public class Domoticz {
                 url = Url.System.UPDATE;
                 break;
 
+            case Json.Url.Request.USERVARIABLES:
+                url = Url.System.USERVARIABLES;
+                break;
+
+            case Json.Url.Request.EVENTS:
+                url = Url.System.EVENTS;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -295,7 +306,6 @@ public class Domoticz {
     }
 
     private String constructGetUrl(int jsonGetUrl) {
-
         String protocol, url, port, jsonUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -619,6 +629,24 @@ public class Domoticz {
                 url);
     }
 
+    public void getUserVariables(UserVariablesReceiver receiver) {
+        UserVariablesParser parser = new UserVariablesParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.USERVARIABLES);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void getEvents(EventReceiver receiver) {
+        EventsParser parser = new EventsParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.EVENTS);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
     public int getDrawableIcon(String type) {
         int test = R.drawable.defaultimage;
         switch (type) {
@@ -818,6 +846,8 @@ public class Domoticz {
                 int SWITCHLOG = 14;
                 int SWITCHTIMER = 15;
                 int UPDATE = 16;
+                int USERVARIABLES = 17;
+                int EVENTS = 18;
             }
 
             interface Set {
@@ -933,6 +963,8 @@ public class Domoticz {
         @SuppressWarnings("SpellCheckingInspection")
         interface System {
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
+            String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
+            String EVENTS = "/json.htm?type=events&param=list";
         }
     }
 

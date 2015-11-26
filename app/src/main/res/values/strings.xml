@@ -72,4 +72,15 @@
     <string name="no_network_available">Error: No network connection available</string>
     <string name="oops">OOPS!</string>
 
+    <string name="favorite_added">added to Dashboard.</string>
+    <string name="favorite_removed">removed from Dashboard.</string>
+
+    <string name="switch_on">Turning switch on</string>
+    <string name="switch_off">Turning switch off</string>
+
+    <string name="blind_up">Turning blind up</string>
+    <string name="blind_down">Turning blind down</string>
+    <string name="blind_stop">Stop blind</string>
+
+
 </resources>

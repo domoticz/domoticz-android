@@ -12,6 +12,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -80,6 +81,8 @@ public class GeoSettingsActivity extends AppCompatActivity
     private ArrayList<LocationInfo> locations;
     private LocationAdapter adapter;
 
+    private CoordinatorLayout coordinatorLayout;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -88,9 +91,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 // The user picked a place.
                 Place place = PlacePicker.getPlace(data, this);
-                Toast.makeText(this,
-                        String.format(getString(R.string.geofence_place), place.getName()),
-                        Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, String.format(getString(R.string.geofence_place), place.getName()), Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -98,29 +99,27 @@ public class GeoSettingsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_geo_settings);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
         domoticz = new Domoticz(this);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
 
         if (!isGooglePlayServicesAvailable()) {
-            Toast.makeText(this,
-                    R.string.google_play_services_unavailable,
-                    Toast.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getString(R.string.google_play_services_unavailable), Snackbar.LENGTH_SHORT).show();
             finish();
             return;
         }
 
         mSharedPrefs = new SharedPrefUtil(this);
-
         createListView();
         initSwitches();
     }
 
     private void initSwitches() {
-
         Switch notSwitch = (Switch) findViewById(R.id.switch_notifications_button);
         Switch geoSwitch = (Switch) findViewById(R.id.switch_button);
 
@@ -248,7 +247,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     public void getCurrentLocationOnMapFromProvider() {
-
         Criteria criteria = new Criteria();
         criteria.setSpeedRequired(false);
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -266,9 +264,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         } else if (bestAvailableProvider != null && bestAvailableProvider.equals(bestAvailableProvider)) {
             if (!locationManager.isProviderEnabled(bestAvailableProvider)) {
                 Log.d(TAG, "Best available provider not enabled" + bestAvailableProvider);
-                Toast.makeText(this,
-                        String.format(getString(R.string.geofence_provider_msg), bestAvailableProvider),
-                        Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, String.format(getString(R.string.geofence_provider_msg), bestAvailableProvider), Snackbar.LENGTH_LONG).show();
                 Intent mainIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivityForResult(mainIntent, BEST_AVAILABLE_PROVIDER_CODE);
             } else {
@@ -277,9 +273,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         } else {
             if (!locationManager.isProviderEnabled(bestProvider)) {
                 Log.d(TAG, "Best provider not enabled" + bestProvider);
-                Toast.makeText(this,
-                        String.format(getString(R.string.geofence_provider_msg), bestProvider),
-                        Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, String.format(getString(R.string.geofence_provider_msg), bestProvider), Snackbar.LENGTH_LONG).show();
                 Intent mainIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivityForResult(mainIntent, BEST_PROVIDER_CODE);
             } else {
@@ -404,7 +398,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             LocationServices.GeofencingApi
                     .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
             if (domoticz.isDebugEnabled())
-                Toast.makeText(this, "Starting Geofence Service", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Starting Geofence Service", Snackbar.LENGTH_LONG).show();
         }
     }
 
