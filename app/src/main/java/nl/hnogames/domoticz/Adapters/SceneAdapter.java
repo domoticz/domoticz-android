@@ -134,22 +134,25 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
 
-            if (holder.isProtected) holder.onOffSwitch.setEnabled(false);
+            if(holder.onOffSwitch!=null) {
+                if (holder.isProtected) {
+                    holder.onOffSwitch.setEnabled(false);
+                }
+                holder.onOffSwitch.setId(mSceneInfo.getIdx());
+                holder.onOffSwitch.setChecked(mSceneInfo.getStatusInBoolean());
+                holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                        handleClick(compoundButton.getId(), checked);
+                    }
+                });
+            }
 
             Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase())).into(holder.iconRow);
-            holder.onOffSwitch.setId(mSceneInfo.getIdx());
-            holder.onOffSwitch.setChecked(mSceneInfo.getStatusInBoolean());
-            holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    handleClick(compoundButton.getId(), checked);
-                }
-            });
+
         } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
                 + mSceneInfo.toString());
         convertView.setTag(holder);
-
-        //} else holder = (ViewHolder) convertView.getTag();
 
         return convertView;
     }

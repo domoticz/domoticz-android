@@ -64,13 +64,11 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
         mDomoticz.getUserVariables(new UserVariablesReceiver() {
             @Override
             public void onReceiveUserVariabeles(ArrayList<UserVariableInfo> mVarInfos) {
-                UserVariables.this.mUserVariableInfos = mVarInfos;
-                successHandling(mUserVariableInfos.toString(), false);
-
-                adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
-
-                createListView();
-                hideProgressDialog();
+                    UserVariables.this.mUserVariableInfos = mVarInfos;
+                    successHandling(mUserVariableInfos.toString(), false);
+                    adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
+                    createListView();
+                    hideProgressDialog();
             }
 
             @Override

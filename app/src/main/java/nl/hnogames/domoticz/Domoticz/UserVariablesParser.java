@@ -27,16 +27,18 @@ public class UserVariablesParser implements JSONParserInterface {
         try {
             JSONArray jsonArray = new JSONArray(result);
             ArrayList<UserVariableInfo> mVars = new ArrayList<>();
-
             if (jsonArray.length() > 0) {
-
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject row = jsonArray.getJSONObject(i);
                     mVars.add(new UserVariableInfo(row));
                 }
             }
 
-            varsReceiver.onReceiveUserVariabeles(mVars);
+            if(mVars==null || mVars.size()<=0)
+                onError(new NullPointerException(
+                        "No UserVariables devined in Domoticz."));
+            else
+                varsReceiver.onReceiveUserVariabeles(mVars);
         } catch (JSONException e) {
             Log.e(TAG, "UserVariabeleParser JSON exception");
             e.printStackTrace();

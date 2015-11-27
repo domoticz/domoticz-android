@@ -89,6 +89,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                         case Domoticz.Device.Type.Value.MEDIAPLAYER:
                         case Domoticz.Device.Type.Value.X10SIREN:
                         case Domoticz.Device.Type.Value.DOORLOCK:
+                        case Domoticz.Device.Type.Value.DIMMER:
                         case Domoticz.Device.Type.Value.BLINDS:
                         case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                             onSwitchToggle(selectedSwitch);
@@ -109,7 +110,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
                         default:
                             throw new NullPointerException(
-                                    "No supported switch type defined in the adapter (setSwitchRowData)");
+                                    "Toggle event received from wear device for unsupported switch type.");
                     }
 
                     //now send latest status
