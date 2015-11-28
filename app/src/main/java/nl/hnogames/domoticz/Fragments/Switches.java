@@ -3,6 +3,8 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +27,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
@@ -43,6 +46,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private SwitchesAdapter adapter;
     private ListView listView;
 
+    private CoordinatorLayout coordinatorLayout;
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -123,6 +127,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<ExtendedStatusInfo> switches) {
         try {
+            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                    .coordinatorLayout);
+
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
             supportedSwitches = new ArrayList<>();
@@ -217,6 +224,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
+        if(isFavorite)
+            Snackbar.make(coordinatorLayout, mSwitch.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, mSwitch.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+
+
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
 
@@ -282,8 +295,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onSwitchClick(int idx, boolean checked) {
         addDebugText("onSwitchClick");
         addDebugText("Set idx " + idx + " to " + checked);
-
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+
+        if(checked)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         if (clickedSwitch != null) {
             int jsonAction;
@@ -316,6 +333,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onButtonClick(int idx, boolean checked) {
         addDebugText("onButtonClick");
         addDebugText("Set idx " + idx + " to ON");
+        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+
+        if(checked)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -342,6 +365,13 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onBlindClick(int idx, int jsonAction) {
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
+        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+        if(jsonAction == Domoticz.Device.Blind.Action.UP)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if(jsonAction == Domoticz.Device.Blind.Action.DOWN)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
@@ -360,6 +390,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     @Override
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
+        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+
+        Snackbar.make(coordinatorLayout, "Setting level for switch: "+clickedSwitch.getName()+" to "+value, Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;

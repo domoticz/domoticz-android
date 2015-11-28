@@ -3,6 +3,8 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -31,6 +34,8 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private ListView listView;
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public void refreshFragment() {
@@ -72,28 +77,33 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 successHandling(mTemperatureInfos.toString(), false);
                 Temperature.this.mTemperatureInfos = mTemperatureInfos;
-                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-                adapter = new TemperatureAdapter(mActivity, mTemperatureInfos);
-                listView = (ListView) getView().findViewById(R.id.listView);
-                listView.setAdapter(adapter);
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                   int index, long id) {
-                        showInfoDialog(Temperature.this.mTemperatureInfos.get(index));
-                        return true;
-                    }
-                });
-                mSwipeRefreshLayout.setRefreshing(false);
+                if(getView()!=null) {
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+                    coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                            .coordinatorLayout);
 
-                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        processTemperature();
-                    }
-                });
-                hideProgressDialog();
+                    adapter = new TemperatureAdapter(mActivity, mTemperatureInfos);
+                    listView = (ListView) getView().findViewById(R.id.listView);
+                    listView.setAdapter(adapter);
+                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                                       int index, long id) {
+                            showInfoDialog(Temperature.this.mTemperatureInfos.get(index));
+                            return true;
+                        }
+                    });
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            processTemperature();
+                        }
+                    });
+                    hideProgressDialog();
+                }
             }
 
             @Override
@@ -124,6 +134,11 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private void changeFavorite(final TemperatureInfo mTemperatureInfo, final boolean isFavorite) {
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
+
+        if(isFavorite)
+            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;

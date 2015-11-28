@@ -3,6 +3,8 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -31,6 +34,8 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private ListView listView;
     private WeatherAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public void refreshFragment() {
@@ -70,31 +75,36 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
-                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-                successHandling(mWeatherInfos.toString(), false);
-                Weather.this.mWeatherInfos = mWeatherInfos;
+                if(getView()!=null) {
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+                    coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                            .coordinatorLayout);
 
-                adapter = new WeatherAdapter(mActivity, mWeatherInfos);
-                listView = (ListView) getView().findViewById(R.id.listView);
-                listView.setAdapter(adapter);
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                   int index, long id) {
-                        showInfoDialog(Weather.this.mWeatherInfos.get(index));
-                        return true;
-                    }
-                });
-                mSwipeRefreshLayout.setRefreshing(false);
+                    successHandling(mWeatherInfos.toString(), false);
+                    Weather.this.mWeatherInfos = mWeatherInfos;
 
-                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        processWeather();
-                    }
-                });
-                hideProgressDialog();
+                    adapter = new WeatherAdapter(mActivity, mWeatherInfos);
+                    listView = (ListView) getView().findViewById(R.id.listView);
+                    listView.setAdapter(adapter);
+                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                                       int index, long id) {
+                            showInfoDialog(Weather.this.mWeatherInfos.get(index));
+                            return true;
+                        }
+                    });
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            processWeather();
+                        }
+                    });
+                    hideProgressDialog();
+                }
             }
 
             @Override
@@ -123,6 +133,11 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private void changeFavorite(final WeatherInfo mWeatherInfo, final boolean isFavorite) {
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
+
+        if(isFavorite)
+            Snackbar.make(coordinatorLayout, mWeatherInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, mWeatherInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;

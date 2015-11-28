@@ -3,6 +3,8 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +20,7 @@ import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -38,6 +41,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private int planID = 0;
     private String planName = "";
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public void refreshFragment() {
@@ -72,6 +76,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onConnectionOk() {
         showProgressDialog();
         getActionBar().setTitle(R.string.title_dashboard);
+
         if (planName != null && planName.length() > 0)
             getActionBar().setTitle(planName + "");
 
@@ -120,6 +125,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             return;
 
         try {
+            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                    .coordinatorLayout);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
             supportedSwitches = new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
@@ -169,6 +176,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 getActivity(),
                 mSwitch,
                 R.layout.dialog_switch_info);
+
         infoDialog.setIdx(String.valueOf(mSwitch.getIdx()));
         infoDialog.setLastUpdate(mSwitch.getLastUpdate());
         infoDialog.setSignalLevel(String.valueOf(mSwitch.getSignalLevel()));
@@ -189,6 +197,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
+
+        if(isFavorite)
+            Snackbar.make(coordinatorLayout, mSwitch.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, mSwitch.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -217,6 +230,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("Set idx " + idx + " to " + checked);
 
         DevicesInfo clickedSwitch = getDevice(idx);
+        if(checked)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+
         if (clickedSwitch != null) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -258,6 +276,14 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("onButtonClick");
         addDebugText("Set idx " + idx + " to ON");
 
+        DevicesInfo clickedSwitch = getDevice(idx);
+
+        if(checked)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+
+
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
@@ -289,6 +315,13 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onBlindClick(int idx, int jsonAction) {
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
+        DevicesInfo clickedSwitch = getDevice(idx);
+        if(jsonAction == Domoticz.Device.Blind.Action.UP)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if(jsonAction == Domoticz.Device.Blind.Action.DOWN)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
@@ -307,6 +340,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
+        DevicesInfo clickedSwitch = getDevice(idx);
+        Snackbar.make(coordinatorLayout, "Setting level for switch: "+clickedSwitch.getName()+" to "+value, Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;

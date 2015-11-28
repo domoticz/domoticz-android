@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +24,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,12 +52,16 @@ public class MainActivity extends AppCompatActivity {
     private Menu menu;
     private int selectedFragment = 0;
     private SearchView searchViewAction;
+    public CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSharedPrefs = new SharedPrefUtil(this);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     if (version != null && version.length() > 0) {
                         String prefVersion = mSharedPrefs.getUpdateAvailable();
                         if (!prefVersion.equals(version)) {
-                            Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.update_available) + ": " + version, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, MainActivity.this.getString(R.string.update_available) + ": " + version, Snackbar.LENGTH_LONG).show();
                         }
                     }
                     mSharedPrefs.setUpdateAvailable(version);
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(MainActivity.this, "Could not check for updates:" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Could not check for updates:" + error.getMessage(), Snackbar.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -327,7 +333,6 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (Exception ex) {
         }
-
         return super.onOptionsItemSelected(item);
     }
 

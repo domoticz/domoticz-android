@@ -2,6 +2,8 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.thermostatClickListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -25,15 +28,15 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     private Domoticz mDomoticz;
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
-
+    private CoordinatorLayout coordinatorLayout;
 
     private long thermostatSetPointValue;
-
     private ListView listView;
     private UtilityAdapter adapter;
     private ProgressDialog progressDialog;
     private Activity mActivity;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     @Override
     public void refreshFragment() {
@@ -91,25 +94,30 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void createListView() {
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-        listView = (ListView) getView().findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                           int index, long id) {
-                showInfoDialog(Utilities.this.mUtilitiesInfos.get(index));
-                return true;
-            }
-        });
-        mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                processUtilities();
-            }
-        });
+        if(getView()!=null) {
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                    .coordinatorLayout);
+
+            listView = (ListView) getView().findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                               int index, long id) {
+                    showInfoDialog(Utilities.this.mUtilitiesInfos.get(index));
+                    return true;
+                }
+            });
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    processUtilities();
+                }
+            });
+        }
     }
 
     private void showInfoDialog(final UtilitiesInfo mUtilitiesInfo) {
@@ -132,6 +140,11 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private void changeFavorite(final UtilitiesInfo mUtilitiesInfo, final boolean isFavorite) {
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mUtilitiesInfo.getIdx() + " favorite to " + isFavorite);
+
+        if(isFavorite)
+            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;

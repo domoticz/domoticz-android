@@ -3,6 +3,8 @@ package nl.hnogames.domoticz.Domoticz;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.net.Uri;
+import android.service.voice.AlwaysOnHotwordDetector;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +19,8 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticz.Interfaces.EventReceiver;
+import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
@@ -26,6 +30,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
@@ -164,7 +169,6 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
-
         return switchesSupported;
     }
 
@@ -184,7 +188,6 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(Device.Type.Name.DOORLOCK);
         switchesSupported.add(Device.Type.Name.DOORBELL);
-
         return switchesSupported;
     }
 
@@ -192,6 +195,7 @@ public class Domoticz {
         List<Integer> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Value.ON_OFF);
         switchesSupported.add(Device.Type.Value.PUSH_ON_BUTTON);
+        switchesSupported.add(Device.Type.Value.DIMMER);
         switchesSupported.add(Device.Type.Value.PUSH_OFF_BUTTON);
         switchesSupported.add(Device.Type.Value.MEDIAPLAYER);
         switchesSupported.add(Device.Type.Value.SMOKE_DETECTOR);
@@ -206,6 +210,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.ON_OFF);
         switchesSupported.add(Device.Type.Name.PUSH_ON_BUTTON);
         switchesSupported.add(Device.Type.Name.PUSH_OFF_BUTTON);
+        switchesSupported.add(Device.Type.Name.DIMMER);
         switchesSupported.add(Device.Type.Name.MEDIAPLAYER);
         switchesSupported.add(Device.Type.Name.SMOKE_DETECTOR);
         switchesSupported.add(Device.Type.Name.X10SIREN);
@@ -288,6 +293,18 @@ public class Domoticz {
                 url = Url.System.UPDATE;
                 break;
 
+            case Json.Url.Request.USERVARIABLES:
+                url = Url.System.USERVARIABLES;
+                break;
+
+            case Json.Url.Request.EVENTS:
+                url = Url.System.EVENTS;
+                break;
+
+            case Json.Url.Request.EVENTXML:
+                url = Url.System.EVENTXML;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -295,7 +312,6 @@ public class Domoticz {
     }
 
     private String constructGetUrl(int jsonGetUrl) {
-
         String protocol, url, port, jsonUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -331,9 +347,7 @@ public class Domoticz {
         String protocol, baseUrl, url, port, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
-
         if (isUserOnLocalWifi()) {
-
             if (mSharedPrefUtil.isDomoticzLocalSecure()) {
                 protocol = Url.Protocol.HTTPS;
             } else protocol = Url.Protocol.HTTP;
@@ -394,6 +408,11 @@ public class Domoticz {
                 actionUrl = FavoriteAction.OFF;
                 break;
 
+            case Event.Action.OFF:
+            case Event.Action.ON:
+                actionUrl = Url.System.EVENTSTATUS + String.valueOf(value);
+                break;
+
             case Device.Dimmer.Action.DIM_LEVEL:
                 actionUrl = Url.Switch.DIM_LEVEL + String.valueOf(value);
                 break;
@@ -431,13 +450,20 @@ public class Domoticz {
                         + String.valueOf(idx)
                         + Url.Favorite.VALUE + actionUrl;
                 break;
+
+            case Json.Url.Set.EVENT:
+                url = Url.System.EVENTACTION;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + actionUrl
+                        +"&xml=" ;
+                break;
         }
 
         String fullString = buildUrl.append(protocol)
                 .append(baseUrl).append(":")
                 .append(port)
                 .append(jsonUrl).toString();
-
         logger("Constructed url: " + fullString);
 
         return fullString;
@@ -550,9 +576,23 @@ public class Domoticz {
                           int jsonAction,
                           long value,
                           setCommandReceiver receiver) {
-
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void setEventAction(int id,
+                               String xmlStatement,
+                          int jsonUrl,
+                          int jsonAction,
+                          long value,
+                          setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = constructSetUrl(jsonUrl, id, jsonAction, value);
+        url += Uri.encode(xmlStatement);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -613,6 +653,34 @@ public class Domoticz {
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.LOG);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void getUserVariables(UserVariablesReceiver receiver) {
+        UserVariablesParser parser = new UserVariablesParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.USERVARIABLES);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void getEvents(EventReceiver receiver) {
+        EventsParser parser = new EventsParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.EVENTS);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void getEventXml(int id, EventXmlReceiver receiver) {
+        EventsXmlParser parser = new EventsXmlParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.EVENTXML);
+        url = url.replace("%id%", id+"");
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -818,6 +886,9 @@ public class Domoticz {
                 int SWITCHLOG = 14;
                 int SWITCHTIMER = 15;
                 int UPDATE = 16;
+                int USERVARIABLES = 17;
+                int EVENTS = 18;
+                int EVENTXML = 19;
             }
 
             interface Set {
@@ -825,6 +896,7 @@ public class Domoticz {
                 int SWITCHES = 102;
                 int TEMP = 103;
                 int FAVORITE = 104;
+                int EVENT = 105;
             }
         }
 
@@ -842,6 +914,16 @@ public class Domoticz {
         interface Action {
             int ON = 40;
             int OFF = 41;
+        }
+    }
+
+    public interface Event {
+        interface Type {
+            String EVENT = "Event";
+        }
+        interface Action {
+            int ON = 55;
+            int OFF = 56;
         }
     }
 
@@ -933,6 +1015,11 @@ public class Domoticz {
         @SuppressWarnings("SpellCheckingInspection")
         interface System {
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
+            String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
+            String EVENTS = "/json.htm?type=events&param=list";
+            String EVENTXML = "/json.htm?type=events&param=load&event=%id%";
+            String EVENTACTION = "/json.htm?type=events&param=create&name=LichtenAan&eventid=";
+            String EVENTSTATUS = "&eventstatus=";
         }
     }
 

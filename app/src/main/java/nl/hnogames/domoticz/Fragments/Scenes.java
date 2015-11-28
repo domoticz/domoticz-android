@@ -2,6 +2,8 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -29,6 +32,9 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     private Domoticz mDomoticz;
     private SceneAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private CoordinatorLayout coordinatorLayout;
+    private ArrayList<SceneInfo> mScenes;
 
     @Override
     public void Filter(String text) {
@@ -74,35 +80,49 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        if(getView()!=null) {
+            mScenes = scenes;
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-        final ScenesClickListener listener = this;
+            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                    .coordinatorLayout);
+            final ScenesClickListener listener = this;
 
-        adapter = new SceneAdapter(mActivity, scenes, listener);
-        ListView listView = (ListView) getView().findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                           int index, long id) {
-                showInfoDialog(scenes.get(index));
-                return true;
+            adapter = new SceneAdapter(mActivity, scenes, listener);
+            ListView listView = (ListView) getView().findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                               int index, long id) {
+                    showInfoDialog(scenes.get(index));
+                    return true;
+                }
+            });
+
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    processScenes();
+                }
+            });
+
+            hideProgressDialog();
+        }
+    }
+
+    private SceneInfo getScene(int idx) {
+        SceneInfo clickedScene = null;
+        for (SceneInfo s : mScenes) {
+            if (s.getIdx() == idx) {
+                clickedScene = s;
             }
-        });
-
-        mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                processScenes();
-            }
-        });
-
-        hideProgressDialog();
+        }
+        return clickedScene;
     }
 
     private void showInfoDialog(final SceneInfo mSceneInfo) {
-
         SceneInfoDialog infoDialog = new SceneInfoDialog(
                 getActivity(),
                 mSceneInfo,
@@ -123,6 +143,11 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     private void changeFavorite(final SceneInfo mSceneInfo, final boolean isFavorite) {
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSceneInfo.getIdx() + " favorite to " + isFavorite);
+
+        if(isFavorite)
+            Snackbar.make(coordinatorLayout, mSceneInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, mSceneInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -157,6 +182,12 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     public void onSceneClick(int idx, boolean action) {
         addDebugText("onSceneClick");
         addDebugText("Set " + idx + " to " + action);
+        SceneInfo clickedCene = getScene(idx);
+
+        if(action)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedCene.getName(), Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedCene.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SCENES;
@@ -167,7 +198,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                successHandling(result, true);
+                successHandling(result, false);
             }
 
             @Override
