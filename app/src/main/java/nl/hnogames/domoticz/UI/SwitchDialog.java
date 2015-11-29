@@ -14,20 +14,16 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.R;
 
-/**
- * Created by m.heinis on 11/12/2015.
- */
-public class SwitchsDialog implements DialogInterface.OnDismissListener {
+public class SwitchDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private ArrayList<SwitchInfo> info;
-    private String idx;
     private DismissListener dismissListener;
     private Context mContext;
 
-    public SwitchsDialog(Context c,
-                         ArrayList<SwitchInfo> _info,
-                         int layout) {
+    public SwitchDialog(Context c,
+                        ArrayList<SwitchInfo> _info,
+                        int layout) {
         this.info = _info;
         this.mContext = c;
 
@@ -42,12 +38,12 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-        mdb.title("Connect Switch");
+        mdb.title(R.string.connect_switch);
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
         String[] listData = processSwitches();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

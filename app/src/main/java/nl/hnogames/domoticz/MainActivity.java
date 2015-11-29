@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz;
 
 import android.content.DialogInterface;
@@ -23,7 +45,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -35,22 +56,18 @@ import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-
 public class MainActivity extends AppCompatActivity {
+
+    @SuppressWarnings("unused")
+    private String TAG = MainActivity.class.getSimpleName();
 
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
-    private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawer;
     private String[] fragments;
-    private String TAG = MainActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
-    private RecyclerView mRecyclerView;                           // Declaring RecyclerView
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
-    private RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    private Menu menu;
-    private int selectedFragment = 0;
     private SearchView searchViewAction;
     public CoordinatorLayout coordinatorLayout;
 
@@ -139,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
     private void addFragment() {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        selectedFragment = screenIndex;
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
         tx.commitAllowingStateLoss();
     }
@@ -164,13 +180,13 @@ public class MainActivity extends AppCompatActivity {
         int PROFILE = R.drawable.ic_launcher;
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
         mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, EMAIL, PROFILE, this);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
         mRecyclerView.setAdapter(mAdapter);
 
-        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
 
         final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
@@ -190,14 +206,15 @@ public class MainActivity extends AppCompatActivity {
                         searchViewAction.setQuery("", false);
                         searchViewAction.clearFocus();
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                        selectedFragment = recyclerView.getChildPosition(child) - 1;
                         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[recyclerView.getChildPosition(child) - 1]));
                         tx.commitAllowingStateLoss();
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     invalidateOptionsMenu();
@@ -236,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     searchViewAction.clearFocus();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 //getSupportActionBar().setTitle(R.string.drawer_navigation_title);
@@ -332,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return super.onOptionsItemSelected(item);
     }

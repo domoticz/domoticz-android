@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz;
 
 import android.Manifest;
@@ -51,7 +73,7 @@ import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.UI.LocationDialog;
-import nl.hnogames.domoticz.UI.SwitchsDialog;
+import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 // import android.location.LocationListener;
@@ -172,16 +194,16 @@ public class GeoSettingsActivity extends AppCompatActivity
             final LocationInfo selectedLocation,
             ArrayList<SwitchInfo> switches) {
 
-        SwitchsDialog infoDialog = new SwitchsDialog(
+        SwitchDialog infoDialog = new SwitchDialog(
                 GeoSettingsActivity.this, switches,
                 R.layout.dialog_switch_logs);
-        infoDialog.onDismissListener(new SwitchsDialog.DismissListener() {
+        infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
             public void onDismiss(int selectedSwitchIDX) {
                 selectedLocation.setSwitchidx(selectedSwitchIDX);
-                mSharedPrefs.updateLocation(GeoSettingsActivity.this, selectedLocation);
+                mSharedPrefs.updateLocation(selectedLocation);
 
-                adapter.data = mSharedPrefs.getLocations(GeoSettingsActivity.this);
+                adapter.data = mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();
             }
         });
@@ -189,7 +211,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void createListView() {
-        locations = mSharedPrefs.getLocations(this);
+        locations = mSharedPrefs.getLocations();
         mGeofenceList = new ArrayList<>();
 
         if (locations != null)
@@ -201,7 +223,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             @Override
             public void onEnableClick(LocationInfo location, boolean checked) {
                 location.setEnabled(checked);
-                mSharedPrefs.updateLocation(GeoSettingsActivity.this, location);
+                mSharedPrefs.updateLocation(location);
             }
 
             @Override
@@ -212,7 +234,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 adapter.data.remove(location);
-                                mSharedPrefs.removeLocation(GeoSettingsActivity.this, location);
+                                mSharedPrefs.removeLocation(location);
                                 adapter.notifyDataSetChanged();
                                 break;
                         }
@@ -338,8 +360,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLocation(), 15));
                 map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
-                mSharedPrefs.addLocation(GeoSettingsActivity.this, location);
-                locations = mSharedPrefs.getLocations(GeoSettingsActivity.this);
+                mSharedPrefs.addLocation(location);
+                locations = mSharedPrefs.getLocations();
 
                 mGeofenceList = new ArrayList<>();//reset values
 

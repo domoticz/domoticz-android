@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Fragments;
 
 import android.app.Activity;
@@ -20,7 +42,6 @@ import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -28,14 +49,13 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
         switchesClickListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = Switches.class.getSimpleName();
     private ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
     private Context mActivity;
-    private int currentSwitch = 1;
     private DevicesAdapter adapter;
-    private ListView listView;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
 
     private int planID = 0;
@@ -69,6 +89,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 adapter.getFilter().filter(text);
             super.Filter(text);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -100,11 +121,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
         extendedStatusSwitches = new ArrayList<>();
-        final int totalNumberOfSwitches = devicesInfos.size();
 
         for (DevicesInfo switchInfo : devicesInfos) {
             successHandling(switchInfo.toString(), false);
-            int idx = switchInfo.getIdx();
 
             if (this.planID <= 0) {
                 if (switchInfo.getFavoriteBoolean()) {//only favorites
@@ -125,8 +144,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             return;
 
         try {
-            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                    .coordinatorLayout);
+            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
             supportedSwitches = new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
@@ -147,7 +165,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
             final switchesClickListener listener = this;
             adapter = new DevicesAdapter(mActivity, supportedSwitches, listener);
-            listView = (ListView) getView().findViewById(R.id.listView);
+            ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -357,14 +375,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 errorHandling(error);
             }
         });
-    }
-
-
-    /**
-     * Notifies the list view adapter the data has changed and refreshes the list view
-     */
-    private void notifyDataSetChanged() {
-        listView.setAdapter(adapter);
     }
 
     /**

@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.pm.PackageInfo;
@@ -38,9 +60,9 @@ public class Preference extends PreferenceFragment {
     private void handleImportExportButtons() {
         final File SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
         final String sPath = SettingsFile.getPath().substring(0, SettingsFile.getPath().lastIndexOf("/"));
-        new File(sPath).mkdirs();
+        new File(sPath).mkdirs();       //TODO something with result
 
-        android.preference.Preference exportButton = (android.preference.Preference) findPreference("export_settings");
+        android.preference.Preference exportButton =  findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -48,11 +70,11 @@ public class Preference extends PreferenceFragment {
                 if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
                     Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();     //TODO Change to snackbar
                 return false;
             }
         });
-        android.preference.Preference importButton = (android.preference.Preference) findPreference("import_settings");
+        android.preference.Preference importButton = findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -94,6 +116,7 @@ public class Preference extends PreferenceFragment {
 
                     domoticzversion.setSummary(sVersion);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
 

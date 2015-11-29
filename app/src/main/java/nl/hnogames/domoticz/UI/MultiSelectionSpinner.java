@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.UI;
 
 import android.app.AlertDialog;
@@ -14,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-@SuppressWarnings("unused")
 public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClickListener {
     String[] _items = null;
     boolean[] mSelection = null;
@@ -80,6 +101,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
                 "setAdapter is not supported by MultiSelectSpinner.");
     }
 
+    @SuppressWarnings("unused")
     public void setItems(String[] items) {
         _items = items;
         mSelection = new boolean[_items.length];
@@ -96,6 +118,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
         Arrays.fill(mSelection, false);
     }
 
+    @SuppressWarnings("unused")
     public void setSelection(String[] selection) {
         if (mSelection == null) throw new IllegalArgumentException("No items in adapter");
         for (String cell : selection) {
@@ -138,6 +161,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
         simple_adapter.add(buildSelectedItemString());
     }
 
+    @SuppressWarnings("unused")
     public void setSelection(int[] selectedIndices) {
         for (int i = 0; i < mSelection.length; i++) {
             mSelection[i] = false;
@@ -172,6 +196,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
         return selection;
     }
 
+    @SuppressWarnings("unused")
     public List<Integer> getSelectedIndices() {
         List<Integer> selection = new LinkedList<>();
         for (int i = 0; i < _items.length; ++i) {
@@ -199,6 +224,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
         return sb.toString();
     }
 
+    @SuppressWarnings("unused")
     public String getSelectedItemsAsString() {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;

@@ -7,12 +7,10 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Adapters.LogAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -50,6 +48,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                 adapter.getFilter().filter(text);
             super.Filter(text);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -63,7 +62,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     private void processUserVariables() {
         mDomoticz.getUserVariables(new UserVariablesReceiver() {
             @Override
-            public void onReceiveUserVariabeles(ArrayList<UserVariableInfo> mVarInfos) {
+            public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
                     UserVariables.this.mUserVariableInfos = mVarInfos;
                     successHandling(mUserVariableInfos.toString(), false);
                     adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
@@ -93,16 +92,6 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                 }
             });
         }
-    }
-
-
-    /**
-     * Notifies the list view adapter the data has changed and refreshes the list view
-     */
-    private void notifyDataSetChanged() {
-        addDebugText("notifyDataSetChanged");
-        // adapter.notifyDataSetChanged();
-        listView.setAdapter(adapter);
     }
 
     /**

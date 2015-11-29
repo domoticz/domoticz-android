@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
@@ -12,22 +34,20 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.R;
 
-@SuppressWarnings("unused")
 public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private WeatherInfo info;
-    private Context mContext;
     private Switch favorite_switch;
 
     public WeatherInfoDialog(Context mContext,
                              WeatherInfo info,
                              int layout) {
-        this.mContext = mContext;
         this.info = info;
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
+        //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
@@ -62,7 +82,7 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         TextView weather_direction = (TextView) view.findViewById(R.id.weather_direction_value);
         TextView weather_speed = (TextView) view.findViewById(R.id.weather_speed_value);
 
-        IDX_value.setText(info.getIdx()+"");
+        IDX_value.setText(info.getIdx() + "");
            TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(info.getLastUpdate());
 

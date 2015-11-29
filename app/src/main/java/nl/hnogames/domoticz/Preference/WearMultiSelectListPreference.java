@@ -1,6 +1,27 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Preference;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.MultiSelectListPreference;
@@ -19,14 +40,11 @@ import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.R;
 
-@TargetApi(11)
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = WearMultiSelectListPreference.class.getName();
 
     private boolean selectAllValuesByDefault;
 
-    private Context mContext;
-    private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
     private Domoticz mDomoticz;
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
@@ -36,7 +54,6 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);
         selectAllValuesByDefault = typedArray.getBoolean(R.styleable.CustomListPreference_selectAllValuesByDefault, false);
         typedArray.recycle();
-        mContext = context;
         mDomoticz = new Domoticz(context);
         initSwitches();
     }
@@ -94,7 +111,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
 
     private void processSwitches(ArrayList<ExtendedStatusInfo> switches) {
-        mEntries = getEntries();
+        CharSequence[] mEntries = getEntries();
         mEntryValues = getEntryValues();
 
         if (switches != null) {
@@ -118,7 +135,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                     CharSequence[] fullEntriesList = new CharSequence[mEntries.length + dynamicEntries.length];
                     CharSequence[] fullEntryValuesList = new CharSequence[mEntryValues.length + dynamicEntryValues.length];
 
-                    int i = 0, j = 0;
+                    int i, j;
                     for (i = 0; i <= mEntries.length - 1; i++) {
                         fullEntriesList[i] = mEntries[i];
                         fullEntryValuesList[i] = mEntryValues[i];
@@ -142,11 +159,10 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         if (!restoreValue && selectAllValuesByDefault && mEntryValues != null) {
-            final int valueCount = mEntryValues.length;
-            final Set<String> result = new HashSet<String>();
+            final Set<String> result = new HashSet<>();
 
-            for (int i = 0; i < valueCount; i++) {
-                result.add(mEntryValues[i].toString());
+            for (CharSequence mEntryValue : mEntryValues) {
+                result.add(mEntryValue.toString());
             }
             setValues(result);
             return;

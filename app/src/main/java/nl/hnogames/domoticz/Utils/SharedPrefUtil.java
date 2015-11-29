@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Utils;
 
 import android.content.Context;
@@ -26,8 +48,6 @@ import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 
-
-@SuppressWarnings("unused")
 public class SharedPrefUtil {
 
     public static final String PREF_CUSTOM_WEAR = "enablewearitems";
@@ -68,7 +88,6 @@ public class SharedPrefUtil {
     Context mContext;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-
 
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
@@ -177,7 +196,6 @@ public class SharedPrefUtil {
             setNavigationDefaults();
 
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-        String[] allValues = mContext.getResources().getStringArray(R.array.drawer_fragments);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
         if (selections == null) //default
@@ -186,13 +204,11 @@ public class SharedPrefUtil {
             String[] selectionValues = new String[selections.size()];
             int i = 0;
             for (String v : allNames) {
-                int index = 0;
                 for (String s : selections) {
                     if (s.equals(v)) {
                         selectionValues[i] = v;
                         i++;
                     }
-                    index++;
                 }
             }
             return selectionValues;
@@ -201,7 +217,7 @@ public class SharedPrefUtil {
 
     public void setNavigationDefaults() {
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
-        Set<String> selections = new HashSet<String>(Arrays.asList(allNames));
+        Set<String> selections = new HashSet<>(Arrays.asList(allNames));
         editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
     }
 
@@ -418,15 +434,14 @@ public class SharedPrefUtil {
     }
 
     // This four methods are used for maintaining locations.
-    public void saveLocations(Context context, List<LocationInfo> locations) {
+    public void saveLocations(List<LocationInfo> locations) {
         Gson gson = new Gson();
         String jsonLocations = gson.toJson(locations);
         editor.putString(PREF_GEOFENCE_LOCATIONS, jsonLocations);
         editor.commit();
     }
 
-    public ArrayList<LocationInfo> getLocations(Context context) {
-        SharedPreferences settings;
+    public ArrayList<LocationInfo> getLocations() {
         List<LocationInfo> locations;
         if (prefs.contains(PREF_GEOFENCE_LOCATIONS)) {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
@@ -434,15 +449,15 @@ public class SharedPrefUtil {
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
                     LocationInfo[].class);
             locations = Arrays.asList(locationItem);
-            locations = new ArrayList<LocationInfo>(locations);
+            locations = new ArrayList<>(locations);
         } else
             return null;
 
         return (ArrayList<LocationInfo>) locations;
     }
 
-    public LocationInfo getLocation(Context context, int id) {
-        List<LocationInfo> locations = getLocations(context);
+    public LocationInfo getLocation(int id) {
+        List<LocationInfo> locations = getLocations();
         for (LocationInfo l : locations) {
             if (l.getID() == id)
                 return l;
@@ -451,18 +466,18 @@ public class SharedPrefUtil {
         return null;
     }
 
-    public void addLocation(Context context, LocationInfo location) {
-        List<LocationInfo> locations = getLocations(context);
+    public void addLocation(LocationInfo location) {
+        List<LocationInfo> locations = getLocations();
         if (locations == null)
-            locations = new ArrayList<LocationInfo>();
+            locations = new ArrayList<>();
         locations.add(location);
-        saveLocations(context, locations);
+        saveLocations(locations);
     }
 
-    public void updateLocation(Context context, LocationInfo location) {
-        List<LocationInfo> locations = getLocations(context);
+    public void updateLocation(LocationInfo location) {
+        List<LocationInfo> locations = getLocations();
         if (locations == null)
-            locations = new ArrayList<LocationInfo>();
+            locations = new ArrayList<>();
 
         int i = 0;
         for (LocationInfo l : locations) {
@@ -471,22 +486,22 @@ public class SharedPrefUtil {
             }
             i++;
         }
-        saveLocations(context, locations);
+        saveLocations(locations);
     }
 
-    public void removeLocation(Context context, LocationInfo location) {
-        ArrayList<LocationInfo> locations = getLocations(context);
-        ArrayList<LocationInfo> removelocations = new ArrayList<>();
+    public void removeLocation(LocationInfo location) {
+        ArrayList<LocationInfo> locations = getLocations();
+        ArrayList<LocationInfo> removeLocations = new ArrayList<>();
         if (locations != null) {
             for (LocationInfo l : locations) {
                 if (l.getID() == location.getID())
-                    removelocations.add(l);
+                    removeLocations.add(l);
             }
-            for (LocationInfo l : removelocations) {
+            for (LocationInfo l : removeLocations) {
                 locations.remove(l);
             }
 
-            saveLocations(context, locations);
+            saveLocations(locations);
         }
     }
 
@@ -515,7 +530,7 @@ public class SharedPrefUtil {
         return res;
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})
     public boolean loadSharedPreferencesFromFile(File src) {
         boolean res = false;
         ObjectInputStream input = null;

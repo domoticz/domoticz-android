@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Fragments;
 
 import android.app.Activity;
@@ -18,18 +40,16 @@ import java.util.Comparator;
 
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
 import nl.hnogames.domoticz.Containers.PlanInfo;
-import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
-@SuppressWarnings("unused")
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = Plans.class.getSimpleName();
 
     private ProgressDialog progressDialog;
@@ -94,25 +114,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             @Override
             public void onError(Exception error) {
                 errorHandling(error);
-            }
-        });
-    }
-
-    private void showInfoDialog(final SceneInfo mSceneInfo) {
-
-        SceneInfoDialog infoDialog = new SceneInfoDialog(
-                getActivity(),
-                mSceneInfo,
-                R.layout.dialog_scene_info);
-        infoDialog.setIdx(String.valueOf(mSceneInfo.getIdx()));
-        infoDialog.setLastUpdate(mSceneInfo.getLastUpdate());
-        infoDialog.setIsFavorite(mSceneInfo.getFavoriteBoolean());
-        infoDialog.show();
-        infoDialog.onDismissListener(new SceneInfoDialog.DismissListener() {
-
-            @Override
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                //TODO
             }
         });
     }

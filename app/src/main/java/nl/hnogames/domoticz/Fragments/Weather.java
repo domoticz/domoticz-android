@@ -18,13 +18,13 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Weather extends DomoticzFragment implements DomoticzFragmentListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = Weather.class.getSimpleName();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
@@ -59,6 +59,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                 adapter.getFilter().filter(text);
             super.Filter(text);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

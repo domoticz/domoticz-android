@@ -81,6 +81,7 @@
     <string name="blind_up">Turning blind up</string>
     <string name="blind_down">Turning blind down</string>
     <string name="blind_stop">Stop blind</string>
+    <string name="connect_switch">Connect switch</string>
 
 
 </resources>
