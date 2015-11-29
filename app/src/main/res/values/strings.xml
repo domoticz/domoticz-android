@@ -18,6 +18,9 @@
     <string name="button_state_on">On</string>
     <string name="button_state_off">Off</string>
     <string name="button_status_log">Log</string>
+    <string name="button_status_day">Day</string>
+    <string name="button_status_month">Month</string>
+    <string name="button_status_year">Year</string>
     <string name="button_status_timer">Timer</string>
     <string name="button_status_notifications">Notifications</string>
 

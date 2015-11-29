@@ -26,7 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.annotation.NonNull;
+import android.location.Location;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +55,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private EditText txtRadius;
 
     private DismissListener dismissListener;
+    private Location current;
 
     public LocationDialog(final Context mContext, int layout) {
         this.mContext = mContext;
@@ -69,7 +70,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         mdb.dismissListener(this);
         mdb.onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
                 String name = editName.getInputWidgetText().toString();
 
                 if (name.isEmpty() || name.length() <= 0)
@@ -92,11 +93,14 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         });
     }
 
+    public void setCurrentLocation(Location currectLocation) {
+        current = currectLocation;
+    }
+
     public void show() {
         mdb.title(mContext.getString(R.string.title_add_location));
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-
         Button getLocation = (Button) view.findViewById(R.id.get_address);
         txtLatitude = (EditText) view.findViewById(R.id.latitude);
         txtRadius = (EditText) view.findViewById(R.id.radius);
@@ -104,6 +108,11 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         txtLongitude = (EditText) view.findViewById(R.id.longitude);
         editAddress = (FloatingLabelEditText) view.findViewById(R.id.address);
         editName = (FloatingLabelEditText) view.findViewById(R.id.name);
+        if (current != null) {
+            editName.setInputWidgetText(mContext.getString(R.string.currentlocation));
+            txtLatitude.setText(mContext.getString(R.string.latitude) + ": " + current.getLatitude());
+            txtLongitude.setText(mContext.getString(R.string.longitude) + ": " + current.getLongitude());
+        }
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +125,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                 }
             }
         });
-
         md.show();
     }
 

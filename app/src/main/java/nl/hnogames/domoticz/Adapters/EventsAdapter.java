@@ -42,7 +42,6 @@ import java.util.Collections;
 import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
-import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
 
 // Example used: http://www.ezzylearning.com/tutorial/customizing-android-listview-items-with-custom-arrayadapter
@@ -97,10 +96,10 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         int layoutResourceId;
 
-        EventInfo mEventInfo = filteredData.get(position);
+        final EventInfo mEventInfo = filteredData.get(position);
         holder = new ViewHolder();
         layoutResourceId = R.layout.event_row_default;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -111,31 +110,37 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
         holder.buttonON = (Switch) convertView.findViewById(R.id.switch_button);
 
-        if(holder.buttonON!=null) {
+        if (holder.buttonON != null) {
             holder.buttonON.setId(mEventInfo.getId());
             holder.buttonON.setEnabled(true);
             holder.buttonON.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for(EventInfo e: data)
-                    {
-                        if(e.getId() == v.getId())
-                        {
+                    for (EventInfo e : data) {
+                        if (e.getId() == v.getId()) {
                             handleClick(e.getId(), !e.getStatusBoolean());
+
+                            //reset switch to previous state (we can't handle toggles yet!)
+                            if (mEventInfo.getStatusBoolean()) {
+                                holder.buttonON.setChecked(true);
+                            } else {
+                                holder.buttonON.setChecked(false);
+                            }
                         }
                     }
                 }
             });
+
             if (mEventInfo.getStatusBoolean()) {
                 holder.buttonON.setChecked(true);
             } else {
                 holder.buttonON.setChecked(false);
             }
         }
-        if(holder.name!=null)
+        if (holder.name != null)
             holder.name.setText(mEventInfo.getName());
 
-        if(holder.message!=null) {
+        if (holder.message != null) {
             if (mEventInfo.getStatusBoolean()) {
                 holder.message.setText("Status: " + context.getString(R.string.button_state_on));
             } else {

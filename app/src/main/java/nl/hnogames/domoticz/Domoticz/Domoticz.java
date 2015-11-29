@@ -43,6 +43,7 @@ import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
+import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
@@ -327,6 +328,10 @@ public class Domoticz {
                 url = Url.System.EVENTXML;
                 break;
 
+            case Json.Url.Request.GRAPH:
+                url = Url.Log.GRAPH;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -478,7 +483,7 @@ public class Domoticz {
                 jsonUrl = url
                         + String.valueOf(idx)
                         + actionUrl
-                        +"&xml=" ;
+                        + "&xml=";
                 break;
         }
 
@@ -608,10 +613,10 @@ public class Domoticz {
 
     public void setEventAction(int id,
                                String xmlStatement,
-                          int jsonUrl,
-                          int jsonAction,
-                          long value,
-                          setCommandReceiver receiver) {
+                               int jsonUrl,
+                               int jsonAction,
+                               long value,
+                               setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, id, jsonAction, value);
         url += Uri.encode(xmlStatement);
@@ -702,7 +707,20 @@ public class Domoticz {
     public void getEventXml(int id, EventXmlReceiver receiver) {
         EventsXmlParser parser = new EventsXmlParser(receiver);
         String url = constructGetUrl(Json.Url.Request.EVENTXML);
-        url = url.replace("%id%", id+"");
+        url = url.replace("%id%", id + "");
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+
+    public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
+        GraphDataParser parser = new GraphDataParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.GRAPH) + String.valueOf(idx);
+        url = url + Url.Log.GRAPH_RANGE + range;
+        url = url + Url.Log.GRAPH_TYPE + type;
+
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -911,6 +929,7 @@ public class Domoticz {
                 int USERVARIABLES = 17;
                 int EVENTS = 18;
                 int EVENTXML = 19;
+                int GRAPH = 20;
             }
 
             interface Set {
@@ -939,10 +958,19 @@ public class Domoticz {
         }
     }
 
+    public interface Graph {
+        interface Range {
+            String DAY = "day";
+            String MONTH = "month";
+            String YEAR = "year";
+        }
+    }
+
     public interface Event {
         interface Type {
             String EVENT = "Event";
         }
+
         interface Action {
             int ON = 55;
             int OFF = 56;
@@ -1025,6 +1053,10 @@ public class Domoticz {
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Log {
+            String GRAPH = "/json.htm?type=graph&idx=";
+            String GRAPH_RANGE = "&range=";
+            String GRAPH_TYPE = "&sensor=";
+
             String GET_LOG = "/json.htm?type=command&param=getlog";
             String GET_FROMLASTLOGTIME = "/json.htm?type=command&param=getlog&lastlogtime=";
         }

@@ -55,7 +55,7 @@ public class EventsXmlParser implements JSONParserInterface {
                 }
             }
 
-            if(mVars.size() <= 0)
+            if (mVars == null || mVars.size() <= 0)
                 onError(new NullPointerException(
                         "No Event Details found in Domoticz."));
             else

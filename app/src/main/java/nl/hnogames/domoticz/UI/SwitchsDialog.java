@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
@@ -14,16 +36,20 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.R;
 
-public class SwitchDialog implements DialogInterface.OnDismissListener {
+/**
+ * Created by m.heinis on 11/12/2015.
+ */
+public class SwitchsDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private ArrayList<SwitchInfo> info;
+    private String idx;
     private DismissListener dismissListener;
     private Context mContext;
 
-    public SwitchDialog(Context c,
-                        ArrayList<SwitchInfo> _info,
-                        int layout) {
+    public SwitchsDialog(Context c,
+                         ArrayList<SwitchInfo> _info,
+                         int layout) {
         this.info = _info;
         this.mContext = c;
 
@@ -38,12 +64,12 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-        mdb.title(R.string.connect_switch);
+        mdb.title("Connect Switch");
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
         String[] listData = processSwitches();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

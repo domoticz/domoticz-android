@@ -10,5 +10,6 @@
     <string name="latitude">Latitude</string>
     <string name="radius">Radius (meter)</string>
     <string name="connectedswitch">Connected switch</string>
+    <string name="currentlocation">Current Location</string>
 
 </resources>

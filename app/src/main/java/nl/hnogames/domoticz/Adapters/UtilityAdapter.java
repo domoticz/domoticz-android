@@ -42,14 +42,14 @@ import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.thermostatClickListener;
+import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.R;
 
 public class UtilityAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = UtilityAdapter.class.getSimpleName();
 
-    private final thermostatClickListener listener;
+    private final UtilityClickListener listener;
     Context context;
     ArrayList<UtilitiesInfo> filteredData = null;
     ArrayList<UtilitiesInfo> data = null;
@@ -58,7 +58,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
 
     public UtilityAdapter(Context context,
                           ArrayList<UtilitiesInfo> data,
-                          thermostatClickListener listener) {
+                          UtilityClickListener listener) {
         super();
 
         this.context = context;
@@ -167,12 +167,11 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         }
         convertView.setTag(holder);
 
-
         return convertView;
     }
 
     public void handleThermostatClick(int idx, int action, long newSetPoint) {
-        listener.onClick(idx, action, newSetPoint);
+        listener.onThermostatClick(idx, action, newSetPoint);
     }
 
     static class ViewHolder {

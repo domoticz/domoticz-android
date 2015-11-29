@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -42,12 +43,15 @@ import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
+
 
 public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
 
+    private final TemperatureClickListener listener;
     Domoticz domoticz;
     Context context;
     ArrayList<TemperatureInfo> filteredData = null;
@@ -55,7 +59,8 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public TemperatureAdapter(Context context,
-                              ArrayList<TemperatureInfo> data) {
+                              ArrayList<TemperatureInfo> data,
+                              TemperatureClickListener listener) {
         super();
 
         this.context = context;
@@ -68,6 +73,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         });
         this.data = data;
         this.filteredData = data;
+        this.listener = listener;
     }
 
     @Override
@@ -107,11 +113,45 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         holder.isProtected = mTemperatureInfo.isProtected();
+        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
+        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
+        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.temperature_hardware);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
         Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg())).into(holder.iconRow);
+
+        holder.dayButton.setId(mTemperatureInfo.getIdx());
+        holder.dayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                }
+            }
+        });
+        holder.monthButton.setId(mTemperatureInfo.getIdx());
+        holder.monthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                }
+            }
+        });
+        holder.yearButton.setId(mTemperatureInfo.getIdx());
+        holder.yearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                }
+            }
+        });
 
         holder.name.setText(mTemperatureInfo.getName());
         holder.data.append(": " + mTemperatureInfo.getData());
@@ -130,6 +170,9 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         ImageButton buttonPlus;
         ImageView iconRow;
         ImageButton buttonMinus;
+        Button dayButton;
+        Button monthButton;
+        Button yearButton;
         Boolean isProtected;
     }
 

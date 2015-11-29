@@ -22,8 +22,12 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-public interface thermostatClickListener {
+import java.util.ArrayList;
 
-    void onClick(int idx, int action, long newSetPoint);
+import nl.hnogames.domoticz.Containers.GraphPointInfo;
 
+public interface GraphDataReceiver {
+    void onReceive(ArrayList<GraphPointInfo> mGraphList);
+
+    void onError(Exception error);
 }

@@ -33,13 +33,10 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Containers.EventXmlInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
-import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -90,10 +87,13 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
             @Override
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
                 Events.this.mEventInfos = mEventInfos;
-
                 adapter = new EventsAdapter(mActivity, mEventInfos, new EventsClickListener() {
+
                     @Override
                     public void onEventClick(final int id, boolean action) {
+                        Snackbar.make(coordinatorLayout, "This action is not supported yet!", Snackbar.LENGTH_SHORT).show();
+
+                        /*
                         mDomoticz.getEventXml(id, new EventXmlReceiver() {
                             @Override
                             public void onReceiveEventXml(ArrayList<EventXmlInfo> mEventXmlInfos) {
@@ -125,7 +125,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
                             public void onError(Exception error) {
                                 Snackbar.make(coordinatorLayout, "Could not retrieve details of Event: "+id, Snackbar.LENGTH_SHORT).show();
                             }
-                        });
+                        });*/
                     }
                 });
 
@@ -134,7 +134,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
             }
 
             @Override
-            public void onError(Exception error)  {
+            public void onError(Exception error) {
                 errorHandling(error);
             }
         });
@@ -142,7 +142,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     private void createListView() {
-        if(getView()!=null) {
+        if (getView() != null) {
             coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                     .coordinatorLayout);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
