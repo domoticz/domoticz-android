@@ -18,7 +18,6 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -80,7 +79,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
 
-        if(getView()!=null) {
+        if (getView() != null) {
             mScenes = scenes;
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
@@ -144,10 +143,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSceneInfo.getIdx() + " favorite to " + isFavorite);
 
-        if(isFavorite)
-            Snackbar.make(coordinatorLayout, mSceneInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite)
+            Snackbar.make(coordinatorLayout, mSceneInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mSceneInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mSceneInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -184,10 +183,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         addDebugText("Set " + idx + " to " + action);
         SceneInfo clickedCene = getScene(idx);
 
-        if(action)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedCene.getName(), Snackbar.LENGTH_SHORT).show();
+        if (action)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedCene.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedCene.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedCene.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SCENES;

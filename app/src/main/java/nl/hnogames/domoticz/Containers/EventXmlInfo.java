@@ -26,15 +26,17 @@ public class EventXmlInfo {
     public String getName() {
         return Name;
     }
+
     public String getStatus() {
         return Status;
     }
+
     public String getXmlstatement() {
         return Xmlstatement;
     }
 
     public boolean getStatusBoolean() {
-        if(getStatus().equals("1"))
+        if (getStatus().equals("1"))
             return true;
         else
             return false;
@@ -48,7 +50,7 @@ public class EventXmlInfo {
     public String toString() {
         return "EventXmlInfo{" +
                 "id=" + id +
-                ", Name='" + Name +"', " +
+                ", Name='" + Name + "', " +
                 "Status='" + Status +
                 "'}";
     }

@@ -134,7 +134,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
 
-            if(holder.onOffSwitch!=null) {
+            if (holder.onOffSwitch != null) {
                 if (holder.isProtected) {
                     holder.onOffSwitch.setEnabled(false);
                 }

@@ -18,7 +18,6 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -76,7 +75,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
 
-                if(getView()!=null) {
+                if (getView() != null) {
                     mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
                     coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                             .coordinatorLayout);
@@ -134,10 +133,10 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
-        if(isFavorite)
-            Snackbar.make(coordinatorLayout, mWeatherInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite)
+            Snackbar.make(coordinatorLayout, mWeatherInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mWeatherInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mWeatherInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;

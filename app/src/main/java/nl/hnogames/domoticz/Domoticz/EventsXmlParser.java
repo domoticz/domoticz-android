@@ -8,9 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Containers.EventXmlInfo;
-import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
 
@@ -19,6 +17,7 @@ public class EventsXmlParser implements JSONParserInterface {
 
     private static final String TAG = EventsXmlParser.class.getSimpleName();
     private EventXmlReceiver varsReceiver;
+
     public EventsXmlParser(EventXmlReceiver varsReceiver) {
         this.varsReceiver = varsReceiver;
     }
@@ -36,7 +35,7 @@ public class EventsXmlParser implements JSONParserInterface {
                 }
             }
 
-            if(mVars==null || mVars.size()<=0)
+            if (mVars == null || mVars.size() <= 0)
                 onError(new NullPointerException(
                         "No Event Details found in Domoticz."));
             else

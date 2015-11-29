@@ -13,17 +13,20 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
+import nl.hnogames.domoticz.Containers.GraphPointInfo;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Temperature extends DomoticzFragment implements DomoticzFragmentListener {
+public class Temperature extends DomoticzFragment implements DomoticzFragmentListener, TemperatureClickListener {
 
     private static final String TAG = Temperature.class.getSimpleName();
     private ProgressDialog progressDialog;
@@ -71,6 +74,8 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     private void processTemperature() {
+        final TemperatureClickListener listener = this;
+
         mDomoticz.getTemperatures(new TemperatureReceiver() {
 
             @Override
@@ -78,12 +83,12 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                 successHandling(mTemperatureInfos.toString(), false);
                 Temperature.this.mTemperatureInfos = mTemperatureInfos;
 
-                if(getView()!=null) {
+                if (getView() != null) {
                     mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
                     coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                             .coordinatorLayout);
 
-                    adapter = new TemperatureAdapter(mActivity, mTemperatureInfos);
+                    adapter = new TemperatureAdapter(mActivity, mTemperatureInfos, listener);
                     listView = (ListView) getView().findViewById(R.id.listView);
                     listView.setAdapter(adapter);
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -135,10 +140,10 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
 
-        if(isFavorite)
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite)
+            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -191,5 +196,28 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     public void errorHandling(Exception error) {
         super.errorHandling(error);
         hideProgressDialog();
+    }
+
+    @Override
+    public void onLogClick(final TemperatureInfo temp, String range) {
+        showProgressDialog();
+        mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {
+            @Override
+            public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
+                hideProgressDialog();
+
+                GraphDialog infoDialog = new GraphDialog(
+                        getActivity(),
+                        mGraphList,
+                        R.layout.dialog_graph);
+
+                infoDialog.show();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout, "Could not get Log data for: " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 }

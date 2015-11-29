@@ -16,15 +16,14 @@ import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
+import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.Interfaces.thermostatClickListener;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Utilities extends DomoticzFragment implements DomoticzFragmentListener,
-        thermostatClickListener {
+        UtilityClickListener {
 
     private Domoticz mDomoticz;
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
@@ -72,7 +71,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processUtilities() {
-        final thermostatClickListener listener = this;
+        final UtilityClickListener listener = this;
         mDomoticz.getUtilities(new UtilitiesReceiver() {
 
             @Override
@@ -95,7 +94,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     private void createListView() {
 
-        if(getView()!=null) {
+        if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
             coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                     .coordinatorLayout);
@@ -141,10 +140,10 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mUtilitiesInfo.getIdx() + " favorite to " + isFavorite);
 
-        if(isFavorite)
-            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite)
+            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -164,31 +163,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 errorHandling(error);
             }
         });
-    }
-
-
-    @Override
-    public void onClick(final int idx, int action, long newSetPoint) {
-        addDebugText("onClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
-
-        thermostatSetPointValue = newSetPoint;
-
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
-
-        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                updateThermostatSetPointValue(idx, thermostatSetPointValue);
-                successHandling(result, false);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
-
     }
 
     /**
@@ -249,5 +223,32 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     public void errorHandling(Exception error) {
         super.errorHandling(error);
         hideProgressDialog();
+    }
+
+    @Override
+    public void onClick(UtilitiesInfo utility) {
+    }
+
+    @Override
+    public void onThermostatClick(final int idx, int action, long newSetPoint) {
+        addDebugText("onThermostatClick");
+        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+        thermostatSetPointValue = newSetPoint;
+
+        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+
+        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                updateThermostatSetPointValue(idx, thermostatSetPointValue);
+                successHandling(result, false);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

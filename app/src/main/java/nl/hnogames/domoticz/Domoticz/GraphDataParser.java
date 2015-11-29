@@ -8,17 +8,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Interfaces.EventReceiver;
+import nl.hnogames.domoticz.Containers.GraphPointInfo;
+import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
 
 @SuppressWarnings("unused")
-public class EventsParser implements JSONParserInterface {
+public class GraphDataParser implements JSONParserInterface {
 
-    private static final String TAG = EventsParser.class.getSimpleName();
-    private EventReceiver varsReceiver;
+    private static final String TAG = GraphDataParser.class.getSimpleName();
+    private GraphDataReceiver varsReceiver;
 
-    public EventsParser(EventReceiver varsReceiver) {
+    public GraphDataParser(GraphDataReceiver varsReceiver) {
         this.varsReceiver = varsReceiver;
     }
 
@@ -26,23 +26,22 @@ public class EventsParser implements JSONParserInterface {
     public void parseResult(String result) {
         try {
             JSONArray jsonArray = new JSONArray(result);
-            ArrayList<EventInfo> mVars = new ArrayList<>();
-
+            ArrayList<GraphPointInfo> mVars = new ArrayList<>();
             if (jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject row = jsonArray.getJSONObject(i);
-                    mVars.add(new EventInfo(row));
+                    mVars.add(new GraphPointInfo(row));
                 }
             }
 
             if (mVars == null || mVars.size() <= 0)
                 onError(new NullPointerException(
-                        "No Events devined in Domoticz."));
+                        "No Data found in Domoticz."));
             else
-                varsReceiver.onReceiveEvents(mVars);
+                varsReceiver.onReceive(mVars);
 
         } catch (JSONException e) {
-            Log.e(TAG, "EventsParser JSON exception");
+            Log.e(TAG, "GraphDataParser JSON exception");
             e.printStackTrace();
             varsReceiver.onError(e);
         }
@@ -50,7 +49,7 @@ public class EventsParser implements JSONParserInterface {
 
     @Override
     public void onError(Exception error) {
-        Log.e(TAG, "EventsParser of JSONParserInterface exception");
+        Log.e(TAG, "GraphDataParser of JSONParserInterface exception");
         varsReceiver.onError(error);
     }
 }

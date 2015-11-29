@@ -165,6 +165,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
         if (map == null)
             map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+
         getCurrentLocationOnMapFromProvider();
     }
 
@@ -282,14 +283,16 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
     }
 
+    private Location currectLocation;
+
     public void getLocation(String usedLocationService) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         //locationManager.requestLocationUpdates(usedLocationService, 0, 0, this);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        setMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+        currectLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
     }
 
     private void setMarker(LatLng currentLatLng) {
@@ -328,6 +331,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         LocationDialog infoDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
+        infoDialog.setCurrentLocation(currectLocation);
         infoDialog.onDismissListener(new LocationDialog.DismissListener() {
             @Override
             public void onDismiss(LocationInfo location) {

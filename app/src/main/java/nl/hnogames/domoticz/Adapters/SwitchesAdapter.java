@@ -44,11 +44,9 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     private int previousDimmerValue;
     private ItemFilter mFilter = new ItemFilter();
 
-
     public SwitchesAdapter(Context context,
                            ArrayList<ExtendedStatusInfo> data,
                            switchesClickListener listener) {
-
         super();
         this.context = context;
         domoticz = new Domoticz(context);

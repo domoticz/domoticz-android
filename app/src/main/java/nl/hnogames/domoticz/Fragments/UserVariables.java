@@ -7,12 +7,10 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Adapters.LogAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -64,22 +62,22 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
         mDomoticz.getUserVariables(new UserVariablesReceiver() {
             @Override
             public void onReceiveUserVariabeles(ArrayList<UserVariableInfo> mVarInfos) {
-                    UserVariables.this.mUserVariableInfos = mVarInfos;
-                    successHandling(mUserVariableInfos.toString(), false);
-                    adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
-                    createListView();
-                    hideProgressDialog();
+                UserVariables.this.mUserVariableInfos = mVarInfos;
+                successHandling(mUserVariableInfos.toString(), false);
+                adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
+                createListView();
+                hideProgressDialog();
             }
 
             @Override
-            public void onError(Exception error)  {
+            public void onError(Exception error) {
                 errorHandling(error);
             }
         });
     }
 
     private void createListView() {
-        if(getView()!=null) {
+        if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
             listView = (ListView) getView().findViewById(R.id.listView);

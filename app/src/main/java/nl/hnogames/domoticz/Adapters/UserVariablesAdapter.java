@@ -83,7 +83,7 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
         holder.name.setText(mUserVariableInfo.getName());
-        holder.message.setText("Value: "+mUserVariableInfo.getValue());
+        holder.message.setText("Value: " + mUserVariableInfo.getValue());
         holder.datetime.setText(mUserVariableInfo.getLastUpdate());
 
         Picasso.with(context).load(R.drawable.printer).into(holder.iconRow);
