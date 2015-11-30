@@ -101,7 +101,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     }
 
     private void createListView() {
-        if(getView()!=null) {
+        if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
             ListView listView = (ListView) getView().findViewById(R.id.listView);

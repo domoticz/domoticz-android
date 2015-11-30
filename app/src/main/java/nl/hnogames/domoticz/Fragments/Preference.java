@@ -62,7 +62,7 @@ public class Preference extends PreferenceFragment {
         final String sPath = SettingsFile.getPath().substring(0, SettingsFile.getPath().lastIndexOf("/"));
         new File(sPath).mkdirs();       //TODO something with result
 
-        android.preference.Preference exportButton =  findPreference("export_settings");
+        android.preference.Preference exportButton = findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {

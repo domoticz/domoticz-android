@@ -50,7 +50,7 @@ public class EventInfo {
     }
 
     public boolean getStatusBoolean() {
-        if(getStatus().equals("1"))
+        if (getStatus().equals("1"))
             return true;
         else
             return false;
@@ -65,7 +65,7 @@ public class EventInfo {
     public String toString() {
         return "EventInfo{" +
                 "id=" + id +
-                ", Name='" + Name +"', " +
+                ", Name='" + Name + "', " +
                 "Status='" + Status +
                 "'}";
     }

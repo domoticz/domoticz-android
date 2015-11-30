@@ -70,7 +70,7 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         TextView weather_drewpoint_title = (TextView) view.findViewById(R.id.weather_drewpoint);
         TextView weather_temperature_title = (TextView) view.findViewById(R.id.weather_temperature);
         TextView weather_chill_title = (TextView) view.findViewById(R.id.weather_chill);
-        TextView weather_direction_title= (TextView) view.findViewById(R.id.weather_direction);
+        TextView weather_direction_title = (TextView) view.findViewById(R.id.weather_direction);
         TextView weather_speed_title = (TextView) view.findViewById(R.id.weather_speed);
 
         TextView weather_forcast = (TextView) view.findViewById(R.id.weather_forcast_value);
@@ -83,60 +83,61 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         TextView weather_speed = (TextView) view.findViewById(R.id.weather_speed_value);
 
         IDX_value.setText(info.getIdx() + "");
-           TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
+        TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(info.getLastUpdate());
 
         favorite_switch = (Switch) view.findViewById(R.id.favorite_switch);
         favorite_switch.setChecked(info.getFavoriteBoolean());
         favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {}
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            }
         });
 
         //data of weather object:
-        if(info.getForecastStr()!=null && info.getForecastStr().length()>0)
-            weather_forcast.setText( info.getForecastStr());
+        if (info.getForecastStr() != null && info.getForecastStr().length() > 0)
+            weather_forcast.setText(info.getForecastStr());
         else {
             weather_forcast.setVisibility(View.GONE);
             weather_forcast_title.setVisibility(View.GONE);
         }
-        if(info.getSpeed()!=null && info.getSpeed().length()>0)
+        if (info.getSpeed() != null && info.getSpeed().length() > 0)
             weather_speed.setText(info.getSpeed());
         else {
             weather_speed.setVisibility(View.GONE);
             weather_speed_title.setVisibility(View.GONE);
         }
-        if(info.getDewPoint()>0)
-            weather_drewpoint.setText(info.getDewPoint()+"");
+        if (info.getDewPoint() > 0)
+            weather_drewpoint.setText(info.getDewPoint() + "");
         else {
             weather_drewpoint.setVisibility(View.GONE);
             weather_drewpoint_title.setVisibility(View.GONE);
         }
-        if(info.getTemp()>0)
-            weather_temperature.setText(info.getTemp()+"");
+        if (info.getTemp() > 0)
+            weather_temperature.setText(info.getTemp() + "");
         else {
             weather_temperature.setVisibility(View.GONE);
             weather_temperature_title.setVisibility(View.GONE);
         }
-        if(info.getBarometer()>0)
-            weather_barometer.setText(info.getBarometer()+"");
+        if (info.getBarometer() > 0)
+            weather_barometer.setText(info.getBarometer() + "");
         else {
             weather_barometer.setVisibility(View.GONE);
             weather_barometer_title.setVisibility(View.GONE);
         }
-        if(info.getChill()!=null && info.getChill().length()>0)
+        if (info.getChill() != null && info.getChill().length() > 0)
             weather_chill.setText(info.getChill());
         else {
             weather_chill.setVisibility(View.GONE);
             weather_chill_title.setVisibility(View.GONE);
         }
-        if(info.getDirectionStr()!=null && info.getDirectionStr().length()>0)
+        if (info.getDirectionStr() != null && info.getDirectionStr().length() > 0)
             weather_direction.setText(info.getDirectionStr());
         else {
             weather_direction.setVisibility(View.GONE);
             weather_direction_title.setVisibility(View.GONE);
         }
-        if(info.getHumidityStatus()!=null && info.getHumidityStatus().length()>0)
+        if (info.getHumidityStatus() != null && info.getHumidityStatus().length() > 0)
             weather_humidity.setText(info.getHumidityStatus());
         else {
             weather_humidity.setVisibility(View.GONE);

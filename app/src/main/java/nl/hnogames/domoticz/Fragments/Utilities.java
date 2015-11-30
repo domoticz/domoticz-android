@@ -27,6 +27,7 @@ import android.app.ProgressDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -34,13 +35,16 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
+import nl.hnogames.domoticz.Containers.GraphPointInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -250,6 +254,33 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onClick(UtilitiesInfo utility) {
+    }
+
+    @Override
+    public void onLogClick(final UtilitiesInfo utility, final String range) {
+        showProgressDialog();
+        final String graphtype = utility.getSubType()
+                .replace("kWh", "counter");
+        mDomoticz.getGraphData(utility.getIdx(), range, graphtype, new GraphDataReceiver() {
+            @Override
+            public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
+                Log.i("GRAPH", mGraphList.toString());
+                hideProgressDialog();
+                GraphDialog infoDialog = new GraphDialog(
+                        getActivity(),
+                        mGraphList,
+                        R.layout.dialog_graph);
+                infoDialog.setRange(range);
+                infoDialog.setSteps(4);
+                infoDialog.setTitle(graphtype);
+                infoDialog.show();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout, "Could not get Log data for: " + utility.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

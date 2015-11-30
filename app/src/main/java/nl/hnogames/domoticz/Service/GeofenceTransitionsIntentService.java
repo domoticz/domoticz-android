@@ -87,7 +87,7 @@ public class GeofenceTransitionsIntentService extends IntentService
             int transitionType = geoFenceEvent.getGeofenceTransition();
             if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
                 for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                    LocationInfo locationFound = mSharedPrefs.getLocation( Integer.valueOf(geofence.getRequestId()));
+                    LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                     Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
 
                     if (mSharedPrefs.isGeofenceNotificationsEnabled())
@@ -100,7 +100,7 @@ public class GeofenceTransitionsIntentService extends IntentService
 
             } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                 for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                    LocationInfo locationFound = mSharedPrefs.getLocation( Integer.valueOf(geofence.getRequestId()));
+                    LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                     Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
 
                     if (mSharedPrefs.isGeofenceNotificationsEnabled())

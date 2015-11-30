@@ -28,5 +28,6 @@ import nl.hnogames.domoticz.Containers.EventXmlInfo;
 
 public interface EventXmlReceiver {
     void onReceiveEventXml(ArrayList<EventXmlInfo> mEventXmlInfos);
+
     void onError(Exception error);
 }

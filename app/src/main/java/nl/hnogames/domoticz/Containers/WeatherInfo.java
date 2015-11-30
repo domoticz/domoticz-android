@@ -134,12 +134,12 @@ public class WeatherInfo {
         return signalLevel;
     }
 
-    public int getBarometer() {
-        return Barometer;
-    }
-
     public void setSignalLevel(int signalLevel) {
         this.signalLevel = signalLevel;
+    }
+
+    public int getBarometer() {
+        return Barometer;
     }
 
     public String getName() {

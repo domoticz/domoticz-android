@@ -36,6 +36,7 @@ public class UtilitiesInfo {
     String LastUpdate;
     long setPoint;
     String Type;
+    String SubType;
     int Favorite;
     int HardwareID;
     String HardwareName;
@@ -64,6 +65,8 @@ public class UtilitiesInfo {
             Data = row.getString("Data");
         if (row.has("Type"))
             Type = row.getString("Type");
+        if (row.has("SubType"))
+            SubType = row.getString("SubType");
         idx = row.getInt("idx");
 
         if (row.has("SignalLevel")) {
@@ -85,6 +88,7 @@ public class UtilitiesInfo {
                 ", LastUpdate='" + LastUpdate + '\'' +
                 ", setPoint=" + setPoint +
                 ", Type='" + Type + '\'' +
+                ", SubType='" + SubType + '\'' +
                 ", Favorite=" + Favorite +
                 ", HardwareID=" + HardwareID +
                 ", signalLevel=" + signalLevel +
@@ -172,6 +176,10 @@ public class UtilitiesInfo {
 
     public void setType(String type) {
         Type = type;
+    }
+
+    public String getSubType() {
+        return SubType;
     }
 
     public String getLastUpdate() {

@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Switch;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -36,13 +35,11 @@ import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Column;
-import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.ComboLineColumnChartData;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ComboLineColumnChartView;
 import nl.hnogames.domoticz.Containers.GraphPointInfo;
@@ -52,6 +49,9 @@ public class GraphDialog {
 
     private final MaterialDialog.Builder mdb;
     private ArrayList<GraphPointInfo> mGraphList;
+    private String axisYLabel = "Temp";
+    private String range = "day";
+    private int steps = 1;
 
     public GraphDialog(Context mContext,
                        ArrayList<GraphPointInfo> mGraphList,
@@ -65,126 +65,177 @@ public class GraphDialog {
     }
 
     public void show() {
-        mdb.title("Graph");
+        mdb.title(axisYLabel);
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
         ComboLineColumnChartView chart = (ComboLineColumnChartView) view.findViewById(R.id.chart);
         ComboLineColumnChartData columndata = generateData();
         chart.setComboLineColumnChartData(columndata);
-
+        setViewPort(chart);
         md.show();
+    }
+
+    public void setTitle(String title) {
+        axisYLabel = title;
+        mdb.title(title);
+    }
+
+    public void setRange(String range) {
+        this.range = range;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
+
+    //The viewport adds a margin to the top and bottom
+    private void setViewPort(ComboLineColumnChartView chart) {
+        final Viewport v = new Viewport(chart.getMaximumViewport());
+        v.top += (v.height() * 0.20f);
+        if (!(v.bottom <= 1))
+            v.bottom -= (v.height() * 0.50f);
+        chart.setMaximumViewport(v);
+        chart.setCurrentViewport(v);
+        chart.setViewportCalculationEnabled(false);
     }
 
     private ComboLineColumnChartData generateData() {
         List<Line> lines = new ArrayList<Line>();
-        List<PointValue> values = new ArrayList<PointValue>();
-        List<PointValue> valueshu = new ArrayList<PointValue>();
-        List<PointValue> valuesba = new ArrayList<PointValue>();
-        List<Column> columns = new ArrayList<Column>();
-        List<SubcolumnValue> valuesC = new ArrayList<SubcolumnValue>();
+
+        List<PointValue> values = new ArrayList<>();
+        List<PointValue> valueshu = new ArrayList<>();
+        List<PointValue> valuesba = new ArrayList<>();
+        List<PointValue> valuesc = new ArrayList<>();
+        List<PointValue> valuesv = new ArrayList<>();
+
         List<AxisValue> axisValueX = new ArrayList<>();
 
         int counter = 0;
         boolean addHumidity = false;
         boolean addBarometer = false;
         boolean addTemperature = false;
+        boolean addCounter = false;
+        boolean addPercentage = false;
         boolean onlyDate = false;
+        Calendar mydate = Calendar.getInstance();
 
+        int stepcounter = 0;
         for (GraphPointInfo g : this.mGraphList) {
-            int interval = 0;
-            try {
-                if (g.getTemperature() > 0) {
-                    addTemperature = true;
-                }
-                if (g.getBarometer() != null && g.getBarometer().length() > 0 && Integer.parseInt(g.getBarometer()) > 0) {
-                    addBarometer = true;
-                    valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
-                }
-                if (g.getHumidity() != null && g.getHumidity().length() > 0 && Integer.parseInt(g.getHumidity()) > 0) {
-                    addHumidity = true;
-                    valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
-                }
-
-                Calendar mydate = Calendar.getInstance();
+            stepcounter++;
+            if (stepcounter == this.steps) {
+                stepcounter = 0;
                 try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    mydate.setTime(sdf.parse(g.getDateTime()));
+                    if (g.getTemperature() > 0) {
+                        addTemperature = true;
+                        values.add(new PointValue(counter, g.getTemperature()));
+                    }
+                    if (g.getBarometer() != null && g.getBarometer().length() > 0) {
+                        addBarometer = true;
+                        valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                    }
+                    if (g.getHumidity() != null && g.getHumidity().length() > 0) {
+                        addHumidity = true;
+                        valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                    }
+                    if (g.getPercentage() != null && g.getPercentage().length() > 0) {
+                        addPercentage = true;
+                        valuesv.add(new PointValue(counter, Float.parseFloat(g.getPercentage())));
+                    }
+                    if (g.getCounter() != null && g.getCounter().length() > 0) {
+                        addCounter = true;
+                        valuesc.add(new PointValue(counter, Float.parseFloat(g.getCounter())));
+                    }
+
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        mydate.setTime(sdf.parse(g.getDateTime()));
+                    } catch (ParseException e) {
+                        onlyDate = true;
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        mydate.setTime(sdf.parse(g.getDateTime()));
+                    }
+
+                    String label = "";
+                    if (!onlyDate) {
+                        label = String.valueOf(mydate.get(Calendar.HOUR_OF_DAY))
+                                + ":"
+                                + String.valueOf(
+                                mydate.get(Calendar.MINUTE));
+                    } else {
+                        label = (mydate.get(Calendar.MONTH) + 1) + "/"
+                                + mydate.get(Calendar.DAY_OF_MONTH);
+                    }
+
+                    axisValueX.add(new AxisValue(counter, label
+                            .toCharArray()));
+                    counter++;
                 } catch (ParseException e) {
-                    onlyDate = true;
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    mydate.setTime(sdf.parse(g.getDateTime()));
+                    e.printStackTrace();
                 }
-
-                values.add(new PointValue(counter, g.getTemperature()));
-                values.add(new PointValue(counter, g.getTemperature()));
-                valuesC.add(new SubcolumnValue(
-                        g.getTemperature(),
-                        ChartUtils.COLOR_BLUE));
-
-                columns.add(new Column(valuesC));
-                String label = "";
-                if (!onlyDate) {
-                    label = String.valueOf(mydate.get(Calendar.HOUR_OF_DAY))
-                            + ":"
-                            + String.valueOf(
-                            mydate.get(Calendar.MINUTE));
-                } else {
-                    label = (mydate.get(Calendar.MONTH) + 1) + "/"
-                            + mydate.get(Calendar.DAY_OF_MONTH);
-                }
-
-                axisValueX.add(new AxisValue(counter, label
-                        .toCharArray()));
-                counter++;
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
         }
 
+        boolean setCubic = false;
+        //setCubic seems bugged in HelloCharts library
+        //if(range.equals(Domoticz.Graph.Range.MONTH) || range.equals(Domoticz.Graph.Range.YEAR))
+        //    setCubic=true;
         if (addTemperature) {
-            Line line = new Line(values);
-            line.setColor(ChartUtils.COLOR_BLUE);
-            line.setCubic(false);
-            line.setHasLabels(false);
-            line.setHasLines(true);
-            line.setHasPoints(false);
-            lines.add(line);
+            lines.add(new Line(values)
+                    .setColor(ChartUtils.COLOR_BLUE)
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
         }
 
         if (addHumidity) {
-            Line line = new Line(valueshu);
-            line.setColor(ChartUtils.COLOR_RED);
-            line.setCubic(false);
-            line.setHasLabels(false);
-            line.setHasLines(true);
-            line.setHasPoints(false);
-            lines.add(line);
+            lines.add(new Line(valueshu)
+                    .setColor(ChartUtils.COLOR_RED)
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
         }
 
         if (addBarometer) {
-            Line line = new Line(valuesba);
-            line.setColor(ChartUtils.COLOR_GREEN);
-            line.setCubic(false);
-            line.setHasLabels(false);
-            line.setHasLines(true);
-            line.setHasPoints(false);
-            lines.add(line);
+            lines.add(new Line(valuesba)
+                    .setColor(ChartUtils.COLOR_GREEN)
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+        }
+
+        if (addCounter) {
+            lines.add(new Line(valuesc)
+                    .setColor(ChartUtils.COLOR_ORANGE)
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+        }
+
+        if (addPercentage) {
+            lines.add(new Line(valuesv)
+                    .setColor(ChartUtils.COLOR_VIOLET)
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
         }
 
         LineChartData lineChartData = new LineChartData(lines);
-        ColumnChartData columnChartData = new ColumnChartData(columns);
+        ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
         Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
         Axis axisY = new Axis().setHasLines(true);
-
         axisX.setMaxLabelChars(5);
         axisX.setName("Date");
-        axisY.setName("Temp");
-        ComboLineColumnChartData data = new ComboLineColumnChartData(null,
-                lineChartData);
+        axisY.setName(axisYLabel);
         data.setAxisXBottom(axisX);
         data.setAxisYLeft(axisY);
 
         return data;
     }
+
 }

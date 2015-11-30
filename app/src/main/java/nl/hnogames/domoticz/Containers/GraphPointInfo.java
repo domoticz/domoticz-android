@@ -36,6 +36,8 @@ public class GraphPointInfo {
     String hu;
     String ba;
     long te;
+    String v;
+    String c;
 
     public GraphPointInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -44,6 +46,12 @@ public class GraphPointInfo {
             te = row.getLong("te");
         if (row.has("d"))
             dateTime = row.getString("d");
+        if (row.has("v"))
+            v = row.getString("v");
+        else if (row.has("v_avg"))
+            v = row.getString("v_avg");
+        if (row.has("c"))
+            c = row.getString("c");
         if (row.has("hu"))
             hu = row.getString("hu");
         if (row.has("ba"))
@@ -57,6 +65,9 @@ public class GraphPointInfo {
                 '}';
     }
 
+    public String getPercentage() {
+        return v;
+    }
 
     public long getTemperature() {
         return te;
@@ -64,6 +75,10 @@ public class GraphPointInfo {
 
     public String getHumidity() {
         return hu;
+    }
+
+    public String getCounter() {
+        return c;
     }
 
     public String getBarometer() {

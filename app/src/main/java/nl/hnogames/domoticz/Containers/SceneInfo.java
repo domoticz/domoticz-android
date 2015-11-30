@@ -108,7 +108,7 @@ public class SceneInfo {
         return hardwareID;
     }
 
-        public String getLastUpdate() {
+    public String getLastUpdate() {
         return lastUpdate;
     }
 

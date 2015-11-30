@@ -51,15 +51,19 @@ public class UserVariableInfo {
     public String getName() {
         return Name;
     }
+
     public String getValue() {
         return Value;
     }
+
     public String getType() {
         return Type;
     }
+
     public String getLastUpdate() {
         return LastUpdate;
     }
+
     public int getIdx() {
         return idx;
     }
@@ -69,9 +73,9 @@ public class UserVariableInfo {
     public String toString() {
         return "UserVariableInfo{" +
                 "idx=" + idx +
-                ", Name='" + Name +"', " +
-                "Value='" + Value +"', " +
-                "Type='" + Type +"', " +
+                ", Name='" + Name + "', " +
+                "Value='" + Value + "', " +
+                "Type='" + Type + "', " +
                 "LastUpdate='" + LastUpdate +
                 "'}";
     }

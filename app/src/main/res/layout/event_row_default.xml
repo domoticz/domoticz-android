@@ -35,8 +35,8 @@
         style="@style/row_body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/rowIcon"
         android:layout_below="@+id/logs_name"
+        android:layout_toRightOf="@id/rowIcon"
         android:text="Value: " />
 
     <Switch

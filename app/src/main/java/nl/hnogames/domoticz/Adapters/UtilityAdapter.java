@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -156,12 +157,47 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.name = (TextView) convertView.findViewById(R.id.utilities_name);
             holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
+            holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
+            holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
+            holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+
             holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
             holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
 
             holder.name.setText(mUtilitiesInfo.getName());
             holder.data.append(": " + mUtilitiesInfo.getData());
             holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
+
+            holder.dayButton.setId(mUtilitiesInfo.getIdx());
+            holder.dayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (UtilitiesInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                    }
+                }
+            });
+            holder.monthButton.setId(mUtilitiesInfo.getIdx());
+            holder.monthButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (UtilitiesInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                    }
+                }
+            });
+            holder.yearButton.setId(mUtilitiesInfo.getIdx());
+            holder.yearButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (UtilitiesInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                    }
+                }
+            });
 
             Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg())).into(holder.iconRow);
         }
@@ -184,6 +220,9 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         ImageView iconRow;
         ImageButton buttonMinus;
         Boolean isProtected;
+        Button dayButton;
+        Button monthButton;
+        Button yearButton;
     }
 
     private class ItemFilter extends Filter {
