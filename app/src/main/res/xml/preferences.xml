@@ -7,15 +7,13 @@
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="startup_screen"
-            android:title="@string/startup_screen">
-        </ListPreference>
+            android:title="@string/startup_screen"></ListPreference>
         <MultiSelectListPreference
+            android:defaultValue="@array/drawer_actions"
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
-            android:defaultValue="@array/drawer_actions"
             android:key="enable_items"
-            android:title="@string/enable_items">
-        </MultiSelectListPreference>
+            android:title="@string/enable_items"></MultiSelectListPreference>
         <SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
@@ -26,22 +24,22 @@
 
 
     <PreferenceCategory android:title="@string/category_wear">
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="enablewearitems"
-        android:summaryOff="@string/wear_custom_on"
-        android:summaryOn="@string/wear_custom_off"
-        android:title="@string/enable_wear_select" />
-    <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
-        android:key="wearitems"
-        android:dependency="enablewearitems"
-        android:title="@string/custom_wear_select"
-        android:dialogTitle="@string/custom_wear_select"
-        android:summary="@string/custom_wear_select_desc"
-        android:entries="@array/empty_array"
-        android:entryValues="@array/empty_array"
-        android:defaultValue="@array/empty_array"
-        customPreference:selectAllValuesByDefault="true" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enablewearitems"
+            android:summaryOff="@string/wear_custom_on"
+            android:summaryOn="@string/wear_custom_off"
+            android:title="@string/enable_wear_select" />
+        <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
+            android:defaultValue="@array/empty_array"
+            android:dependency="enablewearitems"
+            android:dialogTitle="@string/custom_wear_select"
+            android:entries="@array/empty_array"
+            android:entryValues="@array/empty_array"
+            android:key="wearitems"
+            android:summary="@string/custom_wear_select_desc"
+            android:title="@string/custom_wear_select"
+            customPreference:selectAllValuesByDefault="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server">
@@ -62,10 +60,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_export">
-        <Preference android:title="@string/export_settings"
-            android:key="export_settings" />
-        <Preference android:title="@string/import_settings"
-            android:key="import_settings" />
+        <Preference
+            android:key="export_settings"
+            android:title="@string/export_settings" />
+        <Preference
+            android:key="import_settings"
+            android:title="@string/import_settings" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_info">

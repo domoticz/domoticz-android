@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,16 +14,20 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
+import nl.hnogames.domoticz.Containers.GraphPointInfo;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Weather extends DomoticzFragment implements DomoticzFragmentListener {
+public class Weather extends DomoticzFragment implements DomoticzFragmentListener, WeatherClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Weather.class.getSimpleName();
@@ -72,12 +77,13 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     }
 
     private void processWeather() {
+        final WeatherClickListener listener = this;
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
 
-                if(getView()!=null) {
+                if (getView() != null) {
                     mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
                     coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                             .coordinatorLayout);
@@ -85,7 +91,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                     successHandling(mWeatherInfos.toString(), false);
                     Weather.this.mWeatherInfos = mWeatherInfos;
 
-                    adapter = new WeatherAdapter(mActivity, mWeatherInfos);
+                    adapter = new WeatherAdapter(mActivity, mWeatherInfos, listener);
                     listView = (ListView) getView().findViewById(R.id.listView);
                     listView.setAdapter(adapter);
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -135,10 +141,10 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
-        if(isFavorite)
-            Snackbar.make(coordinatorLayout, mWeatherInfo.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite)
+            Snackbar.make(coordinatorLayout, mWeatherInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mWeatherInfo.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mWeatherInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -190,5 +196,35 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     public void errorHandling(Exception error) {
         super.errorHandling(error);
         hideProgressDialog();
+    }
+
+    @Override
+    public void onLogClick(final WeatherInfo weather, final String range) {
+        showProgressDialog();
+        final String graphtype = weather.getTypeImg()
+                .toLowerCase()
+                .replace("temperature", "temp")
+                .replace("visibility", "counter");
+
+        mDomoticz.getGraphData(weather.getIdx(), range, graphtype, new GraphDataReceiver() {
+            @Override
+            public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
+                Log.i("GRAPH", mGraphList.toString());
+                hideProgressDialog();
+                GraphDialog infoDialog = new GraphDialog(
+                        getActivity(),
+                        mGraphList,
+                        R.layout.dialog_graph);
+                infoDialog.setRange(range);
+                infoDialog.setSteps(4);
+                infoDialog.setTitle(graphtype.toUpperCase());
+                infoDialog.show();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout, "Could not get Log data for: " + weather.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 }

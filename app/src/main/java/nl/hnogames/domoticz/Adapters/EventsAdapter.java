@@ -49,13 +49,12 @@ import nl.hnogames.domoticz.R;
 public class EventsAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = EventsAdapter.class.getSimpleName();
-
+    private final EventsClickListener listener;
     Context context;
     ArrayList<EventInfo> filteredData = null;
     ArrayList<EventInfo> data = null;
     Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
-    private final EventsClickListener listener;
 
     public EventsAdapter(Context context,
                          ArrayList<EventInfo> data,

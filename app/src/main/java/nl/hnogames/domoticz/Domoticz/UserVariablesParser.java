@@ -55,7 +55,7 @@ public class UserVariablesParser implements JSONParserInterface {
                 }
             }
 
-            if(mVars.size()<=0)
+            if (mVars.size() <= 0)
                 onError(new NullPointerException(
                         "No UserVariables devined in Domoticz."));
             else

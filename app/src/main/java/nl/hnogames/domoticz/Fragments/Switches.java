@@ -246,10 +246,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
-        if(isFavorite)
-            Snackbar.make(coordinatorLayout, mSwitch.getName()+ " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite)
+            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mSwitch.getName()+ " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
 
         int jsonAction;
@@ -319,10 +319,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("Set idx " + idx + " to " + checked);
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
 
-        if(checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        if (checked)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         if (clickedSwitch != null) {
             int jsonAction;
@@ -357,10 +357,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("Set idx " + idx + " to ON");
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
 
-        if(checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        if (checked)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -388,12 +388,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
-        if(jsonAction == Domoticz.Device.Blind.Action.UP)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else if(jsonAction == Domoticz.Device.Blind.Action.DOWN)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        if (jsonAction == Domoticz.Device.Blind.Action.UP)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if (jsonAction == Domoticz.Device.Blind.Action.DOWN)
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop)+": "+clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
@@ -414,7 +414,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("onDimmerChange");
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
 
-        Snackbar.make(coordinatorLayout, "Setting level for switch: "+clickedSwitch.getName()+" to "+value, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;

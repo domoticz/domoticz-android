@@ -104,6 +104,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     private LocationAdapter adapter;
 
     private CoordinatorLayout coordinatorLayout;
+    private Location currectLocation;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -304,8 +305,6 @@ public class GeoSettingsActivity extends AppCompatActivity
             }
         }
     }
-
-    private Location currectLocation;
 
     public void getLocation(String usedLocationService) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&

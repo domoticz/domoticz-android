@@ -22,12 +22,8 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-import nl.hnogames.domoticz.Containers.UtilitiesInfo;
+import nl.hnogames.domoticz.Containers.WeatherInfo;
 
-public interface UtilityClickListener {
-    void onClick(UtilitiesInfo utility);
-
-    void onLogClick(UtilitiesInfo utility, String range);
-
-    void onThermostatClick(int idx, int action, long newSetPoint);
+public interface WeatherClickListener {
+    void onLogClick(WeatherInfo weather, String range);
 }

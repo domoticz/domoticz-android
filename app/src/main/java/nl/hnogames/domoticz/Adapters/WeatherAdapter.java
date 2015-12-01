@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -41,24 +42,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
+import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 
 public class WeatherAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = WeatherAdapter.class.getSimpleName();
 
-    Context context;
-    ArrayList<WeatherInfo> filteredData = null;
-    ArrayList<WeatherInfo> data = null;
-    Domoticz domoticz;
+    private final WeatherClickListener listener;
+    private Context context;
+    private ArrayList<WeatherInfo> filteredData = null;
+    private ArrayList<WeatherInfo> data = null;
+    private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
 
     public WeatherAdapter(Context context,
-                          ArrayList<WeatherInfo> data) {
+                          ArrayList<WeatherInfo> data,
+                          WeatherClickListener listener) {
         super();
-
         this.context = context;
         domoticz = new Domoticz(context);
         Collections.sort(data, new Comparator<WeatherInfo>() {
@@ -70,6 +75,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
 
         this.data = data;
         this.filteredData = data;
+        this.listener = listener;
     }
 
     @Override
@@ -111,6 +117,9 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
         holder.data = (TextView) convertView.findViewById(R.id.weather_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.weather_hardware);
+        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
+        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
+        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
 
         holder.name.setText(mWeatherInfo.getName());
         holder.hardware.append(": " + mWeatherInfo.getHardwareName());
@@ -136,6 +145,39 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         if (mWeatherInfo.getHumidityStatus() != null && mWeatherInfo.getHumidityStatus().length() > 0)
             holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
 
+        holder.dayButton.setId(mWeatherInfo.getIdx());
+        holder.dayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (WeatherInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                }
+            }
+        });
+
+        holder.monthButton.setId(mWeatherInfo.getIdx());
+        holder.monthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (WeatherInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                }
+            }
+        });
+
+        holder.yearButton.setId(mWeatherInfo.getIdx());
+        holder.yearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (WeatherInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                }
+            }
+        });
+
         convertView.setTag(holder);
         Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg())).into(holder.iconRow);
         return convertView;
@@ -151,6 +193,9 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         ImageButton buttonMinus;
         ImageView iconRow;
         Boolean isProtected;
+        Button dayButton;
+        Button monthButton;
+        Button yearButton;
     }
 
     private class ItemFilter extends Filter {

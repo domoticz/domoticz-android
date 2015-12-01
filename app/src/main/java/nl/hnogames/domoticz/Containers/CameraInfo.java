@@ -74,7 +74,6 @@ public class CameraInfo {
                 "'}";
     }
 
-
     public String getName() {
         return Name;
     }
@@ -111,7 +110,7 @@ public class CameraInfo {
         return devices;
     }
 
-
+    //get the full parsed URL for the ip camera image
     public String getFullURL() {
         String combinedUserName = "";
         if (getUsername() != null && getUsername().length() > 0) {
@@ -119,7 +118,6 @@ public class CameraInfo {
             if (getPassword() != null && getPassword().length() > 0)
                 combinedUserName += ":" + getPassword();
         }
-
         String combinedUrl = "";
         if (combinedUserName.length() > 0)
             combinedUrl = combinedUserName + "@";
@@ -133,6 +131,20 @@ public class CameraInfo {
             combinedUrl += ":" + getPort();
 
         combinedUrl += "/" + getImageURL();
+        return replaceUserPassInURL(combinedUrl);
+    }
+
+    //Domoticz adds some username tags in the url, we have to replace them later
+    private String replaceUserPassInURL(String url) {
+        String combinedUrl = url;
+        if (combinedUrl.indexOf("#USERNAME") >= 0)
+            combinedUrl = combinedUrl.replace("#USERNAME", getUsername());
+        if (combinedUrl.indexOf("#PASSWORD") >= 0)
+            combinedUrl = combinedUrl.replace("#PASSWORD", getPassword());
+        if (combinedUrl.indexOf("username") >= 0)
+            combinedUrl = combinedUrl.replace("username", getUsername());
+        if (combinedUrl.indexOf("password") >= 0)
+            combinedUrl = combinedUrl.replace("password", getPassword());
         return combinedUrl;
     }
 }

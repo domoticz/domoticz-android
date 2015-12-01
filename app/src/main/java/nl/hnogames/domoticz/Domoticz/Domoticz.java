@@ -26,7 +26,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.net.Uri;
-import android.service.voice.AlwaysOnHotwordDetector;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -721,6 +720,7 @@ public class Domoticz {
         url = url + Url.Log.GRAPH_RANGE + range;
         url = url + Url.Log.GRAPH_TYPE + type;
 
+        Log.i("GRAPH", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
