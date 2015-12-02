@@ -101,7 +101,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         int layoutResourceId;
 
         UtilitiesInfo mUtilitiesInfo = filteredData.get(position);
-        final long setPoint = mUtilitiesInfo.getSetPoint();
+        final double setPoint = mUtilitiesInfo.getSetPoint();
 
         //if (convertView == null) {
         holder = new ViewHolder();
@@ -124,7 +124,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    long newValue = setPoint - 1;
+                    double newValue = setPoint - 0.5;
                     handleThermostatClick(view.getId(),
                             Domoticz.Device.Thermostat.Action.MIN,
                             newValue);
@@ -133,7 +133,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    long newValue = setPoint + 1;
+                    double newValue = setPoint + 0.5;
                     handleThermostatClick(view.getId(),
                             Domoticz.Device.Thermostat.Action.PLUS,
                             newValue);
@@ -204,7 +204,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-    public void handleThermostatClick(int idx, int action, long newSetPoint) {
+    public void handleThermostatClick(int idx, int action, double newSetPoint) {
         listener.onThermostatClick(idx, action, newSetPoint);
     }
 

@@ -369,7 +369,7 @@ public class Domoticz {
         return fullString;
     }
 
-    public String constructSetUrl(int jsonSetUrl, int idx, int action, long value) {
+    public String constructSetUrl(int jsonSetUrl, int idx, int action, double value) {
         String protocol, baseUrl, url, port, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -600,7 +600,7 @@ public class Domoticz {
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
-                          long value,
+                          double value,
                           setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);

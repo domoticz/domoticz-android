@@ -34,7 +34,7 @@ public class UtilitiesInfo {
     String Name;
     String Data;
     String LastUpdate;
-    long setPoint;
+    double setPoint;
     String Type;
     String SubType;
     int Favorite;
@@ -135,11 +135,11 @@ public class UtilitiesInfo {
         return HardwareName;
     }
 
-    public long getSetPoint() {
+    public double getSetPoint() {
         return setPoint;
     }
 
-    public void setSetPoint(long setPoint) {
+    public void setSetPoint(double setPoint) {
         this.setPoint = setPoint;
     }
 
