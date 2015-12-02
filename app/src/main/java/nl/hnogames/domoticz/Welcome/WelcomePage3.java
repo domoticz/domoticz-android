@@ -1,9 +1,6 @@
 package nl.hnogames.domoticz.Welcome;
 
-import android.Manifest;
 import android.app.Fragment;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +20,6 @@ import java.util.Set;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -58,6 +54,7 @@ public class WelcomePage3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         try {
             callingInstance = getArguments().getInt(INSTANCE);
         } catch (Exception e) {
@@ -120,6 +117,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private void setPreferenceValues() {
+
         remote_username_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteUsername());
         remote_password_input.setInputWidgetText(mSharedPrefs.getDomoticzRemotePassword());
         remote_server_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteUrl());
@@ -134,30 +132,11 @@ public class WelcomePage3 extends Fragment {
 
         setProtocol_spinner();
         setStartScreen_spinner();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!PermissionsUtil.canAccessLocation(getActivity())) {
-                requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);
-            }
-        }
-        else
-            setSsid_spinner();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_ACCESS_REQUEST:
-                if (PermissionsUtil.canAccessLocation(getActivity())) {
-                    setSsid_spinner();
-                }
-                else
-                    ((WelcomeViewActivity)getActivity()).finishWithResult(false);
-                break;
-        }
+        setSsid_spinner();
     }
 
     private void setSsid_spinner() {
+
         Set<String> ssidFromPrefs = mSharedPrefs.getLocalSsid();
         ArrayList<String> ssidListFromPrefs = new ArrayList<>();
         ArrayList<String> ssids = new ArrayList<>();
@@ -190,10 +169,14 @@ public class WelcomePage3 extends Fragment {
             // Set SSID's from shared preferences to selected
             local_wifi_spinner.setSelection(ssidListFromPrefs);
         }
+
+
     }
 
     private void setProtocol_spinner() {
+
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
+
         ArrayAdapter<String> protocolAdapter
                 = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
         remote_protocol_spinner.setAdapter(protocolAdapter);
@@ -226,6 +209,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private void setStartScreen_spinner() {
+
         String[] startScreens = getResources().getStringArray(R.array.drawer_actions);
         ArrayAdapter<String> startScreenAdapter
                 = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, startScreens);
@@ -309,6 +293,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private int getPrefsDomoticzLocalSecureIndex() {
+
         boolean isSecure = mSharedPrefs.isDomoticzLocalSecure();
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
