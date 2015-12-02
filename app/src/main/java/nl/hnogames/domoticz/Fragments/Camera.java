@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +45,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
 public class Camera extends Fragment {
 
@@ -65,16 +68,13 @@ public class Camera extends Fragment {
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get access to the URI for the bitmap
-                Uri bmpUri = getLocalBitmapUri(root);
-                if (bmpUri != null) {
-                    // Construct a ShareIntent with link to image
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    shareIntent.setType("image/*");
-                    // Launch sharing dialog for image
-                    startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                    }
+                }
+                else {
+                    processImage();
                 }
             }
         });
@@ -83,6 +83,32 @@ public class Camera extends Fragment {
             setImage(this.url);
 
         return group;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
+                if (PermissionsUtil.canAccessStorage(getActivity())) {
+                    processImage();
+                }
+                break;
+        }
+    }
+
+    private void processImage()
+    {
+        // Get access to the URI for the bitmap
+        Uri bmpUri = getLocalBitmapUri(root);
+        if (bmpUri != null) {
+            // Construct a ShareIntent with link to image
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+            shareIntent.setType("image/*");
+            // Launch sharing dialog for image
+            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+        }
     }
 
     public void setImage(String url) {

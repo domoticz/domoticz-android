@@ -123,21 +123,25 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             String text = context.getText(R.string.last_update) + ": " + String.valueOf(mSceneInfo.getLastUpdate());
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
-            if (holder.isProtected) holder.onOffSwitch.setEnabled(false);
+
             Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.SCENE.toLowerCase())).into(holder.iconRow);
 
-            holder.buttonOn.setId(mSceneInfo.getIdx());
-            holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
-
-            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    handleClick(view.getId(), true);
+            if (holder.buttonOn != null) {
+                holder.buttonOn.setId(mSceneInfo.getIdx());
+                holder.buttonOn.setText(context.getString(R.string.button_state_on));
+                holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+                holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handleClick(view.getId(), true);
+                    }
+                });
+                if (holder.isProtected) {
+                    holder.buttonOn.setEnabled(false);
                 }
-            });
-        } else if (mSceneInfo.getType().equalsIgnoreCase(Domoticz.Scene.Type.GROUP)) {
+            }
 
+        } else if (mSceneInfo.getType().equalsIgnoreCase(Domoticz.Scene.Type.GROUP)) {
             holder.isProtected = mSceneInfo.isProtected();
             layoutResourceId = R.layout.scene_row_group;
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();

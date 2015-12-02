@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.EditTextPreference;
@@ -37,11 +38,14 @@ import java.io.File;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
 public class Preference extends PreferenceFragment {
 
-    SharedPrefUtil mSharedPrefs;
+    private SharedPrefUtil mSharedPrefs;
+    private File SettingsFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,7 @@ public class Preference extends PreferenceFragment {
     }
 
     private void handleImportExportButtons() {
-        final File SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
+        SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
         final String sPath = SettingsFile.getPath().substring(0, SettingsFile.getPath().lastIndexOf("/"));
         new File(sPath).mkdirs();       //TODO something with result
 
@@ -66,28 +70,67 @@ public class Preference extends PreferenceFragment {
         exportButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                Log.v("Export Settings", "Exporting settings to: " + SettingsFile.getPath());
-                if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-                    Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();     //TODO Change to snackbar
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                    }
+                }
+                else {
+                    exportSettings();
+                }
                 return false;
             }
         });
+
         android.preference.Preference importButton = findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                Log.v("Import Settings", "Importing settings from: " + SettingsFile.getPath());
-                mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
-
-                if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-                    Toast.makeText(getActivity(), "Settings Imported, please restart Domoticz.", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                    }
+                }
+                else {
+                    importSettings();
+                }
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
+                if (PermissionsUtil.canAccessStorage(getActivity())) {
+                    importSettings();
+                }
+                break;
+            case PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST:
+                if (PermissionsUtil.canAccessStorage(getActivity())) {
+                    exportSettings();
+                }
+                break;
+        }
+    }
+
+    private void importSettings() {
+        Log.v("Import Settings", "Importing settings from: " + SettingsFile.getPath());
+        mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
+        if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
+            Toast.makeText(getActivity(), "Settings Imported, please restart Domoticz.", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void exportSettings()
+    {
+        Log.v("Export Settings", "Exporting settings to: " + SettingsFile.getPath());
+        if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
+            Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();     //TODO Change to snackbar
     }
 
     private void setVersionInfo() {
