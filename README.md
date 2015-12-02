@@ -10,7 +10,7 @@ Domoticz is a very light weight home automation system that lets you monitor and
 freepik / elegantthemes for icon
 http://www.freepik.com/free-psd/rounded-flat-icons-in-two-versions_708307.htm
 
-RoadXY for the start version (framework) of the app.
+RoadXY for the start version (framework) of the app. \s\s
 remb0 as the organizer all devs/mods/testers other domoticz supporters
 
 
