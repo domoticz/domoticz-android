@@ -55,7 +55,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
     private CoordinatorLayout coordinatorLayout;
 
-    private long thermostatSetPointValue;
+    private double thermostatSetPointValue;
     private ListView listView;
     private UtilityAdapter adapter;
     private ProgressDialog progressDialog;
@@ -198,7 +198,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
      * @param idx         ID of the utility to be changed
      * @param newSetPoint The new set point value
      */
-    private void updateThermostatSetPointValue(int idx, long newSetPoint) {
+    private void updateThermostatSetPointValue(int idx, double newSetPoint) {
         addDebugText("updateThermostatSetPointValue");
 
         for (UtilitiesInfo info : mUtilitiesInfos) {
@@ -284,7 +284,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onThermostatClick(final int idx, int action, long newSetPoint) {
+    public void onThermostatClick(final int idx, int action, double newSetPoint) {
         addDebugText("onThermostatClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
