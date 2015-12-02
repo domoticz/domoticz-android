@@ -7,8 +7,8 @@ android {
         applicationId 'nl.hnogames.domoticz'
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 25
-        versionName '0.1.142'
+        versionCode 26
+        versionName '0.1.143'
     }
     buildTypes {
         release {

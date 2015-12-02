@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="G:\Dropbox\Android\Domoticz-master\libs\MemorizingTrustManager\assets"/></dataSet><dataSet config="release"><source path="G:\Dropbox\Android\Domoticz-master\libs\MemorizingTrustManager\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\M. Heinis\Documents\GitHub\DomoticzForAndroid\libs\MemorizingTrustManager\assets"/></dataSet><dataSet config="release"><source path="C:\Users\M. Heinis\Documents\GitHub\DomoticzForAndroid\libs\MemorizingTrustManager\src\release\assets"/></dataSet></merger>

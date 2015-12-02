@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/G:/Dropbox/Android/Domoticz-master/libs/MemorizingTrustManager/build/intermediates/bundles/debug/res/values-no/values-no.xml -->
+    <!-- From: file:/C:/Users/M.%20Heinis/Documents/GitHub/DomoticzForAndroid/libs/MemorizingTrustManager/build/intermediates/bundles/debug/res/values-no/values-no.xml -->
     <eat-comment/>
     <string name="mtm_accept_cert">Godta ukjent sertifikat?</string>
     <string name="mtm_accept_servername">Godta feil servernavn?</string>
