@@ -38,11 +38,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+
+# Geofencing
+-----
+Add (one or multiple) Geofences and connected a switch to it
+![index](https://cloud.githubusercontent.com/assets/14561640/11558484/5f595e8c-99b3-11e5-8b68-e868f81aa904.png)
+
+
+# Android Wear
+-----
+You can toggle switches with your Android Wear device
+![wear](https://cloud.githubusercontent.com/assets/14561640/11558411/ead47588-99b2-11e5-8d83-a34c09216a11.png)
+
+
 # Screenshots
 -----
 Here some screenshots
 
-
 ![screenshot_20151109-155913](https://cloud.githubusercontent.com/assets/14561640/11527593/2e29deb2-98e2-11e5-9198-218162a17d23.png)
-![screenshot_20151109-155953](https://cloud.githubusercontent.com/assets/14561640/11527591/2e242e4a-98e2-11e5-9fe9-51b92a76dea9.png)![screenshot_20151110-103733](https://cloud.githubusercontent.com/assets/14561640/11527590/2e21a9d6-98e2-11e5-9ec0-ed86340f537a.png)
-![screenshot_20151109-155941](https://cloud.githubusercontent.com/assets/14561640/11527589/2e20d88a-98e2-11e5-9e59-b3be4efd19cd.png)
+![screenshot_20151109-155953](https://cloud.githubusercontent.com/assets/14561640/11527591/2e242e4a-98e2-11e5-9fe9-51b92a76dea9.png)
