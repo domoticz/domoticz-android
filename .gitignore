@@ -38,3 +38,4 @@ proguard/
 
 # Android Studio captures folder
 captures/
+libs/MemorizingTrustManager/build/outputs/aar/MemorizingTrustManager-release.aar
