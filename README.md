@@ -5,13 +5,29 @@ This is a Android for Domoticz and will soon be in the Play Store (not ready yet
 -----
 **Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
 
-# Donations
+
+
+# Geofencing
 -----
-**This project needs you!** If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, **feel free to donate**. Your donation is highly appreciated (and I love food, coffee and beer). Thank you!
- - [**Donate 5 $**](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=heinis%2emark%40gmail%2ecom&lc=NL&item_name=DomoticzForAndroid&amount=5%2e00&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted):
- Great project, let me buy you a beer!!!
- - Of course, you can also [**choose what you want to donate**](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=heinis%2emark%40gmail%2ecom&lc=NL&item_name=DomoticzForAndroid&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest), all donations are awesome!
- 
+Add (one or multiple) Geofences and connected a switch to it
+![index](https://cloud.githubusercontent.com/assets/14561640/11558484/5f595e8c-99b3-11e5-8b68-e868f81aa904.png)
+
+
+# Android Wear
+-----
+You can toggle switches with your Android Wear device
+![wear](https://cloud.githubusercontent.com/assets/14561640/11558411/ead47588-99b2-11e5-8d83-a34c09216a11.png)
+
+
+# Screenshots
+-----
+Here some screenshots
+
+![screenshot_20151109-155913](https://cloud.githubusercontent.com/assets/14561640/11527593/2e29deb2-98e2-11e5-9198-218162a17d23.png)
+![screenshot_20151109-155953](https://cloud.githubusercontent.com/assets/14561640/11527591/2e242e4a-98e2-11e5-9fe9-51b92a76dea9.png)
+
+
+
 # Credits
 -----
 **freepik / elegantthemes** for icon  
@@ -37,23 +53,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-
-# Geofencing
------
-Add (one or multiple) Geofences and connected a switch to it
-![index](https://cloud.githubusercontent.com/assets/14561640/11558484/5f595e8c-99b3-11e5-8b68-e868f81aa904.png)
-
-
-# Android Wear
------
-You can toggle switches with your Android Wear device
-![wear](https://cloud.githubusercontent.com/assets/14561640/11558411/ead47588-99b2-11e5-8d83-a34c09216a11.png)
-
-
-# Screenshots
------
-Here some screenshots
-
-![screenshot_20151109-155913](https://cloud.githubusercontent.com/assets/14561640/11527593/2e29deb2-98e2-11e5-9198-218162a17d23.png)
-![screenshot_20151109-155953](https://cloud.githubusercontent.com/assets/14561640/11527591/2e242e4a-98e2-11e5-9fe9-51b92a76dea9.png)
