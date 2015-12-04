@@ -26,7 +26,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.net.Uri;
-import android.service.voice.AlwaysOnHotwordDetector;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -370,7 +369,7 @@ public class Domoticz {
         return fullString;
     }
 
-    public String constructSetUrl(int jsonSetUrl, int idx, int action, long value) {
+    public String constructSetUrl(int jsonSetUrl, int idx, int action, double value) {
         String protocol, baseUrl, url, port, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -444,6 +443,11 @@ public class Domoticz {
                 actionUrl = Url.Switch.DIM_LEVEL + String.valueOf(value);
                 break;
 
+            case Device.Dimmer.Action.COLOR:
+                actionUrl = Url.Switch.COLOR;
+                break;
+
+
             default:
                 throw new NullPointerException(
                         "Action not found in method Domoticz.constructSetUrl");
@@ -471,6 +475,13 @@ public class Domoticz {
                         + Url.Temp.VALUE + actionUrl;
                 break;
 
+            case Json.Url.Set.SCENEFAVORITE:
+                url = Url.Favorite.SCENE;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + Url.Favorite.VALUE + actionUrl;
+                break;
+
             case Json.Url.Set.FAVORITE:
                 url = Url.Favorite.GET;
                 jsonUrl = url
@@ -484,6 +495,13 @@ public class Domoticz {
                         + String.valueOf(idx)
                         + actionUrl
                         + "&xml=";
+                break;
+
+            case Json.Url.Set.RGBCOLOR:
+                url = Url.System.RGBCOLOR;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + actionUrl;
                 break;
         }
 
@@ -601,10 +619,28 @@ public class Domoticz {
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
-                          long value,
+                          double value,
                           setCommandReceiver receiver) {
+
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
+        Log.v(TAG, "Action: "+url);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+
+    }
+
+    public void setRGBColorAction(int idx,
+                          int jsonUrl,
+                          int hue,
+                          int brightness,
+                          setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = constructSetUrl(jsonUrl, idx, Device.Dimmer.Action.COLOR, 0);
+        url = url.replace("%hue%", String.valueOf(hue)).replace("%bright%", String.valueOf(brightness));
+        Log.v(TAG, "Action: "+url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -620,6 +656,7 @@ public class Domoticz {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, id, jsonAction, value);
         url += Uri.encode(xmlStatement);
+        Log.v(TAG, "Action: "+url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -721,6 +758,7 @@ public class Domoticz {
         url = url + Url.Log.GRAPH_RANGE + range;
         url = url + Url.Log.GRAPH_TYPE + type;
 
+        Log.i("GRAPH", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -836,6 +874,7 @@ public class Domoticz {
         interface Dimmer {
             interface Action {
                 int DIM_LEVEL = 20;
+                int COLOR = 21;
             }
         }
 
@@ -894,6 +933,18 @@ public class Domoticz {
             }
         }
 
+        interface SubType {
+            @SuppressWarnings("unused")
+            interface Value {
+                int RGB = 1;
+            }
+
+            @SuppressWarnings("unused")
+            interface Name {
+                String RGB = "RGB";
+            }
+        }
+
         interface Favorite {
             int ON = 208;
             int OFF = 209;
@@ -937,7 +988,9 @@ public class Domoticz {
                 int SWITCHES = 102;
                 int TEMP = 103;
                 int FAVORITE = 104;
+                int SCENEFAVORITE = 106;
                 int EVENT = 105;
+                int RGBCOLOR = 107;
             }
         }
 
@@ -991,16 +1044,17 @@ public class Domoticz {
 
         @SuppressWarnings("SpellCheckingInspection")
         interface Category {
-            String DEVICES = "/json.htm?type=devices";
+            String ALLDEVICES = "/json.htm?type=devices";
+            String DEVICES = "/json.htm?type=devices&filter=all&used=true&order=Name";
             String VERSION = "/json.htm?type=command&param=getversion";
-            String DASHBOARD = DEVICES + "&filter=all";
+            String DASHBOARD = ALLDEVICES + "&filter=all";
             String SCENES = "/json.htm?type=scenes";
             String SWITCHES = "/json.htm?type=command&param=getlightswitches";
-            String WEATHER = DEVICES + "&filter=weather";
+            String WEATHER = ALLDEVICES + "&filter=weather&used=true";
             String CAMERAS = "/json.htm?type=cameras";
-            String UTILITIES = DEVICES + "&filter=utility";
+            String UTILITIES = ALLDEVICES + "&filter=utility&used=true";
             String PLANS = "/json.htm?type=plans";
-            String TEMPERATURE = DEVICES + "&filter=temp";
+            String TEMPERATURE = ALLDEVICES + "&filter=temp&used=true";
             String SWITCHLOG = "/json.htm?type=lightlog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
         }
@@ -1008,6 +1062,7 @@ public class Domoticz {
         @SuppressWarnings({"SpellCheckingInspection", "unused"})
         interface Switch {
             String DIM_LEVEL = "Set%20Level&level=";
+            String COLOR = "&hue=%hue%&brightness=%bright%&iswhite=false";
             String GET = "/json.htm?type=command&param=switchlight&idx=";
             String CMD = "&switchcmd=";
             String LEVEL = "&level=";
@@ -1027,6 +1082,7 @@ public class Domoticz {
         @SuppressWarnings("SpellCheckingInspection")
         interface Favorite {
             String GET = "/json.htm?type=command&param=makefavorite&idx=";
+            String SCENE = "/json.htm?type=command&param=makescenefavorite&idx=";
             String VALUE = "&isfavorite=";
         }
 
@@ -1074,6 +1130,7 @@ public class Domoticz {
             String EVENTXML = "/json.htm?type=events&param=load&event=%id%";
             String EVENTACTION = "/json.htm?type=events&param=create&name=LichtenAan&eventid=";
             String EVENTSTATUS = "&eventstatus=";
+            String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
         }
     }
 

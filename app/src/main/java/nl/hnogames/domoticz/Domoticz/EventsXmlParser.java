@@ -38,6 +38,7 @@ public class EventsXmlParser implements JSONParserInterface {
 
     private static final String TAG = EventsXmlParser.class.getSimpleName();
     private EventXmlReceiver varsReceiver;
+
     public EventsXmlParser(EventXmlReceiver varsReceiver) {
         this.varsReceiver = varsReceiver;
     }

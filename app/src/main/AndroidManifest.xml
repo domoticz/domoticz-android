@@ -23,6 +23,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -49,8 +50,8 @@
         <activity
             android:name=".PlanActivity"
             android:label="@string/cameraActivity_name"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".PlanActivity">
+            android:parentActivityName=".PlanActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -59,8 +60,8 @@
         <activity
             android:name=".ServerSettingsActivity"
             android:label="@string/title_activity_server_settings"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".SettingsActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.SettingsActivity" />
@@ -77,17 +78,18 @@
 
         <activity
             android:name=".Welcome.WelcomeViewActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/welcome_title_activity_welcome"></activity>
+            android:label="@string/welcome_title_activity_welcome"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBJ_XlxltqRMHEaqUxKak6LkIb0jt4qRWM " />
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service android:name=".Service.GeofenceTransitionsIntentService"/>
+        <service android:name=".Service.GeofenceTransitionsIntentService" />
 
         <service android:name=".Service.WearMessageListenerService">
             <intent-filter>

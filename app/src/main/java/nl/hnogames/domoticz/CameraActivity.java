@@ -23,7 +23,6 @@
 package nl.hnogames.domoticz;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -46,7 +45,6 @@ public class CameraActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 camera).commit();
         camera.setImage(imageurl);
-
     }
 
     @Override

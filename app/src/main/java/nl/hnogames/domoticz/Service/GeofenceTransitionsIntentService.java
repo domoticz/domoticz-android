@@ -79,39 +79,42 @@ public class GeofenceTransitionsIntentService extends IntentService
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
-        if (geoFenceEvent.hasError()) {
-            int errorCode = geoFenceEvent.getErrorCode();
-            Log.e(TAG, "Location Services error: " + errorCode);
-        } else {
-            int transitionType = geoFenceEvent.getGeofenceTransition();
-            if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
-                for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                    LocationInfo locationFound = mSharedPrefs.getLocation( Integer.valueOf(geofence.getRequestId()));
-                    Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
+        try {
+            GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
+            if (geoFenceEvent.hasError()) {
+                int errorCode = geoFenceEvent.getErrorCode();
+                Log.e(TAG, "Location Services error: " + errorCode);
+            } else {
+                int transitionType = geoFenceEvent.getGeofenceTransition();
+                if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
+                    for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
+                        LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
 
-                    if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                        sendNotification("Entering " + locationFound.getName(), "Entering one of the locations");
+                        if (mSharedPrefs.isGeofenceNotificationsEnabled())
+                            sendNotification("Entering " + locationFound.getName(), "Entering one of the locations");
 
-                    if (locationFound.getSwitchidx() > 0) {
-                        handleSwitch(locationFound.getSwitchidx(), true);
+                        if (locationFound.getSwitchidx() > 0) {
+                            handleSwitch(locationFound.getSwitchidx(), true);
+                        }
                     }
-                }
 
-            } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
-                for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                    LocationInfo locationFound = mSharedPrefs.getLocation( Integer.valueOf(geofence.getRequestId()));
-                    Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
+                } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
+                    for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
+                        LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
 
-                    if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                        sendNotification("Leaving " + locationFound.getName(), "Leaving one of the locations");
+                        if (mSharedPrefs.isGeofenceNotificationsEnabled())
+                            sendNotification("Leaving " + locationFound.getName(), "Leaving one of the locations");
 
-                    if (locationFound.getSwitchidx() > 0) {
-                        handleSwitch(locationFound.getSwitchidx(), false);
+                        if (locationFound.getSwitchidx() > 0) {
+                            handleSwitch(locationFound.getSwitchidx(), false);
+                        }
                     }
                 }
             }
-        }
+        }catch(Exception ex){}
+
     }
 
     private void handleSwitch(final int idx, final boolean checked) {

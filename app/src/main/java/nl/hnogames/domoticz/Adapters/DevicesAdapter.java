@@ -53,8 +53,7 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
-    private final int ID_TEXTVIEW = 1000;
-    private final int ID_SWITCH = 0;
+    public final int ID_SCENE_SWITCH = 2000;
 
     Domoticz domoticz;
     private Context context;
@@ -124,12 +123,23 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private View setSwitchRowId(DevicesInfo mExtendedStatusInfo, ViewHolder holder) {
-        View row;
+        View row = setDefaultRowId(holder);
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null)))
-
-            row = setDefaultRowId(holder);
-        else
+                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+            switch (mExtendedStatusInfo.getType()) {
+                case Domoticz.Scene.Type.GROUP:
+                    row = setOnOffSwitchRowId(holder);
+                    break;
+                case Domoticz.Scene.Type.SCENE:
+                    row = setPushOnOffSwitchRowId(holder);
+                    break;
+                default:
+                    row = setDefaultRowId(holder);
+                    break;
+            }
+        }
+        else {
+            boolean switchFound = true;
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case Domoticz.Device.Type.Value.ON_OFF:
                 case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -161,13 +171,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
 
                 default:
-                    row = setDefaultRowId(holder);
-
+                    switchFound=false;
+                    break;
             }
-
+        }
         return row;
     }
-
 
     private View setOnOffSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
@@ -308,8 +317,19 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                   ViewHolder holder,
                                   View convertView) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null)))
-            setDefaultRowData(mExtendedStatusInfo, holder);
+                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+            switch (mExtendedStatusInfo.getType()) {
+                case Domoticz.Scene.Type.GROUP:
+                    setOnOffSwitchRowData(mExtendedStatusInfo, holder);
+                    break;
+                case Domoticz.Scene.Type.SCENE:
+                    setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, true);
+                    break;
+                default:
+                    setDefaultRowData(mExtendedStatusInfo, holder);
+                    break;
+            }
+        }
         else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case Domoticz.Device.Type.Value.ON_OFF:
@@ -388,7 +408,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
 
         if (holder.onOffSwitch != null) {
-            holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx());
+            if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx()+this.ID_SCENE_SWITCH);
+            else
+                holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx());
+
             holder.onOffSwitch.setChecked(mExtendedStatusInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -399,7 +423,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
 
         if (holder.buttonLog != null) {
-            holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
+            if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonLog.setId(mExtendedStatusInfo.getIdx()+this.ID_SCENE_SWITCH);
+            else
+                holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
+
             holder.buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -428,7 +456,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.buttonOn.setEnabled(false);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
-        holder.buttonOn.setId(mExtendedStatusInfo.getIdx());
+
+        if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            holder.buttonOn.setId(mExtendedStatusInfo.getIdx()+this.ID_SCENE_SWITCH);
+        else
+            holder.buttonOn.setId(mExtendedStatusInfo.getIdx());
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
@@ -448,8 +480,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     handleOnButtonClick(v.getId(), false);
             }
         });
+
         if (holder.buttonLog != null) {
-            holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
+            if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonLog.setId(mExtendedStatusInfo.getIdx()+this.ID_SCENE_SWITCH);
+            else
+                holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
+
             holder.buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -530,13 +567,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        holder.switch_dimmer_level.setId(mExtendedStatusInfo.getIdx() + ID_TEXTVIEW);
+        holder.switch_dimmer_level.setId(mExtendedStatusInfo.getIdx());
         String percentage = calculateDimPercentage(
                 mExtendedStatusInfo.getMaxDimLevel(), mExtendedStatusInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
-        holder.dimmerOnOffSwitch.setId(mExtendedStatusInfo.getIdx() + ID_SWITCH);
+        holder.dimmerOnOffSwitch.setId(mExtendedStatusInfo.getIdx());
 
         if (holder.isProtected)
             holder.dimmerOnOffSwitch.setEnabled(false);
@@ -564,7 +601,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
                 TextView switch_dimmer_level = (TextView) seekBar.getRootView()
-                        .findViewById(mExtendedStatusInfo.getIdx() + ID_TEXTVIEW);
+                        .findViewById(mExtendedStatusInfo.getIdx());
                 switch_dimmer_level.setText(percentage);
             }
 
@@ -577,7 +614,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
                 Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
-                        .findViewById(mExtendedStatusInfo.getIdx() + ID_SWITCH);
+                        .findViewById(mExtendedStatusInfo.getIdx());
 
                 if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
                     dimmerOnOffSwitch.setChecked(false);

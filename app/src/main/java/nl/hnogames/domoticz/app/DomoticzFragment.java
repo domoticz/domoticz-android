@@ -159,19 +159,21 @@ public class DomoticzFragment extends Fragment {
     }
 
     public void addDebugText(String text) {
-        Logger(fragmentName, text);
-
-        if (debug) {
-            if (debugText != null) {
-                String temp = debugText.getText().toString();
-                if (temp.isEmpty() || temp.equals("")) debugText.setText(text);
-                else {
-                    temp = temp + "\n";
-                    temp = temp + text;
-                    debugText.setText(temp);
-                }
-            } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+        if(text!=null && text.length()>0)
+        {
+            Logger(fragmentName, text);
+            if (debug) {
+                if (debugText != null) {
+                    String temp = debugText.getText().toString();
+                    if (temp.isEmpty() || temp.equals("")) debugText.setText(text);
+                    else {
+                        temp = temp + "\n";
+                        temp = temp + text;
+                        debugText.setText(temp);
+                    }
+                } else throw new RuntimeException(
+                        "Layout should have a TextView defined with the ID \"debugText\"");
+            }
         }
     }
 

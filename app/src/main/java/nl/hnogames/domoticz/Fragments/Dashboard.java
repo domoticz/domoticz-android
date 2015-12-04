@@ -63,6 +63,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
 
+
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
@@ -121,7 +122,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
         extendedStatusSwitches = new ArrayList<>();
-
         for (DevicesInfo switchInfo : devicesInfos) {
             successHandling(switchInfo.toString(), false);
 
@@ -139,7 +139,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
-
         if (switches == null)
             return;
 
@@ -264,6 +263,14 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
                 else jsonAction = Domoticz.Device.Switch.Action.OFF;
             }
+
+            if(clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                jsonUrl = Domoticz.Json.Url.Set.SCENES;
+                if (checked) jsonAction = Domoticz.Scene.Action.ON;
+                else jsonAction = Domoticz.Scene.Action.OFF;
+                idx = idx - adapter.ID_SCENE_SWITCH;
+            }
+
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
@@ -279,11 +286,19 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private DevicesInfo getDevice(int idx) {
-
         DevicesInfo clickedSwitch = null;
         for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
             if (mExtendedStatusInfo.getIdx() == idx) {
                 clickedSwitch = mExtendedStatusInfo;
+            }
+        }
+        if(clickedSwitch==null) {
+            for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
+                if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                    if (mExtendedStatusInfo.getIdx() == (idx - adapter.ID_SCENE_SWITCH)) {
+                        clickedSwitch = mExtendedStatusInfo;
+                    }
+                }
             }
         }
         return clickedSwitch;
@@ -301,13 +316,18 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         else
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
-
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
         if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
         else jsonAction = Domoticz.Device.Switch.Action.OFF;
 
+        if(clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+            jsonUrl = Domoticz.Json.Url.Set.SCENES;
+            if (checked) jsonAction = Domoticz.Scene.Action.ON;
+            else jsonAction = Domoticz.Scene.Action.OFF;
+            idx = idx - adapter.ID_SCENE_SWITCH;
+        }
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
@@ -322,12 +342,14 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onLogButtonClick(int idx) {
-    }
+    public void onLogButtonClick(int idx) {}
 
     @Override
-    public void onTimerButtonClick(int idx) {
-    }
+    public void onColorButtonClick(int idx) {}
+
+    @Override
+    public void onTimerButtonClick(int idx) {}
+
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {
@@ -390,7 +412,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
      * Shows the progress dialog if isn't already showing
      */
     private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
+        if (progressDialog == null)
+            initProgressDialog();
         if (!progressDialog.isShowing())
             progressDialog.show();
     }
@@ -399,7 +422,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
      * Hides the progress dialog if it is showing
      */
     private void hideProgressDialog() {
-        if (progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
 

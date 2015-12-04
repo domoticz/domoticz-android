@@ -58,18 +58,17 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    @SuppressWarnings("unused")
-    private String TAG = MainActivity.class.getSimpleName();
-
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
+    public CoordinatorLayout coordinatorLayout;
+    @SuppressWarnings("unused")
+    private String TAG = MainActivity.class.getSimpleName();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawer;
     private String[] fragments;
     private SharedPrefUtil mSharedPrefs;
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private SearchView searchViewAction;
-    public CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -104,6 +104,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     private LocationAdapter adapter;
 
     private CoordinatorLayout coordinatorLayout;
+    private Location currectLocation;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -305,16 +306,15 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
     }
 
-    private Location currectLocation;
-
     public void getLocation(String usedLocationService) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        //locationManager.requestLocationUpdates(usedLocationService, 0, 0, this);
+
         currectLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
+        if(currectLocation!=null)
+            setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
     }
 
     private void setMarker(LatLng currentLatLng) {

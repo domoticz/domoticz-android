@@ -222,24 +222,26 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     @Override
-    public void onLogClick(final TemperatureInfo temp, String range) {
+    public void onLogClick(final TemperatureInfo temp, final String range) {
         showProgressDialog();
         mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 hideProgressDialog();
-
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
                         mGraphList,
                         R.layout.dialog_graph);
-
+                infoDialog.setRange(range);
+                infoDialog.setSteps(3);
+                infoDialog.setTitle(getActivity().getString(R.string.title_temperature));
                 infoDialog.show();
             }
 
             @Override
             public void onError(Exception error) {
                 Snackbar.make(coordinatorLayout, "Could not get Log data for: " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+                hideProgressDialog();
             }
         });
     }

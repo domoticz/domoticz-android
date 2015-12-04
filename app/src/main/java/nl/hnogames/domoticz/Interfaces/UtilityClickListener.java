@@ -27,5 +27,7 @@ import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 public interface UtilityClickListener {
     void onClick(UtilitiesInfo utility);
 
-    void onThermostatClick(int idx, int action, long newSetPoint);
+    void onLogClick(UtilitiesInfo utility, String range);
+
+    void onThermostatClick(int idx, int action, double newSetPoint);
 }

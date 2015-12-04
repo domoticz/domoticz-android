@@ -63,11 +63,9 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     private int previousDimmerValue;
     private ItemFilter mFilter = new ItemFilter();
 
-
     public SwitchesAdapter(Context context,
                            ArrayList<ExtendedStatusInfo> data,
                            switchesClickListener listener) {
-
         super();
         this.context = context;
         domoticz = new Domoticz(context);
@@ -149,7 +147,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
-                row = setDimmerRowId(holder);
+                if(mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
+                    row = setDimmerRowId(holder, true);
+                else
+                    row = setDimmerRowId(holder, false);
+
                 break;
 
             default:
@@ -225,9 +227,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
-    private View setDimmerRowId(ViewHolder holder) {
+    private View setDimmerRowId(ViewHolder holder, boolean isRGB) {
+        if(isRGB)
+            layoutResourceId = R.layout.switch_row_rgb_dimmer;
+        else
+            layoutResourceId = R.layout.switch_row_dimmer;
 
-        layoutResourceId = R.layout.switch_row_dimmer;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
@@ -241,6 +246,9 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+
+        if(isRGB)
+            holder.buttonColor = (Button) row.findViewById(R.id.color_button);
         return row;
     }
 
@@ -275,9 +283,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
-                setDimmerRowData(mExtendedStatusInfo, holder);
-                break;
+                if(mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
+                    setDimmerRowData(mExtendedStatusInfo, holder, true);
+                else
+                    setDimmerRowData(mExtendedStatusInfo, holder, false);
 
+                break;
             default:
                 throw new NullPointerException(
                         "No supported switch type defined in the adapter (setSwitchRowData)");
@@ -430,12 +441,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     }
 
     private void setDimmerRowData(final ExtendedStatusInfo mExtendedStatusInfo,
-                                  final ViewHolder holder) {
+                                  final ViewHolder holder,
+                                  final boolean isRGB) {
 
         holder.isProtected = mExtendedStatusInfo.isProtected();
-
         holder.switch_name.setText(mExtendedStatusInfo.getName());
-
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
@@ -444,7 +454,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
         holder.switch_battery_level.setText(text);
-
 
         holder.switch_dimmer_level.setId(mExtendedStatusInfo.getIdx() + ID_TEXTVIEW);
         String percentage = calculateDimPercentage(
@@ -461,20 +470,26 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 handleOnOffSwitchClick(compoundButton.getId(), checked);
                 mExtendedStatusInfo.setStatusBoolean(checked);
-
                 if (checked) {
                     holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                     holder.dimmer.setVisibility(View.VISIBLE);
                     if (holder.dimmer.getProgress() <= 10) {
                         holder.dimmer.setProgress(20);//dimmer turned on with default progress value
                     }
+                    if(isRGB)
+                        holder.buttonColor.setVisibility(View.VISIBLE);
                 } else {
                     holder.switch_dimmer_level.setVisibility(View.GONE);
                     holder.dimmer.setVisibility(View.GONE);
+                    if(isRGB)
+                        holder.buttonColor.setVisibility(View.GONE);
                 }
             }
         });
-        if (holder.isProtected) holder.dimmer.setEnabled(false);
+
+        if (holder.isProtected)
+            holder.dimmer.setEnabled(false);
+
         holder.dimmer.setProgress(mExtendedStatusInfo.getLevel());
         holder.dimmer.setMax(mExtendedStatusInfo.getMaxDimLevel());
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -512,9 +527,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (!mExtendedStatusInfo.getStatusBoolean()) {
             holder.switch_dimmer_level.setVisibility(View.GONE);
             holder.dimmer.setVisibility(View.GONE);
+            if(isRGB)
+                holder.buttonColor.setVisibility(View.GONE);
         } else {
             holder.switch_dimmer_level.setVisibility(View.VISIBLE);
             holder.dimmer.setVisibility(View.VISIBLE);
+            if(isRGB)
+                holder.buttonColor.setVisibility(View.VISIBLE);
         }
 
         holder.buttonLog.setId(mExtendedStatusInfo.getIdx());
@@ -535,6 +554,17 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         if (mExtendedStatusInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.INVISIBLE);
+
+        if(isRGB)
+        {
+            holder.buttonColor.setId(mExtendedStatusInfo.getIdx());
+            holder.buttonColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleColorButtonClick(v.getId());
+                }
+            });
+        }
     }
 
     private String calculateDimPercentage(int maxDimLevel, int level) {
@@ -554,6 +584,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         listener.onLogButtonClick(idx);
     }
 
+    private void handleColorButtonClick(int idx) {
+        listener.onColorButtonClick(idx);
+    }
+
     private void handleTimerButtonClick(int idx) {
         listener.onTimerButtonClick(idx);
     }
@@ -570,7 +604,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageButton buttonUp, buttonDown, buttonStop;
-        Button buttonOn, buttonLog, buttonTimer;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor;
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;

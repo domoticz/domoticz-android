@@ -41,6 +41,7 @@ public class ExtendedStatusInfo {
     int maxDimLevel;
     int favorite;
     String type;
+    String subtype;
     String status;
     String PlanID;
     boolean statusBoolean;
@@ -64,6 +65,10 @@ public class ExtendedStatusInfo {
             exceptionHandling(e);
             name = UNKNOWN;
         }
+
+            if (row.has("SubType"))
+                subtype = row.getString("SubType");
+
         try {
             if (row.has("Data"))
                 Data = row.getString("Data");
@@ -216,6 +221,10 @@ public class ExtendedStatusInfo {
 
     public boolean isProtected() {
         return isProtected;
+    }
+
+    public String getSubType() {
+        return subtype;
     }
 
     public String getTypeImg() {

@@ -49,6 +49,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private Domoticz mDomoticz;
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
     private int currentSwitch = 1;
+
     public WearMultiSelectListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);

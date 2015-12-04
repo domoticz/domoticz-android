@@ -30,14 +30,6 @@ public class WelcomeViewActivity extends FragmentActivity
     @SuppressWarnings("unused")
     private static final int SETTINGS = 2;
 
-    private static final String[] INITIAL_PERMS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    private static final int INITIAL_REQUEST = 1337;
     private final List<Fragment> fList = new ArrayList<>();
     private WelcomePageAdapter mAdapter;
     private ViewPager mPager;
@@ -52,12 +44,6 @@ public class WelcomeViewActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!canAccessLocation() || !canAccessStorage()) {
-                requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
-            }
-        }
-
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -68,39 +54,13 @@ public class WelcomeViewActivity extends FragmentActivity
         buildLayout();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case INITIAL_REQUEST:
-                if (!canAccessLocation() || !canAccessStorage()) {
-                    finishWithResult(false);
-                }
-                break;
-        }
-    }
-
-    private void finishWithResult(boolean success) {
+    public void finishWithResult(boolean success) {
         Bundle conData = new Bundle();
         conData.putBoolean("RESULT", success);
         Intent intent = new Intent();
         intent.putExtras(conData);
         setResult(RESULT_OK, intent);
         super.finish();
-    }
-
-    private boolean canAccessLocation() {
-        return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION));
-    }
-
-    private boolean canAccessStorage() {
-        return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE));
-    }
-
-    private boolean hasPermission(String perm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return (PackageManager.PERMISSION_GRANTED == checkSelfPermission(perm));
-        } else
-            return true;
     }
 
     @Override
@@ -114,14 +74,12 @@ public class WelcomeViewActivity extends FragmentActivity
     }
 
     private void setUpBackgroundColors() {
-
         Integer color1 = getResources().getColor(R.color.welcome1_background);
         Integer color2 = getResources().getColor(R.color.welcome2_background);
         Integer color3 = getResources().getColor(R.color.welcome3_background);
         Integer color4 = getResources().getColor(R.color.welcome4_background);
 
         background_colors = new Integer[]{color1, color2, color3, color4};
-
     }
 
     private void buildLayout() {

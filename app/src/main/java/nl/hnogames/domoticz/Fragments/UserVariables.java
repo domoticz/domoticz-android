@@ -63,22 +63,22 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
         mDomoticz.getUserVariables(new UserVariablesReceiver() {
             @Override
             public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
-                    UserVariables.this.mUserVariableInfos = mVarInfos;
-                    successHandling(mUserVariableInfos.toString(), false);
-                    adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
-                    createListView();
-                    hideProgressDialog();
+                UserVariables.this.mUserVariableInfos = mVarInfos;
+                successHandling(mUserVariableInfos.toString(), false);
+                adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
+                createListView();
+                hideProgressDialog();
             }
 
             @Override
-            public void onError(Exception error)  {
+            public void onError(Exception error) {
                 errorHandling(error);
             }
         });
     }
 
     private void createListView() {
-        if(getView()!=null) {
+        if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
             listView = (ListView) getView().findViewById(R.id.listView);

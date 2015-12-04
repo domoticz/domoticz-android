@@ -39,12 +39,10 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
 import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -93,7 +91,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                     public void onItemClick(int position, View v) {
                         Intent intent = new Intent(getActivity(), CameraActivity.class);
                         //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGEURL", "http://" + mCameras.get(position).getAddress() + "/" + mCameras.get(position).getImageURL());
+                        intent.putExtra("IMAGEURL", mCameras.get(position).getFullURL());
                         //noinspection SpellCheckingInspection
                         intent.putExtra("IMAGETITLE", mCameras.get(position).getName());
                         startActivity(intent);

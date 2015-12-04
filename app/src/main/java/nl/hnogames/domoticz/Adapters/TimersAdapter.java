@@ -84,10 +84,10 @@ public class TimersAdapter extends BaseAdapter {
 
         holder.switch_name.setText(mSwitchTimerInfo.getActive());
         String commando = "";
-        if (mSwitchTimerInfo.getCmd() == 1)
-            commando += "Commando: " + context.getString(R.string.button_state_on);
+        if (mSwitchTimerInfo.getCmd() == 0)
+            commando += "Command: " + context.getString(R.string.button_state_on);
         else
-            commando += "Commando: " + context.getString(R.string.button_state_off);
+            commando += "Command: " + context.getString(R.string.button_state_off);
 
         String type = "";
         if (mSwitchTimerInfo.getType() == 0)

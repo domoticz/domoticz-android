@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/barometer"/>
+                android:text="@string/barometer" />
 
             <TextView
                 android:id="@+id/weather_chill"
@@ -159,7 +159,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="@string/barometer"/>
+                android:text="@string/barometer" />
 
             <TextView
                 android:id="@+id/weather_chill_value"
