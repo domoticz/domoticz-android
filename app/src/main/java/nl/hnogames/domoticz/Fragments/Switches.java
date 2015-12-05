@@ -306,7 +306,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
             @Override
             public void onDismiss(int selectedColor) {
-
                 float[] hsv = new float[3];
                 Color.RGBToHSV(Color.red(selectedColor),Color.green(selectedColor),Color.blue(selectedColor), hsv);
                 Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2]);
@@ -326,7 +325,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                                 Snackbar.make(coordinatorLayout, "Could not change the Color", Snackbar.LENGTH_SHORT).show();
                             }
                         });
-
             }
         });
     }

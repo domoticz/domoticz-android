@@ -22,12 +22,19 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -47,6 +54,7 @@ import java.util.Set;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
 public class SharedPrefUtil {
 
@@ -506,6 +514,9 @@ public class SharedPrefUtil {
     }
 
     public boolean saveSharedPreferencesToFile(File dst) {
+        if(dst.exists())
+            dst.delete();
+
         boolean res = false;
         ObjectOutputStream output = null;
 
@@ -559,6 +570,8 @@ public class SharedPrefUtil {
             }
             editor.commit();
             res = true;
+
+            setGeoFenceService();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -575,5 +588,42 @@ public class SharedPrefUtil {
             }
         }
         return res;
+    }
+
+    private GoogleApiClient mApiClient = null;
+    public void setGeoFenceService() {
+        final List<Geofence> mGeofenceList= new ArrayList<>();
+        final ArrayList<LocationInfo> locations= getLocations();
+        if (locations != null)
+            for (LocationInfo locationInfo : locations)
+                if (locationInfo.getEnabled())
+                    mGeofenceList.add(locationInfo.toGeofence());
+
+        if(locations!=null && locations.size()>0) {
+            mApiClient = new GoogleApiClient.Builder(mContext)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(Bundle bundle) {
+                                PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+                                LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                        }
+                    })
+                    .build();
+            mApiClient.connect();
+        }
+    }
+
+    /**
+     * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
+     * transition occurs.
+     */
+    public PendingIntent getGeofenceTransitionPendingIntent() {
+        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
+        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

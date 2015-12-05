@@ -226,11 +226,16 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
+        if(mSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSwitch.getType().equals(Domoticz.Scene.Type.SCENE)){
+            jsonUrl = Domoticz.Json.Url.Set.SCENEFAVORITE;
+        }
+
         mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 mSwitch.setFavoriteBoolean(isFavorite);
+                processDashboard();
             }
 
             @Override
@@ -238,7 +243,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 errorHandling(error);
             }
         });
-
     }
 
     @Override
