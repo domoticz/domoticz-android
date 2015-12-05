@@ -38,6 +38,7 @@ http://www.freepik.com/free-psd/rounded-flat-icons-in-two-versions_708307.htm
 All other devs/mods/testers and domoticz supporters
 
 
+
 # License
 -----
 Copyright 2015 Domoticz
