@@ -250,7 +250,8 @@ public class MainActivity extends AppCompatActivity {
                 super.onDrawerOpened(drawerView);
 
                 try {
-                    searchViewAction.clearFocus();
+                    if(searchViewAction!=null)
+                        searchViewAction.clearFocus();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

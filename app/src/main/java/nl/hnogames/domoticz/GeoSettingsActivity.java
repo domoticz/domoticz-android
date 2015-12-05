@@ -311,7 +311,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
         currectLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if(currectLocation!=null)
             setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
@@ -408,7 +407,7 @@ public class GeoSettingsActivity extends AppCompatActivity
      * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
      * transition occurs.
      */
-    private PendingIntent getGeofenceTransitionPendingIntent() {
+    private PendingIntent mGeofenceList() {
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -420,7 +419,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     public void setGeoFenceService() {
         if (mGeofenceList != null && mGeofenceList.size() > 0) {
-            mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+            mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
             LocationServices.GeofencingApi
                     .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
             if (domoticz.isDebugEnabled())

@@ -74,6 +74,8 @@ public class Preference extends PreferenceFragment {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
                     }
+                    else
+                        exportSettings();
                 }
                 else {
                     exportSettings();
@@ -90,6 +92,8 @@ public class Preference extends PreferenceFragment {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
                     }
+                    else
+                        importSettings();
                 }
                 else {
                     importSettings();
