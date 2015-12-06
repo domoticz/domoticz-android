@@ -318,6 +318,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                             @Override
                             public void onReceiveResult(String result) {
                                 Snackbar.make(coordinatorLayout, "Color set for: "+getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                                getSwitchesData();
                             }
 
                             @Override
@@ -382,6 +383,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    getSwitchesData();
                 }
 
                 @Override
@@ -441,6 +443,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                getSwitchesData();
             }
 
             @Override
