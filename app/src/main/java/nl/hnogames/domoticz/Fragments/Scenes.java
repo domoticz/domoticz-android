@@ -183,6 +183,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 mSceneInfo.setFavoriteBoolean(isFavorite);
+                processScenes();
             }
 
             @Override

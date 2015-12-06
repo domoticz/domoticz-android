@@ -279,6 +279,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    processDashboard();
                 }
 
                 @Override

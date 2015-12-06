@@ -382,7 +382,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mExtendedStatusInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
+
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
     }
 
     private void setOnOffSwitchRowData(DevicesInfo mExtendedStatusInfo,
@@ -405,7 +415,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.onOffSwitch.setEnabled(false);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
+
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
 
         if (holder.onOffSwitch != null) {
             if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE))
@@ -455,7 +475,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
+
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
 
         if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE))
             holder.buttonOn.setId(mExtendedStatusInfo.getIdx()+this.ID_SCENE_SWITCH);
@@ -537,7 +567,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
+
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
 
         if (holder.isProtected) holder.buttonDown.setEnabled(false);
         holder.buttonDown.setId(mExtendedStatusInfo.getIdx());
@@ -572,7 +612,15 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 mExtendedStatusInfo.getMaxDimLevel(), mExtendedStatusInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
         holder.dimmerOnOffSwitch.setId(mExtendedStatusInfo.getIdx());
 
         if (holder.isProtected)

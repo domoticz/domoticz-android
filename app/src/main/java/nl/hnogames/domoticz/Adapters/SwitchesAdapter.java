@@ -314,7 +314,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.onOffSwitch.setId(mExtendedStatusInfo.getIdx());
         holder.onOffSwitch.setChecked(mExtendedStatusInfo.getStatusBoolean());
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
         holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -339,6 +338,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         if (mExtendedStatusInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.INVISIBLE);
+
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
     }
 
     private void setPushOnOffSwitchRowData(ExtendedStatusInfo mExtendedStatusInfo, ViewHolder holder, boolean action) {
@@ -357,7 +368,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
         holder.buttonOn.setId(mExtendedStatusInfo.getIdx());
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
@@ -395,6 +405,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         if (mExtendedStatusInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.INVISIBLE);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
     }
 
     private void setBlindsRowData(ExtendedStatusInfo mExtendedStatusInfo,
@@ -429,7 +446,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
         if (holder.isProtected) holder.buttonDown.setEnabled(false);
         holder.buttonDown.setId(mExtendedStatusInfo.getIdx());
         holder.buttonDown.setOnClickListener(new View.OnClickListener() {
@@ -438,6 +454,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 handleBlindsClick(view.getId(), Domoticz.Device.Blind.Action.DOWN);
             }
         });
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
     }
 
     private void setDimmerRowData(final ExtendedStatusInfo mExtendedStatusInfo,
@@ -460,7 +482,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 mExtendedStatusInfo.getMaxDimLevel(), mExtendedStatusInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg())).into(holder.iconRow);
         holder.dimmerOnOffSwitch.setId(mExtendedStatusInfo.getIdx() + ID_SWITCH);
         if (holder.isProtected) holder.dimmerOnOffSwitch.setEnabled(false);
 
@@ -565,6 +586,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 }
             });
         }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if(!mExtendedStatusInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
     }
 
     private String calculateDimPercentage(int maxDimLevel, int level) {

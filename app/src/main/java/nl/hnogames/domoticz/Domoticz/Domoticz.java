@@ -765,7 +765,7 @@ public class Domoticz {
                 url);
     }
 
-    public int getDrawableIcon(String type) {
+    public int getDrawableIcon(String type, String subtype, boolean state) {
         int test = R.drawable.defaultimage;
         switch (type) {
             case "scene":
@@ -779,7 +779,12 @@ public class Domoticz {
             case "door":
                 return R.drawable.door;
             case "lightbulb":
-                return R.drawable.lights;
+                if(subtype!=null && subtype.length()>0 && subtype.equals(Device.Type.Name.DUSKSENSOR))
+                    return R.drawable.uvdark;
+                if(subtype!=null && subtype.length()>0 && subtype.startsWith(Device.SubType.Name.RGB))
+                    return R.drawable.rgb;
+                else
+                    return R.drawable.lights;
             case "push":
                 return R.drawable.pushoff;
             case "pushoff":

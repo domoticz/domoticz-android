@@ -120,7 +120,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.temperature_hardware);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(), mTemperatureInfo.getType(), false)).into(holder.iconRow);
 
         holder.dayButton.setId(mTemperatureInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {

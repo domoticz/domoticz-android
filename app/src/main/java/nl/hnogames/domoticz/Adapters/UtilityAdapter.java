@@ -145,7 +145,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.name.setText(mUtilitiesInfo.getName());
             holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());
             holder.setPoint.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
-            Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg())).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), false)).into(holder.iconRow);
         } else {
             layoutResourceId = R.layout.utilities_row_default;
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -197,7 +197,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
                 }
             });
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg())).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), false)).into(holder.iconRow);
         }
         convertView.setTag(holder);
 

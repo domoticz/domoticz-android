@@ -124,7 +124,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.SCENE.toLowerCase())).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.SCENE.toLowerCase(), "", false)).into(holder.iconRow);
 
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
@@ -172,7 +172,11 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
                 });
             }
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase())).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase(), "", mSceneInfo.getStatusInBoolean())).into(holder.iconRow);
+            if(!mSceneInfo.getStatusInBoolean())
+                holder.iconRow.setAlpha(0.5f);
+            else
+                holder.iconRow.setAlpha(1f);
 
         } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
                 + mSceneInfo.toString());
