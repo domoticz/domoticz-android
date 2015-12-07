@@ -118,7 +118,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view,
                                                        int index, long id) {
-                            showInfoDialog(Temperature.this.mTemperatureInfos.get(index));
+                            showInfoDialog(adapter.filteredData.get(index));
                             return true;
                         }
                     });

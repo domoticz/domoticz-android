@@ -26,50 +26,29 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.util.Base64;
-import android.util.Log;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
-import nl.hnogames.domoticz.app.AppController;
 
 public class PermissionsUtil {
-
-    private static final String TAG = PermissionsUtil.class.getSimpleName();
 
     //these permissions are needed for Wifi scanning
     public static final String[] INITIAL_ACCESS_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
-
     //these permissions are needed for storing camera images
     public static final String[] INITIAL_STORAGE_PERMS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-
     public static final int INITIAL_ACCESS_REQUEST = 1337;
     public static final int INITIAL_IMPORT_SETTINGS_REQUEST = 1887;
     public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 1997;
     public static final int INITIAL_CAMERA_REQUEST = 1777;
+    private static final String TAG = PermissionsUtil.class.getSimpleName();
 
     public static boolean canAccessLocation(Context context) {
         return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, context));
     }
+
     public static boolean canAccessStorage(Context context) {
         return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context));
     }

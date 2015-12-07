@@ -39,8 +39,8 @@ public class TimersAdapter extends BaseAdapter {
 
     private static final String TAG = TimersAdapter.class.getSimpleName();
 
-    Context context;
-    ArrayList<SwitchTimerInfo> data = null;
+    private Context context;
+    private ArrayList<SwitchTimerInfo> data = null;
 
     public TimersAdapter(Context context,
                          ArrayList<SwitchTimerInfo> data) {

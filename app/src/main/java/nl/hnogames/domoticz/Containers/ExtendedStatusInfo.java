@@ -66,8 +66,8 @@ public class ExtendedStatusInfo {
             name = UNKNOWN;
         }
 
-            if (row.has("SubType"))
-                subtype = row.getString("SubType");
+        if (row.has("SubType"))
+            subtype = row.getString("SubType");
 
         try {
             if (row.has("Data"))

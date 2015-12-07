@@ -29,7 +29,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -96,6 +95,7 @@ public class SharedPrefUtil {
     Context mContext;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    private GoogleApiClient mApiClient = null;
 
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
@@ -264,7 +264,6 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
     }
 
-
     /*
      *      Remote server settings
      */
@@ -428,7 +427,6 @@ public class SharedPrefUtil {
         editor.putStringSet(LOCAL_SERVER_SSID, set).apply();
     }
 
-
     /**
      * Method for setting local server addresses the same as the remote server addresses
      */
@@ -514,7 +512,7 @@ public class SharedPrefUtil {
     }
 
     public boolean saveSharedPreferencesToFile(File dst) {
-        if(dst.exists())
+        if (dst.exists())
             dst.delete();
 
         boolean res = false;
@@ -590,23 +588,22 @@ public class SharedPrefUtil {
         return res;
     }
 
-    private GoogleApiClient mApiClient = null;
     public void setGeoFenceService() {
-        final List<Geofence> mGeofenceList= new ArrayList<>();
-        final ArrayList<LocationInfo> locations= getLocations();
+        final List<Geofence> mGeofenceList = new ArrayList<>();
+        final ArrayList<LocationInfo> locations = getLocations();
         if (locations != null)
             for (LocationInfo locationInfo : locations)
                 if (locationInfo.getEnabled())
                     mGeofenceList.add(locationInfo.toGeofence());
 
-        if(locations!=null && locations.size()>0) {
+        if (locations != null && locations.size() > 0) {
             mApiClient = new GoogleApiClient.Builder(mContext)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                         @Override
                         public void onConnected(Bundle bundle) {
-                                PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
-                                LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+                            PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+                            LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
                         }
 
                         @Override

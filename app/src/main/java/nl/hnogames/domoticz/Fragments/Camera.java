@@ -46,7 +46,6 @@ import java.io.IOException;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
 public class Camera extends Fragment {
 
@@ -72,8 +71,7 @@ public class Camera extends Fragment {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
                     }
-                }
-                else {
+                } else {
                     processImage();
                 }
             }
@@ -96,8 +94,7 @@ public class Camera extends Fragment {
         }
     }
 
-    private void processImage()
-    {
+    private void processImage() {
         // Get access to the URI for the bitmap
         Uri bmpUri = getLocalBitmapUri(root);
         if (bmpUri != null) {

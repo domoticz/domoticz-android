@@ -188,8 +188,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
         ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
 
-        if(mSharedPrefs==null)
-            mSharedPrefs=new SharedPrefUtil(this);
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(this);
 
         if (!mSharedPrefs.showCustomWear() && mSharedPrefs.getWearSwitches() != null && mSharedPrefs.getWearSwitches().length > 0) {
             for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {

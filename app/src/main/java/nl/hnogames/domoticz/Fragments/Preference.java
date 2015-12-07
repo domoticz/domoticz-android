@@ -40,7 +40,6 @@ import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
 public class Preference extends PreferenceFragment {
 
@@ -73,11 +72,9 @@ public class Preference extends PreferenceFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
-                    }
-                    else
+                    } else
                         exportSettings();
-                }
-                else {
+                } else {
                     exportSettings();
                 }
                 return false;
@@ -91,11 +88,9 @@ public class Preference extends PreferenceFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
-                    }
-                    else
+                    } else
                         importSettings();
-                }
-                else {
+                } else {
                     importSettings();
                 }
                 return false;
@@ -128,8 +123,7 @@ public class Preference extends PreferenceFragment {
             Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
     }
 
-    private void exportSettings()
-    {
+    private void exportSettings() {
         Log.v("Export Settings", "Exporting settings to: " + SettingsFile.getPath());
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
             Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();

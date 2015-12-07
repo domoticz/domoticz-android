@@ -187,7 +187,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
     }
 
     public List<String> getSelectedStrings() {
-        if(_items==null)
+        if (_items == null)
             return null;
 
         List<String> selection = new LinkedList<>();
@@ -201,7 +201,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
 
     @SuppressWarnings("unused")
     public List<Integer> getSelectedIndices() {
-        if(_items==null)
+        if (_items == null)
             return null;
 
         List<Integer> selection = new LinkedList<>();
@@ -214,7 +214,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
     }
 
     private String buildSelectedItemString() {
-        if(_items==null)
+        if (_items == null)
             return null;
 
         StringBuilder sb = new StringBuilder();
@@ -235,7 +235,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
 
     @SuppressWarnings("unused")
     public String getSelectedItemsAsString() {
-        if(_items==null)
+        if (_items == null)
             return null;
 
         StringBuilder sb = new StringBuilder();

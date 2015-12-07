@@ -25,16 +25,13 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -185,7 +182,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,
                                                int index, long id) {
-                    showInfoDialog(supportedSwitches.get(index));
+                    showInfoDialog(adapter.filteredData.get(index));
                     return true;
                 }
             });
@@ -231,7 +228,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     getActivity(),
                     switchLogs,
                     R.layout.dialog_switch_logs);
-
             infoDialog.show();
         }
     }
@@ -244,7 +240,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     getActivity(),
                     switchLogs,
                     R.layout.dialog_switch_logs);
-
             infoDialog.show();
         }
     }
@@ -257,7 +252,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
             Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
-
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -307,7 +301,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onDismiss(int selectedColor) {
                 float[] hsv = new float[3];
-                Color.RGBToHSV(Color.red(selectedColor),Color.green(selectedColor),Color.blue(selectedColor), hsv);
+                Color.RGBToHSV(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor), hsv);
                 Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2]);
 
                 mDomoticz.setRGBColorAction(idx,
@@ -317,8 +311,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         new setCommandReceiver() {
                             @Override
                             public void onReceiveResult(String result) {
-                                Snackbar.make(coordinatorLayout, "Color set for: "+getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
-                                getSwitchesData();
+                                Snackbar.make(coordinatorLayout, "Color set for: " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -383,7 +376,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
-                    getSwitchesData();
                 }
 
                 @Override
@@ -443,7 +435,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                getSwitchesData();
             }
 
             @Override
@@ -462,7 +453,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
-
         mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {

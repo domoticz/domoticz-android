@@ -40,6 +40,7 @@ public class TemperatureInfo {
     int HardwareID;
     String HardwareName;
     String TypeImg;
+    double Temp;
     int signalLevel;
 
     public TemperatureInfo(JSONObject row) throws JSONException {
@@ -52,6 +53,8 @@ public class TemperatureInfo {
             HardwareID = row.getInt("HardwareID");
         if (row.has("Type"))
             HardwareName = row.getString("Type");
+        if (row.has("Temp"))
+            Temp = row.getDouble("Temp");
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
         if (row.has("TypeImg"))
@@ -114,6 +117,10 @@ public class TemperatureInfo {
 
     public void setSignalLevel(int signalLevel) {
         this.signalLevel = signalLevel;
+    }
+
+    public double getTemperature() {
+        return Temp;
     }
 
     public String getName() {

@@ -169,7 +169,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
-                    showInfoDialog(supportedSwitches.get(index));
+                    showInfoDialog(adapter.filteredData.get(index));
                     return true;
                 }
             });
@@ -226,7 +226,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        if(mSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSwitch.getType().equals(Domoticz.Scene.Type.SCENE)){
+        if (mSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
             jsonUrl = Domoticz.Json.Url.Set.SCENEFAVORITE;
         }
 
@@ -234,7 +234,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                mSwitch.setFavoriteBoolean(isFavorite);
                 processDashboard();
             }
 
@@ -268,7 +267,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 else jsonAction = Domoticz.Device.Switch.Action.OFF;
             }
 
-            if(clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+            if (clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
                 jsonUrl = Domoticz.Json.Url.Set.SCENES;
                 if (checked) jsonAction = Domoticz.Scene.Action.ON;
                 else jsonAction = Domoticz.Scene.Action.OFF;
@@ -279,7 +278,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
-                    processDashboard();
                 }
 
                 @Override
@@ -297,9 +295,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 clickedSwitch = mExtendedStatusInfo;
             }
         }
-        if(clickedSwitch==null) {
+        if (clickedSwitch == null) {
             for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
-                if(mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                if (mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
                     if (mExtendedStatusInfo.getIdx() == (idx - adapter.ID_SCENE_SWITCH)) {
                         clickedSwitch = mExtendedStatusInfo;
                     }
@@ -327,7 +325,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
         else jsonAction = Domoticz.Device.Switch.Action.OFF;
 
-        if(clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+        if (clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
             jsonUrl = Domoticz.Json.Url.Set.SCENES;
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
@@ -347,13 +345,16 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onLogButtonClick(int idx) {}
+    public void onLogButtonClick(int idx) {
+    }
 
     @Override
-    public void onColorButtonClick(int idx) {}
+    public void onColorButtonClick(int idx) {
+    }
 
     @Override
-    public void onTimerButtonClick(int idx) {}
+    public void onTimerButtonClick(int idx) {
+    }
 
 
     @Override

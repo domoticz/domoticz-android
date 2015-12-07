@@ -113,7 +113,8 @@ public class GeofenceTransitionsIntentService extends IntentService
                     }
                 }
             }
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
 
     }
 

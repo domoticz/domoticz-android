@@ -624,7 +624,7 @@ public class Domoticz {
 
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
-        Log.v(TAG, "Action: "+url);
+        Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -633,14 +633,14 @@ public class Domoticz {
     }
 
     public void setRGBColorAction(int idx,
-                          int jsonUrl,
-                          int hue,
-                          int brightness,
-                          setCommandReceiver receiver) {
+                                  int jsonUrl,
+                                  int hue,
+                                  int brightness,
+                                  setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, Device.Dimmer.Action.COLOR, 0);
         url = url.replace("%hue%", String.valueOf(hue)).replace("%bright%", String.valueOf(brightness));
-        Log.v(TAG, "Action: "+url);
+        Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -656,7 +656,7 @@ public class Domoticz {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, id, jsonAction, value);
         url += Uri.encode(xmlStatement);
-        Log.v(TAG, "Action: "+url);
+        Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -767,7 +767,7 @@ public class Domoticz {
 
     public int getDrawableIcon(String type, String subtype, boolean state) {
         int test = R.drawable.defaultimage;
-        switch (type) {
+        switch (type.toLowerCase()) {
             case "scene":
                 return R.drawable.generic;
             case "group":
@@ -779,10 +779,8 @@ public class Domoticz {
             case "door":
                 return R.drawable.door;
             case "lightbulb":
-                if(subtype!=null && subtype.length()>0 && subtype.equals(Device.Type.Name.DUSKSENSOR))
+                if (subtype != null && subtype.length() > 0 && subtype.equals(Device.Type.Name.DUSKSENSOR))
                     return R.drawable.uvdark;
-                if(subtype!=null && subtype.length()>0 && subtype.startsWith(Device.SubType.Name.RGB))
-                    return R.drawable.rgb;
                 else
                     return R.drawable.lights;
             case "push":
@@ -797,20 +795,26 @@ public class Domoticz {
                 return R.drawable.uv;
             case "contact":
                 return R.drawable.contact;
-            case "LogitechMediaServer":
+            case "logitechMediaServer":
                 return R.drawable.media;
-            case "Media":
+            case "media":
                 return R.drawable.media;
             case "blinds":
                 return R.drawable.down;
             case "dimmer":
-                return R.drawable.lights;
+                if (subtype != null && subtype.length() > 0 && subtype.startsWith(Device.SubType.Name.RGB))
+                    return R.drawable.rgb;
+                else
+                    return R.drawable.dimmer;
             case "motion":
                 return R.drawable.motion;
             case "security":
                 return R.drawable.security;
             case "temperature":
-                return R.drawable.temperature;
+                if (state)
+                    return R.drawable.heating;
+                else
+                    return R.drawable.cooling;
             case "counter":
                 return R.drawable.up;
             case "override_mini":
@@ -825,15 +829,15 @@ public class Domoticz {
                 return R.drawable.leaf;
             case "hardware":
                 return R.drawable.computer;
-            case "Fan":
+            case "fan":
                 return R.drawable.fan;
-            case "Speaker":
+            case "speaker":
                 return R.drawable.speaker;
             case "current":
                 return R.drawable.wall;
             case "text":
                 return R.drawable.text;
-            case "Alert":
+            case "alert":
                 return R.drawable.siren;
             case "gauge":
                 return R.drawable.gauge;

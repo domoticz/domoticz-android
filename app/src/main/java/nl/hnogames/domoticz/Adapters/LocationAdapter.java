@@ -46,7 +46,7 @@ public class LocationAdapter extends BaseAdapter {
 
     private static final String TAG = LocationAdapter.class.getSimpleName();
     public ArrayList<LocationInfo> data = null;
-    Context context;
+    private Context context;
     private SharedPrefUtil prefs;
 
     private LocationClickListener listener;

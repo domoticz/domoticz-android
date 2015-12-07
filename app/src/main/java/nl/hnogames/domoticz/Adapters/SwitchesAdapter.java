@@ -57,7 +57,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     Domoticz domoticz;
     private Context context;
     private ArrayList<ExtendedStatusInfo> data = null;
-    private ArrayList<ExtendedStatusInfo> filteredData = null;
+    public ArrayList<ExtendedStatusInfo> filteredData = null;
     private switchesClickListener listener;
     private int layoutResourceId;
     private int previousDimmerValue;
@@ -81,6 +81,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         this.filteredData = data;
         this.listener = listener;
     }
+
 
     @Override
     public int getCount() {
@@ -147,7 +148,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
-                if(mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
+                if (mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
                     row = setDimmerRowId(holder, true);
                 else
                     row = setDimmerRowId(holder, false);
@@ -228,7 +229,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     }
 
     private View setDimmerRowId(ViewHolder holder, boolean isRGB) {
-        if(isRGB)
+        if (isRGB)
             layoutResourceId = R.layout.switch_row_rgb_dimmer;
         else
             layoutResourceId = R.layout.switch_row_dimmer;
@@ -247,7 +248,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
-        if(isRGB)
+        if (isRGB)
             holder.buttonColor = (Button) row.findViewById(R.id.color_button);
         return row;
     }
@@ -283,7 +284,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
-                if(mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
+                if (mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
                     setDimmerRowData(mExtendedStatusInfo, holder, true);
                 else
                     setDimmerRowData(mExtendedStatusInfo, holder, false);
@@ -295,8 +296,8 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    private void setOnOffSwitchRowData(ExtendedStatusInfo mExtendedStatusInfo,
-                                       ViewHolder holder) {
+    private void setOnOffSwitchRowData(final ExtendedStatusInfo mExtendedStatusInfo,
+                                       final ViewHolder holder) {
 
         holder.isProtected = mExtendedStatusInfo.isProtected();
         holder.switch_name.setText(mExtendedStatusInfo.getName());
@@ -318,6 +319,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 handleOnOffSwitchClick(compoundButton.getId(), checked);
+                mExtendedStatusInfo.setStatusBoolean(checked);
+
+                if (!checked)
+                    holder.iconRow.setAlpha(0.5f);
+                else
+                    holder.iconRow.setAlpha(1f);
             }
         });
 
@@ -339,13 +346,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (mExtendedStatusInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.INVISIBLE);
 
-        if(!mExtendedStatusInfo.getStatusBoolean())
+        if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
-        if(!mExtendedStatusInfo.getStatusBoolean())
+        if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
@@ -407,7 +414,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             holder.buttonTimer.setVisibility(View.INVISIBLE);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
-        if(!mExtendedStatusInfo.getStatusBoolean())
+        if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
@@ -456,7 +463,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
-        if(!mExtendedStatusInfo.getStatusBoolean())
+        if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
@@ -497,14 +504,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     if (holder.dimmer.getProgress() <= 10) {
                         holder.dimmer.setProgress(20);//dimmer turned on with default progress value
                     }
-                    if(isRGB)
+                    if (isRGB)
                         holder.buttonColor.setVisibility(View.VISIBLE);
                 } else {
                     holder.switch_dimmer_level.setVisibility(View.GONE);
                     holder.dimmer.setVisibility(View.GONE);
-                    if(isRGB)
+                    if (isRGB)
                         holder.buttonColor.setVisibility(View.GONE);
                 }
+                if (!checked)
+                    holder.iconRow.setAlpha(0.5f);
+                else
+                    holder.iconRow.setAlpha(1f);
             }
         });
 
@@ -548,12 +559,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (!mExtendedStatusInfo.getStatusBoolean()) {
             holder.switch_dimmer_level.setVisibility(View.GONE);
             holder.dimmer.setVisibility(View.GONE);
-            if(isRGB)
+            if (isRGB)
                 holder.buttonColor.setVisibility(View.GONE);
         } else {
             holder.switch_dimmer_level.setVisibility(View.VISIBLE);
             holder.dimmer.setVisibility(View.VISIBLE);
-            if(isRGB)
+            if (isRGB)
                 holder.buttonColor.setVisibility(View.VISIBLE);
         }
 
@@ -576,8 +587,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (mExtendedStatusInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.INVISIBLE);
 
-        if(isRGB)
-        {
+        if (isRGB) {
             holder.buttonColor.setId(mExtendedStatusInfo.getIdx());
             holder.buttonColor.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -587,12 +597,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
-        if(!mExtendedStatusInfo.getStatusBoolean())
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSubType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
-
     }
 
     private String calculateDimPercentage(int maxDimLevel, int level) {

@@ -52,12 +52,12 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = SceneAdapter.class.getSimpleName();
 
     private final ScenesClickListener listener;
-    Context context;
-    ArrayList<SceneInfo> filteredData = null;
-    ArrayList<SceneInfo> data = null;
-    Domoticz domoticz;
+    private Context context;
+    public ArrayList<SceneInfo> filteredData = null;
+    private ArrayList<SceneInfo> data = null;
+    private Domoticz domoticz;
 
-    ItemFilter mFilter = new ItemFilter();
+    private  ItemFilter mFilter = new ItemFilter();
 
     public SceneAdapter(Context context,
                         ArrayList<SceneInfo> data,
@@ -78,6 +78,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
 
         this.listener = listener;
     }
+
 
     @Override
     public int getCount() {
@@ -173,7 +174,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             }
 
             Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase(), "", mSceneInfo.getStatusInBoolean())).into(holder.iconRow);
-            if(!mSceneInfo.getStatusInBoolean())
+            if (!mSceneInfo.getStatusInBoolean())
                 holder.iconRow.setAlpha(0.5f);
             else
                 holder.iconRow.setAlpha(1f);
