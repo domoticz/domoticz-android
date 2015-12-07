@@ -159,8 +159,7 @@ public class DomoticzFragment extends Fragment {
     }
 
     public void addDebugText(String text) {
-        if(text!=null && text.length()>0)
-        {
+        if (text != null && text.length() > 0) {
             Logger(fragmentName, text);
             if (debug) {
                 if (debugText != null) {

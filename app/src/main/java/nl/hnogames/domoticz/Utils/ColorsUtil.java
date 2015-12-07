@@ -25,7 +25,6 @@ package nl.hnogames.domoticz.Utils;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.graphics.Color;
-import android.util.Pair;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -39,7 +38,7 @@ import nl.hnogames.domoticz.R;
 public class ColorsUtil {
     private static final String TAG = ColorsUtil.class.getSimpleName();
 
-    public static int getRandomMaterialColor(Context mContext){
+    public static int getRandomMaterialColor(Context mContext) {
         try {
             List<Integer> allColors = getAllMaterialColors(mContext);
             return allColors.get(new Random().nextInt(allColors.size()));

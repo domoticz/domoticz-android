@@ -118,7 +118,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,
                                                int index, long id) {
-                    showInfoDialog(scenes.get(index));
+                    showInfoDialog(adapter.filteredData.get(index));
                     return true;
                 }
             });

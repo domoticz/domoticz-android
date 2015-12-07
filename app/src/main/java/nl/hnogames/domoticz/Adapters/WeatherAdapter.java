@@ -42,10 +42,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 
@@ -55,7 +53,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
 
     private final WeatherClickListener listener;
     private Context context;
-    private ArrayList<WeatherInfo> filteredData = null;
+    public ArrayList<WeatherInfo> filteredData = null;
     private ArrayList<WeatherInfo> data = null;
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();

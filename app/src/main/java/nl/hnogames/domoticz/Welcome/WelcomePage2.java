@@ -18,11 +18,11 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class WelcomePage2 extends Fragment {
 
+    private File SettingsFile;
+
     public static final WelcomePage2 newInstance() {
         return new WelcomePage2();
     }
-    private File SettingsFile;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,8 +38,7 @@ public class WelcomePage2 extends Fragment {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
                     }
-                }
-                else {
+                } else {
                     importSettings();
                 }
             }
@@ -51,12 +50,11 @@ public class WelcomePage2 extends Fragment {
         return v;
     }
 
-    private void importSettings()
-    {
+    private void importSettings() {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
         if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
             Toast.makeText(getActivity(), "Settings Imported, we need to restart Domoticz!!", Toast.LENGTH_LONG).show();
-            ((WelcomeViewActivity)getActivity()).finishWithResult(true);
+            ((WelcomeViewActivity) getActivity()).finishWithResult(true);
         } else
             Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
     }
@@ -67,9 +65,8 @@ public class WelcomePage2 extends Fragment {
             case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
                 if (PermissionsUtil.canAccessStorage(getActivity())) {
                     importSettings();
-                }
-                else
-                    ((WelcomeViewActivity)getActivity()).finishWithResult(false);
+                } else
+                    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
                 break;
         }
     }

@@ -132,7 +132,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,
                                                int index, long id) {
-                    showInfoDialog(Utilities.this.mUtilitiesInfos.get(index));
+                    showInfoDialog(adapter.filteredData.get(index));
                     return true;
                 }
             });

@@ -312,7 +312,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             return;
         }
         currectLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if(currectLocation!=null)
+        if (currectLocation != null)
             setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
     }
 

@@ -50,10 +50,10 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = EventsAdapter.class.getSimpleName();
     private final EventsClickListener listener;
-    Context context;
-    ArrayList<EventInfo> filteredData = null;
-    ArrayList<EventInfo> data = null;
-    Domoticz domoticz;
+    public Context context;
+    private ArrayList<EventInfo> filteredData = null;
+    private ArrayList<EventInfo> data = null;
+    private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
 
     public EventsAdapter(Context context,
@@ -69,6 +69,7 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
         this.filteredData = data;
         this.listener = listener;
     }
+
 
     @Override
     public int getCount() {

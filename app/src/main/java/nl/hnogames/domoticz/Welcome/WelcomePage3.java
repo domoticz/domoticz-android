@@ -1,8 +1,6 @@
 package nl.hnogames.domoticz.Welcome;
 
-import android.Manifest;
 import android.app.Fragment;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -139,8 +137,7 @@ public class WelcomePage3 extends Fragment {
             if (!PermissionsUtil.canAccessLocation(getActivity())) {
                 requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);
             }
-        }
-        else
+        } else
             setSsid_spinner();
     }
 
@@ -150,9 +147,8 @@ public class WelcomePage3 extends Fragment {
             case PermissionsUtil.INITIAL_ACCESS_REQUEST:
                 if (PermissionsUtil.canAccessLocation(getActivity())) {
                     setSsid_spinner();
-                }
-                else
-                    ((WelcomeViewActivity)getActivity()).finishWithResult(false);
+                } else
+                    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
                 break;
         }
     }

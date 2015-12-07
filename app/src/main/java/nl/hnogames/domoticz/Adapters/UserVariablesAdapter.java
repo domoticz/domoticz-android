@@ -46,10 +46,10 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = UserVariablesAdapter.class.getSimpleName();
 
-    Context context;
-    ArrayList<UserVariableInfo> filteredData = null;
-    ArrayList<UserVariableInfo> data = null;
-    Domoticz domoticz;
+    private Context context;
+    public ArrayList<UserVariableInfo> filteredData = null;
+    private ArrayList<UserVariableInfo> data = null;
+    private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
 
     public UserVariablesAdapter(Context context,
@@ -63,6 +63,7 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
         this.data = data;
         this.filteredData = data;
     }
+
 
     @Override
     public int getCount() {

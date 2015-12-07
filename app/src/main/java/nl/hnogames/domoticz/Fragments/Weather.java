@@ -98,12 +98,12 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view,
                                                        int index, long id) {
-                            showInfoDialog(Weather.this.mWeatherInfos.get(index));
+                            showInfoDialog(adapter.filteredData.get(index));
                             return true;
                         }
                     });
-                    mSwipeRefreshLayout.setRefreshing(false);
 
+                    mSwipeRefreshLayout.setRefreshing(false);
                     mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {

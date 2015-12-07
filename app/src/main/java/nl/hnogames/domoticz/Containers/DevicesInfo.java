@@ -30,13 +30,13 @@ public class DevicesInfo {
     private final String UNKNOWN = "Unknown";
     private final String TAG = DevicesInfo.class.getSimpleName();
     JSONObject jsonObject;
-    String SubType;
     boolean timers;
     int idx;
     String Name;
     String LastUpdate;
     long setPoint;
     String Type;
+    String SubType;
     int Favorite;
     int HardwareID;
     String HardwareName;
@@ -136,10 +136,10 @@ public class DevicesInfo {
             TypeImg = row.getString("TypeImg");
         if (row.has("Type"))
             Type = row.getString("Type");
-        if (row.has("Timers"))
-            timers = row.getBoolean("Timers");
         if (row.has("SubType"))
             SubType = row.getString("SubType");
+        if (row.has("Timers"))
+            timers = row.getBoolean("Timers");
 
         idx = row.getInt("idx");
 
@@ -163,6 +163,10 @@ public class DevicesInfo {
 
     public String getTimers() {
         return Timers;
+    }
+
+    public String getSubType() {
+        return SubType;
     }
 
     public String getPlanID() {

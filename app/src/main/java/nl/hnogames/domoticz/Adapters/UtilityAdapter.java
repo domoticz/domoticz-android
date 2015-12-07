@@ -51,11 +51,11 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = UtilityAdapter.class.getSimpleName();
 
     private final UtilityClickListener listener;
-    Context context;
-    ArrayList<UtilitiesInfo> filteredData = null;
-    ArrayList<UtilitiesInfo> data = null;
-    Domoticz domoticz;
-    private ItemFilter mFilter = new ItemFilter();
+    private Context context;
+    public ArrayList<UtilitiesInfo> filteredData = null;
+    private ArrayList<UtilitiesInfo> data = null;
+    private Domoticz domoticz;
+    private  ItemFilter mFilter = new ItemFilter();
 
     public UtilityAdapter(Context context,
                           ArrayList<UtilitiesInfo> data,

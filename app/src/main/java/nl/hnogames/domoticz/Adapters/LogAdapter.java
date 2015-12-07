@@ -64,6 +64,7 @@ public class LogAdapter extends BaseAdapter implements Filterable {
         this.filteredData = data;
     }
 
+
     @Override
     public int getCount() {
         return filteredData.size();

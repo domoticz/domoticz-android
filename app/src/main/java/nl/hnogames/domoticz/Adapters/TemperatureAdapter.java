@@ -52,10 +52,10 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
 
     private final TemperatureClickListener listener;
-    Domoticz domoticz;
-    Context context;
-    ArrayList<TemperatureInfo> filteredData = null;
-    ArrayList<TemperatureInfo> data = null;
+    private Domoticz domoticz;
+    private Context context;
+    public ArrayList<TemperatureInfo> filteredData = null;
+    private ArrayList<TemperatureInfo> data = null;
     private ItemFilter mFilter = new ItemFilter();
 
     public TemperatureAdapter(Context context,
@@ -75,6 +75,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         this.filteredData = data;
         this.listener = listener;
     }
+
 
     @Override
     public int getCount() {
@@ -120,7 +121,13 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.temperature_hardware);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(), mTemperatureInfo.getType(), false)).into(holder.iconRow);
+
+
+        boolean toHot = false;
+        if (mTemperatureInfo.getTemperature() > 30)
+            toHot = true;
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(), mTemperatureInfo.getType(), toHot)).into(holder.iconRow);
 
         holder.dayButton.setId(mTemperatureInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {

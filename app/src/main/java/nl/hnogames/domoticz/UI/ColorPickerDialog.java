@@ -24,20 +24,13 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.larswerkman.lobsterpicker.LobsterPicker;
 import com.larswerkman.lobsterpicker.sliders.LobsterOpacitySlider;
 import com.larswerkman.lobsterpicker.sliders.LobsterShadeSlider;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 
 public class ColorPickerDialog implements DialogInterface.OnDismissListener {
@@ -45,7 +38,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
-    private int currentColor =0;
+    private int currentColor = 0;
     private LobsterPicker lobsterPicker;
 
     public ColorPickerDialog(Context mContext) {
