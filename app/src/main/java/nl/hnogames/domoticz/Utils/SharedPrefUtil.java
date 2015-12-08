@@ -141,7 +141,6 @@ public class SharedPrefUtil {
     }
 
     public void setStartupScreenIndex(int position) {
-
         String[] startupScreenValues =
                 mContext.getResources().getStringArray(R.array.drawer_actions);
         String startupScreenValue;
@@ -420,11 +419,13 @@ public class SharedPrefUtil {
     }
 
     public void setLocalSsid(List<String> ssids) {
-        Set<String> set = new HashSet<>();
-        for (String ssid : ssids) {
-            set.add(ssid);
+        if(ssids!=null) {
+            Set<String> set = new HashSet<>();
+            for (String ssid : ssids) {
+                set.add(ssid);
+            }
+            editor.putStringSet(LOCAL_SERVER_SSID, set).apply();
         }
-        editor.putStringSet(LOCAL_SERVER_SSID, set).apply();
     }
 
     /**

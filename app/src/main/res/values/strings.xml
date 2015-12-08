@@ -88,4 +88,9 @@
     <string name="connect_switch">Connect switch</string>
 
 
+    <string name="sort_on">ON</string>
+    <string name="sort_off">OFF</string>
+    <string name="sort_all">ALL</string>
+
+
 </resources>

@@ -153,12 +153,19 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 String name = mExtendedStatusInfo.getName();
                 int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                 String switchType = mExtendedStatusInfo.getSwitchType();
-
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
-                        (switchType == null || switchType.equals(null) || switchType.length() <= 0))//utilities
+                        (switchType == null || switchType.equals(null) || switchType.length() <= 0))
                 {
-                    supportedSwitches.add(mExtendedStatusInfo);
+                    if(super.getSort().equals(null)||super.getSort().length()<=0||super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                        supportedSwitches.add(mExtendedStatusInfo);
+                    }else{
+                        Snackbar.make(coordinatorLayout, "Sorting on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                        if((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean()))
+                            supportedSwitches.add(mExtendedStatusInfo);
+                        if((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean()))
+                            supportedSwitches.add(mExtendedStatusInfo);
+                    }
                 }
             }
 
@@ -186,7 +193,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
         hideProgressDialog();
     }
-
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
         DeviceInfoDialog infoDialog = new DeviceInfoDialog(
