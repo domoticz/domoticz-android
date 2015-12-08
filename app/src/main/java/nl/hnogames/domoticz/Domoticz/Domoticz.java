@@ -780,7 +780,10 @@ public class Domoticz {
                 return R.drawable.door;
             case "lightbulb":
                 if (subtype != null && subtype.length() > 0 && subtype.equals(Device.Type.Name.DUSKSENSOR))
-                    return R.drawable.uvdark;
+                    if(state)
+                        return R.drawable.uvdark;
+                    else
+                        return R.drawable.uvsunny;
                 else
                     return R.drawable.lights;
             case "push":

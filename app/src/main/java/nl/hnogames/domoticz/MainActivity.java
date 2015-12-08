@@ -39,6 +39,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
@@ -50,7 +51,12 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Fragments.Dashboard;
+import nl.hnogames.domoticz.Fragments.Scenes;
+import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.UI.SortDialog;
+import nl.hnogames.domoticz.UI.SwitchsDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -307,13 +313,14 @@ public class MainActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_simple, menu);
 
         } else {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_main, menu);
+            if((f instanceof Dashboard)||(f instanceof Scenes)||(f instanceof Switches))
+                getMenuInflater().inflate(R.menu.menu_main_sort, menu);
+            else
+                getMenuInflater().inflate(R.menu.menu_main, menu);
 
             MenuItem searchMenuItem = menu.findItem(R.id.search);
             searchViewAction = (SearchView) MenuItemCompat
                     .getActionView(searchMenuItem);
-
             searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -323,7 +330,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Fragment n = getVisibleFragment();
-
                     if (n instanceof DomoticzFragment) {
                         ((DomoticzFragment) n).Filter(newText);
                     }
@@ -342,6 +348,22 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_settings:
                     startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
+                    return true;
+                case R.id.action_sort:
+                    SortDialog infoDialog = new SortDialog(
+                            this,
+                            R.layout.dialog_switch_logs);
+                    infoDialog.onDismissListener(new SortDialog.DismissListener() {
+                        @Override
+                        public void onDismiss(String selectedSort) {
+                            Log.i(TAG, "Sorting: "+selectedSort);
+                            Fragment f = getVisibleFragment();
+                            if (f instanceof DomoticzFragment) {
+                                ((DomoticzFragment) f).sortFragment(selectedSort);
+                            }
+                        }
+                    });
+                    infoDialog.show();
                     return true;
             }
 

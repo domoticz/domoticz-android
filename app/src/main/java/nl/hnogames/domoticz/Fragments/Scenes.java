@@ -34,6 +34,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -103,6 +104,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
 
+         ArrayList<SceneInfo> supportedScenes = new ArrayList<>();
         if (getView() != null) {
             mScenes = scenes;
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
@@ -111,7 +113,19 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                     .coordinatorLayout);
             final ScenesClickListener listener = this;
 
-            adapter = new SceneAdapter(mActivity, scenes, listener);
+            for(SceneInfo s: scenes) {
+                if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                    supportedScenes.add(s);
+                } else {
+                    Snackbar.make(coordinatorLayout, "Sorting on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                    if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && s.getStatusInBoolean()))
+                        supportedScenes.add(s);
+                    if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !s.getStatusInBoolean()))
+                        supportedScenes.add(s);
+                }
+            }
+
+            adapter = new SceneAdapter(mActivity, supportedScenes, listener);
             ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

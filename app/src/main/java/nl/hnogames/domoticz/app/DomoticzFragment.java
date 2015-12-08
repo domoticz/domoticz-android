@@ -54,11 +54,21 @@ public class DomoticzFragment extends Fragment {
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
+    private String sort = "";
 
     public DomoticzFragment() {
     }
 
     public void refreshFragment() {
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void sortFragment(String sort) {
+        this.sort = sort;
+        refreshFragment();
     }
 
     @Override

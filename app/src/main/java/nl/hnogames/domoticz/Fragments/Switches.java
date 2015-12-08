@@ -170,7 +170,16 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         appSupportedSwitchesValues.contains(switchTypeVal) &&
                         appSupportedSwitchesNames.contains(switchType)) {
-                    supportedSwitches.add(mExtendedStatusInfo);
+                    if(super.getSort().equals(null)||super.getSort().length()<=0||super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                        supportedSwitches.add(mExtendedStatusInfo);
+                    }else{
+                        Snackbar.make(coordinatorLayout, "Sorting on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                        if((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean())) {
+                            supportedSwitches.add(mExtendedStatusInfo);
+                        }if((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean())) {
+                            supportedSwitches.add(mExtendedStatusInfo);
+                        }
+                    }
                 }
             }
 
