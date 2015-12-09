@@ -52,9 +52,9 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
 
     private final TemperatureClickListener listener;
+    public ArrayList<TemperatureInfo> filteredData = null;
     private Domoticz domoticz;
     private Context context;
-    public ArrayList<TemperatureInfo> filteredData = null;
     private ArrayList<TemperatureInfo> data = null;
     private ItemFilter mFilter = new ItemFilter();
 

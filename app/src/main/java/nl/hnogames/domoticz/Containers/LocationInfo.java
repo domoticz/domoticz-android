@@ -30,7 +30,7 @@ public class LocationInfo {
     LatLng Location;
     int id = 0;
     int switchidx = 0;
-    int range = 120;//meters
+    int range = 400;//meters
     boolean enabled = false;
 
 
@@ -38,6 +38,7 @@ public class LocationInfo {
         this.Name = n;
         this.Location = l;
         this.id = i;
+        this.range = range;
     }
 
 

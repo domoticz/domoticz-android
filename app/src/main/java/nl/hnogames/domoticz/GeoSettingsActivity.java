@@ -22,21 +22,15 @@
 
 package nl.hnogames.domoticz;
 
-import android.Manifest;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,6 +46,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -71,9 +66,9 @@ import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
-import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchsDialog;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 // import android.location.LocationListener;
@@ -85,13 +80,8 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private final String TAG = "GeoSettings";
     @SuppressWarnings("FieldCanBeLocal")
-    private final int BEST_AVAILABLE_PROVIDER_CODE = 111;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int BEST_PROVIDER_CODE = 222;
-    @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
     private GoogleMap map;
-    private LocationManager locationManager;
     private SharedPrefUtil mSharedPrefs;
 
     private Domoticz domoticz;
@@ -105,6 +95,8 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private CoordinatorLayout coordinatorLayout;
     private Location currectLocation;
+    private String usedLocationService;
+    private LocationRequest mLocationRequest;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -140,6 +132,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         mSharedPrefs = new SharedPrefUtil(this);
         createListView();
         initSwitches();
+        createLocationRequest();
     }
 
     private void initSwitches() {
@@ -189,7 +182,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (map == null)
             map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
-        getCurrentLocationOnMapFromProvider();
     }
 
     public void showSwitchesDialog(
@@ -270,50 +262,39 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
     }
 
-    public void getCurrentLocationOnMapFromProvider() {
-        Criteria criteria = new Criteria();
-        criteria.setSpeedRequired(false);
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setCostAllowed(true);
-        criteria.setBearingAccuracy(Criteria.ACCURACY_HIGH);
-        criteria.setAltitudeRequired(false);
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(100000);
+        mLocationRequest.setFastestInterval(50000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // finding best provider without fulfilling the criteria
-        String bestProvider = locationManager.getBestProvider(criteria, false);
-        // finding best provider which fulfills the criteria
-        String bestAvailableProvider = locationManager.getBestProvider(criteria, true);
-
-        if (bestProvider == null) {
-        } else if (bestAvailableProvider != null && bestAvailableProvider.equals(bestAvailableProvider)) {
-            if (!locationManager.isProviderEnabled(bestAvailableProvider)) {
-                Log.d(TAG, "Best available provider not enabled" + bestAvailableProvider);
-                Snackbar.make(coordinatorLayout, String.format(getString(R.string.geofence_provider_msg), bestAvailableProvider), Snackbar.LENGTH_LONG).show();
-                Intent mainIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(mainIntent, BEST_AVAILABLE_PROVIDER_CODE);
-            } else {
-                getLocation(bestAvailableProvider);
-            }
-        } else {
-            if (!locationManager.isProviderEnabled(bestProvider)) {
-                Log.d(TAG, "Best provider not enabled" + bestProvider);
-                Snackbar.make(coordinatorLayout, String.format(getString(R.string.geofence_provider_msg), bestProvider), Snackbar.LENGTH_LONG).show();
-                Intent mainIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(mainIntent, BEST_PROVIDER_CODE);
-            } else {
-                getLocation(bestProvider);
-            }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PermissionsUtil.INITIAL_ACCESS_REQUEST:
+                if (PermissionsUtil.canAccessLocation(this)) {
+                    startLocationUpdates();
+                }
+                break;
         }
     }
 
-    public void getLocation(String usedLocationService) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        currectLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    public void getLocation() {
+        currectLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mApiClient);
         if (currectLocation != null)
             setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mApiClient, mLocationRequest, new com.google.android.gms.location.LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        getLocation();
+                    }
+                });
     }
 
     private void setMarker(LatLng currentLatLng) {
@@ -403,18 +384,16 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
-     * transition occurs.
-     */
-    private PendingIntent mGeofenceList() {
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
     @Override
     public void onConnected(Bundle bundle) {
         setGeoFenceService();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!PermissionsUtil.canAccessLocation(this)) {
+                requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);
+            } else
+                startLocationUpdates();
+        } else
+            startLocationUpdates();
     }
 
     public void setGeoFenceService() {

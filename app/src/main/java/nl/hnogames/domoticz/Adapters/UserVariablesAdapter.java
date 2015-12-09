@@ -45,9 +45,8 @@ import nl.hnogames.domoticz.R;
 public class UserVariablesAdapter extends BaseAdapter implements Filterable {
 
     private static final String TAG = UserVariablesAdapter.class.getSimpleName();
-
-    private Context context;
     public ArrayList<UserVariableInfo> filteredData = null;
+    private Context context;
     private ArrayList<UserVariableInfo> data = null;
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();

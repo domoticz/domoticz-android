@@ -53,11 +53,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
-
+    public ArrayList<ExtendedStatusInfo> filteredData = null;
     Domoticz domoticz;
     private Context context;
     private ArrayList<ExtendedStatusInfo> data = null;
-    public ArrayList<ExtendedStatusInfo> filteredData = null;
     private switchesClickListener listener;
     private int layoutResourceId;
     private int previousDimmerValue;
@@ -126,7 +125,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
             case Domoticz.Device.Type.Value.X10SIREN:
             case Domoticz.Device.Type.Value.DOORLOCK:
-            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                 row = setOnOffSwitchRowId(holder);
                 break;
 
@@ -136,7 +134,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 row = setMotionSwitchRowId(holder);
                 break;
 
-            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.BLINDVENETIAN:
                 row = setBlindsRowId(holder);
                 break;
 
@@ -148,10 +146,20 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                 if (mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
                     row = setDimmerRowId(holder, true);
                 else
                     row = setDimmerRowId(holder, false);
+                break;
+
+            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.BLINDINVERTED:
+                if(canHandleStopButton(mExtendedStatusInfo))
+                    row = setBlindsRowId(holder);
+                else
+                    row = setOnOffSwitchRowId(holder);
 
                 break;
 
@@ -265,7 +273,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.CONTACT:
             case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
-            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                 setOnOffSwitchRowData(mExtendedStatusInfo, holder);
                 break;
 
@@ -279,21 +286,44 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, false);
                 break;
 
-            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.BLINDVENETIAN:
                 setBlindsRowData(mExtendedStatusInfo, holder);
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                 if (mExtendedStatusInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
                     setDimmerRowData(mExtendedStatusInfo, holder, true);
                 else
                     setDimmerRowData(mExtendedStatusInfo, holder, false);
-
                 break;
+
+            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.BLINDINVERTED:
+                if(canHandleStopButton(mExtendedStatusInfo))
+                    setBlindsRowData(mExtendedStatusInfo, holder);
+                else
+                    setOnOffSwitchRowData(mExtendedStatusInfo, holder);
+                break;
+
             default:
                 throw new NullPointerException(
                         "No supported switch type defined in the adapter (setSwitchRowData)");
         }
+    }
+
+    private boolean canHandleStopButton(ExtendedStatusInfo mExtendedStatusInfo)
+    {
+        if((mExtendedStatusInfo.getSubType().indexOf("RAEX") >= 0 ) ||
+        (mExtendedStatusInfo.getSubType().indexOf("A-OK") >= 0)||
+        (mExtendedStatusInfo.getSubType().indexOf("RollerTrol") >= 0)||
+        (mExtendedStatusInfo.getSubType().indexOf("RFY") >= 0)||
+        (mExtendedStatusInfo.getSubType().indexOf("ASA") >= 0)||
+        (mExtendedStatusInfo.getSubType().indexOf("T6 DC") >= 0))
+            return true;
+        else
+            return false;
     }
 
     private void setOnOffSwitchRowData(final ExtendedStatusInfo mExtendedStatusInfo,
@@ -362,7 +392,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     private void setPushOnOffSwitchRowData(ExtendedStatusInfo mExtendedStatusInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mExtendedStatusInfo.isProtected();
         holder.switch_name.setText(mExtendedStatusInfo.getName());
-
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
@@ -440,7 +469,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleBlindsClick(view.getId(), Domoticz.Device.Blind.Action.UP);
+                for(ExtendedStatusInfo e : filteredData)
+                {
+                    if(e.getIdx() == view.getId())
+                    {
+                        if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
+                        else if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
+                        else
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
+                    }
+                }
             }
         });
 
@@ -449,7 +489,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleBlindsClick(view.getId(), Domoticz.Device.Blind.Action.STOP);
+                for(ExtendedStatusInfo e : filteredData)
+                {
+                    if(e.getIdx() == view.getId())
+                    {
+                        handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.STOP);
+                    }
+                }
             }
         });
 
@@ -458,7 +504,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleBlindsClick(view.getId(), Domoticz.Device.Blind.Action.DOWN);
+                for(ExtendedStatusInfo e : filteredData)
+                {
+                    if(e.getIdx() == view.getId())
+                    {
+                        if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
+                        else if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                        handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
+                    else
+                        handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
+                    }
+                }
             }
         });
 

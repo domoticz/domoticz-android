@@ -52,8 +52,8 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = WeatherAdapter.class.getSimpleName();
 
     private final WeatherClickListener listener;
-    private Context context;
     public ArrayList<WeatherInfo> filteredData = null;
+    private Context context;
     private ArrayList<WeatherInfo> data = null;
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
