@@ -55,7 +55,6 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 public class GeofenceTransitionsIntentService extends IntentService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-
     private final String TAG = "GEOFENCE";
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
@@ -67,9 +66,9 @@ public class GeofenceTransitionsIntentService extends IntentService
     @Override
     public void onCreate() {
         super.onCreate();
-
         mSharedPrefs = new SharedPrefUtil(this);
     }
+
 
     /**
      * Handles incoming intents.
@@ -98,7 +97,6 @@ public class GeofenceTransitionsIntentService extends IntentService
                             handleSwitch(locationFound.getSwitchidx(), true);
                         }
                     }
-
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
@@ -115,7 +113,6 @@ public class GeofenceTransitionsIntentService extends IntentService
             }
         } catch (Exception ex) {
         }
-
     }
 
     private void handleSwitch(final int idx, final boolean checked) {
@@ -164,12 +161,10 @@ public class GeofenceTransitionsIntentService extends IntentService
                                              });
                                          }
                                      }
-
                                  }
 
                                  @Override
                                  public void onError(Exception error) {
-
                                  }
                              }
         );
@@ -202,5 +197,4 @@ public class GeofenceTransitionsIntentService extends IntentService
     @Override
     public void onConnectionFailed(ConnectionResult result) {
     }
-
 }

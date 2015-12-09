@@ -22,7 +22,10 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -31,47 +34,51 @@ import android.net.wifi.WifiManager;
 
 import java.util.List;
 
+import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
+
 public class PhoneConnectionUtil {
 
-    final WifiManager wifiManager;
-    Context mContext;
-    ConnectivityManager connManager;
-    NetworkInfo networkWifiInfo;
-    NetworkInfo networkCellInfo;
+    private final WifiManager wifiManager;
+    private Context mContext;
+    private ConnectivityManager connManager;
+    private NetworkInfo networkWifiInfo;
+    private NetworkInfo networkCellInfo;
+    private WifiSSIDListener listener;
 
-    public PhoneConnectionUtil(Context mContext) {
+    public PhoneConnectionUtil(Context mContext,
+                               final WifiSSIDListener listener) {
         this.mContext = mContext;
         wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-    }
+        this.listener=listener;
+        mContext.registerReceiver(new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context c, Intent intent)
+            {
+                List<ScanResult> results = wifiManager.getScanResults();
+                CharSequence[] entries = new CharSequence[0];
 
-    public CharSequence[] startSsidScanAsCharSequence() {
-        List<ScanResult> results = startSsidScan();
-        CharSequence[] entries = new CharSequence[0];
+                if (results != null && results.size() > 0) {
+                    entries = new CharSequence[results.size()];
 
-        if (results != null && results.size() > 0) {
-            entries = new CharSequence[results.size()];
-
-            int i = 0;
-            for (ScanResult result : results) {
-                entries[i] = result.SSID;
-                i++;
+                    int i = 0;
+                    for (ScanResult result : results) {
+                        if(result.SSID!=null && result.SSID.length()>0) {
+                            entries[i] = result.SSID;
+                            i++;
+                        }
+                    }
+                }
+                listener.ReceiveSSIDs(entries);
             }
-        }
-        return entries;
+        }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     }
 
-    public List<ScanResult> startSsidScan() {
-        List<ScanResult> results;
-
-        if (wifiManager.startScan()) {
-            results = wifiManager.getScanResults();
-            return results;
-        } else {
-            return null;
-        }
+    public void startSsidScan() {
+        wifiManager.startScan();
     }
 
     @SuppressWarnings("unused")

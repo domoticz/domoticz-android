@@ -51,11 +51,11 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = UtilityAdapter.class.getSimpleName();
 
     private final UtilityClickListener listener;
-    private Context context;
     public ArrayList<UtilitiesInfo> filteredData = null;
+    private Context context;
     private ArrayList<UtilitiesInfo> data = null;
     private Domoticz domoticz;
-    private  ItemFilter mFilter = new ItemFilter();
+    private ItemFilter mFilter = new ItemFilter();
 
     public UtilityAdapter(Context context,
                           ArrayList<UtilitiesInfo> data,
@@ -165,6 +165,9 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.name.setText(mUtilitiesInfo.getName());
             holder.data.append(": " + mUtilitiesInfo.getData());
             holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
+
+            if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
+                holder.data.append(" Today: " + mUtilitiesInfo.getCounterToday());
 
             holder.dayButton.setId(mUtilitiesInfo.getIdx());
             holder.dayButton.setOnClickListener(new View.OnClickListener() {

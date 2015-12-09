@@ -104,7 +104,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
 
-         ArrayList<SceneInfo> supportedScenes = new ArrayList<>();
+        ArrayList<SceneInfo> supportedScenes = new ArrayList<>();
         if (getView() != null) {
             mScenes = scenes;
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
@@ -113,14 +113,16 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                     .coordinatorLayout);
             final ScenesClickListener listener = this;
 
-            for(SceneInfo s: scenes) {
+            for (SceneInfo s : scenes) {
                 if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
                     supportedScenes.add(s);
                 } else {
-                    Snackbar.make(coordinatorLayout, "Sorting on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && s.getStatusInBoolean()))
+                    Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                    if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && s.getStatusInBoolean()) && isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !s.getStatusInBoolean()))
+                    if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !s.getStatusInBoolean()) && isOnOffScene(s))
+                        supportedScenes.add(s);
+                    if ((super.getSort().equals(getContext().getString(R.string.sort_static))) && !isOnOffScene(s))
                         supportedScenes.add(s);
                 }
             }
@@ -149,6 +151,15 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         }
     }
 
+    private boolean isOnOffScene(SceneInfo testSwitch)
+    {
+       switch (testSwitch.getType()) {
+            case Domoticz.Scene.Type.GROUP:
+                return true;
+        }
+
+        return false;
+    }
     private SceneInfo getScene(int idx) {
         SceneInfo clickedScene = null;
         for (SceneInfo s : mScenes) {

@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
@@ -170,13 +171,17 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         appSupportedSwitchesValues.contains(switchTypeVal) &&
                         appSupportedSwitchesNames.contains(switchType)) {
-                    if(super.getSort().equals(null)||super.getSort().length()<=0||super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
                         supportedSwitches.add(mExtendedStatusInfo);
-                    }else{
-                        Snackbar.make(coordinatorLayout, "Sorting on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                        if((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean())) {
+                    } else {
+                        Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean()) && isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
-                        }if((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean())) {
+                        }
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean()) && isOnOffSwitch(mExtendedStatusInfo)) {
+                            supportedSwitches.add(mExtendedStatusInfo);
+                        }
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_static)) ) && !isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         }
                     }
@@ -209,6 +214,28 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         hideProgressDialog();
     }
 
+    private boolean isOnOffSwitch(ExtendedStatusInfo testSwitch)
+    {
+        switch (testSwitch.getSwitchTypeVal()) {
+            case Domoticz.Device.Type.Value.ON_OFF:
+            case Domoticz.Device.Type.Value.MEDIAPLAYER:
+            case Domoticz.Device.Type.Value.X10SIREN:
+            case Domoticz.Device.Type.Value.DOORLOCK:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+            case Domoticz.Device.Type.Value.BLINDINVERTED:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+            case Domoticz.Device.Type.Value.BLINDVENETIAN:
+            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.DIMMER:
+                return true;
+        }
+        switch (testSwitch.getType()) {
+            case Domoticz.Scene.Type.GROUP:
+                return true;
+        }
+
+        return false;
+    }
     private void showInfoDialog(final ExtendedStatusInfo mSwitch) {
 
         SwitchInfoDialog infoDialog = new SwitchInfoDialog(
@@ -432,10 +459,15 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
-        if (jsonAction == Domoticz.Device.Blind.Action.UP)
+
+        if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else if (jsonAction == Domoticz.Device.Blind.Action.DOWN)
+        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 

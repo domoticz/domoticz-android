@@ -419,7 +419,7 @@ public class SharedPrefUtil {
     }
 
     public void setLocalSsid(List<String> ssids) {
-        if(ssids!=null) {
+        if (ssids != null) {
             Set<String> set = new HashSet<>();
             for (String ssid : ssids) {
                 set.add(ssid);

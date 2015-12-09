@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +51,7 @@ public class DevicesInfo {
     int level;
     int switchTypeVal;
     String switchType;
+    String CounterToday;
     String Data;
     String Timers;
     boolean statusBoolean;
@@ -67,6 +70,13 @@ public class DevicesInfo {
                 maxDimLevel = row.getInt("MaxDimLevel");
         } catch (Exception e) {
             maxDimLevel = 1;
+        }
+
+        try {
+            if (row.has("CounterToday"))
+                CounterToday = row.getString("CounterToday");
+        } catch (Exception e) {
+            CounterToday = "";
         }
 
         try {
@@ -207,13 +217,8 @@ public class DevicesInfo {
 
     @Override
     public String toString() {
-        return "DeviceInfo{" +
-                "idx=" + idx +
-                ", name='" + Name + '\'' +
-                ", lastUpdate='" + LastUpdate + '\'' +
-                ", type='" + Type + '\'' +
-                ", favorite=" + Favorite +
-                ", hardwareID=" + HardwareID +
+        return this.getClass().getSimpleName() + "{" +
+                new Gson().toJson(this) +
                 '}';
     }
 
@@ -255,6 +260,10 @@ public class DevicesInfo {
 
     public String getHardwareName() {
         return HardwareName;
+    }
+
+    public String getCounterToday() {
+        return CounterToday;
     }
 
     public String getTypeImg() {

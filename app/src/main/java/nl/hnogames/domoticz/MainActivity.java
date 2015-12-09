@@ -56,7 +56,6 @@ import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
-import nl.hnogames.domoticz.UI.SwitchsDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -313,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_simple, menu);
 
         } else {
-            if((f instanceof Dashboard)||(f instanceof Scenes)||(f instanceof Switches))
+            if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                 getMenuInflater().inflate(R.menu.menu_main_sort, menu);
             else
                 getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -356,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
                         public void onDismiss(String selectedSort) {
-                            Log.i(TAG, "Sorting: "+selectedSort);
+                            Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = getVisibleFragment();
                             if (f instanceof DomoticzFragment) {
                                 ((DomoticzFragment) f).sortFragment(selectedSort);
