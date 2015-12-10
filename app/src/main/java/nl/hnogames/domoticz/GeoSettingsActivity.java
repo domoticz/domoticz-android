@@ -95,7 +95,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private CoordinatorLayout coordinatorLayout;
     private Location currectLocation;
-    private String usedLocationService;
     private LocationRequest mLocationRequest;
 
     @Override
@@ -106,7 +105,9 @@ public class GeoSettingsActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 // The user picked a place.
                 Place place = PlacePicker.getPlace(data, this);
-                Snackbar.make(coordinatorLayout, String.format(getString(R.string.geofence_place), place.getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout,
+                        String.format(getString(R.string.geofence_place), place.getName()),
+                        Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -179,8 +180,11 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             mApiClient.connect();
         }
-        if (map == null)
+        if (map == null) {
             map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+            map.getUiSettings().setMapToolbarEnabled(true);
+            map.getUiSettings().setTiltGesturesEnabled(false);
+        }
 
     }
 
@@ -243,10 +247,15 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setMarker(locations.get(position).getLocation());
+            }
+        });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                setMarker(locations.get(position).getLocation());
                 domoticz.getSwitches(new SwitchesReceiver() {
                     @Override
                     public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
@@ -255,6 +264,9 @@ public class GeoSettingsActivity extends AppCompatActivity
 
                     @Override
                     public void onError(Exception error) {
+                        Snackbar.make(coordinatorLayout,
+                                R.string.unable_to_get_switches,
+                                Snackbar.LENGTH_SHORT).show();
                     }
                 });
                 return false;

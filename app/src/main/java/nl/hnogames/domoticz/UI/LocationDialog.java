@@ -25,11 +25,12 @@ package nl.hnogames.domoticz.UI;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -37,28 +38,36 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.model.LatLng;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
-import java.util.List;
 import java.util.Random;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.GeoUtil;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private Context mContext;
-    private LatLng foundLocation;
+    private Address foundLocation;
     private FloatingLabelEditText editAddress;
     private FloatingLabelEditText editName;
-    private EditText txtLatitude;
-    private EditText txtLongitude;
-    private EditText txtRadius;
+    private TextView resolvedAddress;
+    private TextView resolvedCountry;
 
     private DismissListener dismissListener;
-    private Location current;
+    private Location currentLocation;
+    private final GeoUtil mGeoUtil;
+    private EditText radiusText;
+    private int radius;
+    private LatLng mLatLong;
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private int radiusDefaultValue = 120;
 
     public LocationDialog(final Context mContext, int layout) {
         this.mContext = mContext;
+
+        mGeoUtil = new GeoUtil(mContext);
 
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
@@ -70,31 +79,59 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         mdb.dismissListener(this);
         mdb.onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                String name = editName.getInputWidgetText().toString();
+            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
 
-                if (name.isEmpty() || name.length() <= 0)
-                    Toast.makeText(mContext, R.string.location_name, Toast.LENGTH_SHORT).show();
-                else if (foundLocation == null)
+                if (valuesAreValid() && dismissListener != null) {
+                    dismissListener.onDismiss(
+                            new LocationInfo(new Random().nextInt(999999),
+                                    editName.getInputWidgetText().toString(),
+                                    mLatLong,
+                                    radius));
+                } else
                     Toast.makeText(mContext, R.string.location_not_found, Toast.LENGTH_SHORT).show();
-                else {
-                    try {
-                        if (dismissListener != null)
-                            dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(),
-                                    new LatLng(Double.parseDouble(txtLatitude.getText().toString().replace(mContext.getString(R.string.latitude) + ": ", "")),
-                                            Double.parseDouble(txtLongitude.getText().toString().replace(mContext.getString(R.string.longitude) + ": ", ""))),
-                                    Integer.parseInt(txtRadius.getText().toString().replace(mContext.getString(R.string.radius) + ": ", ""))));
-                    } catch (Exception ex) {
-                        if (dismissListener != null)
-                            dismissListener.onDismiss(new LocationInfo(new Random().nextInt(999999), editName.getInputWidgetText().toString(), foundLocation, 120));
-                    }
-                }
             }
         });
     }
 
-    public void setCurrentLocation(Location currectLocation) {
-        current = currectLocation;
+    private boolean valuesAreValid() {
+
+        setRadiusValue();
+
+        String name = editName.getInputWidgetText().toString();
+
+        if (name.isEmpty() || name.length() <= 0){
+            return false;
+        }
+
+        if (foundLocation != null) {
+            mLatLong = new LatLng(foundLocation.getLatitude(), foundLocation.getLongitude());
+            return true;
+        } else if (currentLocation != null) {
+            mLatLong = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            return true;
+        }
+
+        return false;
+    }
+
+    private void setRadiusValue() {
+
+        if (!radiusText.getText().toString().isEmpty()) {
+            try {
+                radius = Integer.parseInt(radiusText.getText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                radius = radiusDefaultValue;
+            }
+        } else radius = radiusDefaultValue;
+    }
+
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
     public void show() {
@@ -102,52 +139,50 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         Button getLocation = (Button) view.findViewById(R.id.get_address);
-        txtLatitude = (EditText) view.findViewById(R.id.latitude);
-        txtRadius = (EditText) view.findViewById(R.id.radius);
-        txtRadius.setText(mContext.getString(R.string.radius) + ": 120");
-        txtLongitude = (EditText) view.findViewById(R.id.longitude);
-        editAddress = (FloatingLabelEditText) view.findViewById(R.id.address);
-        editName = (FloatingLabelEditText) view.findViewById(R.id.name);
-        if (current != null) {
-            editName.setInputWidgetText(mContext.getString(R.string.currentlocation));
-            txtLatitude.setText(mContext.getString(R.string.latitude) + ": " + current.getLatitude());
-            txtLongitude.setText(mContext.getString(R.string.longitude) + ": " + current.getLongitude());
+
+        initViews(view);
+
+        if (radius <= 0) radius = radiusDefaultValue;
+        radiusText.setText(String.valueOf(radius));
+
+        if (currentLocation != null) {
+            editName.setInputWidgetText(mContext.getString(R.string.currentLocation));
+
+            Address currentAddress = mGeoUtil.getAddressFromLocation(currentLocation);
+            if (currentAddress != null) {
+                String addressLine =
+                        currentAddress.getAddressLine(0) + ", " + currentAddress.getLocality();
+                resolvedAddress.setText(addressLine);
+            } else resolvedAddress.setText(R.string.unknown);
+
+            if (currentAddress != null) {
+                resolvedCountry.setText(currentAddress.getCountryName());
+            } else resolvedCountry.setText(R.string.unknown);
         }
+
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                foundLocation = getLocationFromAddress(mContext, String.valueOf(editAddress.getInputWidgetText().toString()));
+                foundLocation = mGeoUtil.getAddressFromString(String.valueOf(editAddress.getInputWidgetText().toString()));
                 if (foundLocation == null)
                     Toast.makeText(mContext, R.string.could_not_find_location, Toast.LENGTH_SHORT).show();
                 else {
-                    txtLatitude.setText(mContext.getString(R.string.latitude) + ": " + foundLocation.latitude);
-                    txtLongitude.setText(mContext.getString(R.string.longitude) + ": " + foundLocation.longitude);
+                    resolvedAddress.setText(foundLocation.getAddressLine(0));
+                    resolvedCountry.setText(foundLocation.getCountryName());
                 }
             }
         });
         md.show();
     }
 
-    public LatLng getLocationFromAddress(Context context, String strAddress) {
-        Geocoder coder;
-        coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
+    public void initViews(View view) {
+        radiusText = (EditText) view.findViewById(R.id.radius);
 
-        try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
+        resolvedAddress = (TextView) view.findViewById(R.id.resolvedAddress);
+        resolvedCountry = (TextView) view.findViewById(R.id.resolvedCountry);
 
-            p1 = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return p1;
+        editAddress = (FloatingLabelEditText) view.findViewById(R.id.address);
+        editName = (FloatingLabelEditText) view.findViewById(R.id.name);
     }
 
     @Override
