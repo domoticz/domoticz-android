@@ -4,6 +4,7 @@ android {
     compileSdkVersion 'Google Inc.:Google APIs:23'
     buildToolsVersion "23.0.1"
     defaultConfig {
+        multiDexEnabled true
         applicationId 'nl.hnogames.domoticz'
         minSdkVersion 17
         targetSdkVersion 23

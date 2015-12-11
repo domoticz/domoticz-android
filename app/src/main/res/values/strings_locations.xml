@@ -11,5 +11,14 @@
     <string name="radius">Radius (meter)</string>
     <string name="connectedswitch">Connected switch</string>
     <string name="currentlocation">Current Location</string>
+    <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
+    <string name="delete_short">DEL</string>
+    <string name="Location">Location</string>
+    <string name="currentLocation">Current Location</string>
+    <string name="manual">Manual</string>
+    <string name="getLocation">GET</string>
+    <string name="locationAddress">Address</string>
+    <string name="unknown">Unknown</string>
+    <string name="not_available">N/A</string>
 
 </resources>
