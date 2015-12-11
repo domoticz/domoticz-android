@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:longClickable="true"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
     <CheckBox
         android:id="@+id/enableSwitch"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,42 +24,46 @@
             <TextView
                 android:id="@+id/location_name"
                 style="@style/row_name"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:text="Switch name" />
+                tools:text="Switch name"
+                android:layout_toStartOf="@+id/remove_button" />
 
             <TextView
-                android:id="@+id/location_latitude"
+                android:id="@+id/location_address"
+                style="@style/row_body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/location_name"
+                tools:text="State 1, Ohio"
+                android:layout_toStartOf="@+id/remove_button" />
+
+            <TextView
+                android:id="@+id/location_country"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/location_name" />
-
-            <TextView
-                android:id="@+id/location_longitude"
-                style="@style/row_body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/location_latitude" />
+                android:layout_below="@+id/location_address"
+                tools:text="United States"
+                android:layout_alignEnd="@+id/location_address" />
 
             <TextView
                 android:id="@+id/location_radius"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/location_longitude" />
+                android:layout_below="@+id/location_country"
+                tools:text="Radius (meter): 120"
+                android:layout_alignEnd="@+id/location_country" />
 
             <TextView
-                android:id="@+id/location_connectedswitch"
+                android:id="@+id/location_connectedSwitch"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/location_radius" />
 
@@ -73,11 +71,10 @@
                 android:id="@+id/remove_button"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/button_off"
-                android:text="DEL" />
+                android:text="@string/delete_short" />
 
         </RelativeLayout>
-    </LinearLayout>
 </LinearLayout>

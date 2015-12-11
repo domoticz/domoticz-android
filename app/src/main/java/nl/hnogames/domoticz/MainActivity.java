@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPrefUtil mSharedPrefs;
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private SearchView searchViewAction;
+    private Domoticz domoticz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             addFragment();
 
             //get latest update version
-            Domoticz domoticz = new Domoticz(this);
+            domoticz = new Domoticz(this);
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {
@@ -122,11 +123,21 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout, "Could not check for updates:" + error.getMessage(), Snackbar.LENGTH_SHORT).show();
                 }
             });
+
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(domoticz!=null)
+            domoticz.Disconnect();
+
+        super.onStop();
     }
 
     /* Called when the second activity's finished */
@@ -147,12 +158,9 @@ public class MainActivity extends AppCompatActivity {
                         ((DomoticzFragment) f).refreshFragment();
                     } else if (f instanceof DomoticzCardFragment)
                         ((DomoticzCardFragment) f).refreshFragment();
-                {
-                }
 
                 updateDrawerItems();
                 break;
-
             }
         }
     }

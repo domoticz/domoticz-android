@@ -96,7 +96,6 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
         return listData;
     }
 
-
     public void onDismissListener(DismissListener dismissListener) {
         this.dismissListener = dismissListener;
     }

@@ -44,6 +44,7 @@ public class PhoneConnectionUtil {
     private NetworkInfo networkWifiInfo;
     private NetworkInfo networkCellInfo;
     private WifiSSIDListener listener;
+    private BroadcastReceiver receiver;
 
     public PhoneConnectionUtil(Context mContext,
                                final WifiSSIDListener listener) {
@@ -53,11 +54,10 @@ public class PhoneConnectionUtil {
         networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         this.listener=listener;
-        mContext.registerReceiver(new BroadcastReceiver()
-        {
+
+        receiver =new BroadcastReceiver() {
             @Override
-            public void onReceive(Context c, Intent intent)
-            {
+            public void onReceive(Context c, Intent intent) {
                 List<ScanResult> results = wifiManager.getScanResults();
                 CharSequence[] entries = new CharSequence[0];
 
@@ -66,7 +66,7 @@ public class PhoneConnectionUtil {
 
                     int i = 0;
                     for (ScanResult result : results) {
-                        if(result.SSID!=null && result.SSID.length()>0) {
+                        if (result.SSID != null && result.SSID.length() > 0) {
                             entries[i] = result.SSID;
                             i++;
                         }
@@ -74,10 +74,19 @@ public class PhoneConnectionUtil {
                 }
                 listener.ReceiveSSIDs(entries);
             }
-        }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        };
+    }
+
+    public void stopReceiver(){
+        try {
+            mContext.unregisterReceiver(receiver);
+        }catch(Exception ex){}
     }
 
     public void startSsidScan() {
+        try {
+            mContext.registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        }catch(Exception ex){}
         wifiManager.startScan();
     }
 
