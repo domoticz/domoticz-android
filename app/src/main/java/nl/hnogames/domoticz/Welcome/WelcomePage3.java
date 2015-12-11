@@ -48,6 +48,7 @@ public class WelcomePage3 extends Fragment {
     private boolean hasBeenVisibleToUser = false;
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
+    private PhoneConnectionUtil mPhoneConnectionUtil;
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -154,9 +155,12 @@ public class WelcomePage3 extends Fragment {
             case PermissionsUtil.INITIAL_ACCESS_REQUEST:
                 if (PermissionsUtil.canAccessLocation(getActivity())) {
                     setSsid_spinner();
-                } else
+                } else {
+                     if(mPhoneConnectionUtil!=null)
+                         mPhoneConnectionUtil.stopReceiver();
+
                     ((WelcomeViewActivity) getActivity()).finishWithResult(false);
-                break;
+                }break;
         }
     }
 
@@ -174,7 +178,7 @@ public class WelcomePage3 extends Fragment {
             }
         }
 
-        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
+        mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] ssidFound) {
                 if (ssidFound == null || ssidFound.length < 1) {
@@ -193,6 +197,7 @@ public class WelcomePage3 extends Fragment {
                     // Set SSID's from shared preferences to selected
                     local_wifi_spinner.setSelection(ssidListFromPrefs);
                 }
+                mPhoneConnectionUtil.stopReceiver();
             }
         });
         mPhoneConnectionUtil.startSsidScan();

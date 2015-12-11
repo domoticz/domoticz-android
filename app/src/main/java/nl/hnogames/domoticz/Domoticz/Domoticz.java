@@ -82,6 +82,11 @@ public class Domoticz {
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     Context mContext;
 
+    public void Disconnect(){
+        if(mPhoneConnectionUtil!=null)
+            mPhoneConnectionUtil.stopReceiver();
+    }
+
     public Domoticz(Context mContext) {
         this.mContext = mContext;
         mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -732,6 +737,17 @@ public class Domoticz {
                 url);
     }
 
+    public void getDevice(DevicesReceiver receiver, int idx) {
+        DevicesParser parser = new DevicesParser(receiver, idx);
+        String url = constructGetUrl(Json.Url.Request.DEVICES);
+
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.LOG);
@@ -837,7 +853,10 @@ public class Domoticz {
                 else
                     return R.drawable.cooling;
             case "counter":
-                return R.drawable.up;
+                if (subtype != null && subtype.length() > 0 && subtype.equals("P1 Smart Meter"))
+                    return R.drawable.wall;
+                else
+                    return R.drawable.up;
             case "override_mini":
                 return R.drawable.defaultimage;
             case "visibility":

@@ -85,6 +85,9 @@ public class LocationInfo {
      * @return A Geofence object.
      */
     public Geofence toGeofence() {
+        if(radius<=0)
+            radius=400;//default
+
         // Build a new Geofence object.
         return new Geofence.Builder()
                 .setRequestId(String.valueOf(id))

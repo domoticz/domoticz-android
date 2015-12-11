@@ -166,8 +166,13 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.data.append(": " + mUtilitiesInfo.getData());
             holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
 
+            if(mUtilitiesInfo.getUsage()!=null && mUtilitiesInfo.getUsage().length()>0)
+                holder.data.setText("Usage: " +  mUtilitiesInfo.getUsage());
             if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
                 holder.data.append(" Today: " + mUtilitiesInfo.getCounterToday());
+            if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
+                    !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+                holder.data.append(" Total: " + mUtilitiesInfo.getCounter());
 
             holder.dayButton.setId(mUtilitiesInfo.getIdx());
             holder.dayButton.setOnClickListener(new View.OnClickListener() {

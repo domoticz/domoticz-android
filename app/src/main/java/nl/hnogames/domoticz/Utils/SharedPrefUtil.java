@@ -91,6 +91,7 @@ public class SharedPrefUtil {
             "local_server_authentication_method";
 
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
+    public static final int INVALID_IDX = 999999;
 
     Context mContext;
     SharedPreferences prefs;
@@ -101,6 +102,22 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+    }
+
+    public void setWidgetIDX(int widgetID, int idx) {
+        editor.putInt("WIDGET"+widgetID, idx).apply();
+    }
+
+    public int getWidgetIDX(int widgetID) {
+        return prefs.getInt("WIDGET"+widgetID, INVALID_IDX);
+    }
+
+    public void setWidgetIDforIDX(int widgetID, int idx) {
+        editor.putInt("WIDGETIDX"+idx, widgetID).apply();
+    }
+
+    public int getWidgetIDforIDX(int idx) {
+        return prefs.getInt("WIDGETIDX"+idx, INVALID_IDX);
     }
 
     /*

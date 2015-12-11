@@ -11,6 +11,50 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name">
 
+        <receiver android:name=".Service.WidgetProviderLarge" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidgetprovider" />
+        </receiver>
+
+        <receiver
+            android:name=".Service.WidgetIntentReceiver" >
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidgetprovider" />
+        </receiver>
+
+        <receiver
+            android:name=".Service.BootUpReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidgetprovider" />
+        </receiver>
+
+        <activity android:name=".WidgetConfigurationActivity"
+            android:label="Domoticz Widget Config">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".WidgetActionActivity"
+        android:label="Domoticz Widget Action">
+    </activity>
+
+        <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService"/>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name_domoticz"
