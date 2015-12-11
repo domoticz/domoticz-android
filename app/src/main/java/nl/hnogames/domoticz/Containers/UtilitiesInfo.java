@@ -44,6 +44,8 @@ public class UtilitiesInfo {
     String HardwareName;
     String TypeImg;
     String CounterToday;
+    String Counter;
+    String Usage;
     int signalLevel;
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
@@ -68,8 +70,12 @@ public class UtilitiesInfo {
             Data = row.getString("Data");
         if (row.has("Type"))
             Type = row.getString("Type");
+        if (row.has("Counter"))
+            Counter = row.getString("Counter");
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
+        if (row.has("Usage"))
+            Usage = row.getString("Usage");
         if (row.has("SubType"))
             SubType = row.getString("SubType");
         idx = row.getInt("idx");
@@ -112,6 +118,14 @@ public class UtilitiesInfo {
 
     public String getName() {
         return Name;
+    }
+
+    public String getCounter() {
+        return Counter;
+    }
+
+    public String getUsage() {
+        return Usage;
     }
 
     public void setName(String name) {
