@@ -13,12 +13,13 @@
     <string name="currentlocation">Current Location</string>
     <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
     <string name="delete_short">DEL</string>
-    <string name="Location">Location</string>
+    <string name="Location_name">Location name</string>
     <string name="currentLocation">Current Location</string>
     <string name="manual">Manual</string>
     <string name="getLocation">GET</string>
     <string name="locationAddress">Address</string>
     <string name="unknown">Unknown</string>
     <string name="not_available">N/A</string>
+    <string name="no_valid_latLong">Not a valid latitude or longitude</string>
 
 </resources>
