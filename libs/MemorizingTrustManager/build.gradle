@@ -2,22 +2,26 @@ buildscript {
 	repositories {
 		mavenCentral()
 	}
+	//noinspection GroovyAssignabilityCheck
 	dependencies {
-		classpath 'com.android.tools.build:gradle:1.2.3'
+		classpath 'com.android.tools.build:gradle:1.5.0'
 	}
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
 	compileSdkVersion 22
 	buildToolsVersion "22.0.1"
+	//noinspection GroovyAssignabilityCheck
 	defaultConfig {
         	minSdkVersion 7
 		targetSdkVersion 22
 	}
 
+	//noinspection GroovyAssignabilityCheck
 	sourceSets {
+		//noinspection GroovyAssignabilityCheck
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
 			java.srcDirs = ['src']
