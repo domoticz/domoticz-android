@@ -2,15 +2,10 @@
 <resources>
 
     <string name="title_add_location">Add Location</string>
-    <string name="locationaddress">Address</string>
-    <string name="locationname">Name</string>
-    <string name="locationaddresshint">Streetname Number City Country</string>
-    <string name="getlocation">GET</string>
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
     <string name="radius">Radius (meter)</string>
-    <string name="connectedswitch">Connected switch</string>
-    <string name="currentlocation">Current Location</string>
+    <string name="connectedSwitch">Connected switch</string>
     <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
     <string name="delete_short">DEL</string>
     <string name="Location_name">Location name</string>

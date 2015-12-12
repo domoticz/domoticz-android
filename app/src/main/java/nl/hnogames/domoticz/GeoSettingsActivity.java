@@ -29,6 +29,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -54,7 +55,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -67,12 +67,9 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.UI.LocationDialog;
-import nl.hnogames.domoticz.UI.SwitchsDialog;
+import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-
-// import android.location.LocationListener;
-
 
 public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
@@ -94,7 +91,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     private LocationAdapter adapter;
 
     private CoordinatorLayout coordinatorLayout;
-    private Location currectLocation;
+    private Location currentLocation;
     private LocationRequest mLocationRequest;
 
     @Override
@@ -192,10 +189,10 @@ public class GeoSettingsActivity extends AppCompatActivity
             final LocationInfo selectedLocation,
             ArrayList<SwitchInfo> switches) {
 
-        SwitchsDialog infoDialog = new SwitchsDialog(
+        SwitchDialog infoDialog = new SwitchDialog(
                 GeoSettingsActivity.this, switches,
                 R.layout.dialog_switch_logs);
-        infoDialog.onDismissListener(new SwitchsDialog.DismissListener() {
+        infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
             public void onDismiss(int selectedSwitchIDX) {
                 selectedLocation.setSwitchidx(selectedSwitchIDX);
@@ -282,7 +279,11 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+
         switch (requestCode) {
             case PermissionsUtil.INITIAL_ACCESS_REQUEST:
                 if (PermissionsUtil.canAccessLocation(this)) {
@@ -293,10 +294,10 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     public void getLocation() {
-        currectLocation = LocationServices.FusedLocationApi.getLastLocation(
+        currentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mApiClient);
-        if (currectLocation != null)
-            setMarker(new LatLng(currectLocation.getLatitude(), currectLocation.getLongitude()));
+        if (currentLocation != null)
+            setMarker(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
     }
 
     protected void startLocationUpdates() {
@@ -345,14 +346,14 @@ public class GeoSettingsActivity extends AppCompatActivity
         LocationDialog infoDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
-        infoDialog.setCurrentLocation(currectLocation);
+        infoDialog.setCurrentLocation(currentLocation);
         infoDialog.onDismissListener(new LocationDialog.DismissListener() {
             @Override
             public void onDismiss(LocationInfo location) {
                 //save location
                 Log.d(TAG, "Location Added: " + location.getName());
 
-                Marker newLocation = map.addMarker(new MarkerOptions().position(location.getLocation()));
+                map.addMarker(new MarkerOptions().position(location.getLocation()));
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLocation(), 15));
                 map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 

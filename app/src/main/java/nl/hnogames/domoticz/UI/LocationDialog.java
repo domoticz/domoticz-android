@@ -84,7 +84,8 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         mdb.dismissListener(this);
         mdb.onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
-            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+            public void onClick(@NonNull MaterialDialog materialDialog,
+                                @NonNull DialogAction dialogAction) {
 
                 if (valuesAreValid() && dismissListener != null) {
                     dismissListener.onDismiss(
@@ -145,6 +146,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         mdb.title(mContext.getString(R.string.title_add_location));
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
+
         Button getLocation = (Button) view.findViewById(R.id.get_address);
 
         initViews(view);
@@ -192,7 +194,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                                     Toast.LENGTH_SHORT).show();
                         else setAddressData(foundLocation);
 
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         e.printStackTrace();
                         Toast.makeText(mContext,
                                 R.string.no_valid_latLong,
@@ -213,7 +215,8 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     }
 
     private void setAddressData(Address foundLocation) {
-        resolvedAddress.setText(foundLocation.getAddressLine(0));
+        String address = foundLocation.getAddressLine(0) + ", " + foundLocation.getLocality();
+        resolvedAddress.setText(address);
         resolvedCountry.setText(foundLocation.getCountryName());
     }
 
