@@ -22,10 +22,6 @@
 
 package nl.hnogames.domoticz.Utils;
 
-/**
- * Created by m.heinis on 12/10/2015.
- */
-
 public class WidgetUtils {
     public final static String WIDGET_UPDATE_ACTION ="nl.hnogames.domoticz.Utils.intent.action.UPDATE_WIDGET";
 }

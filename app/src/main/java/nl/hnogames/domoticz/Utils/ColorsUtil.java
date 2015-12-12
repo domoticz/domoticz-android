@@ -36,6 +36,8 @@ import java.util.Random;
 import nl.hnogames.domoticz.R;
 
 public class ColorsUtil {
+
+    @SuppressWarnings("unused")
     private static final String TAG = ColorsUtil.class.getSimpleName();
 
     public static int getRandomMaterialColor(Context mContext) {

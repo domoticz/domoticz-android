@@ -31,6 +31,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,7 +42,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -188,14 +188,14 @@ public class MainActivity extends AppCompatActivity {
         int ICONS[] = mSharedPrefs.getNavigationIcons();
 
         String NAME = getString(R.string.app_name_domoticz);
-        String EMAIL = getString(R.string.domoticz_url);
+        String WEBSITE = getString(R.string.domoticz_url);
         int PROFILE = R.drawable.ic_launcher;
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
-        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, EMAIL, PROFILE, this);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -223,14 +223,16 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[recyclerView.getChildPosition(child) - 1]));
+                        tx.replace(R.id.main,
+                                Fragment.instantiate(MainActivity.this,
+                                        fragments[recyclerView.getChildPosition(child) - 1]));
                         tx.commitAllowingStateLoss();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     invalidateOptionsMenu();
-                    mDrawer.closeDrawer(Gravity.LEFT);
+                    mDrawer.closeDrawer(GravityCompat.START);
 
                     return true;
                 }
