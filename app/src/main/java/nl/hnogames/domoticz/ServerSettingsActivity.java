@@ -25,7 +25,6 @@ package nl.hnogames.domoticz;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -33,7 +32,9 @@ import nl.hnogames.domoticz.Welcome.WelcomePage3;
 
 public class ServerSettingsActivity extends AppCompatActivity {
 
+    @SuppressWarnings("unused")
     private static final int WELCOME_WIZARD = 1;
+    @SuppressWarnings("unused")
     private static final int SETTINGS = 2;
 
     @Override

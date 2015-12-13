@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticz.Fragments;
+package nl.hnogames.domoticz.Preference;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -30,6 +30,7 @@ import android.os.Environment;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,6 +46,11 @@ public class Preference extends PreferenceFragment {
 
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private final String TAG = Preference.class.getSimpleName();
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private final String TAG_IMPORT = "Import Settings";
+    private final String TAG_EXPORT = "Export Settings";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,46 +66,59 @@ public class Preference extends PreferenceFragment {
         handleImportExportButtons();
     }
 
+
     private void handleImportExportButtons() {
-        SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
-        final String sPath = SettingsFile.getPath().substring(0, SettingsFile.getPath().lastIndexOf("/"));
-        new File(sPath).mkdirs();       //TODO something with result
+        SettingsFile = new File(Environment.getExternalStorageDirectory(),
+                "/Domoticz/DomoticzSettings.txt");
+        final String sPath = SettingsFile.getPath().
+                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+        boolean mkdirsResultIsOk = new File(sPath).mkdirs();
+        if (!mkdirsResultIsOk) {
+            Toast.makeText(getActivity(),
+                    R.string.unable_to_create_directories,
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            android.preference.Preference exportButton = findPreference("export_settings");
+            exportButton.setOnPreferenceClickListener(
+                    new android.preference.Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(android.preference.Preference preference) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                                    requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
+                                            PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
+                                } else
+                                    exportSettings();
+                            } else {
+                                exportSettings();
+                            }
+                            return false;
+                        }
+                    });
 
-        android.preference.Preference exportButton = findPreference("export_settings");
-        exportButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
-                    } else
-                        exportSettings();
-                } else {
-                    exportSettings();
-                }
-                return false;
-            }
-        });
-
-        android.preference.Preference importButton = findPreference("import_settings");
-        importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
-                    } else
+            android.preference.Preference importButton = findPreference("import_settings");
+            importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                            requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
+                                    PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                        } else
+                            importSettings();
+                    } else {
                         importSettings();
-                } else {
-                    importSettings();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
                 if (PermissionsUtil.canAccessStorage(getActivity())) {
@@ -115,26 +134,33 @@ public class Preference extends PreferenceFragment {
     }
 
     private void importSettings() {
-        Log.v("Import Settings", "Importing settings from: " + SettingsFile.getPath());
+        Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
         mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(getActivity(), "Settings Imported, please restart Domoticz.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),
+                    R.string.settings_imported,
+                    Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),
+                    R.string.settings_import_failed,
+                    Toast.LENGTH_SHORT).show();
     }
 
     private void exportSettings() {
-        Log.v("Export Settings", "Exporting settings to: " + SettingsFile.getPath());
+        Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
             Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();     //TODO Change to snackbar
+            Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
     }
 
     private void setVersionInfo() {
         PackageInfo pInfo = null;
         try {
-            pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            pInfo = getActivity()
+                    .getPackageManager()
+                    .getPackageInfo(getActivity()
+                            .getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -142,7 +168,8 @@ public class Preference extends PreferenceFragment {
         if (pInfo != null) appVersion = pInfo.versionName;
 
         final EditTextPreference version = (EditTextPreference) findPreference("version");
-        final EditTextPreference domoticzversion = (EditTextPreference) findPreference("version_domoticz");
+        final EditTextPreference domoticzVersion =
+                (EditTextPreference) findPreference("version_domoticz");
         version.setSummary(appVersion);
 
         Domoticz domoticz = new Domoticz(getActivity());
@@ -155,7 +182,7 @@ public class Preference extends PreferenceFragment {
                     if (sUpdateVersion != null && sUpdateVersion.length() > 0)
                         sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
 
-                    domoticzversion.setSummary(sVersion);
+                    domoticzVersion.setSummary(sVersion);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
