@@ -118,7 +118,6 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
-        holder.hardware = (TextView) convertView.findViewById(R.id.temperature_hardware);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
 
@@ -164,7 +163,6 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             holder.data.setText(R.string.wind);
             holder.data.append(": " +  mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
         } else holder.data.append(": " + mTemperatureInfo.getData());
-        holder.hardware.append(mTemperatureInfo.getHardwareName());
 
         convertView.setTag(holder);
         return convertView;
@@ -173,7 +171,6 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder {
         TextView name;
         TextView data;
-        TextView hardware;
         ImageView iconRow;
         Button dayButton;
         Button monthButton;

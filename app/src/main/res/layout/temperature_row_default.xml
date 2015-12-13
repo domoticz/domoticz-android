@@ -40,21 +40,12 @@
                 tools:text="Utility name" />
 
             <TextView
-                android:id="@+id/temperature_hardware"
-                style="@style/row_body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/temperature_name"
-                tools:text="hardware" />
-
-            <TextView
                 android:id="@+id/temperature_data"
                 style="@style/row_body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/temperature_hardware"
+                android:layout_below="@+id/temperature_name"
                 android:text="@string/temperature" />
 
         </RelativeLayout>
