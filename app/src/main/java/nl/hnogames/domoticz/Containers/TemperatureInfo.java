@@ -40,6 +40,7 @@ public class TemperatureInfo {
     int HardwareID;
     String HardwareName;
     String TypeImg;
+    String Direction;
     double Temp;
     int signalLevel;
 
@@ -59,7 +60,8 @@ public class TemperatureInfo {
             LastUpdate = row.getString("LastUpdate");
         if (row.has("TypeImg"))
             TypeImg = row.getString("TypeImg");
-
+        if (row.has("DirectionStr"))
+            Direction = row.getString("DirectionStr");
         if (row.has("SetPoint"))
             setPoint = row.getLong("SetPoint");
         if (row.has("Name"))
@@ -111,14 +113,6 @@ public class TemperatureInfo {
         return isProtected;
     }
 
-    public int getSignalLevel() {
-        return signalLevel;
-    }
-
-    public void setSignalLevel(int signalLevel) {
-        this.signalLevel = signalLevel;
-    }
-
     public double getTemperature() {
         return Temp;
     }
@@ -135,23 +129,17 @@ public class TemperatureInfo {
         return Data;
     }
 
+    public String getDirection() {
+        return Direction;
+    }
+
     public String getHardwareName() {
         return HardwareName;
-    }
-
-    public long getSetPoint() {
-        return setPoint;
-    }
-
-    public void setSetPoint(long setPoint) {
-        this.setPoint = setPoint;
     }
 
     public int getFavorite() {
         return Favorite;
     }
-
-    ;
 
     public void setFavorite(int favorite) {
         Favorite = favorite;

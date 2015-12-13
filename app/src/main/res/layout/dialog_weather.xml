@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/forcast" />
+                android:text="@string/forecast" />
 
             <TextView
                 android:id="@+id/weather_humidity"
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/drewpoint" />
+                android:text="@string/dewPoint" />
 
             <TextView
                 android:id="@+id/weather_temperature"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/barometer" />
+                android:text="@string/pressure" />
 
             <TextView
                 android:id="@+id/weather_chill"
@@ -119,7 +119,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="@string/forcast" />
+                android:text="@string/forecast" />
 
             <TextView
                 android:id="@+id/weather_humidity_value"
@@ -139,7 +139,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="@string/drewpoint" />
+                android:text="@string/dewPoint" />
 
             <TextView
                 android:id="@+id/weather_temperature_value"
@@ -159,7 +159,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="2dp"
                 android:paddingTop="2dp"
-                android:text="@string/barometer" />
+                android:text="@string/pressure" />
 
             <TextView
                 android:id="@+id/weather_chill_value"

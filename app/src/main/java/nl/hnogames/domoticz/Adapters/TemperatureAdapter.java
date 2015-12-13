@@ -31,7 +31,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +48,7 @@ import nl.hnogames.domoticz.R;
 
 public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
+    @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
 
     private final TemperatureClickListener listener;
@@ -104,7 +104,6 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         int layoutResourceId;
 
         TemperatureInfo mTemperatureInfo = filteredData.get(position);
-        final long setPoint = mTemperatureInfo.getSetPoint();
 
         //if (convertView == null) {
         holder = new ViewHolder();
@@ -161,8 +160,11 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         });
 
         holder.name.setText(mTemperatureInfo.getName());
-        holder.data.append(": " + mTemperatureInfo.getData());
-        holder.hardware.append(": " + mTemperatureInfo.getHardwareName());
+        if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
+            holder.data.setText(R.string.wind);
+            holder.data.append(": " +  mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
+        } else holder.data.append(": " + mTemperatureInfo.getData());
+        holder.hardware.append(mTemperatureInfo.getHardwareName());
 
         convertView.setTag(holder);
         return convertView;
@@ -172,11 +174,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         TextView name;
         TextView data;
         TextView hardware;
-        TextView lastSeen;
-        TextView setPoint;
-        ImageButton buttonPlus;
         ImageView iconRow;
-        ImageButton buttonMinus;
         Button dayButton;
         Button monthButton;
         Button yearButton;
@@ -194,19 +192,19 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             final ArrayList<TemperatureInfo> list = data;
 
             int count = list.size();
-            final ArrayList<TemperatureInfo> nlist = new ArrayList<TemperatureInfo>(count);
+            final ArrayList<TemperatureInfo> temperatureInfos = new ArrayList<>(count);
 
             TemperatureInfo filterableObject;
 
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    temperatureInfos.add(filterableObject);
                 }
             }
 
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = temperatureInfos;
+            results.count = temperatureInfos.size();
 
             return results;
         }
