@@ -73,46 +73,41 @@ public class Preference extends PreferenceFragment {
         final String sPath = SettingsFile.getPath().
                 substring(0, SettingsFile.getPath().lastIndexOf("/"));
         boolean mkdirsResultIsOk = new File(sPath).mkdirs();
-        if (!mkdirsResultIsOk) {
-            Toast.makeText(getActivity(),
-                    R.string.unable_to_create_directories,
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            android.preference.Preference exportButton = findPreference("export_settings");
-            exportButton.setOnPreferenceClickListener(
-                    new android.preference.Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(android.preference.Preference preference) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                                    requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
-                                            PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
-                                } else
-                                    exportSettings();
-                            } else {
-                                exportSettings();
-                            }
-                            return false;
-                        }
-                    });
 
-            android.preference.Preference importButton = findPreference("import_settings");
-            importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(android.preference.Preference preference) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                            requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
-                                    PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
-                        } else
-                            importSettings();
-                    } else {
-                        importSettings();
+        android.preference.Preference exportButton = findPreference("export_settings");
+        exportButton.setOnPreferenceClickListener(
+                new android.preference.Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(android.preference.Preference preference) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                                requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
+                                        PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
+                            } else
+                                exportSettings();
+                        } else {
+                            exportSettings();
+                        }
+                        return false;
                     }
-                    return false;
+                });
+
+        android.preference.Preference importButton = findPreference("import_settings");
+        importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
+                                PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                    } else
+                        importSettings();
+                } else {
+                    importSettings();
                 }
-            });
-        }
+                return false;
+            }
+        });
     }
 
     @Override
