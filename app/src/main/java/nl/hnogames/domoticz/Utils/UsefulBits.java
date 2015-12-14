@@ -32,4 +32,11 @@ public class UsefulBits {
                     || string.length() <= 0;
         else return true;
     }
+
+    public static boolean isEmpty(CharSequence charSequence) {
+        //noinspection SimplifiableIfStatement
+        if (charSequence != null)
+            return charSequence.length() <= 0;
+        else return true;
+    }
 }
