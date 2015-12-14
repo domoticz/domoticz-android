@@ -9,13 +9,19 @@ This is a Android for Domoticz and will soon be in the Play Store (not ready yet
 
 # Geofencing
 -----
-Add (one or multiple) Geofences and connected a switch to it
+Add (one or multiple) Geofences and connected a switch to it  
 ![index](https://cloud.githubusercontent.com/assets/14561640/11558484/5f595e8c-99b3-11e5-8b68-e868f81aa904.png)
+
+# Widgets
+-----
+See more information and toggle switches right from your home screen!  
+![index](https://cloud.githubusercontent.com/assets/14561640/11777235/4752e40a-a24d-11e5-9a2a-e52b0933e06a.png)
+
 
 
 # Android Wear
 -----
-You can toggle switches with your Android Wear device
+You can toggle switches with your Android Wear device  
 ![wear](https://cloud.githubusercontent.com/assets/14561640/11558411/ead47588-99b2-11e5-8d83-a34c09216a11.png)
 
 
