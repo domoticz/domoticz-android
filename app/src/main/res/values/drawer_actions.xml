@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="drawer_actions">
+        <item>Wizard</item>
         <item>Dashboard</item>
         <item>Scenes</item>
         <item>Switches</item>
@@ -17,6 +18,7 @@
     <string-array name="empty_array"></string-array>
 
     <string-array name="drawer_fragments" translatable="false">
+        <item>nl.hnogames.domoticz.Fragments.Wizard</item>
         <item>nl.hnogames.domoticz.Fragments.Dashboard</item>
         <item>nl.hnogames.domoticz.Fragments.Scenes</item>
         <item>nl.hnogames.domoticz.Fragments.Switches</item>
@@ -31,6 +33,7 @@
     </string-array>
 
     <array name="drawer_icons">
+        <item>@drawable/ic_wizard</item>
         <item>@drawable/ic_dashboard</item>
         <item>@drawable/ic_scenes</item>
         <item>@drawable/ic_switch</item>

@@ -119,15 +119,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop()
-    {
-        if(domoticz!=null)
-            domoticz.Disconnect();
-
-        super.onStop();
-    }
-
     public String[] processSwitches(ArrayList<DevicesInfo> switches) {
         String[] listData = new String[switches.size()];
         int counter = 0;

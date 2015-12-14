@@ -62,7 +62,7 @@ public class SharedPrefUtil {
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
-    public static final String PREF_NAVIGATION_ITEMS = "enable_items";
+    public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
@@ -93,10 +93,18 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
     public static final int INVALID_IDX = 999999;
 
-    Context mContext;
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
+    private Context mContext;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
     private GoogleApiClient mApiClient = null;
+
+    public void completeCard(String cardTag) {
+        editor.putBoolean("CARD"+cardTag, true).apply();
+    }
+
+    public boolean isCardCompleted(String cardTag) {
+       return prefs.getBoolean("CARD"+cardTag, false);
+    }
 
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
@@ -137,6 +145,45 @@ public class SharedPrefUtil {
 
     public void setWelcomeWizardSuccess(boolean success) {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
+    }
+
+    public void removeWizard() {
+        //1 change startup screen
+        String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
+        String[] startupScreenValues =
+                mContext.getResources().getStringArray(R.array.drawer_actions);
+
+        if(startupScreenSelectedValue== null)
+        {
+            editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[0]).apply(); //set to dashboard
+        }
+        else{
+            int i = 0;
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    break;
+                }
+                i++;
+            }
+            if(i==0)//first = wizard
+                editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[1]).apply(); //set to dashboard
+        }
+
+        //2 remove wizard from navigation
+        String removeWizard="";
+        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+        for(String s : selections)
+        {
+            if(s.equals(allNames[0])) {
+                removeWizard = allNames[0];
+                break;
+            }
+        }
+        if(removeWizard.length()>0) {
+            selections.remove(removeWizard);
+            editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
+        }
     }
 
     public int getStartupScreenIndex() {

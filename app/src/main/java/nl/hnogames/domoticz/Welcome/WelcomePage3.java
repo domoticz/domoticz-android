@@ -1,11 +1,6 @@
 package nl.hnogames.domoticz.Welcome;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,6 +25,7 @@ import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WelcomePage3 extends Fragment {
 
@@ -190,11 +186,12 @@ public class WelcomePage3 extends Fragment {
                     local_wifi_spinner.setSelection(0);
                 } else {
                     for (CharSequence ssid : ssidFound) {
-                        if (!ssids.contains(ssid)) ssids.add(ssid.toString());  // Prevent double SSID's
+                        if (!UsefulBits.isEmpty(ssid) && !ssids.contains(ssid))
+                            ssids.add(ssid.toString());  // Prevent double SSID's
                     }
                     local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
                     local_wifi_spinner.setItems(ssids);
-                    // Set SSID's from shared preferences to selected
+
                     local_wifi_spinner.setSelection(ssidListFromPrefs);
                 }
                 mPhoneConnectionUtil.stopReceiver();
@@ -333,6 +330,15 @@ public class WelcomePage3 extends Fragment {
             i++;
         }
         return i;
+    }
+
+    @Override
+    public void onStop()
+    {
+        if(mPhoneConnectionUtil!=null)
+            mPhoneConnectionUtil.stopReceiver();
+
+        super.onStop();
     }
 
     @Override

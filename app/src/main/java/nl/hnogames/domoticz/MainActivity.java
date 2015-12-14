@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void buildScreen() {
+    public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             addDrawerItems();
             addFragment();
@@ -131,15 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop()
-    {
-        if(domoticz!=null)
-            domoticz.Disconnect();
-
-        super.onStop();
-    }
-
     /* Called when the second activity's finished */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
@@ -163,6 +154,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    public void changeFragment(String fragment) {
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
+        tx.commitAllowingStateLoss();
     }
 
     private void addFragment() {

@@ -57,7 +57,6 @@ import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
-import nl.hnogames.domoticz.Utils.ColorsUtil;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Switches extends DomoticzFragment implements DomoticzFragmentListener,
@@ -327,11 +326,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onColorButtonClick(final int idx) {
-        int randomColor = ColorsUtil.getRandomMaterialColor(getActivity());
 
         ColorPickerDialog colorDialog = new ColorPickerDialog(
                 getActivity());
-        colorDialog.setCurrentColor(randomColor);
         colorDialog.show();
         colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
             @Override
