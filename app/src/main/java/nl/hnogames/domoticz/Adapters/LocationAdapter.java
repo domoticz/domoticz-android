@@ -125,11 +125,11 @@ public class LocationAdapter extends BaseAdapter {
         holder.radius.setText(text);
 
         if (mLocationInfo.getSwitchidx() > 0) {
-            text = context.getString(R.string.connectedswitch) + ": " + mLocationInfo.getSwitchidx();
+            text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchidx();
             holder.connectedSwitch.setText(text);
         }
         else {
-            text = context.getString(R.string.connectedswitch)
+            text = context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available);
             holder.connectedSwitch.setText(text);
         }

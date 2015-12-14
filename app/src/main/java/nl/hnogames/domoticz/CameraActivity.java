@@ -35,7 +35,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        String imageurl = bundle.getString("IMAGEURL");
+        String imageUrl = bundle.getString("IMAGEURL");
 
         String title = bundle.getString("IMAGETITLE");
         this.setTitle(title);
@@ -44,7 +44,7 @@ public class CameraActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 camera).commit();
-        camera.setImage(imageurl);
+        camera.setImage(imageUrl);
     }
 
     @Override

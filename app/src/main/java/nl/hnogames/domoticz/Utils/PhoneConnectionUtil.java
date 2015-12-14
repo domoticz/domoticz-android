@@ -40,7 +40,6 @@ public class PhoneConnectionUtil {
 
     private final WifiManager wifiManager;
     private Context mContext;
-    private ConnectivityManager connManager;
     private NetworkInfo networkWifiInfo;
     private NetworkInfo networkCellInfo;
     private WifiSSIDListener listener;
@@ -50,10 +49,10 @@ public class PhoneConnectionUtil {
                                final WifiSSIDListener listener) {
         this.mContext = mContext;
         wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-        connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        this.listener=listener;
+        this.listener = listener;
 
         receiver =new BroadcastReceiver() {
             @Override
@@ -80,13 +79,17 @@ public class PhoneConnectionUtil {
     public void stopReceiver(){
         try {
             mContext.unregisterReceiver(receiver);
-        }catch(Exception ex){}
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void startSsidScan() {
         try {
             mContext.registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        }catch(Exception ex){}
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
         wifiManager.startScan();
     }
 

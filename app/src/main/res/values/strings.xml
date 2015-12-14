@@ -91,5 +91,6 @@
     <string name="sort_off">Status Off</string>
     <string name="sort_static">Static Switches</string>
     <string name="sort_all">All Devices</string>
+    <string name="row_icon_description">row icon</string>
 
 </resources>

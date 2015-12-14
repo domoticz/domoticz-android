@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customPreference="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/category_generic">
@@ -7,13 +8,13 @@
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="startup_screen"
-            android:title="@string/startup_screen"></ListPreference>
+            android:title="@string/startup_screen"/>
         <MultiSelectListPreference
             android:defaultValue="@array/drawer_actions"
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="enable_items"
-            android:title="@string/enable_items"></MultiSelectListPreference>
+            android:title="@string/enable_items"/>
         <SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
@@ -22,21 +23,20 @@
             android:title="@string/extra_data_title" />
     </PreferenceCategory>
 
-
     <PreferenceCategory android:title="@string/category_wear">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="enablewearitems"
+            android:key="enableWearItems"
             android:summaryOff="@string/wear_custom_on"
             android:summaryOn="@string/wear_custom_off"
             android:title="@string/enable_wear_select" />
         <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
             android:defaultValue="@array/empty_array"
-            android:dependency="enablewearitems"
+            android:dependency="enableWearItems"
             android:dialogTitle="@string/custom_wear_select"
             android:entries="@array/empty_array"
             android:entryValues="@array/empty_array"
-            android:key="wearitems"
+            android:key="wearItems"
             android:summary="@string/custom_wear_select_desc"
             android:title="@string/custom_wear_select"
             customPreference:selectAllValuesByDefault="true" />
@@ -50,8 +50,10 @@
                 android:targetPackage="nl.hnogames.domoticz" />
         </Preference>
     </PreferenceCategory>
-    <PreferenceCategory android:title="Config Geofencing">
-        <Preference android:title="Config Geofencing">
+    <PreferenceCategory
+        android:title="@string/category_geofencing">
+        <Preference
+            android:title="@string/geofencing_configure">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetClass="nl.hnogames.domoticz.GeoSettingsActivity"
@@ -75,14 +77,14 @@
             android:selectable="false"
             android:shouldDisableView="false"
             android:summary="Version 1.0.2"
-            android:title="@string/info_version"></EditTextPreference>
+            android:title="@string/info_version"/>
         <EditTextPreference
             android:key="version_domoticz"
             android:persistent="false"
             android:selectable="false"
             android:shouldDisableView="false"
             android:summary="Version 1.0.2"
-            android:title="@string/info_domoticz_version"></EditTextPreference>
+            android:title="@string/info_domoticz_version"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_debug">

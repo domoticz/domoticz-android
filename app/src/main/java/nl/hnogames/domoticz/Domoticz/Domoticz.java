@@ -138,7 +138,7 @@ public class Domoticz {
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
-            if (UsefulBits.isStringEmpty(entry.getValue())) {
+            if (UsefulBits.isEmpty(entry.getValue())) {
                 logger(entry.getKey() + " is empty");
                 result = false;
                 break;
@@ -967,7 +967,7 @@ public class Domoticz {
                 int BLINDPERCENTAGEINVERTED = 16;
             }
 
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Name {
                 String DOORBELL = "Doorbell";
                 String CONTACT = "Contact";
@@ -987,6 +987,8 @@ public class Domoticz {
                 String BLINDVENETIAN = "Venetian Blinds EU";
                 String BLINDINVERTED = "Blinds Inverted";
                 String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
+                String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
+                String WIND = "Wind";
             }
         }
 

@@ -1,7 +1,6 @@
 package nl.hnogames.domoticz;
 
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +23,6 @@ import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
-/**
- * Created by m.heinis on 12/10/2015.
- */
 public class WidgetActionActivity extends AppCompatActivity
 {
     private SharedPrefUtil mSharedPrefs;
@@ -43,8 +39,10 @@ public class WidgetActionActivity extends AppCompatActivity
         domoticz = new Domoticz(this);
 
         this.setTitle("Choose Switch");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(false);
+        }
 
         //1) Is domoticz connected?
         if (mSharedPrefs.isFirstStart()) {
@@ -82,7 +80,7 @@ public class WidgetActionActivity extends AppCompatActivity
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     String[] listData = processSwitches(mDevicesInfo);
                     ListView listView = (ListView) findViewById(R.id.list);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(WidgetActionActivity.this,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(WidgetActionActivity.this,
                             android.R.layout.simple_list_item_1, android.R.id.text1, listData);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -131,10 +129,8 @@ public class WidgetActionActivity extends AppCompatActivity
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-            AppWidgetProviderInfo providerInfo = AppWidgetManager.getInstance(
-                    getBaseContext()).getAppWidgetInfo(mAppWidgetId);
 
-            //save widget id in combination with idx in sharedpreferences
+            //save widget id in combination with idx in shared preferences
             mSharedPrefs.setWidgetIDX(mAppWidgetId, mSelectedSwitch.getIdx());
 
             Intent startService = new Intent(WidgetActionActivity.this,

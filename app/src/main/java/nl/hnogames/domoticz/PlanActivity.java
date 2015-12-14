@@ -24,12 +24,12 @@ package nl.hnogames.domoticz;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Dashboard;
 
-public class PlanActivity extends ActionBarActivity {
+public class PlanActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,8 @@ public class PlanActivity extends ActionBarActivity {
 
         Dashboard dash = new Dashboard();
         dash.selectedPlan(selectedPlanID, selectedPlan);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(android.R.id.content, dash);

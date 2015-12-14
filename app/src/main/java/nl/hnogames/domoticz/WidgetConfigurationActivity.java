@@ -1,10 +1,6 @@
 package nl.hnogames.domoticz;
 
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
-
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,23 +14,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Service.WidgetProviderLarge;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
-/**
- * Created by m.heinis on 12/10/2015.
- */
-public class WidgetConfigurationActivity extends AppCompatActivity
-{
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
+public class WidgetConfigurationActivity extends AppCompatActivity {
+
+    private final String TAG = this.getClass().getSimpleName();
     private SharedPrefUtil mSharedPrefs;
     private final int iWelcomeResultCode = 885;
     private Domoticz domoticz;
@@ -48,9 +41,11 @@ public class WidgetConfigurationActivity extends AppCompatActivity
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
 
-        this.setTitle("Choose Switch");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
+        this.setTitle(getString(R.string.pick_switch_title));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(false);
+        }
 
         //1) Is domoticz connected?
         if (mSharedPrefs.isFirstStart()) {
@@ -82,11 +77,11 @@ public class WidgetConfigurationActivity extends AppCompatActivity
 
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            Log.i(this.getClass().getSimpleName(), "Showing switches for widget");
+            Log.i(TAG, "Showing switches for widget");
             domoticz.getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
-                    final ArrayList<DevicesInfo> mDevices = new ArrayList<DevicesInfo>();
+                    final ArrayList<DevicesInfo> mDevices = new ArrayList<>();
                     for (DevicesInfo s : mDevicesInfo) {
                         if (!s.getType().equals(Domoticz.Scene.Type.GROUP) && !s.getType().equals(Domoticz.Scene.Type.SCENE)) {
                             mDevices.add(s);
@@ -96,7 +91,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity
 
                     String[] listData = processSwitches(mDevices);
                     ListView listView = (ListView) findViewById(R.id.list);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(WidgetConfigurationActivity.this,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(WidgetConfigurationActivity.this,
                             android.R.layout.simple_list_item_1, android.R.id.text1, listData);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -113,7 +108,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(WidgetConfigurationActivity.this, "Failed to get switches", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WidgetConfigurationActivity.this, R.string.failed_get_switches, Toast.LENGTH_SHORT).show();
                     WidgetConfigurationActivity.this.finish();
                 }
             },0);
@@ -175,7 +170,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity
             finish();
         }
         if (mAppWidgetId == INVALID_APPWIDGET_ID) {
-            Log.i("I am invalid", "I am invalid");
+            Log.i(TAG, "I am invalid");
             finish();
         }
     }

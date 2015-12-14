@@ -32,7 +32,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,9 +45,11 @@ import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WeatherAdapter extends BaseAdapter implements Filterable {
 
+    @SuppressWarnings("unused")
     private static final String TAG = WeatherAdapter.class.getSimpleName();
 
     private final WeatherClickListener listener;
@@ -101,7 +102,6 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         int layoutResourceId;
 
         WeatherInfo mWeatherInfo = filteredData.get(position);
-        final long setPoint = mWeatherInfo.getSetPoint();
 
         //if (convertView == null) {
         holder = new ViewHolder();
@@ -120,27 +120,27 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
 
         holder.name.setText(mWeatherInfo.getName());
-        holder.hardware.append(": " + mWeatherInfo.getHardwareName());
+        holder.hardware.append(mWeatherInfo.getHardwareName());
 
         holder.data.setEllipsize(TextUtils.TruncateAt.END);
         holder.data.setMaxLines(3);
         holder.data.append(mWeatherInfo.getData());
 
-        if (mWeatherInfo.getForecastStr() != null && mWeatherInfo.getForecastStr().length() > 0)
+        if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
             holder.data.append(", " + mWeatherInfo.getForecastStr());
-        if (mWeatherInfo.getSpeed() != null && mWeatherInfo.getSpeed().length() > 0)
+        if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
             holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed());
         if (mWeatherInfo.getDewPoint() > 0)
-            holder.data.append(", " + context.getString(R.string.drewpoint) + ": " + mWeatherInfo.getDewPoint());
+            holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint());
         if (mWeatherInfo.getTemp() > 0)
             holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp());
         if (mWeatherInfo.getBarometer() > 0)
-            holder.data.append(", " + context.getString(R.string.barometer) + ": " + mWeatherInfo.getBarometer());
-        if (mWeatherInfo.getChill() != null && mWeatherInfo.getChill().length() > 0)
+            holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
+        if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
             holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill());
-        if (mWeatherInfo.getDirectionStr() != null && mWeatherInfo.getDirectionStr().length() > 0)
+        if (!UsefulBits.isEmpty(mWeatherInfo.getDirectionStr()))
             holder.data.append(", " + context.getString(R.string.direction) + ": " + mWeatherInfo.getDirectionStr());
-        if (mWeatherInfo.getHumidityStatus() != null && mWeatherInfo.getHumidityStatus().length() > 0)
+        if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
             holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
 
         holder.dayButton.setId(mWeatherInfo.getIdx());
@@ -185,10 +185,6 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         TextView name;
         TextView data;
         TextView hardware;
-        TextView lastSeen;
-        TextView setPoint;
-        ImageButton buttonPlus;
-        ImageButton buttonMinus;
         ImageView iconRow;
         Boolean isProtected;
         Button dayButton;
@@ -207,19 +203,19 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             final ArrayList<WeatherInfo> list = data;
 
             int count = list.size();
-            final ArrayList<WeatherInfo> nlist = new ArrayList<WeatherInfo>(count);
+            final ArrayList<WeatherInfo> weatherInfos = new ArrayList<>(count);
 
             WeatherInfo filterableObject;
 
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    weatherInfos.add(filterableObject);
                 }
             }
 
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = weatherInfos;
+            results.count = weatherInfos.size();
             return results;
         }
 

@@ -13,7 +13,7 @@
         android:inputType="textNoSuggestions"
         app:flw_inputWidgetTextColor="@color/default_text_color_light"
         app:flw_inputWidgetTextSize="@dimen/text_size_large"
-        app:flw_labelText="@string/Location"
+        app:flw_labelText="@string/Location_name"
         app:flw_labelTextColor="@color/default_text_color_light"
         app:flw_labelTextSize="@dimen/text_size_medium" />
 
@@ -30,6 +30,39 @@
         app:flw_labelTextSize="@dimen/text_size_medium" />
 
     <LinearLayout
+        android:id="@+id/layout_latLong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+            android:id="@+id/latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="textNoSuggestions|number"
+            app:flw_inputWidgetTextColor="@color/default_text_color_light"
+            app:flw_inputWidgetTextSize="@dimen/text_size_large"
+            app:flw_labelText="@string/latitude"
+            app:flw_labelTextColor="@color/default_text_color_light"
+            app:flw_labelTextSize="@dimen/text_size_medium" />
+
+        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+            android:id="@+id/longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="textNoSuggestions|number"
+            app:flw_inputWidgetTextColor="@color/default_text_color_light"
+            app:flw_inputWidgetTextSize="@dimen/text_size_large"
+            app:flw_labelText="@string/longitude"
+            app:flw_labelTextColor="@color/default_text_color_light"
+            app:flw_labelTextSize="@dimen/text_size_medium" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -41,16 +74,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/button_status"
             android:text="@string/getLocation" />
 
         <Button
-            android:id="@+id/manual_address"
+            android:id="@+id/edit_mode_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:background="@drawable/button_status"
             android:text="@string/manual" />
     </LinearLayout>
@@ -87,7 +120,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -102,6 +135,7 @@
                 style="@style/row_body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="false"
                 android:padding="2dp"
                 tools:text="Address 1, Ohio"/>
 
