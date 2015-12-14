@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Address;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,21 +34,22 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.GeoUtil;
 
-// Example used: http://www.ezzylearning.com/tutorial/customizing-android-listview-items-with-custom-arrayadapter
-// And: http://www.survivingwithandroid.com/2013/02/android-listview-adapter-checkbox-item_7.html
 public class LocationAdapter extends BaseAdapter {
 
+    @SuppressWarnings("unused")
     private static final String TAG = LocationAdapter.class.getSimpleName();
+    private GeoUtil mGeoUtil;
     public ArrayList<LocationInfo> data = null;
     private Context context;
-    private SharedPrefUtil prefs;
 
     private LocationClickListener listener;
 
@@ -55,9 +57,11 @@ public class LocationAdapter extends BaseAdapter {
                            ArrayList<LocationInfo> data,
                            LocationClickListener l) {
         super();
+
+        mGeoUtil = new GeoUtil(context);
+
         this.context = context;
         this.data = data;
-        prefs = new SharedPrefUtil(context);
         this.listener = l;
     }
 
@@ -95,20 +99,40 @@ public class LocationAdapter extends BaseAdapter {
         holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
         holder.name = (TextView) convertView.findViewById(R.id.location_name);
         holder.radius = (TextView) convertView.findViewById(R.id.location_radius);
-        holder.longitude = (TextView) convertView.findViewById(R.id.location_longitude);
-        holder.latitude = (TextView) convertView.findViewById(R.id.location_latitude);
-        holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedswitch);
+        holder.country = (TextView) convertView.findViewById(R.id.location_country);
+        holder.address = (TextView) convertView.findViewById(R.id.location_address);
+        holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
-        holder.name.setText(mLocationInfo.getName());
-        holder.latitude.setText(context.getString(R.string.latitude) + ": " + mLocationInfo.getLocation().latitude);
-        holder.longitude.setText(context.getString(R.string.longitude) + ": " + mLocationInfo.getLocation().longitude);
-        holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRange());
+        Address address = mGeoUtil.getAddressFromLatLng(
+                new LatLng(mLocationInfo.getLocation().latitude, mLocationInfo.getLocation().longitude));
 
-        if (mLocationInfo.getSwitchidx() > 0)
-            holder.connectedSwitch.setText(context.getString(R.string.connectedswitch) + ": " + mLocationInfo.getSwitchidx());
-        else
-            holder.connectedSwitch.setText(context.getString(R.string.connectedswitch) + ": N/A");
+        String addressString;
+        String countryString;
+
+        if (address != null) {
+            addressString = address.getAddressLine(0) + ", " + address.getLocality();
+            countryString = address.getCountryName();
+        } else {
+            addressString = context.getString(R.string.unknown);
+            countryString = context.getString(R.string.unknown);
+        }
+
+        holder.name.setText(mLocationInfo.getName());
+        holder.address.setText(addressString);
+        holder.country.setText(countryString);
+        String text = context.getString(R.string.radius) + ": " + mLocationInfo.getRadius();
+        holder.radius.setText(text);
+
+        if (mLocationInfo.getSwitchidx() > 0) {
+            text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchidx();
+            holder.connectedSwitch.setText(text);
+        }
+        else {
+            text = context.getString(R.string.connectedSwitch)
+                    + ": " + context.getString(R.string.not_available);
+            holder.connectedSwitch.setText(text);
+        }
 
         holder.remove.setId(mLocationInfo.getID());
         holder.remove.setOnClickListener(new View.OnClickListener() {
@@ -147,9 +171,9 @@ public class LocationAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView name;
-        TextView latitude;
+        TextView address;
         TextView radius;
-        TextView longitude;
+        TextView country;
         TextView connectedSwitch;
         CheckBox enable;
         Button remove;

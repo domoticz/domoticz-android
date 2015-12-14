@@ -22,39 +22,44 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DevicesInfo {
+public class DevicesInfo implements Comparable {
 
     private final String UNKNOWN = "Unknown";
     private final String TAG = DevicesInfo.class.getSimpleName();
-    JSONObject jsonObject;
-    boolean timers;
-    int idx;
-    String Name;
-    String LastUpdate;
-    long setPoint;
-    String Type;
-    String SubType;
-    int Favorite;
-    int HardwareID;
-    String HardwareName;
-    String TypeImg;
-    String PlanID;
-    int batteryLevel;
-    int maxDimLevel;
-    int signalLevel;
-    String status;
-    int level;
-    int switchTypeVal;
-    String switchType;
-    String Data;
-    String Timers;
-    boolean statusBoolean;
-    boolean isProtected;
+    private JSONObject jsonObject;
+    private boolean timers;
+    private int idx;
+    private String Name;
+    private String LastUpdate;
+    private long setPoint;
+    private String Type;
+    private String SubType;
+    private int Favorite;
+    private int HardwareID;
+    private String HardwareName;
+    private String TypeImg;
+    private String PlanID;
+    private int batteryLevel;
+    private int maxDimLevel;
+    private int signalLevel;
+    private String status;
+    private int level;
+    private int switchTypeVal;
+    private String switchType;
+    private String CounterToday;
+    private String Counter;
+    private String Usage;
+    private String Data;
+    private String Timers;
+    private boolean statusBoolean;
+    private boolean isProtected;
 
-    public DevicesInfo(JSONObject row) throws JSONException {
+    public DevicesInfo(JSONObject row)  throws JSONException {
         this.jsonObject = row;
         try {
             if (row.has("LevelInt"))
@@ -68,6 +73,13 @@ public class DevicesInfo {
         } catch (Exception e) {
             maxDimLevel = 1;
         }
+
+        if (row.has("Counter"))
+            Counter = row.getString("Counter");
+        if (row.has("CounterToday"))
+            CounterToday = row.getString("CounterToday");
+        if (row.has("Usage"))
+            Usage = row.getString("Usage");
 
         try {
             if (row.has("Status"))
@@ -161,6 +173,14 @@ public class DevicesInfo {
         else this.Favorite = 0;
     }
 
+    public String getCounter() {
+        return Counter;
+    }
+
+    public String getUsage() {
+        return Usage;
+    }
+
     public String getTimers() {
         return Timers;
     }
@@ -207,13 +227,8 @@ public class DevicesInfo {
 
     @Override
     public String toString() {
-        return "DeviceInfo{" +
-                "idx=" + idx +
-                ", name='" + Name + '\'' +
-                ", lastUpdate='" + LastUpdate + '\'' +
-                ", type='" + Type + '\'' +
-                ", favorite=" + Favorite +
-                ", hardwareID=" + HardwareID +
+        return this.getClass().getSimpleName() + "{" +
+                new Gson().toJson(this) +
                 '}';
     }
 
@@ -255,6 +270,10 @@ public class DevicesInfo {
 
     public String getHardwareName() {
         return HardwareName;
+    }
+
+    public String getCounterToday() {
+        return CounterToday;
     }
 
     public String getTypeImg() {
@@ -323,5 +342,10 @@ public class DevicesInfo {
 
     public String getSwitchType() {
         return switchType;
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        return this.getName().compareTo(((DevicesInfo)another).getName());
     }
 }

@@ -48,8 +48,7 @@ public class SortDialog implements DialogInterface.OnDismissListener {
                       int layout) {
         this.mContext = c;
 
-        names = new String[]{mContext.getString(R.string.sort_on), mContext.getString(R.string.sort_off), mContext.getString(R.string.sort_all)};
-
+        names = new String[]{mContext.getString(R.string.sort_on), mContext.getString(R.string.sort_off), mContext.getString(R.string.sort_static), mContext.getString(R.string.sort_all)};
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
                 .negativeText(android.R.string.cancel);
@@ -65,10 +64,8 @@ public class SortDialog implements DialogInterface.OnDismissListener {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, names);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -56,6 +56,7 @@ import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
+import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
@@ -81,10 +82,18 @@ public class Domoticz {
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     Context mContext;
 
+    public void Disconnect(){
+        if(mPhoneConnectionUtil!=null)
+            mPhoneConnectionUtil.stopReceiver();
+    }
+
     public Domoticz(Context mContext) {
         this.mContext = mContext;
         mSharedPrefUtil = new SharedPrefUtil(mContext);
-        mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+        mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
+            @Override
+            public void ReceiveSSIDs(CharSequence[] entries) { }
+        });
         debug = mSharedPrefUtil.isDebugEnabled();
     }
 
@@ -129,7 +138,7 @@ public class Domoticz {
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
-            if (UsefulBits.isStringEmpty(entry.getValue())) {
+            if (UsefulBits.isEmpty(entry.getValue())) {
                 logger(entry.getKey() + " is empty");
                 result = false;
                 break;
@@ -180,6 +189,9 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.ON_OFF);
         switchesSupported.add(Device.Type.Value.DIMMER);
         switchesSupported.add(Device.Type.Value.BLINDPERCENTAGE);
+        switchesSupported.add(Device.Type.Value.BLINDVENETIAN);
+        switchesSupported.add(Device.Type.Value.BLINDINVERTED);
+        switchesSupported.add(Device.Type.Value.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(Device.Type.Value.BLINDS);
         switchesSupported.add(Device.Type.Value.MOTION);
         switchesSupported.add(Device.Type.Value.CONTACT);
@@ -199,6 +211,9 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.ON_OFF);
         switchesSupported.add(Device.Type.Name.DIMMER);
         switchesSupported.add(Device.Type.Name.BLINDPERCENTAGE);
+        switchesSupported.add(Device.Type.Name.BLINDVENETIAN);
+        switchesSupported.add(Device.Type.Name.BLINDINVERTED);
+        switchesSupported.add(Device.Type.Name.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(Device.Type.Name.BLINDS);
         switchesSupported.add(Device.Type.Name.PUSH_ON_BUTTON);
         switchesSupported.add(Device.Type.Name.PUSH_OFF_BUTTON);
@@ -416,6 +431,14 @@ public class Domoticz {
 
             case Device.Blind.Action.DOWN:
                 actionUrl = Url.Action.DOWN;
+                break;
+
+            case Device.Blind.Action.ON:
+                actionUrl = Url.Action.ON;
+                break;
+
+            case Device.Blind.Action.OFF:
+                actionUrl = Url.Action.OFF;
                 break;
 
             case Device.Thermostat.Action.MIN:
@@ -714,6 +737,17 @@ public class Domoticz {
                 url);
     }
 
+    public void getDevice(DevicesReceiver receiver, int idx) {
+        DevicesParser parser = new DevicesParser(receiver, idx);
+        String url = constructGetUrl(Json.Url.Request.DEVICES);
+
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.LOG);
@@ -780,7 +814,7 @@ public class Domoticz {
                 return R.drawable.door;
             case "lightbulb":
                 if (subtype != null && subtype.length() > 0 && subtype.equals(Device.Type.Name.DUSKSENSOR))
-                    if(state)
+                    if (state)
                         return R.drawable.uvdark;
                     else
                         return R.drawable.uvsunny;
@@ -819,7 +853,10 @@ public class Domoticz {
                 else
                     return R.drawable.cooling;
             case "counter":
-                return R.drawable.up;
+                if (subtype != null && subtype.length() > 0 && subtype.equals("P1 Smart Meter"))
+                    return R.drawable.wall;
+                else
+                    return R.drawable.up;
             case "override_mini":
                 return R.drawable.defaultimage;
             case "visibility":
@@ -894,6 +931,8 @@ public class Domoticz {
             interface Action {
                 int UP = 30;
                 int STOP = 31;
+                int ON = 33;
+                int OFF = 34;
                 int DOWN = 32;
             }
         }
@@ -923,9 +962,12 @@ public class Domoticz {
                 int DUSKSENSOR = 12;
                 int DOORLOCK = 11;
                 int BLINDPERCENTAGE = 13;
+                int BLINDVENETIAN = 15;
+                int BLINDINVERTED = 6;
+                int BLINDPERCENTAGEINVERTED = 16;
             }
 
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Name {
                 String DOORBELL = "Doorbell";
                 String CONTACT = "Contact";
@@ -942,6 +984,11 @@ public class Domoticz {
                 String DUSKSENSOR = "Dusk Sensor";
                 String DOORLOCK = "Door Lock";
                 String BLINDPERCENTAGE = "Blinds Percentage";
+                String BLINDVENETIAN = "Venetian Blinds EU";
+                String BLINDINVERTED = "Blinds Inverted";
+                String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
+                String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
+                String WIND = "Wind";
             }
         }
 

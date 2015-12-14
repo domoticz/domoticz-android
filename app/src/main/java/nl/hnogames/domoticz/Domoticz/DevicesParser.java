@@ -38,9 +38,24 @@ public class DevicesParser implements JSONParserInterface {
 
     private static final String TAG = DevicesParser.class.getSimpleName();
     private DevicesReceiver receiver;
+    private int idx = 999999;
 
     public DevicesParser(DevicesReceiver receiver) {
         this.receiver = receiver;
+    }
+
+    public DevicesParser(DevicesReceiver receiver, int idx) {
+        this.receiver = receiver;
+        this.idx=idx;
+    }
+
+    private DevicesInfo getDevice(int idx, ArrayList<DevicesInfo> mDevicesInfo) {
+        for (DevicesInfo s : mDevicesInfo) {
+            if (s.getIdx() == idx) {
+                return s;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -58,8 +73,11 @@ public class DevicesParser implements JSONParserInterface {
                 }
             }
 
-            receiver.onReceiveDevices(mDevices);
-
+            if(idx == 999999)
+                receiver.onReceiveDevices(mDevices);
+            else{
+                receiver.onReceiveDevice(getDevice(idx, mDevices));
+            }
         } catch (JSONException e) {
             Log.e(TAG, "DevicesParser JSON exception");
             e.printStackTrace();

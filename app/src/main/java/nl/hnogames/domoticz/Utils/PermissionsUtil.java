@@ -43,6 +43,8 @@ public class PermissionsUtil {
     public static final int INITIAL_IMPORT_SETTINGS_REQUEST = 1887;
     public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 1997;
     public static final int INITIAL_CAMERA_REQUEST = 1777;
+
+    @SuppressWarnings("unused")
     private static final String TAG = PermissionsUtil.class.getSimpleName();
 
     public static boolean canAccessLocation(Context context) {

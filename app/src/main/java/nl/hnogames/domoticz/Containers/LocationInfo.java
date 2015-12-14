@@ -30,7 +30,7 @@ public class LocationInfo {
     LatLng Location;
     int id = 0;
     int switchidx = 0;
-    int range = 120;//meters
+    int radius = 400;           //meters
     boolean enabled = false;
 
 
@@ -38,6 +38,7 @@ public class LocationInfo {
         this.Name = n;
         this.Location = l;
         this.id = i;
+        this.radius = radius;
     }
 
 
@@ -65,12 +66,12 @@ public class LocationInfo {
         switchidx = idx;
     }
 
-    public int getRange() {
-        return range;
+    public int getRadius() {
+        return radius;
     }
 
-    public void setRange(int e) {
-        range = e;
+    public void setRadius(int e) {
+        radius = e;
     }
 
     public LatLng getLocation() {
@@ -84,12 +85,15 @@ public class LocationInfo {
      * @return A Geofence object.
      */
     public Geofence toGeofence() {
+        if(radius<=0)
+            radius=400;//default
+
         // Build a new Geofence object.
         return new Geofence.Builder()
                 .setRequestId(String.valueOf(id))
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setCircularRegion(Location.latitude, Location.longitude, range)
+                .setCircularRegion(Location.latitude, Location.longitude, radius)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .build();
     }

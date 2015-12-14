@@ -1,6 +1,11 @@
 package nl.hnogames.domoticz.Welcome;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
@@ -42,6 +48,7 @@ public class WelcomePage3 extends Fragment {
     private boolean hasBeenVisibleToUser = false;
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
+    private PhoneConnectionUtil mPhoneConnectionUtil;
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -136,7 +143,8 @@ public class WelcomePage3 extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessLocation(getActivity())) {
                 requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);
-            }
+            } else
+                setSsid_spinner();
         } else
             setSsid_spinner();
     }
@@ -147,16 +155,19 @@ public class WelcomePage3 extends Fragment {
             case PermissionsUtil.INITIAL_ACCESS_REQUEST:
                 if (PermissionsUtil.canAccessLocation(getActivity())) {
                     setSsid_spinner();
-                } else
+                } else {
+                     if(mPhoneConnectionUtil!=null)
+                         mPhoneConnectionUtil.stopReceiver();
+
                     ((WelcomeViewActivity) getActivity()).finishWithResult(false);
-                break;
+                }break;
         }
     }
 
     private void setSsid_spinner() {
         Set<String> ssidFromPrefs = mSharedPrefs.getLocalSsid();
-        ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-        ArrayList<String> ssids = new ArrayList<>();
+        final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+        final ArrayList<String> ssids = new ArrayList<>();
 
         if (ssidFromPrefs != null) {
             if (ssidFromPrefs.size() > 0) {
@@ -167,25 +178,29 @@ public class WelcomePage3 extends Fragment {
             }
         }
 
-        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity());
-        CharSequence[] ssidFound = mPhoneConnectionUtil.startSsidScanAsCharSequence();
-
-        if (ssidFound.length < 1) {
-            // No wifi ssid nearby found!
-            local_wifi_spinner.setEnabled(false);                       // Disable spinner
-            ssids.add(getString(R.string.welcome_msg_no_ssid_found));
-            // Set selection to the 'no ssids found' message to inform user
-            local_wifi_spinner.setItems(ssids);
-            local_wifi_spinner.setSelection(0);
-        } else {
-            for (CharSequence ssid : ssidFound) {
-                if (!ssids.contains(ssid)) ssids.add(ssid.toString());  // Prevent double SSID's
+        mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
+            @Override
+            public void ReceiveSSIDs(CharSequence[] ssidFound) {
+                if (ssidFound == null || ssidFound.length < 1) {
+                    // No wifi ssid nearby found!
+                    local_wifi_spinner.setEnabled(false);                       // Disable spinner
+                    ssids.add(getString(R.string.welcome_msg_no_ssid_found));
+                    // Set selection to the 'no ssids found' message to inform user
+                    local_wifi_spinner.setItems(ssids);
+                    local_wifi_spinner.setSelection(0);
+                } else {
+                    for (CharSequence ssid : ssidFound) {
+                        if (!ssids.contains(ssid)) ssids.add(ssid.toString());  // Prevent double SSID's
+                    }
+                    local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                    local_wifi_spinner.setItems(ssids);
+                    // Set SSID's from shared preferences to selected
+                    local_wifi_spinner.setSelection(ssidListFromPrefs);
+                }
+                mPhoneConnectionUtil.stopReceiver();
             }
-            local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
-            local_wifi_spinner.setItems(ssids);
-            // Set SSID's from shared preferences to selected
-            local_wifi_spinner.setSelection(ssidListFromPrefs);
-        }
+        });
+        mPhoneConnectionUtil.startSsidScan();
     }
 
     private void setProtocol_spinner() {

@@ -63,7 +63,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
 
-
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
@@ -114,6 +113,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             }
 
             @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
+
+            @Override
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -136,6 +139,32 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         createListView(extendedStatusSwitches);
     }
 
+    private boolean isOnOffSwitch(DevicesInfo testSwitch)
+    {
+        if(testSwitch.getSwitchTypeVal()<=0 && testSwitch.getSwitchType()==null)
+            return false;
+
+        switch (testSwitch.getSwitchTypeVal()) {
+            case Domoticz.Device.Type.Value.ON_OFF:
+            case Domoticz.Device.Type.Value.MEDIAPLAYER:
+            case Domoticz.Device.Type.Value.X10SIREN:
+            case Domoticz.Device.Type.Value.DOORLOCK:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+            case Domoticz.Device.Type.Value.BLINDINVERTED:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+            case Domoticz.Device.Type.Value.BLINDVENETIAN:
+            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.DIMMER:
+                return true;
+        }
+        switch (testSwitch.getType()) {
+            case Domoticz.Scene.Type.GROUP:
+                return true;
+        }
+
+        return false;
+    }
+
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
@@ -153,18 +182,26 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 String name = mExtendedStatusInfo.getName();
                 int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                 String switchType = mExtendedStatusInfo.getSwitchType();
+
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
-                        (switchType == null || switchType.equals(null) || switchType.length() <= 0))
-                {
-                    if(super.getSort().equals(null)||super.getSort().length()<=0||super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                        (switchType == null || switchType.equals(null) || switchType.length() <= 0)) {
+                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
                         supportedSwitches.add(mExtendedStatusInfo);
-                    }else{
-                        Snackbar.make(coordinatorLayout, "Sorting on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                        if((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean()))
+                    } else {
+                        Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
+                                isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
-                        if((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean()))
+                        }
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
+                                isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
+                        }
+                        if (super.getSort().equals(getContext().getString(R.string.sort_static)) &&
+                                !isOnOffSwitch(mExtendedStatusInfo)) {
+                            supportedSwitches.add(mExtendedStatusInfo);
+                        }
                     }
                 }
             }
@@ -368,10 +405,15 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
         DevicesInfo clickedSwitch = getDevice(idx);
-        if (jsonAction == Domoticz.Device.Blind.Action.UP)
+
+        if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else if (jsonAction == Domoticz.Device.Blind.Action.DOWN)
+        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 

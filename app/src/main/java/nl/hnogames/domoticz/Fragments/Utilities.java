@@ -207,6 +207,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 break;
             }
         }
+
         notifyDataSetChanged();
     }
 
@@ -215,9 +216,16 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
      */
     private void notifyDataSetChanged() {
         addDebugText("notifyDataSetChanged");
-        // adapter.notifyDataSetChanged();
+
+        // save index and top position
+        int index = listView.getFirstVisiblePosition();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : v.getTop();
+
+        adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
 
+        listView.setSelectionFromTop(index, top);
     }
 
     /**
@@ -292,7 +300,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
         thermostatSetPointValue = newSetPoint;
-
         int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 
         mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {

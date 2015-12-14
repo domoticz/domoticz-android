@@ -39,7 +39,7 @@ import nl.hnogames.domoticz.R;
 /**
  * Created by m.heinis on 11/12/2015.
  */
-public class SwitchsDialog implements DialogInterface.OnDismissListener {
+public class SwitchDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private ArrayList<SwitchInfo> info;
@@ -47,9 +47,9 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
     private DismissListener dismissListener;
     private Context mContext;
 
-    public SwitchsDialog(Context c,
-                         ArrayList<SwitchInfo> _info,
-                         int layout) {
+    public SwitchDialog(Context c,
+                        ArrayList<SwitchInfo> _info,
+                        int layout) {
         this.info = _info;
         this.mContext = c;
 
@@ -95,7 +95,6 @@ public class SwitchsDialog implements DialogInterface.OnDismissListener {
         }
         return listData;
     }
-
 
     public void onDismissListener(DismissListener dismissListener) {
         this.dismissListener = dismissListener;

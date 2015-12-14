@@ -40,6 +40,7 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 
@@ -107,7 +108,10 @@ public class DomoticzCardFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         onAttachFragment(fragments.get(0));                           // Get only the last fragment
 
-        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity());
+        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
+            @Override
+            public void ReceiveSSIDs(CharSequence[] entries) {}
+        });
 
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");

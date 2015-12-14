@@ -31,6 +31,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,7 +42,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -56,7 +56,6 @@ import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
-import nl.hnogames.domoticz.UI.SwitchsDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPrefUtil mSharedPrefs;
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private SearchView searchViewAction;
+    private Domoticz domoticz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             addFragment();
 
             //get latest update version
-            Domoticz domoticz = new Domoticz(this);
+            domoticz = new Domoticz(this);
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {
@@ -123,11 +123,21 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout, "Could not check for updates:" + error.getMessage(), Snackbar.LENGTH_SHORT).show();
                 }
             });
+
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(domoticz!=null)
+            domoticz.Disconnect();
+
+        super.onStop();
     }
 
     /* Called when the second activity's finished */
@@ -148,12 +158,9 @@ public class MainActivity extends AppCompatActivity {
                         ((DomoticzFragment) f).refreshFragment();
                     } else if (f instanceof DomoticzCardFragment)
                         ((DomoticzCardFragment) f).refreshFragment();
-                {
-                }
 
                 updateDrawerItems();
                 break;
-
             }
         }
     }
@@ -181,14 +188,14 @@ public class MainActivity extends AppCompatActivity {
         int ICONS[] = mSharedPrefs.getNavigationIcons();
 
         String NAME = getString(R.string.app_name_domoticz);
-        String EMAIL = getString(R.string.domoticz_url);
+        String WEBSITE = getString(R.string.domoticz_url);
         int PROFILE = R.drawable.ic_launcher;
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
-        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, EMAIL, PROFILE, this);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -216,14 +223,16 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[recyclerView.getChildPosition(child) - 1]));
+                        tx.replace(R.id.main,
+                                Fragment.instantiate(MainActivity.this,
+                                        fragments[recyclerView.getChildPosition(child) - 1]));
                         tx.commitAllowingStateLoss();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     invalidateOptionsMenu();
-                    mDrawer.closeDrawer(Gravity.LEFT);
+                    mDrawer.closeDrawer(GravityCompat.START);
 
                     return true;
                 }
@@ -313,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_simple, menu);
 
         } else {
-            if((f instanceof Dashboard)||(f instanceof Scenes)||(f instanceof Switches))
+            if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                 getMenuInflater().inflate(R.menu.menu_main_sort, menu);
             else
                 getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -356,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
                         public void onDismiss(String selectedSort) {
-                            Log.i(TAG, "Sorting: "+selectedSort);
+                            Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = getVisibleFragment();
                             if (f instanceof DomoticzFragment) {
                                 ((DomoticzFragment) f).sortFragment(selectedSort);

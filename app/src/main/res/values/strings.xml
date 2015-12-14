@@ -87,10 +87,10 @@
     <string name="blind_stop">Stop blind</string>
     <string name="connect_switch">Connect switch</string>
 
-
-    <string name="sort_on">ON</string>
-    <string name="sort_off">OFF</string>
-    <string name="sort_all">ALL</string>
-
+    <string name="sort_on">Status On</string>
+    <string name="sort_off">Status Off</string>
+    <string name="sort_static">Static Switches</string>
+    <string name="sort_all">All Devices</string>
+    <string name="row_icon_description">row icon</string>
 
 </resources>

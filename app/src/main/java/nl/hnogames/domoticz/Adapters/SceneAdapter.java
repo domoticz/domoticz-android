@@ -52,12 +52,12 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     private static final String TAG = SceneAdapter.class.getSimpleName();
 
     private final ScenesClickListener listener;
-    private Context context;
     public ArrayList<SceneInfo> filteredData = null;
+    private Context context;
     private ArrayList<SceneInfo> data = null;
     private Domoticz domoticz;
 
-    private  ItemFilter mFilter = new ItemFilter();
+    private ItemFilter mFilter = new ItemFilter();
 
     public SceneAdapter(Context context,
                         ArrayList<SceneInfo> data,

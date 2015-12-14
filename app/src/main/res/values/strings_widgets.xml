@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="failed_get_switches">Failed to get switches</string>
+    <string name="pick_switch_title">Pick a switch</string>
+</resources>

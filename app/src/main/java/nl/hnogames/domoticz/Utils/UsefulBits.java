@@ -24,13 +24,12 @@ package nl.hnogames.domoticz.Utils;
 
 public class UsefulBits {
 
-    public static boolean isStringEmpty(String string) {
-        boolean isEmpty = false;
-
-        if (string.equalsIgnoreCase("") || string.isEmpty()) {
-            isEmpty = true;
-        }
-        return isEmpty;
+    public static boolean isEmpty(String string) {
+        //noinspection SimplifiableIfStatement
+        if (string != null)
+            return string.equalsIgnoreCase("")
+                    || string.isEmpty()
+                    || string.length() <= 0;
+        else return true;
     }
-
 }

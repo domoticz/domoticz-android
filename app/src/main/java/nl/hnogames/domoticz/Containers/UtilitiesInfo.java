@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,6 +43,9 @@ public class UtilitiesInfo {
     int HardwareID;
     String HardwareName;
     String TypeImg;
+    String CounterToday;
+    String Counter;
+    String Usage;
     int signalLevel;
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
@@ -65,6 +70,12 @@ public class UtilitiesInfo {
             Data = row.getString("Data");
         if (row.has("Type"))
             Type = row.getString("Type");
+        if (row.has("Counter"))
+            Counter = row.getString("Counter");
+        if (row.has("CounterToday"))
+            CounterToday = row.getString("CounterToday");
+        if (row.has("Usage"))
+            Usage = row.getString("Usage");
         if (row.has("SubType"))
             SubType = row.getString("SubType");
         idx = row.getInt("idx");
@@ -80,18 +91,8 @@ public class UtilitiesInfo {
 
     @Override
     public String toString() {
-        return "UtilitiesInfo{" +
-                "isProtected=" + isProtected +
-                ", jsonObject=" + jsonObject +
-                ", idx=" + idx +
-                ", Name='" + Name + '\'' +
-                ", LastUpdate='" + LastUpdate + '\'' +
-                ", setPoint=" + setPoint +
-                ", Type='" + Type + '\'' +
-                ", SubType='" + SubType + '\'' +
-                ", Favorite=" + Favorite +
-                ", HardwareID=" + HardwareID +
-                ", signalLevel=" + signalLevel +
+        return this.getClass().getSimpleName() + "{" +
+                new Gson().toJson(this) +
                 '}';
     }
 
@@ -119,8 +120,20 @@ public class UtilitiesInfo {
         return Name;
     }
 
+    public String getCounter() {
+        return Counter;
+    }
+
+    public String getUsage() {
+        return Usage;
+    }
+
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getCounterToday() {
+        return CounterToday;
     }
 
     public String getTypeImg() {
