@@ -411,12 +411,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.switch_battery_level.setText(text);
 
         if(mExtendedStatusInfo.getUsage()!=null && mExtendedStatusInfo.getUsage().length()>0)
-            holder.switch_battery_level.setText("Usage: " +  mExtendedStatusInfo.getUsage());
+            holder.switch_battery_level.setText(context.getString(R.string.usage)+": " +  mExtendedStatusInfo.getUsage());
         if (mExtendedStatusInfo.getCounterToday() != null && mExtendedStatusInfo.getCounterToday().length() > 0)
-            holder.switch_battery_level.append(" Today: " + mExtendedStatusInfo.getCounterToday());
+            holder.switch_battery_level.append(" " +context.getString(R.string.today)+": " + mExtendedStatusInfo.getCounterToday());
         if (mExtendedStatusInfo.getCounter() != null && mExtendedStatusInfo.getCounter().length() > 0 &&
                 !mExtendedStatusInfo.getCounter().equals(mExtendedStatusInfo.getData()))
-            holder.switch_battery_level.append(" Total: " + mExtendedStatusInfo.getCounter());
+            holder.switch_battery_level.append(" " +context.getString(R.string.total)+": "+ mExtendedStatusInfo.getCounter());
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
         holder.iconRow.setAlpha(1f);

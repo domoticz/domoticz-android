@@ -288,7 +288,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, "Could not get Log data for: " + utility.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log)+": " + utility.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
                 hideProgressDialog();
             }
         });

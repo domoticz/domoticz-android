@@ -57,8 +57,9 @@ import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
 public class SharedPrefUtil {
 
-    public static final String PREF_CUSTOM_WEAR = "enablewearitems";
-    public static final String PREF_CUSTOM_WEAR_ITEMS = "wearitems";
+    public static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";

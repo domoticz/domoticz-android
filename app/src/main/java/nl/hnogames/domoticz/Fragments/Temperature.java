@@ -240,7 +240,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, "Could not get Log data for: " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log)+": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
                 hideProgressDialog();
             }
         });

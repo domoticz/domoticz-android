@@ -191,7 +191,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(this);
 
-        if (!mSharedPrefs.showCustomWear() && mSharedPrefs.getWearSwitches() != null && mSharedPrefs.getWearSwitches().length > 0) {
+        if (!mSharedPrefs.showCustomWear() || ( mSharedPrefs.getWearSwitches() != null && mSharedPrefs.getWearSwitches().length > 0)){
             for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 String name = mExtendedStatusInfo.getName();
                 int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
@@ -206,26 +206,28 @@ public class WearMessageListenerService extends WearableListenerService implemen
             }
         } else {
             String[] filterSwitches = mSharedPrefs.getWearSwitches();
-            for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
-                String name = mExtendedStatusInfo.getName();
-                String idx = mExtendedStatusInfo.getIdx() + "";
-                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                String switchType = mExtendedStatusInfo.getSwitchType();
+            if(filterSwitches!=null && filterSwitches.length>0) {
+                for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
+                    String name = mExtendedStatusInfo.getName();
+                    String idx = mExtendedStatusInfo.getIdx() + "";
+                    int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                    String switchType = mExtendedStatusInfo.getSwitchType();
 
-                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                        appSupportedSwitchesValues.contains(switchTypeVal) &&
-                        appSupportedSwitchesNames.contains(switchType)) {
+                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                            appSupportedSwitchesValues.contains(switchTypeVal) &&
+                            appSupportedSwitchesNames.contains(switchType)) {
 
-                    for (String f : filterSwitches) {
-                        if (f.equals(idx)) {
-                            supportedSwitches.add(mExtendedStatusInfo);
+                        for (String f : filterSwitches) {
+                            if (f.equals(idx)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
+                            }
                         }
                     }
                 }
             }
         }
 
-        if (supportedSwitches.size() > 0) {
+        if (supportedSwitches!=null && supportedSwitches.size() > 0) {
             String parsedData = new Gson().toJson(supportedSwitches);
             Log.v(TAG, "Sending data: " + parsedData);
             sendMessage(SEND_DATA, parsedData);
