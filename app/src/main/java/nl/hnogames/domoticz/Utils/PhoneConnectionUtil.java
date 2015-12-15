@@ -32,7 +32,11 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 
@@ -44,6 +48,7 @@ public class PhoneConnectionUtil {
     private NetworkInfo networkCellInfo;
     private WifiSSIDListener listener;
     private BroadcastReceiver receiver;
+    private AtomicBoolean unregistered;
 
     public PhoneConnectionUtil(Context mContext,
                                final WifiSSIDListener listener) {
@@ -53,10 +58,31 @@ public class PhoneConnectionUtil {
         networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         this.listener = listener;
+    }
 
-        receiver =new BroadcastReceiver() {
+    public void stopReceiver(){
+        try {
+            if(receiver!=null) {
+                synchronized (unregistered) {
+                    if (!unregistered.get()) {
+                        mContext.unregisterReceiver(receiver);
+                        unregistered.set(true);
+                    }
+                }
+            }
+        } catch(Exception ex){
+            receiver=null;
+        }
+    }
+
+    public void startSsidScan() {
+        final List<ScanResult> scanList = new ArrayList<ScanResult>();
+        wifiManager.startScan();
+
+        unregistered = new AtomicBoolean(false);
+        receiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context c, Intent intent) {
+            public void onReceive(Context context, Intent intent) {
                 List<ScanResult> results = wifiManager.getScanResults();
                 CharSequence[] entries = new CharSequence[0];
 
@@ -74,23 +100,14 @@ public class PhoneConnectionUtil {
                 listener.ReceiveSSIDs(entries);
             }
         };
-    }
+        Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
+            @Override
+            public void run() {
+                stopReceiver();
+            }
+        }, 30, TimeUnit.SECONDS);
 
-    public void stopReceiver(){
-        try {
-            mContext.unregisterReceiver(receiver);
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    public void startSsidScan() {
-        try {
-            mContext.registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-        wifiManager.startScan();
+        mContext.registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     }
 
     @SuppressWarnings("unused")

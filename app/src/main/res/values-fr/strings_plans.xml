@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_plans">Plans</string>
+    <plurals name="devices">
+        <item quantity="one">%1d device</item>
+        <item quantity="other">%1d devices</item>
+    </plurals>
+
+</resources>

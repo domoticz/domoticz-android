@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 
 public class WelcomeViewActivity extends FragmentActivity
         implements View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -35,6 +36,7 @@ public class WelcomeViewActivity extends FragmentActivity
     private RelativeLayout navigation;
     private Integer[] background_colors;
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+
 
     @SuppressLint("MissingSuperCall")
     @Override

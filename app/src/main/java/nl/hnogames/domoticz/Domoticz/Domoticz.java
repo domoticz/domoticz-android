@@ -82,11 +82,6 @@ public class Domoticz {
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     Context mContext;
 
-    public void Disconnect(){
-        if(mPhoneConnectionUtil!=null)
-            mPhoneConnectionUtil.stopReceiver();
-    }
-
     public Domoticz(Context mContext) {
         this.mContext = mContext;
         mSharedPrefUtil = new SharedPrefUtil(mContext);

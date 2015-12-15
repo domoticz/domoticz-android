@@ -21,7 +21,7 @@
         android:id="@+id/info_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/logo_domoticz"
         android:text="@string/welcome_info_domoticz"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_welcomePage1_domoticzInfo" />
