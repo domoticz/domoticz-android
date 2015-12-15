@@ -1,10 +1,17 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
     <string name="app_name_domoticz">Domoticz</string>
     <string name="domoticz_url">http://www.domoticz.com/</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_navigation_title">Select category</string>
+
+    <string name="dialog_exit">Really Exit?</string>
+    <string name="dialog_exit_description">Are you sure you want to exit?</string>
 
     <string name="msg_please_wait">Please wait...</string>
     <string name="msg_connectionSettingsIncomplete_title">Connection settings incomplete</string>
@@ -43,18 +50,6 @@
     <string name="msg_copiedToClipboard">Text copied to clipboard</string>
     <string name="favorite">Favorite</string>
 
-    <string name="timer_before_sunset">Before Sunset</string>
-    <string name="timer_after_sunset">After Sunset</string>
-    <string name="timer_ontime">On Time</string>
-    <string name="timer_before_sunrise">Before Sunrise</string>
-    <string name="timer_after_sunrise">After Sunrise</string>
-    <string name="timer_fixed">Fixed DateTime</string>
-
-    <string name="timer_every_days">Every Day</string>
-    <string name="timer_working_days">Working Days</string>
-    <string name="timer_weekend">Weekend</string>
-    <string name="timer_other">Other</string>
-
     <string name="geofence">Geofencing</string>
     <string name="title_geofence">Enable geofencing</string>
     <string name="description_geofence">Enable and config geofences</string>
@@ -92,5 +87,7 @@
     <string name="sort_static">Static Switches</string>
     <string name="sort_all">All Devices</string>
     <string name="row_icon_description">row icon</string>
+
+    <string name="choose_color">Choose Color</string>
 
 </resources>

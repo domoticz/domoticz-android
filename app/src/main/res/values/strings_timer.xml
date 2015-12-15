@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
+    <string name="command">Command</string>
+    <string name="type">Type</string>
+    <string name="notapplicable">N/A</string>
+
+    <string name="timer_before_sunset">Before Sunset</string>
+    <string name="timer_after_sunset">After Sunset</string>
+    <string name="timer_ontime">On Time</string>
+    <string name="timer_before_sunrise">Before Sunrise</string>
+    <string name="timer_after_sunrise">After Sunrise</string>
+    <string name="timer_fixed">Fixed DateTime</string>
+
+    <string name="timer_every_days">Every Day</string>
+    <string name="timer_working_days">Working Days</string>
+    <string name="timer_weekend">Weekend</string>
+    <string name="timer_other">Other</string>
+
+</resources>

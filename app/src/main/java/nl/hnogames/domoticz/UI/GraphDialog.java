@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -52,12 +53,13 @@ public class GraphDialog {
     private String axisYLabel = "Temp";
     private String range = "day";
     private int steps = 1;
+    private Context mContext;
 
     public GraphDialog(Context mContext,
                        ArrayList<GraphPointInfo> mGraphList,
                        int layout) {
         this.mGraphList = mGraphList;
-
+        this.mContext=mContext;
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         mdb.customView(layout, false)
@@ -70,7 +72,7 @@ public class GraphDialog {
         View view = md.getCustomView();
 
         ComboLineColumnChartView chart = (ComboLineColumnChartView) view.findViewById(R.id.chart);
-        ComboLineColumnChartData columndata = generateData();
+        ComboLineColumnChartData columndata = generateData(view );
         chart.setComboLineColumnChartData(columndata);
         setViewPort(chart);
         md.show();
@@ -100,7 +102,7 @@ public class GraphDialog {
         chart.setViewportCalculationEnabled(false);
     }
 
-    private ComboLineColumnChartData generateData() {
+    private ComboLineColumnChartData generateData(View view ) {
         List<Line> lines = new ArrayList<Line>();
 
         List<PointValue> values = new ArrayList<>();
@@ -196,12 +198,13 @@ public class GraphDialog {
         }
 
         boolean setCubic = false;
+
         //setCubic seems bugged in HelloCharts library
         //if(range.equals(Domoticz.Graph.Range.MONTH) || range.equals(Domoticz.Graph.Range.YEAR))
         //    setCubic=true;
         if (addTemperature) {
             lines.add(new Line(values)
-                    .setColor(ChartUtils.COLOR_BLUE)
+                    .setColor(mContext.getResources().getColor(R.color.md_material_blue_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -210,16 +213,17 @@ public class GraphDialog {
 
         if (addHumidity) {
             lines.add(new Line(valueshu)
-                    .setColor(ChartUtils.COLOR_RED)
+                    .setColor(mContext.getResources().getColor(R.color.material_orange_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
+
         }
 
         if (addBarometer) {
             lines.add(new Line(valuesba)
-                    .setColor(ChartUtils.COLOR_GREEN)
+                    .setColor(mContext.getResources().getColor(R.color.material_green_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -228,7 +232,7 @@ public class GraphDialog {
 
         if (addCounter) {
             lines.add(new Line(valuesc)
-                    .setColor(ChartUtils.COLOR_ORANGE)
+                    .setColor(mContext.getResources().getColor(R.color.material_indigo_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -237,7 +241,7 @@ public class GraphDialog {
 
         if (addPercentage) {
             lines.add(new Line(valuesv)
-                    .setColor(ChartUtils.COLOR_VIOLET)
+                    .setColor(mContext.getResources().getColor(R.color.material_yellow_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -246,29 +250,75 @@ public class GraphDialog {
 
         if (addDirection) {
             lines.add(new Line(valuesdi)
-                    .setColor(ChartUtils.COLOR_GREEN)
+                    .setColor(mContext.getResources().getColor(R.color.material_deep_teal_500))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
+
         }
 
         if (addSunPower) {
             lines.add(new Line(valuesuv)
-                    .setColor(ChartUtils.COLOR_ORANGE)
+                    .setColor(mContext.getResources().getColor(R.color.material_deep_purple_600))
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+
+        }
+
+        if (addSpeed) {
+            lines.add(new Line(valuessp)
+                    .setColor(mContext.getResources().getColor(R.color.material_amber_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
         }
 
-        if (addSpeed) {
-            lines.add(new Line(valuessp)
-                    .setColor(ChartUtils.COLOR_VIOLET)
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
+        if(lines.size()>1) {
+            if (addTemperature) {
+                ((TextView) view.findViewById(R.id.legend_temperature))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addHumidity) {
+                ((TextView) view.findViewById(R.id.legend_humidity))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addBarometer) {
+                ((TextView) view.findViewById(R.id.legend_barometer))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addCounter) {
+                ((TextView) view.findViewById(R.id.legend_counter))
+                        .setVisibility(View.VISIBLE);
+                ((TextView) view.findViewById(R.id.legend_counter))
+                        .setText(axisYLabel);
+            }
+
+            if (addPercentage) {
+                ((TextView) view.findViewById(R.id.legend_percentage))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addDirection) {
+                ((TextView) view.findViewById(R.id.legend_direction))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addSunPower) {
+                ((TextView) view.findViewById(R.id.legend_sunpower))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addSpeed) {
+                ((TextView) view.findViewById(R.id.legend_speed))
+                        .setVisibility(View.VISIBLE);
+            }
         }
 
         LineChartData lineChartData = new LineChartData(lines);

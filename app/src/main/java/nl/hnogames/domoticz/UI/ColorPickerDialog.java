@@ -57,7 +57,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-        mdb.title("Choose Color");
+        mdb.title(mContext.getString(R.string.choose_color));
 
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();

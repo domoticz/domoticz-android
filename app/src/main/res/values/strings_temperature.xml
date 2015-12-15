@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
 
     <string name="title_temperature">Temperature</string>
     <string name="wind">Wind</string>
+    <string name="error_log">Could not get Log data for</string>
 
 </resources>

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
+    <string name="title_wizard">Welcome Wizard</string>
 
     <string name="wizard_welcome">Welcome</string>
     <string name="wizard_welcome_description">Domoticz is a very light weight home automation system that lets you monitor and configure various devices.</string>
