@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
     <string-array name="drawer_actions">
         <item>Wizard</item>
         <item>Dashboard</item>
@@ -15,7 +18,7 @@
         <item>User Variables</item>
     </string-array>
 
-    <string-array name="empty_array"></string-array>
+    <string-array name="empty_array" translatable="false"></string-array>
 
     <string-array name="drawer_fragments" translatable="false">
         <item>nl.hnogames.domoticz.Fragments.Wizard</item>
@@ -32,7 +35,7 @@
         <item>nl.hnogames.domoticz.Fragments.UserVariables</item>
     </string-array>
 
-    <array name="drawer_icons">
+    <array name="drawer_icons" translatable="false">
         <item>@drawable/ic_wizard</item>
         <item>@drawable/ic_dashboard</item>
         <item>@drawable/ic_scenes</item>

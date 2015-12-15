@@ -223,7 +223,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, "Could not get Log data for: " + weather.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log)+": " + weather.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
                 hideProgressDialog();
             }
         });

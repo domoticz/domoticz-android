@@ -47,6 +47,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
     public CoordinatorLayout coordinatorLayout;
+
     @SuppressWarnings("unused")
     private String TAG = MainActivity.class.getSimpleName();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private SearchView searchViewAction;
     private Domoticz domoticz;
+
+    private ArrayList<String> stackFragments = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,17 +160,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void removeFragmentStack(String fragment)
+    {
+        if(stackFragments!= null) {
+            if (stackFragments.contains(fragment))
+                stackFragments.remove(fragment);
+        }
+    }
+
+    public void addFragmentStack(String fragment)
+    {
+        if(stackFragments == null)
+            stackFragments=new ArrayList<>();
+
+        if(stackFragments.contains(fragment))
+            stackFragments.remove(fragment);
+
+        stackFragments.add(fragment);
+    }
+
     public void changeFragment(String fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+       // tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
         tx.commitAllowingStateLoss();
+        addFragmentStack(fragment);
     }
 
     private void addFragment() {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        //tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
         tx.commitAllowingStateLoss();
+        addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
     }
 
     private void updateDrawerItems() {
@@ -220,10 +247,12 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                        //tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
                         tx.replace(R.id.main,
                                 Fragment.instantiate(MainActivity.this,
                                         fragments[recyclerView.getChildPosition(child) - 1]));
                         tx.commitAllowingStateLoss();
+                        addFragmentStack(fragments[recyclerView.getChildPosition(child) - 1]);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -383,17 +412,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        MainActivity.super.onBackPressed();
-                    }
-                }).create().show();
+        if(stackFragments== null || stackFragments.size()<=1) {
+            new AlertDialog.Builder(this)
+                    .setTitle(this.getString(R.string.dialog_exit))
+                    .setMessage(this.getString(R.string.dialog_exit_description))
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    }).create().show();
+        }
+        else{
+            String currentFragment = stackFragments.get(stackFragments.size()-1);
+            String previousFragment = stackFragments.get(stackFragments.size()-2);
+            changeFragment(previousFragment);
+            stackFragments.remove(currentFragment);
+        }
     }
 }

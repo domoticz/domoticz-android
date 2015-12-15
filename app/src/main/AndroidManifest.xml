@@ -11,6 +11,14 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name">
 
+        <service android:name=".Service.GeofenceTransitionsIntentService" />
+
+        <service android:name=".Service.WearMessageListenerService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
+        </service>
+
         <receiver android:name=".Service.WidgetProviderLarge" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -53,7 +61,7 @@
         <activity android:name=".WidgetActionActivity"
             android:configChanges="orientation|screenSize"
             android:label="Domoticz Widget Action">
-    </activity>
+        </activity>
 
         <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService"/>
 
@@ -69,7 +77,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -138,13 +145,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service android:name=".Service.GeofenceTransitionsIntentService" />
-
-        <service android:name=".Service.WearMessageListenerService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
-        </service>
     </application>
 
     <permission

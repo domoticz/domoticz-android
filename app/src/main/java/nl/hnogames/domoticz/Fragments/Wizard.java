@@ -43,12 +43,15 @@ import com.dexafree.materialList.view.MaterialListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Wizard extends Fragment {
+public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
+{
 
     private final String WELCOME = "WELCOME_CARD";
     private final String FAVORITE = "FAVORITE_CARD";
@@ -62,6 +65,9 @@ public class Wizard extends Fragment {
     private ViewGroup root;
     private SharedPrefUtil mSharedPrefs;
 
+    private final int iSettingsResultCode = 995;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
@@ -69,7 +75,10 @@ public class Wizard extends Fragment {
 
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
         mSharedPrefs = new SharedPrefUtil(getActivity());
+
+        getActionBar().setTitle(R.string.title_wizard);
         createCards();
+
         return root;
     }
 
@@ -79,18 +88,6 @@ public class Wizard extends Fragment {
         mListView.getItemAnimator().setAddDuration(300);
         mListView.getItemAnimator().setRemoveDuration(300);
         mListView.getAdapter().clearAll();
-
-        /*mListView.addOnItemTouchListener(new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(Card card, int position) {
-                Log.d("CARD_TYPE", card.getTag().toString());
-            }
-
-            @Override
-            public void onItemLongClick(Card card, int position) {
-                Log.d("LONG_CLICK", card.getTag().toString());
-            }
-        });*/
 
         mListView.setOnDismissCallback(new OnDismissCallback() {
             @Override
@@ -102,7 +99,6 @@ public class Wizard extends Fragment {
         });
 
         List<Card> cards = new ArrayList<>();
-
         if (!mSharedPrefs.isCardCompleted(WELCOME)) {
             cards.add((new Card.Builder(context)
                     .setTag(WELCOME)
@@ -170,7 +166,7 @@ public class Wizard extends Fragment {
                             .setListener(new OnActionClickListener() {
                                 @Override
                                 public void onActionClicked(View view, Card card) {
-                                    startActivityForResult(new Intent(context, SettingsActivity.class), 847);
+                                    startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                 }
                             }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -200,7 +196,7 @@ public class Wizard extends Fragment {
                             .setListener(new OnActionClickListener() {
                                 @Override
                                 public void onActionClicked(View view, Card card) {
-                                    startActivityForResult(new Intent(context, SettingsActivity.class), 847);
+                                    startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                 }
                             }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -230,7 +226,7 @@ public class Wizard extends Fragment {
                             .setListener(new OnActionClickListener() {
                                 @Override
                                 public void onActionClicked(View view, Card card) {
-                                    startActivityForResult(new Intent(context, SettingsActivity.class), 847);
+                                    startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                 }
                             }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -352,6 +348,7 @@ public class Wizard extends Fragment {
                                 @Override
                                 public void onActionClicked(View view, Card card) {
                                     mSharedPrefs.removeWizard();
+                                    ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
                                     ((MainActivity) getActivity()).buildScreen();
                                     ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                 }
@@ -362,6 +359,10 @@ public class Wizard extends Fragment {
                             .setListener(new OnActionClickListener() {
                                 @Override
                                 public void onActionClicked(View view, Card card) {
+                                    mSharedPrefs.removeWizard();
+                                    ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
+                                    ((MainActivity) getActivity()).buildScreen();
+                                    ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                 }
                             }))
                     .endConfig()
@@ -370,5 +371,9 @@ public class Wizard extends Fragment {
 
         mListView.getAdapter().addAll(cards);
     }
+
+    @Override
+    public void onConnectionOk() {}
+
 }
 

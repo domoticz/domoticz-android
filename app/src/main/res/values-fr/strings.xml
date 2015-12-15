@@ -43,18 +43,6 @@
     <string name="msg_copiedToClipboard">Texte copié dans le presse papier</string>
     <string name="favorite">Favoris</string>
 
-    <string name="timer_before_sunset">Avant le crépuscule</string>
-    <string name="timer_after_sunset">Après le crépuscule</string>
-    <string name="timer_ontime">"À l'heure"</string>
-    <string name="timer_before_sunrise">"Avant l'aube"</string>
-    <string name="timer_after_sunrise">"Après l'aube"</string>
-    <string name="timer_fixed">Heure fixe</string>
-
-    <string name="timer_every_days">Tous les jours</string>
-    <string name="timer_working_days">Jours de semaine</string>
-    <string name="timer_weekend">Weekend</string>
-    <string name="timer_other">Autres</string>
-
     <string name="geofence">Geofencing</string>
     <string name="title_geofence">Enable geofencing</string>
     <string name="description_geofence">Enable and config geofences</string>

@@ -8,8 +8,8 @@ android {
         applicationId 'nl.hnogames.domoticz'
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 35
-        versionName '0.1.152'
+        versionCode 36
+        versionName '0.1.153'
 
         multiDexEnabled true
     }
@@ -49,6 +49,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.google.code.gson:gson:1.7.2'
+    compile 'com.android.support:multidex:1.0.1'
 
     compile 'com.google.android.gms:play-services-maps:8.3.0'
     compile 'com.google.android.gms:play-services-location:8.3.0'
@@ -74,7 +75,6 @@ dependencies {
     compile "com.splunk.mint:mint:4.4.0"
     compile 'com.larswerkman:lobsterpicker:1.0.0'
     compile 'com.github.dexafree:materiallist:3.1.2'
-
 
     wearApp project(':wear')
 }
