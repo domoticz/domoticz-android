@@ -19,7 +19,7 @@
     <string name="welcome_msg_connectionDataInvalid">URL should not start with http</string>
     <string name="welcome_msg_correctOnPreviousPage">Please correct the data on the previous page</string>
     <string name="welcome_msg_serverVersion">Domoticz version</string>
-    <string name="welcome_msg_pleaseGoToPreviousPage">Please go back to the previous page and correct yout settings</string>
+    <string name="welcome_msg_pleaseGoToPreviousPage">Please go back to the previous page and correct your settings</string>
     <string name="welcome_msg_numberOfDevices">%1$d devices found</string>
     <string name="welcome_msg_no_ssid_found">No wifi SSID\'s found</string>
     <string name="welcome_ssid_spinner_prompt">Select home SSID\'s</string>

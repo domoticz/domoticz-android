@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_add_location">Add Location</string>
+    <string name="locationaddress">Adresse</string>
+    <string name="locationname">Nom</string>
+    <string name="locationaddresshint">Streetname Number City Country</string>
+    <string name="getlocation">GET</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="radius">Radius (meter)</string>
+    <string name="connectedswitch">Connected switch</string>
+    <string name="currentlocation">Current Location</string>
+    <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
+    <string name="delete_short">DEL</string>
+    <string name="Location">Location</string>
+    <string name="currentLocation">Current Location</string>
+    <string name="manual">Manual</string>
+    <string name="getLocation">GET</string>
+    <string name="locationAddress">Address</string>
+    <string name="unknown">Unknown</string>
+    <string name="not_available">N/A</string>
+
+</resources>

@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name_domoticz">Domoticz</string>
+    <string name="domoticz_url">http://www.domoticz.com/</string>
+
+    <string name="drawer_open">Ouvrir le menu</string>
+    <string name="drawer_close">Fermer le menu</string>
+    <string name="drawer_navigation_title">Sélectioner une catégorie</string>
+
+    <string name="msg_please_wait">Patientez…</string>
+    <string name="msg_connectionSettingsIncomplete_title">Connection settings incomplete</string>
+    <string name="msg_connectionSettingsIncomplete_msg1">
+        The connection settings for the Domoticz server are incomplete.</string>
+    <string name="msg_connectionSettingsIncomplete_msg2">
+        Please review connection settings.</string>
+    <string name="msg_connectionUrlMalformed_title">Server address error</string>
+    <string name="msg_connectionUrlMalformed_msg">Specified server address is incorrect.</string>
+
+    <string name="button_state_on">On</string>
+    <string name="button_state_off">Off</string>
+    <string name="button_status_log">Log</string>
+    <string name="button_status_day">Jour</string>
+    <string name="button_status_month">Mois</string>
+    <string name="button_status_year">Année</string>
+    <string name="button_status_timer">Planning</string>
+    <string name="button_color">Couleur</string>
+    <string name="button_status_notifications">Notifications</string>
+
+    <string name="last_update">Dernière activité</string>
+    <string name="level">Niveau</string>
+    <string name="signal_level">Niveau du signal</string>
+    <string name="battery_level">Niveau de batterie</string>
+    <string name="data">État</string>
+    <string name="hardware">Matériel</string>
+    <string name="temperature">Température</string>
+    <string name="status">Statut</string>
+    <string name="set_point">Set point</string>
+    <string name="action_success">Action succes</string>
+    <string name="action_failed">Action échec</string>
+    <string name="action_unknown">Action resultat inconnu</string>
+
+    <string name="debug_textview_title">Debuggage info</string>
+
+    <string name="msg_copiedToClipboard">Texte copié dans le presse papier</string>
+    <string name="favorite">Favoris</string>
+
+    <string name="timer_before_sunset">Avant le crépuscule</string>
+    <string name="timer_after_sunset">Après le crépuscule</string>
+    <string name="timer_ontime">"À l'heure"</string>
+    <string name="timer_before_sunrise">"Avant l'aube"</string>
+    <string name="timer_after_sunrise">"Après l'aube"</string>
+    <string name="timer_fixed">Heure fixe</string>
+
+    <string name="timer_every_days">Tous les jours</string>
+    <string name="timer_working_days">Jours de semaine</string>
+    <string name="timer_weekend">Weekend</string>
+    <string name="timer_other">Autres</string>
+
+    <string name="geofence">Geofencing</string>
+    <string name="title_geofence">Enable geofencing</string>
+    <string name="description_geofence">Enable and config geofences</string>
+    <string name="title_geofence_notifications">Enable notifications</string>
+    <string name="description_geofence_notifications">Enable notifications for triggering events</string>
+    <string name="geofence_provider_msg">Please enable %1$s to find your location</string>
+    <string name="google_play_services_unavailable">Google Play services unavailable.</string>
+    <string name="geofence_place">Place: %s</string>
+    <string name="location_name">No location name specified.</string>
+    <string name="location_not_found">No location found.</string>
+
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="are_you_sure">Êtes-vous sûr ?</string>
+    <string name="could_not_find_location">"Impossible d'obtenir votre localisation, s'il vous plait réessayer."</string>
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+    <string name="something_went_wrong">"Quelque chose s'est mal passé"</string>
+    <string name="no_network_available">Erreur : aucune connexion disponible</string>
+    <string name="oops">OOPS!</string>
+
+    <string name="favorite_added">ajouté au Tableau de bord</string>
+    <string name="favorite_removed">retiré du Tableau de bord</string>
+
+    <string name="switch_on">Allumer</string>
+    <string name="switch_off">Éteindre</string>
+
+    <string name="blind_up">Ouvrir les stores</string>
+    <string name="blind_down">Fermer les stores</string>
+    <string name="blind_stop">Arrêter les stores</string>
+    <string name="connect_switch">Connecter un intérrupteur</string>
+
+    <string name="sort_on">Statut On</string>
+    <string name="sort_off">Statut Off</string>
+    <string name="sort_static">Static Switches</string>
+    <string name="sort_all">Tous les dispositifs</string>
+
+</resources>
