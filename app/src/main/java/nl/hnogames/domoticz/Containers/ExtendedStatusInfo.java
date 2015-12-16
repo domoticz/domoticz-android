@@ -33,27 +33,29 @@ public class ExtendedStatusInfo {
 
     private final String UNKNOWN = "Unknown";
     private final String TAG = ExtendedStatusInfo.class.getSimpleName();
-    JSONObject jsonObject;
-    String name;
-    String hardwareName;
-    boolean isProtected;
-    int level;
-    int maxDimLevel;
-    int favorite;
-    String type;
-    String subtype;
-    String status;
-    String PlanID;
-    boolean statusBoolean;
-    int batteryLevel;
-    String TypeImg;
-    int signalLevel;
-    int switchTypeVal;
-    String switchType;
-    String lastUpdate;
-    String Data;
-    int idx;
-    String Timers;
+    private boolean useCustomImage;
+    private JSONObject jsonObject;
+    private String name;
+    private String hardwareName;
+    private boolean isProtected;
+    private int level;
+    private int maxDimLevel;
+    private int favorite;
+    private String type;
+    private String subtype;
+    private String status;
+    private String PlanID;
+    private boolean statusBoolean;
+    private int batteryLevel;
+    private String TypeImg;
+    private String Image;
+    private int signalLevel;
+    private int switchTypeVal;
+    private String switchType;
+    private String lastUpdate;
+    private String Data;
+    private int idx;
+    private String Timers;
 
     public ExtendedStatusInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -95,8 +97,22 @@ public class ExtendedStatusInfo {
             exceptionHandling(e);
             hardwareName = UNKNOWN;
         }
+        try {
+            if (row.has("CustomImage")) {
+                if(row.getInt("CustomImage")>0)
+                    useCustomImage = true;
+                else
+                    useCustomImage = false;
+            }
+            else
+                useCustomImage = false;
+        } catch (Exception e) {
+            useCustomImage = false;
+        }
         if (row.has("TypeImg"))
             TypeImg = row.getString("TypeImg");
+        if (row.has("Image"))
+            Image = row.getString("Image");
         try {
             isProtected = row.getBoolean("Protected");
         } catch (Exception e) {
@@ -227,6 +243,10 @@ public class ExtendedStatusInfo {
         return subtype;
     }
 
+    public String getImage() {
+        return Image;
+    }
+
     public String getTypeImg() {
         return TypeImg;
     }
@@ -301,9 +321,16 @@ public class ExtendedStatusInfo {
         }
     }
 
+    public boolean getUseCustomImage() {
+        return useCustomImage;
+    }
+
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
-        setStatus("On");
+        if(status)
+            setStatus("On");
+        else
+            setStatus("Off");
     }
 
     public int getBatteryLevel() {

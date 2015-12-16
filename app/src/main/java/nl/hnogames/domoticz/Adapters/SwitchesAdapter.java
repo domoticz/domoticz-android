@@ -381,7 +381,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         else
             holder.iconRow.setAlpha(1f);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSwitchType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
@@ -442,7 +448,14 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (mExtendedStatusInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.INVISIBLE);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSwitchType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
@@ -519,7 +532,14 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSwitchType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
@@ -654,7 +674,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSubType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSwitchType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else

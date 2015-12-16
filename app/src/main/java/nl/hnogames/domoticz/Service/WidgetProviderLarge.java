@@ -131,7 +131,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                             views.setViewVisibility(R.id.on_button, View.GONE);
                         }
 
-                        views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getTypeImg(), s.getSwitchType(), true));
+                        views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
                         appWidgetManager.updateAppWidget(mSharedPrefs.getWidgetIDforIDX(s.getIdx()), views);
                     }
                 }
