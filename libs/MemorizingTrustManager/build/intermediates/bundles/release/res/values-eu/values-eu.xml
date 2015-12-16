@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Road/Android%20studio%20Projects/DomoticzForAndroid/libs/MemorizingTrustManager/res/values-eu/strings.xml -->
-    <eat-comment/>
     <string name="mtm_accept_cert">Ziurtagiri ezezaguna onartu?</string>
     <string name="mtm_accept_servername">Zerbitzariaren izeneko desadostasuna onartu?</string>
     <string name="mtm_cert_details">Ziurtagiriaren xehetasunak:</string>
