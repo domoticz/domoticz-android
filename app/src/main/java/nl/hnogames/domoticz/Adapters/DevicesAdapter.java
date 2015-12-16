@@ -85,7 +85,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         this.listener = listener;
     }
 
-
     @Override
     public int getCount() {
         return filteredData.size();
@@ -110,11 +109,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         DevicesInfo extendedStatusInfo = filteredData.get(position);
 
-        //if (convertView == null) {
         holder = new ViewHolder();
         convertView = setSwitchRowId(extendedStatusInfo, holder);
         convertView.setTag(holder);
-        //} else holder = (ViewHolder) convertView.getTag();
 
         setSwitchRowData(extendedStatusInfo, holder, convertView);
 
@@ -137,48 +134,53 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
             }
         } else {
-            boolean switchFound = true;
-            switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-                case Domoticz.Device.Type.Value.ON_OFF:
-                case Domoticz.Device.Type.Value.MEDIAPLAYER:
-                case Domoticz.Device.Type.Value.X10SIREN:
-                case Domoticz.Device.Type.Value.DOORLOCK:
-                    row = setOnOffSwitchRowId(holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.MOTION:
-                case Domoticz.Device.Type.Value.CONTACT:
-                case Domoticz.Device.Type.Value.DUSKSENSOR:
-                    row = setMotionSwitchRowId(holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.BLINDVENETIAN:
-                    row = setBlindsRowId(holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
-                case Domoticz.Device.Type.Value.DOORBELL:
-                case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
-                    row = setPushOnOffSwitchRowId(holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.DIMMER:
-                case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
-                case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    row = setDimmerRowId(holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.BLINDS:
-                case Domoticz.Device.Type.Value.BLINDINVERTED:
-                    if(canHandleStopButton(mExtendedStatusInfo))
-                        row = setBlindsRowId(holder);
-                    else
+            if((mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))){
+                row = setDefaultRowId(holder);
+            }
+            else {
+                boolean switchFound = true;
+                switch (mExtendedStatusInfo.getSwitchTypeVal()) {
+                    case Domoticz.Device.Type.Value.ON_OFF:
+                    case Domoticz.Device.Type.Value.MEDIAPLAYER:
+                    case Domoticz.Device.Type.Value.X10SIREN:
+                    case Domoticz.Device.Type.Value.DOORLOCK:
                         row = setOnOffSwitchRowId(holder);
-                    break;
-                default:
-                    switchFound = false;
-                    break;
+                        break;
+
+                    case Domoticz.Device.Type.Value.MOTION:
+                    case Domoticz.Device.Type.Value.CONTACT:
+                    case Domoticz.Device.Type.Value.DUSKSENSOR:
+                        row = setMotionSwitchRowId(holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.BLINDVENETIAN:
+                        row = setBlindsRowId(holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                    case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
+                    case Domoticz.Device.Type.Value.DOORBELL:
+                    case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                        row = setPushOnOffSwitchRowId(holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.DIMMER:
+                    case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+                    case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                        row = setDimmerRowId(holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.BLINDS:
+                    case Domoticz.Device.Type.Value.BLINDINVERTED:
+                        if (canHandleStopButton(mExtendedStatusInfo))
+                            row = setBlindsRowId(holder);
+                        else
+                            row = setOnOffSwitchRowId(holder);
+                        break;
+                    default:
+                        switchFound = false;
+                        break;
+                }
             }
         }
         return row;
@@ -336,49 +338,54 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
             }
         } else
-            switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-                case Domoticz.Device.Type.Value.ON_OFF:
-                case Domoticz.Device.Type.Value.MEDIAPLAYER:
-                case Domoticz.Device.Type.Value.X10SIREN:
-                case Domoticz.Device.Type.Value.MOTION:
-                case Domoticz.Device.Type.Value.CONTACT:
-                case Domoticz.Device.Type.Value.DUSKSENSOR:
-                case Domoticz.Device.Type.Value.DOORLOCK:
-                    setOnOffSwitchRowData(mExtendedStatusInfo, holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
-                case Domoticz.Device.Type.Value.DOORBELL:
-                    setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, true);
-                    break;
-
-                case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
-                    setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, false);
-                    break;
-
-                case Domoticz.Device.Type.Value.BLINDVENETIAN:
-                    setBlindsRowData(mExtendedStatusInfo, holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.DIMMER:
-                case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
-                case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    setDimmerRowData(mExtendedStatusInfo, holder);
-                    break;
-
-                case Domoticz.Device.Type.Value.BLINDS:
-                case Domoticz.Device.Type.Value.BLINDINVERTED:
-                    if(canHandleStopButton(mExtendedStatusInfo))
-                        setBlindsRowData(mExtendedStatusInfo, holder);
-                    else
-                        setOnOffSwitchRowData(mExtendedStatusInfo, holder);
-                    break;
-
-                default:
-                    throw new NullPointerException(
-                            "No supported switch type defined in the adapter (setSwitchRowData)");
+            if((mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))){
+                setDefaultRowData(mExtendedStatusInfo, holder);
             }
+            else {
+                switch (mExtendedStatusInfo.getSwitchTypeVal()) {
+                    case Domoticz.Device.Type.Value.ON_OFF:
+                    case Domoticz.Device.Type.Value.MEDIAPLAYER:
+                    case Domoticz.Device.Type.Value.X10SIREN:
+                    case Domoticz.Device.Type.Value.MOTION:
+                    case Domoticz.Device.Type.Value.CONTACT:
+                    case Domoticz.Device.Type.Value.DUSKSENSOR:
+                    case Domoticz.Device.Type.Value.DOORLOCK:
+                        setOnOffSwitchRowData(mExtendedStatusInfo, holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                    case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
+                    case Domoticz.Device.Type.Value.DOORBELL:
+                        setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, true);
+                        break;
+
+                    case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                        setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, false);
+                        break;
+
+                    case Domoticz.Device.Type.Value.BLINDVENETIAN:
+                        setBlindsRowData(mExtendedStatusInfo, holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.DIMMER:
+                    case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+                    case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                        setDimmerRowData(mExtendedStatusInfo, holder);
+                        break;
+
+                    case Domoticz.Device.Type.Value.BLINDS:
+                    case Domoticz.Device.Type.Value.BLINDINVERTED:
+                        if (canHandleStopButton(mExtendedStatusInfo))
+                            setBlindsRowData(mExtendedStatusInfo, holder);
+                        else
+                            setOnOffSwitchRowData(mExtendedStatusInfo, holder);
+                        break;
+
+                    default:
+                        throw new NullPointerException(
+                                "No supported switch type defined in the adapter (setSwitchRowData)");
+                }
+        }
     }
 
     private boolean canHandleStopButton(DevicesInfo mExtendedStatusInfo)
@@ -418,7 +425,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 !mExtendedStatusInfo.getCounter().equals(mExtendedStatusInfo.getData()))
             holder.switch_battery_level.append(" " +context.getString(R.string.total)+": "+ mExtendedStatusInfo.getCounter());
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSubType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         holder.iconRow.setAlpha(1f);
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -446,7 +459,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.onOffSwitch.setEnabled(false);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSubType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
@@ -505,7 +524,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSubType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
@@ -619,7 +644,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSwitchType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                mExtendedStatusInfo.getType(),
+                mExtendedStatusInfo.getSubType(),
+                mExtendedStatusInfo.getStatusBoolean(),
+                mExtendedStatusInfo.getUseCustomImage(),
+                mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
@@ -649,7 +680,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 mExtendedStatusInfo.getMaxDimLevel(), mExtendedStatusInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getSubType(), mExtendedStatusInfo.getStatusBoolean())).into(holder.iconRow);
+                Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(),
+                        mExtendedStatusInfo.getType(),
+                        mExtendedStatusInfo.getSubType(),
+                        mExtendedStatusInfo.getStatusBoolean(),
+                        mExtendedStatusInfo.getUseCustomImage(),
+                        mExtendedStatusInfo.getImage())).into(holder.iconRow);
+
         if (!mExtendedStatusInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
