@@ -47,6 +47,7 @@ public class DevicesInfo implements Comparable {
     private int batteryLevel;
     private int maxDimLevel;
     private int signalLevel;
+    private boolean useCustomImage;
     private String status;
     private int level;
     private int switchTypeVal;
@@ -54,6 +55,7 @@ public class DevicesInfo implements Comparable {
     private String CounterToday;
     private String Counter;
     private String Usage;
+    private String Image;
     private String Data;
     private String Timers;
     private boolean statusBoolean;
@@ -73,11 +75,27 @@ public class DevicesInfo implements Comparable {
         } catch (Exception e) {
             maxDimLevel = 1;
         }
+        try {
+            if (row.has("CustomImage")) {
+                if(row.getInt("CustomImage")>0)
+                    useCustomImage = true;
+                else
+                    useCustomImage = false;
+            }
+            else
+                useCustomImage = false;
+        } catch (Exception e) {
+            useCustomImage = false;
+        }
 
         if (row.has("Counter"))
             Counter = row.getString("Counter");
+        if (row.has("Image"))
+            Image = row.getString("Image");
+
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
+
         if (row.has("Usage"))
             Usage = row.getString("Usage");
 
@@ -134,6 +152,7 @@ public class DevicesInfo implements Comparable {
         } catch (Exception e) {
             switchTypeVal = 999999;
         }
+
         if (row.has("Favorite"))
             Favorite = row.getInt("Favorite");
         if (row.has("HardwareID"))
@@ -222,7 +241,10 @@ public class DevicesInfo implements Comparable {
 
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
-        setStatus("On");
+        if(status)
+            setStatus("On");
+        else
+            setStatus("Off");
     }
 
     @Override
@@ -252,6 +274,10 @@ public class DevicesInfo implements Comparable {
 
     ;
 
+    public boolean getUseCustomImage() {
+        return useCustomImage;
+    }
+
     public int getFavorite() {
         return Favorite;
     }
@@ -274,6 +300,10 @@ public class DevicesInfo implements Comparable {
 
     public String getCounterToday() {
         return CounterToday;
+    }
+
+    public String getImage() {
+        return Image;
     }
 
     public String getTypeImg() {

@@ -125,7 +125,9 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         if (mTemperatureInfo.getTemperature() > 30)
             toHot = true;
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(), mTemperatureInfo.getType(), toHot)).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                mTemperatureInfo.getType(),
+                null, toHot, false, null)).into(holder.iconRow);
 
         holder.dayButton.setId(mTemperatureInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {
