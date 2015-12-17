@@ -6,6 +6,11 @@
 /build
 /captures
 
+# idea project files
+*.iml
+*.idea
+*.iws
+
 # Built application files
 *.apk
 *.ap_
@@ -39,3 +44,4 @@ proguard/
 # Android Studio captures folder
 captures/
 libs/MemorizingTrustManager/build/outputs/aar/MemorizingTrustManager-release.aar
+libs/MemorizingTrustManager/build/
