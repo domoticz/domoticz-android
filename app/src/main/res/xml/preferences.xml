@@ -71,20 +71,20 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_info">
-        <EditTextPreference
+        <Preference
             android:key="version"
-            android:persistent="false"
-            android:selectable="false"
-            android:shouldDisableView="false"
             android:summary="Version 1.0.2"
             android:title="@string/info_version"/>
-        <EditTextPreference
+        <Preference
             android:key="version_domoticz"
-            android:persistent="false"
-            android:selectable="false"
-            android:shouldDisableView="false"
             android:summary="Version 1.0.2"
             android:title="@string/info_domoticz_version"/>
+        <Preference
+            android:key="info_about"
+            android:title="@string/info_about"/>
+        <Preference
+            android:key="info_credits"
+            android:title="@string/info_credits"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_debug">

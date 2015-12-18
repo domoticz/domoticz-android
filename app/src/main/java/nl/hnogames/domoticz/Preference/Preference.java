@@ -27,7 +27,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
@@ -39,6 +38,7 @@ import java.io.File;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -50,6 +50,7 @@ public class Preference extends PreferenceFragment {
     private final String TAG = Preference.class.getSimpleName();
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG_IMPORT = "Import Settings";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String TAG_EXPORT = "Export Settings";
 
     @Override
@@ -64,8 +65,37 @@ public class Preference extends PreferenceFragment {
         setStartUpScreenDefaultValue();
         setVersionInfo();
         handleImportExportButtons();
+        handleInfoAndAbout();
     }
 
+    private void handleInfoAndAbout() {
+        android.preference.Preference about = findPreference("info_about");
+        about.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                SimpleTextDialog td = new SimpleTextDialog(getActivity());
+                td.setTitle(R.string.info_about);
+                td.setText(R.string.welcome_info_domoticz);
+                td.show();
+                return true;
+            }
+        });
+
+        android.preference.Preference credits = findPreference("info_credits");
+        credits.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                String text = getString(R.string.info_credits_text);
+                text = text + ":\n\n" + getString(R.string.info_credits_text_urls);
+
+                SimpleTextDialog td = new SimpleTextDialog(getActivity());
+                td.setTitle(R.string.info_credits);
+                td.setText(text);
+                td.show();
+                return false;
+            }
+        });
+    }
 
     private void handleImportExportButtons() {
         SettingsFile = new File(Environment.getExternalStorageDirectory(),
@@ -159,13 +189,12 @@ public class Preference extends PreferenceFragment {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String appVersion = "";
-        if (pInfo != null) appVersion = pInfo.versionName;
+        String appVersionStr = getActivity().getString(R.string.unknown);
+        if (pInfo != null) appVersionStr = pInfo.versionName;
 
-        final EditTextPreference version = (EditTextPreference) findPreference("version");
-        final EditTextPreference domoticzVersion =
-                (EditTextPreference) findPreference("version_domoticz");
-        version.setSummary(appVersion);
+        final android.preference.Preference appVersion = findPreference("version");
+        final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
+        appVersion.setSummary(appVersionStr);
 
         Domoticz domoticz = new Domoticz(getActivity());
         domoticz.getVersion(new VersionReceiver() {
