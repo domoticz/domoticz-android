@@ -303,7 +303,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+
+                Snackbar.make(coordinatorLayout, "Could not set favorite.", Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -319,7 +320,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                Snackbar.make(coordinatorLayout, "Could not find any logs to show.", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -361,12 +362,13 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         mDomoticz.getSwitchTimers(idx, new SwitchTimerReceiver() {
             @Override
             public void onReceiveSwitchTimers(ArrayList<SwitchTimerInfo> switchTimers) {
-                showTimerDialog(switchTimers);
+                if(switchTimers!=null)
+                    showTimerDialog(switchTimers);
             }
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                Snackbar.make(coordinatorLayout, "Could not show the timers.", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
