@@ -4,18 +4,18 @@
     tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
     <string-array name="drawer_actions">
-        <item>Wizard</item>
-        <item>Dashboard</item>
-        <item>Scenes</item>
-        <item>Switches</item>
-        <item>Utilities</item>
-        <item>Temperature</item>
-        <item>Weather</item>
-        <item>Cameras</item>
-        <item>Plans</item>
-        <item>Logs</item>
-        <item>Events</item>
-        <item>User Variables</item>
+        <item>@string/title_wizard</item>
+        <item>@string/title_dashboard</item>
+        <item>@string/title_scenes</item>
+        <item>@string/title_switches</item>
+        <item>@string/title_utilities</item>
+        <item>@string/title_temperature</item>
+        <item>@string/title_weather</item>
+        <item>@string/title_cameras</item>
+        <item>@string/title_plans</item>
+        <item>@string/title_logs</item>
+        <item>@string/title_events</item>
+        <item>@string/title_vars</item>
     </string-array>
 
     <string-array name="empty_array" translatable="false"></string-array>
