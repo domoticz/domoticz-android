@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Containers;
 
 import android.util.Log;
@@ -5,32 +27,33 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-@SuppressWarnings("unused")
 public class ExtendedStatusInfo {
 
     private final String UNKNOWN = "Unknown";
     private final String TAG = ExtendedStatusInfo.class.getSimpleName();
-    JSONObject jsonObject;
-    String name;
-    String hardwareName;
-    boolean isProtected;
-    int level;
-    int maxDimLevel;
-    int favorite;
-    String type;
-    String status;
-    String PlanID;
-    boolean statusBoolean;
-    int batteryLevel;
-    String TypeImg;
-    int signalLevel;
-    int switchTypeVal;
-    String switchType;
-    String lastUpdate;
-    String Data;
-    int idx;
-    String Timers;
+    private boolean useCustomImage;
+    private JSONObject jsonObject;
+    private String name;
+    private String hardwareName;
+    private boolean isProtected;
+    private int level;
+    private int maxDimLevel;
+    private int favorite;
+    private String type;
+    private String subtype;
+    private String status;
+    private String PlanID;
+    private boolean statusBoolean;
+    private int batteryLevel;
+    private String TypeImg;
+    private String Image;
+    private int signalLevel;
+    private int switchTypeVal;
+    private String switchType;
+    private String lastUpdate;
+    private String Data;
+    private int idx;
+    private String Timers;
 
     public ExtendedStatusInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -42,6 +65,10 @@ public class ExtendedStatusInfo {
             exceptionHandling(e);
             name = UNKNOWN;
         }
+
+        if (row.has("SubType"))
+            subtype = row.getString("SubType");
+
         try {
             if (row.has("Data"))
                 Data = row.getString("Data");
@@ -68,8 +95,22 @@ public class ExtendedStatusInfo {
             exceptionHandling(e);
             hardwareName = UNKNOWN;
         }
+        try {
+            if (row.has("CustomImage")) {
+                if(row.getInt("CustomImage")>0)
+                    useCustomImage = true;
+                else
+                    useCustomImage = false;
+            }
+            else
+                useCustomImage = false;
+        } catch (Exception e) {
+            useCustomImage = false;
+        }
         if (row.has("TypeImg"))
             TypeImg = row.getString("TypeImg");
+        if (row.has("Image"))
+            Image = row.getString("Image");
         try {
             isProtected = row.getBoolean("Protected");
         } catch (Exception e) {
@@ -195,6 +236,14 @@ public class ExtendedStatusInfo {
         return isProtected;
     }
 
+    public String getSubType() {
+        return subtype;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
     public String getTypeImg() {
         return TypeImg;
     }
@@ -267,6 +316,10 @@ public class ExtendedStatusInfo {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    public boolean getUseCustomImage() {
+        return useCustomImage;
     }
 
     public void setStatusBoolean(boolean status) {
