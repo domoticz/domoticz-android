@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz.Adapter;
 
 import android.content.Context;
@@ -70,16 +92,79 @@ public class ListAdapter extends WearableListView.Adapter {
         status.setText(mDataset.get(position).getData());
 
         String imageType = mDataset.get(position).getTypeImg();
-        if(imageType!=null && imageType.length()>0)
-            Picasso.with(this.mContext).load(getDrawableIcon(mDataset.get(position).getTypeImg())).into(itemHolder.imageView);
+        if(imageType!=null && imageType.length()>0) {
+            Picasso.with(this.mContext).load(
+                    getDrawableIcon(mDataset.get(position).getTypeImg(),
+                            mDataset.get(position).getType(),
+                            mDataset.get(position).getSwitchType(),
+                            mDataset.get(position).getStatusBoolean(),
+                            mDataset.get(position).getUseCustomImage(),
+                            mDataset.get(position).getImage()))
+                    .into(itemHolder.imageView);
+
+            if (!mDataset.get(position).getStatusBoolean())
+                itemHolder.imageView.setAlpha(0.5f);
+            else
+                itemHolder.imageView.setAlpha(1f);
+        }
 
         // replace list item's metadata
         holder.itemView.setTag(position);
     }
 
-    public int getDrawableIcon(String type) {
+
+    public int getDrawableIcon(String imgType, String Type , String switchType, boolean State, boolean useCustomImage, String CustomImage) {
+        int standardImage = getDrawableIcon(imgType, Type, switchType, State);
+
+        if(useCustomImage && CustomImage!=null && CustomImage.length()>0)
+        {
+            switch (CustomImage) {
+                case "Alarm":
+                    return R.drawable.alarm;
+                case "Amplifier":
+                    return R.drawable.volume;
+                case "Computer":
+                case "ComputerPC":
+                    return R.drawable.computer;
+                case "Cooling":
+                    return R.drawable.cooling;
+                case "ChristmasTree":
+                    return R.drawable.christmastree;
+                case "Fan":
+                    return R.drawable.wind;
+                case "Fireplace":
+                    return R.drawable.flame;
+                case "Generic":
+                    return R.drawable.generic;
+                case "Harddisk":
+                    return R.drawable.harddisk;
+                case "Heating":
+                    return R.drawable.heating;
+                case "Light":
+                    return R.drawable.lights;
+                case "Media":
+                    return R.drawable.video;
+                case "Phone":
+                    return R.drawable.phone;
+                case "Speaker":
+                    return R.drawable.sub;
+                case "Printer":
+                    return R.drawable.printer;
+                case "TV":
+                    return R.drawable.tv;
+                case "WallSocket":
+                    return R.drawable.wall;
+                case "Water":
+                    return R.drawable.water;
+            }
+        }
+
+        return standardImage;
+    }
+
+    private int getDrawableIcon(String imgType, String Type , String switchType, boolean State) {
         int test = R.drawable.defaultimage;
-        switch (type) {
+        switch (imgType.toLowerCase()) {
             case "scene":
                 return R.drawable.generic;
             case "group":
@@ -91,7 +176,13 @@ public class ListAdapter extends WearableListView.Adapter {
             case "door":
                 return R.drawable.door;
             case "lightbulb":
-                return R.drawable.lights;
+                if (switchType != null && switchType.length() > 0 && switchType.equals("Dusk Sensor"))
+                    if (State)
+                        return R.drawable.uvdark;
+                    else
+                        return R.drawable.uvsunny;
+                else
+                    return R.drawable.lights;
             case "push":
                 return R.drawable.pushoff;
             case "pushoff":
@@ -104,22 +195,31 @@ public class ListAdapter extends WearableListView.Adapter {
                 return R.drawable.uv;
             case "contact":
                 return R.drawable.contact;
-            case "LogitechMediaServer":
+            case "logitechMediaServer":
                 return R.drawable.media;
-            case "Media":
+            case "media":
                 return R.drawable.media;
             case "blinds":
                 return R.drawable.down;
             case "dimmer":
-                return R.drawable.lights;
+                if (switchType != null && switchType.length() > 0 && switchType.startsWith("RGB"))
+                    return R.drawable.rgb;
+                else
+                    return R.drawable.dimmer;
             case "motion":
                 return R.drawable.motion;
             case "security":
                 return R.drawable.security;
             case "temperature":
-                return R.drawable.temperature;
+                if (State)
+                    return R.drawable.heating;
+                else
+                    return R.drawable.cooling;
             case "counter":
-                return R.drawable.up;
+                if (Type != null && Type.length() > 0 && Type.equals("P1 Smart Meter"))
+                    return R.drawable.wall;
+                else
+                    return R.drawable.up;
             case "override_mini":
                 return R.drawable.defaultimage;
             case "visibility":
@@ -127,20 +227,21 @@ public class ListAdapter extends WearableListView.Adapter {
             case "radiation":
                 return R.drawable.radiation;
             case "moisture":
+            case "rain":
                 return R.drawable.rain;
             case "leaf":
                 return R.drawable.leaf;
             case "hardware":
                 return R.drawable.computer;
-            case "Fan":
+            case "fan":
                 return R.drawable.fan;
-            case "Speaker":
+            case "speaker":
                 return R.drawable.speaker;
             case "current":
                 return R.drawable.wall;
             case "text":
                 return R.drawable.text;
-            case "Alert":
+            case "alert":
                 return R.drawable.siren;
             case "gauge":
                 return R.drawable.gauge;
