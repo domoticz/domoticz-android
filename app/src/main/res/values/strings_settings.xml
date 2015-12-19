@@ -54,6 +54,10 @@
     <!--        Information category       -->
     <string name="info_version">Version</string>
     <string name="info_domoticz_version">Domoticz version</string>
+    <string name="info_about">About Domoticz</string>
+    <string name="info_credits">Credits</string>
+    <string name="info_credits_text">Domoticz for Android is made possible with several open source libraries</string>
+    <string name="info_credits_text_urls" translatable="false">Domoticz\nhttp://www.domoticz.com\n\nHelloCharts\nhttps://github.com/lecho/hellocharts-android\n\nCircleImageView\nhttps://github.com/hdodenhof/CircleImageView\n\nPicasso\nhttps://github.com/square/picasso\n\nViewPagerIndicator\nhttps://github.com/JakeWharton/ViewPagerIndicator\n\nFloating Label Widgets\nhttps://github.com/marvinlabs/android-floatinglabel-widgets\n\nMaterial Dialogs\nafollestad.material-dialogs\n\nLobsterpicker\nhttps://github.com/LarsWerkman/Lobsterpicker\n\nMaterialList\nhttps://github.com/dexafree/MaterialList\n\nMemorizingTrustManager\nhttps://github.com/ge0rg/MemorizingTrustManager</string>
 
 
     <!--        Debug category       -->
