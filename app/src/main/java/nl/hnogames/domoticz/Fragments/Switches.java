@@ -304,7 +304,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onError(Exception error) {
 
-                Snackbar.make(coordinatorLayout, "Could not set favorite.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_favorite), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -320,14 +320,13 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, "Could not find any logs to show.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public void onColorButtonClick(final int idx) {
-
         ColorPickerDialog colorDialog = new ColorPickerDialog(
                 getActivity());
         colorDialog.show();
@@ -345,12 +344,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         new setCommandReceiver() {
                             @Override
                             public void onReceiveResult(String result) {
-                                Snackbar.make(coordinatorLayout, "Color set for: " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set)+": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onError(Exception error) {
-                                Snackbar.make(coordinatorLayout, "Could not change the Color", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -368,7 +367,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, "Could not show the timers.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_timer), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -489,7 +488,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("onDimmerChange");
         ExtendedStatusInfo clickedSwitch = getSwitch(idx);
 
-        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level)+": " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
