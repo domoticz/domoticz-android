@@ -35,8 +35,10 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
+        //noinspection SpellCheckingInspection
         String imageUrl = bundle.getString("IMAGEURL");
 
+        //noinspection SpellCheckingInspection
         String title = bundle.getString("IMAGETITLE");
         this.setTitle(title);
 

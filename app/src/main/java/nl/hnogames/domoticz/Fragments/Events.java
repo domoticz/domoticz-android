@@ -22,8 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -43,10 +43,9 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 public class Events extends DomoticzFragment implements DomoticzFragmentListener {
 
     private Domoticz mDomoticz;
-    private ArrayList<EventInfo> mEventInfos;
     private EventsAdapter adapter;
     private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
 
@@ -58,9 +57,9 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_events);
     }
 
@@ -78,7 +77,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     @Override
     public void onConnectionOk() {
         showProgressDialog();
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         processUserVariables();
     }
 
@@ -86,8 +85,8 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
         mDomoticz.getEvents(new EventReceiver() {
             @Override
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
-                Events.this.mEventInfos = mEventInfos;
-                adapter = new EventsAdapter(mActivity, mEventInfos, new EventsClickListener() {
+
+                adapter = new EventsAdapter(mContext, mEventInfos, new EventsClickListener() {
 
                     @Override
                     public void onEventClick(final int id, boolean action) {

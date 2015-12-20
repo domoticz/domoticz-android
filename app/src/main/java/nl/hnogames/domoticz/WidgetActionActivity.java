@@ -38,7 +38,7 @@ public class WidgetActionActivity extends AppCompatActivity
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
 
-        this.setTitle("Choose Switch");
+        this.setTitle(getString(R.string.choose_switch));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(false);
@@ -97,7 +97,7 @@ public class WidgetActionActivity extends AppCompatActivity
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(WidgetActionActivity.this, "Failed to get switches", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WidgetActionActivity.this, R.string.failed_to_get_switches, Toast.LENGTH_SHORT).show();
                     WidgetActionActivity.this.finish();
                 }
             },0);

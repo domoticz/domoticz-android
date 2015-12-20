@@ -1,7 +1,7 @@
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
@@ -20,10 +20,9 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     private Domoticz mDomoticz;
     private ArrayList<UserVariableInfo> mUserVariableInfos;
 
-    private ListView listView;
     private UserVariablesAdapter adapter;
     private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
@@ -35,9 +34,9 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_vars);
     }
 
@@ -55,7 +54,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     @Override
     public void onConnectionOk() {
         showProgressDialog();
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         processUserVariables();
     }
 
@@ -65,7 +64,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
             public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
                 UserVariables.this.mUserVariableInfos = mVarInfos;
                 successHandling(mUserVariableInfos.toString(), false);
-                adapter = new UserVariablesAdapter(mActivity, mUserVariableInfos);
+                adapter = new UserVariablesAdapter(mContext, mUserVariableInfos);
                 createListView();
                 hideProgressDialog();
             }
@@ -81,7 +80,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
         if (getView() != null) {
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-            listView = (ListView) getView().findViewById(R.id.listView);
+            ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
 
             mSwipeRefreshLayout.setRefreshing(false);

@@ -3,6 +3,7 @@ package nl.hnogames.domoticz.Welcome;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,7 +147,8 @@ public class WelcomePage3 extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PermissionsUtil.INITIAL_ACCESS_REQUEST:
                 if (PermissionsUtil.canAccessLocation(getActivity())) {
@@ -163,6 +165,7 @@ public class WelcomePage3 extends Fragment {
     private void setSsid_spinner() {
         Set<String> ssidFromPrefs = mSharedPrefs.getLocalSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+        //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
 
         if (ssidFromPrefs != null) {

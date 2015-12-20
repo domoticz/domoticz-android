@@ -22,8 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
@@ -40,11 +40,10 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     private Domoticz mDomoticz;
-    private ArrayList<LogInfo> mLogInfos;
 
     private LogAdapter adapter;
     private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
@@ -55,9 +54,9 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_logs);
     }
 
@@ -76,7 +75,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     public void onConnectionOk() {
         showProgressDialog();
 
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         processLogs();
     }
 
@@ -86,8 +85,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
             public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
                 successHandling(mLogInfos.toString(), false);
 
-                Logs.this.mLogInfos = mLogInfos;
-                adapter = new LogAdapter(mActivity, mLogInfos);
+                adapter = new LogAdapter(mContext, mLogInfos);
 
                 createListView();
                 hideProgressDialog();

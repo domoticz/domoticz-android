@@ -24,8 +24,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;

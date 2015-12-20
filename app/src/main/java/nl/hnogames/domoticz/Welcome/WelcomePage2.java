@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class WelcomePage2 extends Fragment {
 
     private File SettingsFile;
 
-    public static final WelcomePage2 newInstance() {
+    public static WelcomePage2 newInstance() {
         return new WelcomePage2();
     }
 
@@ -60,7 +61,8 @@ public class WelcomePage2 extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
                 if (PermissionsUtil.canAccessStorage(getActivity())) {

@@ -33,13 +33,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import nl.hnogames.domoticz.R;
 
-/**
- * Created by m.heinis on 11/12/2015.
- */
 public class SortDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
-    private String idx;
     private DismissListener dismissListener;
     private Context mContext;
     private String[] names;
@@ -64,7 +60,7 @@ public class SortDialog implements DialogInterface.OnDismissListener {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, names);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

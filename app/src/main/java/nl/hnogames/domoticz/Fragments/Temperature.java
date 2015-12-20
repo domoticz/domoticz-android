@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
@@ -50,12 +49,13 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Temperature extends DomoticzFragment implements DomoticzFragmentListener, TemperatureClickListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = Temperature.class.getSimpleName();
+
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
-    private Context mActivity;
+    private Context mContext;
 
-    private ArrayList<TemperatureInfo> mTemperatureInfos;
     private ListView listView;
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -71,9 +71,9 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_temperature);
     }
 
@@ -92,7 +92,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     public void onConnectionOk() {
         showProgressDialog();
 
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         processTemperature();
     }
 
@@ -104,14 +104,13 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 successHandling(mTemperatureInfos.toString(), false);
-                Temperature.this.mTemperatureInfos = mTemperatureInfos;
 
                 if (getView() != null) {
                     mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
                     coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                             .coordinatorLayout);
 
-                    adapter = new TemperatureAdapter(mActivity, mTemperatureInfos, listener);
+                    adapter = new TemperatureAdapter(mContext, mTemperatureInfos, listener);
                     listView = (ListView) getView().findViewById(R.id.listView);
                     listView.setAdapter(adapter);
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

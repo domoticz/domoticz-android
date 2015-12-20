@@ -102,6 +102,7 @@ public class Preference extends PreferenceFragment {
                 "/Domoticz/DomoticzSettings.txt");
         final String sPath = SettingsFile.getPath().
                 substring(0, SettingsFile.getPath().lastIndexOf("/"));
+        //noinspection unused
         boolean mkdirsResultIsOk = new File(sPath).mkdirs();
 
         android.preference.Preference exportButton = findPreference("export_settings");
@@ -206,7 +207,9 @@ public class Preference extends PreferenceFragment {
                     if (sUpdateVersion != null && sUpdateVersion.length() > 0)
                         sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
                     domoticzVersion.setSummary(sVersion);
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
 
             @Override

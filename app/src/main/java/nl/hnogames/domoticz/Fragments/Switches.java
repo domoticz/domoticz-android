@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
@@ -64,13 +62,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @SuppressWarnings("unused")
     private static final String TAG = Switches.class.getSimpleName();
-    private ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
-    private Context mActivity;
+    private Context mContext;
     private int currentSwitch = 1;
     private SwitchesAdapter adapter;
-    private ListView listView;
 
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
@@ -85,9 +81,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_switches);
     }
 
@@ -106,7 +102,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onConnectionOk() {
         showProgressDialog();
 
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         getSwitchesData();
     }
 
@@ -158,7 +154,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-            supportedSwitches = new ArrayList<>();
+            ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
             final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
@@ -188,8 +184,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             }
 
             final switchesClickListener listener = this;
-            adapter = new SwitchesAdapter(mActivity, supportedSwitches, listener);
-            listView = (ListView) getView().findViewById(R.id.listView);
+            adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
+            ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -314,8 +310,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onLogButtonClick(int idx) {
         mDomoticz.getSwitchLogs(idx, new SwitchLogReceiver() {
             @Override
-            public void onReceiveSwitches(ArrayList<SwitchLogInfo> switcheLogs) {
-                showLogDialog(switcheLogs);
+            public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
+                showLogDialog(switchesLogs);
             }
 
             @Override

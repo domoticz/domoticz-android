@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
@@ -54,7 +53,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
-    private Context mActivity;
+    private Context mContext;
     private DevicesAdapter adapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
 
@@ -77,9 +76,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -105,7 +104,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -207,7 +206,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             }
 
             final switchesClickListener listener = this;
-            adapter = new DevicesAdapter(mActivity, supportedSwitches, listener);
+            adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
             ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -226,6 +225,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 }
             });
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         hideProgressDialog();

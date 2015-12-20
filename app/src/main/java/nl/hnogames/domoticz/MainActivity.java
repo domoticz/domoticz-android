@@ -76,9 +76,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPrefUtil mSharedPrefs;
     private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
     private SearchView searchViewAction;
-    private Domoticz domoticz;
 
-    private ArrayList<String> stackFragments = new ArrayList<String>();
+    private ArrayList<String> stackFragments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             addFragment();
 
             //get latest update version
-            domoticz = new Domoticz(this);
+            Domoticz domoticz = new Domoticz(this);
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {

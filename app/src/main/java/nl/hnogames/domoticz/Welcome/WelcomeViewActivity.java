@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 
 public class WelcomeViewActivity extends FragmentActivity
         implements View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -74,10 +74,10 @@ public class WelcomeViewActivity extends FragmentActivity
     }
 
     private void setUpBackgroundColors() {
-        Integer color1 = getResources().getColor(R.color.welcome1_background);
-        Integer color2 = getResources().getColor(R.color.welcome2_background);
-        Integer color3 = getResources().getColor(R.color.welcome3_background);
-        Integer color4 = getResources().getColor(R.color.welcome4_background);
+        Integer color1 = ContextCompat.getColor(this, R.color.welcome1_background);
+        Integer color2 = ContextCompat.getColor(this, R.color.welcome2_background);
+        Integer color3 = ContextCompat.getColor(this, R.color.welcome3_background);
+        Integer color4 = ContextCompat.getColor(this, R.color.welcome4_background);
 
         background_colors = new Integer[]{color1, color2, color3, color4};
     }
@@ -96,7 +96,7 @@ public class WelcomeViewActivity extends FragmentActivity
         mIndicator.setViewPager(mPager);
         float radius = mIndicator.getRadius();
         mIndicator.setRadius(radius + 4);
-        mIndicator.setFillColor(getResources().getColor(android.R.color.darker_gray));
+        mIndicator.setFillColor(ContextCompat.getColor(this, android.R.color.darker_gray));
         mIndicator.setOnPageChangeListener(this);
 
         buttonPrev = (TextView) findViewById(R.id.btn_prev);
@@ -105,7 +105,7 @@ public class WelcomeViewActivity extends FragmentActivity
 
         buttonNext = (TextView) findViewById(R.id.btn_next);
         buttonNext.setText(getString(R.string.welcome_button_next).toUpperCase());
-        buttonNext.setTextColor(getResources().getColor(R.color.white));
+        buttonNext.setTextColor(ContextCompat.getColor(this, R.color.white));
         buttonNext.setOnClickListener(this);
     }
 
@@ -179,7 +179,7 @@ public class WelcomeViewActivity extends FragmentActivity
             navigation.setBackgroundResource(R.color.default_background_color_light);
             buttonPrev.setVisibility(View.VISIBLE);
             buttonNext.setText(getString(R.string.welcome_button_next).toUpperCase());
-            buttonNext.setTextColor(getResources().getColor(R.color.light_gray));
+            buttonNext.setTextColor(ContextCompat.getColor(this, R.color.light_gray));
             disableFinishButton(false);
         }
     }
