@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
-
     <string name="title_switches">Switches</string>
     <string name="txt_notAvailable">N/A</string>
     <string name="idx">IDX</string>
@@ -11,4 +10,11 @@
     <string name="placeholder_value">255</string>
     <string name="placeholder_lastUpdate">2015-05-01 01:01:01</string>
 
+    <string name="color_set">Color set for</string>
+    
+    <string name="error_favorite">Could not set favorite</string>
+    <string name="error_logs">Could not find any logs to show</string>
+    <string name="error_color">Could not change the Color</string>
+    <string name="error_timer">Could not show the timers</string>
+    <string name="error_level">Setting level for switch</string>
 </resources>
