@@ -89,5 +89,7 @@
     <string name="row_icon_description">row icon</string>
 
     <string name="choose_color">Choose Color</string>
+    <string name="no_data_on_domoticz">No data on Domoticz server</string>
+    <string name="error_image_description">Error image</string>
 
 </resources>

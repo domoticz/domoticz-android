@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="Error image"
+                android:contentDescription="@string/error_image_description"
                 android:src="@drawable/sad_smiley" />
 
             <TextView
