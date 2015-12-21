@@ -36,7 +36,6 @@ public class ServerSettingsActivity extends AppCompatActivity {
     private static final int WELCOME_WIZARD = 1;
     @SuppressWarnings("unused")
     private static final int SETTINGS = 2;
-    private Fragment serverSettings;
 
 
     @Override
@@ -46,7 +45,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        serverSettings = WelcomePage3.newInstance(SETTINGS);
+        Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, serverSettings)
                 .commit();

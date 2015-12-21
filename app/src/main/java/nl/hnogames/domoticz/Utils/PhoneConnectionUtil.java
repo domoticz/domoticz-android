@@ -32,7 +32,6 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +61,7 @@ public class PhoneConnectionUtil {
 
     public void stopReceiver(){
         try {
-            if(receiver!=null) {
+            if(receiver != null) {
                 synchronized (unregistered) {
                     if (!unregistered.get()) {
                         mContext.unregisterReceiver(receiver);
@@ -71,12 +70,11 @@ public class PhoneConnectionUtil {
                 }
             }
         } catch(Exception ex){
-            receiver=null;
+            receiver = null;
         }
     }
 
     public void startSsidScan() {
-        final List<ScanResult> scanList = new ArrayList<ScanResult>();
         wifiManager.startScan();
 
         unregistered = new AtomicBoolean(false);

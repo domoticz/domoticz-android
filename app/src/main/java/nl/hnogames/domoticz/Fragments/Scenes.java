@@ -22,8 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,7 +34,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -51,7 +50,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
     private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context mContext;
     private Domoticz mDomoticz;
     private SceneAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -82,7 +81,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     public void onConnectionOk() {
         showProgressDialog();
 
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         processScenes();
     }
 
@@ -127,7 +126,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 }
             }
 
-            adapter = new SceneAdapter(mActivity, supportedScenes, listener);
+            adapter = new SceneAdapter(mContext, supportedScenes, listener);
             ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -221,9 +220,9 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_scenes);
     }
 

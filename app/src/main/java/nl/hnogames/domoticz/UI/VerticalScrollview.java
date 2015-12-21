@@ -53,7 +53,7 @@ public class VerticalScrollview extends ScrollView{
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                return false; // redirect MotionEvents to ourself
+                return false; // redirect MotionEvents to our self
 
             case MotionEvent.ACTION_CANCEL:
                 Log.i("VerticalScrollview", "onInterceptTouchEvent: CANCEL super false" );

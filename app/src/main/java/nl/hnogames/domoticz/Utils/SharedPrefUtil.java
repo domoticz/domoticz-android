@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
@@ -70,9 +71,6 @@ public class SharedPrefUtil {
     public static final String PREF_DEBUGGING = "debugging";
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
-
-    private static final String http = "http://";
-    private static final String https = "https://";
 
     private static final String REMOTE_SERVER_USERNAME = "remote_server_username";
     private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
@@ -154,8 +152,7 @@ public class SharedPrefUtil {
         String[] startupScreenValues =
                 mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        if(startupScreenSelectedValue== null)
-        {
+        if (startupScreenSelectedValue == null) {
             editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[0]).apply(); //set to dashboard
         }
         else{
@@ -166,7 +163,7 @@ public class SharedPrefUtil {
                 }
                 i++;
             }
-            if(i==0)//first = wizard
+            if(i == 0)              //first = wizard
                 editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[1]).apply(); //set to dashboard
         }
 
@@ -174,8 +171,8 @@ public class SharedPrefUtil {
         String removeWizard="";
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
-        for(String s : selections)
-        {
+
+        for(String s : selections) {
             if(s.equals(allNames[0])) {
                 removeWizard = allNames[0];
                 break;

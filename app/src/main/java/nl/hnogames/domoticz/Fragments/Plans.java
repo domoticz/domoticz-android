@@ -22,8 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -53,7 +53,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private static final String TAG = Plans.class.getSimpleName();
 
     private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context mContext;
     private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;
     private PlansAdapter mAdapter;
@@ -80,7 +80,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     public void processPlans() {
         showProgressDialog();
 
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         mDomoticz.getPlans(new PlansReceiver() {
 
             @Override
@@ -102,7 +102,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                     public void onItemClick(int position, View v) {
                         //Toast.makeText(getActivity(), "Clicked " + mPlans.get(position).getName(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), PlanActivity.class);
+                        //noinspection SpellCheckingInspection
                         intent.putExtra("PLANNAME", mPlans.get(position).getName());
+                        //noinspection SpellCheckingInspection
                         intent.putExtra("PLANID", mPlans.get(position).getIdx());
                         startActivity(intent);
                     }
@@ -119,9 +121,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_plans);
     }
 

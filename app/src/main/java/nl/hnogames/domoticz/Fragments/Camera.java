@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,8 @@ public class Camera extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PermissionsUtil.INITIAL_CAMERA_REQUEST:
                 if (PermissionsUtil.canAccessStorage(getActivity())) {
@@ -118,7 +120,7 @@ public class Camera extends Fragment {
     public Uri getLocalBitmapUri(ImageView imageView) {
         // Extract Bitmap from ImageView drawable
         Drawable drawable = imageView.getDrawable();
-        Bitmap bmp = null;
+        Bitmap bmp;
         if (drawable instanceof BitmapDrawable) {
             bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         } else {

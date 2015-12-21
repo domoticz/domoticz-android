@@ -22,8 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -59,7 +59,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private ListView listView;
     private UtilityAdapter adapter;
     private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
@@ -72,9 +72,9 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
         getActionBar().setTitle(R.string.title_utilities);
     }
 
@@ -93,7 +93,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     public void onConnectionOk() {
         showProgressDialog();
 
-        mDomoticz = new Domoticz(mActivity);
+        mDomoticz = new Domoticz(mContext);
         processUtilities();
     }
 
@@ -106,7 +106,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 successHandling(mUtilitiesInfos.toString(), false);
 
                 Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
-                adapter = new UtilityAdapter(mActivity, mUtilitiesInfos, listener);
+                adapter = new UtilityAdapter(mContext, mUtilitiesInfos, listener);
 
                 createListView();
                 hideProgressDialog();
@@ -267,11 +267,11 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         showProgressDialog();
-        final String graphtype = utility.getSubType()
+        final String graphType = utility.getSubType()
                 .replace("kWh", "counter")
                 .replace("Energy", "counter");
 
-        mDomoticz.getGraphData(utility.getIdx(), range, graphtype, new GraphDataReceiver() {
+        mDomoticz.getGraphData(utility.getIdx(), range, graphType, new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 Log.i("GRAPH", mGraphList.toString());
@@ -282,13 +282,13 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                         R.layout.dialog_graph);
                 infoDialog.setRange(range);
                 infoDialog.setSteps(4);
-                infoDialog.setTitle(graphtype.toUpperCase());
+                infoDialog.setTitle(graphType.toUpperCase());
                 infoDialog.show();
             }
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log)+": " + utility.getName() + " " + graphtype, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log)+": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
                 hideProgressDialog();
             }
         });

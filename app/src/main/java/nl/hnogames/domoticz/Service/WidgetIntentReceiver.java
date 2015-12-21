@@ -36,9 +36,6 @@ import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-/**
- * Created by m.heinis on 12/10/2015.
- */
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private int widgetID = 0;

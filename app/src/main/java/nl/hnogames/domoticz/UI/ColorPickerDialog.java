@@ -38,7 +38,6 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
-    private int currentColor = 0;
     private LobsterPicker lobsterPicker;
 
     public ColorPickerDialog(Context mContext) {
@@ -47,13 +46,10 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
 
+        //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_color, wrapInScrollView)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
-    }
-
-    public void setCurrentColor(int currentColor) {
-        this.currentColor = currentColor;
     }
 
     public void show() {

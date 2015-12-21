@@ -31,10 +31,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -143,9 +146,15 @@ public class DomoticzCardFragment extends Fragment {
      * @param error Exception
      */
     public void errorHandling(Exception error) {
+        hideRecyclerView();
         error.printStackTrace();
+
         String errorMessage = mDomoticz.getErrorMessage(error);
-        setErrorMessage(errorMessage);
+
+        if (error instanceof JSONException
+                && errorMessage.equalsIgnoreCase("No value for result")) {
+            setMessage(getString(R.string.no_data_on_domoticz));
+        } else setErrorMessage(errorMessage);
     }
 
     public ActionBar getActionBar() {
@@ -179,7 +188,6 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void setErrorLayoutMessage(String message) {
-        hideView();
         RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -189,10 +197,28 @@ public class DomoticzCardFragment extends Fragment {
                 "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
-    private void hideView() {
-        android.support.v7.widget.RecyclerView listView = (android.support.v7.widget.RecyclerView) root.findViewById(R.id.my_recycler_view);
-        if (listView != null) {
-            listView.setVisibility(View.GONE);
+    private void setMessage(String message) {
+        RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+        if (errorLayout != null) {
+            errorLayout.setVisibility(View.VISIBLE);
+
+            ImageView errorImage = (ImageView) root.findViewById(R.id.errorImage);
+            errorImage.setVisibility(View.GONE);
+
+            TextView errorTextWrong = (TextView) root.findViewById(R.id.errorTextWrong);
+            errorTextWrong.setVisibility(View.GONE);
+
+
+            TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+            errorTextMessage.setText(message);
+        } else throw new RuntimeException(
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+    }
+
+    private void hideRecyclerView() {
+        android.support.v7.widget.RecyclerView recyclerView = (android.support.v7.widget.RecyclerView) root.findViewById(R.id.my_recycler_view);
+        if (recyclerView != null) {
+            recyclerView.setVisibility(View.GONE);
         }
     }
 
