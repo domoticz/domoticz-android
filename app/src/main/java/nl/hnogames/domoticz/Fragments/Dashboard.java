@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -43,6 +44,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
@@ -61,6 +63,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private String planName = "";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
+
+    private Parcelable state;
+    private ListView listView;
+
 
     @Override
     public void refreshFragment() {
@@ -104,6 +110,12 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
+        if(listView!=null) {
+            //switch toggled, refresh listview
+            state = listView.onSaveInstanceState();
+            WidgetUtils.RefreshWidgets(mContext);
+        }
+
         mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
@@ -135,7 +147,12 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 extendedStatusSwitches.add(switchInfo);
             }
         }
-        createListView(extendedStatusSwitches);
+        if(extendedStatusSwitches.size()<=0) {
+            hideProgressDialog();
+            setMessage(mContext.getString(R.string.no_data_on_domoticz));
+        }
+        else
+            createListView(extendedStatusSwitches);
     }
 
     private boolean isOnOffSwitch(DevicesInfo testSwitch)
@@ -165,7 +182,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     // add dynamic list view
-    // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
         if (switches == null)
             return;
@@ -207,7 +223,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
             final switchesClickListener listener = this;
             adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
-            ListView listView = (ListView) getView().findViewById(R.id.listView);
+            listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -224,6 +240,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     processDashboard();
                 }
             });
+
+            if(state != null) {
+                // Restore previous state (including selected item index and scroll position)
+                listView.onRestoreInstanceState(state);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -243,6 +264,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         infoDialog.setBatteryLevel(String.valueOf(mSwitch.getBatteryLevel()));
         infoDialog.setIsFavorite(mSwitch.getFavoriteBoolean());
         infoDialog.show();
+
         infoDialog.onDismissListener(new DeviceInfoDialog.DismissListener() {
             @Override
             public void onDismiss(boolean isChanged, boolean isFavorite) {
@@ -321,6 +343,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    processDashboard();
                 }
 
                 @Override
@@ -378,6 +401,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                processDashboard();
             }
 
             @Override
@@ -399,6 +423,26 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onTimerButtonClick(int idx) {
     }
 
+    @Override
+    public void onThermostatClick(final int idx, int action, final double newSetPoint) {
+        addDebugText("onThermostatClick");
+        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+
+        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                successHandling(result, false);
+                processDashboard();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
+    }
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {
@@ -422,6 +466,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                processDashboard();
             }
 
             @Override
@@ -444,6 +489,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                processDashboard();
             }
 
             @Override

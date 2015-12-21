@@ -58,6 +58,7 @@ import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mSharedPrefs = new SharedPrefUtil(this);
 
+        WidgetUtils.RefreshWidgets(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayout);
 

@@ -36,7 +36,7 @@ public class DevicesInfo implements Comparable {
     private int idx;
     private String Name;
     private String LastUpdate;
-    private long setPoint;
+    private double setPoint;
     private String Type;
     private String SubType;
     private int Favorite;
@@ -179,6 +179,9 @@ public class DevicesInfo implements Comparable {
         } catch (Exception ex) {
             signalLevel = 0;
         }
+
+        if (row.has("SetPoint"))
+            setPoint = row.getLong("SetPoint");
     }
 
     public boolean getFavoriteBoolean() {
@@ -190,6 +193,14 @@ public class DevicesInfo implements Comparable {
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+    public double getSetPoint() {
+        return setPoint;
+    }
+
+    public void setSetPoint(double setPoint) {
+        this.setPoint = setPoint;
     }
 
     public String getCounter() {
