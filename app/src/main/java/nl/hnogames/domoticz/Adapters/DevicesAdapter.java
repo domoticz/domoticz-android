@@ -129,6 +129,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Scene.Type.SCENE:
                     row = setPushOnOffSwitchRowId(holder);
                     break;
+                case Domoticz.UTILITIES_TYPE_THERMOSTAT:
+                    row = setThermostatRowId(holder);
+                    break;
                 default:
                     row = setDefaultRowId(holder);
                     break;
@@ -274,6 +277,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    private View setThermostatRowId(ViewHolder holder) {
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.utilities_row_thermostat;
+        else layoutResourceId = R.layout.utilities_row_thermostat;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View convertView = inflater.inflate(layoutResourceId, null);
+
+        holder.switch_name = (TextView) convertView.findViewById(R.id.thermostat_name);
+        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+
+        holder.switch_battery_level = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
+        holder.signal_level = (TextView) convertView.findViewById(R.id.thermostat_set_point);
+        holder.buttonPlus = (ImageButton) convertView.findViewById(R.id.utilities_plus);
+        holder.buttonMinus = (ImageButton) convertView.findViewById(R.id.utilities_minus);
+
+        return convertView;
+    }
+
     private View setBlindsRowId(ViewHolder holder) {
 
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_blinds;
@@ -332,6 +353,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
                 case Domoticz.Scene.Type.SCENE:
                     setPushOnOffSwitchRowData(mExtendedStatusInfo, holder, true);
+                    break;
+                case Domoticz.UTILITIES_TYPE_THERMOSTAT:
+                    setThermostatRowData(mExtendedStatusInfo, holder);
                     break;
                 default:
                     setDefaultRowData(mExtendedStatusInfo, holder);
@@ -504,6 +528,48 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 }
             });
         }
+    }
+
+
+    private void setThermostatRowData(DevicesInfo mExtendedStatusInfo, ViewHolder holder) {
+        holder.isProtected = mExtendedStatusInfo.isProtected();
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mExtendedStatusInfo.getName());
+
+        final double setPoint = mExtendedStatusInfo.getSetPoint();
+
+        if (holder.isProtected) holder.buttonPlus.setEnabled(false);
+        if (holder.isProtected) holder.buttonMinus.setEnabled(false);
+
+        holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double newValue = setPoint - 0.5;
+                handleThermostatClick(view.getId(),
+                        Domoticz.Device.Thermostat.Action.MIN,
+                        newValue);
+            }
+        });
+        holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double newValue = setPoint + 0.5;
+                handleThermostatClick(view.getId(),
+                        Domoticz.Device.Thermostat.Action.PLUS,
+                        newValue);
+            }
+        });
+        holder.buttonPlus.setId(mExtendedStatusInfo.getIdx());
+        holder.buttonMinus.setId(mExtendedStatusInfo.getIdx());
+
+        holder.switch_name.setText(mExtendedStatusInfo.getName());
+        holder.switch_battery_level.setText(mExtendedStatusInfo.getLastUpdate());
+        holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getType(),mExtendedStatusInfo.getSubType(), false, false, null)).into(holder.iconRow);
+    }
+
+    public void handleThermostatClick(int idx, int action, double newSetPoint) {
+        listener.onThermostatClick(idx, action, newSetPoint);
     }
 
     private void setPushOnOffSwitchRowData(DevicesInfo mExtendedStatusInfo, ViewHolder holder, boolean action) {
@@ -797,7 +863,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
-        ImageButton buttonUp, buttonDown, buttonStop;
+        ImageButton buttonUp, buttonDown, buttonStop, buttonPlus, buttonMinus;
         Button buttonOn, buttonLog, buttonTimer;
         Boolean isProtected;
         ImageView iconRow;

@@ -220,8 +220,6 @@ public class ListAdapter extends WearableListView.Adapter {
                     return R.drawable.wall;
                 else
                     return R.drawable.up;
-            case "override_mini":
-                return R.drawable.defaultimage;
             case "visibility":
                 return R.drawable.visibility;
             case "radiation":
@@ -251,6 +249,11 @@ public class ListAdapter extends WearableListView.Adapter {
                 return R.drawable.defaultimage;
             case "utility":
                 return R.drawable.scale;
+        }
+
+        switch (Type.toLowerCase()) {
+            case "thermostat":
+                return R.drawable.flame;
         }
 
         return test;

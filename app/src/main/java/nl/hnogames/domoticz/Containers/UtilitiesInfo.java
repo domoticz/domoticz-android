@@ -30,23 +30,23 @@ import org.json.JSONObject;
 public class UtilitiesInfo {
 
     private final boolean isProtected;
-    JSONObject jsonObject;
+    private JSONObject jsonObject;
 
-    int idx;
-    String Name;
-    String Data;
-    String LastUpdate;
-    double setPoint;
-    String Type;
-    String SubType;
-    int Favorite;
-    int HardwareID;
-    String HardwareName;
-    String TypeImg;
-    String CounterToday;
-    String Counter;
-    String Usage;
-    int signalLevel;
+    private int idx;
+    private String Name;
+    private String Data;
+    private String LastUpdate;
+    private double setPoint;
+    private String Type;
+    private String SubType;
+    private int Favorite;
+    private int HardwareID;
+    private String HardwareName;
+    private String TypeImg;
+    private String CounterToday;
+    private String Counter;
+    private String Usage;
+    private int signalLevel;
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;

@@ -203,11 +203,12 @@ public class DomoticzCardFragment extends Fragment {
             errorLayout.setVisibility(View.VISIBLE);
 
             ImageView errorImage = (ImageView) root.findViewById(R.id.errorImage);
-            errorImage.setVisibility(View.GONE);
+            errorImage.setImageResource(R.drawable.empty);
+            errorImage.setAlpha(0.5f);
+            errorImage.setVisibility(View.VISIBLE);
 
             TextView errorTextWrong = (TextView) root.findViewById(R.id.errorTextWrong);
             errorTextWrong.setVisibility(View.GONE);
-
 
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
