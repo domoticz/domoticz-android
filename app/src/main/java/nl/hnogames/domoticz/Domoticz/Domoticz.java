@@ -647,7 +647,6 @@ public class Domoticz {
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url);
-
     }
 
     public void setRGBColorAction(int idx,

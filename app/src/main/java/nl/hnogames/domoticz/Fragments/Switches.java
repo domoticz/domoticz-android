@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -55,6 +56,7 @@ import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Switches extends DomoticzFragment implements DomoticzFragmentListener,
@@ -71,6 +73,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private Parcelable state;
+    private ListView listView;
 
     @Override
     public void refreshFragment() {
@@ -107,6 +112,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void getSwitchesData() {
+        if(listView!=null) {
+            //switch toggled, refresh listview
+            state = listView.onSaveInstanceState();
+            WidgetUtils.RefreshWidgets(mContext);
+        }
+
         mDomoticz.getSwitches(new SwitchesReceiver() {
             @Override
             public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
@@ -185,7 +196,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             final switchesClickListener listener = this;
             adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
-            ListView listView = (ListView) getView().findViewById(R.id.listView);
+            listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -203,6 +214,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     getSwitchesData();
                 }
             });
+            if(state != null) {
+                // Restore previous state (including selected item index and scroll position)
+                listView.onRestoreInstanceState(state);
+            }
         } catch (Exception ex) {
             errorHandling(ex);
         }
@@ -295,11 +310,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 mSwitch.setFavoriteBoolean(isFavorite);
+                getSwitchesData();
             }
 
             @Override
             public void onError(Exception error) {
-
                 Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_favorite), Snackbar.LENGTH_SHORT).show();
             }
         });
@@ -341,6 +356,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                             @Override
                             public void onReceiveResult(String result) {
                                 Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set)+": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                                getSwitchesData();
                             }
 
                             @Override
@@ -406,6 +422,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    getSwitchesData();
                 }
 
                 @Override
@@ -439,6 +456,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                getSwitchesData();
             }
 
             @Override
@@ -470,6 +488,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                getSwitchesData();
             }
 
             @Override
@@ -492,6 +511,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
+                getSwitchesData();
             }
 
             @Override
