@@ -27,20 +27,14 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+
+import nl.hnogames.domoticz.Utils.WidgetUtils;
+
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class BootUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        //refresh all widgets
-        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-        ComponentName widgetComponent = new ComponentName(context, WidgetProviderLarge.class);
-        int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
-        for (int i = 0; i < appWidgetIds.length; i++) {
-            Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetIds[i]);
-            updateIntent.setAction("FROM WIDGET PROVIDER");
-            context.startService(updateIntent);
-        }
+        WidgetUtils.RefreshWidgets(context);
     }
 }

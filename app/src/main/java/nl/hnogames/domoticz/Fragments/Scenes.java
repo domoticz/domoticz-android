@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -42,6 +43,7 @@ import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Scenes extends DomoticzFragment implements DomoticzFragmentListener,
@@ -57,6 +59,9 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<SceneInfo> mScenes;
+
+    private Parcelable state;
+    private ListView listView;
 
     @Override
     public void Filter(String text) {
@@ -86,6 +91,12 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     private void processScenes() {
+        if(listView!=null) {
+            //switch toggled, refresh listview
+            state = listView.onSaveInstanceState();
+            WidgetUtils.RefreshWidgets(mContext);
+        }
+
         mDomoticz.getScenes(new ScenesReceiver() {
 
             @Override
@@ -102,7 +113,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
-
         ArrayList<SceneInfo> supportedScenes = new ArrayList<>();
         if (getView() != null) {
             mScenes = scenes;
@@ -127,7 +137,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             }
 
             adapter = new SceneAdapter(mContext, supportedScenes, listener);
-            ListView listView = (ListView) getView().findViewById(R.id.listView);
+            listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -146,6 +156,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 }
             });
 
+            if(state != null) {
+                // Restore previous state (including selected item index and scroll position)
+                listView.onRestoreInstanceState(state);
+            }
             hideProgressDialog();
         }
     }
@@ -216,7 +230,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 errorHandling(error);
             }
         });
-
     }
 
     @Override
@@ -246,7 +259,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                successHandling(result, false);
+                processScenes();
             }
 
             @Override

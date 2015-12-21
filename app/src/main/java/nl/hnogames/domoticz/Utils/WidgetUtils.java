@@ -22,6 +22,28 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+
+import nl.hnogames.domoticz.Service.WidgetProviderLarge;
+
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+
 public class WidgetUtils {
     public final static String WIDGET_UPDATE_ACTION ="nl.hnogames.domoticz.Utils.intent.action.UPDATE_WIDGET";
+
+    public static void RefreshWidgets(Context context){
+        //refresh all widgets
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+        ComponentName widgetComponent = new ComponentName(context, WidgetProviderLarge.class);
+        int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
+        for (int i = 0; i < appWidgetIds.length; i++) {
+            Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
+            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            updateIntent.setAction("FROM WIDGET PROVIDER");
+            context.startService(updateIntent);
+        }
+    }
 }

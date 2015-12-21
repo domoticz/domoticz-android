@@ -198,7 +198,6 @@ public class DomoticzFragment extends Fragment {
     }
 
     private void setErrorLayoutMessage(String message) {
-
         hideListView();
 
         RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
@@ -210,17 +209,18 @@ public class DomoticzFragment extends Fragment {
                 "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
-    private void setMessage(String message) {
+    public void setMessage(String message) {
         RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
 
             ImageView errorImage = (ImageView) root.findViewById(R.id.errorImage);
-            errorImage.setVisibility(View.GONE);
+            errorImage.setImageResource(R.drawable.empty);
+            errorImage.setAlpha(0.5f);
+            errorImage.setVisibility(View.VISIBLE);
 
             TextView errorTextWrong = (TextView) root.findViewById(R.id.errorTextWrong);
             errorTextWrong.setVisibility(View.GONE);
-
 
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
