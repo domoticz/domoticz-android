@@ -37,4 +37,6 @@ public interface switchesClickListener {
     void onColorButtonClick(int idx);
 
     void onTimerButtonClick(int idx);
+
+    void onThermostatClick(int idx, int action, double newSetPoint);
 }

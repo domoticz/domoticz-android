@@ -423,6 +423,26 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onTimerButtonClick(int idx) {
     }
 
+    @Override
+    public void onThermostatClick(final int idx, int action, final double newSetPoint) {
+        addDebugText("onThermostatClick");
+        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+
+        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                successHandling(result, false);
+                processDashboard();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
+    }
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {

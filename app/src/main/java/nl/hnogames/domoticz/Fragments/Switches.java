@@ -384,6 +384,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         });
     }
 
+    @Override
+    public void onThermostatClick(int idx, int action, double newSetPoint) {}
+
     private ExtendedStatusInfo getSwitch(int idx) {
         ExtendedStatusInfo clickedSwitch = null;
         for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
