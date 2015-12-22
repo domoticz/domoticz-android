@@ -4,6 +4,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+    publishNonDefault true
 
     defaultConfig {
         minSdkVersion 20
@@ -30,7 +31,7 @@ android {
 
         paid {
             applicationId 'nl.hnogames.domoticz'
-            resValue "string", "app_name_domoticz", 'Domoticz Lite'
+            resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
     }
