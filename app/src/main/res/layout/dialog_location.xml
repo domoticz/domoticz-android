@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
@@ -73,8 +73,8 @@
             android:id="@+id/get_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="10dp"
+            android:layout_weight="1"
             android:background="@drawable/button_status"
             android:text="@string/getLocation" />
 
@@ -82,8 +82,8 @@
             android:id="@+id/edit_mode_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="10dp"
+            android:layout_weight="1"
             android:background="@drawable/button_status"
             android:text="@string/manual" />
     </LinearLayout>
@@ -91,8 +91,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -103,41 +103,41 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:labelFor="@+id/radius"
                 android:paddingBottom="20dp"
-                android:textSize="@dimen/text_size_large"
                 android:text="@string/radius"
-                android:labelFor="@+id/radius"/>
+                android:textSize="@dimen/text_size_large" />
 
             <EditText
                 android:id="@+id/radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="120"
-                android:inputType="number"/>
+                android:inputType="number"
+                tools:text="120" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="20dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
-                android:textSize="@dimen/text_size_large"
-                android:text="@string/locationAddress"/>
+                android:text="@string/locationAddress"
+                android:textSize="@dimen/text_size_large" />
 
             <TextView
                 android:id="@+id/resolvedAddress"
                 style="@style/row_body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="false"
                 android:padding="2dp"
-                tools:text="Address 1, Ohio"/>
+                android:singleLine="false"
+                tools:text="Address 1, Ohio" />
 
             <TextView
                 android:id="@+id/resolvedCountry"
@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                tools:text="America"/>
+                tools:text="America" />
 
         </LinearLayout>
 

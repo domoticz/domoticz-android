@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
-    <string name="app_name_domoticz">Domoticz</string>
     <string name="domoticz_url">http://www.domoticz.com/</string>
+
+    <string name="premium_category">Buy Premium!</string>
+    <string name="premium_title">Get the premium version!</string>
+    <string name="premium_feature"> is a premium feature, please buy the paid version via the play store!</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

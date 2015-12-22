@@ -38,6 +38,12 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
 
+        if(BuildConfig.LITE_VERSION)
+        {
+            Toast.makeText(this, getString(R.string.wizard_widgets)+" "+ getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+            this.finish();
+        }
+
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
 
@@ -144,9 +150,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
-
-            //AppWidgetProviderInfo providerInfo = AppWidgetManager.getInstance(
-            //        getBaseContext()).getAppWidgetInfo(mAppWidgetId);
 
             mSharedPrefs.setWidgetIDX(mAppWidgetId, idx);
             mSharedPrefs.setWidgetIDforIDX(mAppWidgetId, idx);

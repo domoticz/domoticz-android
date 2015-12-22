@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
     <string name="welcome_title_activity_welcome">Welcome</string>
     <string name="welcome_info_domoticz">Domoticz is a Home Automation System that lets you monitor

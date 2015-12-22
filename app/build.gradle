@@ -5,14 +5,13 @@ android {
     buildToolsVersion "23.0.2"
     //noinspection GroovyAssignabilityCheck
     defaultConfig {
-        applicationId 'nl.hnogames.domoticz'
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 41
-        versionName '0.1.157'
-
+        versionCode 42
+        versionName '0.1.158'
         multiDexEnabled true
     }
+
     //noinspection GroovyAssignabilityCheck
     buildTypes {
         release {
@@ -20,9 +19,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    //noinspection GroovyAssignabilityCheck
+
     productFlavors {
+        free {
+            applicationId 'nl.hnogames.domoticz.lite'
+            resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "app_name_domoticz", 'Domoticz Lite'
+            buildConfigField "boolean", "LITE_VERSION", "true"
+        }
+
+        paid {
+            applicationId 'nl.hnogames.domoticz'
+            resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "app_name_domoticz", 'Domoticz'
+            buildConfigField "boolean", "LITE_VERSION", "false"
+        }
     }
+
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+
     //noinspection GroovyAssignabilityCheck
     dexOptions {
         preDexLibraries false

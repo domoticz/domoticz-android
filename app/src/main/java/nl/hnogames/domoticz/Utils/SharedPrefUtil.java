@@ -392,7 +392,7 @@ public class SharedPrefUtil {
      *      Local server settings
      */
     public boolean isLocalServerAddressDifferent() {
-        return prefs.getBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, true);
+        return prefs.getBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, false);
     }
 
     public void setLocalServerUsesSameAddress(boolean b) {

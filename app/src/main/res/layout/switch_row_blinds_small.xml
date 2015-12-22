@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -8,6 +8,7 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
@@ -15,38 +16,31 @@
         android:id="@+id/rowIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:paddingRight="5dp"
         android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/switch_name"
+        style="@style/row_name_small"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/switch_name"
-            style="@style/row_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch name" />
-
-        <TextView
-            android:id="@+id/switch_status"
-            style="@style/row_body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/status" />
-
-    </LinearLayout>
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/rowIcon"
+        android:text="Switch"
+        android:layout_toLeftOf="@+id/linearLayout2"
+        android:layout_toStartOf="@+id/linearLayout2" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout2">
 
         <ImageButton
             android:id="@+id/switch_button_up"
@@ -67,4 +61,4 @@
             android:src="@drawable/ic_arrow_down" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -19,7 +19,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".Service.WidgetProviderLarge" >
+        <receiver android:name=".Service.WidgetProviderLarge">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -28,8 +28,7 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <receiver
-            android:name=".Service.WidgetIntentReceiver" >
+        <receiver android:name=".Service.WidgetIntentReceiver">
             <intent-filter>
                 <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
             </intent-filter>
@@ -39,8 +38,7 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <receiver
-            android:name=".Service.BootUpReceiver" >
+        <receiver android:name=".Service.BootUpReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -50,7 +48,8 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <activity android:name=".WidgetConfigurationActivity"
+        <activity
+            android:name=".WidgetConfigurationActivity"
             android:configChanges="orientation|screenSize"
             android:label="Domoticz Widget Config">
             <intent-filter>
@@ -58,17 +57,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".WidgetActionActivity"
+        <activity
+            android:name=".WidgetActionActivity"
             android:configChanges="orientation|screenSize"
-            android:label="Domoticz Widget Action">
-        </activity>
+            android:label="Domoticz Widget Action"></activity>
 
-        <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService"/>
+        <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService" />
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name_domoticz"
             android:configChanges="orientation|screenSize"
+            android:label="@string/app_name_domoticz"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -77,6 +76,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -84,8 +84,8 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/settingsActivity_name"
             android:configChanges="orientation|screenSize"
+            android:label="@string/settingsActivity_name"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -94,8 +94,8 @@
 
         <activity
             android:name=".CameraActivity"
-            android:label="@string/cameraActivity_name"
             android:configChanges="orientation|screenSize"
+            android:label="@string/cameraActivity_name"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -104,8 +104,8 @@
 
         <activity
             android:name=".PlanActivity"
-            android:label="@string/cameraActivity_name"
             android:configChanges="orientation|screenSize"
+            android:label="@string/cameraActivity_name"
             android:parentActivityName=".PlanActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -114,8 +114,8 @@
 
         <activity
             android:name=".ServerSettingsActivity"
-            android:label="@string/title_activity_server_settings"
             android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_server_settings"
             android:parentActivityName=".SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -124,8 +124,8 @@
 
         <activity
             android:name=".GeoSettingsActivity"
-            android:label="@string/title_activity_server_settings"
             android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_server_settings"
             android:parentActivityName=".SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -139,7 +139,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBJ_XlxltqRMHEaqUxKak6LkIb0jt4qRWM " />
+            android:value="@string/googleapikey" />
 
         <meta-data
             android:name="com.google.android.gms.version"
