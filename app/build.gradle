@@ -15,8 +15,7 @@ android {
     //noinspection GroovyAssignabilityCheck
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -35,6 +34,10 @@ android {
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
     }
 
     //noinspection GroovyAssignabilityCheck
