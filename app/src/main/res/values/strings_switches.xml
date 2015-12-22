@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
     <string name="title_switches">Switches</string>
     <string name="txt_notAvailable">N/A</string>
@@ -11,7 +9,7 @@
     <string name="placeholder_lastUpdate">2015-05-01 01:01:01</string>
 
     <string name="color_set">Color set for</string>
-    
+
     <string name="error_favorite">Could not set favorite</string>
     <string name="error_logs">Could not find any logs to show</string>
     <string name="error_color">Could not change the Color</string>

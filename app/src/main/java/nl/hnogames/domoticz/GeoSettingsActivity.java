@@ -127,10 +127,11 @@ public class GeoSettingsActivity extends AppCompatActivity
             return;
         }
 
+        createLocationRequest();
+        initSwitches();
         mSharedPrefs = new SharedPrefUtil(this);
         createListView();
         initSwitches();
-        createLocationRequest();
     }
 
     private void initSwitches() {

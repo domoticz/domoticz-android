@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name_domoticz">Domoticz</string>
     <string name="domoticz_url">http://www.domoticz.com/</string>
 
     <string name="drawer_open">Ouvrir le menu</string>

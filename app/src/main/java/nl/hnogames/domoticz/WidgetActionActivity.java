@@ -129,7 +129,6 @@ public class WidgetActionActivity extends AppCompatActivity
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-
             //save widget id in combination with idx in shared preferences
             mSharedPrefs.setWidgetIDX(mAppWidgetId, mSelectedSwitch.getIdx());
 

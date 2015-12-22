@@ -154,35 +154,33 @@ public class MainActivity extends AppCompatActivity {
                         ((DomoticzFragment) f).refreshFragment();
                     } else if (f instanceof DomoticzCardFragment)
                         ((DomoticzCardFragment) f).refreshFragment();
-
-                updateDrawerItems();
-                break;
+                    updateDrawerItems();
+                    break;
             }
         }
     }
 
-    public void removeFragmentStack(String fragment)
-    {
-        if(stackFragments!= null) {
+    public void removeFragmentStack(String fragment) {
+        if (stackFragments != null) {
             if (stackFragments.contains(fragment))
                 stackFragments.remove(fragment);
         }
     }
 
-    public void addFragmentStack(String fragment)
-    {
-        if(stackFragments == null)
-            stackFragments=new ArrayList<>();
+    public void addFragmentStack(String fragment) {
+        if (stackFragments == null)
+            stackFragments = new ArrayList<>();
 
-        if(stackFragments.contains(fragment))
-            stackFragments.remove(fragment);
-
-        stackFragments.add(fragment);
+        if (!stackFragments.contains(fragment)) {
+            if(stackFragments.size()>1)
+                stackFragments.remove(stackFragments.size()-1);
+            stackFragments.add(fragment);
+        }
     }
 
     public void changeFragment(String fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-       // tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        // tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
         tx.commitAllowingStateLoss();
         addFragmentStack(fragment);
@@ -415,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(stackFragments== null || stackFragments.size()<=1) {
+        if (stackFragments == null || stackFragments.size() <= 1) {
             new AlertDialog.Builder(this)
                     .setTitle(this.getString(R.string.dialog_exit))
                     .setMessage(this.getString(R.string.dialog_exit_description))
@@ -425,10 +423,9 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.super.onBackPressed();
                         }
                     }).create().show();
-        }
-        else{
-            String currentFragment = stackFragments.get(stackFragments.size()-1);
-            String previousFragment = stackFragments.get(stackFragments.size()-2);
+        } else {
+            String currentFragment = stackFragments.get(stackFragments.size() - 1);
+            String previousFragment = stackFragments.get(stackFragments.size() - 2);
             changeFragment(previousFragment);
             stackFragments.remove(currentFragment);
         }

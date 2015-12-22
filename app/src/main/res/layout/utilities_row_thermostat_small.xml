@@ -16,28 +16,43 @@
         android:id="@+id/rowIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:paddingRight="5dp"
         android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
 
     <TextView
-        android:id="@+id/switch_name"
+        android:id="@+id/thermostat_name"
         style="@style/row_name_small"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rowIcon"
-        android:text="Switch name" />
+        android:text="Utility"
+        android:layout_toLeftOf="@+id/linearLayout"
+        android:layout_toStartOf="@+id/linearLayout" />
 
-    <Button
-        android:id="@+id/on_button"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/button"
-        android:text="@string/button_state_on" />
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+
+        <ImageButton
+            android:id="@+id/utilities_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus" />
+
+        <ImageButton
+            android:id="@+id/utilities_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_minus" />
+
+    </LinearLayout>
 
 </RelativeLayout>

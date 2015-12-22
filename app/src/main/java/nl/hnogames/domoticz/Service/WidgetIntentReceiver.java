@@ -143,7 +143,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName() + " Widget: " + widgetID, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
                 updateWidget(context);
             }
 
@@ -171,7 +171,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName() + " Widget: " + widgetID, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName() , Toast.LENGTH_SHORT).show();
                 updateWidget(context);
             }
 
@@ -207,7 +207,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
-                    Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName() + " Widget: " + widgetID, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
                     updateWidget(context);
                 }
 
