@@ -6,4 +6,6 @@
     <string name="pick_switch_title">Pick a switch</string>
     <string name="choose_switch">Choose Switch</string>
     <string name="failed_to_get_switches">Failed to get switches</string>
+    <string name="failed_toggeling_switch">Failed to toggling switch.</string>
+    <string name="switch_toggled">"Switch toggled: "</string>
 </resources>
