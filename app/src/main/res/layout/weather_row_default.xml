@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,6 +9,8 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
     <ImageView
@@ -17,9 +18,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/row_icon_description"
         android:paddingEnd="5dp"
-        tools:src="@drawable/clock48"
-        android:contentDescription="@string/row_icon_description" />
+        tools:src="@drawable/clock48" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -57,6 +58,7 @@
                 android:layout_below="@+id/weather_hardware" />
 
         </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/extra_panel_button"
             android:layout_width="match_parent"

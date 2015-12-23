@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:customPreference="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customPreference="http://schemas.android.com/apk/res-auto"
+    android:key="settingsscreen">
+
+    <PreferenceCategory android:title="@string/premium_category"
+        android:key="premium_category">
+        <Preference
+            android:key="premium_settings"
+            android:title="@string/premium_title"></Preference>
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_generic">
         <ListPreference
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="startup_screen"
-            android:title="@string/startup_screen"/>
+            android:title="@string/startup_screen" />
         <MultiSelectListPreference
             android:defaultValue="@array/drawer_actions"
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="enable_menu_items"
-            android:title="@string/enable_items"/>
+            android:title="@string/enable_items" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
@@ -43,22 +50,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server">
-        <Preference android:title="@string/server_settings">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetClass="nl.hnogames.domoticz.ServerSettingsActivity"
-                android:targetPackage="nl.hnogames.domoticz" />
-        </Preference>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/category_geofencing">
         <Preference
-            android:title="@string/geofencing_configure">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetClass="nl.hnogames.domoticz.GeoSettingsActivity"
-                android:targetPackage="nl.hnogames.domoticz" />
-        </Preference>
+            android:key="server_settings"
+            android:title="@string/server_settings"></Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_geofencing">
+        <Preference
+            android:key="geo_settings"
+            android:title="@string/geofencing_configure"></Preference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_export">
@@ -74,17 +74,17 @@
         <Preference
             android:key="version"
             android:summary="Version 1.0.2"
-            android:title="@string/info_version"/>
+            android:title="@string/info_version" />
         <Preference
             android:key="version_domoticz"
             android:summary="Version 1.0.2"
-            android:title="@string/info_domoticz_version"/>
+            android:title="@string/info_domoticz_version" />
         <Preference
             android:key="info_about"
-            android:title="@string/info_about"/>
+            android:title="@string/info_about" />
         <Preference
             android:key="info_credits"
-            android:title="@string/info_credits"/>
+            android:title="@string/info_credits" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_debug">

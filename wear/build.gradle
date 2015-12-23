@@ -4,9 +4,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+    publishNonDefault true
 
     defaultConfig {
-        applicationId "nl.hnogames.domoticz"
         minSdkVersion 20
         targetSdkVersion 23
         versionCode 4
@@ -16,6 +16,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+
+    productFlavors {
+        free {
+            applicationId 'nl.hnogames.domoticz.lite'
+            resValue "string", "app_name_domoticz", 'Domoticz Lite'
+            buildConfigField "boolean", "LITE_VERSION", "true"
+        }
+
+        paid {
+            applicationId 'nl.hnogames.domoticz'
+            resValue "string", "app_name_domoticz", 'Domoticz'
+            buildConfigField "boolean", "LITE_VERSION", "false"
         }
     }
 }

@@ -22,22 +22,28 @@
 
 package nl.hnogames.domoticz.Preference;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
 
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -62,10 +68,77 @@ public class Preference extends PreferenceFragment {
 
         mSharedPrefs = new SharedPrefUtil(getActivity());
 
+        setPreferences();
         setStartUpScreenDefaultValue();
         setVersionInfo();
         handleImportExportButtons();
         handleInfoAndAbout();
+    }
+
+    private void setPreferences(){
+
+        android.preference.Preference ServerSettings = (android.preference.Preference) findPreference("server_settings");
+        ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                Intent intent = new Intent(getActivity(), ServerSettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        android.preference.Preference GeoSettings = (android.preference.Preference) findPreference("geo_settings");
+        GeoSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if(BuildConfig.LITE_VERSION)
+                {
+                    Toast.makeText(getActivity(), getString(R.string.geofence)+" "+ getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), GeoSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
+        WearPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if(BuildConfig.LITE_VERSION)
+                {
+                    Toast.makeText(getActivity(), getString(R.string.category_wear)+" "+ getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        android.preference.PreferenceScreen preferenceScreen =(android.preference.PreferenceScreen)findPreference("settingsscreen");
+        android.preference.PreferenceCategory premiumCategory =(android.preference.PreferenceCategory)findPreference("premium_category");
+        android.preference.Preference premiumPreference =(android.preference.Preference)findPreference("premium_settings");
+        if(!BuildConfig.LITE_VERSION)
+        {
+            preferenceScreen.removePreference(premiumCategory);
+        }
+        else{
+            premiumPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    String packageID = getActivity().getPackageName().replace(".lite","");
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageID)));
+                    }
+
+                    return true;
+                }
+            });
+        }
     }
 
     private void handleInfoAndAbout() {
@@ -80,7 +153,6 @@ public class Preference extends PreferenceFragment {
                 return true;
             }
         });
-
         android.preference.Preference credits = findPreference("info_credits");
         credits.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override

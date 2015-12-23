@@ -279,7 +279,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private View setThermostatRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.utilities_row_thermostat;
-        else layoutResourceId = R.layout.utilities_row_thermostat;
+        else layoutResourceId = R.layout.utilities_row_thermostat_small;
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View convertView = inflater.inflate(layoutResourceId, null);
@@ -536,6 +536,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mExtendedStatusInfo.getName());
 
+
         final double setPoint = mExtendedStatusInfo.getSetPoint();
 
         if (holder.isProtected) holder.buttonPlus.setEnabled(false);
@@ -563,8 +564,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonMinus.setId(mExtendedStatusInfo.getIdx());
 
         holder.switch_name.setText(mExtendedStatusInfo.getName());
-        holder.switch_battery_level.setText(mExtendedStatusInfo.getLastUpdate());
-        holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        if (holder.switch_battery_level != null)
+            holder.switch_battery_level.setText(mExtendedStatusInfo.getLastUpdate());
+
+        if (holder.signal_level != null)
+            holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+
         Picasso.with(context).load(domoticz.getDrawableIcon(mExtendedStatusInfo.getTypeImg(), mExtendedStatusInfo.getType(),mExtendedStatusInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
@@ -649,11 +654,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mExtendedStatusInfo.getLastUpdate().substring(mExtendedStatusInfo.getLastUpdate().indexOf(" ") + 1));
-        holder.switch_status.setText(text);
+        if(holder.switch_status!=null)
+            holder.switch_status.setText(text);
 
         text = context.getString(R.string.data) + ": " +
                 String.valueOf(mExtendedStatusInfo.getData());
-        holder.switch_battery_level.setText(text);
+        if(holder.switch_battery_level!=null)
+            holder.switch_battery_level.setText(text);
 
         if (holder.isProtected) holder.buttonUp.setEnabled(false);
         holder.buttonUp.setId(mExtendedStatusInfo.getIdx());

@@ -49,8 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/sad_smiley"
-                android:contentDescription="@string/error_image_description" />
+                android:contentDescription="@string/error_image_description"
+                android:src="@drawable/sad_smiley" />
 
             <TextView
                 android:id="@+id/errorTextOops"
@@ -79,9 +79,9 @@
                 android:layout_below="@id/errorTextWrong"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                tools:text="Error: No network connection available"
                 android:textColor="@color/light_gray"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_small"
+                tools:text="Error: No network connection available" />
 
         </RelativeLayout>
 
