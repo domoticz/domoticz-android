@@ -34,6 +34,7 @@ import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class WidgetIntentReceiver extends BroadcastReceiver {
@@ -132,7 +133,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, "Failed to toggling switch.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.failed_toggeling_switch, Toast.LENGTH_SHORT).show();
             }
         }, idx);
     }
@@ -143,13 +144,13 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
                 updateWidget(context);
             }
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, "Failed to toggle switch." + widgetID, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -171,13 +172,13 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
-                Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName() , Toast.LENGTH_SHORT).show();
                 updateWidget(context);
             }
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, "Failed to toggle switch." + widgetID, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -207,13 +208,13 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
-                    Toast.makeText(context, "Switch toggled: " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.switch_toggled)+ ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
                     updateWidget(context);
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, "Failed to toggle switch." + widgetID, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }
