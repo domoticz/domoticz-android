@@ -16,5 +16,6 @@
     <string name="unknown">Unknown</string>
     <string name="not_available">N/A</string>
     <string name="no_valid_latLong">Not a valid latitude or longitude</string>
+    <string name="starting_geofence_service">Starting Geofence service</string>
 
 </resources>

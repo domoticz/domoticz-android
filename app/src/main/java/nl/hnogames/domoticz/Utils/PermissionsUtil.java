@@ -57,6 +57,8 @@ public class PermissionsUtil {
     }
 
     private static boolean hasPermission(String permission, Context context) {
+
+        // Using ContextCompat.checkSelfPermission will work on all API versions
         return (PackageManager.PERMISSION_GRANTED
                 == ContextCompat.checkSelfPermission(context, permission));
     }
