@@ -36,7 +36,7 @@ You can toggle switches with your Android Wear device
 
 # Floorplan
 -----
-Config your floorplan within Domoticz 
+Config your floorplan within Domoticz  
 ![floorplan](https://cloud.githubusercontent.com/assets/14561640/11994856/5817e6ea-aa46-11e5-8c50-44ded81f7b7d.png)
 
 
