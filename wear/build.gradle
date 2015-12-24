@@ -24,13 +24,13 @@ android {
 
     productFlavors {
         free {
-            applicationId 'nl.hnogames.domoticz.lite'
+            applicationId 'nl.hnogames.domoticz'
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
 
         paid {
-            applicationId 'nl.hnogames.domoticz'
+            applicationId 'nl.hnogames.domoticz.premium'
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }

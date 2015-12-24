@@ -128,7 +128,7 @@ public class Preference extends PreferenceFragment {
             premiumPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    String packageID = getActivity().getPackageName().replace(".lite","");
+                    String packageID = getActivity().getPackageName()+".premium";
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
                     } catch (android.content.ActivityNotFoundException anfe) {
