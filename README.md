@@ -19,13 +19,13 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 # Geofencing
 -----
 Add (one or multiple) Geofences and connected a switch to it  
-![geofence](https://cloud.githubusercontent.com/assets/14561640/11994717/b958d494-aa43-11e5-83fd-60757e8c7385.png)
+![geofencing](https://cloud.githubusercontent.com/assets/14561640/11994853/4e504300-aa46-11e5-83b1-ae71b9d8f322.png)
 
 
 # Widgets
 -----
 See more information and toggle switches right from your home screen!  
-![widgets](https://cloud.githubusercontent.com/assets/14561640/11994719/c6a9130c-aa43-11e5-86b8-afc76e741093.png)
+![widgets](https://cloud.githubusercontent.com/assets/14561640/11994858/604c018e-aa46-11e5-9892-75bb8a4eb752.png)
 
 
 # Android Wear
@@ -37,15 +37,15 @@ You can toggle switches with your Android Wear device
 # Floorplan
 -----
 Config your floorplan within Domoticz 
-![floowplan](https://cloud.githubusercontent.com/assets/14561640/11994740/09714006-aa44-11e5-85d3-720adbf4e081.png)
+![floorplan](https://cloud.githubusercontent.com/assets/14561640/11994856/5817e6ea-aa46-11e5-8c50-44ded81f7b7d.png)
 
 
 # Screenshots
 -----
 Here some screenshots
 
-![2](https://cloud.githubusercontent.com/assets/14561640/11994728/e6f61fba-aa43-11e5-80fc-581ba7acecfd.png)
-![1](https://cloud.githubusercontent.com/assets/14561640/11994729/e6fa0e9a-aa43-11e5-9b79-0565d850c396.png)
+![2](https://cloud.githubusercontent.com/assets/14561640/11994848/3e03224c-aa46-11e5-85c2-6833b6891baf.png)
+![1](https://cloud.githubusercontent.com/assets/14561640/11994849/3e27abd0-aa46-11e5-9d28-47185ffb53f6.png)
 
 
 # Credits
