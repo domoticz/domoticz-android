@@ -8,9 +8,12 @@ This is a Android for Domoticz and will soon be in the Play Store (not ready yet
 
 # Google Play Store
 -----
-You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets..
-Free: ![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)
-Premium: ![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)
+You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets..  
+**Free:**  
+![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)
+
+**Premium:**  
+![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)
 
 
 # Geofencing
