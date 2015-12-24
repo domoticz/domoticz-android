@@ -6,32 +6,43 @@ This is a Android for Domoticz and will soon be in the Play Store (not ready yet
 **Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
 
 
+# Google Play Store
+-----
+You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets..
+Free: ![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994745/53d71878-aa44-11e5-9139-f938358327cb.png)
+Premium: ![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994745/53d71878-aa44-11e5-9139-f938358327cb.png)
+
 
 # Geofencing
 -----
 Add (one or multiple) Geofences and connected a switch to it  
-![index](https://cloud.githubusercontent.com/assets/14561640/11558484/5f595e8c-99b3-11e5-8b68-e868f81aa904.png)
+![geofence](https://cloud.githubusercontent.com/assets/14561640/11994717/b958d494-aa43-11e5-83fd-60757e8c7385.png)
+
 
 # Widgets
 -----
 See more information and toggle switches right from your home screen!  
-![index](https://cloud.githubusercontent.com/assets/14561640/11777235/4752e40a-a24d-11e5-9a2a-e52b0933e06a.png)
-
+![widgets](https://cloud.githubusercontent.com/assets/14561640/11994719/c6a9130c-aa43-11e5-86b8-afc76e741093.png)
 
 
 # Android Wear
 -----
 You can toggle switches with your Android Wear device  
-![wear](https://cloud.githubusercontent.com/assets/14561640/11558411/ead47588-99b2-11e5-8d83-a34c09216a11.png)
+![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
+
+
+# Floorplan
+-----
+Config your floorplan within Domoticz 
+![floowplan](https://cloud.githubusercontent.com/assets/14561640/11994740/09714006-aa44-11e5-85d3-720adbf4e081.png)
 
 
 # Screenshots
 -----
 Here some screenshots
 
-![screenshot_20151109-155913](https://cloud.githubusercontent.com/assets/14561640/11527593/2e29deb2-98e2-11e5-9198-218162a17d23.png)
-![screenshot_20151109-155953](https://cloud.githubusercontent.com/assets/14561640/11527591/2e242e4a-98e2-11e5-9fe9-51b92a76dea9.png)
-
+![2](https://cloud.githubusercontent.com/assets/14561640/11994728/e6f61fba-aa43-11e5-80fc-581ba7acecfd.png)
+![1](https://cloud.githubusercontent.com/assets/14561640/11994729/e6fa0e9a-aa43-11e5-9b79-0565d850c396.png)
 
 
 # Credits
