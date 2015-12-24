@@ -47,6 +47,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.tjeannin.apprate.AppRate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            new AppRate(this).setMinDaysUntilPrompt(2)
+                    .setMinLaunchesUntilPrompt(10).init();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
