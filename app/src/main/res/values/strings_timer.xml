@@ -16,5 +16,6 @@
     <string name="timer_working_days">Working Days</string>
     <string name="timer_weekend">Weekend</string>
     <string name="timer_other">Other</string>
+    <string name="timers">Timers</string>
 
 </resources>

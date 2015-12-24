@@ -22,16 +22,19 @@
 
 package nl.hnogames.domoticz;
 
+import android.*;
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -42,6 +45,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -70,6 +74,7 @@ import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
@@ -78,6 +83,19 @@ public class GeoSettingsActivity extends AppCompatActivity
     private final String TAG = "GeoSettings";
     @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int LOCATION_INTERVAL = 100000;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int LOCATION_FASTEST_INTERVAL = 50000;
+
+    private final int ACTION_MAP_LOCATION = 10;
+    private final int ACTION_SET_GEOFENCE_SERVICE = 11;
+    private final int ACTION_GET_LOCATION = 12;
+
+    private final int REQUEST_MAP_LOCATION = 20;
+    private final int REQUEST_GEOFENCE_SERVICE = 21;
+    private final int REQUEST_GET_LOCATION = 22;
+
     private GoogleMap map;
     private SharedPrefUtil mSharedPrefs;
 
@@ -118,20 +136,22 @@ public class GeoSettingsActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
         domoticz = new Domoticz(this);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                .coordinatorLayout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         if (!isGooglePlayServicesAvailable()) {
-            Snackbar.make(coordinatorLayout, getString(R.string.google_play_services_unavailable), Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(
+                    GeoSettingsActivity.this,
+                    R.string.google_play_services_unavailable,
+                    Toast.LENGTH_SHORT).show();
+                    // Snackbar not possible since we're ending the activity
             finish();
             return;
         }
 
-        createLocationRequest();
-        initSwitches();
         mSharedPrefs = new SharedPrefUtil(this);
         createListView();
         initSwitches();
+        createLocationRequest();
     }
 
     private void initSwitches() {
@@ -182,6 +202,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
             map.getUiSettings().setMapToolbarEnabled(true);
             map.getUiSettings().setTiltGesturesEnabled(false);
+            checkForLocationPermission(ACTION_MAP_LOCATION);
         }
 
     }
@@ -224,22 +245,19 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             @Override
             public void onRemoveClick(final LocationInfo location) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
+                builder.setMessage(R.string.are_you_sure)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 adapter.data.remove(location);
                                 mSharedPrefs.removeLocation(location);
                                 adapter.notifyDataSetChanged();
-                                break;
-                        }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
-                builder.setMessage(getString(R.string.are_you_sure))
-                        .setPositiveButton(getString(R.string.yes), dialogClickListener)
-                        .setNegativeButton(getString(R.string.no), dialogClickListener).show();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), null)
+                        .show();
             }
         });
 
@@ -273,9 +291,10 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void createLocationRequest() {
+
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(100000);
-        mLocationRequest.setFastestInterval(50000);
+        mLocationRequest.setInterval(LOCATION_INTERVAL);
+        mLocationRequest.setFastestInterval(LOCATION_FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -286,61 +305,181 @@ public class GeoSettingsActivity extends AppCompatActivity
             @NonNull int[] grantResults) {
 
         switch (requestCode) {
-            case PermissionsUtil.INITIAL_ACCESS_REQUEST:
-                if (PermissionsUtil.canAccessLocation(this)) {
+            case PermissionsUtil.INITIAL_LOCATION_REQUEST:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
+                    startGeofenceService();
+                    setMyLocationOnMap();
+                }
+                break;
+
+            case REQUEST_GEOFENCE_SERVICE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startGeofenceService();
+                } else {
+                    stopGeofenceService();
+                }
+                break;
+
+            case REQUEST_GET_LOCATION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startLocationUpdates();
+                }
+                break;
+
+            case REQUEST_MAP_LOCATION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setMyLocationOnMap();
                 }
                 break;
         }
     }
 
-    public void getLocation() {
-        currentLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mApiClient);
-        if (currentLocation != null)
-            setMarker(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+    private void checkForLocationPermission(final int actionToStart) {
+        if (PermissionsUtil.canAccessLocation(this)) {
+
+            // We have permission already!
+            Log.v(TAG, "We have permission!");
+
+            switch (actionToStart) {
+                case ACTION_GET_LOCATION:
+                    getLocationServices();
+                    break;
+
+                case ACTION_MAP_LOCATION:
+                    setMyLocationOnMap();
+                    break;
+
+                case ACTION_SET_GEOFENCE_SERVICE:
+                    startGeofenceService();
+                    break;
+            }
+
+        } else {
+
+            // No permission, check if the dialog has already been shown to user
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+                            ActivityCompat.shouldShowRequestPermissionRationale(
+                            this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+                // User has declined already once, we should explain
+
+                Log.v(TAG, "Should show request permission rationale");
+
+                String sb;
+                sb = "For Geofencing to work, Domoticz needs to know the location of your device";
+                sb+=UsefulBits.newLine();
+                sb+=UsefulBits.newLine();
+                sb+="Enable location permission?";
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
+                builder.setTitle("Domoticz requires permissions")
+                        .setMessage(sb)
+                        .setPositiveButton("Re-try", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch (actionToStart) {
+                                    case ACTION_GET_LOCATION:
+                                        ActivityCompat.requestPermissions(
+                                                GeoSettingsActivity.this,
+                                                PermissionsUtil.INITIAL_LOCATION_PERMS,
+                                                REQUEST_GET_LOCATION);
+                                        break;
+                                    case ACTION_SET_GEOFENCE_SERVICE:
+                                        ActivityCompat.requestPermissions(
+                                                GeoSettingsActivity.this,
+                                                PermissionsUtil.INITIAL_LOCATION_PERMS,
+                                                REQUEST_GEOFENCE_SERVICE);
+                                        break;
+
+                                    case ACTION_MAP_LOCATION:
+                                        ActivityCompat.requestPermissions(
+                                                GeoSettingsActivity.this,
+                                                PermissionsUtil.INITIAL_LOCATION_PERMS,
+                                                REQUEST_MAP_LOCATION);
+                                        break;
+                                }
+                            }
+                        })
+                        .setNegativeButton("I'm sure", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(GeoSettingsActivity.this,
+                                        "Without location permission Domoticz cannot use Geofencing",
+                                        Toast.LENGTH_SHORT).show();
+                                stopGeofenceService();
+                                GeoSettingsActivity.this.finish();
+                            }
+                        })
+                        .show();
+            } else {
+
+                // Users hasn't seen the permission dialog, let show it to them
+
+                Log.v(TAG, "Requesting permission");
+
+                int requestCode;
+
+                switch (actionToStart) {
+                    case ACTION_GET_LOCATION:
+                        requestCode = REQUEST_GET_LOCATION;
+                        break;
+
+                    case ACTION_MAP_LOCATION:
+                        requestCode = REQUEST_MAP_LOCATION;
+                        break;
+
+                    case ACTION_SET_GEOFENCE_SERVICE:
+                        requestCode = REQUEST_GEOFENCE_SERVICE;
+                        break;
+                    default:
+                        requestCode = PermissionsUtil.INITIAL_LOCATION_REQUEST;
+                        break;
+
+                }
+                ActivityCompat.requestPermissions(
+                        this,
+                        PermissionsUtil.INITIAL_LOCATION_PERMS,
+                        requestCode);
+            }
+        }
     }
 
-    protected void startLocationUpdates() {
+    private void startLocationUpdates() {
+
+        checkForLocationPermission(ACTION_GET_LOCATION);
+    }
+
+    private void getLocationServices() {
+
+        //noinspection ResourceType
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mApiClient, mLocationRequest, new com.google.android.gms.location.LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        getLocation();
+                        //noinspection ResourceType
+                        currentLocation
+                                = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
                     }
                 });
+
+    }
+
+    private void setMyLocationOnMap() {
+        //noinspection ResourceType
+        map.setMyLocationEnabled(true);
     }
 
     private void setMarker(LatLng currentLatLng) {
-        // Marker currentLocation =
         map.addMarker(new MarkerOptions().position(currentLatLng));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
         map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        try {
-            if (mSharedPrefs.isGeofenceEnabled())
-                getMenuInflater().inflate(R.menu.menu_geo, menu);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_add:
-                showAddLocationDialog();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void showAddLocationDialog() {
@@ -380,6 +519,31 @@ public class GeoSettingsActivity extends AppCompatActivity
         infoDialog.show();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        try {
+            if (mSharedPrefs.isGeofenceEnabled())
+                getMenuInflater().inflate(R.menu.menu_geo, menu);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_add:
+                showAddLocationDialog();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Checks if Google Play services is available.
      *
@@ -401,23 +565,26 @@ public class GeoSettingsActivity extends AppCompatActivity
     @Override
     public void onConnected(Bundle bundle) {
         setGeoFenceService();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!PermissionsUtil.canAccessLocation(this)) {
-                requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);
-            } else
-                startLocationUpdates();
-        } else
-            startLocationUpdates();
+        startLocationUpdates();
     }
 
     public void setGeoFenceService() {
+        checkForLocationPermission(ACTION_SET_GEOFENCE_SERVICE);
+    }
+
+    public void startGeofenceService() {
         if (mGeofenceList != null && mGeofenceList.size() > 0) {
             mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
+            //noinspection ResourceType
             LocationServices.GeofencingApi
                     .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
             if (domoticz.isDebugEnabled())
-                Snackbar.make(coordinatorLayout, "Starting Geofence Service", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, "Starting Geofence service", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    public void stopGeofenceService() {
+        LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
     }
 
     @Override
@@ -428,12 +595,11 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // If the error has a resolution, start a Google Play services activity to resolve it.
         if (connectionResult.hasResolution()) {
             try {
-                connectionResult.startResolutionForResult(this,
-                        999);
+                connectionResult.startResolutionForResult(this, 999);
             } catch (IntentSender.SendIntentException e) {
                 Log.e(TAG, "Exception while resolving connection error.", e);
             }

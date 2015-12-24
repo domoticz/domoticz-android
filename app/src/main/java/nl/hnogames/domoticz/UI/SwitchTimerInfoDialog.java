@@ -23,7 +23,6 @@
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ListView;
 
@@ -35,7 +34,7 @@ import nl.hnogames.domoticz.Adapters.TimersAdapter;
 import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.R;
 
-public class SwitchTimerInfoDialog implements DialogInterface.OnDismissListener {
+public class SwitchTimerInfoDialog {
 
     private final MaterialDialog.Builder mdb;
     private ArrayList<SwitchTimerInfo> info;
@@ -50,16 +49,10 @@ public class SwitchTimerInfoDialog implements DialogInterface.OnDismissListener 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
                 .positiveText(android.R.string.ok);
-        mdb.dismissListener(this);
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-
     }
 
     public void show() {
-        mdb.title("Timers");
+        mdb.title(R.string.timers);
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
