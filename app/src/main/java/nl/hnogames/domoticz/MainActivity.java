@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (stackFragments == null || stackFragments.size() <= 1) {
-            new AlertDialog.Builder(this)
+           /* new AlertDialog.Builder(this)
                     .setTitle(this.getString(R.string.dialog_exit))
                     .setMessage(this.getString(R.string.dialog_exit_description))
                     .setNegativeButton(android.R.string.no, null)
@@ -433,7 +433,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface arg0, int arg1) {
                             MainActivity.super.onBackPressed();
                         }
-                    }).create().show();
+                    }).create().show(); */
+                     MainActivity.super.onBackPressed();
         } else {
             String currentFragment = stackFragments.get(stackFragments.size() - 1);
             String previousFragment = stackFragments.get(stackFragments.size() - 2);
