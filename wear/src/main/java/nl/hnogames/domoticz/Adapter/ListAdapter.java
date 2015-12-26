@@ -33,26 +33,34 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.R;
 
 public class ListAdapter extends WearableListView.Adapter {
-    private ArrayList<ExtendedStatusInfo> mDataset;
+    private ArrayList<DevicesInfo> mDataset;
     private final Context mContext;
     private final LayoutInflater mInflater;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(Context context, ArrayList<ExtendedStatusInfo> dataset) {
+    public ListAdapter(Context context, ArrayList<DevicesInfo> dataset) {
         mContext = context;
+
         mInflater = LayoutInflater.from(context);
-        mDataset = dataset;
+        setData(dataset);
     }
 
-    public void setData(ArrayList<ExtendedStatusInfo> dataset)
+    public void setData(ArrayList<DevicesInfo> dataset)
     {
-
         mDataset = dataset;
+        Collections.sort(dataset, new Comparator<DevicesInfo>() {
+            @Override
+            public int compare(DevicesInfo left, DevicesInfo right) {
+                return left.getName().compareTo(right.getName());
+            }
+        });
     }
 
     // Provide a reference to the type of views you're using
