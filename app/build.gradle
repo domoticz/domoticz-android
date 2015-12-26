@@ -93,5 +93,7 @@ dependencies {
     compile 'com.larswerkman:lobsterpicker:1.0.0'
     compile 'com.github.dexafree:materiallist:3.1.2'
 
+    compile 'com.github.hotchemi:android-rate:0.5.6'
+
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 }

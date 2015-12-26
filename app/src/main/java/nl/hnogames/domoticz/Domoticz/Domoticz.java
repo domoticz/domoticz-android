@@ -718,10 +718,12 @@ public class Domoticz {
                 url);
     }
 
-    public void getDevices(DevicesReceiver receiver, int plan) {
+    public void getDevices(DevicesReceiver receiver, int plan, String filter) {
         DevicesParser parser = new DevicesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.DEVICES);
 
+        if(filter!=null && filter.length()>0)
+            url = url.replace("filter=all", "filter="+filter);
         if (plan > 0)
             url += "&plan=" + plan;
 

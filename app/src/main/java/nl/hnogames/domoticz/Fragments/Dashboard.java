@@ -131,7 +131,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             public void onError(Exception error) {
                 errorHandling(error);
             }
-        }, planID);
+        }, planID,null);
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {

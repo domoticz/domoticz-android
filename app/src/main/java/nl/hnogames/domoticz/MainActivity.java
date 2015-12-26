@@ -47,11 +47,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.tjeannin.apprate.AppRate;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Dashboard;
@@ -131,8 +130,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            new AppRate(this).setMinDaysUntilPrompt(2)
-                    .setMinLaunchesUntilPrompt(10).init();
+
+            AppRate.with(this)
+                    .setInstallDays(0) // default 10, 0 means install day.
+                    .setLaunchTimes(3) // default 10
+                    .setRemindInterval(2) // default 1
+                    .monitor();
+
+            // Show a dialog if meets conditions
+            AppRate.showRateDialogIfMeetsConditions(this);
+
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
