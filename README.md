@@ -6,32 +6,46 @@ This is a Android for Domoticz and will soon be in the Play Store (not ready yet
 **Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
 
 
+# Google Play Store
+-----
+You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets..  
+
+**Free:**  
+[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)
+
+**Premium:**  
+[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)
 
 # Geofencing
 -----
 Add (one or multiple) Geofences and connected a switch to it  
-![index](https://cloud.githubusercontent.com/assets/14561640/11558484/5f595e8c-99b3-11e5-8b68-e868f81aa904.png)
+![geofencing](https://cloud.githubusercontent.com/assets/14561640/11994853/4e504300-aa46-11e5-83b1-ae71b9d8f322.png)
+
 
 # Widgets
 -----
 See more information and toggle switches right from your home screen!  
-![index](https://cloud.githubusercontent.com/assets/14561640/11777235/4752e40a-a24d-11e5-9a2a-e52b0933e06a.png)
-
+![widgets](https://cloud.githubusercontent.com/assets/14561640/11994858/604c018e-aa46-11e5-9892-75bb8a4eb752.png)
 
 
 # Android Wear
 -----
 You can toggle switches with your Android Wear device  
-![wear](https://cloud.githubusercontent.com/assets/14561640/11558411/ead47588-99b2-11e5-8d83-a34c09216a11.png)
+![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
+
+
+# Floorplan
+-----
+Config your floorplan within Domoticz  
+![floorplan](https://cloud.githubusercontent.com/assets/14561640/11994856/5817e6ea-aa46-11e5-8c50-44ded81f7b7d.png)
 
 
 # Screenshots
 -----
 Here some screenshots
 
-![screenshot_20151109-155913](https://cloud.githubusercontent.com/assets/14561640/11527593/2e29deb2-98e2-11e5-9198-218162a17d23.png)
-![screenshot_20151109-155953](https://cloud.githubusercontent.com/assets/14561640/11527591/2e242e4a-98e2-11e5-9fe9-51b92a76dea9.png)
-
+![2](https://cloud.githubusercontent.com/assets/14561640/11994848/3e03224c-aa46-11e5-85c2-6833b6891baf.png)
+![1](https://cloud.githubusercontent.com/assets/14561640/11994849/3e27abd0-aa46-11e5-9d28-47185ffb53f6.png)
 
 
 # Credits
