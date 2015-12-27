@@ -494,7 +494,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                getSwitchesData();
+                //getSwitchesData();
             }
 
             @Override
