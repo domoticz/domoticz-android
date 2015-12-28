@@ -39,16 +39,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
@@ -71,7 +69,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private SwitchesAdapter adapter;
 
     private CoordinatorLayout coordinatorLayout;
-    private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
+    private ArrayList<DevicesInfo> extendedStatusSwitches;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Parcelable state;
@@ -118,77 +116,55 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             WidgetUtils.RefreshWidgets(mContext);
         }
 
-        mDomoticz.getSwitches(new SwitchesReceiver() {
+        mDomoticz.getDevices(new DevicesReceiver() {
             @Override
-            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                processSwitches(switches);
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                extendedStatusSwitches=mDevicesInfo;
+                createListView(mDevicesInfo);
             }
+
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
 
             @Override
             public void onError(Exception error) {
                 errorHandling(error);
             }
-        });
-    }
-
-    private void processSwitches(ArrayList<SwitchInfo> switchInfos) {
-        currentSwitch = 1;//reset values
-        extendedStatusSwitches = new ArrayList<>();
-        final int totalNumberOfSwitches = switchInfos.size();
-
-        for (SwitchInfo switchInfo : switchInfos) {
-            successHandling(switchInfo.toString(), false);
-            int idx = switchInfo.getIdx();
-
-            mDomoticz.getStatus(idx, new StatusReceiver() {
-                @Override
-                public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
-                    extendedStatusSwitches.add(extendedStatusInfo);     // Add to array
-                    if (currentSwitch == totalNumberOfSwitches) {
-                        createListView(extendedStatusSwitches);         // All extended info is in
-                    } else currentSwitch++;                               // Not there yet
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+        }, 0,"light");
     }
 
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
-    private void createListView(ArrayList<ExtendedStatusInfo> switches) {
+    private void createListView(ArrayList<DevicesInfo> switches) {
         try {
             coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
 
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-            ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
+            ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
             final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
             final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
-            for (ExtendedStatusInfo mExtendedStatusInfo : switches) {
-                String name = mExtendedStatusInfo.getName();
-                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                String switchType = mExtendedStatusInfo.getSwitchType();
+            for (DevicesInfo mDevicesInfo : switches) {
+                String name = mDevicesInfo.getName();
+                int switchTypeVal = mDevicesInfo.getSwitchTypeVal();
+                String switchType = mDevicesInfo.getSwitchType();
 
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         appSupportedSwitchesValues.contains(switchTypeVal) &&
                         appSupportedSwitchesNames.contains(switchType)) {
                     if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
-                        supportedSwitches.add(mExtendedStatusInfo);
+                        supportedSwitches.add(mDevicesInfo);
                     } else {
                         Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean()) && isOnOffSwitch(mExtendedStatusInfo)) {
-                            supportedSwitches.add(mExtendedStatusInfo);
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
+                            supportedSwitches.add(mDevicesInfo);
                         }
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean()) && isOnOffSwitch(mExtendedStatusInfo)) {
-                            supportedSwitches.add(mExtendedStatusInfo);
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
+                            supportedSwitches.add(mDevicesInfo);
                         }
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_static)) ) && !isOnOffSwitch(mExtendedStatusInfo)) {
-                            supportedSwitches.add(mExtendedStatusInfo);
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_static)) ) && !isOnOffSwitch(mDevicesInfo)) {
+                            supportedSwitches.add(mDevicesInfo);
                         }
                     }
                 }
@@ -224,7 +200,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         hideProgressDialog();
     }
 
-    private boolean isOnOffSwitch(ExtendedStatusInfo testSwitch)
+    private boolean isOnOffSwitch(DevicesInfo testSwitch)
     {
         switch (testSwitch.getSwitchTypeVal()) {
             case Domoticz.Device.Type.Value.ON_OFF:
@@ -246,7 +222,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
         return false;
     }
-    private void showInfoDialog(final ExtendedStatusInfo mSwitch) {
+    private void showInfoDialog(final DevicesInfo mSwitch) {
 
         SwitchInfoDialog infoDialog = new SwitchInfoDialog(
                 getActivity(),
@@ -290,7 +266,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         }
     }
 
-    private void changeFavorite(final ExtendedStatusInfo mSwitch, final boolean isFavorite) {
+    private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
@@ -387,11 +363,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     @Override
     public void onThermostatClick(int idx, int action, double newSetPoint) {}
 
-    private ExtendedStatusInfo getSwitch(int idx) {
-        ExtendedStatusInfo clickedSwitch = null;
-        for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
-            if (mExtendedStatusInfo.getIdx() == idx) {
-                clickedSwitch = mExtendedStatusInfo;
+    private DevicesInfo getSwitch(int idx) {
+        DevicesInfo clickedSwitch = null;
+        for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
+            if (mDevicesInfo.getIdx() == idx) {
+                clickedSwitch = mDevicesInfo;
             }
         }
         return clickedSwitch;
@@ -401,7 +377,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onSwitchClick(int idx, boolean checked) {
         addDebugText("onSwitchClick");
         addDebugText("Set idx " + idx + " to " + checked);
-        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+        DevicesInfo clickedSwitch = getSwitch(idx);
 
         if (checked)
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
@@ -440,7 +416,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onButtonClick(int idx, boolean checked) {
         addDebugText("onButtonClick");
         addDebugText("Set idx " + idx + " to ON");
-        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+        DevicesInfo clickedSwitch = getSwitch(idx);
 
         if (checked)
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
@@ -473,7 +449,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onBlindClick(int idx, int jsonAction) {
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
-        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+        DevicesInfo clickedSwitch = getSwitch(idx);
 
         if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
@@ -504,7 +480,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     @Override
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
-        ExtendedStatusInfo clickedSwitch = getSwitch(idx);
+        DevicesInfo clickedSwitch = getSwitch(idx);
 
         Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level)+": " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
 
@@ -514,7 +490,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                getSwitchesData();
+                //getSwitchesData();
             }
 
             @Override

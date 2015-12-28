@@ -32,7 +32,6 @@ import android.os.Environment;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -128,7 +127,7 @@ public class Preference extends PreferenceFragment {
             premiumPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    String packageID = getActivity().getPackageName().replace(".lite","");
+                    String packageID = getActivity().getPackageName()+".premium";
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
                     } catch (android.content.ActivityNotFoundException anfe) {

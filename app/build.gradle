@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 43
-        versionName '0.1.159'
+        versionCode 46
+        versionName '0.1.201'
         multiDexEnabled true
     }
 
@@ -22,14 +22,16 @@ android {
 
     productFlavors {
         free {
-            applicationId 'nl.hnogames.domoticz.lite'
+            applicationId 'nl.hnogames.domoticz'
+            resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
 
         paid {
-            applicationId 'nl.hnogames.domoticz'
+            applicationId 'nl.hnogames.domoticz.premium'
+            resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
@@ -91,6 +93,8 @@ dependencies {
     compile 'com.larswerkman:lobsterpicker:1.0.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.dexafree:materiallist:3.1.2'
+
+    compile 'com.github.hotchemi:android-rate:0.5.6'
 
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 }

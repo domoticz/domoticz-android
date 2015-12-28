@@ -43,7 +43,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapter.ListAdapter;
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
 public class WearActivity extends DomoticzActivity
@@ -51,7 +51,7 @@ public class WearActivity extends DomoticzActivity
         MessageApi.MessageListener,
         GoogleApiClient.ConnectionCallbacks {
 
-    private ArrayList<ExtendedStatusInfo> switches = null;
+    private ArrayList<DevicesInfo> switches = null;
     private WearableListView listView;
     private ListAdapter adapter;
 
@@ -78,7 +78,7 @@ public class WearActivity extends DomoticzActivity
             {
                 String json = jsonSwitchArray.getJSONObject(i).getString("jsonObject");
                 JSONObject row = new JSONObject(json);
-                switches.add(new ExtendedStatusInfo(new JSONObject(row.getString("nameValuePairs"))));
+                switches.add(new DevicesInfo(new JSONObject(row.getString("nameValuePairs"))));
             }
         } catch (JSONException e) {
             e.printStackTrace();

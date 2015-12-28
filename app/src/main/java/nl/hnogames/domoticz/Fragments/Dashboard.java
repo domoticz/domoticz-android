@@ -32,6 +32,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,7 @@ import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
@@ -107,6 +110,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             getActionBar().setTitle(planName + "");
 
         processDashboard();
+
     }
 
     private void processDashboard() {
@@ -131,7 +135,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             public void onError(Exception error) {
                 errorHandling(error);
             }
-        }, planID);
+        }, planID,null);
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
@@ -489,7 +493,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                processDashboard();
+                //processDashboard();
             }
 
             @Override
