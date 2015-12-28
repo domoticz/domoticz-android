@@ -94,6 +94,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     private Location currentLocation;
     private LocationRequest mLocationRequest;
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -128,10 +129,8 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
 
         mSharedPrefs = new SharedPrefUtil(this);
-        createLocationRequest();
         initSwitches();
         createListView();
-        initSwitches();
     }
 
     private void initSwitches() {
@@ -302,6 +301,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     protected void startLocationUpdates() {
+        createLocationRequest();
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mApiClient, mLocationRequest, new com.google.android.gms.location.LocationListener() {
                     @Override
@@ -401,6 +401,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     @Override
     public void onConnected(Bundle bundle) {
         setGeoFenceService();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessLocation(this)) {
                 requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);

@@ -117,7 +117,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     Toast.makeText(WidgetConfigurationActivity.this, R.string.failed_get_switches, Toast.LENGTH_SHORT).show();
                     WidgetConfigurationActivity.this.finish();
                 }
-            },0);
+            },0,null);
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);

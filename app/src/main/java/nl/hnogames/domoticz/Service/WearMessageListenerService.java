@@ -40,11 +40,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -60,7 +58,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private static GoogleApiClient mApiClient;
     private Domoticz domoticz;
     private SharedPrefUtil mSharedPrefs;
-    private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
+    private ArrayList<DevicesInfo> extendedStatusSwitches;
 
     private int currentSwitch = 1;
 
@@ -98,7 +96,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             Log.v("WEAR SERVICE", "Toggle Switch request received");
             String data = new String(messageEvent.getData());
             try {
-                ExtendedStatusInfo selectedSwitch = new ExtendedStatusInfo(new JSONObject(data));
+                DevicesInfo selectedSwitch = new DevicesInfo(new JSONObject(data));
                 domoticz = new Domoticz(getApplicationContext());
 
                 if (selectedSwitch != null) {
@@ -133,9 +131,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
                     //now send latest status
                     getSwitches();
-
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -145,73 +141,57 @@ public class WearMessageListenerService extends WearableListenerService implemen
     }
 
     private void getSwitches() {
-
         extendedStatusSwitches = new ArrayList<>();
         currentSwitch = 1;
         domoticz = new Domoticz(getApplicationContext());
-        domoticz.getSwitches(new SwitchesReceiver() {
+        domoticz.getDevices(new DevicesReceiver() {
             @Override
-            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                if (switches != null)
-                    for (SwitchInfo switchInfo : switches) {
-                        int idx = switchInfo.getIdx();
-                        final int totalNumberOfSwitches = switches.size();
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                extendedStatusSwitches = mDevicesInfo;
+                processAllSwitches(extendedStatusSwitches);
+            }
 
-                        domoticz.getStatus(idx, new StatusReceiver() {
-                            @Override
-                            public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
-                                extendedStatusSwitches.add(extendedStatusInfo);     // Add to array
-                                if (currentSwitch == totalNumberOfSwitches) {
-                                    processAllSwitches(extendedStatusSwitches);         // All extended info is in
-                                } else
-                                    currentSwitch++;                               // Not there yet
-                            }
-
-                            @Override
-                            public void onError(Exception error) {
-                                Log.e(TAG, error.getMessage());
-                            }
-                        });
-                    }
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
             public void onError(Exception error) {
                 Log.e(TAG, error.getMessage());
             }
-        });
+        },0,"lights");
+
     }
 
-    private void processAllSwitches(ArrayList<ExtendedStatusInfo> extendedStatusSwitches) {
+    private void processAllSwitches(ArrayList<DevicesInfo> extendedStatusSwitches) {
         final List<Integer> appSupportedSwitchesValues = domoticz.getWearSupportedSwitchesValues();
         final List<String> appSupportedSwitchesNames = domoticz.getWearSupportedSwitchesNames();
-
-        ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
+        ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
 
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(this);
 
         if (!mSharedPrefs.showCustomWear() || ( mSharedPrefs.getWearSwitches() == null || mSharedPrefs.getWearSwitches().length <= 0)){
-            for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
-                String name = mExtendedStatusInfo.getName();
-                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                String switchType = mExtendedStatusInfo.getSwitchType();
+            for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
+                String name = mDevicesInfo.getName();
+                int switchTypeVal = mDevicesInfo.getSwitchTypeVal();
+                String switchType = mDevicesInfo.getSwitchType();
 
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         appSupportedSwitchesValues.contains(switchTypeVal) &&
                         appSupportedSwitchesNames.contains(switchType) &&
-                        mExtendedStatusInfo.getFavoriteBoolean()) {//only dashboard switches..
-                    supportedSwitches.add(mExtendedStatusInfo);
+                        mDevicesInfo.getFavoriteBoolean()) {//only dashboard switches..
+                    supportedSwitches.add(mDevicesInfo);
                 }
             }
         } else {
             String[] filterSwitches = mSharedPrefs.getWearSwitches();
             if(filterSwitches!=null && filterSwitches.length>0) {
-                for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
-                    String name = mExtendedStatusInfo.getName();
-                    String idx = mExtendedStatusInfo.getIdx() + "";
-                    int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                    String switchType = mExtendedStatusInfo.getSwitchType();
+                for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
+                    String name = mDevicesInfo.getName();
+                    String idx = mDevicesInfo.getIdx() + "";
+                    int switchTypeVal = mDevicesInfo.getSwitchTypeVal();
+                    String switchType = mDevicesInfo.getSwitchType();
 
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                             appSupportedSwitchesValues.contains(switchTypeVal) &&
@@ -219,7 +199,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
                         for (String f : filterSwitches) {
                             if (f.equals(idx)) {
-                                supportedSwitches.add(mExtendedStatusInfo);
+                                supportedSwitches.add(mDevicesInfo);
                             }
                         }
                     }
@@ -256,8 +236,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
     public void onConnectionSuspended(int i) {
     }
 
-
-    public void onSwitchToggle(ExtendedStatusInfo toggledDevice) {
+    public void onSwitchToggle(DevicesInfo toggledDevice) {
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
@@ -300,4 +279,3 @@ public class WearMessageListenerService extends WearableListenerService implemen
         });
     }
 }
-

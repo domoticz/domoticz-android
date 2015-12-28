@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,11 +45,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.tjeannin.apprate.AppRate;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Dashboard;
@@ -62,6 +62,7 @@ import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -131,8 +132,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            new AppRate(this).setMinDaysUntilPrompt(2)
-                    .setMinLaunchesUntilPrompt(10).init();
+
+            AppRate.with(this)
+                    .setInstallDays(0) // default 10, 0 means install day.
+                    .setLaunchTimes(3) // default 10
+                    .setRemindInterval(2) // default 1
+                    .monitor();
+
+            // Show a dialog if meets conditions
+            AppRate.showRateDialogIfMeetsConditions(this);
+
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -153,15 +162,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
-                    Fragment f = getVisibleFragment();
-                    if (f instanceof DomoticzFragment) {
-                        ((DomoticzFragment) f).refreshFragment();
-                    } else if (f instanceof DomoticzCardFragment)
-                        ((DomoticzCardFragment) f).refreshFragment();
+                    refreshFragment();
                     updateDrawerItems();
                     break;
             }
         }
+    }
+
+    public void refreshFragment(){
+        Fragment f = getVisibleFragment();
+        if (f instanceof DomoticzFragment) {
+            ((DomoticzFragment) f).refreshFragment();
+        } else if (f instanceof DomoticzCardFragment)
+            ((DomoticzCardFragment) f).refreshFragment();
     }
 
     public void removeFragmentStack(String fragment) {
@@ -188,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
         tx.commitAllowingStateLoss();
         addFragmentStack(fragment);
+        saveScreenToAnaliticz(fragment);
     }
 
     private void addFragment() {
@@ -197,6 +211,14 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
         tx.commitAllowingStateLoss();
         addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+        saveScreenToAnaliticz(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+    }
+
+    private void saveScreenToAnaliticz(String screen){
+        AppController application = (AppController) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(screen);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void updateDrawerItems() {
@@ -416,17 +438,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        refreshFragment();
+    }
+
+    @Override
     public void onBackPressed() {
         if (stackFragments == null || stackFragments.size() <= 1) {
-            new AlertDialog.Builder(this)
-                    .setTitle(this.getString(R.string.dialog_exit))
-                    .setMessage(this.getString(R.string.dialog_exit_description))
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            MainActivity.super.onBackPressed();
-                        }
-                    }).create().show();
+             MainActivity.super.onBackPressed();
         } else {
             String currentFragment = stackFragments.get(stackFragments.size() - 1);
             String previousFragment = stackFragments.get(stackFragments.size() - 2);
