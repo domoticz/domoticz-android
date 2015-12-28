@@ -120,16 +120,16 @@ public class UtilitiesInfo {
         return Name;
     }
 
+    public void setName(String name) {
+        Name = name;
+    }
+
     public String getCounter() {
         return Counter;
     }
 
     public String getUsage() {
         return Usage;
-    }
-
-    public void setName(String name) {
-        Name = name;
     }
 
     public String getCounterToday() {

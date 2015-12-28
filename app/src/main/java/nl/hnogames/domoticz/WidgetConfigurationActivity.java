@@ -28,8 +28,9 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 public class WidgetConfigurationActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
-    private SharedPrefUtil mSharedPrefs;
     private final int iWelcomeResultCode = 885;
+    int mAppWidgetId;
+    private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
 
     @Override
@@ -38,9 +39,8 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
 
-        if(BuildConfig.LITE_VERSION)
-        {
-            Toast.makeText(this, getString(R.string.wizard_widgets)+" "+ getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+        if (BuildConfig.LITE_VERSION) {
+            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
             this.finish();
         }
 
@@ -117,7 +117,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     Toast.makeText(WidgetConfigurationActivity.this, R.string.failed_get_switches, Toast.LENGTH_SHORT).show();
                     WidgetConfigurationActivity.this.finish();
                 }
-            },0,null);
+            }, 0, null);
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -130,16 +130,15 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         int counter = 0;
         for (DevicesInfo s : switches) {
 
-                String log = s.getName();
-                listData[counter] = log;
-                counter++;
+            String log = s.getName();
+            listData[counter] = log;
+            counter++;
 
         }
         Arrays.sort(listData);
         return listData;
     }
 
-    int mAppWidgetId;
     private void showAppWidget(DevicesInfo mSelectedSwitch) {
         mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();

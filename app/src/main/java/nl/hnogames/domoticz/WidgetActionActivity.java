@@ -23,10 +23,10 @@ import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
-public class WidgetActionActivity extends AppCompatActivity
-{
-    private SharedPrefUtil mSharedPrefs;
+public class WidgetActionActivity extends AppCompatActivity {
     private final int iWelcomeResultCode = 885;
+    int mAppWidgetId;
+    private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
 
     @Override
@@ -100,7 +100,7 @@ public class WidgetActionActivity extends AppCompatActivity
                     Toast.makeText(WidgetActionActivity.this, R.string.failed_to_get_switches, Toast.LENGTH_SHORT).show();
                     WidgetActionActivity.this.finish();
                 }
-            },0,null);
+            }, 0, null);
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -119,7 +119,6 @@ public class WidgetActionActivity extends AppCompatActivity
         return listData;
     }
 
-    int mAppWidgetId;
     private void showAppWidget(DevicesInfo mSelectedSwitch) {
         mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();

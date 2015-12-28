@@ -35,6 +35,9 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
+        if(bundle==null)
+            this.finish();
+
         //noinspection SpellCheckingInspection
         String imageUrl = bundle.getString("IMAGEURL");
 
@@ -54,7 +57,6 @@ public class CameraActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                //NavUtils.navigateUpFromSameTask(this);
                 this.finish();
                 return true;
         }

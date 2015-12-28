@@ -177,7 +177,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         });
 
         convertView.setTag(holder);
-        Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(),null, false, false, null)).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
         return convertView;
     }
 

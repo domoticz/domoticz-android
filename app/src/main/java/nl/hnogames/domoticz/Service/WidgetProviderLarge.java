@@ -94,7 +94,8 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
             domoticz.getDevice(new DevicesReceiver() {
                 @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
+                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                }
 
                 @Override
                 public void onReceiveDevice(DevicesInfo s) {
@@ -126,8 +127,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
                                     s.getIdx()));
                             views.setViewVisibility(R.id.on_button, View.VISIBLE);
-                        }
-                        else{
+                        } else {
                             views.setViewVisibility(R.id.on_button, View.GONE);
                         }
 

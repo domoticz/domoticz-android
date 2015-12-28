@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void refreshFragment(){
+    public void refreshFragment() {
         Fragment f = getVisibleFragment();
         if (f instanceof DomoticzFragment) {
             ((DomoticzFragment) f).refreshFragment();
@@ -189,8 +189,8 @@ public class MainActivity extends AppCompatActivity {
             stackFragments = new ArrayList<>();
 
         if (!stackFragments.contains(fragment)) {
-            if(stackFragments.size()>1)
-                stackFragments.remove(stackFragments.size()-1);
+            if (stackFragments.size() > 1)
+                stackFragments.remove(stackFragments.size() - 1);
             stackFragments.add(fragment);
         }
     }
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         saveScreenToAnaliticz(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
     }
 
-    private void saveScreenToAnaliticz(String screen){
+    private void saveScreenToAnaliticz(String screen) {
         AppController application = (AppController) getApplication();
         Tracker mTracker = application.getDefaultTracker();
         mTracker.setScreenName(screen);
@@ -446,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (stackFragments == null || stackFragments.size() <= 1) {
-             MainActivity.super.onBackPressed();
+            MainActivity.super.onBackPressed();
         } else {
             String currentFragment = stackFragments.get(stackFragments.size() - 1);
             String previousFragment = stackFragments.get(stackFragments.size() - 2);
