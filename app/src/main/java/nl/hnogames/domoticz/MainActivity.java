@@ -160,15 +160,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
-                    Fragment f = getVisibleFragment();
-                    if (f instanceof DomoticzFragment) {
-                        ((DomoticzFragment) f).refreshFragment();
-                    } else if (f instanceof DomoticzCardFragment)
-                        ((DomoticzCardFragment) f).refreshFragment();
+                    refreshFragment();
                     updateDrawerItems();
                     break;
             }
         }
+    }
+
+    public void refreshFragment(){
+        Fragment f = getVisibleFragment();
+        if (f instanceof DomoticzFragment) {
+            ((DomoticzFragment) f).refreshFragment();
+        } else if (f instanceof DomoticzCardFragment)
+            ((DomoticzCardFragment) f).refreshFragment();
     }
 
     public void removeFragmentStack(String fragment) {
@@ -423,18 +427,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        refreshFragment();
+    }
+
+    @Override
     public void onBackPressed() {
         if (stackFragments == null || stackFragments.size() <= 1) {
-           /* new AlertDialog.Builder(this)
-                    .setTitle(this.getString(R.string.dialog_exit))
-                    .setMessage(this.getString(R.string.dialog_exit_description))
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            MainActivity.super.onBackPressed();
-                        }
-                    }).create().show(); */
-                     MainActivity.super.onBackPressed();
+             MainActivity.super.onBackPressed();
         } else {
             String currentFragment = stackFragments.get(stackFragments.size() - 1);
             String previousFragment = stackFragments.get(stackFragments.size() - 2);
