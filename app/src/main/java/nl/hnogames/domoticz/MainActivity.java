@@ -45,6 +45,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,7 @@ import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -197,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
         tx.commitAllowingStateLoss();
         addFragmentStack(fragment);
+        saveScreenToAnaliticz(fragment);
     }
 
     private void addFragment() {
@@ -206,6 +211,14 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
         tx.commitAllowingStateLoss();
         addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+        saveScreenToAnaliticz(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+    }
+
+    private void saveScreenToAnaliticz(String screen){
+        AppController application = (AppController) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(screen);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void updateDrawerItems() {
