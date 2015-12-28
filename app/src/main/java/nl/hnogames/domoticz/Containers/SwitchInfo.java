@@ -33,17 +33,17 @@ public class SwitchInfo {
 
     private static final String UNKNOWN = "Unknown";
     private final String TAG = SwitchInfo.class.getSimpleName();
-    JSONObject jsonObject;
-    String IsDimmer;
-    String Name;
-    String SubType;
-    String type;
-    String TypeImg;
-    int idx;
-    String Timers;
+    private JSONObject jsonObject;
+    private String IsDimmer;
+    private String Name;
+    private String SubType;
+    private String type;
+    private String TypeImg;
+    private int idx;
+    private String Timers;
 
-    int switchTypeVal;
-    String switchType;
+    private int switchTypeVal;
+    private String switchType;
 
 
     public SwitchInfo(JSONObject row) throws JSONException {

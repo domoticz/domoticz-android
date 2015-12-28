@@ -22,15 +22,11 @@
 
 package nl.hnogames.domoticz.Service;
 
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
 import nl.hnogames.domoticz.Utils.WidgetUtils;
-
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class BootUpReceiver extends BroadcastReceiver {
     @Override

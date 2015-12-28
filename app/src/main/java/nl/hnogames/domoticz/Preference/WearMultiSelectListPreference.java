@@ -33,11 +33,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.R;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
@@ -47,7 +45,6 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
     private CharSequence[] mEntryValues;
     private Domoticz mDomoticz;
-    private ArrayList<ExtendedStatusInfo> extendedStatusSwitches;
     private int currentSwitch = 1;
 
     public WearMultiSelectListPreference(Context context, AttributeSet attrs) {
@@ -60,58 +57,41 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
     }
 
     private void initSwitches() {
-        extendedStatusSwitches = new ArrayList<>();
         currentSwitch = 1;
-        mDomoticz.getSwitches(new SwitchesReceiver() {
+        mDomoticz.getDevices(new DevicesReceiver() {
             @Override
-            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                for (SwitchInfo switchInfo : switches) {
-                    int idx = switchInfo.getIdx();
-                    final int totalNumberOfSwitches = switches.size();
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();
+                final List<String> appSupportedSwitchesNames = mDomoticz.getWearSupportedSwitchesNames();
+                ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
 
-                    mDomoticz.getStatus(idx, new StatusReceiver() {
-                        @Override
-                        public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
-                            extendedStatusSwitches.add(extendedStatusInfo);
-                            if (currentSwitch == totalNumberOfSwitches) {
-                                {
-                                    final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();
-                                    final List<String> appSupportedSwitchesNames = mDomoticz.getWearSupportedSwitchesNames();
-                                    ArrayList<ExtendedStatusInfo> supportedSwitches = new ArrayList<>();
-
-                                    for (ExtendedStatusInfo mExtendedStatusInfo : extendedStatusSwitches) {
-                                        String name = mExtendedStatusInfo.getName();
-                                        int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                                        String switchType = mExtendedStatusInfo.getSwitchType();
-                                        if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                                                appSupportedSwitchesValues.contains(switchTypeVal) &&
-                                                appSupportedSwitchesNames.contains(switchType)) {
-                                            supportedSwitches.add(mExtendedStatusInfo);
-                                        }
-                                    }
-
-                                    if (supportedSwitches.size() > 0)
-                                        processSwitches(supportedSwitches);
-                                }
-                            } else currentSwitch++;                               // Not there yet
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            Log.e(TAG, error.getMessage());
-                        }
-                    });
+                for (DevicesInfo mExtendedStatusInfo : mDevicesInfo) {
+                    String name = mExtendedStatusInfo.getName();
+                    int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                    String switchType = mExtendedStatusInfo.getSwitchType();
+                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                            appSupportedSwitchesValues.contains(switchTypeVal) &&
+                            appSupportedSwitchesNames.contains(switchType)) {
+                        supportedSwitches.add(mExtendedStatusInfo);
+                    }
                 }
+
+                if (supportedSwitches.size() > 0)
+                    processSwitches(supportedSwitches);
+            }
+
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
             public void onError(Exception error) {
+                Log.e(TAG, error.getMessage());
             }
-        });
+        }, 0, "lights");
     }
 
-
-    private void processSwitches(ArrayList<ExtendedStatusInfo> switches) {
+    private void processSwitches(ArrayList<DevicesInfo> switches) {
         CharSequence[] mEntries = getEntries();
         mEntryValues = getEntryValues();
 
@@ -119,7 +99,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
             List<String> entries = new ArrayList<>();
             List<String> entryValues = new ArrayList<>();
 
-            for (ExtendedStatusInfo s : switches) {
+            for (DevicesInfo s : switches) {
                 entryValues.add(s.getIdx() + "");
                 entries.add(s.getIdx() + " - " + s.getName());
             }

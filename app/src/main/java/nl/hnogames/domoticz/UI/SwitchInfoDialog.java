@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 
@@ -41,7 +41,7 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
-    private ExtendedStatusInfo mSwitch;
+    private DevicesInfo mSwitch;
     private String idx;
     private String lastUpdate;
     private String signalLevel;
@@ -51,7 +51,7 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
     private Switch favorite_switch;
 
     public SwitchInfoDialog(Context mContext,
-                            ExtendedStatusInfo mSwitch,
+                            DevicesInfo mSwitch,
                             int layout) {
         this.mContext = mContext;
         this.mSwitch = mSwitch;

@@ -83,7 +83,7 @@ public class WelcomePage4 extends Fragment {
                         public void onError(Exception error) {
                             setErrorText(mDomoticz.getErrorMessage(error));
                         }
-                    }, 0);
+                    }, 0,null);
                 }
 
                 @Override
