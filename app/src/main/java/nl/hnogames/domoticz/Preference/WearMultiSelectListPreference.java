@@ -86,7 +86,8 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, error.getMessage());
+                if (error != null && error.getMessage() != null && error.getMessage().length() > 0)
+                    Log.e(TAG, error.getMessage());
             }
         }, 0, "lights");
     }

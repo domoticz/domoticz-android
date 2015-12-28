@@ -91,7 +91,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     private void processScenes() {
-        if(listView!=null) {
+        if (listView != null) {
             //switch toggled, refresh listview
             state = listView.onSaveInstanceState();
             WidgetUtils.RefreshWidgets(mContext);
@@ -156,7 +156,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 }
             });
 
-            if(state != null) {
+            if (state != null) {
                 // Restore previous state (including selected item index and scroll position)
                 listView.onRestoreInstanceState(state);
             }
@@ -164,15 +164,15 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         }
     }
 
-    private boolean isOnOffScene(SceneInfo testSwitch)
-    {
-       switch (testSwitch.getType()) {
+    private boolean isOnOffScene(SceneInfo testSwitch) {
+        switch (testSwitch.getType()) {
             case Domoticz.Scene.Type.GROUP:
                 return true;
         }
 
         return false;
     }
+
     private SceneInfo getScene(int idx) {
         SceneInfo clickedScene = null;
         for (SceneInfo s : mScenes) {

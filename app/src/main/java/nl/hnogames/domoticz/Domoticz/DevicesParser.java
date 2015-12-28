@@ -46,7 +46,7 @@ public class DevicesParser implements JSONParserInterface {
 
     public DevicesParser(DevicesReceiver receiver, int idx) {
         this.receiver = receiver;
-        this.idx=idx;
+        this.idx = idx;
     }
 
     private DevicesInfo getDevice(int idx, ArrayList<DevicesInfo> mDevicesInfo) {
@@ -73,9 +73,9 @@ public class DevicesParser implements JSONParserInterface {
                 }
             }
 
-            if(idx == 999999)
+            if (idx == 999999)
                 receiver.onReceiveDevices(mDevices);
-            else{
+            else {
                 receiver.onReceiveDevice(getDevice(idx, mDevices));
             }
         } catch (JSONException e) {

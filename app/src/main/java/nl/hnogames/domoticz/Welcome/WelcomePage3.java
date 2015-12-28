@@ -154,11 +154,12 @@ public class WelcomePage3 extends Fragment {
                 if (PermissionsUtil.canAccessLocation(getActivity())) {
                     setSsid_spinner();
                 } else {
-                     if(mPhoneConnectionUtil!=null)
-                         mPhoneConnectionUtil.stopReceiver();
+                    if (mPhoneConnectionUtil != null)
+                        mPhoneConnectionUtil.stopReceiver();
 
                     ((WelcomeViewActivity) getActivity()).finishWithResult(false);
-                }break;
+                }
+                break;
         }
     }
 
@@ -336,9 +337,8 @@ public class WelcomePage3 extends Fragment {
     }
 
     @Override
-    public void onStop()
-    {
-        if(mPhoneConnectionUtil!=null)
+    public void onStop() {
+        if (mPhoneConnectionUtil != null)
             mPhoneConnectionUtil.stopReceiver();
 
         super.onStop();

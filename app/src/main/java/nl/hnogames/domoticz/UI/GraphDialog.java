@@ -59,7 +59,7 @@ public class GraphDialog {
                        ArrayList<GraphPointInfo> mGraphList,
                        int layout) {
         this.mGraphList = mGraphList;
-        this.mContext=mContext;
+        this.mContext = mContext;
         mdb = new MaterialDialog.Builder(mContext);
         //noinspection unused
         boolean wrapInScrollView = true;
@@ -73,7 +73,7 @@ public class GraphDialog {
         View view = md.getCustomView();
 
         ComboLineColumnChartView chart = (ComboLineColumnChartView) view.findViewById(R.id.chart);
-        ComboLineColumnChartData columnData = generateData(view );
+        ComboLineColumnChartData columnData = generateData(view);
         chart.setComboLineColumnChartData(columnData);
         setViewPort(chart);
         md.show();
@@ -104,7 +104,7 @@ public class GraphDialog {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private ComboLineColumnChartData generateData(View view ) {
+    private ComboLineColumnChartData generateData(View view) {
         List<Line> lines = new ArrayList<>();
 
         List<PointValue> values = new ArrayList<>();
@@ -143,11 +143,19 @@ public class GraphDialog {
                     }
                     if (g.getBarometer() != null && g.getBarometer().length() > 0) {
                         addBarometer = true;
-                        valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                        try {
+                            valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                        } catch (Exception ex) {
+                            valuesba.add(new PointValue(counter, Float.parseFloat(g.getBarometer())));
+                        }
                     }
                     if (g.getHumidity() != null && g.getHumidity().length() > 0) {
                         addHumidity = true;
-                        valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                        try {
+                            valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                        } catch (Exception ex) {
+                            valuesba.add(new PointValue(counter, Float.parseFloat(g.getHumidity())));
+                        }
                     }
                     if (g.getPercentage() != null && g.getPercentage().length() > 0) {
                         addPercentage = true;
@@ -281,7 +289,7 @@ public class GraphDialog {
 
         if (lines.size() > 1) {
             if (addTemperature) {
-                ( view.findViewById(R.id.legend_temperature))
+                (view.findViewById(R.id.legend_temperature))
                         .setVisibility(View.VISIBLE);
             }
 

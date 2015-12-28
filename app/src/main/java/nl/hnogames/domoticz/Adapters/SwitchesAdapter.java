@@ -155,7 +155,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
             case Domoticz.Device.Type.Value.BLINDS:
             case Domoticz.Device.Type.Value.BLINDINVERTED:
-                if(canHandleStopButton(mDevicesInfo))
+                if (canHandleStopButton(mDevicesInfo))
                     row = setBlindsRowId(holder);
                 else
                     row = setOnOffSwitchRowId(holder);
@@ -300,7 +300,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
             case Domoticz.Device.Type.Value.BLINDS:
             case Domoticz.Device.Type.Value.BLINDINVERTED:
-                if(canHandleStopButton(mDevicesInfo))
+                if (canHandleStopButton(mDevicesInfo))
                     setBlindsRowData(mDevicesInfo, holder);
                 else
                     setOnOffSwitchRowData(mDevicesInfo, holder);
@@ -312,13 +312,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    private boolean canHandleStopButton(DevicesInfo mDevicesInfo)
-    {
-        if((mDevicesInfo.getSubType().indexOf("RAEX") >= 0 ) ||
-                (mDevicesInfo.getSubType().indexOf("A-OK") >= 0)||
-                (mDevicesInfo.getSubType().indexOf("RollerTrol") >= 0)||
-                (mDevicesInfo.getSubType().indexOf("RFY") >= 0)||
-                (mDevicesInfo.getSubType().indexOf("ASA") >= 0)||
+    private boolean canHandleStopButton(DevicesInfo mDevicesInfo) {
+        if ((mDevicesInfo.getSubType().indexOf("RAEX") >= 0) ||
+                (mDevicesInfo.getSubType().indexOf("A-OK") >= 0) ||
+                (mDevicesInfo.getSubType().indexOf("RollerTrol") >= 0) ||
+                (mDevicesInfo.getSubType().indexOf("RFY") >= 0) ||
+                (mDevicesInfo.getSubType().indexOf("ASA") >= 0) ||
                 (mDevicesInfo.getSubType().indexOf("T6 DC") >= 0))
             return true;
         else
@@ -481,13 +480,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(DevicesInfo e : filteredData)
-                {
-                    if(e.getIdx() == view.getId())
-                    {
-                        if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
+                for (DevicesInfo e : filteredData) {
+                    if (e.getIdx() == view.getId()) {
+                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
                             handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
-                        else if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                        else if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
                             handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
                         else
                             handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
@@ -501,10 +498,8 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(DevicesInfo e : filteredData)
-                {
-                    if(e.getIdx() == view.getId())
-                    {
+                for (DevicesInfo e : filteredData) {
+                    if (e.getIdx() == view.getId()) {
                         handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.STOP);
                     }
                 }
@@ -516,13 +511,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(DevicesInfo e : filteredData)
-                {
-                    if(e.getIdx() == view.getId())
-                    {
-                        if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
+                for (DevicesInfo e : filteredData) {
+                    if (e.getIdx() == view.getId()) {
+                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
                             handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
-                        else if(e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                        else if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
                             handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
                         else
                             handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);

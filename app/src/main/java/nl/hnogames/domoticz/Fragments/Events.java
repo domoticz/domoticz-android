@@ -85,6 +85,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
         mDomoticz.getEvents(new EventReceiver() {
             @Override
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
+                successHandling(mEventInfos.toString(), false);
 
                 adapter = new EventsAdapter(mContext, mEventInfos, new EventsClickListener() {
 

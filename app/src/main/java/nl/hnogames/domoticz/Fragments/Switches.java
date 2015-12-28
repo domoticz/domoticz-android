@@ -110,7 +110,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void getSwitchesData() {
-        if(listView!=null) {
+        if (listView != null) {
             //switch toggled, refresh listview
             state = listView.onSaveInstanceState();
             WidgetUtils.RefreshWidgets(mContext);
@@ -119,18 +119,20 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                extendedStatusSwitches=mDevicesInfo;
+                extendedStatusSwitches = mDevicesInfo;
+                successHandling(mDevicesInfo.toString(), false);
                 createListView(mDevicesInfo);
             }
 
             @Override
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
 
             @Override
             public void onError(Exception error) {
                 errorHandling(error);
             }
-        }, 0,"light");
+        }, 0, "light");
     }
 
     // add dynamic list view
@@ -163,7 +165,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
                             supportedSwitches.add(mDevicesInfo);
                         }
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_static)) ) && !isOnOffSwitch(mDevicesInfo)) {
+                        if ((super.getSort().equals(getContext().getString(R.string.sort_static))) && !isOnOffSwitch(mDevicesInfo)) {
                             supportedSwitches.add(mDevicesInfo);
                         }
                     }
@@ -190,7 +192,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     getSwitchesData();
                 }
             });
-            if(state != null) {
+            if (state != null) {
                 // Restore previous state (including selected item index and scroll position)
                 listView.onRestoreInstanceState(state);
             }
@@ -200,8 +202,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         hideProgressDialog();
     }
 
-    private boolean isOnOffSwitch(DevicesInfo testSwitch)
-    {
+    private boolean isOnOffSwitch(DevicesInfo testSwitch) {
         switch (testSwitch.getSwitchTypeVal()) {
             case Domoticz.Device.Type.Value.ON_OFF:
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -222,6 +223,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
         return false;
     }
+
     private void showInfoDialog(final DevicesInfo mSwitch) {
 
         SwitchInfoDialog infoDialog = new SwitchInfoDialog(
@@ -331,7 +333,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         new setCommandReceiver() {
                             @Override
                             public void onReceiveResult(String result) {
-                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set)+": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                                 getSwitchesData();
                             }
 
@@ -349,7 +351,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         mDomoticz.getSwitchTimers(idx, new SwitchTimerReceiver() {
             @Override
             public void onReceiveSwitchTimers(ArrayList<SwitchTimerInfo> switchTimers) {
-                if(switchTimers!=null)
+                if (switchTimers != null)
                     showTimerDialog(switchTimers);
             }
 
@@ -361,7 +363,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
-    public void onThermostatClick(int idx, int action, double newSetPoint) {}
+    public void onThermostatClick(int idx, int action, double newSetPoint) {
+    }
 
     private DevicesInfo getSwitch(int idx) {
         DevicesInfo clickedSwitch = null;
@@ -375,40 +378,44 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onSwitchClick(int idx, boolean checked) {
-        addDebugText("onSwitchClick");
-        addDebugText("Set idx " + idx + " to " + checked);
-        DevicesInfo clickedSwitch = getSwitch(idx);
+        try {
+            addDebugText("onSwitchClick");
+            addDebugText("Set idx " + idx + " to " + checked);
+            DevicesInfo clickedSwitch = getSwitch(idx);
 
-        if (checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            if (checked)
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            else
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
-        if (clickedSwitch != null) {
-            int jsonAction;
-            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+            if (clickedSwitch != null) {
+                int jsonAction;
+                int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
-            if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                    clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-                if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
-                else jsonAction = Domoticz.Device.Switch.Action.ON;
-            } else {
-                if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-                else jsonAction = Domoticz.Device.Switch.Action.OFF;
+                if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                        clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                    if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
+                    else jsonAction = Domoticz.Device.Switch.Action.ON;
+                } else {
+                    if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
+                    else jsonAction = Domoticz.Device.Switch.Action.OFF;
+                }
+
+                mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        getSwitchesData();
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
             }
-
-            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
-                @Override
-                public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    getSwitchesData();
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
         }
     }
 
@@ -481,23 +488,24 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
         DevicesInfo clickedSwitch = getSwitch(idx);
+        if(clickedSwitch!=null) {
+            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level) + ": " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
 
-        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level)+": " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
+            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+            int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                    //getSwitchesData();
+                }
 
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-        int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                //getSwitchesData();
-            }
-
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
+        }
     }
 
     /**
