@@ -47,8 +47,8 @@ public class LocationAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = LocationAdapter.class.getSimpleName();
-    private GeoUtil mGeoUtil;
     public ArrayList<LocationInfo> data = null;
+    private GeoUtil mGeoUtil;
     private Context context;
 
     private LocationClickListener listener;
@@ -127,8 +127,7 @@ public class LocationAdapter extends BaseAdapter {
         if (mLocationInfo.getSwitchidx() > 0) {
             text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchidx();
             holder.connectedSwitch.setText(text);
-        }
-        else {
+        } else {
             text = context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available);
             holder.connectedSwitch.setText(text);

@@ -87,7 +87,8 @@ public class Domoticz {
         mSharedPrefUtil = new SharedPrefUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
             @Override
-            public void ReceiveSSIDs(CharSequence[] entries) { }
+            public void ReceiveSSIDs(CharSequence[] entries) {
+            }
         });
         debug = mSharedPrefUtil.isDebugEnabled();
     }
@@ -722,8 +723,8 @@ public class Domoticz {
         DevicesParser parser = new DevicesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.DEVICES);
 
-        if(filter!=null && filter.length()>0)
-            url = url.replace("filter=all", "filter="+filter);
+        if (filter != null && filter.length() > 0)
+            url = url.replace("filter=all", "filter=" + filter);
         if (plan > 0)
             url += "&plan=" + plan;
 
@@ -796,11 +797,10 @@ public class Domoticz {
     }
 
 
-    public int getDrawableIcon(String imgType, String Type , String switchType, boolean State, boolean useCustomImage, String CustomImage) {
+    public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
-        if(useCustomImage && CustomImage!=null && CustomImage.length()>0)
-        {
+        if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
             switch (CustomImage) {
                 case "Alarm":
                     return R.drawable.alarm;
@@ -845,7 +845,7 @@ public class Domoticz {
         return standardImage;
     }
 
-    private int getDrawableIcon(String imgType, String Type , String switchType, boolean State) {
+    private int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
             case "scene":

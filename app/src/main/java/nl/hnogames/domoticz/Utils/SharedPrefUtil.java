@@ -69,9 +69,9 @@ public class SharedPrefUtil {
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     public static final String PREF_DEBUGGING = "debugging";
+    public static final int INVALID_IDX = 999999;
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
-
     private static final String REMOTE_SERVER_USERNAME = "remote_server_username";
     private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
     private static final String REMOTE_SERVER_URL = "remote_server_url";
@@ -79,7 +79,6 @@ public class SharedPrefUtil {
     private static final String REMOTE_SERVER_SECURE = "remote_server_secure";
     private static final String REMOTE_SERVER_AUTHENTICATION_METHOD =
             "remote_server_authentication_method";
-
     private static final String IS_LOCAL_SERVER_ADDRESS_DIFFERENT = "local_server_different_address";
     private static final String LOCAL_SERVER_USERNAME = "local_server_username";
     private static final String LOCAL_SERVER_PASSWORD = "local_server_password";
@@ -88,22 +87,11 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_SECURE = "local_server_secure";
     private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
             "local_server_authentication_method";
-
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
-    public static final int INVALID_IDX = 999999;
-
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private GoogleApiClient mApiClient = null;
-
-    public void completeCard(String cardTag) {
-        editor.putBoolean("CARD"+cardTag, true).apply();
-    }
-
-    public boolean isCardCompleted(String cardTag) {
-       return prefs.getBoolean("CARD"+cardTag, false);
-    }
 
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
@@ -111,20 +99,28 @@ public class SharedPrefUtil {
         editor = prefs.edit();
     }
 
+    public void completeCard(String cardTag) {
+        editor.putBoolean("CARD" + cardTag, true).apply();
+    }
+
+    public boolean isCardCompleted(String cardTag) {
+        return prefs.getBoolean("CARD" + cardTag, false);
+    }
+
     public void setWidgetIDX(int widgetID, int idx) {
-        editor.putInt("WIDGET"+widgetID, idx).apply();
+        editor.putInt("WIDGET" + widgetID, idx).apply();
     }
 
     public int getWidgetIDX(int widgetID) {
-        return prefs.getInt("WIDGET"+widgetID, INVALID_IDX);
+        return prefs.getInt("WIDGET" + widgetID, INVALID_IDX);
     }
 
     public void setWidgetIDforIDX(int widgetID, int idx) {
-        editor.putInt("WIDGETIDX"+idx, widgetID).apply();
+        editor.putInt("WIDGETIDX" + idx, widgetID).apply();
     }
 
     public int getWidgetIDforIDX(int idx) {
-        return prefs.getInt("WIDGETIDX"+idx, INVALID_IDX);
+        return prefs.getInt("WIDGETIDX" + idx, INVALID_IDX);
     }
 
     /*
@@ -154,8 +150,7 @@ public class SharedPrefUtil {
 
         if (startupScreenSelectedValue == null) {
             editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[0]).apply(); //set to dashboard
-        }
-        else{
+        } else {
             int i = 0;
             for (String screen : startupScreenValues) {
                 if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
@@ -163,22 +158,22 @@ public class SharedPrefUtil {
                 }
                 i++;
             }
-            if(i == 0)              //first = wizard
+            if (i == 0)              //first = wizard
                 editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[1]).apply(); //set to dashboard
         }
 
         //2 remove wizard from navigation
-        String removeWizard="";
+        String removeWizard = "";
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        for(String s : selections) {
-            if(s.equals(allNames[0])) {
+        for (String s : selections) {
+            if (s.equals(allNames[0])) {
                 removeWizard = allNames[0];
                 break;
             }
         }
-        if(removeWizard.length()>0) {
+        if (removeWizard.length() > 0) {
             selections.remove(removeWizard);
             editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
         }

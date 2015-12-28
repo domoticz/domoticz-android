@@ -85,25 +85,25 @@ public class TimersAdapter extends BaseAdapter {
         holder.switch_name.setText(mSwitchTimerInfo.getActive());
         String commando = "";
         if (mSwitchTimerInfo.getCmd() == 0)
-            commando += context.getString(R.string.command)+": " + context.getString(R.string.button_state_on);
+            commando += context.getString(R.string.command) + ": " + context.getString(R.string.button_state_on);
         else
-            commando += context.getString(R.string.command)+": " + context.getString(R.string.button_state_off);
+            commando += context.getString(R.string.command) + ": " + context.getString(R.string.button_state_off);
 
         String type = "";
         if (mSwitchTimerInfo.getType() == 0)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_before_sunrise);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_before_sunrise);
         else if (mSwitchTimerInfo.getType() == 1)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_after_sunrise);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunrise);
         else if (mSwitchTimerInfo.getType() == 2)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_ontime);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_ontime);
         else if (mSwitchTimerInfo.getType() == 3)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_before_sunset);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_before_sunset);
         else if (mSwitchTimerInfo.getType() == 4)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_after_sunset);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunset);
         else if (mSwitchTimerInfo.getType() == 5)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_fixed);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_fixed);
         else
-            type += context.getString(R.string.type)+": " + context.getString(R.string.notapplicable);
+            type += context.getString(R.string.type) + ": " + context.getString(R.string.notapplicable);
 
         if (mSwitchTimerInfo.getDate().length() > 0)
             holder.switch_name.setText(holder.switch_name.getText() + " | " + mSwitchTimerInfo.getDate());

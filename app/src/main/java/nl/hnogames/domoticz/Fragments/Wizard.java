@@ -64,11 +64,9 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
     private final String FINISH = "FINISH";
 
     private final String TAG = Wizard.class.getSimpleName();
-
-    private ViewGroup root;
-
-    private SharedPrefUtil mSharedPrefs;
     private final int iSettingsResultCode = 995;
+    private ViewGroup root;
+    private SharedPrefUtil mSharedPrefs;
     private Context context;
 
     @Override
@@ -131,7 +129,7 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
 
         List<Card> cards = new ArrayList<>();
 
-        for (String card : cardsToGenerate){
+        for (String card : cardsToGenerate) {
 
             if (card.equalsIgnoreCase(WELCOME)) {
                 cards.add((new Card.Builder(context)
@@ -242,7 +240,7 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                         .endConfig()
                         .build());
             }
-            if (card.equalsIgnoreCase(WEAR)){
+            if (card.equalsIgnoreCase(WEAR)) {
                 cards.add(new Card.Builder(context)
                         .setTag(WEAR)
                         .setDismissible()
@@ -300,7 +298,7 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                         .endConfig()
                         .build());
             }
-            if (card.equalsIgnoreCase(FILTER)){
+            if (card.equalsIgnoreCase(FILTER)) {
                 cards.add(new Card.Builder(context)
                         .setTag(FILTER)
                         .setDismissible()

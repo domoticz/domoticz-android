@@ -173,7 +173,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
                 });
             }
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase(),  null, null,  mSceneInfo.getStatusInBoolean(), false, null)).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase(), null, null, mSceneInfo.getStatusInBoolean(), false, null)).into(holder.iconRow);
             if (!mSceneInfo.getStatusInBoolean())
                 holder.iconRow.setAlpha(0.5f);
             else

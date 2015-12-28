@@ -32,8 +32,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.analytics.Tracker;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +45,6 @@ import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
@@ -114,7 +111,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
-        if(listView!=null) {
+        if (listView != null) {
             //switch toggled, refresh listview
             state = listView.onSaveInstanceState();
             WidgetUtils.RefreshWidgets(mContext);
@@ -135,7 +132,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             public void onError(Exception error) {
                 errorHandling(error);
             }
-        }, planID,null);
+        }, planID, null);
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
@@ -151,17 +148,15 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 extendedStatusSwitches.add(switchInfo);
             }
         }
-        if(extendedStatusSwitches.size()<=0) {
+        if (extendedStatusSwitches.size() <= 0) {
             hideProgressDialog();
             setMessage(mContext.getString(R.string.no_data_on_domoticz));
-        }
-        else
+        } else
             createListView(extendedStatusSwitches);
     }
 
-    private boolean isOnOffSwitch(DevicesInfo testSwitch)
-    {
-        if(testSwitch.getSwitchTypeVal()<=0 && testSwitch.getSwitchType()==null)
+    private boolean isOnOffSwitch(DevicesInfo testSwitch) {
+        if (testSwitch.getSwitchTypeVal() <= 0 && testSwitch.getSwitchType() == null)
             return false;
 
         switch (testSwitch.getSwitchTypeVal()) {
@@ -245,7 +240,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 }
             });
 
-            if(state != null) {
+            if (state != null) {
                 // Restore previous state (including selected item index and scroll position)
                 listView.onRestoreInstanceState(state);
             }
