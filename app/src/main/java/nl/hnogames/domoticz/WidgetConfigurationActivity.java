@@ -110,7 +110,8 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
+                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                }
 
                 @Override
                 public void onError(Exception error) {

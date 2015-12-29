@@ -89,42 +89,52 @@ public class LogAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         int layoutResourceId;
 
-        LogInfo mLogInfo = filteredData.get(position);
+        if(filteredData!=null) {
+            LogInfo mLogInfo = filteredData.get(position);
 
-        //if (convertView == null) {
-        holder = new ViewHolder();
+            if(mLogInfo!=null) {
+                holder = new ViewHolder();
+                String dateTime = "";
+                String message = "";
 
-        String dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
-        String message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
+                if(mLogInfo.getMessage().indexOf("  ")>=0) {
+                    dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
+                    message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
+                }
+                else
+                    message = mLogInfo.getMessage();
 
-        layoutResourceId = R.layout.logs_row_default;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
+                layoutResourceId = R.layout.logs_row_default;
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                convertView = inflater.inflate(layoutResourceId, parent, false);
 
-        holder.name = (TextView) convertView.findViewById(R.id.logs_name);
-        holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);
-        holder.message = (TextView) convertView.findViewById(R.id.logs_message);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+                holder.name = (TextView) convertView.findViewById(R.id.logs_name);
+                holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);
+                holder.message = (TextView) convertView.findViewById(R.id.logs_message);
+                holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
-        if (message.indexOf(":") > 0) {
-            holder.name.setText(message.substring(0, message.indexOf(":")).trim());
-            holder.message.setText(message.substring(message.indexOf(":") + 1).trim());
-        } else {
-            if (message.startsWith("(")) {
-                holder.name.setText(message.substring(0, message.indexOf(")")).replace("(", "").trim());
-                holder.message.setText(message.substring(message.indexOf(")") + 1).trim());
-            } else
-                holder.name.setText(message);
+                if (message.indexOf(":") > 0) {
+                    holder.name.setText(message.substring(0, message.indexOf(":")).trim());
+                    holder.message.setText(message.substring(message.indexOf(":") + 1).trim());
+                } else {
+                    if (message.startsWith("(")) {
+                        holder.name.setText(message.substring(0, message.indexOf(")")).replace("(", "").trim());
+                        holder.message.setText(message.substring(message.indexOf(")") + 1).trim());
+                    } else
+                        holder.name.setText(message);
+                }
+
+                holder.datetime.setText(dateTime);
+
+                Picasso.with(context).load(R.drawable.text).into(holder.iconRow);
+
+                convertView.setTag(holder);
+            }
+
+            return convertView;
         }
+        return null;
 
-        holder.datetime.setText(dateTime);
-
-        Picasso.with(context).load(R.drawable.text).into(holder.iconRow);
-
-        convertView.setTag(holder);
-
-
-        return convertView;
     }
 
     static class ViewHolder {

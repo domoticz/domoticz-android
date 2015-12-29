@@ -43,6 +43,7 @@ public class ScenesParser implements JSONParserInterface {
     public ScenesParser(ScenesReceiver scenesReceiver) {
         this.scenesReceiver = scenesReceiver;
     }
+
     public ScenesParser(ScenesReceiver scenesReceiver, int idx) {
         this.scenesReceiver = scenesReceiver;
         this.idx = idx;

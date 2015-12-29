@@ -77,10 +77,12 @@ public class WelcomePage4 extends Fragment {
                         }
 
                         @Override
-                        public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
+                        public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                        }
 
                         @Override
-                        public void onError(Exception error) {}
+                        public void onError(Exception error) {
+                        }
                     }, 0, null);
                 }
 
@@ -93,16 +95,19 @@ public class WelcomePage4 extends Fragment {
     }
 
     private void setErrorText(String errorMessage) {
-        tempText = tempText + "\n";
-        tempText = tempText + errorMessage;
-        tempText = tempText + "\n\n";
-        tempText = tempText + getString(R.string.welcome_msg_correctOnPreviousPage);
-        disableFinishButton();
-        setResultText(tempText);
+        try {
+            tempText = tempText + "\n";
+            tempText = tempText + errorMessage;
+            tempText = tempText + "\n\n";
+            tempText = tempText + getString(R.string.welcome_msg_correctOnPreviousPage);
+            disableFinishButton();
+            setResultText(tempText);
 
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
-        mSharedPrefs.setWelcomeWizardSuccess(false);
-        tempText = "";
+            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
+            mSharedPrefs.setWelcomeWizardSuccess(false);
+            tempText = "";
+        }catch(Exception ex)
+        {}
     }
 
     private void setSuccessText(String message) {

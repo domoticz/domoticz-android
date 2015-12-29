@@ -325,7 +325,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (isRGB) {
             if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_rgb_dimmer;
             else layoutResourceId = R.layout.switch_row_rgb_dimmer_small;
-        }else {
+        } else {
             if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_dimmer;
             else layoutResourceId = R.layout.switch_row_dimmer_small;
         }
@@ -861,7 +861,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        if (isRGB && holder.buttonColor!=null) {
+        if (isRGB && holder.buttonColor != null) {
             holder.buttonColor.setId(mDeviceInfo.getIdx());
             holder.buttonColor.setOnClickListener(new View.OnClickListener() {
                 @Override

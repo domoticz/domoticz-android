@@ -162,10 +162,9 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                             views.setTextViewText(R.id.desc, s.getStatusInString());
 
                             if (s.getStatusInString() != null) {
-                                if(s.getType().equals(Domoticz.Scene.Type.SCENE)){
+                                if (s.getType().equals(Domoticz.Scene.Type.SCENE)) {
                                     views.setTextViewText(R.id.on_button, "on");
-                                }
-                                else {
+                                } else {
                                     if (s.getStatusInBoolean())
                                         views.setTextViewText(R.id.on_button, "off");
                                     else

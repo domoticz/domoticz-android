@@ -67,6 +67,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
                 for (DevicesInfo mExtendedStatusInfo : mDevicesInfo) {
                     String name = mExtendedStatusInfo.getName();
+
                     int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                     String switchType = mExtendedStatusInfo.getSwitchType();
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&

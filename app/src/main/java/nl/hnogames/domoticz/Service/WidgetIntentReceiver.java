@@ -144,7 +144,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onReceiveScene(SceneInfo scene) {
-                    if(scene!=null) {
+                    if (scene != null) {
                         if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
                             onButtonClick(scene, true, domoticz, context);
                         } else {//switch

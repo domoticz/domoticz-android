@@ -110,7 +110,8 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             }
 
             @Override
-            public void onReceiveScene(SceneInfo scene) { }
+            public void onReceiveScene(SceneInfo scene) {
+            }
         });
     }
 
