@@ -65,6 +65,7 @@ public class WelcomePage4 extends Fragment {
                 @Override
                 public void onReceiveVersion(String version) {
                     tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
+                    setSuccessText(tempText);
 
                     mDomoticz.getDevices(new DevicesReceiver() {
                         @Override
@@ -76,13 +77,10 @@ public class WelcomePage4 extends Fragment {
                         }
 
                         @Override
-                        public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                        }
+                        public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
 
                         @Override
-                        public void onError(Exception error) {
-                            setErrorText(mDomoticz.getErrorMessage(error));
-                        }
+                        public void onError(Exception error) {}
                     }, 0, null);
                 }
 
