@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -78,16 +79,25 @@ public class WidgetActionActivity extends AppCompatActivity {
             domoticz.getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
-                    String[] listData = processSwitches(mDevicesInfo);
+                    final ArrayList<DevicesInfo> mDevices = new ArrayList<>();
+                    for (DevicesInfo s : mDevicesInfo) {
+                        mDevices.add(s);
+                    }
+                    Collections.sort(mDevices);
+
+                    String[] listData = processSwitches(mDevices);
                     ListView listView = (ListView) findViewById(R.id.list);
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(WidgetActionActivity.this,
                             android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            showAppWidget(mDevicesInfo.get(position));
+                            DevicesInfo selected = mDevices.get(position);
+                            showAppWidget(selected);
                         }
                     });
+
                     listView.setAdapter(adapter);
                 }
 
@@ -124,13 +134,17 @@ public class WidgetActionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
+        int idx = mSelectedSwitch.getIdx();
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-            //save widget id in combination with idx in shared preferences
-            mSharedPrefs.setWidgetIDX(mAppWidgetId, mSelectedSwitch.getIdx());
+            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE))
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true);
+            else
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false);
 
+            mSharedPrefs.setWidgetIDforIDX(mAppWidgetId, idx);
             Intent startService = new Intent(WidgetActionActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);

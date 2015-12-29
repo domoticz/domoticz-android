@@ -107,12 +107,18 @@ public class SharedPrefUtil {
         return prefs.getBoolean("CARD" + cardTag, false);
     }
 
-    public void setWidgetIDX(int widgetID, int idx) {
+    public void setWidgetIDX(int widgetID, int idx, boolean isScene) {
         editor.putInt("WIDGET" + widgetID, idx).apply();
+        editor.putBoolean("WIDGETSCENE" + widgetID, isScene).apply();
+        editor.commit();
     }
 
     public int getWidgetIDX(int widgetID) {
         return prefs.getInt("WIDGET" + widgetID, INVALID_IDX);
+    }
+
+    public boolean getWidgetisScene(int widgetID) {
+        return prefs.getBoolean("WIDGETSCENE" + widgetID, false);
     }
 
     public void setWidgetIDforIDX(int widgetID, int idx) {

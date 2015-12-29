@@ -11,4 +11,6 @@
     <string name="speed">Speed</string>
     <string name="empty">N/A</string>
     <string name="forecast">Forecast</string>
+    <string name="rain">Rain</string>
+
 </resources>

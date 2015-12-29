@@ -65,6 +65,7 @@ public class WelcomePage4 extends Fragment {
                 @Override
                 public void onReceiveVersion(String version) {
                     tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
+                    setSuccessText(tempText);
 
                     mDomoticz.getDevices(new DevicesReceiver() {
                         @Override
@@ -81,7 +82,6 @@ public class WelcomePage4 extends Fragment {
 
                         @Override
                         public void onError(Exception error) {
-                            setErrorText(mDomoticz.getErrorMessage(error));
                         }
                     }, 0, null);
                 }
@@ -95,16 +95,19 @@ public class WelcomePage4 extends Fragment {
     }
 
     private void setErrorText(String errorMessage) {
-        tempText = tempText + "\n";
-        tempText = tempText + errorMessage;
-        tempText = tempText + "\n\n";
-        tempText = tempText + getString(R.string.welcome_msg_correctOnPreviousPage);
-        disableFinishButton();
-        setResultText(tempText);
+        try {
+            tempText = tempText + "\n";
+            tempText = tempText + errorMessage;
+            tempText = tempText + "\n\n";
+            tempText = tempText + getString(R.string.welcome_msg_correctOnPreviousPage);
+            disableFinishButton();
+            setResultText(tempText);
 
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
-        mSharedPrefs.setWelcomeWizardSuccess(false);
-        tempText = "";
+            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
+            mSharedPrefs.setWelcomeWizardSuccess(false);
+            tempText = "";
+        }catch(Exception ex)
+        {}
     }
 
     private void setSuccessText(String message) {

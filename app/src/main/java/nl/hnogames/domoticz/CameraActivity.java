@@ -35,7 +35,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle==null)
+        if (bundle == null)
             this.finish();
 
         //noinspection SpellCheckingInspection

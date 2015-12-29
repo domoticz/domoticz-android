@@ -585,6 +585,15 @@ public class Domoticz {
                 url);
     }
 
+    public void getScene(ScenesReceiver receiver, int idx) {
+        ScenesParser parser = new ScenesParser(receiver, idx);
+        String url = constructGetUrl(Json.Url.Request.SCENES);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
     public void getPlans(PlansReceiver receiver) {
         PlanParser parser = new PlanParser(receiver);
         String url = constructGetUrl(Json.Url.Request.PLANS);
@@ -728,6 +737,7 @@ public class Domoticz {
         if (plan > 0)
             url += "&plan=" + plan;
 
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -743,7 +753,6 @@ public class Domoticz {
                 getUserCredentials(Authentication.PASSWORD),
                 url);
     }
-
 
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
