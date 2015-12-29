@@ -129,7 +129,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, R.string.failed_toggeling_switch, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
                 }
             }, idx);
         } else {
@@ -168,7 +168,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -195,7 +195,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -223,7 +223,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -251,7 +251,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -276,7 +276,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }

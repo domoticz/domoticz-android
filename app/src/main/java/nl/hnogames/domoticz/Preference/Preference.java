@@ -76,7 +76,7 @@ public class Preference extends PreferenceFragment {
 
     private void setPreferences() {
 
-        android.preference.Preference ServerSettings = (android.preference.Preference) findPreference("server_settings");
+        android.preference.Preference ServerSettings = findPreference("server_settings");
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -86,7 +86,7 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.Preference GeoSettings = (android.preference.Preference) findPreference("geo_settings");
+        android.preference.Preference GeoSettings = findPreference("geo_settings");
         GeoSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -115,7 +115,7 @@ public class Preference extends PreferenceFragment {
 
         android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
-        android.preference.Preference premiumPreference = (android.preference.Preference) findPreference("premium_settings");
+        android.preference.Preference premiumPreference = findPreference("premium_settings");
         if (!BuildConfig.LITE_VERSION) {
             preferenceScreen.removePreference(premiumCategory);
         } else {

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackground"
     android:foreground="?android:attr/selectableItemBackground"
     android:longClickable="true"
@@ -19,7 +20,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:paddingRight="5dp"
-        android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
+        android:src="@drawable/clock48" />
 
     <TextView
         android:id="@+id/switch_name"
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rowIcon"
-        android:text="Switch"
+        tools:text="Switch"
         android:layout_toLeftOf="@+id/linearLayout2"
         android:layout_toStartOf="@+id/linearLayout2" />
 

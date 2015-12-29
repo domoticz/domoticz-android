@@ -25,7 +25,6 @@ package nl.hnogames.domoticz.Utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 
 public class PermissionsUtil {

@@ -276,13 +276,9 @@ public class DevicesInfo implements Comparable {
         return Name;
     }
 
-    ;
-
     public void setName(String name) {
         Name = name;
     }
-
-    ;
 
     public boolean getUseCustomImage() {
         return useCustomImage;

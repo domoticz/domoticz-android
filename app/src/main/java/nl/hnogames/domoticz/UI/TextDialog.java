@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.UI;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;

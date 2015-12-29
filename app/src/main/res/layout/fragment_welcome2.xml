@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Import Settings"
+            android:text="@string/import_settings"
             android:textColor="@color/default_text_color_light"
             android:textSize="@dimen/text_size_welcomePage2_settingsInfo" />
 

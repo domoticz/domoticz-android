@@ -34,7 +34,7 @@
                 android:layout_marginBottom="0dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
-                android:text="Loading..."
+                android:text="@string/text_loading"
                 android:textColor="@color/primary_dark" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/title"
                 android:paddingLeft="5dp"
-                android:text="Loading..."
+                android:text="@string/text_loading"
                 android:textColor="@color/primary_dark" />
 
             <Button
@@ -57,7 +57,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/button"
-                android:text="GO" />
+                android:text="@string/text_go" />
 
         </RelativeLayout>
     </LinearLayout>

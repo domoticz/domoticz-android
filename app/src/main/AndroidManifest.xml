@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.hnogames.domoticz">
+
+    <permission
+        android:name="nl.hnogames.domoticz.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="nl.hnogames.domoticz.permission.MAPS_RECEIVE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.AppController"
@@ -60,7 +76,7 @@
         <activity
             android:name=".WidgetActionActivity"
             android:configChanges="orientation|screenSize"
-            android:label="Domoticz Widget Action"></activity>
+            android:label="Domoticz Widget Action"/>
 
         <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService" />
 
@@ -135,7 +151,7 @@
         <activity
             android:name=".Welcome.WelcomeViewActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/welcome_title_activity_welcome"></activity>
+            android:label="@string/welcome_title_activity_welcome"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -146,20 +162,5 @@
             android:value="@integer/google_play_services_version" />
 
     </application>
-
-    <permission
-        android:name="nl.hnogames.domoticz.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="nl.hnogames.domoticz.permission.MAPS_RECEIVE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

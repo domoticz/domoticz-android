@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5sp"
     android:background="@drawable/appwidget_bg_clickable"
     android:orientation="horizontal">
@@ -13,7 +14,7 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
+        android:src="@drawable/clock48" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
                 android:layout_marginBottom="0dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
-                android:text="Switch name"
+                tools:text="Switch name"
                 android:textColor="@color/primary_dark" />
 
             <TextView
@@ -47,8 +48,6 @@
                 android:layout_below="@+id/title"
                 android:text="@string/battery_level"
                 android:textColor="@color/primary_dark" />
-
-
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

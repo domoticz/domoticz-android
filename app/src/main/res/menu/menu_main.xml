@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/search"
-        android:title="Filter"
+        android:title="@string/Filter"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom" />
 

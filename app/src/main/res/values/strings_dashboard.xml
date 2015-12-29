@@ -9,4 +9,6 @@
     <string name="today">Today</string>
     <string name="total">Total</string>
 
+    <string name="favorite_added">added to dashboard.</string>
+    <string name="favorite_removed">removed from dashboard.</string>
 </resources>

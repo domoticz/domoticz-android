@@ -13,19 +13,16 @@
         The local settings are for when you are connected to your home wifi network.
         Remote settings are used when not connected to your home wifi network or when connected
         to cellular data (2G, 3G, 4G etc).</string>
-    <string name="welcome_info_pleaseWait">Please wait…</string>
     <string name="welcome_info_checkingConnection">Verifying your connection settings</string>
     <string name="welcome_msg_connectionDataIncomplete">Connection data incomplete or empty</string>
     <string name="welcome_msg_connectionDataInvalid">URL should not start with http</string>
     <string name="welcome_msg_correctOnPreviousPage">Please correct the data on the previous page</string>
     <string name="welcome_msg_serverVersion">Domoticz version</string>
-    <string name="welcome_msg_pleaseGoToPreviousPage">Please go back to the previous page and correct your settings</string>
     <string name="welcome_msg_numberOfDevices">%1$d devices found</string>
     <string name="welcome_msg_no_ssid_found">No wifi SSID\'s found</string>
     <string name="welcome_ssid_spinner_prompt">Select home SSID\'s</string>
     <string name="welcome_server_settings_title">Server settings</string>
     <string name="welcome_server_startScreen">Start screen</string>
-    <string name="welcome_server_local_ssid">Local server wifi</string>
     <string name="welcome_button_next">next</string>
     <string name="welcome_button_previous">prev</string>
     <string name="welcome_button_finish">finish</string>

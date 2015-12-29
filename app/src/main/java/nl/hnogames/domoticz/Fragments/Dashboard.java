@@ -203,19 +203,19 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
                         (switchType == null || switchType.equals(null) || switchType.length() <= 0)) {
-                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                         supportedSwitches.add(mExtendedStatusInfo);
                     } else {
                         Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
                                 isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         }
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
                                 isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         }
-                        if (super.getSort().equals(getContext().getString(R.string.sort_static)) &&
+                        if (super.getSort().equals(getContext().getString(R.string.filterOn_static)) &&
                                 !isOnOffSwitch(mExtendedStatusInfo)) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         }

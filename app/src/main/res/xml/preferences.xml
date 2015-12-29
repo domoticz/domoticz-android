@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customPreference="http://schemas.android.com/apk/res-auto"
     android:key="settingsscreen">
 
-    <PreferenceCategory android:title="@string/premium_category"
+    <PreferenceCategory
+        android:title="@string/premium_category"
         android:key="premium_category">
         <Preference
             android:key="premium_settings"
-            android:title="@string/premium_title"></Preference>
+            android:title="@string/premium_title"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_generic">
+    <PreferenceCategory
+        android:title="@string/category_generic">
         <ListPreference
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
@@ -30,7 +33,8 @@
             android:title="@string/extra_data_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_wear">
+    <PreferenceCategory
+        android:title="@string/category_wear">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableWearItems"
@@ -49,19 +53,22 @@
             customPreference:selectAllValuesByDefault="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_server">
+    <PreferenceCategory
+        android:title="@string/category_server">
         <Preference
             android:key="server_settings"
-            android:title="@string/server_settings"></Preference>
+            android:title="@string/server_settings"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_geofencing">
+    <PreferenceCategory
+        android:title="@string/category_geofencing">
         <Preference
             android:key="geo_settings"
-            android:title="@string/geofencing_configure"></Preference>
+            android:title="@string/geofencing_configure"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_export">
+    <PreferenceCategory
+        android:title="@string/category_export">
         <Preference
             android:key="export_settings"
             android:title="@string/export_settings" />
@@ -70,7 +77,8 @@
             android:title="@string/import_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_info">
+    <PreferenceCategory
+        android:title="@string/category_info">
         <Preference
             android:key="version"
             android:summary="Version 1.0.2"
@@ -87,7 +95,8 @@
             android:title="@string/info_credits" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_debug">
+    <PreferenceCategory
+        android:title="@string/category_debug">
         <SwitchPreference
             android:defaultValue="false"
             android:key="debugging"

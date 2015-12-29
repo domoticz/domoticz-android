@@ -4,6 +4,6 @@
 
     <string name="title_temperature">Temperature</string>
     <string name="wind">Wind</string>
-    <string name="error_log">Could not get Log data for</string>
+    <string name="error_log">Could not get log data for</string>
 
 </resources>

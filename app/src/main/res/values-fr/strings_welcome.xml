@@ -7,19 +7,16 @@
     <string name="welcome_info_settings1">La prochaine page est pour la configuration de Domoticz</string>
     <string name="welcome_info_settings2">
         "Vous pouvez configurer des paramètres pour un serveur local et un serveur distant.\nLe serveur local est utilisé lorsque vous êtes connecté à votre wifi personnel.\nLe serveur distant est utilisé lorsque vous n'êtes pas connecté à votre wifi personnel ou que vous êtes connecté à un réseau mobile (2G, 3G, 4G etc)."</string>
-    <string name="welcome_info_pleaseWait">Patientez…</string>
     <string name="welcome_info_checkingConnection">Vérifier vos paramètres de connexion</string>
     <string name="welcome_msg_connectionDataIncomplete">Paramètres de connexion vides ou incomplets</string>
     <string name="welcome_msg_connectionDataInvalid">L\'URL ne doit pas commencer par http</string>
     <string name="welcome_msg_correctOnPreviousPage">"Corrigez les informations sur la page précédente s'il vous plait"</string>
     <string name="welcome_msg_serverVersion">Version de Domoticz</string>
-    <string name="welcome_msg_pleaseGoToPreviousPage">"Retournez sur la page précédente et corrigez vos paramètres s'il vous plait"</string>
     <string name="welcome_msg_numberOfDevices">%1$d dispositifs trouvés</string>
     <string name="welcome_msg_no_ssid_found">Aucun SSID wifi trouvé</string>
     <string name="welcome_ssid_spinner_prompt">Sélectionnez votre SSID</string>
     <string name="welcome_server_settings_title">Paramètres du serveur</string>
     <string name="welcome_server_startScreen">"Écran d'accueil"</string>
-    <string name="welcome_server_local_ssid">Serveur wifi local</string>
     <string name="welcome_button_next">Suiv.</string>
     <string name="welcome_button_previous">Préc.</string>
     <string name="welcome_button_finish">Terminer</string>
