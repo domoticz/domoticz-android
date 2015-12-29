@@ -34,8 +34,10 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -91,56 +93,100 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             views = new RemoteViews(packageName, R.layout.widget_layout);//default
             final Domoticz domoticz = new Domoticz(getApplicationContext());
 
-            int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
-            domoticz.getDevice(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                }
-
-                @Override
-                public void onReceiveDevice(DevicesInfo s) {
-                    if (s != null) {
-                        boolean withButtons = withButtons(s);
-                        if (withButtons)
-                            views = new RemoteViews(packageName, R.layout.widget_layout);//default
-
-                        String text = s.getData();
-                        views.setTextViewText(R.id.title, s.getName());
-                        if (s.getUsage() != null && s.getUsage().length() > 0)
-                            text = s.getUsage();
-                        if (s.getCounterToday() != null && s.getCounterToday().length() > 0)
-                            text += " Today: " + s.getCounterToday();
-                        if (s.getCounter() != null && s.getCounter().length() > 0 &&
-                                !s.getCounter().equals(s.getData()))
-                            text += " Total: " + s.getCounter();
-
-                        views.setTextViewText(R.id.desc, text);
-
-                        if (withButtons && s.getStatus() != null) {
-                            if (s.getStatusBoolean())
-                                views.setTextViewText(R.id.on_button, "off");
-                            else
-                                views.setTextViewText(R.id.on_button, "on");
-
-                            views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
-                                    UpdateWidgetService.this,
-                                    mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
-                                    s.getIdx()));
-                            views.setViewVisibility(R.id.on_button, View.VISIBLE);
-                        } else {
-                            views.setViewVisibility(R.id.on_button, View.GONE);
-                        }
-
-                        views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
-                        appWidgetManager.updateAppWidget(mSharedPrefs.getWidgetIDforIDX(s.getIdx()), views);
+            final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
+            boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);
+            if (!isScene) {
+                domoticz.getDevice(new DevicesReceiver() {
+                    @Override
+                    public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                     }
-                }
 
-                @Override
-                public void onError(Exception error) {
-                }
+                    @Override
+                    public void onReceiveDevice(DevicesInfo s) {
+                        if (s != null) {
+                            boolean withButtons = withButtons(s);
+                            if (withButtons)
+                                views = new RemoteViews(packageName, R.layout.widget_layout);//default
 
-            }, idx);
+                            String text = s.getData();
+                            views.setTextViewText(R.id.title, s.getName());
+                            if (s.getUsage() != null && s.getUsage().length() > 0)
+                                text = s.getUsage();
+                            if (s.getCounterToday() != null && s.getCounterToday().length() > 0)
+                                text += " Today: " + s.getCounterToday();
+                            if (s.getCounter() != null && s.getCounter().length() > 0 &&
+                                    !s.getCounter().equals(s.getData()))
+                                text += " Total: " + s.getCounter();
+
+                            views.setTextViewText(R.id.desc, text);
+
+                            if (withButtons && s.getStatus() != null) {
+                                if (s.getStatusBoolean())
+                                    views.setTextViewText(R.id.on_button, "off");
+                                else
+                                    views.setTextViewText(R.id.on_button, "on");
+
+                                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                                        UpdateWidgetService.this,
+                                        mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                        s.getIdx()));
+                                views.setViewVisibility(R.id.on_button, View.VISIBLE);
+                            } else {
+                                views.setViewVisibility(R.id.on_button, View.GONE);
+                            }
+
+                            views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
+                            appWidgetManager.updateAppWidget(mSharedPrefs.getWidgetIDforIDX(s.getIdx()), views);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                    }
+                }, idx);
+            } else {
+                domoticz.getScene(new ScenesReceiver() {
+                    @Override
+                    public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                    }
+
+                    @Override
+                    public void onReceiveScene(SceneInfo s) {
+                        if (s != null) {
+                            views = new RemoteViews(packageName, R.layout.widget_layout);//scenes and groups always contain buttons
+                            views.setTextViewText(R.id.title, s.getName());
+                            views.setTextViewText(R.id.desc, s.getStatusInString());
+
+                            if (s.getStatusInString() != null) {
+                                if (s.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                                    views.setTextViewText(R.id.on_button, "on");
+                                } else {
+                                    if (s.getStatusInBoolean())
+                                        views.setTextViewText(R.id.on_button, "off");
+                                    else
+                                        views.setTextViewText(R.id.on_button, "on");
+                                }
+
+                                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                                        UpdateWidgetService.this,
+                                        mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                        idx));
+
+                                views.setViewVisibility(R.id.on_button, View.VISIBLE);
+                            } else {
+                                views.setViewVisibility(R.id.on_button, View.GONE);
+                            }
+
+                            views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getType(), null, null, false, false, null));
+                            appWidgetManager.updateAppWidget(mSharedPrefs.getWidgetIDforIDX(s.getIdx()), views);
+                        }
+                    }
+                }, idx);
+            }
         }
 
         public PendingIntent buildButtonPendingIntent(Context context, int widgetid, int idx) {

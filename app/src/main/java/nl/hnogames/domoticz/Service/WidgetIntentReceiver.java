@@ -31,8 +31,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -48,15 +50,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
             toggleSwitch(context, idx);
         }
-    }
-
-    private DevicesInfo getDevice(int idx, ArrayList<DevicesInfo> mDevicesInfo) {
-        for (DevicesInfo s : mDevicesInfo) {
-            if (s.getIdx() == idx) {
-                return s;
-            }
-        }
-        return null;
     }
 
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {
@@ -79,7 +72,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         }
         return false;
     }
-
 
     private boolean isPushOnSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
@@ -116,31 +108,84 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private void toggleSwitch(final Context context, int idx) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         final Domoticz domoticz = new Domoticz(context);
-        domoticz.getDevice(new DevicesReceiver() {
-            @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-            }
+        boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
+        int testIDX = mSharedPrefs.getWidgetIDX(widgetID);
 
-            @Override
-            public void onReceiveDevice(DevicesInfo s) {
-                if (isOnOffSwitch(s))
-                    onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
-                if (isPushOffSwitch(s))
-                    onButtonClick(s, false, domoticz, context);
-                if (isPushOnSwitch(s))
-                    onButtonClick(s, true, domoticz, context);
-            }
+        if (!isScene) {
+            domoticz.getDevice(new DevicesReceiver() {
+                @Override
+                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                }
 
-            @Override
-            public void onError(Exception error) {
-                Toast.makeText(context, R.string.failed_toggeling_switch, Toast.LENGTH_SHORT).show();
-            }
-        }, idx);
+                @Override
+                public void onReceiveDevice(DevicesInfo s) {
+                    if (isOnOffSwitch(s))
+                        onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
+                    if (isPushOffSwitch(s))
+                        onButtonClick(s, false, domoticz, context);
+                    if (isPushOnSwitch(s))
+                        onButtonClick(s, true, domoticz, context);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Toast.makeText(context, R.string.failed_toggeling_switch, Toast.LENGTH_SHORT).show();
+                }
+            }, idx);
+        } else {
+            domoticz.getScene(new ScenesReceiver() {
+                @Override
+                public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
+                }
+
+                @Override
+                public void onError(Exception error) {
+                }
+
+                @Override
+                public void onReceiveScene(SceneInfo scene) {
+                    if (scene != null) {
+                        if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
+                            onButtonClick(scene, true, domoticz, context);
+                        } else {//switch
+                            onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
+                        }
+                    }
+                }
+            }, idx);
+        }
     }
 
     public void onBlindClick(final DevicesInfo clickedSwitch, int jsonAction, Domoticz mDomoticz, final Context context) {
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int idx = clickedSwitch.getIdx();
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
+                updateWidget(context);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
+        int jsonAction;
+        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+
+        if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
+        else jsonAction = Domoticz.Device.Switch.Action.OFF;
+
+        int idx = clickedSwitch.getIdx();
+        if (clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+            jsonUrl = Domoticz.Json.Url.Set.SCENES;
+            if (checked) jsonAction = Domoticz.Scene.Action.ON;
+            else jsonAction = Domoticz.Scene.Action.OFF;
+        }
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
@@ -184,10 +229,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     }
 
     public void onSwitchClick(final DevicesInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
-
         if (clickedSwitch != null) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+
             if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
                     clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
                 if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
@@ -197,13 +242,30 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 else jsonAction = Domoticz.Device.Switch.Action.OFF;
             }
 
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
+                    updateWidget(context);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Toast.makeText(context, context.getString(R.string.failed_toggeling_switch), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    public void onSwitchClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
+
+        if (clickedSwitch != null) {
+            int jsonAction;
+            int jsonUrl = Domoticz.Json.Url.Set.SCENES;
             int idx = clickedSwitch.getIdx();
-            if (clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                jsonUrl = Domoticz.Json.Url.Set.SCENES;
-                if (checked) jsonAction = Domoticz.Scene.Action.ON;
-                else jsonAction = Domoticz.Scene.Action.OFF;
-                idx = idx - 4000;
-            }
+
+            if (checked) jsonAction = Domoticz.Scene.Action.ON;
+            else jsonAction = Domoticz.Scene.Action.OFF;
 
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
                 @Override

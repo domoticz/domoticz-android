@@ -24,10 +24,12 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -43,6 +45,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -415,7 +418,35 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onColorButtonClick(int idx) {
+    public void onColorButtonClick(final int idx) {
+        ColorPickerDialog colorDialog = new ColorPickerDialog(
+                getActivity());
+        colorDialog.show();
+        colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
+            @Override
+            public void onDismiss(int selectedColor) {
+                float[] hsv = new float[3];
+                Color.RGBToHSV(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor), hsv);
+                Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2]);
+
+                mDomoticz.setRGBColorAction(idx,
+                        Domoticz.Json.Url.Set.RGBCOLOR,
+                        Math.round(hsv[0]),
+                        100,
+                        new setCommandReceiver() {
+                            @Override
+                            public void onReceiveResult(String result) {
+                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                                processDashboard();
+                            }
+
+                            @Override
+                            public void onError(Exception error) {
+                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
     }
 
     @Override

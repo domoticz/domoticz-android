@@ -86,6 +86,22 @@
                 android:textColor="@color/material_amber_600"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/legend_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/usage"
+                android:textColor="@color/material_orange_600"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/legend_rain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rain"
+                android:textColor="@color/material_light_green_600"
+                android:visibility="gone" />
+
         </LinearLayout>
 
     </LinearLayout>

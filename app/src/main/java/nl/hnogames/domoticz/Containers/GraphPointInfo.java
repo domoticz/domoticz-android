@@ -31,17 +31,19 @@ import org.json.JSONObject;
 @SuppressWarnings("unused")
 public class GraphPointInfo {
 
-    JSONObject jsonObject;
-    String dateTime;
-    String hu;
-    String ba;
-    long te;
-    String v;
-    String c;
-    String di;
-    String gu;
-    String sp;
-    String uvi;
+    private JSONObject jsonObject;
+    private String dateTime;
+    private String hu;
+    private String ba;
+    private long te;
+    private String v;
+    private String c;
+    private String di;
+    private String gu;
+    private String sp;
+    private String uvi;
+    private String mm;
+    private String u;
 
     public GraphPointInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -68,6 +70,12 @@ public class GraphPointInfo {
             gu = row.getString("gu");
         if (row.has("uvi"))
             uvi = row.getString("uvi");
+        if (row.has("u"))
+            u = row.getString("u");
+        else if (row.has("u_max"))
+            u = row.getString("u_max");
+        if (row.has("mm"))
+            mm = row.getString("mm");
     }
 
     @Override
@@ -103,6 +111,14 @@ public class GraphPointInfo {
 
     public String getDirection() {
         return di;
+    }
+
+    public String getRain() {
+        return mm;
+    }
+
+    public String getUsage() {
+        return u;
     }
 
     public String getBarometer() {

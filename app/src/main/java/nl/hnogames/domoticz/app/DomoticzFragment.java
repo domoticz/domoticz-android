@@ -241,7 +241,7 @@ public class DomoticzFragment extends Fragment {
 
     private void showDebugLayout() {
         try {
-            if(root!=null) {
+            if (root != null) {
                 LinearLayout debugLayout = (LinearLayout) root.findViewById(R.id.debugLayout);
                 if (debugLayout != null) {
                     debugLayout.setVisibility(View.VISIBLE);
@@ -259,14 +259,15 @@ public class DomoticzFragment extends Fragment {
                     }
                 }
             }
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 
     public void Logger(String tag, String text) {
-        if(!UsefulBits.isEmpty(tag) && !UsefulBits.isEmpty(text))
+        if (!UsefulBits.isEmpty(tag) && !UsefulBits.isEmpty(text))
             Log.d(tag, text);
     }
 
     public void Filter(String text) {
-            }
+    }
 }
