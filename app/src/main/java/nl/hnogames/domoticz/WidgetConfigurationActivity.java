@@ -20,6 +20,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Service.WidgetProviderLarge;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -131,6 +132,11 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         int counter = 0;
         for (DevicesInfo s : switches) {
             String log = s.getName();
+
+            String category = domoticz.getDeviceType(s);
+            if (!UsefulBits.isEmpty(category))
+                log += " (" + category + ")";
+
             listData[counter] = log;
             counter++;
         }

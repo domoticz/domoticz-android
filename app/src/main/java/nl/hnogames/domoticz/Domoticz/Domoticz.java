@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
@@ -726,6 +727,16 @@ public class Domoticz {
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url);
+    }
+
+    public String getDeviceType(DevicesInfo device) {
+        if(device == null)
+            return null;
+
+        if(!UsefulBits.isEmpty(device.getSwitchType()))
+            return mContext.getString(R.string.title_switches);
+        else
+            return device.getType();//Group and Switches are in Type
     }
 
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
