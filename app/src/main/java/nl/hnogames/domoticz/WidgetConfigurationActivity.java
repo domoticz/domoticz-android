@@ -89,9 +89,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     final ArrayList<DevicesInfo> mDevices = new ArrayList<>();
                     for (DevicesInfo s : mDevicesInfo) {
-                        if (!s.getType().equals(Domoticz.Scene.Type.GROUP) && !s.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                            mDevices.add(s);
-                        }
+                        mDevices.add(s);
                     }
                     Collections.sort(mDevices);
 
@@ -99,18 +97,20 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     ListView listView = (ListView) findViewById(R.id.list);
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(WidgetConfigurationActivity.this,
                             android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            showAppWidget(mDevices.get(position));
+                            DevicesInfo selected = mDevices.get(position);
+                            showAppWidget(selected);
                         }
                     });
+
                     listView.setAdapter(adapter);
                 }
 
                 @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                }
+                public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
 
                 @Override
                 public void onError(Exception error) {
@@ -129,11 +129,9 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         String[] listData = new String[switches.size()];
         int counter = 0;
         for (DevicesInfo s : switches) {
-
             String log = s.getName();
             listData[counter] = log;
             counter++;
-
         }
         Arrays.sort(listData);
         return listData;
@@ -150,9 +148,12 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-            mSharedPrefs.setWidgetIDX(mAppWidgetId, idx);
-            mSharedPrefs.setWidgetIDforIDX(mAppWidgetId, idx);
+            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE))
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true);
+            else
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false);
 
+            mSharedPrefs.setWidgetIDforIDX(mAppWidgetId, idx);
             Intent startService = new Intent(WidgetConfigurationActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);

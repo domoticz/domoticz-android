@@ -98,7 +98,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         }
 
         mDomoticz.getScenes(new ScenesReceiver() {
-
             @Override
             public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
                 successHandling(scenes.toString(), false);
@@ -109,6 +108,9 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             public void onError(Exception error) {
                 errorHandling(error);
             }
+
+            @Override
+            public void onReceiveScene(SceneInfo scene) { }
         });
     }
 
