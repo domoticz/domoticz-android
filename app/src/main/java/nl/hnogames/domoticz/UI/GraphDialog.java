@@ -116,6 +116,8 @@ public class GraphDialog {
         List<PointValue> valuessp = new ArrayList<>();
         List<PointValue> valuesdi = new ArrayList<>();
         List<PointValue> valuesuv = new ArrayList<>();
+        List<PointValue> valuesu = new ArrayList<>();
+        List<PointValue> valuesmm = new ArrayList<>();
 
         List<AxisValue> axisValueX = new ArrayList<>();
 
@@ -128,6 +130,8 @@ public class GraphDialog {
         boolean addSunPower = false;
         boolean addDirection = false;
         boolean addSpeed = false;
+        boolean addRain = false;
+        boolean addUsage = false;
         boolean onlyDate = false;
         Calendar mydate = Calendar.getInstance();
 
@@ -176,6 +180,14 @@ public class GraphDialog {
                     if (g.getSunPower() != null && g.getSunPower().length() > 0) {
                         addSunPower = true;
                         valuesuv.add(new PointValue(counter, Float.parseFloat(g.getSunPower())));
+                    }
+                    if (g.getUsage() != null && g.getUsage().length() > 0) {
+                        addUsage = true;
+                        valuesu.add(new PointValue(counter, Float.parseFloat(g.getUsage())));
+                    }
+                    if (g.getRain() != null && g.getRain().length() > 0) {
+                        addRain = true;
+                        valuesmm.add(new PointValue(counter, Float.parseFloat(g.getRain())));
                     }
 
                     try {
@@ -287,6 +299,24 @@ public class GraphDialog {
                     .setHasPoints(false));
         }
 
+        if (addUsage) {
+            lines.add(new Line(valuesu)
+                    .setColor(ContextCompat.getColor(mContext, R.color.material_orange_600))
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+        }
+
+        if (addRain) {
+            lines.add(new Line(valuesmm)
+                    .setColor(ContextCompat.getColor(mContext, R.color.material_light_green_600))
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+        }
+
         if (lines.size() > 1) {
             if (addTemperature) {
                 (view.findViewById(R.id.legend_temperature))
@@ -327,6 +357,16 @@ public class GraphDialog {
 
             if (addSpeed) {
                 (view.findViewById(R.id.legend_speed))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addUsage) {
+                (view.findViewById(R.id.legend_usage))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addRain) {
+                (view.findViewById(R.id.legend_rain))
                         .setVisibility(View.VISIBLE);
             }
         }
