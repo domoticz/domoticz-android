@@ -620,7 +620,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     dimmerOnOffSwitch.setChecked(true);
                 }
 
-                handleDimmerChange(mDevicesInfo.getIdx(), progress);
+                handleDimmerChange(mDevicesInfo.getIdx(), progress+1);
                 mDevicesInfo.setLevel(progress);
             }
         });

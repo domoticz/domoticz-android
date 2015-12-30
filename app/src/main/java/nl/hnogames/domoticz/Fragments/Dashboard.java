@@ -510,7 +510,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
         DevicesInfo clickedSwitch = getDevice(idx);
-        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + (value-1), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
