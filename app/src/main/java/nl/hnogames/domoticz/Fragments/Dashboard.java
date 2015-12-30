@@ -188,70 +188,71 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (switches == null)
             return;
 
-        try {
-            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-            supportedSwitches = new ArrayList<>();
-            final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
-            final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
+        if(getView()!=null) {
+            try {
+                coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
+                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+                supportedSwitches = new ArrayList<>();
+                final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
+                final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
-            for (DevicesInfo mExtendedStatusInfo : switches) {
-                String name = mExtendedStatusInfo.getName();
-                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                String switchType = mExtendedStatusInfo.getSwitchType();
+                for (DevicesInfo mExtendedStatusInfo : switches) {
+                    String name = mExtendedStatusInfo.getName();
+                    int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                    String switchType = mExtendedStatusInfo.getSwitchType();
 
-                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                        (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
-                        (switchType == null || switchType.equals(null) || switchType.length() <= 0)) {
-                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
-                        supportedSwitches.add(mExtendedStatusInfo);
-                    } else {
-                        Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
-                                isOnOffSwitch(mExtendedStatusInfo)) {
+                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                            (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
+                            (switchType == null || switchType.equals(null) || switchType.length() <= 0)) {
+                        if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                             supportedSwitches.add(mExtendedStatusInfo);
-                        }
-                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
-                                isOnOffSwitch(mExtendedStatusInfo)) {
-                            supportedSwitches.add(mExtendedStatusInfo);
-                        }
-                        if (super.getSort().equals(getContext().getString(R.string.filterOn_static)) &&
-                                !isOnOffSwitch(mExtendedStatusInfo)) {
-                            supportedSwitches.add(mExtendedStatusInfo);
+                        } else {
+                            Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
+                                    isOnOffSwitch(mExtendedStatusInfo)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
+                            }
+                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
+                                    isOnOffSwitch(mExtendedStatusInfo)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
+                            }
+                            if (super.getSort().equals(getContext().getString(R.string.filterOn_static)) &&
+                                    !isOnOffSwitch(mExtendedStatusInfo)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
+                            }
                         }
                     }
                 }
-            }
 
-            final switchesClickListener listener = this;
-            adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
-            listView = (ListView) getView().findViewById(R.id.listView);
-            listView.setAdapter(adapter);
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
-                    showInfoDialog(adapter.filteredData.get(index));
-                    return true;
+                final switchesClickListener listener = this;
+                adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
+                listView = (ListView) getView().findViewById(R.id.listView);
+                listView.setAdapter(adapter);
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
+                        showInfoDialog(adapter.filteredData.get(index));
+                        return true;
+                    }
+                });
+
+                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        processDashboard();
+                    }
+                });
+
+                if (state != null) {
+                    // Restore previous state (including selected item index and scroll position)
+                    listView.onRestoreInstanceState(state);
                 }
-            });
-
-            mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    processDashboard();
-                }
-            });
-
-            if (state != null) {
-                // Restore previous state (including selected item index and scroll position)
-                listView.onRestoreInstanceState(state);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            hideProgressDialog();
         }
-
-        hideProgressDialog();
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
@@ -427,12 +428,20 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             public void onDismiss(int selectedColor) {
                 float[] hsv = new float[3];
                 Color.RGBToHSV(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor), hsv);
-                Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2]);
+                Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: "+selectedColor);
+
+                boolean isWhite = false;
+                int hue = Math.round(hsv[0]);
+                if(selectedColor==-1) {
+                    isWhite = true;
+                    hue=205;
+                }
 
                 mDomoticz.setRGBColorAction(idx,
                         Domoticz.Json.Url.Set.RGBCOLOR,
-                        Math.round(hsv[0]),
+                        hue,
                         100,
+                        isWhite,
                         new setCommandReceiver() {
                             @Override
                             public void onReceiveResult(String result) {
@@ -510,7 +519,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
         DevicesInfo clickedSwitch = getDevice(idx);
-        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + value, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + (value-1), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;

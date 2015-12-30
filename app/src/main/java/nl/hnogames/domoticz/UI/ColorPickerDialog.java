@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.UI;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.Button;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.larswerkman.lobsterpicker.LobsterPicker;
@@ -39,14 +40,12 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     private DismissListener dismissListener;
     private Context mContext;
     private LobsterPicker lobsterPicker;
+    private LobsterShadeSlider shadeSlider;
 
     public ColorPickerDialog(Context mContext) {
         this.mContext = mContext;
-
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
-
-        //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_color, wrapInScrollView)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
@@ -54,24 +53,19 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
 
     public void show() {
         mdb.title(mContext.getString(R.string.choose_color));
-
-        MaterialDialog md = mdb.build();
+        final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
         lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
-        LobsterShadeSlider shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
-        LobsterOpacitySlider opacitySlider = (LobsterOpacitySlider) view.findViewById(R.id.opacityslider);
-
+        shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
         lobsterPicker.addDecorator(shadeSlider);
-        lobsterPicker.addDecorator(opacitySlider);
-
         md.show();
     }
 
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         if (dismissListener != null)
-            dismissListener.onDismiss(lobsterPicker.getColor());
+            dismissListener.onDismiss(shadeSlider.getColor());
     }
 
     public void onDismissListener(DismissListener dismissListener) {

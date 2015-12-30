@@ -834,7 +834,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     seekBar.setProgress(previousDimmerValue);
                 } else if (progress > 0 && !dimmerOnOffSwitch.isChecked())
                     dimmerOnOffSwitch.setChecked(true);
-                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1);
+                handleDimmerChange(mDeviceInfo.getIdx(), progress+1);
                 mDeviceInfo.setLevel(progress);
             }
         });
