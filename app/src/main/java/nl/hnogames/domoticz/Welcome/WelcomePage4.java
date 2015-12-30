@@ -65,14 +65,13 @@ public class WelcomePage4 extends Fragment {
                 @Override
                 public void onReceiveVersion(String version) {
                     tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
-                    setSuccessText(tempText);
 
                     mDomoticz.getDevices(new DevicesReceiver() {
                         @Override
                         public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                            tempText = tempText + "\n";
+                            tempText += "\n";
                             String formatted = String.format(getString(R.string.welcome_msg_numberOfDevices), mDevicesInfo.size());
-                            tempText = tempText + formatted;
+                            tempText += formatted;
                             setSuccessText(tempText);
                         }
 
@@ -82,6 +81,7 @@ public class WelcomePage4 extends Fragment {
 
                         @Override
                         public void onError(Exception error) {
+                            setSuccessText(tempText);//no devices found
                         }
                     }, 0, null);
                 }

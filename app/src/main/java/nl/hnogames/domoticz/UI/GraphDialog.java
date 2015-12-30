@@ -383,5 +383,4 @@ public class GraphDialog {
 
         return data;
     }
-
 }

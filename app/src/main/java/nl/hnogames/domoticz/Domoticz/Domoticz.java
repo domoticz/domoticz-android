@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
@@ -663,10 +664,16 @@ public class Domoticz {
                                   int jsonUrl,
                                   int hue,
                                   int brightness,
+                                  boolean isWhite,
                                   setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
+
         String url = constructSetUrl(jsonUrl, idx, Device.Dimmer.Action.COLOR, 0);
         url = url.replace("%hue%", String.valueOf(hue)).replace("%bright%", String.valueOf(brightness));
+
+        if(isWhite)
+            url = url.replace("&iswhite=false","&iswhite=true");
+
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -726,6 +733,16 @@ public class Domoticz {
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url);
+    }
+
+    public String getDeviceType(DevicesInfo device) {
+        if(device == null)
+            return null;
+
+        if(!UsefulBits.isEmpty(device.getSwitchType()))
+            return mContext.getString(R.string.title_switches);
+        else
+            return device.getType();//Group and Switches are in Type
     }
 
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
