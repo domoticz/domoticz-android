@@ -664,10 +664,16 @@ public class Domoticz {
                                   int jsonUrl,
                                   int hue,
                                   int brightness,
+                                  boolean isWhite,
                                   setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
+
         String url = constructSetUrl(jsonUrl, idx, Device.Dimmer.Action.COLOR, 0);
         url = url.replace("%hue%", String.valueOf(hue)).replace("%bright%", String.valueOf(brightness));
+
+        if(isWhite)
+            url = url.replace("&iswhite=false","&iswhite=true");
+
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
