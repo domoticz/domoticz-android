@@ -91,7 +91,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
                     @Override
                     public void onEventClick(final int id, boolean action) {
-                        Snackbar.make(coordinatorLayout, "This action is not supported yet!", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
 
                         /*
                         mDomoticz.getEventXml(id, new EventXmlReceiver() {

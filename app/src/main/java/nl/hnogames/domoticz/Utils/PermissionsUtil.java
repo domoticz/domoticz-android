@@ -25,12 +25,12 @@ package nl.hnogames.domoticz.Utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 public class PermissionsUtil {
 
     //these permissions are needed for Wifi scanning
-    public static final String[] INITIAL_ACCESS_PERMS = {
+    public static final String[] INITIAL_LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
@@ -39,7 +39,7 @@ public class PermissionsUtil {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    public static final int INITIAL_ACCESS_REQUEST = 1337;
+    public static final int INITIAL_LOCATION_REQUEST = 1337;
     public static final int INITIAL_IMPORT_SETTINGS_REQUEST = 1887;
     public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 1997;
     public static final int INITIAL_CAMERA_REQUEST = 1777;
@@ -55,11 +55,11 @@ public class PermissionsUtil {
         return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context));
     }
 
-    private static boolean hasPermission(String perm, Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return (PackageManager.PERMISSION_GRANTED == context.checkSelfPermission(perm));
-        } else
-            return true;
+    private static boolean hasPermission(String permission, Context context) {
+
+        // Using ContextCompat.checkSelfPermission will work on all API versions
+        return (PackageManager.PERMISSION_GRANTED
+                == ContextCompat.checkSelfPermission(context, permission));
     }
 
 }

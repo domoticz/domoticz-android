@@ -126,15 +126,15 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             final ScenesClickListener listener = this;
 
             for (SceneInfo s : scenes) {
-                if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                     supportedScenes.add(s);
                 } else {
                     Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && s.getStatusInBoolean()) && isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !s.getStatusInBoolean()) && isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_static))) && !isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !isOnOffScene(s))
                         supportedScenes.add(s);
                 }
             }
