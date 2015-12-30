@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -19,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:paddingRight="5dp"
-        android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
+        android:src="@drawable/clock48" />
 
     <TextView
         android:id="@+id/switch_name"
@@ -28,9 +30,13 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/rowIcon"
+<<<<<<< HEAD
         android:text="Switch"
         android:layout_toStartOf="@+id/linearLayout3"
         android:layout_toLeftOf="@+id/linearLayout3" />
+=======
+        tools:text="Switch" />
+>>>>>>> refs/remotes/origin/master
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -47,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginRight="6dp"
-            android:text="55%" />
+            tools:text="55%" />
 
         <SeekBar
             android:id="@+id/switch_dimmer"

@@ -155,17 +155,17 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                         appSupportedSwitchesValues.contains(switchTypeVal) &&
                         appSupportedSwitchesNames.contains(switchType)) {
-                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                    if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                         supportedSwitches.add(mDevicesInfo);
                     } else {
                         Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
                             supportedSwitches.add(mDevicesInfo);
                         }
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
                             supportedSwitches.add(mDevicesInfo);
                         }
-                        if ((super.getSort().equals(getContext().getString(R.string.sort_static))) && !isOnOffSwitch(mDevicesInfo)) {
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !isOnOffSwitch(mDevicesInfo)) {
                             supportedSwitches.add(mDevicesInfo);
                         }
                     }

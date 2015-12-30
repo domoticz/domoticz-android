@@ -48,7 +48,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
 
-        this.setTitle(getString(R.string.pick_switch_title));
+        this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(false);
@@ -116,7 +116,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(WidgetConfigurationActivity.this, R.string.failed_get_switches, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WidgetConfigurationActivity.this, R.string.failed_to_get_switches, Toast.LENGTH_SHORT).show();
                     WidgetConfigurationActivity.this.finish();
                 }
             }, 0, null);

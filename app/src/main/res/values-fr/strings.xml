@@ -3,16 +3,8 @@
 
     <string name="drawer_open">Ouvrir le menu</string>
     <string name="drawer_close">Fermer le menu</string>
-    <string name="drawer_navigation_title">Sélectioner une catégorie</string>
 
     <string name="msg_please_wait">Patientez…</string>
-    <string name="msg_connectionSettingsIncomplete_title">Connection settings incomplete</string>
-    <string name="msg_connectionSettingsIncomplete_msg1">
-        The connection settings for the Domoticz server are incomplete.</string>
-    <string name="msg_connectionSettingsIncomplete_msg2">
-        Please review connection settings.</string>
-    <string name="msg_connectionUrlMalformed_title">Server address error</string>
-    <string name="msg_connectionUrlMalformed_msg">Specified server address is incorrect.</string>
 
     <string name="button_state_on">On</string>
     <string name="button_state_off">Off</string>
@@ -25,7 +17,6 @@
     <string name="button_status_notifications">Notifications</string>
 
     <string name="last_update">Dernière activité</string>
-    <string name="level">Niveau</string>
     <string name="signal_level">Niveau du signal</string>
     <string name="battery_level">Niveau de batterie</string>
     <string name="data">État</string>
@@ -47,10 +38,8 @@
     <string name="description_geofence">Enable and config geofences</string>
     <string name="title_geofence_notifications">Enable notifications</string>
     <string name="description_geofence_notifications">Enable notifications for triggering events</string>
-    <string name="geofence_provider_msg">Please enable %1$s to find your location</string>
     <string name="google_play_services_unavailable">Google Play services unavailable.</string>
     <string name="geofence_place">Place: %s</string>
-    <string name="location_name">No location name specified.</string>
     <string name="location_not_found">No location found.</string>
 
     <string name="yes">Oui</string>
@@ -72,11 +61,10 @@
     <string name="blind_up">Ouvrir les stores</string>
     <string name="blind_down">Fermer les stores</string>
     <string name="blind_stop">Arrêter les stores</string>
-    <string name="connect_switch">Connecter un intérrupteur</string>
 
-    <string name="sort_on">Statut On</string>
-    <string name="sort_off">Statut Off</string>
-    <string name="sort_static">Static Switches</string>
-    <string name="sort_all">Tous les dispositifs</string>
+    <string name="filterOn_on">Statut On</string>
+    <string name="filterOn_off">Statut Off</string>
+    <string name="filterOn_static">Static Switches</string>
+    <string name="filterOn_all">Tous les dispositifs</string>
 
 </resources>

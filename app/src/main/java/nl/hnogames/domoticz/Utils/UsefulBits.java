@@ -39,4 +39,8 @@ public class UsefulBits {
             return charSequence.length() <= 0;
         else return true;
     }
+
+    public static String newLine() {
+        return System.getProperty("line.separator");
+    }
 }

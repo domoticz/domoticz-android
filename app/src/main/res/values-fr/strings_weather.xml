@@ -8,7 +8,6 @@
     <string name="direction">Direction</string>
     <string name="humidity">Hum</string>
     <string name="speed">Vitesse</string>
-    <string name="empty">N/A</string>
     <string name="forecast">Forcast</string>
 
 </resources>

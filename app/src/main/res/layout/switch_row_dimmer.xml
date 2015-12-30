@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -18,7 +20,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:paddingRight="5dp"
-        android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
+        android:src="@drawable/clock48" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -36,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="35dp"
-                android:text="Switch" />
+                tools:text="Switch" />
 
             <TextView
                 android:id="@+id/switch_battery_level"
@@ -75,7 +77,12 @@
                     android:layout_height="22dp"
                     android:layout_gravity="right"
                     android:layout_marginRight="6dp"
+<<<<<<< HEAD
                     android:text="55%" />
+=======
+                    tools:text="55%"
+                    android:visibility="gone" />
+>>>>>>> refs/remotes/origin/master
 
                 <SeekBar
                     android:id="@+id/switch_dimmer"
@@ -113,7 +120,6 @@
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/button_status"
                 android:text="@string/button_status_timer" />
-
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

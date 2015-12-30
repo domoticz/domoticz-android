@@ -5,7 +5,5 @@
     <string name="txt_notAvailable">N/A</string>
     <string name="idx">IDX</string>
     <string name="idx_valuePlaceholder">33</string>
-    <string name="placeholder_value">255</string>
-    <string name="placeholder_lastUpdate">2015-05-01 01:01:01</string>
 
 </resources>
