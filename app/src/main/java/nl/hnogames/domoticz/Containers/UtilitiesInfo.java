@@ -62,8 +62,11 @@ public class UtilitiesInfo {
             HardwareName = row.getString("HardwareName");
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
-        if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
+
+        if (row.has("SetPoint")){
+            setPoint = Double.parseDouble(row.getString("SetPoint"));
+        }
+
         if (row.has("Name"))
             Name = row.getString("Name");
         if (row.has("Data"))

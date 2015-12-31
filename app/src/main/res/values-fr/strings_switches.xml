@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="title_switches">Intérrupteurs</string>
-    <string name="txt_notAvailable">N/A</string>
-    <string name="idx">IDX</string>
-    <string name="idx_valuePlaceholder">33</string>
-
-</resources>

@@ -449,7 +449,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
@@ -488,7 +488,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
@@ -600,7 +600,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
@@ -673,7 +673,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_status != null)
             holder.switch_status.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
@@ -754,8 +754,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
-                String.valueOf(mDeviceInfo.getData());
+        text = context.getString(R.string.status) + ": " +
+                String.valueOf(mDeviceInfo.getStatus());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
