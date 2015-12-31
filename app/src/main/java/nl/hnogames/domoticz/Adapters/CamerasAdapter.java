@@ -30,6 +30,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -73,7 +75,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
 
             holder.name.setText(name);
-            Picasso.with(mContext).load(cameraInfo.getFullURL()).into(holder.camera);
+
+            Picasso.with(mContext)
+                    .load(cameraInfo.getFullURL())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(holder.camera);
         }
     }
 

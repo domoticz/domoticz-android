@@ -39,6 +39,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -114,7 +116,11 @@ public class Camera extends Fragment {
     public void setImage(String url) {
         this.url = url;
         if (root != null && !root.equals(null))
-            Picasso.with(getActivity()).load(url).into(root);
+            Picasso.with(getActivity())
+                    .load(url)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(root);
     }
 
     // Returns the URI path to the Bitmap displayed in specified ImageView
