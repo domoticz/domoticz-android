@@ -36,6 +36,9 @@ public class PlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
+        if (bundle == null)
+            this.finish();
+        
         //noinspection SpellCheckingInspection
         String selectedPlan = bundle.getString("PLANNAME");
         //noinspection SpellCheckingInspection
