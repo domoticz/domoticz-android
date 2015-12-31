@@ -334,7 +334,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -401,7 +401,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -471,7 +471,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
         holder.switch_status.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
+        text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
@@ -549,8 +549,8 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.data) + ": " +
-                String.valueOf(mDevicesInfo.getData());
+        text = context.getString(R.string.status) + ": " +
+                String.valueOf(mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
