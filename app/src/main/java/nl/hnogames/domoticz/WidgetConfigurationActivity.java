@@ -3,8 +3,13 @@ package nl.hnogames.domoticz;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,13 +20,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import nl.hnogames.domoticz.Adapters.WidgetsAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Fragments.Dashboard;
+import nl.hnogames.domoticz.Fragments.Scenes;
+import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Service.WidgetProviderLarge;
+import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.app.DomoticzFragment;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -33,6 +44,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
+    private WidgetsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,22 +100,13 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             domoticz.getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
-                    final ArrayList<DevicesInfo> mDevices = new ArrayList<>();
-                    for (DevicesInfo s : mDevicesInfo) {
-                        mDevices.add(s);
-                    }
-                    Collections.sort(mDevices);
-
-                    String[] listData = processSwitches(mDevices);
                     ListView listView = (ListView) findViewById(R.id.list);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(WidgetConfigurationActivity.this,
-                            android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+                    adapter = new WidgetsAdapter(WidgetConfigurationActivity.this, mDevicesInfo);
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            DevicesInfo selected = mDevices.get(position);
-                            showAppWidget(selected);
+                            showAppWidget((DevicesInfo)adapter.getItem(position));
                         }
                     });
 
@@ -125,23 +128,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
-    }
-
-    public String[] processSwitches(ArrayList<DevicesInfo> switches) {
-        String[] listData = new String[switches.size()];
-        int counter = 0;
-        for (DevicesInfo s : switches) {
-            String log = s.getName();
-
-            String category = domoticz.getDeviceType(s);
-            if (!UsefulBits.isEmpty(category))
-                log += " (" + category + ")";
-
-            listData[counter] = log;
-            counter++;
-        }
-        Arrays.sort(listData);
-        return listData;
     }
 
     private void showAppWidget(DevicesInfo mSelectedSwitch) {
@@ -174,5 +160,39 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             Log.i(TAG, "I am invalid");
             finish();
         }
+    }
+
+    public void Filter(String text) {
+        try {
+            if (adapter != null)
+                adapter.getFilter().filter(text);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private SearchView searchViewAction;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+            MenuItem searchMenuItem = menu.findItem(R.id.search);
+            searchViewAction = (SearchView) MenuItemCompat
+                    .getActionView(searchMenuItem);
+            searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Filter(newText);
+                    return false;
+                }
+            });
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
