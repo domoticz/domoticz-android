@@ -179,8 +179,12 @@ public class DevicesInfo implements Comparable {
             signalLevel = 0;
         }
 
-        if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
+        try {
+            if (row.has("SetPoint")){
+                setPoint = Double.parseDouble(row.getString("SetPoint"));
+            }
+        } catch (Exception ex) {
+        }
     }
 
     public boolean getFavoriteBoolean() {
