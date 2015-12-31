@@ -96,6 +96,7 @@
         <LinearLayout
             android:id="@+id/extra_panel"
             android:layout_width="match_parent"
+            android:paddingLeft="10dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingBottom="10dp">

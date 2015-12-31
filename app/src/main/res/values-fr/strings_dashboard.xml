@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="title_dashboard">Tableau de bord</string>
-    <string name="update_available">Mise à jour du serveur Domoticz disponible</string>
-
-</resources>
