@@ -38,7 +38,7 @@ public class PlanActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle == null)
             this.finish();
-        
+
         //noinspection SpellCheckingInspection
         String selectedPlan = bundle.getString("PLANNAME");
         //noinspection SpellCheckingInspection

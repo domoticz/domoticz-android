@@ -106,10 +106,11 @@ public class GeoUtil {
         try {
             addressList = mGeocoder.getFromLocation(mLatLong.latitude, mLatLong.longitude, 5);
 
-            if (addressList == null) {
+            if (addressList == null || addressList.size() <= 0) {
                 return null;
             }
-            mAddress = addressList.get(0);
+
+            mAddress = addressList.get(0);//get first
 
         } catch (IOException e) {
             e.printStackTrace();
