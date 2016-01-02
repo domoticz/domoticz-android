@@ -31,4 +31,6 @@ public interface ScenesReceiver {
     void onReceiveScenes(ArrayList<SceneInfo> scenes);
 
     void onError(Exception error);
+
+    void onReceiveScene(SceneInfo scene);
 }

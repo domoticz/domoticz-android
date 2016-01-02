@@ -32,7 +32,6 @@ import android.os.Environment;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -50,14 +49,14 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class Preference extends PreferenceFragment {
 
-    private SharedPrefUtil mSharedPrefs;
-    private File SettingsFile;
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = Preference.class.getSimpleName();
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG_IMPORT = "Import Settings";
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG_EXPORT = "Export Settings";
+    private SharedPrefUtil mSharedPrefs;
+    private File SettingsFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,9 +74,9 @@ public class Preference extends PreferenceFragment {
         handleInfoAndAbout();
     }
 
-    private void setPreferences(){
+    private void setPreferences() {
 
-        android.preference.Preference ServerSettings = (android.preference.Preference) findPreference("server_settings");
+        android.preference.Preference ServerSettings = findPreference("server_settings");
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -87,16 +86,14 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.Preference GeoSettings = (android.preference.Preference) findPreference("geo_settings");
+        android.preference.Preference GeoSettings = findPreference("geo_settings");
         GeoSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                if(BuildConfig.LITE_VERSION)
-                {
-                    Toast.makeText(getActivity(), getString(R.string.geofence)+" "+ getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(getActivity(), getString(R.string.geofence) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
-                }
-                else {
+                } else {
                     Intent intent = new Intent(getActivity(), GeoSettingsActivity.class);
                     startActivity(intent);
                     return true;
@@ -108,27 +105,24 @@ public class Preference extends PreferenceFragment {
         WearPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if(BuildConfig.LITE_VERSION)
-                {
-                    Toast.makeText(getActivity(), getString(R.string.category_wear)+" "+ getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(getActivity(), getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
                 return true;
             }
         });
 
-        android.preference.PreferenceScreen preferenceScreen =(android.preference.PreferenceScreen)findPreference("settingsscreen");
-        android.preference.PreferenceCategory premiumCategory =(android.preference.PreferenceCategory)findPreference("premium_category");
-        android.preference.Preference premiumPreference =(android.preference.Preference)findPreference("premium_settings");
-        if(!BuildConfig.LITE_VERSION)
-        {
+        android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
+        android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
+        android.preference.Preference premiumPreference = findPreference("premium_settings");
+        if (!BuildConfig.LITE_VERSION) {
             preferenceScreen.removePreference(premiumCategory);
-        }
-        else{
+        } else {
             premiumPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    String packageID = getActivity().getPackageName()+".premium";
+                    String packageID = getActivity().getPackageName() + ".premium";
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
                     } catch (android.content.ActivityNotFoundException anfe) {

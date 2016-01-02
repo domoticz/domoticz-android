@@ -163,7 +163,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.name.setText(mTemperatureInfo.getName());
         if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
             holder.data.setText(R.string.wind);
-            holder.data.append(": " +  mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
+            holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
         } else holder.data.append(": " + mTemperatureInfo.getData());
 
         convertView.setTag(holder);

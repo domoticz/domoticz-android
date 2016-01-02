@@ -41,11 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -162,7 +159,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             public void onError(Exception error) {
                 Log.e(TAG, error.getMessage());
             }
-        },0,"lights");
+        }, 0, "lights");
 
     }
 
@@ -174,7 +171,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(this);
 
-        if (!mSharedPrefs.showCustomWear() || ( mSharedPrefs.getWearSwitches() == null || mSharedPrefs.getWearSwitches().length <= 0)){
+        if (!mSharedPrefs.showCustomWear() || (mSharedPrefs.getWearSwitches() == null || mSharedPrefs.getWearSwitches().length <= 0)) {
             for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
                 String name = mDevicesInfo.getName();
                 int switchTypeVal = mDevicesInfo.getSwitchTypeVal();
@@ -189,7 +186,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             }
         } else {
             String[] filterSwitches = mSharedPrefs.getWearSwitches();
-            if(filterSwitches!=null && filterSwitches.length>0) {
+            if (filterSwitches != null && filterSwitches.length > 0) {
                 for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
                     String name = mDevicesInfo.getName();
                     String idx = mDevicesInfo.getIdx() + "";
@@ -210,7 +207,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             }
         }
 
-        if (supportedSwitches!=null && supportedSwitches.size() > 0) {
+        if (supportedSwitches != null && supportedSwitches.size() > 0) {
             String parsedData = new Gson().toJson(supportedSwitches);
             Log.v(TAG, "Sending data: " + parsedData);
             sendMessage(SEND_DATA, parsedData);

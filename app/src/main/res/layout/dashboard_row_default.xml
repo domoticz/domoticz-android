@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -18,7 +20,8 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:paddingRight="5dp"
-        android:src="@drawable/abc_btn_check_to_on_mtrl_015" />
+        android:src="@drawable/clock48"
+        android:contentDescription="@string/error_image_description" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:text="Switch name" />
+            tools:text="Switch name" />
 
         <TextView
             android:id="@+id/switch_battery_level"

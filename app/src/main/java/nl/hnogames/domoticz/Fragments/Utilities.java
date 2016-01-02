@@ -268,6 +268,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         showProgressDialog();
         final String graphType = utility.getSubType()
+                .replace("Electric", "counter")
                 .replace("kWh", "counter")
                 .replace("Energy", "counter");
 
@@ -288,7 +289,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log)+": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
                 hideProgressDialog();
             }
         });

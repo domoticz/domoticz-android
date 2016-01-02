@@ -27,17 +27,19 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="35dp"
         android:layout_toRightOf="@id/rowIcon"
-        android:text="Switch" />
+        android:text="Switch"
+        android:layout_toStartOf="@+id/linearLayout3"
+        android:layout_toLeftOf="@+id/linearLayout3" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/linearLayout3"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/switch_dimmer_level"
@@ -49,18 +51,30 @@
 
         <SeekBar
             android:id="@+id/switch_dimmer"
-            android:layout_width="100dp"
+            android:layout_width="200dp"
+            android:minWidth="150dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="20dp" />
+            android:layout_gravity="bottom" />
 
         <Switch
             android:id="@+id/switch_dimmer_switch"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_gravity="right" />
+            android:layout_gravity="center_vertical|right" />
 
+        <Button
+            android:id="@+id/color_button"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_status"
+            android:text="@string/button_color" />
     </LinearLayout>
+
 </RelativeLayout>

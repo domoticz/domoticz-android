@@ -33,14 +33,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class GeoUtil {
+    Context mContext;
+
     public GeoUtil(Context mContext) {
         this.mContext = mContext;
     }
 
-    Context mContext;
-
     /**
      * Gets an address from string
+     *
      * @param strAddress String address
      * @return Address
      */
@@ -65,6 +66,7 @@ public class GeoUtil {
 
     /**
      * Gets an address from location
+     *
      * @param mLocation Location
      * @return Address
      */
@@ -91,6 +93,7 @@ public class GeoUtil {
 
     /**
      * Gets an address from latitude and longitude
+     *
      * @param mLatLong LatLong
      * @return Address
      */
@@ -103,10 +106,11 @@ public class GeoUtil {
         try {
             addressList = mGeocoder.getFromLocation(mLatLong.latitude, mLatLong.longitude, 5);
 
-            if (addressList == null) {
+            if (addressList == null || addressList.size() <= 0) {
                 return null;
             }
-            mAddress = addressList.get(0);
+
+            mAddress = addressList.get(0);//get first
 
         } catch (IOException e) {
             e.printStackTrace();

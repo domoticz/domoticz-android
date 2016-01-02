@@ -33,6 +33,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.splunk.mint.Mint;
 
 import java.security.KeyManagementException;
@@ -43,6 +45,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
+import nl.hnogames.domoticz.R;
+
 
 public class AppController extends Application {
 
@@ -50,6 +54,7 @@ public class AppController extends Application {
     private static AppController mInstance;
     int socketTimeout = 1000 * 5;               // 5 seconds
     private RequestQueue mRequestQueue;
+    private Tracker mTracker;
 
     public static synchronized AppController getInstance() {
         return mInstance;
@@ -111,10 +116,22 @@ public class AppController extends Application {
         }
     }
 
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     *
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            mTracker = analytics.newTracker(getString(R.string.analiticsapikey));
+        }
+        return mTracker;
     }
 }

@@ -68,64 +68,68 @@ public class TimersAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        int layoutResourceId;
+        if(data!=null) {
+            ViewHolder holder;
+            int layoutResourceId;
 
-        SwitchTimerInfo mSwitchTimerInfo = data.get(position);
+            SwitchTimerInfo mSwitchTimerInfo = data.get(position);
 
-        holder = new ViewHolder();
-        layoutResourceId = R.layout.timer_row;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
+            if(mSwitchTimerInfo!=null) {
+                holder = new ViewHolder();
+                layoutResourceId = R.layout.timer_row;
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                convertView = inflater.inflate(layoutResourceId, parent, false);
 
-        holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
-        holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);
-        holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
+                holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
+                holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);
+                holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
 
-        holder.switch_name.setText(mSwitchTimerInfo.getActive());
-        String commando = "";
-        if (mSwitchTimerInfo.getCmd() == 0)
-            commando += context.getString(R.string.command)+": " + context.getString(R.string.button_state_on);
-        else
-            commando += context.getString(R.string.command)+": " + context.getString(R.string.button_state_off);
+                holder.switch_name.setText(mSwitchTimerInfo.getActive());
+                String commando = "";
+                if (mSwitchTimerInfo.getCmd() == 0)
+                    commando += context.getString(R.string.command) + ": " + context.getString(R.string.button_state_on);
+                else
+                    commando += context.getString(R.string.command) + ": " + context.getString(R.string.button_state_off);
 
-        String type = "";
-        if (mSwitchTimerInfo.getType() == 0)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_before_sunrise);
-        else if (mSwitchTimerInfo.getType() == 1)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_after_sunrise);
-        else if (mSwitchTimerInfo.getType() == 2)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_ontime);
-        else if (mSwitchTimerInfo.getType() == 3)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_before_sunset);
-        else if (mSwitchTimerInfo.getType() == 4)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_after_sunset);
-        else if (mSwitchTimerInfo.getType() == 5)
-            type += context.getString(R.string.type)+": " + context.getString(R.string.timer_fixed);
-        else
-            type += context.getString(R.string.type)+": " + context.getString(R.string.notapplicable);
+                String type = "";
+                if (mSwitchTimerInfo.getType() == 0)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_before_sunrise);
+                else if (mSwitchTimerInfo.getType() == 1)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunrise);
+                else if (mSwitchTimerInfo.getType() == 2)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_ontime);
+                else if (mSwitchTimerInfo.getType() == 3)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_before_sunset);
+                else if (mSwitchTimerInfo.getType() == 4)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunset);
+                else if (mSwitchTimerInfo.getType() == 5)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_fixed);
+                else
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.notapplicable);
 
-        if (mSwitchTimerInfo.getDate().length() > 0)
-            holder.switch_name.setText(holder.switch_name.getText() + " | " + mSwitchTimerInfo.getDate());
-        else {
-            if (mSwitchTimerInfo.getDays() == 128)
-                holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_every_days));
-            else if (mSwitchTimerInfo.getDays() == 512)
-                holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
-            else if (mSwitchTimerInfo.getDays() == 256)
-                holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_working_days));
-            else if (mSwitchTimerInfo.getDays() == 512)
-                holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
-            else
-                holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_other));
+                if (mSwitchTimerInfo.getDate() != null && mSwitchTimerInfo.getDate().length() > 0)
+                    holder.switch_name.setText(holder.switch_name.getText() + " | " + mSwitchTimerInfo.getDate());
+                else {
+                    if (mSwitchTimerInfo.getDays() == 128)
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_every_days));
+                    else if (mSwitchTimerInfo.getDays() == 512)
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
+                    else if (mSwitchTimerInfo.getDays() == 256)
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_working_days));
+                    else if (mSwitchTimerInfo.getDays() == 512)
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
+                    else
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_other));
+                }
+
+                holder.switch_status.setText(commando);
+                holder.signal_level.setText(type);
+                convertView.setTag(holder);
+            }
+
+            return convertView;
         }
-
-        holder.switch_status.setText(commando);
-        holder.signal_level.setText(type);
-
-        convertView.setTag(holder);
-
-        return convertView;
+        return null;
     }
 
     static class ViewHolder {

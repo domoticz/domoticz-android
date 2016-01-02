@@ -46,6 +46,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzCardFragment extends Fragment {
 
@@ -113,7 +114,8 @@ public class DomoticzCardFragment extends Fragment {
 
         PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
-            public void ReceiveSSIDs(CharSequence[] entries) {}
+            public void ReceiveSSIDs(CharSequence[] entries) {
+            }
         });
 
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -224,31 +226,34 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void showDebugLayout() {
-        LinearLayout debugLayout = (LinearLayout) root.findViewById(R.id.debugLayout);
-        if (debugLayout != null) {
-            debugLayout.setVisibility(View.VISIBLE);
+        try {
+            if (root != null) {
+                LinearLayout debugLayout = (LinearLayout) root.findViewById(R.id.debugLayout);
+                if (debugLayout != null) {
+                    debugLayout.setVisibility(View.VISIBLE);
 
-            debugText = (TextView) root.findViewById(R.id.debugText);
-            if (debugText != null) {
-                debugText.setMovementMethod(new ScrollingMovementMethod());
-                debugText.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        mDomoticz.debugTextToClipboard(debugText);
-                        return false;
+                    debugText = (TextView) root.findViewById(R.id.debugText);
+                    if (debugText != null) {
+                        debugText.setMovementMethod(new ScrollingMovementMethod());
+                        debugText.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+                                mDomoticz.debugTextToClipboard(debugText);
+                                return false;
+                            }
+                        });
                     }
-                });
-            } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID of debugText");
-        } else throw new RuntimeException(
-                "Layout should have a LinearLayout defined with the ID of debugLayout");
+                }
+            }
+        } catch (Exception ex) {
+        }
     }
 
     public void Logger(String tag, String text) {
-        Log.d(tag, text);
+        if (!UsefulBits.isEmpty(tag) && !UsefulBits.isEmpty(text))
+            Log.d(tag, text);
     }
 
     public void Filter(String text) {
-        Log.d("Filter", "Filter: " + text);
     }
 }

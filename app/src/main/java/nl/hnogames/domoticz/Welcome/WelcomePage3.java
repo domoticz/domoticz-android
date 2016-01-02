@@ -139,7 +139,7 @@ public class WelcomePage3 extends Fragment {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessLocation(getActivity())) {
-                requestPermissions(PermissionsUtil.INITIAL_ACCESS_PERMS, PermissionsUtil.INITIAL_ACCESS_REQUEST);
+                requestPermissions(PermissionsUtil.INITIAL_LOCATION_PERMS, PermissionsUtil.INITIAL_LOCATION_REQUEST);
             } else
                 setSsid_spinner();
         } else
@@ -150,15 +150,16 @@ public class WelcomePage3 extends Fragment {
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PermissionsUtil.INITIAL_ACCESS_REQUEST:
+            case PermissionsUtil.INITIAL_LOCATION_REQUEST:
                 if (PermissionsUtil.canAccessLocation(getActivity())) {
                     setSsid_spinner();
                 } else {
-                     if(mPhoneConnectionUtil!=null)
-                         mPhoneConnectionUtil.stopReceiver();
+                    if (mPhoneConnectionUtil != null)
+                        mPhoneConnectionUtil.stopReceiver();
 
                     ((WelcomeViewActivity) getActivity()).finishWithResult(false);
-                }break;
+                }
+                break;
         }
     }
 
@@ -336,9 +337,8 @@ public class WelcomePage3 extends Fragment {
     }
 
     @Override
-    public void onStop()
-    {
-        if(mPhoneConnectionUtil!=null)
+    public void onStop() {
+        if (mPhoneConnectionUtil != null)
             mPhoneConnectionUtil.stopReceiver();
 
         super.onStop();

@@ -38,9 +38,24 @@ public class ScenesParser implements JSONParserInterface {
 
     private static final String TAG = ScenesParser.class.getSimpleName();
     private ScenesReceiver scenesReceiver;
+    private int idx = 999999;
 
     public ScenesParser(ScenesReceiver scenesReceiver) {
         this.scenesReceiver = scenesReceiver;
+    }
+
+    public ScenesParser(ScenesReceiver scenesReceiver, int idx) {
+        this.scenesReceiver = scenesReceiver;
+        this.idx = idx;
+    }
+
+    private SceneInfo getScene(int idx, ArrayList<SceneInfo> mSceneInfo) {
+        for (SceneInfo s : mSceneInfo) {
+            if (s.getIdx() == idx) {
+                return s;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -56,9 +71,13 @@ public class ScenesParser implements JSONParserInterface {
                     JSONObject row = jsonArray.getJSONObject(i);
                     mScenes.add(new SceneInfo(row));
                 }
-
             }
-            scenesReceiver.onReceiveScenes(mScenes);
+
+            if (idx == 999999)
+                scenesReceiver.onReceiveScenes(mScenes);
+            else {
+                scenesReceiver.onReceiveScene(getScene(idx, mScenes));
+            }
 
         } catch (JSONException e) {
             Log.e(TAG, "ScenesParser JSON exception");

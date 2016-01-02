@@ -91,14 +91,13 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     private void processScenes() {
-        if(listView!=null) {
+        if (listView != null) {
             //switch toggled, refresh listview
             state = listView.onSaveInstanceState();
             WidgetUtils.RefreshWidgets(mContext);
         }
 
         mDomoticz.getScenes(new ScenesReceiver() {
-
             @Override
             public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
                 successHandling(scenes.toString(), false);
@@ -108,6 +107,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             @Override
             public void onError(Exception error) {
                 errorHandling(error);
+            }
+
+            @Override
+            public void onReceiveScene(SceneInfo scene) {
             }
         });
     }
@@ -123,15 +126,15 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             final ScenesClickListener listener = this;
 
             for (SceneInfo s : scenes) {
-                if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.sort_all))) {
+                if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                     supportedScenes.add(s);
                 } else {
                     Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_on)) && s.getStatusInBoolean()) && isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_off)) && !s.getStatusInBoolean()) && isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.sort_static))) && !isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !isOnOffScene(s))
                         supportedScenes.add(s);
                 }
             }
@@ -156,7 +159,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 }
             });
 
-            if(state != null) {
+            if (state != null) {
                 // Restore previous state (including selected item index and scroll position)
                 listView.onRestoreInstanceState(state);
             }
@@ -164,15 +167,15 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         }
     }
 
-    private boolean isOnOffScene(SceneInfo testSwitch)
-    {
-       switch (testSwitch.getType()) {
+    private boolean isOnOffScene(SceneInfo testSwitch) {
+        switch (testSwitch.getType()) {
             case Domoticz.Scene.Type.GROUP:
                 return true;
         }
 
         return false;
     }
+
     private SceneInfo getScene(int idx) {
         SceneInfo clickedScene = null;
         for (SceneInfo s : mScenes) {

@@ -61,7 +61,7 @@ public class DevicesInfo implements Comparable {
     private boolean statusBoolean;
     private boolean isProtected;
 
-    public DevicesInfo(JSONObject row)  throws JSONException {
+    public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
         try {
             if (row.has("LevelInt"))
@@ -77,12 +77,11 @@ public class DevicesInfo implements Comparable {
         }
         try {
             if (row.has("CustomImage")) {
-                if(row.getInt("CustomImage")>0)
+                if (row.getInt("CustomImage") > 0)
                     useCustomImage = true;
                 else
                     useCustomImage = false;
-            }
-            else
+            } else
                 useCustomImage = false;
         } catch (Exception e) {
             useCustomImage = false;
@@ -180,8 +179,12 @@ public class DevicesInfo implements Comparable {
             signalLevel = 0;
         }
 
-        if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
+        try {
+            if (row.has("SetPoint")){
+                setPoint = Double.parseDouble(row.getString("SetPoint"));
+            }
+        } catch (Exception ex) {
+        }
     }
 
     public boolean getFavoriteBoolean() {
@@ -252,7 +255,7 @@ public class DevicesInfo implements Comparable {
 
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
-        if(status)
+        if (status)
             setStatus("On");
         else
             setStatus("Off");
@@ -277,13 +280,9 @@ public class DevicesInfo implements Comparable {
         return Name;
     }
 
-    ;
-
     public void setName(String name) {
         Name = name;
     }
-
-    ;
 
     public boolean getUseCustomImage() {
         return useCustomImage;
@@ -387,6 +386,6 @@ public class DevicesInfo implements Comparable {
 
     @Override
     public int compareTo(Object another) {
-        return this.getName().compareTo(((DevicesInfo)another).getName());
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

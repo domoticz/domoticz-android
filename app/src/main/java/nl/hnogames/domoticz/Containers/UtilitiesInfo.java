@@ -62,8 +62,11 @@ public class UtilitiesInfo {
             HardwareName = row.getString("HardwareName");
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
-        if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
+
+        if (row.has("SetPoint")){
+            setPoint = Double.parseDouble(row.getString("SetPoint"));
+        }
+
         if (row.has("Name"))
             Name = row.getString("Name");
         if (row.has("Data"))
@@ -120,16 +123,16 @@ public class UtilitiesInfo {
         return Name;
     }
 
+    public void setName(String name) {
+        Name = name;
+    }
+
     public String getCounter() {
         return Counter;
     }
 
     public String getUsage() {
         return Usage;
-    }
-
-    public void setName(String name) {
-        Name = name;
     }
 
     public String getCounterToday() {

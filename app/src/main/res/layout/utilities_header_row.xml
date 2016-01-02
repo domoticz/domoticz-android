@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
@@ -17,6 +18,6 @@
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:text="Text title" />
+        tools:text="Text title" />
 
 </LinearLayout>

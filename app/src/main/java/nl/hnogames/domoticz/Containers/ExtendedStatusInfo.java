@@ -99,12 +99,11 @@ public class ExtendedStatusInfo {
         }
         try {
             if (row.has("CustomImage")) {
-                if(row.getInt("CustomImage")>0)
+                if (row.getInt("CustomImage") > 0)
                     useCustomImage = true;
                 else
                     useCustomImage = false;
-            }
-            else
+            } else
                 useCustomImage = false;
         } catch (Exception e) {
             useCustomImage = false;
@@ -321,16 +320,16 @@ public class ExtendedStatusInfo {
         }
     }
 
-    public boolean getUseCustomImage() {
-        return useCustomImage;
-    }
-
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
-        if(status)
+        if (status)
             setStatus("On");
         else
             setStatus("Off");
+    }
+
+    public boolean getUseCustomImage() {
+        return useCustomImage;
     }
 
     public int getBatteryLevel() {

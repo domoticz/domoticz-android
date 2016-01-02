@@ -85,12 +85,13 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
         mDomoticz.getEvents(new EventReceiver() {
             @Override
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
+                successHandling(mEventInfos.toString(), false);
 
                 adapter = new EventsAdapter(mContext, mEventInfos, new EventsClickListener() {
 
                     @Override
                     public void onEventClick(final int id, boolean action) {
-                        Snackbar.make(coordinatorLayout, "This action is not supported yet!", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
 
                         /*
                         mDomoticz.getEventXml(id, new EventXmlReceiver() {

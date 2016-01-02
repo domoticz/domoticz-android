@@ -59,7 +59,7 @@ public class GraphDialog {
                        ArrayList<GraphPointInfo> mGraphList,
                        int layout) {
         this.mGraphList = mGraphList;
-        this.mContext=mContext;
+        this.mContext = mContext;
         mdb = new MaterialDialog.Builder(mContext);
         //noinspection unused
         boolean wrapInScrollView = true;
@@ -73,7 +73,7 @@ public class GraphDialog {
         View view = md.getCustomView();
 
         ComboLineColumnChartView chart = (ComboLineColumnChartView) view.findViewById(R.id.chart);
-        ComboLineColumnChartData columnData = generateData(view );
+        ComboLineColumnChartData columnData = generateData(view);
         chart.setComboLineColumnChartData(columnData);
         setViewPort(chart);
         md.show();
@@ -104,7 +104,7 @@ public class GraphDialog {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private ComboLineColumnChartData generateData(View view ) {
+    private ComboLineColumnChartData generateData(View view) {
         List<Line> lines = new ArrayList<>();
 
         List<PointValue> values = new ArrayList<>();
@@ -116,6 +116,8 @@ public class GraphDialog {
         List<PointValue> valuessp = new ArrayList<>();
         List<PointValue> valuesdi = new ArrayList<>();
         List<PointValue> valuesuv = new ArrayList<>();
+        List<PointValue> valuesu = new ArrayList<>();
+        List<PointValue> valuesmm = new ArrayList<>();
 
         List<AxisValue> axisValueX = new ArrayList<>();
 
@@ -128,6 +130,8 @@ public class GraphDialog {
         boolean addSunPower = false;
         boolean addDirection = false;
         boolean addSpeed = false;
+        boolean addRain = false;
+        boolean addUsage = false;
         boolean onlyDate = false;
         Calendar mydate = Calendar.getInstance();
 
@@ -143,11 +147,19 @@ public class GraphDialog {
                     }
                     if (g.getBarometer() != null && g.getBarometer().length() > 0) {
                         addBarometer = true;
-                        valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                        try {
+                            valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                        } catch (Exception ex) {
+                            valuesba.add(new PointValue(counter, Float.parseFloat(g.getBarometer())));
+                        }
                     }
                     if (g.getHumidity() != null && g.getHumidity().length() > 0) {
                         addHumidity = true;
-                        valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                        try {
+                            valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                        } catch (Exception ex) {
+                            valuesba.add(new PointValue(counter, Float.parseFloat(g.getHumidity())));
+                        }
                     }
                     if (g.getPercentage() != null && g.getPercentage().length() > 0) {
                         addPercentage = true;
@@ -168,6 +180,14 @@ public class GraphDialog {
                     if (g.getSunPower() != null && g.getSunPower().length() > 0) {
                         addSunPower = true;
                         valuesuv.add(new PointValue(counter, Float.parseFloat(g.getSunPower())));
+                    }
+                    if (g.getUsage() != null && g.getUsage().length() > 0) {
+                        addUsage = true;
+                        valuesu.add(new PointValue(counter, Float.parseFloat(g.getUsage())));
+                    }
+                    if (g.getRain() != null && g.getRain().length() > 0) {
+                        addRain = true;
+                        valuesmm.add(new PointValue(counter, Float.parseFloat(g.getRain())));
                     }
 
                     try {
@@ -279,9 +299,27 @@ public class GraphDialog {
                     .setHasPoints(false));
         }
 
+        if (addUsage) {
+            lines.add(new Line(valuesu)
+                    .setColor(ContextCompat.getColor(mContext, R.color.material_orange_600))
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+        }
+
+        if (addRain) {
+            lines.add(new Line(valuesmm)
+                    .setColor(ContextCompat.getColor(mContext, R.color.material_light_green_600))
+                    .setCubic(setCubic)
+                    .setHasLabels(false)
+                    .setHasLines(true)
+                    .setHasPoints(false));
+        }
+
         if (lines.size() > 1) {
             if (addTemperature) {
-                ( view.findViewById(R.id.legend_temperature))
+                (view.findViewById(R.id.legend_temperature))
                         .setVisibility(View.VISIBLE);
             }
 
@@ -321,6 +359,16 @@ public class GraphDialog {
                 (view.findViewById(R.id.legend_speed))
                         .setVisibility(View.VISIBLE);
             }
+
+            if (addUsage) {
+                (view.findViewById(R.id.legend_usage))
+                        .setVisibility(View.VISIBLE);
+            }
+
+            if (addRain) {
+                (view.findViewById(R.id.legend_rain))
+                        .setVisibility(View.VISIBLE);
+            }
         }
 
         LineChartData lineChartData = new LineChartData(lines);
@@ -335,5 +383,4 @@ public class GraphDialog {
 
         return data;
     }
-
 }

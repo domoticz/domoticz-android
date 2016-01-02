@@ -38,7 +38,7 @@ public class SimpleTextDialog {
     private String title;
     private String text;
 
-    public SimpleTextDialog(Context mContext){
+    public SimpleTextDialog(Context mContext) {
 
         this.mContext = mContext;
 

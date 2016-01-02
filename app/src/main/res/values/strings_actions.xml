@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
     <string name="action_settings">Settings</string>
-    <string name="action_sort">Sort</string>
-    <string name="action_welcome">Welcome</string>
+    <string name="action_filter">Filter</string>
 
 </resources>

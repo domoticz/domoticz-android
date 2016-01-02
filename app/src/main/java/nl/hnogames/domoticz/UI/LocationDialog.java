@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.Utils.GeoUtil;
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
+    private final GeoUtil mGeoUtil;
     private Context mContext;
     private Address foundLocation;
     private FloatingLabelEditText editAddress;
@@ -56,10 +57,8 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private FloatingLabelEditText editLongitude;
     private TextView resolvedAddress;
     private TextView resolvedCountry;
-
     private DismissListener dismissListener;
     private Location currentLocation;
-    private final GeoUtil mGeoUtil;
     private EditText radiusText;
     private int radius;
     private LatLng mLatLong;
@@ -107,7 +106,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         String name = editName.getInputWidgetText().toString();
 
-        if (name.isEmpty() || name.length() <= 0){
+        if (name.isEmpty() || name.length() <= 0) {
             return false;
         }
 

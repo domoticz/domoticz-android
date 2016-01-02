@@ -34,12 +34,8 @@ import java.util.List;
 import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.R;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
@@ -71,6 +67,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
                 for (DevicesInfo mExtendedStatusInfo : mDevicesInfo) {
                     String name = mExtendedStatusInfo.getName();
+
                     int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                     String switchType = mExtendedStatusInfo.getSwitchType();
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
@@ -90,7 +87,8 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, error.getMessage());
+                if (error != null && error.getMessage() != null && error.getMessage().length() > 0)
+                    Log.e(TAG, error.getMessage());
             }
         }, 0, "lights");
     }

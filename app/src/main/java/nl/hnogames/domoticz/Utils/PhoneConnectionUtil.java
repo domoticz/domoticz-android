@@ -59,9 +59,9 @@ public class PhoneConnectionUtil {
         this.listener = listener;
     }
 
-    public void stopReceiver(){
+    public void stopReceiver() {
         try {
-            if(receiver != null) {
+            if (receiver != null) {
                 synchronized (unregistered) {
                     if (!unregistered.get()) {
                         mContext.unregisterReceiver(receiver);
@@ -69,7 +69,7 @@ public class PhoneConnectionUtil {
                     }
                 }
             }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             receiver = null;
         }
     }

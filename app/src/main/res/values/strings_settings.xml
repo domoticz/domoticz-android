@@ -27,7 +27,7 @@
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>
     <string name="custom_wear_select">Select Wear switches</string>
-    <string name="custom_wear_select_desc">Select which switches you like on your wear device</string>
+    <string name="custom_wear_select_desc">Select which switches you like to see on your Android Wear device</string>
     <string name="wear_custom_on">Enable Android Wear custom items</string>
     <string name="wear_custom_off">Disable Android Wear custom items</string>
 
@@ -39,7 +39,6 @@
     <!--        Import/Export settings  -->
     <string name="settings_imported">Settings imported, please restart Domoticz</string>
     <string name="settings_import_failed">Failed to import Settings</string>
-    <string name="unable_to_create_directories">Unable to create directories for settings</string>
 
 
     <!--        Preference screens      -->
@@ -62,5 +61,6 @@
     <string name="debug_switch_title">Debugging</string>
     <string name="debug_switch_summary_on">Debugging enabled</string>
     <string name="debug_switch_summary_off">Debugging disabled</string>
+
 
 </resources>
