@@ -662,7 +662,7 @@ public class Domoticz {
 
     public void setRGBColorAction(int idx,
                                   int jsonUrl,
-                                  int hue,
+                                  long hue,
                                   int brightness,
                                   boolean isWhite,
                                   setCommandReceiver receiver) {

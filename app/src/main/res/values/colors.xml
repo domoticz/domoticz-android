@@ -50,4 +50,7 @@
     <color name="material_light_blue_600">#039BE5</color>
     <color name="material_pink_600">#D81B60</color>
 
+    <color name="material_teal_900">#004D40</color>
+    <color name="material_grey_500">#9E9E9E</color>
+
 </resources>
