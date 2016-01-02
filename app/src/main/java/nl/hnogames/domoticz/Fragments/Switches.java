@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -319,41 +320,49 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     @Override
     public void onColorButtonClick(final int idx) {
         ColorPickerDialog colorDialog = new ColorPickerDialog(
-                getActivity());
+                getActivity(), idx);
         colorDialog.show();
         colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
             @Override
             public void onDismiss(int selectedColor) {
-                float[] hsv = new float[3];
-                Color.RGBToHSV(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor), hsv);
-                Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: "+selectedColor);
+                setColor(selectedColor, idx);
+            }
 
-                boolean isWhite = false;
-                int hue = Math.round(hsv[0]);
-                if(selectedColor==-1) {
-                    isWhite = true;
-                    hue=205;
-                }
-
-                mDomoticz.setRGBColorAction(idx,
-                        Domoticz.Json.Url.Set.RGBCOLOR,
-                        hue,
-                        100,
-                        isWhite,
-                        new setCommandReceiver() {
-                            @Override
-                            public void onReceiveResult(String result) {
-                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
-                                getSwitchesData();
-                            }
-
-                            @Override
-                            public void onError(Exception error) {
-                                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
-                            }
-                        });
+            @Override
+            public void onChangeColor(int selectedColor) {
+                setColor(selectedColor, idx);
             }
         });
+    }
+
+    private void setColor(int selectedColor, final int idx)
+    {
+        double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
+        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: "+selectedColor);
+
+        boolean isWhite = false;
+        long hue = Math.round(hsv[0]);
+        if(selectedColor==-1) {
+            isWhite = true;
+        }
+
+        mDomoticz.setRGBColorAction(idx,
+                Domoticz.Json.Url.Set.RGBCOLOR,
+                hue,
+                getSwitch(idx).getLevel(),
+                isWhite,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        getSwitchesData();
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

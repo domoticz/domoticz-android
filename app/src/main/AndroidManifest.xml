@@ -4,6 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.hnogames.domoticz">
 
+    <supports-screens
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:normalScreens="true"
+        android:anyDensity="true"/>
+
+
     <permission
         android:name="nl.hnogames.domoticz.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
