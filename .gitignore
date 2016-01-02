@@ -45,4 +45,3 @@ proguard/
 captures/
 libs/MemorizingTrustManager/build/outputs/aar/MemorizingTrustManager-release.aar
 libs/MemorizingTrustManager/build/
-*.xml
