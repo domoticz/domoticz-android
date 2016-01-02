@@ -38,11 +38,6 @@ android {
         }
     }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        abortOnError false
-    }
-
     //noinspection GroovyAssignabilityCheck
     dexOptions {
         preDexLibraries false
