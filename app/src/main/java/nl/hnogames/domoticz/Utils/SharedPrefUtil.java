@@ -107,6 +107,19 @@ public class SharedPrefUtil {
         return prefs.getBoolean("CARD" + cardTag, false);
     }
 
+    public void savePreviousColor(int idx, int color, int position) {
+        editor.putInt("COLOR" + idx, color).apply();
+        editor.putInt("COLORPOSITION" + idx, position).apply();
+        editor.commit();
+    }
+
+    public int getPreviousColor(int idx) {
+        return prefs.getInt("COLOR" + idx, 0);
+    }
+    public int getPreviousColorPosition(int idx) {
+        return prefs.getInt("COLORPOSITION" + idx, 0);
+    }
+
     public void setWidgetIDX(int widgetID, int idx, boolean isScene) {
         editor.putInt("WIDGET" + widgetID, idx).apply();
         editor.putBoolean("WIDGETSCENE" + widgetID, isScene).apply();
@@ -246,8 +259,8 @@ public class SharedPrefUtil {
         else {
             String[] selectionValues = new String[selections.size()];
             int i = 0;
-
             int index = 0;
+
             for (String v : allNames) {
                 for (String s : selections) {
                     if (s.equals(v)) {
@@ -257,6 +270,7 @@ public class SharedPrefUtil {
                 }
                 index++;
             }
+
             return selectionValues;
         }
     }
@@ -281,7 +295,14 @@ public class SharedPrefUtil {
                     }
                 }
             }
-            return selectionValues;
+
+            if(i < selections.size()){
+                setNavigationDefaults();
+                return getNavigationActions();
+            }
+            else
+                return selectionValues;
+
         }
     }
 
