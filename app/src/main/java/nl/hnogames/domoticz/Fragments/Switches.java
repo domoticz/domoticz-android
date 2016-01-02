@@ -499,7 +499,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("onDimmerChange");
         DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch != null) {
-            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level) + ": " + clickedSwitch.getName() + " to " + (value-1), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level) + ": " + clickedSwitch.getName() + " " + mContext.getString(R.string.to) + " " + (value-1), Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
@@ -546,7 +546,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void errorHandling(Exception error) {
-        super.errorHandling(error);
-        hideProgressDialog();
+        // Let's check if were still attached to an activity
+        if (isAdded()) {
+            super.errorHandling(error);
+            hideProgressDialog();
+        }
     }
 }

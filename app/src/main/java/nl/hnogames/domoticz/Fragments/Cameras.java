@@ -47,6 +47,7 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = Cameras.class.getSimpleName();
 
     private ProgressDialog progressDialog;
@@ -143,8 +144,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     public void errorHandling(Exception error) {
-        super.errorHandling(error);
-        hideProgressDialog();
+        // Let's check if were still attached to an activity
+        if (isAdded()) {
+            super.errorHandling(error);
+            hideProgressDialog();
+        }
     }
 
     public ActionBar getActionBar() {

@@ -216,8 +216,11 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void errorHandling(Exception error) {
-        super.errorHandling(error);
-        hideProgressDialog();
+        // Let's check if were still attached to an activity
+        if (isAdded()) {
+            super.errorHandling(error);
+            hideProgressDialog();
+        }
     }
 
     @Override
@@ -239,8 +242,11 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
-                hideProgressDialog();
+                // Let's check if were still attached to an activity
+                if (isAdded()) {
+                    hideProgressDialog();
+                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
