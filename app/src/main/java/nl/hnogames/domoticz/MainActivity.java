@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            addDrawerItems();
-            addFragment();
+            drawNavigationMenu();
+            WidgetUtils.RefreshWidgets(this);
 
             //get latest update version
             Domoticz domoticz = new Domoticz(this);
@@ -147,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    public void drawNavigationMenu() {
+            addDrawerItems();
+            addFragment();
     }
 
     /* Called when the second activity's finished */
