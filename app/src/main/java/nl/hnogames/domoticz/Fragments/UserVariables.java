@@ -121,7 +121,10 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     @Override
     public void errorHandling(Exception error) {
-        super.errorHandling(error);
-        hideProgressDialog();
+        // Let's check if were still attached to an activity
+        if (isAdded()) {
+            super.errorHandling(error);
+            hideProgressDialog();
+        }
     }
 }

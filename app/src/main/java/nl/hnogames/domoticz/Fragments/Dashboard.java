@@ -567,7 +567,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void errorHandling(Exception error) {
-        super.errorHandling(error);
-        hideProgressDialog();
+        // Let's check if were still attached to an activity
+        if (isAdded()) {
+            super.errorHandling(error);
+            hideProgressDialog();
+        }
     }
 }
