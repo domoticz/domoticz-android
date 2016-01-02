@@ -256,8 +256,11 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void errorHandling(Exception error) {
-        super.errorHandling(error);
-        hideProgressDialog();
+        // Let's check if were still attached to an activity
+        if (isAdded()) {
+            super.errorHandling(error);
+            hideProgressDialog();
+        }
     }
 
     @Override
@@ -289,6 +292,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
+                errorHandling(error);
                 Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
                 hideProgressDialog();
             }

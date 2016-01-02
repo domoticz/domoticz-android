@@ -46,6 +46,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="no_network_available">Error: No network connection available</string>
     <string name="oops">OOPS!</string>
+    <string name="to">"to"</string>
 
     <string name="switch_on">Turning switch on</string>
     <string name="switch_off">Turning switch off</string>
