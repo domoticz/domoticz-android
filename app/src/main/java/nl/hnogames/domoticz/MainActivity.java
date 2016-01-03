@@ -44,6 +44,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -150,8 +151,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void drawNavigationMenu() {
-            addDrawerItems();
-            addFragment();
+        setWakeLock();
+        addDrawerItems();
+        addFragment();
+    }
+
+    private void setWakeLock(){
+        if(mSharedPrefs.getAwaysOn())
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     /* Called when the second activity's finished */
@@ -167,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
+                    drawNavigationMenu();
                     refreshFragment();
                     updateDrawerItems();
                     break;

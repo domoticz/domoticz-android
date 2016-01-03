@@ -60,6 +60,7 @@ public class SharedPrefUtil {
 
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    public static final String PREF_ALWAYS_ON = "alwayson";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
@@ -103,6 +104,9 @@ public class SharedPrefUtil {
         editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
+    public boolean getAwaysOn() {
+        return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
     public boolean isCardCompleted(String cardTag) {
         return prefs.getBoolean("CARD" + cardTag, false);
     }
