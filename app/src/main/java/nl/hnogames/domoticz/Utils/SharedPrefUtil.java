@@ -58,15 +58,12 @@ import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
-    private static final String TAG = SharedPrefUtil.class.getSimpleName();
-
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
-    public static final String PREF_STARTUP_SCREEN_INDEX = "startup_screen_index";
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
@@ -165,24 +162,8 @@ public class SharedPrefUtil {
     }
 
     public void removeWizard() {
-        //1 change startup screen
-        String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
-        String[] startupScreenValues =
-                mContext.getResources().getStringArray(R.array.drawer_actions);
-
-        if (startupScreenSelectedValue == null) {
-            editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[0]).apply(); //set to dashboard
-        } else {
-            int i = 0;
-            for (String screen : startupScreenValues) {
-                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
-                    break;
-                }
-                i++;
-            }
-            if (i == 0)              //first = wizard
-                editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[1]).apply(); //set to dashboard
-        }
+        // 1 if start up screen is 0 (wizard) change to dashboard
+        if (getStartupScreenIndex() == 0) setStartupScreenIndex(1);
 
         //2 remove wizard from navigation
         String removeWizard = "";
@@ -198,42 +179,44 @@ public class SharedPrefUtil {
         if (removeWizard.length() > 0) {
             selections.remove(removeWizard);
             editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
+            editor.commit();
         }
     }
 
     public int getStartupScreenIndex() {
-        int startupScreenIndex = prefs.getInt(PREF_STARTUP_SCREEN_INDEX, 999);
-        if (startupScreenIndex != 999) {
-            Log.v(TAG, "Already migrated to new screen index pref value");
-            return startupScreenIndex;
-        }
+        String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
+        if (startupScreenSelectedValue == null) return 0;
         else {
-            String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
-            if (startupScreenSelectedValue == null) return 0;
-            else {
-                String[] startupScreenValues =
-                        mContext.getResources().getStringArray(R.array.drawer_actions);
-                int i = 0;
+            String[] startupScreenValues =
+                    mContext.getResources().getStringArray(R.array.drawer_actions);
+            int i = 0;
 
-                for (String screen : startupScreenValues) {
-                    if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
-                        break;
-                    }
-                    i++;
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return i;
                 }
-                if (i <= (startupScreenValues.length - 1)) return i;
-                else {
-                    // Startup screen is wrong return 0 which is wizard
-                    // and save new value to shared prefs
-                    editor.putInt(PREF_STARTUP_SCREEN_INDEX, 0);
-                    return 0;
-                }
+                i++;
             }
+
+            //fix, could not find startup screen
+            setStartupScreenIndex(0);
+            return 0;
         }
     }
 
     public void setStartupScreenIndex(int position) {
-        editor.putInt(PREF_STARTUP_SCREEN_INDEX, position);
+        String[] startupScreenValues =
+                mContext.getResources().getStringArray(R.array.drawer_actions);
+        String startupScreenValue;
+
+        try {
+            startupScreenValue = startupScreenValues[position];
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            startupScreenValue = startupScreenValues[0];
+        }
+
+        editor.putString(PREF_STARTUP_SCREEN, startupScreenValue).apply();
     }
 
     public String[] getWearSwitches() {

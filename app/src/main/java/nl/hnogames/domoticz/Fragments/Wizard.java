@@ -372,8 +372,8 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
+                                        ((MainActivity) getActivity()).drawNavigationMenu();
                                         ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
-                                        ((MainActivity) getActivity()).buildScreen();
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                     }
                                 }))
@@ -384,8 +384,8 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
+                                        ((MainActivity) getActivity()).drawNavigationMenu();
                                         ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
-                                        ((MainActivity) getActivity()).buildScreen();
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                     }
                                 }))
