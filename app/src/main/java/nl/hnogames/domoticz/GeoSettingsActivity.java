@@ -47,7 +47,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
@@ -57,6 +57,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -202,10 +203,16 @@ public class GeoSettingsActivity extends AppCompatActivity
             mApiClient.connect();
         }
         if (map == null) {
-            map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-            map.getUiSettings().setMapToolbarEnabled(true);
-            map.getUiSettings().setTiltGesturesEnabled(false);
-            checkForLocationPermission(ACTION_MAP_LOCATION);
+            MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    GeoSettingsActivity.this.map = googleMap;
+                    map.getUiSettings().setMapToolbarEnabled(true);
+                    map.getUiSettings().setTiltGesturesEnabled(false);
+                    checkForLocationPermission(ACTION_MAP_LOCATION);
+                }
+            });
         }
 
     }
@@ -580,7 +587,8 @@ public class GeoSettingsActivity extends AppCompatActivity
      * @return true if it is.
      */
     private boolean isGooglePlayServicesAvailable() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+        int resultCode = api.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "Google Play services is available.");
