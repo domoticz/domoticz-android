@@ -1,5 +1,5 @@
 # DomoticzForAndroid
-This is a Android for Domoticz and will soon be in the Play Store (not ready yet)
+This is a Android client for Domoticz and is available for download in the Play Store.
 
 # Domoticz
 -----
@@ -8,7 +8,7 @@ This is a Android for Domoticz and will soon be in the Play Store (not ready yet
 
 # Google Play Store
 -----
-You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets..  
+You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets.  
 
 **Free:**  
 [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)
@@ -18,7 +18,7 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 
 # Geofencing
 -----
-Add (one or multiple) Geofences and connected a switch to it  
+Add (one or multiple) Geofences and connect a switch to it which will be triggered when entering the Geofence.
 ![geofencing](https://cloud.githubusercontent.com/assets/14561640/11994853/4e504300-aa46-11e5-83b1-ae71b9d8f322.png)
 
 
@@ -30,19 +30,20 @@ See more information and toggle switches right from your home screen!
 
 # Android Wear
 -----
-You can toggle switches with your Android Wear device  
+Toggle switches with your Android Wear device!
+All Android Wear devices are supported.
 ![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
 
 
 # Floorplan
 -----
-Config your floorplan within Domoticz  
+Use your devices within your floorplans 
 ![floorplan](https://cloud.githubusercontent.com/assets/14561640/11994856/5817e6ea-aa46-11e5-8c50-44ded81f7b7d.png)
 
 
 # Screenshots
 -----
-Here some screenshots
+Some screenshots
 
 ![2](https://cloud.githubusercontent.com/assets/14561640/11994848/3e03224c-aa46-11e5-85c2-6833b6891baf.png)
 ![1](https://cloud.githubusercontent.com/assets/14561640/11994849/3e27abd0-aa46-11e5-9d28-47185ffb53f6.png)
