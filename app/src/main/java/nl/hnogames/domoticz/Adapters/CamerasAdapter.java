@@ -37,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 
 @SuppressWarnings("unused")
@@ -44,10 +45,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private static onClickListener onClickListener;
     private final Context mContext;
     private ArrayList<CameraInfo> mDataset;
+    private Domoticz domoticz;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext) {
         this.mDataset = data;
         this.mContext = mContext;
+        this.domoticz  = new Domoticz(mContext);
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
@@ -64,14 +67,13 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-
         if (mDataset != null && mDataset.size() > 0) {
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
             String address = cameraInfo.getAddress();
-            String imageUrl = cameraInfo.getImageURL();
+            String imageUrl = domoticz.getSnapshotUrl(cameraInfo);
 
-            int numberOfDevices = mDataset.get(position).getDevices();
+            int numberOfDevices = cameraInfo.getDevices();
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
 
             holder.name.setText(name);

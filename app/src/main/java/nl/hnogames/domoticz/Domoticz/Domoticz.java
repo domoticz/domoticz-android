@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
@@ -301,6 +302,10 @@ public class Domoticz {
 
             case Json.Url.Request.CAMERAS:
                 url = Url.Category.CAMERAS;
+                break;
+
+            case Json.Url.Request.CAMERA:
+                url = Url.Category.CAMERA;
                 break;
 
             case Json.Url.Request.DEVICES:
@@ -612,6 +617,10 @@ public class Domoticz {
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url);
+    }
+
+    public String getSnapshotUrl(CameraInfo camera) {
+        return constructGetUrl(Json.Url.Request.CAMERA)+camera.getIdx();
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -1102,6 +1111,7 @@ public class Domoticz {
                 int TEMPERATURE = 5;
                 int WEATHER = 6;
                 int CAMERAS = 7;
+                int CAMERA = 21;
                 int SUNRISE_SUNSET = 8;
                 int VERSION = 9;
                 int DEVICES = 10;
@@ -1186,6 +1196,7 @@ public class Domoticz {
             String SWITCHES = "/json.htm?type=command&param=getlightswitches";
             String WEATHER = ALLDEVICES + "&filter=weather&used=true";
             String CAMERAS = "/json.htm?type=cameras";
+            String CAMERA = "/camsnapshot.jpg?idx=";
             String UTILITIES = ALLDEVICES + "&filter=utility&used=true";
             String PLANS = "/json.htm?type=plans";
             String TEMPERATURE = ALLDEVICES + "&filter=temp&used=true";

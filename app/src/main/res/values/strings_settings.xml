@@ -22,6 +22,9 @@
     <string name="extra_data_title">Extra data on dashboard</string>
     <string name="show_extra_data_on">Show extra data on dashboard</string>
     <string name="show_extra_data_off">Hide extra data on dashboard</string>
+    <string name="always_on_title">Wake Lock</string>
+    <string name="always_on_on">Lock the screen always On</string>
+    <string name="always_on_off">Don\'t lock the screen to always On</string>
 
 
     <!--        Wear settings       -->

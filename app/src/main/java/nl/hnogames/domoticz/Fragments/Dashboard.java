@@ -104,39 +104,38 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
         getActionBar().setTitle(R.string.title_dashboard);
 
         if (planName != null && planName.length() > 0)
             getActionBar().setTitle(planName + "");
 
         processDashboard();
-
     }
 
     private void processDashboard() {
-        if (listView != null) {
-            //switch toggled, refresh listview
-            state = listView.onSaveInstanceState();
-            WidgetUtils.RefreshWidgets(mContext);
-        }
+            showProgressDialog();
 
-        mDomoticz = new Domoticz(mContext);
-        mDomoticz.getDevices(new DevicesReceiver() {
-            @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                processDevices(switches);
+            if (listView != null) {
+                //switch toggled, refresh listview
+                state = listView.onSaveInstanceState();
             }
 
-            @Override
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
+            mDomoticz = new Domoticz(mContext);
+            mDomoticz.getDevices(new DevicesReceiver() {
+                @Override
+                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                    processDevices(switches);
+                }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        }, planID, null);
+                @Override
+                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            }, planID, null);
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
@@ -252,8 +251,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            hideProgressDialog();
         }
+        hideProgressDialog();
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {

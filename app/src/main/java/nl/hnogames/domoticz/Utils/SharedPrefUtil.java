@@ -60,6 +60,7 @@ public class SharedPrefUtil {
 
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    public static final String PREF_ALWAYS_ON = "alwayson";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
@@ -103,6 +104,9 @@ public class SharedPrefUtil {
         editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
+    public boolean getAwaysOn() {
+        return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
     public boolean isCardCompleted(String cardTag) {
         return prefs.getBoolean("CARD" + cardTag, false);
     }
@@ -162,24 +166,8 @@ public class SharedPrefUtil {
     }
 
     public void removeWizard() {
-        //1 change startup screen
-        String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
-        String[] startupScreenValues =
-                mContext.getResources().getStringArray(R.array.drawer_actions);
-
-        if (startupScreenSelectedValue == null) {
-            editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[0]).apply(); //set to dashboard
-        } else {
-            int i = 0;
-            for (String screen : startupScreenValues) {
-                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
-                    break;
-                }
-                i++;
-            }
-            if (i == 0)              //first = wizard
-                editor.putString(PREF_STARTUP_SCREEN, startupScreenValues[1]).apply(); //set to dashboard
-        }
+        // 1 if start up screen is 0 (wizard) change to dashboard
+        if (getStartupScreenIndex() == 0) setStartupScreenIndex(1);
 
         //2 remove wizard from navigation
         String removeWizard = "";
@@ -195,6 +183,7 @@ public class SharedPrefUtil {
         if (removeWizard.length() > 0) {
             selections.remove(removeWizard);
             editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
+            editor.commit();
         }
     }
 
@@ -208,11 +197,14 @@ public class SharedPrefUtil {
 
             for (String screen : startupScreenValues) {
                 if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
-                    break;
+                    return i;
                 }
                 i++;
             }
-            return i;
+
+            //fix, could not find startup screen
+            setStartupScreenIndex(0);
+            return 0;
         }
     }
 

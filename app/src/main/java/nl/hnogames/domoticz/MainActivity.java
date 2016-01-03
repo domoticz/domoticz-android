@@ -44,6 +44,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -109,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            addDrawerItems();
-            addFragment();
+            drawNavigationMenu();
+            WidgetUtils.RefreshWidgets(this);
 
             //get latest update version
             Domoticz domoticz = new Domoticz(this);
@@ -149,6 +150,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void drawNavigationMenu() {
+        setWakeLock();
+        addDrawerItems();
+        addFragment();
+    }
+
+    private void setWakeLock(){
+        if(mSharedPrefs.getAwaysOn())
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
     /* Called when the second activity's finished */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
@@ -162,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
+                    drawNavigationMenu();
                     refreshFragment();
                     updateDrawerItems();
                     break;
