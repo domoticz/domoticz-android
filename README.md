@@ -1,5 +1,5 @@
 # DomoticzForAndroid
-This is a Android for Domoticz is available for download in the Play Store
+This is a Android client for Domoticz and is available for download in the Play Store.
 
 # Domoticz
 -----
