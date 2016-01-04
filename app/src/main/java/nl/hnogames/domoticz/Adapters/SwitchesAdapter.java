@@ -124,9 +124,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
             case Domoticz.Device.Type.Value.X10SIREN:
             case Domoticz.Device.Type.Value.DOORLOCK:
-                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
-                    row = setDefaultRowId(holder);
-                else
+                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
+                    if(mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                        row = setSecurityPanelSwitchRowId(holder);
+                    else
+                        row = setDefaultRowId(holder);
+                }else
                     row = setOnOffSwitchRowId(holder);
                 break;
 
@@ -237,6 +240,23 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    private View setSecurityPanelSwitchRowId(ViewHolder holder) {
+        layoutResourceId = R.layout.switch_row_securitypanel;
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+
+        return row;
+    }
+
 
     private View setBlindsRowId(ViewHolder holder) {
         layoutResourceId = R.layout.switch_row_blinds;
@@ -290,7 +310,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
                 if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
-                    setDefaultRowData(mDevicesInfo, holder);
+                {
+                    if(mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                        setSecurityPanelSwitchRowData(mDevicesInfo, holder);
+                    else
+                        setDefaultRowData(mDevicesInfo, holder);
+                }
                 else
                     setOnOffSwitchRowData(mDevicesInfo, holder);
                 break;
@@ -518,6 +543,70 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(1f);
 
     }
+
+    private void setSecurityPanelSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder) {
+        holder.isProtected = mDevicesInfo.isProtected();
+        holder.switch_name.setText(mDevicesInfo.getName());
+
+        String text = context.getString(R.string.last_update) + ": " +
+                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+        holder.signal_level.setText(text);
+
+        text = context.getString(R.string.status) + ": " +
+                String.valueOf(mDevicesInfo.getData());
+        holder.switch_battery_level.setText(text);
+
+        if (holder.isProtected)
+            holder.buttonOn.setEnabled(false);
+
+        holder.buttonOn.setId(mDevicesInfo.getIdx());
+        if(mDevicesInfo.getData().startsWith("Arm"))
+            holder.buttonOn.setText(context.getString(R.string.button_disarm));
+        else
+            holder.buttonOn.setText(context.getString(R.string.button_arm));
+
+        holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open security panel
+                handleSecurityPanel(v.getId());
+            }
+        });
+
+        holder.buttonLog.setId(mDevicesInfo.getIdx());
+        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleLogButtonClick(v.getId());
+            }
+        });
+        holder.buttonTimer.setId(mDevicesInfo.getIdx());
+        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTimerButtonClick(v.getId());
+            }
+        });
+
+        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.INVISIBLE);
+
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
+                mDevicesInfo.getType(),
+                mDevicesInfo.getSwitchType(),
+                mDevicesInfo.getStatusBoolean(),
+                mDevicesInfo.getUseCustomImage(),
+                mDevicesInfo.getImage())).into(holder.iconRow);
+
+        if (!mDevicesInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+    }
+
 
     private void setBlindsRowData(DevicesInfo mDevicesInfo,
                                   ViewHolder holder) {
@@ -748,6 +837,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
     private void handleOnButtonClick(int idx, boolean action) {
         listener.onButtonClick(idx, action);
+    }
+
+    private void handleSecurityPanel(int idx) {
+        listener.onSecurityPanelButtonClick(idx);
     }
 
     private void handleLogButtonClick(int idx) {

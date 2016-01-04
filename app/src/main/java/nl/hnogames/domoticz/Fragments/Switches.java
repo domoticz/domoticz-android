@@ -51,6 +51,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
+import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
@@ -381,7 +382,22 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
-    public void onThermostatClick(int idx, int action, double newSetPoint) {
+    public void onThermostatClick(int idx, int action, double newSetPoint) {}
+
+    @Override
+    public void onSecurityPanelButtonClick(int idx) {
+
+        SecurityPanelDialog securityDialog = new SecurityPanelDialog(
+                getActivity(),
+                getSwitch(idx));
+        securityDialog.show();
+
+        securityDialog.onDismissListener(new SecurityPanelDialog.DismissListener() {
+            @Override
+            public void onDismiss() {
+                getSwitchesData();//refresh
+            }
+        });
     }
 
     private DevicesInfo getSwitch(int idx) {

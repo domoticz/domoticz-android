@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
+import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
 import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
@@ -330,6 +331,10 @@ public class Domoticz {
                 url = Url.Category.SWITCHTIMER;
                 break;
 
+            case Json.Url.Request.SETSECURITY:
+                url = Url.System.SETSECURITY;
+                break;
+
             case Json.Url.Request.UPDATE:
                 url = Url.System.UPDATE;
                 break;
@@ -344,6 +349,10 @@ public class Domoticz {
 
             case Json.Url.Request.EVENTXML:
                 url = Url.System.EVENTXML;
+                break;
+
+            case Json.Url.Request.SETTINGS:
+                url = Url.System.SETTINGS;
                 break;
 
             case Json.Url.Request.GRAPH:
@@ -656,6 +665,22 @@ public class Domoticz {
                 url);
     }
 
+    public void setSecurityPanelAction(int secStatus,
+                          String seccode,
+                          setCommandReceiver receiver) {
+
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.SETSECURITY);
+        url += "&secstatus="+secStatus;
+        url += "&seccode="+seccode;
+
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
@@ -723,6 +748,15 @@ public class Domoticz {
         UtilitiesParser parser = new UtilitiesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UTILITIES);
         RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void getSettings(SettingsReceiver receiver) {
+        SettingsParser parser = new SettingsParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.SETTINGS);
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url);
@@ -1129,6 +1163,8 @@ public class Domoticz {
                 int EVENTS = 18;
                 int EVENTXML = 19;
                 int GRAPH = 20;
+                int SETTINGS = 22;
+                int SETSECURITY = 23;
             }
 
             interface Set {
@@ -1175,6 +1211,14 @@ public class Domoticz {
         interface Action {
             int ON = 55;
             int OFF = 56;
+        }
+    }
+
+    public interface Security {
+        interface Status {
+            int ARMHOME = 1;
+            int ARMAWAY = 2;
+            int DISARM = 0;
         }
     }
 
@@ -1280,6 +1324,8 @@ public class Domoticz {
             String EVENTACTION = "/json.htm?type=events&param=create&name=LichtenAan&eventid=";
             String EVENTSTATUS = "&eventstatus=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
+            String SETTINGS = "/json.htm?type=settings";
+            String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
         }
     }
 

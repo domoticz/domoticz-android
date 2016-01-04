@@ -39,4 +39,6 @@ public interface switchesClickListener {
     void onTimerButtonClick(int idx);
 
     void onThermostatClick(int idx, int action, double newSetPoint);
+
+    void onSecurityPanelButtonClick(int idx);
 }

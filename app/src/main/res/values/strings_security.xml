@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_security_panel">Security Panel</string>
+    <string name="security_pin">Pin Code</string>
+    <string name="security_disarm">Disarm</string>
+    <string name="security_arm_home">Arm Home</string>
+    <string name="security_arm_away">Arm Away</string>
+    <string name="wrongcode">Wrong Code entered!</string>
+    <string name="security_generic_error">Could not change status of Security Panel</string>
+</resources>
