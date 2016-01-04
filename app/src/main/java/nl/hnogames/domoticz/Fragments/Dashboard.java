@@ -47,6 +47,7 @@ import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
+import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -485,6 +486,21 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onError(Exception error) {
                 errorHandling(error);
+            }
+        });
+    }
+
+    @Override
+    public void onSecurityPanelButtonClick(int idx) {
+        SecurityPanelDialog securityDialog = new SecurityPanelDialog(
+                getActivity(),
+                getDevice(idx));
+        securityDialog.show();
+
+        securityDialog.onDismissListener(new SecurityPanelDialog.DismissListener() {
+            @Override
+            public void onDismiss() {
+                processDashboard();//refresh
             }
         });
     }

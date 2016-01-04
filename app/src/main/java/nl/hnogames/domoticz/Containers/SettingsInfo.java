@@ -20,25 +20,38 @@
  *
  */
 
-package nl.hnogames.domoticz.Interfaces;
+package nl.hnogames.domoticz.Containers;
 
-public interface switchesClickListener {
+import com.google.gson.Gson;
 
-    void onSwitchClick(int idx, boolean action);
+import org.json.JSONException;
+import org.json.JSONObject;
 
-    void onBlindClick(int idx, int action);
+public class SettingsInfo {
+    private JSONObject jsonObject;
+    private String secPassword;
+    private int secOnDelay;
 
-    void onDimmerChange(int idx, int value);
+    public SettingsInfo(JSONObject row) throws JSONException {
+        this.jsonObject = row;
+        if (row.has("SecPassword"))
+            secPassword = row.getString("SecPassword");
+        if (row.has("SecOnDelay"))
+            secOnDelay = row.getInt("SecOnDelay");
+    }
 
-    void onButtonClick(int idx, boolean action);
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                new Gson().toJson(this) +
+                '}';
+    }
 
-    void onLogButtonClick(int idx);
+    public String getSecPassword() {
+        return secPassword;
+    }
+    public int getSecOnDelay() {
+        return secOnDelay;
+    }
 
-    void onColorButtonClick(int idx);
-
-    void onTimerButtonClick(int idx);
-
-    void onThermostatClick(int idx, int action, double newSetPoint);
-
-    void onSecurityPanelButtonClick(int idx);
 }

@@ -22,6 +22,9 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class UsefulBits {
 
     public static boolean isEmpty(String string) {
@@ -76,4 +79,29 @@ public class UsefulBits {
 
         return new double[]{computedH, computedS, computedV};
     }
+
+
+    public static String getMd5String(String password) {
+        StringBuffer hexString = new StringBuffer();
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+
+            byte[] hash = md.digest();
+            for (int i = 0; i < hash.length; i++) {
+                if ((0xff & hash[i]) < 0x10) {
+                    hexString.append("0"
+                            + Integer.toHexString((0xFF & hash[i])));
+                } else {
+                    hexString.append(Integer.toHexString(0xFF & hash[i]));
+                }
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return hexString.toString();
+    }
+
 }
