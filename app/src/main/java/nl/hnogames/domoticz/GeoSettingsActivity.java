@@ -54,6 +54,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -81,33 +82,37 @@ public class GeoSettingsActivity extends AppCompatActivity
         GoogleApiClient.OnConnectionFailedListener {
 
     private final String TAG = "GeoSettings";
+
     @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
+
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_INTERVAL = 100000;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_FASTEST_INTERVAL = 50000;
+    @SuppressWarnings("FieldCanBeLocal")
+    private int zoomLevel = 15;
 
     private final int ACTION_MAP_LOCATION = 10;
     private final int ACTION_SET_GEOFENCE_SERVICE = 11;
-    private final int ACTION_GET_LOCATION = 12;
 
+    private final int ACTION_GET_LOCATION = 12;
     private final int REQUEST_MAP_LOCATION = 20;
     private final int REQUEST_GEOFENCE_SERVICE = 21;
-    private final int REQUEST_GET_LOCATION = 22;
 
+    private final int REQUEST_GET_LOCATION = 22;
     private GoogleMap map;
+
     private SharedPrefUtil mSharedPrefs;
 
     private Domoticz domoticz;
-
     // Stores the PendingIntent used to request geofence monitoring.
     private PendingIntent mGeofenceRequestIntent;
     private GoogleApiClient mApiClient;
     private List<Geofence> mGeofenceList;
     private ArrayList<LocationInfo> locations;
-    private LocationAdapter adapter;
 
+    private LocationAdapter adapter;
     private CoordinatorLayout coordinatorLayout;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
@@ -139,8 +144,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
-        domoticz = new Domoticz(this);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         if (!isGooglePlayServicesAvailable()) {
             Toast.makeText(
@@ -152,7 +155,10 @@ public class GeoSettingsActivity extends AppCompatActivity
             return;
         }
 
+        domoticz = new Domoticz(this);
         mSharedPrefs = new SharedPrefUtil(this);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
         createListView();
         initSwitches();
         createLocationRequest();
@@ -501,10 +507,25 @@ public class GeoSettingsActivity extends AppCompatActivity
                         //noinspection ResourceType
                         currentLocation
                                 = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
+                        if (currentLocation != null) {
+                            animateCamera(
+                                    currentLocation.getLatitude(),
+                                    currentLocation.getLongitude());
+                        }
                     }
                 });
         isLocationUpdatesStarted = true;
 
+    }
+
+    private void animateCamera(double lat, double lng) {
+        if (map != null) {
+            CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(lat, lng));
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(zoomLevel);
+
+            map.moveCamera(center);
+            map.animateCamera(zoom);
+        }
     }
 
     private void setMyLocationOnMap() {
