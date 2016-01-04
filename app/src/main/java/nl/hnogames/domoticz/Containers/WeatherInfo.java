@@ -55,43 +55,29 @@ public class WeatherInfo {
     public WeatherInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
 
-        if (row.has("Favorite"))
-            Favorite = row.getInt("Favorite");
-        if (row.has("Barometer"))
-            Barometer = row.getInt("Barometer");
         isProtected = row.getBoolean("Protected");
-        if (row.has("HardwareID"))
-            HardwareID = row.getInt("HardwareID");
-        if (row.has("Type"))
-            HardwareName = row.getString("Type");
-        if (row.has("TypeImg"))
-            TypeImg = row.getString("TypeImg");
-        if (row.has("LastUpdate"))
-            LastUpdate = row.getString("LastUpdate");
-        if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
-        if (row.has("Name"))
-            Name = row.getString("Name");
-        if (row.has("Data")) {
-            Data = row.getString("Data");
-            if (Data.indexOf(';') >= 0) {
-                Data = Data.substring(0, Data.indexOf(';'));
-            }
-        }
+        idx = row.getInt("idx");
 
-        if (row.has("DewPoint"))
-            DewPoint = row.getLong("DewPoint");
-        if (row.has("Temp"))
-            Temp = row.getLong("Temp");
+        if (row.has("Favorite")) Favorite = row.getInt("Favorite");
+        if (row.has("Barometer")) Barometer = row.getInt("Barometer");
+        if (row.has("HardwareID")) HardwareID = row.getInt("HardwareID");
+        if (row.has("Type")) HardwareName = row.getString("Type");
+        if (row.has("Type")) Type = row.getString("Type");
+        if (row.has("TypeImg")) TypeImg = row.getString("TypeImg");
+        if (row.has("LastUpdate")) LastUpdate = row.getString("LastUpdate");
+        if (row.has("SetPoint")) setPoint = row.getLong("SetPoint");
+        if (row.has("Name")) Name = row.getString("Name");
+        if (row.has("Data")) Data = row.getString("Data");
+            if (Type.equals("Rain")) Data = Data.substring(Data.indexOf(';') + 1, Data.length());
+            if (Type.equals("Wind")) Data = Data.substring(0, Data.indexOf(';'));
+
+        if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
+        if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
         if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
         if (row.has("DirectionStr")) DirectionStr = row.getString("DirectionStr");
         if (row.has("Chill")) Chill = row.getString("Chill");
         if (row.has("Speed")) Speed = row.getString("Speed");
-
-        if (row.has("Type"))
-            Type = row.getString("Type");
-        idx = row.getInt("idx");
 
         if (row.has("SignalLevel")) {
             try {
