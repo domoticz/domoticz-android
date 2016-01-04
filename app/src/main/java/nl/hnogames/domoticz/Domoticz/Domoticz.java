@@ -201,6 +201,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
+        switchesSupported.add(Device.Type.Value.SECURITY);
         return switchesSupported;
     }
 
@@ -223,6 +224,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(Device.Type.Name.DOORLOCK);
         switchesSupported.add(Device.Type.Name.DOORBELL);
+        switchesSupported.add(Device.Type.Name.SECURITY);
         return switchesSupported;
     }
 
@@ -1080,11 +1082,13 @@ public class Domoticz {
             @SuppressWarnings("unused")
             interface Value {
                 int RGB = 1;
+                int SECURITYPANEL = 2;
             }
 
             @SuppressWarnings("unused")
             interface Name {
                 String RGB = "RGB";
+                String SECURITYPANEL = "Security Panel";
             }
         }
 

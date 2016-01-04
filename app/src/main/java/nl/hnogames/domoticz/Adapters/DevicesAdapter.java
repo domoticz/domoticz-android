@@ -150,7 +150,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.MEDIAPLAYER:
                     case Domoticz.Device.Type.Value.X10SIREN:
                     case Domoticz.Device.Type.Value.DOORLOCK:
-                        row = setOnOffSwitchRowId(holder);
+
+                        if(mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                            row = setDefaultRowId(holder);
+                        else
+                            row = setOnOffSwitchRowId(holder);
+
                         break;
 
                     case Domoticz.Device.Type.Value.MOTION:
@@ -385,7 +390,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.CONTACT:
                 case Domoticz.Device.Type.Value.DUSKSENSOR:
                 case Domoticz.Device.Type.Value.DOORLOCK:
-                    setOnOffSwitchRowData(mDeviceInfo, holder);
+
+                    if(mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                        setDefaultRowData(mDeviceInfo, holder);
+                    else
+                        setOnOffSwitchRowData(mDeviceInfo, holder);
+
                     break;
 
                 case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
