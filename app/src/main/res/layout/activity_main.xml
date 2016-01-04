@@ -15,7 +15,7 @@
             android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MainActivity"/>
+            tools:context=".MainActivity" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/RecyclerView"
@@ -23,6 +23,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="#ffffff"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
     </android.support.v4.widget.DrawerLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -139,7 +139,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     // add dynamic list view
     // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
-        if(getView()!=null) {
+        if (getView() != null) {
             try {
                 coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
 
@@ -335,14 +335,13 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         });
     }
 
-    private void setColor(int selectedColor, final int idx)
-    {
+    private void setColor(int selectedColor, final int idx) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: "+selectedColor);
+        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
-        if(selectedColor==-1) {
+        if (selectedColor == -1) {
             isWhite = true;
         }
 
@@ -508,7 +507,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("onDimmerChange");
         DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch != null) {
-            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level) + ": " + clickedSwitch.getName() + " " + mContext.getString(R.string.to) + " " + (value-1), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level) + ": " + clickedSwitch.getName() + " " + mContext.getString(R.string.to) + " " + (value - 1), Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;

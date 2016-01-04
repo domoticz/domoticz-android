@@ -124,7 +124,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
             case Domoticz.Device.Type.Value.X10SIREN:
             case Domoticz.Device.Type.Value.DOORLOCK:
-                row = setOnOffSwitchRowId(holder);
+                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                    row = setDefaultRowId(holder);
+                else
+                    row = setOnOffSwitchRowId(holder);
                 break;
 
             case Domoticz.Device.Type.Value.MOTION:
@@ -167,6 +170,20 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                         "Switch type not supported in the adapter for: \n"
                                 + mDevicesInfo.toString());
         }
+        return row;
+    }
+
+    private View setDefaultRowId(ViewHolder holder) {
+        layoutResourceId = R.layout.dashboard_row_default;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+
         return row;
     }
 
@@ -272,7 +289,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.CONTACT:
             case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
-                setOnOffSwitchRowData(mDevicesInfo, holder);
+                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                    setDefaultRowData(mDevicesInfo, holder);
+                else
+                    setOnOffSwitchRowData(mDevicesInfo, holder);
                 break;
 
             case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
@@ -310,6 +330,44 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 throw new NullPointerException(
                         "No supported switch type defined in the adapter (setSwitchRowData)");
         }
+    }
+
+    private void setDefaultRowData(DevicesInfo mDeviceInfo,
+                                   ViewHolder holder) {
+        holder.isProtected = mDeviceInfo.isProtected();
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mDeviceInfo.getName());
+
+        String text = context.getString(R.string.last_update) + ": " +
+                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        if (holder.signal_level != null)
+            holder.signal_level.setText(text);
+
+        text = context.getString(R.string.status) + ": " +
+                String.valueOf(mDeviceInfo.getData());
+        if (holder.switch_battery_level != null)
+            holder.switch_battery_level.setText(text);
+
+        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
+            holder.switch_battery_level.setText(context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage());
+        if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
+            holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+        if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
+                !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
+            holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        holder.iconRow.setAlpha(1f);
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
     }
 
     private boolean canHandleStopButton(DevicesInfo mDevicesInfo) {
@@ -620,7 +678,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     dimmerOnOffSwitch.setChecked(true);
                 }
 
-                handleDimmerChange(mDevicesInfo.getIdx(), progress+1);
+                handleDimmerChange(mDevicesInfo.getIdx(), progress + 1);
                 mDevicesInfo.setLevel(progress);
             }
         });

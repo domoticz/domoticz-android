@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.hnogames.domoticz">
 
     <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
         android:resizeable="true"
         android:smallScreens="true"
-        android:largeScreens="true"
-        android:xlargeScreens="true"
-        android:normalScreens="true"
-        android:anyDensity="true"/>
+        android:xlargeScreens="true" />
 
     <permission
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
@@ -91,7 +90,7 @@
         <activity
             android:name=".WidgetActionActivity"
             android:configChanges="orientation|screenSize"
-            android:label="Domoticz Widget Action"/>
+            android:label="Domoticz Widget Action" />
 
         <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService" />
 
@@ -166,7 +165,7 @@
         <activity
             android:name=".Welcome.WelcomeViewActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/welcome_title_activity_welcome"/>
+            android:label="@string/welcome_title_activity_welcome" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

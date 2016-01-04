@@ -156,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
         addFragment();
     }
 
-    private void setWakeLock(){
-        if(mSharedPrefs.getAwaysOn())
+    private void setWakeLock() {
+        if (mSharedPrefs.getAwaysOn())
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
             getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

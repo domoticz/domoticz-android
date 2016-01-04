@@ -44,36 +44,36 @@ public class UsefulBits {
         return System.getProperty("line.separator");
     }
 
-    public static double[] rgb2hsv (int red, int green, int blue) {
+    public static double[] rgb2hsv(int red, int green, int blue) {
         double computedH = 0, computedS = 0, computedV = 0;
         double r = 0;
         double g = 0;
         double b = 0;
 
-        if (red<0 || green<0 || blue<0 || red>255 || green>255 || blue>255) {
+        if (red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255) {
             return null;
         }
 
-        r=(double)red/255;
-        g=(double)green/255;
-        b=(double)blue/255;
+        r = (double) red / 255;
+        g = (double) green / 255;
+        b = (double) blue / 255;
 
-        double minRGB = Math.min(r,Math.min(g,b));
-        double maxRGB = Math.max(r,Math.max(g,b));
+        double minRGB = Math.min(r, Math.min(g, b));
+        double maxRGB = Math.max(r, Math.max(g, b));
 
         // Black-gray-white
-        if (minRGB==maxRGB) {
+        if (minRGB == maxRGB) {
             computedV = minRGB;
-            return new double[]{0,0,computedV};
+            return new double[]{0, 0, computedV};
         }
 
         // Colors other than black-gray-white:
-        double d = (r==minRGB) ? g-b : ((b==minRGB) ? r-g : b-r);
-        double h = (r==minRGB) ? 3 : ((b==minRGB) ? 1 : 5);
-        computedH = 60*(h - d/(maxRGB - minRGB));
-        computedS = (maxRGB - minRGB)/maxRGB;
+        double d = (r == minRGB) ? g - b : ((b == minRGB) ? r - g : b - r);
+        double h = (r == minRGB) ? 3 : ((b == minRGB) ? 1 : 5);
+        computedH = 60 * (h - d / (maxRGB - minRGB));
+        computedS = (maxRGB - minRGB) / maxRGB;
         computedV = maxRGB;
 
-        return new double[]{computedH,computedS,computedV};
+        return new double[]{computedH, computedS, computedV};
     }
 }

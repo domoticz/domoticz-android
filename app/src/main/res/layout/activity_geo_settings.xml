@@ -1,5 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -32,31 +31,31 @@
                     style="@style/row_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="@string/title_geofence"
-                    android:layout_toLeftOf="@+id/switch_button"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/switch_button"
+                    android:text="@string/title_geofence" />
 
                 <TextView
                     android:id="@+id/geofence_description"
                     style="@style/row_body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/geofence_onoff"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/geofence_onoff"
-                    android:text="@string/description_geofence"
                     android:layout_alignRight="@+id/geofence_onoff"
-                    android:layout_alignEnd="@+id/geofence_onoff" />
+                    android:layout_below="@+id/geofence_onoff"
+                    android:text="@string/description_geofence" />
 
                 <Switch
                     android:id="@+id/switch_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingLeft="10dp"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp" />
 
             </RelativeLayout>
 
@@ -70,31 +69,31 @@
                     style="@style/row_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="@string/title_geofence_notifications"
-                    android:layout_toLeftOf="@+id/switch_notifications_button"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/switch_notifications_button"
+                    android:text="@string/title_geofence_notifications" />
 
                 <TextView
                     android:id="@+id/geofence_notifications_description"
                     style="@style/row_body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/geofence_notifications_onoff"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/geofence_notifications_onoff"
-                    android:text="@string/description_geofence_notifications"
                     android:layout_alignRight="@+id/geofence_notifications_onoff"
-                    android:layout_alignEnd="@+id/geofence_notifications_onoff" />
+                    android:layout_below="@+id/geofence_notifications_onoff"
+                    android:text="@string/description_geofence_notifications" />
 
                 <Switch
                     android:id="@+id/switch_notifications_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingLeft="10dp"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp" />
 
             </RelativeLayout>
 

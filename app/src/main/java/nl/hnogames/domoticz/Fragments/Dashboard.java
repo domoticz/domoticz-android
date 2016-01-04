@@ -48,7 +48,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
@@ -113,29 +112,29 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
-            showProgressDialog();
+        showProgressDialog();
 
-            if (listView != null) {
-                //switch toggled, refresh listview
-                state = listView.onSaveInstanceState();
+        if (listView != null) {
+            //switch toggled, refresh listview
+            state = listView.onSaveInstanceState();
+        }
+
+        mDomoticz = new Domoticz(mContext);
+        mDomoticz.getDevices(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                processDevices(switches);
             }
 
-            mDomoticz = new Domoticz(mContext);
-            mDomoticz.getDevices(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                    processDevices(switches);
-                }
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
 
-                @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            }, planID, null);
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        }, planID, null);
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
@@ -188,7 +187,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (switches == null)
             return;
 
-        if(getView()!=null) {
+        if (getView() != null) {
             try {
                 coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
                 mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
@@ -436,14 +435,13 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         });
     }
 
-    private void setColor(int selectedColor, final int idx)
-    {
+    private void setColor(int selectedColor, final int idx) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: "+selectedColor);
+        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
-        if(selectedColor==-1) {
+        if (selectedColor == -1) {
             isWhite = true;
         }
 
@@ -527,7 +525,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onDimmerChange(int idx, int value) {
         addDebugText("onDimmerChange");
         DevicesInfo clickedSwitch = getDevice(idx);
-        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + (value-1), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + (value - 1), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;

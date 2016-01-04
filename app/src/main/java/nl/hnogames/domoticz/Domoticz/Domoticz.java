@@ -201,6 +201,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
+        switchesSupported.add(Device.Type.Value.SECURITY);
         return switchesSupported;
     }
 
@@ -223,6 +224,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(Device.Type.Name.DOORLOCK);
         switchesSupported.add(Device.Type.Name.DOORBELL);
+        switchesSupported.add(Device.Type.Name.SECURITY);
         return switchesSupported;
     }
 
@@ -620,7 +622,7 @@ public class Domoticz {
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
-        return constructGetUrl(Json.Url.Request.CAMERA)+camera.getIdx();
+        return constructGetUrl(Json.Url.Request.CAMERA) + camera.getIdx();
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -680,8 +682,8 @@ public class Domoticz {
         String url = constructSetUrl(jsonUrl, idx, Device.Dimmer.Action.COLOR, 0);
         url = url.replace("%hue%", String.valueOf(hue)).replace("%bright%", String.valueOf(brightness));
 
-        if(isWhite)
-            url = url.replace("&iswhite=false","&iswhite=true");
+        if (isWhite)
+            url = url.replace("&iswhite=false", "&iswhite=true");
 
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
@@ -745,10 +747,10 @@ public class Domoticz {
     }
 
     public String getDeviceType(DevicesInfo device) {
-        if(device == null)
+        if (device == null)
             return null;
 
-        if(!UsefulBits.isEmpty(device.getSwitchType()))
+        if (!UsefulBits.isEmpty(device.getSwitchType()))
             return mContext.getString(R.string.title_switches);
         else
             return device.getType();//Group and Switches are in Type
@@ -1080,11 +1082,13 @@ public class Domoticz {
             @SuppressWarnings("unused")
             interface Value {
                 int RGB = 1;
+                int SECURITYPANEL = 2;
             }
 
             @SuppressWarnings("unused")
             interface Name {
                 String RGB = "RGB";
+                String SECURITYPANEL = "Security Panel";
             }
         }
 
