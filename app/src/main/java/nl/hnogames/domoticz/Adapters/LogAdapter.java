@@ -89,19 +89,18 @@ public class LogAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         int layoutResourceId;
 
-        if(filteredData!=null) {
+        if (filteredData != null) {
             LogInfo mLogInfo = filteredData.get(position);
 
-            if(mLogInfo!=null) {
+            if (mLogInfo != null) {
                 holder = new ViewHolder();
                 String dateTime = "";
                 String message = "";
 
-                if(mLogInfo.getMessage().indexOf("  ")>=0) {
+                if (mLogInfo.getMessage().indexOf("  ") >= 0) {
                     dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
                     message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
-                }
-                else
+                } else
                     message = mLogInfo.getMessage();
 
                 layoutResourceId = R.layout.logs_row_default;

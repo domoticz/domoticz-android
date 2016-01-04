@@ -180,7 +180,7 @@ public class DevicesInfo implements Comparable {
         }
 
         try {
-            if (row.has("SetPoint")){
+            if (row.has("SetPoint")) {
                 setPoint = Double.parseDouble(row.getString("SetPoint"));
             }
         } catch (Exception ex) {

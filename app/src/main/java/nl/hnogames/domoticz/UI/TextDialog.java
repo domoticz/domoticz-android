@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import nl.hnogames.domoticz.R;
 
 public class TextDialog implements
@@ -45,7 +46,7 @@ public class TextDialog implements
     private String titleText;
     private String text;
 
-    public TextDialog (Context context) {
+    public TextDialog(Context context) {
 
         this.context = context;
 

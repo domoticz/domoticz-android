@@ -147,7 +147,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                     GeoSettingsActivity.this,
                     R.string.google_play_services_unavailable,
                     Toast.LENGTH_SHORT).show();
-                    // Snackbar not possible since we're ending the activity
+            // Snackbar not possible since we're ending the activity
             finish();
             return;
         }
@@ -383,7 +383,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(
+                    ActivityCompat.shouldShowRequestPermissionRationale(
                             this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
                 // User has declined already somewhere, we should explain why we need this

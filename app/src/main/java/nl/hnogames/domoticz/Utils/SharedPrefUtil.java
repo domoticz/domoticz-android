@@ -107,6 +107,7 @@ public class SharedPrefUtil {
     public boolean getAwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
     }
+
     public boolean isCardCompleted(String cardTag) {
         return prefs.getBoolean("CARD" + cardTag, false);
     }
@@ -120,6 +121,7 @@ public class SharedPrefUtil {
     public int getPreviousColor(int idx) {
         return prefs.getInt("COLOR" + idx, 0);
     }
+
     public int getPreviousColorPosition(int idx) {
         return prefs.getInt("COLORPOSITION" + idx, 0);
     }
@@ -288,11 +290,10 @@ public class SharedPrefUtil {
                 }
             }
 
-            if(i < selections.size()){
+            if (i < selections.size()) {
                 setNavigationDefaults();
                 return getNavigationActions();
-            }
-            else
+            } else
                 return selectionValues;
 
         }

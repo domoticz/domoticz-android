@@ -124,7 +124,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
             case Domoticz.Device.Type.Value.X10SIREN:
             case Domoticz.Device.Type.Value.DOORLOCK:
-                if(mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
                     row = setDefaultRowId(holder);
                 else
                     row = setOnOffSwitchRowId(holder);
@@ -289,7 +289,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.CONTACT:
             case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
-                if(mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
                     setDefaultRowData(mDevicesInfo, holder);
                 else
                     setOnOffSwitchRowData(mDevicesInfo, holder);
@@ -369,7 +369,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         else
             holder.iconRow.setAlpha(1f);
     }
-    
+
     private boolean canHandleStopButton(DevicesInfo mDevicesInfo) {
         if ((mDevicesInfo.getSubType().indexOf("RAEX") >= 0) ||
                 (mDevicesInfo.getSubType().indexOf("A-OK") >= 0) ||
@@ -678,7 +678,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     dimmerOnOffSwitch.setChecked(true);
                 }
 
-                handleDimmerChange(mDevicesInfo.getIdx(), progress+1);
+                handleDimmerChange(mDevicesInfo.getIdx(), progress + 1);
                 mDevicesInfo.setLevel(progress);
             }
         });

@@ -68,13 +68,13 @@ public class TimersAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(data!=null) {
+        if (data != null) {
             ViewHolder holder;
             int layoutResourceId;
 
             SwitchTimerInfo mSwitchTimerInfo = data.get(position);
 
-            if(mSwitchTimerInfo!=null) {
+            if (mSwitchTimerInfo != null) {
                 holder = new ViewHolder();
                 layoutResourceId = R.layout.timer_row;
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();

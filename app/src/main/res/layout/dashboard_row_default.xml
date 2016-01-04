@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,9 +18,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
+        android:contentDescription="@string/error_image_description"
         android:paddingRight="5dp"
-        android:src="@drawable/clock48"
-        android:contentDescription="@string/error_image_description" />
+        android:src="@drawable/clock48" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -151,7 +151,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.X10SIREN:
                     case Domoticz.Device.Type.Value.DOORLOCK:
 
-                        if(mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                        if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
                             row = setDefaultRowId(holder);
                         else
                             row = setOnOffSwitchRowId(holder);
@@ -391,7 +391,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.DUSKSENSOR:
                 case Domoticz.Device.Type.Value.DOORLOCK:
 
-                    if(mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
+                    if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
                         setDefaultRowData(mDeviceInfo, holder);
                     else
                         setOnOffSwitchRowData(mDeviceInfo, holder);
@@ -844,7 +844,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     seekBar.setProgress(previousDimmerValue);
                 } else if (progress > 0 && !dimmerOnOffSwitch.isChecked())
                     dimmerOnOffSwitch.setChecked(true);
-                handleDimmerChange(mDeviceInfo.getIdx(), progress+1);
+                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1);
                 mDeviceInfo.setLevel(progress);
             }
         });

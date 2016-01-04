@@ -35,6 +35,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private WidgetsAdapter adapter;
+    private SearchView searchViewAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            showAppWidget((DevicesInfo)adapter.getItem(position));
+                            showAppWidget((DevicesInfo) adapter.getItem(position));
                         }
                     });
 
@@ -161,27 +162,26 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         }
     }
 
-    private SearchView searchViewAction;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
-            MenuItem searchMenuItem = menu.findItem(R.id.search);
-            searchViewAction = (SearchView) MenuItemCompat
-                    .getActionView(searchMenuItem);
-            searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+        searchViewAction = (SearchView) MenuItemCompat
+                .getActionView(searchMenuItem);
+        searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    Filter(newText);
-                    return false;
-                }
-            });
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Filter(newText);
+                return false;
+            }
+        });
 
         return super.onCreateOptionsMenu(menu);
     }

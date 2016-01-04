@@ -164,7 +164,7 @@
                 android:id="@+id/local_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:prompt="@string/welcome_ssid_spinner_prompt"/>
+                android:prompt="@string/welcome_ssid_spinner_prompt" />
 
             <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                 android:id="@+id/local_server_input"
