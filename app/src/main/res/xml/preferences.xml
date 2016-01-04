@@ -41,8 +41,8 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableWearItems"
-            android:summaryOff="@string/wear_custom_on"
-            android:summaryOn="@string/wear_custom_off"
+            android:summaryOff="@string/wear_custom_off"
+            android:summaryOn="@string/wear_custom_on"
             android:title="@string/enable_wear_select" />
         <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
             android:defaultValue="@array/empty_array"
