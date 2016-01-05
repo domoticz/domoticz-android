@@ -666,13 +666,13 @@ public class Domoticz {
     }
 
     public void setSecurityPanelAction(int secStatus,
-                          String seccode,
-                          setCommandReceiver receiver) {
+                                       String seccode,
+                                       setCommandReceiver receiver) {
 
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructGetUrl(Json.Url.Request.SETSECURITY);
-        url += "&secstatus="+secStatus;
-        url += "&seccode="+seccode;
+        url += "&secstatus=" + secStatus;
+        url += "&seccode=" + seccode;
 
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,

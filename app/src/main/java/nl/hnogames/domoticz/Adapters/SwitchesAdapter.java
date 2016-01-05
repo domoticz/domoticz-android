@@ -125,11 +125,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.X10SIREN:
             case Domoticz.Device.Type.Value.DOORLOCK:
                 if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
-                    if(mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                    if (mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
                         row = setSecurityPanelSwitchRowId(holder);
                     else
                         row = setDefaultRowId(holder);
-                }else
+                } else
                     row = setOnOffSwitchRowId(holder);
                 break;
 
@@ -309,14 +309,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.CONTACT:
             case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
-                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
-                {
-                    if(mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
+                    if (mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
                         setSecurityPanelSwitchRowData(mDevicesInfo, holder);
                     else
                         setDefaultRowData(mDevicesInfo, holder);
-                }
-                else
+                } else
                     setOnOffSwitchRowData(mDevicesInfo, holder);
                 break;
 
@@ -560,7 +558,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             holder.buttonOn.setEnabled(false);
 
         holder.buttonOn.setId(mDevicesInfo.getIdx());
-        if(mDevicesInfo.getData().startsWith("Arm"))
+        if (mDevicesInfo.getData().startsWith("Arm"))
             holder.buttonOn.setText(context.getString(R.string.button_disarm));
         else
             holder.buttonOn.setText(context.getString(R.string.button_arm));

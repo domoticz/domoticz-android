@@ -14,6 +14,8 @@
     <string name="button_status_year">Rok</string>
     <string name="button_status_timer">Plan czasowy</string>
     <string name="button_color">Kolor</string>
+    <string name="button_arm">Uzbrój</string>
+    <string name="button_disarm">Rozbrój</string>
     <string name="last_update">Ostatnio widoczny</string>
     <string name="signal_level">Poziom sygnału</string>
     <string name="battery_level">Poziom baterii</string>
@@ -37,6 +39,7 @@
     <string name="something_went_wrong">Coś poszło nie tak</string>
     <string name="no_network_available">Błąd: Brak dostępnego połączenia sieciowego</string>
     <string name="oops">UPS!</string>
+    <string name="to">"do"</string>
     <string name="switch_on">Przełącznik przełączony na wł.</string>
     <string name="switch_off">Przełącznik przełączony na wył.</string>
     <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
@@ -52,4 +55,5 @@
     <string name="no_data_on_domoticz">Brak danych na serwerze Domoticz</string>
     <string name="row_icon_description">rząd ikon</string>
     <string name="error_image_description">Błąd obrazu</string>
+    <string name="white">Biały</string>
 </resources>

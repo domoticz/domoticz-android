@@ -37,7 +37,6 @@ import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SettingsInfo;
@@ -49,6 +48,8 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
+    private static final ScheduledExecutorService worker =
+            Executors.newSingleThreadScheduledExecutor();
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
@@ -63,14 +64,11 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Button btnArmAway;
     private CountDownTimer countDownTimer;
 
-    private static final ScheduledExecutorService worker =
-            Executors.newSingleThreadScheduledExecutor();
-
     public SecurityPanelDialog(Context c,
                                DevicesInfo panelInfo) {
         this.mContext = c;
         this.domoticz = new Domoticz(mContext);
-        this.panelInfo=panelInfo;
+        this.panelInfo = panelInfo;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_security, true)
                 .negativeText(android.R.string.cancel);
@@ -79,7 +77,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if(countDownTimer!=null)
+        if (countDownTimer != null)
             countDownTimer.cancel();
     }
 
@@ -88,18 +86,18 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         md = mdb.build();
         View view = md.getCustomView();
 
-        editPinCode = (FloatingLabelEditText)view.findViewById(R.id.securitypin);
+        editPinCode = (FloatingLabelEditText) view.findViewById(R.id.securitypin);
         editPinCode.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        btnDisarm = (Button)view.findViewById(R.id.disarm);
-        btnArmHome = (Button)view.findViewById(R.id.armhome);
-        btnArmAway = (Button)view.findViewById(R.id.armaway);
-        txtCountDown = (TextView)view.findViewById(R.id.countdown);
+        btnDisarm = (Button) view.findViewById(R.id.disarm);
+        btnArmHome = (Button) view.findViewById(R.id.armhome);
+        btnArmAway = (Button) view.findViewById(R.id.armaway);
+        txtCountDown = (TextView) view.findViewById(R.id.countdown);
 
         domoticz.getSettings(new SettingsReceiver() {
             @Override
             public void onReceiveSettings(SettingsInfo settings) {
-                mSettings=settings;
+                mSettings = settings;
                 md.show();
             }
 
@@ -129,24 +127,21 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         });
     }
 
-    private void SetFields(boolean enabled){
+    private void SetFields(boolean enabled) {
         btnDisarm.setEnabled(enabled);
         btnArmAway.setEnabled(enabled);
         btnArmHome.setEnabled(enabled);
         editPinCode.setEnabled(enabled);
     }
 
-    private void processRequest(final int status)
-    {
+    private void processRequest(final int status) {
         SetFields(false);
-        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editPinCode.getWindowToken(), 0);
 
         final String password = UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
-        if(validatePassword(password))
-        {
-            if(mSettings.getSecOnDelay()<=0 || status == Domoticz.Security.Status.DISARM)
-            {
+        if (validatePassword(password)) {
+            if (mSettings.getSecOnDelay() <= 0 || status == Domoticz.Security.Status.DISARM) {
                 //don't set delay
                 domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
                     @Override
@@ -161,12 +156,12 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                         SetFields(true);
                     }
                 });
-            }
-            else{
-                countDownTimer = new CountDownTimer((mSettings.getSecOnDelay()*1000), 1000) {
+            } else {
+                countDownTimer = new CountDownTimer((mSettings.getSecOnDelay() * 1000), 1000) {
                     public void onTick(long millisUntilFinished) {
-                        txtCountDown.setText(String.valueOf((millisUntilFinished/1000)));
+                        txtCountDown.setText(String.valueOf((millisUntilFinished / 1000)));
                     }
+
                     public void onFinish() {
                         txtCountDown.setText("");
                         domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
@@ -185,16 +180,14 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                     }
                 }.start();
             }
-        }
-        else {
+        } else {
             Toast.makeText(mContext, mContext.getString(R.string.wrongcode), Toast.LENGTH_SHORT).show();
             SetFields(true);
         }
     }
 
-    public boolean validatePassword(String password)
-    {
-        if(password.equals(mSettings.getSecPassword()))
+    public boolean validatePassword(String password) {
+        if (password.equals(mSettings.getSecPassword()))
             return true;
         else
             return false;

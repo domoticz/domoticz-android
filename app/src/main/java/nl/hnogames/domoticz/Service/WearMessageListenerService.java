@@ -157,6 +157,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
             @Override
             public void onError(Exception error) {
+                Log.e(TAG, error.getMessage());
             }
         }, 0, "lights");
 

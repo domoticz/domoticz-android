@@ -118,8 +118,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             WidgetUtils.RefreshWidgets(mContext);
         }
 
-        if(mDomoticz==null)
-            mDomoticz=new Domoticz(mContext);
+        if (mDomoticz == null)
+            mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
@@ -384,7 +384,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
-    public void onThermostatClick(int idx, int action, double newSetPoint) {}
+    public void onThermostatClick(int idx, int action, double newSetPoint) {
+    }
 
     @Override
     public void onSecurityPanelButtonClick(int idx) {
