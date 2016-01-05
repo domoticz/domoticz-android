@@ -116,6 +116,7 @@ public class Preference extends PreferenceFragment {
         android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
+        //noinspection PointlessBooleanExpression
         if (!BuildConfig.LITE_VERSION) {
             preferenceScreen.removePreference(premiumCategory);
         } else {

@@ -33,6 +33,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
 
@@ -82,7 +83,7 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         TextView weather_direction = (TextView) view.findViewById(R.id.weather_direction_value);
         TextView weather_speed = (TextView) view.findViewById(R.id.weather_speed_value);
 
-        IDX_value.setText(info.getIdx());
+        IDX_value.setText(String.valueOf(info.getIdx()));
         TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(info.getLastUpdate());
 
@@ -95,13 +96,13 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         });
 
         //data of weather object:
-        if (info.getForecastStr() != null && info.getForecastStr().length() > 0)
+        if (!UsefulBits.isEmpty(info.getForecastStr()))
             weather_forecast.setText(info.getForecastStr());
         else {
             weather_forecast.setVisibility(View.GONE);
             weather_forecast_title.setVisibility(View.GONE);
         }
-        if (info.getSpeed() != null && info.getSpeed().length() > 0)
+        if (!UsefulBits.isEmpty(info.getSpeed()))
             weather_speed.setText(info.getSpeed());
         else {
             weather_speed.setVisibility(View.GONE);
@@ -120,24 +121,24 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
             weather_temperature_title.setVisibility(View.GONE);
         }
         if (info.getBarometer() > 0)
-            weather_barometer.setText(info.getBarometer());
+            weather_barometer.setText(String.valueOf(info.getBarometer()));
         else {
             weather_barometer.setVisibility(View.GONE);
             weather_barometer_title.setVisibility(View.GONE);
         }
-        if (info.getChill() != null && info.getChill().length() > 0)
+        if (!UsefulBits.isEmpty(info.getChill()))
             weather_chill.setText(info.getChill());
         else {
             weather_chill.setVisibility(View.GONE);
             weather_chill_title.setVisibility(View.GONE);
         }
-        if (info.getDirectionStr() != null && info.getDirectionStr().length() > 0)
+        if (!UsefulBits.isEmpty(info.getDirectionStr()))
             weather_direction.setText(info.getDirectionStr());
         else {
             weather_direction.setVisibility(View.GONE);
             weather_direction_title.setVisibility(View.GONE);
         }
-        if (info.getHumidityStatus() != null && info.getHumidityStatus().length() > 0)
+        if (!UsefulBits.isEmpty(info.getHumidityStatus()))
             weather_humidity.setText(info.getHumidityStatus());
         else {
             weather_humidity.setVisibility(View.GONE);
