@@ -67,7 +67,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
     private Context mContext;
-    private int currentSwitch = 1;
     private SwitchesAdapter adapter;
 
     private CoordinatorLayout coordinatorLayout;
@@ -424,7 +423,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             else
                 Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
-            if (clickedSwitch != null) {
+            if (clickedSwitch.getIdx() > 0) {
                 int jsonAction;
                 int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
