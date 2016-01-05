@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -34,9 +35,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SettingsInfo;
@@ -48,8 +46,8 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
-    private static final ScheduledExecutorService worker =
-            Executors.newSingleThreadScheduledExecutor();
+    private static final String TAG = SecurityPanelDialog.class.getSimpleName();
+
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
@@ -64,8 +62,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Button btnArmAway;
     private CountDownTimer countDownTimer;
 
-    public SecurityPanelDialog(Context c,
-                               DevicesInfo panelInfo) {
+    public SecurityPanelDialog(Context c, DevicesInfo panelInfo) {
         this.mContext = c;
         this.domoticz = new Domoticz(mContext);
         this.panelInfo = panelInfo;
@@ -103,6 +100,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
             @Override
             public void onError(Exception error) {
+                Log.e(TAG, domoticz.getErrorMessage(error));
                 md.dismiss();
             }
         });
@@ -127,7 +125,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         });
     }
 
-    private void SetFields(boolean enabled) {
+    private void setFields(boolean enabled){
         btnDisarm.setEnabled(enabled);
         btnArmAway.setEnabled(enabled);
         btnArmHome.setEnabled(enabled);
@@ -135,11 +133,14 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     }
 
     private void processRequest(final int status) {
-        SetFields(false);
-        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        setFields(false);
+        InputMethodManager imm =
+                (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editPinCode.getWindowToken(), 0);
 
-        final String password = UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
+        final String password =
+                UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
+
         if (validatePassword(password)) {
             if (mSettings.getSecOnDelay() <= 0 || status == Domoticz.Security.Status.DISARM) {
                 //don't set delay
@@ -152,8 +153,11 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
                     @Override
                     public void onError(Exception error) {
-                        Toast.makeText(mContext, mContext.getString(R.string.security_generic_error), Toast.LENGTH_SHORT).show();
-                        SetFields(true);
+                        Log.e(TAG, domoticz.getErrorMessage(error));
+                        Toast.makeText(mContext,
+                                mContext.getString(R.string.security_generic_error),
+                                Toast.LENGTH_SHORT).show();
+                        setFields(true);
                     }
                 });
             } else {
@@ -173,8 +177,10 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
                             @Override
                             public void onError(Exception error) {
-                                Toast.makeText(mContext, mContext.getString(R.string.security_generic_error), Toast.LENGTH_SHORT).show();
-                                SetFields(true);
+                                Toast.makeText(mContext,
+                                        mContext.getString(R.string.security_generic_error),
+                                        Toast.LENGTH_SHORT).show();
+                                setFields(true);
                             }
                         });
                     }
@@ -182,15 +188,12 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
             }
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.wrongcode), Toast.LENGTH_SHORT).show();
-            SetFields(true);
+            setFields(true);
         }
     }
 
     public boolean validatePassword(String password) {
-        if (password.equals(mSettings.getSecPassword()))
-            return true;
-        else
-            return false;
+        return password.equals(mSettings.getSecPassword());
     }
 
     public void onDismissListener(DismissListener dismissListener) {
