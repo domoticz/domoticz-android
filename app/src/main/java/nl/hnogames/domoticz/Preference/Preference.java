@@ -113,6 +113,18 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+        AlwaysOnPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(getActivity(), getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                return true;
+            }
+        });
+
         android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
