@@ -5,6 +5,6 @@
     <string name="security_disarm">Désarmer</string>
     <string name="security_arm_home">Désactiver</string>
     <string name="security_arm_away">Activer</string>
-    <string name="wrongcode">Code incorrect entré !</string>
+    <string name="security_wrong_code">Code incorrect entré !</string>
     <string name="security_generic_error">Impossible de changer le statut du panneau de sécurité</string>
 </resources>

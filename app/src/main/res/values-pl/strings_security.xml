@@ -5,6 +5,6 @@
     <string name="security_disarm">Rozbrój</string>
     <string name="security_arm_home">Uzbrój dom</string>
     <string name="security_arm_away">Uzbrój się</string>
-    <string name="wrongcode">Wpisano niepoprawny kod!</string>
+    <string name="security_wrong_code">Wpisano niepoprawny kod!</string>
     <string name="security_generic_error">Nie można zmienić statusu panelu zabezpieczeń</string>
 </resources>
