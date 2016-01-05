@@ -37,7 +37,7 @@ All Android Wear devices are supported.
 
 # Floorplan
 -----
-Use your devices within your floorplans 
+Use your devices within your floorplans  
 ![floorplan](https://cloud.githubusercontent.com/assets/14561640/11994856/5817e6ea-aa46-11e5-8c50-44ded81f7b7d.png)
 
 
