@@ -60,6 +60,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private SharedPrefUtil mSharedPrefs;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
 
+    private int currentSwitch = 1;
+
     public static void sendMessage(final String path, final String text) {
         Log.d("WEAR Message", "Send: " + text);
         new Thread(new Runnable() {
@@ -97,7 +99,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                 DevicesInfo selectedSwitch = new DevicesInfo(new JSONObject(data));
                 domoticz = new Domoticz(getApplicationContext());
 
-                if (selectedSwitch.getIdx() > 0) {
+                if (selectedSwitch != null) {
                     switch (selectedSwitch.getSwitchTypeVal()) {
                         case Domoticz.Device.Type.Value.ON_OFF:
                         case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -140,6 +142,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     private void getSwitches() {
         extendedStatusSwitches = new ArrayList<>();
+        currentSwitch = 1;
         domoticz = new Domoticz(getApplicationContext());
         domoticz.getDevices(new DevicesReceiver() {
             @Override
@@ -154,7 +157,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, domoticz.getErrorMessage(error));
             }
         }, 0, "lights");
 
@@ -254,7 +256,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, domoticz.getErrorMessage(error));
             }
         });
     }
@@ -273,7 +274,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, domoticz.getErrorMessage(error));
             }
         });
     }
