@@ -142,6 +142,13 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
+
+    @Override
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {

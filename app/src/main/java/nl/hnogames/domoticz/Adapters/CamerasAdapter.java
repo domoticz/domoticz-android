@@ -75,13 +75,13 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
             int numberOfDevices = cameraInfo.getDevices();
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
-
             holder.name.setText(name);
 
             Picasso.with(mContext)
                     .load(cameraInfo.getFullURL())
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .placeholder(R.drawable.placeholder)
                     .into(holder.camera);
         }
     }

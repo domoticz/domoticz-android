@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
+
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
@@ -57,6 +58,10 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private MaterialDialog md;
     private FloatingLabelEditText editPinCode;
     private TextView txtCountDown;
+    private Button btnDisarm;
+    private Button btnArmHome;
+    private Button btnArmAway;
+    private CountDownTimer countDownTimer;
 
     private static final ScheduledExecutorService worker =
             Executors.newSingleThreadScheduledExecutor();
@@ -73,7 +78,10 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {}
+    public void onDismiss(DialogInterface dialog) {
+        if(countDownTimer!=null)
+            countDownTimer.cancel();
+    }
 
     public void show() {
         mdb.title(panelInfo.getName());
@@ -83,9 +91,9 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         editPinCode = (FloatingLabelEditText)view.findViewById(R.id.securitypin);
         editPinCode.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        Button btnDisarm = (Button)view.findViewById(R.id.disarm);
-        Button btnArmHome = (Button)view.findViewById(R.id.armhome);
-        Button btnArmAway = (Button)view.findViewById(R.id.armaway);
+        btnDisarm = (Button)view.findViewById(R.id.disarm);
+        btnArmHome = (Button)view.findViewById(R.id.armhome);
+        btnArmAway = (Button)view.findViewById(R.id.armaway);
         txtCountDown = (TextView)view.findViewById(R.id.countdown);
 
         domoticz.getSettings(new SettingsReceiver() {
@@ -121,16 +129,25 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         });
     }
 
+    private void SetFields(boolean enabled){
+        btnDisarm.setEnabled(enabled);
+        btnArmAway.setEnabled(enabled);
+        btnArmHome.setEnabled(enabled);
+        editPinCode.setEnabled(enabled);
+    }
+
     private void processRequest(final int status)
     {
+        SetFields(false);
         InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editPinCode.getWindowToken(), 0);
 
         final String password = UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
         if(validatePassword(password))
         {
-            if(mSettings.getSecOnDelay()<=0)
+            if(mSettings.getSecOnDelay()<=0 || status == Domoticz.Security.Status.DISARM)
             {
+                //don't set delay
                 domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
@@ -141,15 +158,15 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                     @Override
                     public void onError(Exception error) {
                         Toast.makeText(mContext, mContext.getString(R.string.security_generic_error), Toast.LENGTH_SHORT).show();
+                        SetFields(true);
                     }
                 });
             }
             else{
-                new CountDownTimer((mSettings.getSecOnDelay()*1000), 1000) {
+                countDownTimer = new CountDownTimer((mSettings.getSecOnDelay()*1000), 1000) {
                     public void onTick(long millisUntilFinished) {
                         txtCountDown.setText(String.valueOf((millisUntilFinished/1000)));
                     }
-
                     public void onFinish() {
                         txtCountDown.setText("");
                         domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
@@ -162,14 +179,17 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                             @Override
                             public void onError(Exception error) {
                                 Toast.makeText(mContext, mContext.getString(R.string.security_generic_error), Toast.LENGTH_SHORT).show();
+                                SetFields(true);
                             }
                         });
                     }
                 }.start();
             }
         }
-        else
+        else {
             Toast.makeText(mContext, mContext.getString(R.string.wrongcode), Toast.LENGTH_SHORT).show();
+            SetFields(true);
+        }
     }
 
     public boolean validatePassword(String password)

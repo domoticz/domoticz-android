@@ -143,6 +143,12 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             progressDialog.dismiss();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {

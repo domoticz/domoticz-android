@@ -199,6 +199,12 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
+    @Override
     public void onLogClick(final WeatherInfo weather, final String range) {
         showProgressDialog();
         final String graphType = weather.getTypeImg()

@@ -111,6 +111,12 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
             progressDialog.show();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
     /**
      * Hides the progress dialog if it is showing
      */

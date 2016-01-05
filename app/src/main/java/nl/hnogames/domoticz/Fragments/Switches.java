@@ -118,6 +118,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             WidgetUtils.RefreshWidgets(mContext);
         }
 
+        if(mDomoticz==null)
+            mDomoticz=new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
@@ -558,6 +560,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         if (progressDialog == null) initProgressDialog();
         if (!progressDialog.isShowing())
             progressDialog.show();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
     }
 
     /**
