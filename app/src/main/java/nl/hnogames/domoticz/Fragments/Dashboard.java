@@ -55,7 +55,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         switchesClickListener {
 
     @SuppressWarnings("unused")
-    private static final String TAG = Dashboard.class.getSimpleName();
+    private static final String TAG = Switches.class.getSimpleName();
     private ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
