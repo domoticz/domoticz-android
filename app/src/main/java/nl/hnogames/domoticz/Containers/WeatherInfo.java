@@ -68,8 +68,8 @@ public class WeatherInfo {
         if (row.has("SetPoint")) setPoint = row.getLong("SetPoint");
         if (row.has("Name")) Name = row.getString("Name");
         if (row.has("Data")) Data = row.getString("Data");
-            if (Type.equals("Rain")) Data = Data.substring(Data.indexOf(';') + 1, Data.length());
-            if (Type.equals("Wind")) Data = Data.substring(0, Data.indexOf(';'));
+        if (Type.equals("Rain")) Data = Data.substring(Data.indexOf(';') + 1, Data.length());
+        if (Type.equals("Wind")) Data = Data.substring(0, Data.indexOf(';'));
 
         if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
         if (row.has("Temp")) Temp = row.getLong("Temp");

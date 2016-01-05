@@ -90,17 +90,14 @@ public class GeoSettingsActivity extends AppCompatActivity
     private final int LOCATION_INTERVAL = 100000;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_FASTEST_INTERVAL = 50000;
-    @SuppressWarnings("FieldCanBeLocal")
-    private int zoomLevel = 15;
-
     private final int ACTION_MAP_LOCATION = 10;
     private final int ACTION_SET_GEOFENCE_SERVICE = 11;
-
     private final int ACTION_GET_LOCATION = 12;
     private final int REQUEST_MAP_LOCATION = 20;
     private final int REQUEST_GEOFENCE_SERVICE = 21;
-
     private final int REQUEST_GET_LOCATION = 22;
+    @SuppressWarnings("FieldCanBeLocal")
+    private int zoomLevel = 15;
     private GoogleMap map;
 
     private SharedPrefUtil mSharedPrefs;

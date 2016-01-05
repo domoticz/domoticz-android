@@ -22,11 +22,10 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-import java.util.ArrayList;
-
 import nl.hnogames.domoticz.Containers.SettingsInfo;
 
 public interface SettingsReceiver {
     void onReceiveSettings(SettingsInfo settings);
+
     void onError(Exception error);
 }

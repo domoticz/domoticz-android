@@ -24,15 +24,12 @@ package nl.hnogames.domoticz.Domoticz;
 
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import nl.hnogames.domoticz.Containers.SettingsInfo;
-import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
+import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
 
 public class SettingsParser implements JSONParserInterface {
 

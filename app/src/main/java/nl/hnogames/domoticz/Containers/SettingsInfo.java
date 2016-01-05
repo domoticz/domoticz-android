@@ -50,6 +50,7 @@ public class SettingsInfo {
     public String getSecPassword() {
         return secPassword;
     }
+
     public int getSecOnDelay() {
         return secOnDelay;
     }

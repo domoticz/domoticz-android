@@ -152,11 +152,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.DOORLOCK:
 
                         if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
-                            if(mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
                                 row = setSecurityPanelSwitchRowId(holder);
                             else
                                 row = setDefaultRowId(holder);
-                        }else
+                        } else
                             row = setOnOffSwitchRowId(holder);
 
                         break;
@@ -418,14 +418,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.DUSKSENSOR:
                 case Domoticz.Device.Type.Value.DOORLOCK:
 
-                    if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY))
-                    {
-                        if(mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                    if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
+                        if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
                             setSecurityPanelSwitchRowData(mDeviceInfo, holder);
                         else
                             setDefaultRowData(mDeviceInfo, holder);
-                    }
-                    else
+                    } else
                         setOnOffSwitchRowData(mDeviceInfo, holder);
 
                     break;
@@ -526,19 +524,19 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
 
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getData());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
 
         holder.buttonOn.setId(mDevicesInfo.getIdx());
-        if(mDevicesInfo.getData().startsWith("Arm"))
+        if (mDevicesInfo.getData().startsWith("Arm"))
             holder.buttonOn.setText(context.getString(R.string.button_disarm));
         else
             holder.buttonOn.setText(context.getString(R.string.button_arm));
