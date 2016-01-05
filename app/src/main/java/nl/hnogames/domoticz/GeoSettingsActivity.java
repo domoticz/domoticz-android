@@ -54,13 +54,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +74,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private final String TAG = "GeoSettings";
+    private String TAG = GeoSettingsActivity.class.getSimpleName();
 
     @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
@@ -90,15 +83,12 @@ public class GeoSettingsActivity extends AppCompatActivity
     private final int LOCATION_INTERVAL = 100000;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_FASTEST_INTERVAL = 50000;
-    private final int ACTION_MAP_LOCATION = 10;
+
     private final int ACTION_SET_GEOFENCE_SERVICE = 11;
     private final int ACTION_GET_LOCATION = 12;
-    private final int REQUEST_MAP_LOCATION = 20;
+
     private final int REQUEST_GEOFENCE_SERVICE = 21;
     private final int REQUEST_GET_LOCATION = 22;
-    @SuppressWarnings("FieldCanBeLocal")
-    private int zoomLevel = 15;
-    private GoogleMap map;
 
     private SharedPrefUtil mSharedPrefs;
 
@@ -116,7 +106,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     private boolean requestInProgress;
     private boolean isGeofenceServiceStarted;
     private boolean isLocationUpdatesStarted;
-    private boolean isMyLocationOnMapStarted;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -205,19 +194,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             mApiClient.connect();
         }
-        if (map == null) {
-            MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    GeoSettingsActivity.this.map = googleMap;
-                    map.getUiSettings().setMapToolbarEnabled(true);
-                    map.getUiSettings().setTiltGesturesEnabled(false);
-                    checkForLocationPermission(ACTION_MAP_LOCATION);
-                }
-            });
-        }
-
     }
 
     public void showSwitchesDialog(
@@ -276,12 +252,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setMarker(locations.get(position).getLocation());
-            }
-        });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -325,7 +295,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
                     startGeofenceService();
-                    setMyLocationOnMap();
                 }
                 break;
 
@@ -334,7 +303,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startGeofenceService();
                     if (!isLocationUpdatesStarted) startLocationUpdates();
-                    if (!isMyLocationOnMapStarted) setMyLocationOnMap();
                 } else {
                     stopGeofenceService();
                 }
@@ -345,16 +313,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
                     if (!isGeofenceServiceStarted) stopGeofenceService();
-                    if (!isMyLocationOnMapStarted) setMyLocationOnMap();
-                }
-                break;
-
-            case REQUEST_MAP_LOCATION:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    setMyLocationOnMap();
-                    if (!isLocationUpdatesStarted) startLocationUpdates();
-                    if (!isGeofenceServiceStarted) startGeofenceService();
                 }
                 break;
         }
@@ -369,10 +327,6 @@ public class GeoSettingsActivity extends AppCompatActivity
             switch (actionToStart) {
                 case ACTION_GET_LOCATION:
                     getLocationServices();
-                    break;
-
-                case ACTION_MAP_LOCATION:
-                    setMyLocationOnMap();
                     break;
 
                 case ACTION_SET_GEOFENCE_SERVICE:
@@ -421,18 +375,12 @@ public class GeoSettingsActivity extends AppCompatActivity
                                                     PermissionsUtil.INITIAL_LOCATION_PERMS,
                                                     REQUEST_GET_LOCATION);
                                             break;
+
                                         case ACTION_SET_GEOFENCE_SERVICE:
                                             ActivityCompat.requestPermissions(
                                                     GeoSettingsActivity.this,
                                                     PermissionsUtil.INITIAL_LOCATION_PERMS,
                                                     REQUEST_GEOFENCE_SERVICE);
-                                            break;
-
-                                        case ACTION_MAP_LOCATION:
-                                            ActivityCompat.requestPermissions(
-                                                    GeoSettingsActivity.this,
-                                                    PermissionsUtil.INITIAL_LOCATION_PERMS,
-                                                    REQUEST_MAP_LOCATION);
                                             break;
                                     }
                                 }
@@ -468,10 +416,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                             requestCode = REQUEST_GET_LOCATION;
                             break;
 
-                        case ACTION_MAP_LOCATION:
-                            requestCode = REQUEST_MAP_LOCATION;
-                            break;
-
                         case ACTION_SET_GEOFENCE_SERVICE:
                             requestCode = REQUEST_GEOFENCE_SERVICE;
                             break;
@@ -504,37 +448,10 @@ public class GeoSettingsActivity extends AppCompatActivity
                         //noinspection ResourceType
                         currentLocation
                                 = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
-                        if (currentLocation != null) {
-                            animateCamera(
-                                    currentLocation.getLatitude(),
-                                    currentLocation.getLongitude());
-                        }
                     }
                 });
         isLocationUpdatesStarted = true;
 
-    }
-
-    private void animateCamera(double lat, double lng) {
-        if (map != null) {
-            CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(lat, lng));
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(zoomLevel);
-
-            map.moveCamera(center);
-            map.animateCamera(zoom);
-        }
-    }
-
-    private void setMyLocationOnMap() {
-        //noinspection ResourceType
-        map.setMyLocationEnabled(true);
-        isMyLocationOnMapStarted = true;
-    }
-
-    private void setMarker(LatLng currentLatLng) {
-        map.addMarker(new MarkerOptions().position(currentLatLng));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
-        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
 
     public void showAddLocationDialog() {
@@ -547,10 +464,6 @@ public class GeoSettingsActivity extends AppCompatActivity
             public void onDismiss(LocationInfo location) {
                 //save location
                 Log.d(TAG, "Location Added: " + location.getName());
-
-                map.addMarker(new MarkerOptions().position(location.getLocation()));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLocation(), 15));
-                map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
                 mSharedPrefs.addLocation(location);
                 locations = mSharedPrefs.getLocations();
