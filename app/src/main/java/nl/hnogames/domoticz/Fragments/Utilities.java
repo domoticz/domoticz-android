@@ -264,6 +264,12 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
+    @Override
     public void onClick(UtilitiesInfo utility) {
     }
 

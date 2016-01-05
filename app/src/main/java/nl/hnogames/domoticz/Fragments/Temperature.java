@@ -224,6 +224,12 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
+    @Override
     public void onLogClick(final TemperatureInfo temp, final String range) {
         showProgressDialog();
         mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {

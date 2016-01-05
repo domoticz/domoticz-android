@@ -579,6 +579,12 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             progressDialog.show();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideProgressDialog();
+    }
+
     /**
      * Hides the progress dialog if it is showing
      */
