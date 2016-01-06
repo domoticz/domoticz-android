@@ -40,6 +40,8 @@ public class WeatherInfo {
     String HumidityStatus;
     String DirectionStr;
     String Chill;
+    String Rain;
+    String RainRate;
     String Speed;
     long DewPoint;
     long Temp;
@@ -68,6 +70,10 @@ public class WeatherInfo {
         if (row.has("SetPoint")) setPoint = row.getLong("SetPoint");
         if (row.has("Name")) Name = row.getString("Name");
         if (row.has("Data")) Data = row.getString("Data");
+
+        if (row.has("Rain")) Rain = row.getString("Rain");
+        if (row.has("RainRate")) RainRate = row.getString("RainRate");
+
         if (Type.equals("Rain")) Data = Data.substring(Data.indexOf(';') + 1, Data.length());
         if (Type.equals("Wind")) Data = Data.substring(0, Data.indexOf(';'));
 
@@ -142,6 +148,13 @@ public class WeatherInfo {
 
     public String getForecastStr() {
         return ForecastStr;
+    }
+    
+    public String getRain() {
+        return Rain;
+    }
+    public String getRainRate() {
+        return RainRate;
     }
 
     public String getHumidityStatus() {
