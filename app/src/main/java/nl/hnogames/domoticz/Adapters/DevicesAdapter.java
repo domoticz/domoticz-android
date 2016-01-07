@@ -848,9 +848,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if(holder.signal_level!=null)
             holder.switch_dimmer_level.setText(text);
 
+        int loadLevel = mDevicesInfo.getLevel()/10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
-        holder.switch_dimmer_level.setText(levelNames[0]);
+        holder.switch_dimmer_level.setText(levelNames[loadLevel]);
 
         holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
         if (holder.isProtected) holder.dimmerOnOffSwitch.setEnabled(false);
@@ -880,7 +881,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.dimmer.setEnabled(false);
 
         holder.dimmer.incrementProgressBy(1);
-        holder.dimmer.setProgress(0);
+        holder.dimmer.setProgress(loadLevel);
         holder.dimmer.setMax(levelNames.length-1);
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
