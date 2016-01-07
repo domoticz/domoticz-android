@@ -78,7 +78,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             holder.name.setText(name);
 
             Picasso.with(mContext)
-                    .load(imageUrl)
+                    .load(cameraInfo.getFullURL())//must be Snapshot url of imageUrl later!!
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .placeholder(R.drawable.placeholder)

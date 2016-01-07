@@ -26,6 +26,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -56,6 +59,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private RecyclerView mRecyclerView;
     private CamerasAdapter mAdapter;
     private ArrayList<CameraInfo> mCameras;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -78,6 +82,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     public void getCameras() {
         showProgressDialog();
 
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
         mDomoticz = new Domoticz(mActivity);
         mDomoticz.getCameras(new CameraReceiver() {
 
@@ -92,7 +98,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                     public void onItemClick(int position, View v) {
                         Intent intent = new Intent(getActivity(), CameraActivity.class);
                         //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGEURL", mDomoticz.getSnapshotUrl(mCameras.get(position)));
+                        intent.putExtra("IMAGEURL", mCameras.get(position).getFullURL());//must be Snapshot url of imageUrl later!!
                         //noinspection SpellCheckingInspection
                         intent.putExtra("IMAGETITLE", mCameras.get(position).getName());
                         startActivity(intent);
@@ -100,6 +106,16 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 });
                 mRecyclerView.setAdapter(mAdapter);
                 hideProgressDialog();
+
+
+                //show that this action is not supported yes...
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
+                    }
+                }, 1000L);
+
             }
 
             @Override
