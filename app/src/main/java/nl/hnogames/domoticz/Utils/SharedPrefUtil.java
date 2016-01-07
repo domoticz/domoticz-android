@@ -667,29 +667,32 @@ public class SharedPrefUtil {
     }
 
     public void setGeoFenceService() {
-        final List<Geofence> mGeofenceList = new ArrayList<>();
-        final ArrayList<LocationInfo> locations = getLocations();
-        if (locations != null)
-            for (LocationInfo locationInfo : locations)
-                if (locationInfo.getEnabled())
-                    mGeofenceList.add(locationInfo.toGeofence());
+        if (isGeofenceEnabled()) {
+            final List<Geofence> mGeofenceList = new ArrayList<>();
+            final ArrayList<LocationInfo> locations = getLocations();
+            if (locations != null)
+                for (LocationInfo locationInfo : locations)
+                    if (locationInfo.getEnabled())
+                        mGeofenceList.add(locationInfo.toGeofence());
 
-        if (locations != null && locations.size() > 0) {
-            mApiClient = new GoogleApiClient.Builder(mContext)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle bundle) {
-                            PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
-                            LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
-                        }
+            if (locations != null && mGeofenceList.size() > 0) {
+                mApiClient = new GoogleApiClient.Builder(mContext)
+                        .addApi(LocationServices.API)
+                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                            @Override
+                            public void onConnected(Bundle bundle) {
+                                PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+                                //noinspection ResourceType
+                                LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+                            }
 
-                        @Override
-                        public void onConnectionSuspended(int i) {
-                        }
-                    })
-                    .build();
-            mApiClient.connect();
+                            @Override
+                            public void onConnectionSuspended(int i) {
+                            }
+                        })
+                        .build();
+                mApiClient.connect();
+            }
         }
     }
 
