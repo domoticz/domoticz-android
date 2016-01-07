@@ -845,8 +845,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getStatus());
-        if(holder.signal_level!=null)
-            holder.switch_dimmer_level.setText(text);
+        if(holder.switch_battery_level!=null)
+            holder.switch_battery_level.setText(text);
 
         int loadLevel = mDevicesInfo.getLevel()/10;
         final String[] levelNames = mDevicesInfo.getLevelNames();

@@ -836,13 +836,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
-            holder.signal_level.setText(text);
+        holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getStatus());
-        if(holder.signal_level!=null)
-            holder.switch_dimmer_level.setText(text);
+        holder.switch_battery_level.setText(text);
 
         int loadLevel = mDevicesInfo.getLevel()/10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
