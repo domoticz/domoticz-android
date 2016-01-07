@@ -233,7 +233,7 @@ public class RequestUtil {
      * @param password Password
      * @return Base64 encrypted header map
      */
-    static Map<String, String> createBasicAuthHeader(String username, String password) {
+    public static Map<String, String> createBasicAuthHeader(String username, String password) {
 
         Map<String, String> headerMap = new HashMap<>();
 

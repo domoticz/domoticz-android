@@ -130,7 +130,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getActionBar().setTitle(R.string.title_cameras);
     }
 
-
     /**
      * Initializes the progress dialog
      */

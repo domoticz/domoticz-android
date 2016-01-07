@@ -23,22 +23,32 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.BitmapLruCache;
+
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
@@ -77,12 +87,41 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            Picasso.with(mContext)
-                    .load(cameraInfo.getFullURL())//must be Snapshot url of imageUrl later!!
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .placeholder(R.drawable.placeholder)
-                    .into(holder.camera);
+            ImageLoader.ImageCache imageCache = new BitmapLruCache();
+            ImageLoader imageLoader = new ImageLoader(Volley.newRequestQueue(mContext), imageCache){
+                @Override
+                protected com.android.volley.Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
+                                                                              ImageView.ScaleType scaleType, final String cacheKey) {
+                    return new ImageRequest(requestUrl, new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            onGetImageSuccess(cacheKey, response);
+                        }
+                    }, maxWidth, maxHeight,
+                            Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            onGetImageError(cacheKey, error);
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<String, String>();
+                            String credentials = domoticz.getUserCredentials(Domoticz.Authentication.USERNAME) + ":" + domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);
+                            String base64EncodedCredentials =
+                                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                            params.put("Authorization", "Basic " + base64EncodedCredentials);
+                            params.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                            params.put("Accept-Language", "en-US,en;q=0.7,nl;q=0.3");
+                            params.put("Accept-Encoding", "gzip, deflate");
+                            return params;
+                        }
+                    };
+                }
+            };
+
+            holder.camera.setImageUrl(cameraInfo.getFullURL(), imageLoader);
+            holder.camera.setDefaultImageResId(R.drawable.placeholder);
         }
     }
 
@@ -98,12 +137,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView name;
-        ImageView camera;
+        com.android.volley.toolbox.NetworkImageView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
-            camera = (ImageView) itemView.findViewById(R.id.image);
+            camera = (com.android.volley.toolbox.NetworkImageView) itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
 
