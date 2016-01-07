@@ -30,4 +30,6 @@ public interface UtilityClickListener {
     void onLogClick(UtilitiesInfo utility, String range);
 
     void onThermostatClick(int idx, int action, double newSetPoint);
+
+    void onLogButtonClick(int idx);
 }

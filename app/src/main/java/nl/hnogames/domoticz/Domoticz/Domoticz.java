@@ -76,6 +76,8 @@ public class Domoticz {
     public static final String HIDDEN_CHARACTER = "$";
 
     public static final String UTILITIES_TYPE_THERMOSTAT = "Thermostat";
+    public static final String UTILITIES_SUBTYPE_TEXT = "Text";
+
     /*
     *  Log tag
     */
@@ -325,6 +327,10 @@ public class Domoticz {
 
             case Json.Url.Request.SWITCHLOG:
                 url = Url.Category.SWITCHLOG;
+                break;
+
+            case Json.Url.Request.TEXTLOG:
+                url = Url.Category.TEXTLOG;
                 break;
 
             case Json.Url.Request.SWITCHTIMER:
@@ -647,6 +653,17 @@ public class Domoticz {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.SWITCHLOG) + String.valueOf(idx);
+
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url);
+    }
+
+    public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {
+        SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
+        logger("for idx: " + String.valueOf(idx));
+        String url = constructGetUrl(Json.Url.Request.TEXTLOG) + String.valueOf(idx);
 
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -1165,6 +1182,7 @@ public class Domoticz {
                 int GRAPH = 20;
                 int SETTINGS = 22;
                 int SETSECURITY = 23;
+                int TEXTLOG = 24;
             }
 
             interface Set {
@@ -1249,6 +1267,7 @@ public class Domoticz {
             String PLANS = "/json.htm?type=plans";
             String TEMPERATURE = ALLDEVICES + "&filter=temp&used=true";
             String SWITCHLOG = "/json.htm?type=lightlog&idx=";
+            String TEXTLOG = "/json.htm?type=textlog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
         }
 
