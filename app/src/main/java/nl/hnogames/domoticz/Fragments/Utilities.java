@@ -31,20 +31,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
 import nl.hnogames.domoticz.Containers.GraphPointInfo;
+import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
+import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -328,5 +332,33 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 errorHandling(error);
             }
         });
+    }
+
+    @Override
+    public void onLogButtonClick(int idx) {
+        mDomoticz.getTextLogs(idx, new SwitchLogReceiver() {
+            @Override
+            public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
+                showLogDialog(switchesLogs);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {
+        if (switchLogs.size() <= 0) {
+            Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
+        } else {
+            SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
+                    getActivity(),
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
+            infoDialog.show();
+        }
     }
 }

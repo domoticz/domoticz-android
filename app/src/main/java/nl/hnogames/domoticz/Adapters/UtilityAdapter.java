@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,109 +107,176 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         //if (convertView == null) {
         holder = new ViewHolder();
         if (Domoticz.UTILITIES_TYPE_THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) {
-            layoutResourceId = R.layout.utilities_row_thermostat;
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId, parent, false);
-
-            holder.isProtected = mUtilitiesInfo.isProtected();
-
-            holder.name = (TextView) convertView.findViewById(R.id.thermostat_name);
-            holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
-            holder.lastSeen = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
-            holder.setPoint = (TextView) convertView.findViewById(R.id.thermostat_set_point);
-            holder.buttonPlus = (ImageButton) convertView.findViewById(R.id.utilities_plus);
-            if (holder.isProtected) holder.buttonPlus.setEnabled(false);
-            holder.buttonMinus = (ImageButton) convertView.findViewById(R.id.utilities_minus);
-            if (holder.isProtected) holder.buttonMinus.setEnabled(false);
-            holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    double newValue = setPoint - 0.5;
-                    handleThermostatClick(view.getId(),
-                            Domoticz.Device.Thermostat.Action.MIN,
-                            newValue);
-                }
-            });
-            holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    double newValue = setPoint + 0.5;
-                    handleThermostatClick(view.getId(),
-                            Domoticz.Device.Thermostat.Action.PLUS,
-                            newValue);
-                }
-            });
-
-            holder.buttonPlus.setId(mUtilitiesInfo.getIdx());
-            holder.buttonMinus.setId(mUtilitiesInfo.getIdx());
-            holder.name.setText(mUtilitiesInfo.getName());
-            holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());
-            holder.setPoint.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
-            Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+            convertView = CreateThermostatRow(parent, holder, mUtilitiesInfo, setPoint);
         } else {
-            layoutResourceId = R.layout.utilities_row_default;
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId, parent, false);
-
-            holder.isProtected = mUtilitiesInfo.isProtected();
-            holder.name = (TextView) convertView.findViewById(R.id.utilities_name);
-            holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
-            holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
-            holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
-            holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
-
-            holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
-            holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
-
-            holder.name.setText(mUtilitiesInfo.getName());
-            holder.data.append(": " + mUtilitiesInfo.getData());
-            holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
-
-            if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
-                holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
-            if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
-                holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
-            if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
-                    !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
-                holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
-
-            holder.dayButton.setId(mUtilitiesInfo.getIdx());
-            holder.dayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (UtilitiesInfo t : filteredData) {
-                        if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.DAY);
-                    }
-                }
-            });
-            holder.monthButton.setId(mUtilitiesInfo.getIdx());
-            holder.monthButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (UtilitiesInfo t : filteredData) {
-                        if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
-                    }
-                }
-            });
-            holder.yearButton.setId(mUtilitiesInfo.getIdx());
-            holder.yearButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (UtilitiesInfo t : filteredData) {
-                        if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
-                    }
-                }
-            });
-
-            Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+            if (Domoticz.UTILITIES_SUBTYPE_TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
+                convertView = CreateTextRow(parent, holder, mUtilitiesInfo);
+            }
+            else
+                convertView = CreateDefaultRow(parent, holder, mUtilitiesInfo);
         }
         convertView.setTag(holder);
 
+        return convertView;
+    }
+
+
+    @NonNull
+    private View CreateTextRow(ViewGroup parent, ViewHolder holder, UtilitiesInfo mUtilitiesInfo) {
+        int layoutResourceId;
+        View convertView;
+        layoutResourceId = R.layout.utilities_row_text;
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, parent, false);
+
+        holder.isProtected = mUtilitiesInfo.isProtected();
+        holder.name = (TextView) convertView.findViewById(R.id.utilities_name);
+        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+
+        holder.buttonLog = (Button) convertView.findViewById(R.id.log_button);
+
+        holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
+        holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
+
+        holder.name.setText(mUtilitiesInfo.getName());
+        holder.data.append(": " + mUtilitiesInfo.getData());
+        holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
+
+        if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
+            holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
+        if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
+            holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
+        if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
+                !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+            holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
+
+        holder.buttonLog.setId(mUtilitiesInfo.getIdx());
+        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleLogButtonClick(v.getId());
+            }
+        });
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        return convertView;
+    }
+
+    private void handleLogButtonClick(int idx) {
+        listener.onLogButtonClick(idx);
+    }
+
+    @NonNull
+    private View CreateDefaultRow(ViewGroup parent, ViewHolder holder, UtilitiesInfo mUtilitiesInfo) {
+        int layoutResourceId;
+        View convertView;
+        layoutResourceId = R.layout.utilities_row_default;
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, parent, false);
+
+        holder.isProtected = mUtilitiesInfo.isProtected();
+        holder.name = (TextView) convertView.findViewById(R.id.utilities_name);
+        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+
+        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
+        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
+        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+
+        holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
+        holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
+
+        holder.name.setText(mUtilitiesInfo.getName());
+        holder.data.append(": " + mUtilitiesInfo.getData());
+        holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
+
+        if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
+            holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
+        if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
+            holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
+        if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
+                !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+            holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
+
+        holder.dayButton.setId(mUtilitiesInfo.getIdx());
+        holder.dayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                }
+            }
+        });
+        holder.monthButton.setId(mUtilitiesInfo.getIdx());
+        holder.monthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                }
+            }
+        });
+        holder.yearButton.setId(mUtilitiesInfo.getIdx());
+        holder.yearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                }
+            }
+        });
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        return convertView;
+    }
+
+    @NonNull
+    private View CreateThermostatRow(ViewGroup parent, ViewHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
+        int layoutResourceId;
+        View convertView;
+        layoutResourceId = R.layout.utilities_row_thermostat;
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, parent, false);
+
+
+        holder.name = (TextView) convertView.findViewById(R.id.thermostat_name);
+        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+
+        holder.lastSeen = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
+        holder.setPoint = (TextView) convertView.findViewById(R.id.thermostat_set_point);
+        holder.buttonPlus = (ImageButton) convertView.findViewById(R.id.utilities_plus);
+
+        holder.isProtected = mUtilitiesInfo.isProtected();
+        if (holder.isProtected) holder.buttonPlus.setEnabled(false);
+        holder.buttonMinus = (ImageButton) convertView.findViewById(R.id.utilities_minus);
+        if (holder.isProtected) holder.buttonMinus.setEnabled(false);
+        holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double newValue = setPoint - 0.5;
+                handleThermostatClick(view.getId(),
+                        Domoticz.Device.Thermostat.Action.MIN,
+                        newValue);
+            }
+        });
+        holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double newValue = setPoint + 0.5;
+                handleThermostatClick(view.getId(),
+                        Domoticz.Device.Thermostat.Action.PLUS,
+                        newValue);
+            }
+        });
+
+        holder.buttonPlus.setId(mUtilitiesInfo.getIdx());
+        holder.buttonMinus.setId(mUtilitiesInfo.getIdx());
+        holder.name.setText(mUtilitiesInfo.getName());
+        holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());
+        holder.setPoint.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
         return convertView;
     }
 
@@ -229,6 +297,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         Button dayButton;
         Button monthButton;
         Button yearButton;
+        Button buttonLog;
     }
 
     private class ItemFilter extends Filter {
