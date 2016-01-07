@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             drawNavigationMenu();
             WidgetUtils.RefreshWidgets(this);
+            mSharedPrefs.setGeoFenceService();
 
             //get latest update version
             Domoticz domoticz = new Domoticz(this);

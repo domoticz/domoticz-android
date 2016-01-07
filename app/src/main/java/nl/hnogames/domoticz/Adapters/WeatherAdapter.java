@@ -126,6 +126,11 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.data.setMaxLines(3);
         holder.data.append(mWeatherInfo.getData());
 
+        if (!UsefulBits.isEmpty(mWeatherInfo.getRain()))
+            holder.data.setText(context.getString(R.string.rain) + ": " + mWeatherInfo.getRain());
+        if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
+            holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
+
         if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
             holder.data.append(", " + mWeatherInfo.getForecastStr());
         if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
@@ -142,8 +147,6 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             holder.data.append(", " + context.getString(R.string.direction) + ": " + mWeatherInfo.getDirectionStr());
         if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
             holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
-        if (!UsefulBits.isEmpty(mWeatherInfo.getRain()))
-            holder.data.append(", " + context.getString(R.string.rain) + ": " + mWeatherInfo.getRain());
 
         holder.dayButton.setId(mWeatherInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {

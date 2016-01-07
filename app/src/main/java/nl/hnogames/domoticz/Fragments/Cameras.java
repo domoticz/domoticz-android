@@ -107,7 +107,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 mRecyclerView.setAdapter(mAdapter);
                 hideProgressDialog();
 
-
                 //show that this action is not supported yes...
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -115,7 +114,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                         Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
                     }
                 }, 1000L);
-
             }
 
             @Override
@@ -131,7 +129,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         mActivity = activity;
         getActionBar().setTitle(R.string.title_cameras);
     }
-
 
     /**
      * Initializes the progress dialog

@@ -181,6 +181,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.DIMMER:
                     case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                     case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                    case Domoticz.Device.Type.Value.SELECTOR:
                         if (mDeviceInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
                             row = setDimmerRowId(holder, true);
                         else
@@ -449,6 +450,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                         setDimmerRowData(mDeviceInfo, holder, true);
                     else
                         setDimmerRowData(mDeviceInfo, holder, false);
+                    break;
+
+                case Domoticz.Device.Type.Value.SELECTOR:
+                    setSelectorRowData(mDeviceInfo, holder);
                     break;
 
                 case Domoticz.Device.Type.Value.BLINDS:
@@ -828,6 +833,102 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(1f);
     }
 
+    private void setSelectorRowData(final DevicesInfo mDevicesInfo,
+                                    final ViewHolder holder) {
+        holder.isProtected = mDevicesInfo.isProtected();
+        holder.switch_name.setText(mDevicesInfo.getName());
+
+        String text = context.getString(R.string.last_update) + ": " +
+                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+        if(holder.signal_level!=null)
+            holder.signal_level.setText(text);
+
+        text = context.getString(R.string.status) + ": " +
+                String.valueOf(mDevicesInfo.getStatus());
+        if(holder.switch_battery_level!=null)
+            holder.switch_battery_level.setText(text);
+
+        int loadLevel = mDevicesInfo.getLevel()/10;
+        final String[] levelNames = mDevicesInfo.getLevelNames();
+        holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
+        holder.switch_dimmer_level.setText(levelNames[loadLevel]);
+
+        holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
+        if (holder.isProtected) holder.dimmerOnOffSwitch.setEnabled(false);
+
+        holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                handleOnOffSwitchClick(compoundButton.getId(), checked);
+                mDevicesInfo.setStatusBoolean(checked);
+                if (checked) {
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                    holder.dimmer.setVisibility(View.VISIBLE);
+                    holder.dimmer.setProgress(0);
+                } else {
+                    holder.switch_dimmer_level.setVisibility(View.GONE);
+                    holder.dimmer.setVisibility(View.GONE);
+                }
+                if (!checked)
+                    holder.iconRow.setAlpha(0.5f);
+                else
+                    holder.iconRow.setAlpha(1f);
+            }
+        });
+
+        if (holder.isProtected)
+            holder.dimmer.setEnabled(false);
+
+        holder.dimmer.incrementProgressBy(1);
+        holder.dimmer.setProgress(loadLevel);
+        holder.dimmer.setMax(levelNames.length-1);
+        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String value = levelNames[progress];
+                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
+                        .findViewById(mDevicesInfo.getIdx() + ID_TEXTVIEW);
+                switch_dimmer_level.setText(value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                previousDimmerValue = seekBar.getProgress();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress()*10;
+                Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
+                        .findViewById(mDevicesInfo.getIdx() + ID_SWITCH);
+
+                handleDimmerChange(mDevicesInfo.getIdx(), progress, true);
+                mDevicesInfo.setLevel(progress);
+            }
+        });
+
+        if (!mDevicesInfo.getStatusBoolean()) {
+            holder.switch_dimmer_level.setVisibility(View.GONE);
+            holder.dimmer.setVisibility(View.GONE);
+        } else {
+            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.dimmer.setVisibility(View.VISIBLE);
+        }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
+                mDevicesInfo.getType(),
+                mDevicesInfo.getSwitchType(),
+                mDevicesInfo.getStatusBoolean(),
+                mDevicesInfo.getUseCustomImage(),
+                mDevicesInfo.getImage())).into(holder.iconRow);
+
+        if (!mDevicesInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+    }
+
     private void setDimmerRowData(final DevicesInfo mDeviceInfo,
                                   final ViewHolder holder,
                                   final boolean isRGB) {
@@ -922,7 +1023,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     seekBar.setProgress(previousDimmerValue);
                 } else if (progress > 0 && !dimmerOnOffSwitch.isChecked())
                     dimmerOnOffSwitch.setChecked(true);
-                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1);
+                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -985,8 +1086,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         listener.onBlindClick(idx, action);
     }
 
-    private void handleDimmerChange(final int idx, final int value) {
-        listener.onDimmerChange(idx, value);
+    private void handleDimmerChange(final int idx, final int value, boolean selector) {
+        listener.onDimmerChange(idx, value, selector);
     }
 
     private void handleLogButtonClick(int idx) {
