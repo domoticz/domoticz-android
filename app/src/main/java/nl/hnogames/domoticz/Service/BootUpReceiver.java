@@ -26,11 +26,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 
 public class BootUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         WidgetUtils.RefreshWidgets(context);
+        new SharedPrefUtil(context).setGeoFenceService();
     }
 }
