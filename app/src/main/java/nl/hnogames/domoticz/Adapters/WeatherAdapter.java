@@ -142,6 +142,8 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             holder.data.append(", " + context.getString(R.string.direction) + ": " + mWeatherInfo.getDirectionStr());
         if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
             holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
+        if (!UsefulBits.isEmpty(mWeatherInfo.getRain()))
+            holder.data.append(", " + context.getString(R.string.rain) + ": " + mWeatherInfo.getRain());
 
         holder.dayButton.setId(mWeatherInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {

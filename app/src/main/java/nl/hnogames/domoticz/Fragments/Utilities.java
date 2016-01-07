@@ -291,7 +291,10 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                         mGraphList,
                         R.layout.dialog_graph);
                 infoDialog.setRange(range);
-                infoDialog.setSteps(4);
+
+                if(range.equals("day"))
+                    infoDialog.setSteps(3);
+
                 infoDialog.setTitle(graphType.toUpperCase());
                 infoDialog.show();
             }

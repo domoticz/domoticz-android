@@ -5,6 +5,6 @@
     <string name="security_disarm">Отключить</string>
     <string name="security_arm_home">Вкл дома</string>
     <string name="security_arm_away">Вкл не дома</string>
-    <string name="wrongcode">Введен неверный код!</string>
+    <string name="security_wrong_code">Введен неверный код!</string>
     <string name="security_generic_error">Не удалось изменить статус панели безопасности</string>
 </resources>

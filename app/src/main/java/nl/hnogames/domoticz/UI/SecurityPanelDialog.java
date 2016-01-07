@@ -187,7 +187,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                 }.start();
             }
         } else {
-            Toast.makeText(mContext, mContext.getString(R.string.wrongcode), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
             setFields(true);
         }
     }

@@ -5,6 +5,6 @@
     <string name="security_disarm">Disarm</string>
     <string name="security_arm_home">Arm Home</string>
     <string name="security_arm_away">Arm Away</string>
-    <string name="wrongcode">Wrong Code entered!</string>
+    <string name="security_wrong_code">Wrong Code entered!</string>
     <string name="security_generic_error">Could not change status of Security Panel</string>
 </resources>

@@ -92,7 +92,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                     public void onItemClick(int position, View v) {
                         Intent intent = new Intent(getActivity(), CameraActivity.class);
                         //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGEURL", mCameras.get(position).getFullURL());
+                        intent.putExtra("IMAGEURL", mDomoticz.getSnapshotUrl(mCameras.get(position)));
                         //noinspection SpellCheckingInspection
                         intent.putExtra("IMAGETITLE", mCameras.get(position).getName());
                         startActivity(intent);
