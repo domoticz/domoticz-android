@@ -521,18 +521,21 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onDimmerChange(int idx, int value) {
-        addDebugText("onDimmerChange");
+        addDebugText("onDimmerChange for " + idx + " to " + value);
         DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch != null) {
-            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_level) + ": " + clickedSwitch.getName() + " " + mContext.getString(R.string.to) + " " + (value - 1), Snackbar.LENGTH_SHORT).show();
+            String text = String.format(mContext.getString(R.string.set_level_switch),
+                    clickedSwitch.getName(),
+                    (value - 1));
+            Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
+
             mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
-                    //getSwitchesData();
                 }
 
                 @Override
