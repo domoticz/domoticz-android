@@ -538,13 +538,13 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onDimmerChange(int idx, int value) {
+    public void onDimmerChange(int idx, int value, boolean selector) {
         addDebugText("onDimmerChange for " + idx + " to " + value);
         DevicesInfo clickedSwitch = getDevice(idx);
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    (value - 1));
+                    !selector ? (value - 1) : ((value)/10));
             Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;

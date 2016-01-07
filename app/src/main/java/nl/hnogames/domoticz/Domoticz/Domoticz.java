@@ -205,6 +205,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
         switchesSupported.add(Device.Type.Value.SECURITY);
+        switchesSupported.add(Device.Type.Value.SELECTOR);
         return switchesSupported;
     }
 
@@ -228,6 +229,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DOORLOCK);
         switchesSupported.add(Device.Type.Name.DOORBELL);
         switchesSupported.add(Device.Type.Name.SECURITY);
+        switchesSupported.add(Device.Type.Name.SELECTOR);
         return switchesSupported;
     }
 
@@ -1102,6 +1104,7 @@ public class Domoticz {
                 int BLINDVENETIAN = 15;
                 int BLINDINVERTED = 6;
                 int BLINDPERCENTAGEINVERTED = 16;
+                int SELECTOR = 18;
             }
 
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -1126,6 +1129,7 @@ public class Domoticz {
                 String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
                 String WIND = "Wind";
+                String SELECTOR = "Selector";
             }
         }
 

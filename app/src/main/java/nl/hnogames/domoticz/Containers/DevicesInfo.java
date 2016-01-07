@@ -27,6 +27,9 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 public class DevicesInfo implements Comparable {
 
     private final String UNKNOWN = "Unknown";
@@ -54,6 +57,7 @@ public class DevicesInfo implements Comparable {
     private String switchType;
     private String CounterToday;
     private String Counter;
+    private String LevelNames;
     private String Usage;
     private String Image;
     private String Data;
@@ -75,6 +79,7 @@ public class DevicesInfo implements Comparable {
         } catch (Exception e) {
             maxDimLevel = 1;
         }
+
         try {
             if (row.has("CustomImage")) {
                 if (row.getInt("CustomImage") > 0)
@@ -92,6 +97,8 @@ public class DevicesInfo implements Comparable {
         if (row.has("Image"))
             Image = row.getString("Image");
 
+        if (row.has("LevelNames"))
+            LevelNames = row.getString("LevelNames");
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
 
@@ -228,6 +235,10 @@ public class DevicesInfo implements Comparable {
 
     public String getStatus() {
         return status;
+    }
+
+    public String[] getLevelNames() {
+        return Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
     }
 
     public void setStatus(String status) {
