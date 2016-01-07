@@ -56,7 +56,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @SuppressWarnings("unused")
     private static final String TAG = Dashboard.class.getSimpleName();
-    private ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
     private Context mContext;
@@ -192,7 +191,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             try {
                 coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
                 mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-                supportedSwitches = new ArrayList<>();
+                ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
                 final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
                 final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
@@ -207,7 +206,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         } else {
-                            Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, getString(R.string.filterOn_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
                             if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
                                     isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
@@ -323,7 +322,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         else
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
-        if (clickedSwitch != null) {
+        if (clickedSwitch.getIdx() > 0) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
@@ -439,6 +438,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private void setColor(int selectedColor, final int idx) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
         Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+        addDebugText("Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
@@ -539,25 +539,29 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onDimmerChange(int idx, int value) {
-        addDebugText("onDimmerChange");
+        addDebugText("onDimmerChange for " + idx + " to " + value);
         DevicesInfo clickedSwitch = getDevice(idx);
-        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + (value - 1), Snackbar.LENGTH_SHORT).show();
+        if (clickedSwitch != null) {
+            String text = String.format(mContext.getString(R.string.set_level_switch),
+                    clickedSwitch.getName(),
+                    (value - 1));
+            Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-        int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
+            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+            int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
 
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                //processDashboard();
-            }
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
+        }
     }
 
     /**

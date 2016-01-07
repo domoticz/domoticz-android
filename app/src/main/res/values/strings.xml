@@ -62,6 +62,7 @@
     <string name="filterOn_all">All devices</string>
     <string name="Filter">Filter</string>
     <string name="filter_devices">Filter devices</string>
+    <string name="filtered_on">Filter on</string>
 
     <string name="choose_color">Choose color</string>
 
