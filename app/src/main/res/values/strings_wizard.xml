@@ -13,7 +13,7 @@
     <string name="wizard_startup_description">You can set your startup screen in the settings!</string>
 
     <string name="wizard_geo">Geofencing</string>
-    <string name="wizard_geo_description">You can add Geofences and trigger events when entering the Geofence.</string>
+    <string name="wizard_geo_description">You can set your startup screen in the settings!</string>
 
     <string name="wizard_wear">Android Wear</string>
     <string name="wizard_wear_description">You can specify which switches you would like to control from your Android wear device!</string>
