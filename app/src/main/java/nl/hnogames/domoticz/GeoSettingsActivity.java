@@ -74,22 +74,17 @@ public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private String TAG = GeoSettingsActivity.class.getSimpleName();
-
     @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
-
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_INTERVAL = 100000;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_FASTEST_INTERVAL = 50000;
-
     private final int ACTION_SET_GEOFENCE_SERVICE = 11;
     private final int ACTION_GET_LOCATION = 12;
-
     private final int REQUEST_GEOFENCE_SERVICE = 21;
     private final int REQUEST_GET_LOCATION = 22;
-
+    private String TAG = GeoSettingsActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
 
     private Domoticz domoticz;

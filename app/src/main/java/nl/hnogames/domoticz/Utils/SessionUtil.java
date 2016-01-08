@@ -35,23 +35,20 @@ import java.util.Map;
 
 public class SessionUtil {
 
+    private static final String SET_COOKIE_KEY = "Set-Cookie";
+    private static final String COOKIE_KEY = "Cookie";
+    private static final String SESSION_COOKIE = "SID";
+    private static final String COOKIE_EXPIRE_KEY = "CookieExpire";
+    private Context mContext;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
     public SessionUtil(Context mContext) {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
     }
 
-    private static final String SET_COOKIE_KEY = "Set-Cookie";
-    private static final String COOKIE_KEY = "Cookie";
-    private static final String SESSION_COOKIE = "SID";
-    private static final String COOKIE_EXPIRE_KEY = "CookieExpire";
-
-
-    private Context mContext;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-
-    public final void clearSessionCookie(){
+    public final void clearSessionCookie() {
         editor.putString(SESSION_COOKIE, "");
         editor.commit();
     }
@@ -59,6 +56,7 @@ public class SessionUtil {
     /**
      * Checks the response headers for session cookie and saves it
      * if it finds it.
+     *
      * @param headers Response Headers.
      */
     public final void checkSessionCookie(Map<String, String> headers) {
@@ -74,10 +72,8 @@ public class SessionUtil {
                 editor.putString(SESSION_COOKIE, cookie);
                 editor.commit();
 
-                for(String s : splitCookie)
-                {
-                    if(s.indexOf("Expires")>0)
-                    {
+                for (String s : splitCookie) {
+                    if (s.indexOf("Expires") > 0) {
                         String[] splitExpires = s.split("=");
                         expires = splitExpires[1];
                         editor.putString(COOKIE_EXPIRE_KEY, expires);
@@ -88,8 +84,8 @@ public class SessionUtil {
         }
     }
 
-    public Calendar parseStringToDate(String expires){
-        if(expires == null || expires.length()<=0)
+    public Calendar parseStringToDate(String expires) {
+        if (expires == null || expires.length() <= 0)
             return null;
 
         Calendar cal = Calendar.getInstance();
@@ -105,6 +101,7 @@ public class SessionUtil {
 
     /**
      * Adds session cookie to headers if exists.
+     *
      * @param headers
      */
     public final void addSessionCookie(Map<String, String> headers) {
@@ -112,7 +109,7 @@ public class SessionUtil {
         String expires = prefs.getString(COOKIE_EXPIRE_KEY, "");
 
         Calendar calExpired = parseStringToDate(expires);
-        if(calExpired!=null) {
+        if (calExpired != null) {
             Calendar calNow = Calendar.getInstance();
             if (calExpired.after(calNow)) {
                 //session id still valid!

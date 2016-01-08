@@ -23,33 +23,20 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.Volley;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.BitmapLruCache;
+import nl.hnogames.domoticz.Utils.RequestUtil;
 import nl.hnogames.domoticz.Utils.SessionUtil;
 
 
@@ -90,51 +77,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            final SessionUtil sessionUtil = new SessionUtil(mContext);
-            ImageLoader.ImageCache imageCache = new BitmapLruCache();
-            ImageLoader imageLoader = new ImageLoader(Volley.newRequestQueue(mContext), imageCache){
-                @Override
-                protected com.android.volley.Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
-                                                                              ImageView.ScaleType scaleType, final String cacheKey) {
-                    return new ImageRequest(requestUrl, new Response.Listener<Bitmap>() {
-                        @Override
-                        public void onResponse(Bitmap response) {
-                            onGetImageSuccess(cacheKey, response);
-                        }
-                    }, maxWidth, maxHeight,
-                            Bitmap.Config.RGB_565, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            onGetImageError(cacheKey, error);
-                        }
-                    }) {
-
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = super.getHeaders();
-
-                            if (headers == null
-                                    || headers.equals(Collections.emptyMap())) {
-                                headers = new HashMap<String, String>();
-                            }
-
-                            String credentials = domoticz.getUserCredentials(Domoticz.Authentication.USERNAME) + ":" + domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);
-                            String base64EncodedCredentials =
-                                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-
-                            headers.put("Authorization", "Basic " + base64EncodedCredentials);
-                            headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-                            headers.put("Accept-Language", "en-US,en;q=0.7,nl;q=0.3");
-                            headers.put("Accept-Encoding", "gzip, deflate");
-
-                            sessionUtil.addSessionCookie(headers);
-                            return headers;
-                        }
-
-                    };
-                }
-            };
-
+            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
             holder.camera.setImageUrl(imageUrl, imageLoader);
             holder.camera.setDefaultImageResId(R.drawable.placeholder);
         }

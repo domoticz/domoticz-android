@@ -830,7 +830,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     }
 
     private void setSelectorRowData(final DevicesInfo mDevicesInfo,
-                                  final ViewHolder holder) {
+                                    final ViewHolder holder) {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
@@ -842,7 +842,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
-        int loadLevel = mDevicesInfo.getLevel()/10;
+        int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(levelNames[loadLevel]);
@@ -876,7 +876,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
-        holder.dimmer.setMax(levelNames.length-1);
+        holder.dimmer.setMax(levelNames.length - 1);
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -893,7 +893,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress()*10;
+                int progress = seekBar.getProgress() * 10;
                 Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
                         .findViewById(mDevicesInfo.getIdx() + ID_SWITCH);
 

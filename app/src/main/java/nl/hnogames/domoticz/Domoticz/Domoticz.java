@@ -25,13 +25,19 @@ package nl.hnogames.domoticz.Domoticz;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +94,8 @@ public class Domoticz {
     private final SessionUtil mSessionUtil;
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
+
+    private String snapshot_file_path = "/Domoticz/SnapShot";
 
 
     public Domoticz(Context mContext) {
@@ -599,7 +607,7 @@ public class Domoticz {
         RequestUtil.makeJsonVersionRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3 );
+                url, mSessionUtil, true, 3);
     }
 
     public void getUpdate(UpdateReceiver receiver) {
@@ -896,6 +904,28 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    public File saveSnapShot(Bitmap bitmap, String name) {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                this.snapshot_file_path;
+        File dir = new File(file_path);
+        if (!dir.exists())
+            dir.mkdirs();
+
+        File file = new File(dir, "snapshot" + name + ".jpg");
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);

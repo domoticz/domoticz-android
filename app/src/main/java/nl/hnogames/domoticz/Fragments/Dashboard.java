@@ -544,7 +544,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    !selector ? (value - 1) : ((value)/10));
+                    !selector ? (value - 1) : ((value) / 10));
             Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;

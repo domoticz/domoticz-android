@@ -149,10 +149,11 @@ public class WeatherInfo {
     public String getForecastStr() {
         return ForecastStr;
     }
-    
+
     public String getRain() {
         return Rain;
     }
+
     public String getRainRate() {
         return RainRate;
     }

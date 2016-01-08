@@ -111,8 +111,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         } else {
             if (Domoticz.UTILITIES_SUBTYPE_TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
                 convertView = CreateTextRow(parent, holder, mUtilitiesInfo);
-            }
-            else
+            } else
                 convertView = CreateDefaultRow(parent, holder, mUtilitiesInfo);
         }
         convertView.setTag(holder);

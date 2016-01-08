@@ -840,15 +840,15 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getStatus());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        int loadLevel = mDevicesInfo.getLevel()/10;
+        int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(levelNames[loadLevel]);
@@ -882,7 +882,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
-        holder.dimmer.setMax(levelNames.length-1);
+        holder.dimmer.setMax(levelNames.length - 1);
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -899,7 +899,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress()*10;
+                int progress = seekBar.getProgress() * 10;
                 Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
                         .findViewById(mDevicesInfo.getIdx() + ID_SWITCH);
 
