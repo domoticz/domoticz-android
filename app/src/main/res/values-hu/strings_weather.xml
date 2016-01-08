@@ -11,4 +11,5 @@
   <string name="speed">Sebesség</string>
   <string name="forecast">Előrejelzés</string>
   <string name="rain">Csapadék</string>
+  <string name="rainrate">Rain Rate</string>
 </resources>
