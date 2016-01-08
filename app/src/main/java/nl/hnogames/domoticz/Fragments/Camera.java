@@ -115,12 +115,15 @@ public class Camera extends Fragment {
 
     public void setImage(String url) {
         this.url = url;
-        if (root != null && !root.equals(null))
+        if (root != null && !root.equals(null)) {
+            File file = new File(url);
+            Uri uri = Uri.fromFile(file);
             Picasso.with(getActivity())
-                    .load(url)
+                    .load(uri)
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(root);
+        }
     }
 
     // Returns the URI path to the Bitmap displayed in specified ImageView

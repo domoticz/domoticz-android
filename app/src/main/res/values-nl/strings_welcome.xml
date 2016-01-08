@@ -27,16 +27,16 @@
   <string name="welcome_remote_server_port">Poort</string>
   <string name="welcome_remote_server_username">Gebruikersnaam</string>
   <string name="welcome_remote_server_password">Wachtwoord</string>
-  <string name="welcome_remote_server_directory">Directory</string>
+  <string name="welcome_remote_server_directory">Folder (optioneel)</string>
   <string name="welcome_local_server_used_switch_title">Verschillende server gegevens</string>
   <string name="welcome_local_server_used_switch_summary">Gebruik verschillende server gegevens voor uw thuis netwerk</string>
   <string name="welcome_local_server_ssid">Wifi SSID\'s van uw thuis netwerk</string>
   <string name="welcome_local_server_address">Server adres van uw thuis netwerk</string>
   <string name="welcome_local_server_protocol">Protocol van uw thuis netwerk</string>
   <string name="welcome_local_server_port">Poort van uw thuis netwerk</string>
+  <string name="welcome_local_server_directory">Folder (optioneel)</string>
   <string name="welcome_local_server_username">Gebruikersnaam van uw thuis netwerk (optioneel)</string>
   <string name="welcome_local_server_password">Wachtwoord van uw thuis netwerk (optioneel)</string>
-  <string name="welcome_local_server_directory">Directory van uw thuis netwerk (optioneel)</string>
   <string-array name="remote_server_protocols">
     <item>HTTP</item>
     <item>HTTPS</item>

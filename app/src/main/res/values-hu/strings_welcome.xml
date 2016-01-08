@@ -27,12 +27,14 @@
   <string name="welcome_remote_server_port">Port</string>
   <string name="welcome_remote_server_username">felhasználónév</string>
   <string name="welcome_remote_server_password">Jelszó</string>
+  <string name="welcome_remote_server_directory">Directory</string>
   <string name="welcome_local_server_used_switch_title">Eltérő kiszolgáló cím</string>
   <string name="welcome_local_server_used_switch_summary">Eltérő cím a helyi kapcsolat használatához</string>
   <string name="welcome_local_server_ssid">Helyi wifi SSID</string>
   <string name="welcome_local_server_address">Helyi kiszolgáló címe</string>
   <string name="welcome_local_server_protocol">Helyi protokoll</string>
   <string name="welcome_local_server_port">Helyi port</string>
+  <string name="welcome_local_server_directory">Local directory (leave empty if not used)</string>
   <string name="welcome_local_server_username">Helyi név (ha nem használja, hagyja üresen)</string>
   <string name="welcome_local_server_password">Helyi jelszó (ha nem használja, hagyja üresen)</string>
   <string-array name="remote_server_protocols">

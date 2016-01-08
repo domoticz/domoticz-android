@@ -64,6 +64,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.RequestUtil;
+import nl.hnogames.domoticz.Utils.SessionUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.VolleyUtil;
@@ -84,12 +85,15 @@ public class Domoticz {
     private static final String TAG = Domoticz.class.getSimpleName();
     public static boolean debug;
     private final SharedPrefUtil mSharedPrefUtil;
+    private final SessionUtil mSessionUtil;
     private final PhoneConnectionUtil mPhoneConnectionUtil;
-    Context mContext;
+    private Context mContext;
+
 
     public Domoticz(Context mContext) {
         this.mContext = mContext;
         mSharedPrefUtil = new SharedPrefUtil(mContext);
+        mSessionUtil = new SessionUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] entries) {
@@ -595,7 +599,7 @@ public class Domoticz {
         RequestUtil.makeJsonVersionRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3 );
     }
 
     public void getUpdate(UpdateReceiver receiver) {
@@ -604,7 +608,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, false, 1);
     }
 
     public void getScenes(ScenesReceiver receiver) {
@@ -613,7 +617,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getScene(ScenesReceiver receiver, int idx) {
@@ -622,7 +626,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getPlans(PlansReceiver receiver) {
@@ -631,7 +635,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getCameras(CameraReceiver receiver) {
@@ -641,7 +645,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
@@ -654,7 +658,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -665,7 +669,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -676,7 +680,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver) {
@@ -687,7 +691,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void setSecurityPanelAction(int secStatus,
@@ -703,7 +707,7 @@ public class Domoticz {
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void setAction(int idx,
@@ -718,7 +722,7 @@ public class Domoticz {
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void setRGBColorAction(int idx,
@@ -739,7 +743,7 @@ public class Domoticz {
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void setEventAction(int id,
@@ -755,7 +759,7 @@ public class Domoticz {
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getStatus(int idx, StatusReceiver receiver) {
@@ -766,7 +770,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getUtilities(UtilitiesReceiver receiver) {
@@ -775,7 +779,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getSettings(SettingsReceiver receiver) {
@@ -784,7 +788,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getTemperatures(TemperatureReceiver receiver) {
@@ -793,7 +797,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getWeathers(WeatherReceiver receiver) {
@@ -802,7 +806,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public String getDeviceType(DevicesInfo device) {
@@ -828,7 +832,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getDevice(DevicesReceiver receiver, int idx) {
@@ -838,7 +842,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getLogs(LogsReceiver receiver) {
@@ -847,7 +851,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getUserVariables(UserVariablesReceiver receiver) {
@@ -856,7 +860,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getEvents(EventReceiver receiver) {
@@ -865,7 +869,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
     public void getEventXml(int id, EventXmlReceiver receiver) {
@@ -875,7 +879,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
 
@@ -889,7 +893,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url);
+                url, mSessionUtil, true, 3);
     }
 
 

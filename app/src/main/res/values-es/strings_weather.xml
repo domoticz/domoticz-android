@@ -11,4 +11,5 @@
   <string name="speed">Velocidad</string>
   <string name="forecast">Previsión</string>
   <string name="rain">Lluvia</string>
+  <string name="rainrate">Rain Rate</string>
 </resources>
