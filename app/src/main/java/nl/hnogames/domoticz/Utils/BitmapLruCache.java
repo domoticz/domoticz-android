@@ -17,6 +17,14 @@ public class BitmapLruCache
         super(sizeInKiloBytes);
     }
 
+    public static int getDefaultLruCacheSize() {
+        //final int maxMemory =
+        //        (int) (Runtime.getRuntime().maxMemory() / 1024);
+        //final int cacheSize = maxMemory / 8;
+
+        return 1;
+    }
+
     @Override
     protected int sizeOf(String key, Bitmap value) {
         return value.getRowBytes() * value.getHeight() / 1024;
@@ -30,13 +38,5 @@ public class BitmapLruCache
     @Override
     public void putBitmap(String url, Bitmap bitmap) {
         put(url, bitmap);
-    }
-
-    public static int getDefaultLruCacheSize() {
-        //final int maxMemory =
-        //        (int) (Runtime.getRuntime().maxMemory() / 1024);
-        //final int cacheSize = maxMemory / 8;
-
-        return 1;
     }
 }

@@ -26,13 +26,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,9 +41,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
@@ -56,6 +50,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -106,33 +101,17 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        ImageView cameraImage = (ImageView)v.findViewById(R.id.image);
-                        TextView cameraTitle = (TextView)v.findViewById(R.id.name);
-                        Bitmap savePic = ((BitmapDrawable)cameraImage.getDrawable()).getBitmap();
+                        ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
+                        TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                        Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
-                        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                                "/Domoticz/SnapShot";
-                        File dir = new File(file_path);
-                        if(!dir.exists())
-                            dir.mkdirs();
-
-                        File file = new File(dir, "snapshot" + cameraTitle.getText() + ".jpg");
-                        FileOutputStream fOut = null;
-                        try {
-                            fOut = new FileOutputStream(file);
-                            savePic.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-                            fOut.flush();
-                            fOut.close();
-
-                            Intent intent = new Intent(getActivity(), CameraActivity.class);
-                            intent.putExtra("IMAGETITLE", cameraTitle.getText());
-                            intent.putExtra("IMAGEURL", file.getPath());
-                            startActivity(intent);
-
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                                requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                            } else
+                                processImage(savePic, (String) cameraTitle.getText());
+                        } else {
+                            processImage(savePic, (String) cameraTitle.getText());
                         }
                     }
                 });
@@ -145,6 +124,16 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 errorHandling(error);
             }
         });
+    }
+
+    private void processImage(Bitmap savePic, String title){
+        File dir = mDomoticz.saveSnapShot(savePic, title);
+        if (dir != null) {
+            Intent intent = new Intent(getActivity(), CameraActivity.class);
+            intent.putExtra("IMAGETITLE", title);
+            intent.putExtra("IMAGEURL", dir.getPath());
+            startActivity(intent);
+        }
     }
 
     @Override

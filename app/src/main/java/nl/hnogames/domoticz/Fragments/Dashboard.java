@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -455,7 +456,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     @Override
                     public void onReceiveResult(String result) {
                         Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT).show();
-                        processDashboard();
+                        //processDashboard();
                     }
 
                     @Override
@@ -470,25 +471,44 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onThermostatClick(final int idx, int action, final double newSetPoint) {
+    public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+        final DevicesInfo tempUtil = getDevice(idx);
 
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+        TemperatureDialog tempDialog = new TemperatureDialog(
+                getActivity(),
+                idx,
+                tempUtil.getSetPoint());
 
-        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                processDashboard();
-            }
+            public void onDismiss(double newSetPoint) {
+                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                if (tempUtil != null) {
+                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
+                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                    if (newSetPoint < tempUtil.getSetPoint())
+                        action = Domoticz.Device.Thermostat.Action.MIN;
+                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            successHandling(result, false);
+                            processDashboard();
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error);
+                        }
+                    });
+                }
             }
         });
+
+        tempDialog.show();
     }
+
 
     @Override
     public void onSecurityPanelButtonClick(int idx) {
@@ -544,7 +564,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    !selector ? (value - 1) : ((value)/10));
+                    !selector ? (value - 1) : ((value) / 10));
             Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;

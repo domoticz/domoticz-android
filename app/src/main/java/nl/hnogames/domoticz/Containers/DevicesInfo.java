@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class DevicesInfo implements Comparable {
@@ -237,12 +236,12 @@ public class DevicesInfo implements Comparable {
         return status;
     }
 
-    public String[] getLevelNames() {
-        return Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
-    }
-
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String[] getLevelNames() {
+        return Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
     }
 
     public boolean getStatusBoolean() {

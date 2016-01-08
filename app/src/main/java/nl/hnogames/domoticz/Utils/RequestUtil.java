@@ -23,24 +23,25 @@
 package nl.hnogames.domoticz.Utils;
 
 import android.content.Context;
-import android.content.pm.PackageInstaller;
+import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class RequestUtil {
                                               final String password,
                                               final String url,
                                               final SessionUtil sessionUtil,
-                                              final boolean usePreviusSession,
+                                              final boolean usePreviousSession,
                                               final int retryCounter) {
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
@@ -82,12 +83,11 @@ public class RequestUtil {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter-1;
-                        if(counter <= 0) {
+                        int counter = retryCounter - 1;
+                        if (counter <= 0) {
                             errorHandling(volleyError);
                             if (parser != null) parser.onError(volleyError);
-                        }
-                        else{
+                        } else {
                             //try again without session id
                             makeJsonVersionRequest(parser, username, password, url, sessionUtil, false, retryCounter);
                         }
@@ -105,7 +105,7 @@ public class RequestUtil {
                             headers = new HashMap<String, String>();
                         }
 
-                        if(usePreviusSession)
+                        if (usePreviousSession)
                             sessionUtil.addSessionCookie(headers);
                         return createBasicAuthHeader(username, password, headers);
                     }
@@ -126,7 +126,7 @@ public class RequestUtil {
                                           final String password,
                                           final String url,
                                           final SessionUtil sessionUtil,
-                                          final boolean usePreviusSession,
+                                          final boolean usePreviousSession,
                                           final int retryCounter) {
 
         JsonObjectRequest jsonObjReq =
@@ -141,17 +141,16 @@ public class RequestUtil {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter-1;
-                        if(counter <= 0) {
+                        int counter = retryCounter - 1;
+                        if (counter <= 0) {
                             errorHandling(volleyError);
                             if (parser != null) parser.onError(volleyError);
-                        }
-                        else{
+                        } else {
                             //try again without session id
                             makeJsonGetRequest(parser, username, password, url, sessionUtil, false, retryCounter);
                         }
                     }
-                })  {
+                }) {
 
                     @Override
                     // HTTP basic authentication
@@ -164,7 +163,7 @@ public class RequestUtil {
                             headers = new HashMap<String, String>();
                         }
 
-                        if(usePreviusSession)
+                        if (usePreviousSession)
                             sessionUtil.addSessionCookie(headers);
                         return createBasicAuthHeader(username, password, headers);
                     }
@@ -190,7 +189,7 @@ public class RequestUtil {
                                                 final String password,
                                                 final String url,
                                                 final SessionUtil sessionUtil,
-                                                final boolean usePreviusSession,
+                                                final boolean usePreviousSession,
                                                 final int retryCounter) {
 
         JsonObjectRequest jsonObjReq =
@@ -215,12 +214,11 @@ public class RequestUtil {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter-1;
-                        if(counter <= 0) {
+                        int counter = retryCounter - 1;
+                        if (counter <= 0) {
                             errorHandling(volleyError);
                             if (parser != null) parser.onError(volleyError);
-                        }
-                        else{
+                        } else {
                             //try again without session id
                             makeJsonGetResultRequest(parser, username, password, url, sessionUtil, false, retryCounter);
                         }
@@ -238,7 +236,7 @@ public class RequestUtil {
                             headers = new HashMap<String, String>();
                         }
 
-                        if(usePreviusSession)
+                        if (usePreviousSession)
                             sessionUtil.addSessionCookie(headers);
                         return createBasicAuthHeader(username, password, headers);
                     }
@@ -264,7 +262,7 @@ public class RequestUtil {
                                           final String password,
                                           final String url,
                                           final SessionUtil sessionUtil,
-                                          final boolean usePreviusSession,
+                                          final boolean usePreviousSession,
                                           final int retryCounter) {
 
         JsonObjectRequest jsonObjReq =
@@ -289,17 +287,16 @@ public class RequestUtil {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter-1;
-                        if(counter <= 0) {
+                        int counter = retryCounter - 1;
+                        if (counter <= 0) {
                             errorHandling(volleyError);
                             if (parser != null) parser.onError(volleyError);
-                        }
-                        else{
+                        } else {
                             //try again without session id
                             makeJsonPutRequest(parser, username, password, url, sessionUtil, false, retryCounter);
                         }
                     }
-                })  {
+                }) {
 
                     @Override
                     // HTTP basic authentication
@@ -312,7 +309,7 @@ public class RequestUtil {
                             headers = new HashMap<String, String>();
                         }
 
-                        if(usePreviusSession)
+                        if (usePreviousSession)
                             sessionUtil.addSessionCookie(headers);
                         return createBasicAuthHeader(username, password, headers);
                     }
@@ -329,6 +326,55 @@ public class RequestUtil {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
+    public static ImageLoader getImageLoader(final Domoticz domoticz, final SessionUtil sessionUtil, Context context) {
+        if (domoticz == null)
+            return null;
+
+        ImageLoader.ImageCache imageCache = new BitmapLruCache();
+        return new ImageLoader(Volley.newRequestQueue(context), imageCache) {
+            @Override
+            protected com.android.volley.Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
+                                                                          ImageView.ScaleType scaleType, final String cacheKey) {
+                return new ImageRequest(requestUrl, new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap response) {
+                        onGetImageSuccess(cacheKey, response);
+                    }
+                }, maxWidth, maxHeight,
+                        Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onGetImageError(cacheKey, error);
+                    }
+                }) {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = super.getHeaders();
+
+                        if (headers == null
+                                || headers.equals(Collections.emptyMap())) {
+                            headers = new HashMap<String, String>();
+                        }
+
+                        String credentials = domoticz.getUserCredentials(Domoticz.Authentication.USERNAME) + ":" + domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);
+                        String base64EncodedCredentials =
+                                Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+
+                        headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                        headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                        headers.put("Accept-Language", "en-US,en;q=0.7,nl;q=0.3");
+                        headers.put("Accept-Encoding", "gzip, deflate");
+
+                        sessionUtil.addSessionCookie(headers);
+                        return headers;
+                    }
+                };
+            }
+        };
+    }
+
 
     /**
      * Method to create a basic HTTP base64 encrypted authentication header
@@ -358,7 +404,7 @@ public class RequestUtil {
      */
     public static Map<String, String> createBasicAuthHeader(String username, String password, Map<String, String> headerMap) {
 
-        if(headerMap==null)
+        if (headerMap == null)
             headerMap = new HashMap<>();
 
         String credentials = username + ":" + password;
@@ -368,6 +414,7 @@ public class RequestUtil {
 
         return headerMap;
     }
+
 
     /**
      * Local error handling

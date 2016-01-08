@@ -32,7 +32,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -111,8 +110,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         } else {
             if (Domoticz.UTILITIES_SUBTYPE_TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
                 convertView = CreateTextRow(parent, holder, mUtilitiesInfo);
-            }
-            else
+            } else
                 convertView = CreateDefaultRow(parent, holder, mUtilitiesInfo);
         }
         convertView.setTag(holder);
@@ -240,39 +238,24 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
-
         holder.name = (TextView) convertView.findViewById(R.id.thermostat_name);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
         holder.lastSeen = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
         holder.setPoint = (TextView) convertView.findViewById(R.id.thermostat_set_point);
-        holder.buttonPlus = (ImageButton) convertView.findViewById(R.id.utilities_plus);
-
         holder.isProtected = mUtilitiesInfo.isProtected();
-        if (holder.isProtected) holder.buttonPlus.setEnabled(false);
-        holder.buttonMinus = (ImageButton) convertView.findViewById(R.id.utilities_minus);
-        if (holder.isProtected) holder.buttonMinus.setEnabled(false);
-        holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
+        holder.on_button = (Button) convertView.findViewById(R.id.on_button);
+        if (holder.isProtected)
+            holder.on_button.setEnabled(false);
+
+        holder.on_button.setText(context.getString(R.string.set_temperature));
+        holder.on_button.setId(mUtilitiesInfo.getIdx());
+        holder.on_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                double newValue = setPoint - 0.5;
-                handleThermostatClick(view.getId(),
-                        Domoticz.Device.Thermostat.Action.MIN,
-                        newValue);
-            }
-        });
-        holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                double newValue = setPoint + 0.5;
-                handleThermostatClick(view.getId(),
-                        Domoticz.Device.Thermostat.Action.PLUS,
-                        newValue);
+            public void onClick(View v) {
+                handleThermostatClick(v.getId());
             }
         });
 
-        holder.buttonPlus.setId(mUtilitiesInfo.getIdx());
-        holder.buttonMinus.setId(mUtilitiesInfo.getIdx());
         holder.name.setText(mUtilitiesInfo.getName());
         holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());
         holder.setPoint.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
@@ -280,8 +263,8 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-    public void handleThermostatClick(int idx, int action, double newSetPoint) {
-        listener.onThermostatClick(idx, action, newSetPoint);
+    public void handleThermostatClick(int idx) {
+        listener.onThermostatClick(idx);
     }
 
     static class ViewHolder {
@@ -290,14 +273,14 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         TextView hardware;
         TextView lastSeen;
         TextView setPoint;
-        ImageButton buttonPlus;
         ImageView iconRow;
-        ImageButton buttonMinus;
         Boolean isProtected;
+
         Button dayButton;
         Button monthButton;
         Button yearButton;
         Button buttonLog;
+        Button on_button;
     }
 
     private class ItemFilter extends Filter {

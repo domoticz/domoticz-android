@@ -125,7 +125,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private View setSwitchRowId(DevicesInfo mDeviceInfo, ViewHolder holder) {
         View row = setDefaultRowId(holder);
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-                (mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+                (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
                     row = setOnOffSwitchRowId(holder);
@@ -141,10 +141,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
             }
         } else {
-            if ((mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+            if ((mDeviceInfo.getSwitchType() == null)) {
                 row = setDefaultRowId(holder);
             } else {
-                boolean switchFound = true;
                 switch (mDeviceInfo.getSwitchTypeVal()) {
                     case Domoticz.Device.Type.Value.ON_OFF:
                     case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -194,9 +193,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                             row = setBlindsRowId(holder);
                         else
                             row = setOnOffSwitchRowId(holder);
-                        break;
-                    default:
-                        switchFound = false;
                         break;
                 }
             }
@@ -328,9 +324,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_battery_level = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
         holder.signal_level = (TextView) convertView.findViewById(R.id.thermostat_set_point);
-        holder.buttonPlus = (ImageButton) convertView.findViewById(R.id.utilities_plus);
-        holder.buttonMinus = (ImageButton) convertView.findViewById(R.id.utilities_minus);
-
+        holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
         return convertView;
     }
 
@@ -392,7 +386,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                   ViewHolder holder,
                                   View convertView) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-                (mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+                (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
                     setOnOffSwitchRowData(mDeviceInfo, holder);
@@ -407,7 +401,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     setDefaultRowData(mDeviceInfo, holder);
                     break;
             }
-        } else if ((mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+        } else if ((mDeviceInfo.getSwitchType() == null)) {
             setDefaultRowData(mDeviceInfo, holder);
         } else {
             switch (mDeviceInfo.getSwitchTypeVal()) {
@@ -636,38 +630,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-
     private void setThermostatRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-
         final double setPoint = mDeviceInfo.getSetPoint();
-
-        if (holder.isProtected) holder.buttonPlus.setEnabled(false);
-        if (holder.isProtected) holder.buttonMinus.setEnabled(false);
-
-        holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
+        if (holder.isProtected)
+            holder.buttonOn.setEnabled(false);
+        holder.buttonOn.setText(context.getString(R.string.set_temperature));
+        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                double newValue = setPoint - 0.5;
-                handleThermostatClick(view.getId(),
-                        Domoticz.Device.Thermostat.Action.MIN,
-                        newValue);
+            public void onClick(View v) {
+                handleThermostatClick(v.getId());
             }
         });
-        holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                double newValue = setPoint + 0.5;
-                handleThermostatClick(view.getId(),
-                        Domoticz.Device.Thermostat.Action.PLUS,
-                        newValue);
-            }
-        });
-        holder.buttonPlus.setId(mDeviceInfo.getIdx());
-        holder.buttonMinus.setId(mDeviceInfo.getIdx());
+        holder.buttonOn.setId(mDeviceInfo.getIdx());
 
         holder.switch_name.setText(mDeviceInfo.getName());
         if (holder.switch_battery_level != null)
@@ -679,8 +657,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
-    public void handleThermostatClick(int idx, int action, double newSetPoint) {
-        listener.onThermostatClick(idx, action, newSetPoint);
+    public void handleThermostatClick(int idx) {
+        listener.onThermostatClick(idx);
     }
 
     private void setPushOnOffSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder, boolean action) {
@@ -840,15 +818,15 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         String text = context.getString(R.string.last_update) + ": " +
                 String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
-        if(holder.signal_level!=null)
+        if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getStatus());
-        if(holder.switch_battery_level!=null)
+        if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        int loadLevel = mDevicesInfo.getLevel()/10;
+        int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(levelNames[loadLevel]);
@@ -882,7 +860,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
-        holder.dimmer.setMax(levelNames.length-1);
+        holder.dimmer.setMax(levelNames.length - 1);
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -899,7 +877,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress()*10;
+                int progress = seekBar.getProgress() * 10;
                 Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
                         .findViewById(mDevicesInfo.getIdx() + ID_SWITCH);
 

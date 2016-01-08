@@ -356,7 +356,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     @Override
                     public void onReceiveResult(String result) {
                         Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
-                        getSwitchesData();
+                        //getSwitchesData();
                     }
 
                     @Override
@@ -383,7 +383,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
-    public void onThermostatClick(int idx, int action, double newSetPoint) {}
+    public void onThermostatClick(int idx) {
+    }
 
     @Override
     public void onSecurityPanelButtonClick(int idx) {
@@ -526,7 +527,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    !selector ? (value - 1) : ((value)/10));
+                    !selector ? (value - 1) : ((value) / 10));
 
             Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;

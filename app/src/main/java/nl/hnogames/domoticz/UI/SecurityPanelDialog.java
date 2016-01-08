@@ -125,7 +125,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         });
     }
 
-    private void setFields(boolean enabled){
+    private void setFields(boolean enabled) {
         btnDisarm.setEnabled(enabled);
         btnArmAway.setEnabled(enabled);
         btnArmHome.setEnabled(enabled);
@@ -135,7 +135,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private void processRequest(final int status) {
         setFields(false);
         InputMethodManager imm =
-                (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editPinCode.getWindowToken(), 0);
 
         final String password =
