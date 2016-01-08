@@ -36,8 +36,8 @@ public class WelcomePage3 extends Fragment {
     private SharedPrefUtil mSharedPrefs;
     private FloatingLabelEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
-            local_server_input, local_password_input,
-            local_username_input, local_port_input;
+            remote_directory_input, local_server_input, local_password_input,
+            local_username_input, local_port_input, local_directory_input;
     private Spinner remote_protocol_spinner, local_protocol_spinner, startScreen_spinner;
     private Switch localServer_switch;
     private int remoteProtocolSelectedPosition, localProtocolSelectedPosition, startScreenSelectedPosition;
@@ -91,11 +91,13 @@ public class WelcomePage3 extends Fragment {
         remote_port_input = (FloatingLabelEditText) v.findViewById(R.id.remote_port_input);
         remote_username_input = (FloatingLabelEditText) v.findViewById(R.id.remote_username_input);
         remote_password_input = (FloatingLabelEditText) v.findViewById(R.id.remote_password_input);
+        remote_directory_input = (FloatingLabelEditText) v.findViewById(R.id.remote_directory_input);
         remote_protocol_spinner = (Spinner) v.findViewById(R.id.remote_protocol_spinner);
         local_server_input = (FloatingLabelEditText) v.findViewById(R.id.local_server_input);
         local_port_input = (FloatingLabelEditText) v.findViewById(R.id.local_port_input);
         local_username_input = (FloatingLabelEditText) v.findViewById(R.id.local_username_input);
         local_password_input = (FloatingLabelEditText) v.findViewById(R.id.local_password_input);
+        local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
 
@@ -126,6 +128,7 @@ public class WelcomePage3 extends Fragment {
         remote_password_input.setInputWidgetText(mSharedPrefs.getDomoticzRemotePassword());
         remote_server_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteUrl());
         remote_port_input.setInputWidgetText(mSharedPrefs.getDomoticzRemotePort());
+        remote_directory_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteDirectory());
 
         localServer_switch.setChecked(mSharedPrefs.isLocalServerAddressDifferent());
 
@@ -133,6 +136,7 @@ public class WelcomePage3 extends Fragment {
         local_password_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalPassword());
         local_server_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalUrl());
         local_port_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalPort());
+        local_directory_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalDirectory());
 
         setProtocol_spinner();
         setStartScreen_spinner();
@@ -266,6 +270,8 @@ public class WelcomePage3 extends Fragment {
                 remote_server_input.getInputWidgetText().toString());
         mSharedPrefs.setDomoticzRemotePort(
                 remote_port_input.getInputWidgetText().toString());
+        mSharedPrefs.setDomoticzRemoteDirectory(
+                remote_directory_input.getInputWidgetText().toString());
         mSharedPrefs.setDomoticzRemoteSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         if (callingInstance == WELCOME_WIZARD)
@@ -284,6 +290,8 @@ public class WelcomePage3 extends Fragment {
                     local_server_input.getInputWidgetText().toString());
             mSharedPrefs.setDomoticzLocalPort(
                     local_port_input.getInputWidgetText().toString());
+            mSharedPrefs.setDomoticzLocalDirectory(
+                    local_directory_input.getInputWidgetText().toString());
             mSharedPrefs.setDomoticzLocalSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
             mSharedPrefs.setLocalServerUsesSameAddress(true);

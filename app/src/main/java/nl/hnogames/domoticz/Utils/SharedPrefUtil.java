@@ -77,6 +77,7 @@ public class SharedPrefUtil {
     private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
     private static final String REMOTE_SERVER_URL = "remote_server_url";
     private static final String REMOTE_SERVER_PORT = "remote_server_port";
+    private static final String REMOTE_SERVER_DIRECTORY = "remote_server_directory";
     private static final String REMOTE_SERVER_SECURE = "remote_server_secure";
     private static final String REMOTE_SERVER_AUTHENTICATION_METHOD =
             "remote_server_authentication_method";
@@ -85,6 +86,7 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_PASSWORD = "local_server_password";
     private static final String LOCAL_SERVER_URL = "local_server_url";
     private static final String LOCAL_SERVER_PORT = "local_server_port";
+    private static final String LOCAL_SERVER_DIRECTORY = "local_server_directory";
     private static final String LOCAL_SERVER_SECURE = "local_server_secure";
     private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
             "local_server_authentication_method";
@@ -383,6 +385,14 @@ public class SharedPrefUtil {
         editor.putString(REMOTE_SERVER_PORT, port).apply();
     }
 
+    public String getDomoticzRemoteDirectory() {
+        return prefs.getString(REMOTE_SERVER_DIRECTORY, "");
+    }
+
+    public void setDomoticzRemoteDirectory(String directory) {
+        editor.putString(REMOTE_SERVER_DIRECTORY, directory).apply();
+    }
+
     public boolean isDomoticzRemoteSecure() {
         return prefs.getBoolean(REMOTE_SERVER_SECURE, true);
     }
@@ -444,6 +454,14 @@ public class SharedPrefUtil {
 
     public void setDomoticzLocalPort(String port) {
         editor.putString(LOCAL_SERVER_PORT, port).apply();
+    }
+
+    public String getDomoticzLocalDirectory() {
+        return prefs.getString(LOCAL_SERVER_DIRECTORY, "");
+    }
+
+    public void setDomoticzLocalDirectory(String directory) {
+        editor.putString(LOCAL_SERVER_DIRECTORY, directory).apply();
     }
 
     public boolean isDomoticzLocalSecure() {
