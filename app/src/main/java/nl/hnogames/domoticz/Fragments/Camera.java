@@ -70,20 +70,12 @@ public class Camera extends Fragment {
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
-                    } else
-                        processImage();
-                } else {
-                    processImage();
-                }
+                processImage();
             }
         });
 
         if (this.url.length() > 0)
             setImage(this.url);
-
         return group;
     }
 
@@ -101,7 +93,8 @@ public class Camera extends Fragment {
 
     private void processImage() {
         // Get access to the URI for the bitmap
-        Uri bmpUri = getLocalBitmapUri(root);
+        File file = new File(url);
+        Uri bmpUri = Uri.fromFile(file);
         if (bmpUri != null) {
             // Construct a ShareIntent with link to image
             Intent shareIntent = new Intent();
@@ -124,31 +117,5 @@ public class Camera extends Fragment {
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(root);
         }
-    }
-
-    // Returns the URI path to the Bitmap displayed in specified ImageView
-    public Uri getLocalBitmapUri(ImageView imageView) {
-        // Extract Bitmap from ImageView drawable
-        Drawable drawable = imageView.getDrawable();
-        Bitmap bmp;
-        if (drawable instanceof BitmapDrawable) {
-            bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        } else {
-            return null;
-        }
-        // Store image to default external storage directory
-        Uri bmpUri = null;
-        try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-            file.getParentFile().mkdirs();
-            FileOutputStream out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.close();
-            bmpUri = Uri.fromFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bmpUri;
     }
 }
