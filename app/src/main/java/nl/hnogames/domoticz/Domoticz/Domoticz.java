@@ -374,7 +374,7 @@ public class Domoticz {
     }
 
     private String constructGetUrl(int jsonGetUrl) {
-        String protocol, url, port, jsonUrl;
+        String protocol, url, port, directory, jsonUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
 
@@ -384,6 +384,7 @@ public class Domoticz {
 
             url = mSharedPrefUtil.getDomoticzLocalUrl();
             port = mSharedPrefUtil.getDomoticzLocalPort();
+            directory = mSharedPrefUtil.getDomoticzLocalDirectory();
 
         } else {
             if (mSharedPrefUtil.isDomoticzRemoteSecure()) protocol = Url.Protocol.HTTPS;
@@ -391,6 +392,7 @@ public class Domoticz {
 
             url = mSharedPrefUtil.getDomoticzRemoteUrl();
             port = mSharedPrefUtil.getDomoticzRemotePort();
+            directory = mSharedPrefUtil.getDomoticzRemoteDirectory();
 
         }
         jsonUrl = getJsonGetUrl(jsonGetUrl);
@@ -398,6 +400,7 @@ public class Domoticz {
         String fullString = buildUrl.append(protocol)
                 .append(url).append(":")
                 .append(port)
+                .append(directory.isEmpty() ? "" : "/" + directory)
                 .append(jsonUrl).toString();
 
         logger("Constructed url: " + fullString);
@@ -406,7 +409,7 @@ public class Domoticz {
     }
 
     public String constructSetUrl(int jsonSetUrl, int idx, int action, double value) {
-        String protocol, baseUrl, url, port, jsonUrl = null, actionUrl;
+        String protocol, baseUrl, url, port, directory, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
         if (isUserOnLocalWifi()) {
@@ -416,6 +419,7 @@ public class Domoticz {
 
             baseUrl = mSharedPrefUtil.getDomoticzLocalUrl();
             port = mSharedPrefUtil.getDomoticzLocalPort();
+            directory = mSharedPrefUtil.getDomoticzLocalDirectory();
 
         } else {
             if (mSharedPrefUtil.isDomoticzRemoteSecure()) {
@@ -423,6 +427,7 @@ public class Domoticz {
             } else protocol = Url.Protocol.HTTP;
             baseUrl = mSharedPrefUtil.getDomoticzRemoteUrl();
             port = mSharedPrefUtil.getDomoticzRemotePort();
+            directory = mSharedPrefUtil.getDomoticzRemoteDirectory();
         }
 
         switch (action) {
@@ -552,6 +557,7 @@ public class Domoticz {
         String fullString = buildUrl.append(protocol)
                 .append(baseUrl).append(":")
                 .append(port)
+                .append(directory.isEmpty() ? "" : "/" + directory)
                 .append(jsonUrl).toString();
         logger("Constructed url: " + fullString);
 
