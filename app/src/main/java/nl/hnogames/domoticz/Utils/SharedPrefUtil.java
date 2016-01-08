@@ -91,6 +91,8 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
             "local_server_authentication_method";
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
+
+
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -722,4 +724,6 @@ public class SharedPrefUtil {
         Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
+
 }

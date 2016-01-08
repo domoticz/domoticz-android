@@ -25,7 +25,11 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -36,7 +40,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
@@ -96,24 +106,38 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Intent intent = new Intent(getActivity(), CameraActivity.class);
-                        //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGEURL", mCameras.get(position).getFullURL());//must be Snapshot url of imageUrl later!!
-                        //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGETITLE", mCameras.get(position).getName());
-                        startActivity(intent);
+                        ImageView cameraImage = (ImageView)v.findViewById(R.id.image);
+                        TextView cameraTitle = (TextView)v.findViewById(R.id.name);
+                        Bitmap savePic = ((BitmapDrawable)cameraImage.getDrawable()).getBitmap();
+
+                        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                "/Domoticz/SnapShot";
+                        File dir = new File(file_path);
+                        if(!dir.exists())
+                            dir.mkdirs();
+
+                        File file = new File(dir, "snapshot" + cameraTitle.getText() + ".jpg");
+                        FileOutputStream fOut = null;
+                        try {
+                            fOut = new FileOutputStream(file);
+                            savePic.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+                            fOut.flush();
+                            fOut.close();
+
+                            Intent intent = new Intent(getActivity(), CameraActivity.class);
+                            intent.putExtra("IMAGETITLE", cameraTitle.getText());
+                            intent.putExtra("IMAGEURL", file.getPath());
+                            startActivity(intent);
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 mRecyclerView.setAdapter(mAdapter);
                 hideProgressDialog();
-
-                //show that this action is not supported yes...
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
-                    }
-                }, 1000L);
             }
 
             @Override
