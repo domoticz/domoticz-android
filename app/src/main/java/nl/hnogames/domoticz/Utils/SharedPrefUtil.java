@@ -68,6 +68,7 @@ public class SharedPrefUtil {
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
     public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     public static final String PREF_DEBUGGING = "debugging";
     public static final int INVALID_IDX = 999999;
@@ -344,6 +345,14 @@ public class SharedPrefUtil {
 
     public boolean isDebugEnabled() {
         return prefs.getBoolean(PREF_DEBUGGING, false);
+    }
+
+    public boolean isAdvancedSettingsEnabled() {
+        return prefs.getBoolean(PREF_ADVANCED_SETTINGS_ENABLED, false);
+    }
+
+    public void setAdvancedSettingsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ADVANCED_SETTINGS_ENABLED, enabled).apply();
     }
 
     public boolean showExtraData() {

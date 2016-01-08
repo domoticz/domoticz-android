@@ -37,6 +37,9 @@
     <string name="welcome_local_server_used_switch_title">Different server address</string>
     <string name="welcome_local_server_used_switch_summary">Use different address for local connection</string>
 
+    <string name="welcome_advancedSettings">Advanced server settings</string>
+    <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
+
     <string name="welcome_local_server_ssid">Local wifi SSID\'s</string>
     <string name="welcome_local_server_address">Local server address</string>
     <string name="welcome_local_server_protocol">Local protocol</string>
