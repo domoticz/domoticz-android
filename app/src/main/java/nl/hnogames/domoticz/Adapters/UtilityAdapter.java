@@ -32,7 +32,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -248,6 +247,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.on_button.setEnabled(false);
 
+        holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
         holder.on_button.setOnClickListener(new View.OnClickListener() {
             @Override

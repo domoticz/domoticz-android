@@ -39,7 +39,6 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -474,18 +473,18 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
+        final DevicesInfo tempUtil = getDevice(idx);
 
         TemperatureDialog tempDialog = new TemperatureDialog(
                 getActivity(),
                 idx,
-                20);
+                tempUtil.getSetPoint());
 
         tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
             public void onDismiss(double newSetPoint) {
                 addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
-                DevicesInfo tempUtil = getDevice(idx);
-                if(tempUtil!=null) {
+                if (tempUtil != null) {
                     int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 
                     int action = Domoticz.Device.Thermostat.Action.PLUS;

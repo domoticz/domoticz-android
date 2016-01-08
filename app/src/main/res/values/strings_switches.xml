@@ -15,4 +15,5 @@
     <string name="error_timer">Could not show the timers</string>
     <string name="error_level">Setting level for switch</string>
     <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
+
 </resources>

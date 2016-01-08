@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.renderscript.Double2;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -55,7 +54,7 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         mdb.customView(R.layout.dialog_temperature, false)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
-        currentTemperature=temp;
+        currentTemperature = temp;
     }
 
     public void show() {
@@ -63,41 +62,43 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        temperatureControl = (SeekArc)view.findViewById(R.id.seekTemperature);
-        temperatureText = (TextView)view.findViewById(R.id.seekTempProgress);
-        bntPlus = (Button)view.findViewById(R.id.plus);
-        btnMin = (Button)view.findViewById(R.id.min);
+        temperatureControl = (SeekArc) view.findViewById(R.id.seekTemperature);
+        temperatureText = (TextView) view.findViewById(R.id.seekTempProgress);
+        bntPlus = (Button) view.findViewById(R.id.plus);
+        btnMin = (Button) view.findViewById(R.id.min);
 
         temperatureText.setText(String.valueOf(currentTemperature));
-        int Progress = (int)(currentTemperature*2);
+        int Progress = (int) (currentTemperature * 2);
         temperatureControl.setProgress(Progress);
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
-                double temp = ((double)temperatureControl.getProgress()/2);
+                double temp = ((double) temperatureControl.getProgress() / 2);
                 temperatureText.setText(String.valueOf(temp));
             }
 
             @Override
-            public void onStartTrackingTouch(SeekArc seekArc) {}
+            public void onStartTrackingTouch(SeekArc seekArc) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekArc seekArc) {}
+            public void onStopTrackingTouch(SeekArc seekArc) {
+            }
         });
 
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                temperatureControl.setProgress(temperatureControl.getProgress()+1);
+                temperatureControl.setProgress(temperatureControl.getProgress() + 1);
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                temperatureControl.setProgress(temperatureControl.getProgress()-1);
+                temperatureControl.setProgress(temperatureControl.getProgress() - 1);
             }
         });
         md.show();
@@ -106,7 +107,7 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         if (dismissListener != null)
-            dismissListener.onDismiss(((double)temperatureControl.getProgress()/2));
+            dismissListener.onDismiss(((double) temperatureControl.getProgress() / 2));
     }
 
     public void onDismissListener(DismissListener dismissListener) {

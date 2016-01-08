@@ -42,6 +42,7 @@ public class SessionUtil {
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+
     public SessionUtil(Context mContext) {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);

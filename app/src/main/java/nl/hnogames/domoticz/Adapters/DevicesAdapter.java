@@ -125,7 +125,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private View setSwitchRowId(DevicesInfo mDeviceInfo, ViewHolder holder) {
         View row = setDefaultRowId(holder);
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-                (mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+                (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
                     row = setOnOffSwitchRowId(holder);
@@ -141,10 +141,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
             }
         } else {
-            if ((mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+            if ((mDeviceInfo.getSwitchType() == null)) {
                 row = setDefaultRowId(holder);
             } else {
-                boolean switchFound = true;
                 switch (mDeviceInfo.getSwitchTypeVal()) {
                     case Domoticz.Device.Type.Value.ON_OFF:
                     case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -194,9 +193,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                             row = setBlindsRowId(holder);
                         else
                             row = setOnOffSwitchRowId(holder);
-                        break;
-                    default:
-                        switchFound = false;
                         break;
                 }
             }
@@ -390,7 +386,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                   ViewHolder holder,
                                   View convertView) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-                (mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+                (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
                     setOnOffSwitchRowData(mDeviceInfo, holder);
@@ -405,7 +401,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     setDefaultRowData(mDeviceInfo, holder);
                     break;
             }
-        } else if ((mDeviceInfo.getSwitchType() == null || mDeviceInfo.getSwitchType().equals(null))) {
+        } else if ((mDeviceInfo.getSwitchType() == null)) {
             setDefaultRowData(mDeviceInfo, holder);
         } else {
             switch (mDeviceInfo.getSwitchTypeVal()) {
@@ -634,16 +630,15 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-
     private void setThermostatRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
         final double setPoint = mDeviceInfo.getSetPoint();
-        if (holder.isProtected) holder.buttonPlus.setEnabled(false);
-        if (holder.isProtected) holder.buttonMinus.setEnabled(false);
-
+        if (holder.isProtected)
+            holder.buttonOn.setEnabled(false);
+        holder.buttonOn.setText(context.getString(R.string.set_temperature));
         holder.buttonOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

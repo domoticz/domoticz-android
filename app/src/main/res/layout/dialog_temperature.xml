@@ -17,13 +17,13 @@
         <com.triggertrap.seekarc.SeekArc
             android:id="@+id/seekTemperature"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="358dp"
             android:layout_gravity="center"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"
             seekarc:arcColor="@color/material_red_400"
             seekarc:clockwise="true"
-            seekarc:max="150"
+            seekarc:max="100"
             seekarc:progressColor="@color/material_orange_600"
             seekarc:rotation="180"
             seekarc:startAngle="30"
@@ -39,11 +39,10 @@
             android:textSize="40sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="298dp"
+            android:layout_height="181dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:paddingTop="120dp"
             android:paddingLeft="80dp"
             android:paddingRight="80dp"
             android:layout_gravity="center"
@@ -58,7 +57,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="+"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:layout_gravity="bottom" />
 
             <Button
                 android:id="@+id/min"
@@ -69,7 +69,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="-"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:layout_gravity="bottom" />
         </LinearLayout>
     </FrameLayout>
 
