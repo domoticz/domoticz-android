@@ -456,7 +456,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     @Override
                     public void onReceiveResult(String result) {
                         Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT).show();
-                        processDashboard();
+                        //processDashboard();
                     }
 
                     @Override
