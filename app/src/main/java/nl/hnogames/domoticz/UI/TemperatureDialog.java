@@ -22,13 +22,16 @@
 
 package nl.hnogames.domoticz.UI;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nineoldandroids.animation.ValueAnimator;
 import com.triggertrap.seekarc.SeekArc;
 
 import nl.hnogames.domoticz.R;
@@ -68,8 +71,16 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         btnMin = (Button) view.findViewById(R.id.min);
 
         temperatureText.setText(String.valueOf(currentTemperature));
-        int Progress = (int) (currentTemperature * 2);
-        temperatureControl.setProgress(Progress);
+        int progress = (int) (currentTemperature * 2);
+
+        if(android.os.Build.VERSION.SDK_INT >= 11){
+            ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", progress);
+            animation.setDuration(1000); // 0.5 second
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
+        }
+        else
+            temperatureControl.setProgress(progress); // no animation on Gingerbread or lower
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
