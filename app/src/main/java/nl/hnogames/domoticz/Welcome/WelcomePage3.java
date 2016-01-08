@@ -46,6 +46,7 @@ public class WelcomePage3 extends Fragment {
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
     private PhoneConnectionUtil mPhoneConnectionUtil;
+    private Switch advancedSettings_switch;
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -110,14 +111,35 @@ public class WelcomePage3 extends Fragment {
             v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
         }
 
-        final LinearLayout local_server_settings = (LinearLayout)
+        final LinearLayout localServerSettingsLayout = (LinearLayout)
                 v.findViewById(R.id.local_server_settings);
         localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
+        localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
+
         localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) local_server_settings.setVisibility(View.VISIBLE);
-                else local_server_settings.setVisibility(View.GONE);
+                if (checked) localServerSettingsLayout.setVisibility(View.VISIBLE);
+                else localServerSettingsLayout.setVisibility(View.GONE);
+            }
+        });
+
+        final LinearLayout advancedSettings_layout = (LinearLayout)
+                v.findViewById(R.id.advancedSettings_layout);
+
+        advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
+        advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
+
+        if (mSharedPrefs.isAdvancedSettingsEnabled())
+            advancedSettings_layout.setVisibility(View.VISIBLE);
+
+        advancedSettings_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mSharedPrefs.setAdvancedSettingsEnabled(isChecked);
+
+                if (isChecked) advancedSettings_layout.setVisibility(View.VISIBLE);
+                else advancedSettings_layout.setVisibility(View.GONE);
             }
         });
 
