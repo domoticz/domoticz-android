@@ -35,7 +35,8 @@ public class GraphPointInfo {
     private String dateTime;
     private String hu;
     private String ba;
-    private long te;
+    private float te;
+    private float se;
     private String v;
     private String c;
     private String di;
@@ -49,7 +50,9 @@ public class GraphPointInfo {
         this.jsonObject = row;
 
         if (row.has("te"))
-            te = row.getLong("te");
+            te = (float) row.optDouble("te");
+        if (row.has("se"))
+            se = (float) row.optDouble("se");
         if (row.has("d"))
             dateTime = row.getString("d");
         if (row.has("v"))
@@ -89,8 +92,12 @@ public class GraphPointInfo {
         return v;
     }
 
-    public long getTemperature() {
+    public float getTemperature() {
         return te;
+    }
+
+    public float getSetPoint() {
+        return se;
     }
 
     public String getHumidity() {

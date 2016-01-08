@@ -108,6 +108,7 @@ public class GraphDialog {
         List<Line> lines = new ArrayList<>();
 
         List<PointValue> values = new ArrayList<>();
+        List<PointValue> valuesse = new ArrayList<>();
         List<PointValue> valueshu = new ArrayList<>();
         List<PointValue> valuesba = new ArrayList<>();
         List<PointValue> valuesc = new ArrayList<>();
@@ -125,6 +126,7 @@ public class GraphDialog {
         boolean addHumidity = false;
         boolean addBarometer = false;
         boolean addTemperature = false;
+        boolean addSetpoint = false;
         boolean addCounter = false;
         boolean addPercentage = false;
         boolean addSunPower = false;
@@ -141,9 +143,13 @@ public class GraphDialog {
             if (stepcounter == this.steps) {
                 stepcounter = 0;
                 try {
-                    if (g.getTemperature() > 0) {
+                    if (!Float.isNaN(g.getTemperature())) {
                         addTemperature = true;
                         values.add(new PointValue(counter, g.getTemperature()));
+                    }
+                    if (!Float.isNaN(g.getSetPoint())) {
+                        addSetpoint = true;
+                        valuesse.add(new PointValue(counter, g.getSetPoint()));
                     }
                     if (g.getBarometer() != null && g.getBarometer().length() > 0) {
                         addBarometer = true;
@@ -231,6 +237,15 @@ public class GraphDialog {
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
+
+            if (addSetpoint) {
+                lines.add(new Line(valuesse)
+                        .setColor(ContextCompat.getColor(mContext, R.color.material_pink_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
         }
 
         if (addHumidity) {
@@ -240,7 +255,6 @@ public class GraphDialog {
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
-
         }
 
         if (addBarometer) {
@@ -277,7 +291,6 @@ public class GraphDialog {
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
-
         }
 
         if (addSunPower) {
@@ -287,7 +300,6 @@ public class GraphDialog {
                     .setHasLabels(false)
                     .setHasLines(true)
                     .setHasPoints(false));
-
         }
 
         if (addSpeed) {
@@ -321,6 +333,10 @@ public class GraphDialog {
             if (addTemperature) {
                 (view.findViewById(R.id.legend_temperature))
                         .setVisibility(View.VISIBLE);
+                if (addSetpoint) {
+                    (view.findViewById(R.id.legend_set_point))
+                            .setVisibility(View.VISIBLE);
+                }
             }
 
             if (addHumidity) {
