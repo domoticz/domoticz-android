@@ -180,16 +180,18 @@ public class SharedPrefUtil {
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        for (String s : selections) {
-            if (s.equals(allNames[0])) {
-                removeWizard = allNames[0];
-                break;
+        if (selections != null) {
+            for (String s : selections) {
+                if (s.equals(allNames[0])) {
+                    removeWizard = allNames[0];
+                    break;
+                }
             }
-        }
-        if (removeWizard.length() > 0) {
-            selections.remove(removeWizard);
-            editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
-            editor.commit();
+            if (removeWizard.length() > 0) {
+                selections.remove(removeWizard);
+                editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
+                editor.commit();
+            }
         }
     }
 
@@ -230,18 +232,20 @@ public class SharedPrefUtil {
     }
 
     public String[] getWearSwitches() {
-        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS))
-            return null;
+        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS)) return null;
 
         Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
-        String[] selectionValues = new String[selections.size()];
 
-        int i = 0;
-        for (String s : selections) {
-            selectionValues[i] = s;
-            i++;
-        }
-        return selectionValues;
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
     }
 
     public String[] getNavigationFragments() {
@@ -310,26 +314,32 @@ public class SharedPrefUtil {
     }
 
     public int[] getNavigationIcons() {
-        if (!prefs.contains(PREF_NAVIGATION_ITEMS))
-            setNavigationDefaults();
+        if (!prefs.contains(PREF_NAVIGATION_ITEMS)) setNavigationDefaults();
 
-        TypedArray ICONS = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
+        TypedArray icons = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
-        int[] selectedICONS = new int[selections.size()];
-        int iconIndex = 0;
-        int index = 0;
-        for (String v : allNames) {
-            for (String s : selections) {
-                if (s.equals(v)) {
-                    selectedICONS[iconIndex] = ICONS.getResourceId(index, 0);
-                    iconIndex++;
-                }
-            }
-            index++;
-        }
 
-        return selectedICONS;
+        if (selections != null) {
+
+            int[] selectedICONS = new int[selections.size()];
+            int iconIndex = 0;
+            int index = 0;
+            for (String v : allNames) {
+                for (String s : selections) {
+                    if (s.equals(v)) {
+                        selectedICONS[iconIndex] = icons.getResourceId(index, 0);
+                        iconIndex++;
+                    }
+                }
+                index++;
+            }
+            icons.recycle();
+            return selectedICONS;
+        } else {
+            icons.recycle();
+            return null;
+        }
     }
 
     public boolean isDebugEnabled() {
@@ -490,6 +500,7 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
     }
 
+    @SuppressWarnings("unused")
     public String getDomoticzLocalAuthenticationMethod() {
         boolean localServerAuthenticationMethodIsLoginForm =
                 prefs.getBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, true);
@@ -503,11 +514,9 @@ public class SharedPrefUtil {
     }
 
     public void setDomoticzLocalAuthenticationMethod(String method) {
-
         boolean methodIsLoginForm;
-
-        methodIsLoginForm = method.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
-
+        methodIsLoginForm =
+                method.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
         editor.putBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, methodIsLoginForm).apply();
     }
 
@@ -616,6 +625,7 @@ public class SharedPrefUtil {
         boolean res = false;
         ObjectOutputStream output = null;
 
+        //noinspection TryWithIdenticalCatches
         try {
             output = new ObjectOutputStream(new FileOutputStream(dst));
             output.writeObject(this.prefs.getAll());
@@ -641,6 +651,7 @@ public class SharedPrefUtil {
     public boolean loadSharedPreferencesFromFile(File src) {
         boolean res = false;
         ObjectInputStream input = null;
+        //noinspection TryWithIdenticalCatches
         try {
             input = new ObjectInputStream(new FileInputStream(src));
             editor.clear();
@@ -701,9 +712,14 @@ public class SharedPrefUtil {
                         .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                             @Override
                             public void onConnected(Bundle bundle) {
-                                PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+                                PendingIntent mGeofenceRequestIntent =
+                                        getGeofenceTransitionPendingIntent();
                                 //noinspection ResourceType
-                                LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+                                LocationServices
+                                        .GeofencingApi
+                                        .addGeofences(mApiClient,
+                                                mGeofenceList,
+                                                mGeofenceRequestIntent);
                             }
 
                             @Override
