@@ -328,9 +328,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_battery_level = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
         holder.signal_level = (TextView) convertView.findViewById(R.id.thermostat_set_point);
-        holder.buttonPlus = (ImageButton) convertView.findViewById(R.id.utilities_plus);
-        holder.buttonMinus = (ImageButton) convertView.findViewById(R.id.utilities_minus);
-
+        holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
         return convertView;
     }
 
@@ -642,32 +640,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-
         final double setPoint = mDeviceInfo.getSetPoint();
-
         if (holder.isProtected) holder.buttonPlus.setEnabled(false);
         if (holder.isProtected) holder.buttonMinus.setEnabled(false);
 
-        holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
+        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                double newValue = setPoint - 0.5;
-                handleThermostatClick(view.getId(),
-                        Domoticz.Device.Thermostat.Action.MIN,
-                        newValue);
+            public void onClick(View v) {
+                handleThermostatClick(v.getId());
             }
         });
-        holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                double newValue = setPoint + 0.5;
-                handleThermostatClick(view.getId(),
-                        Domoticz.Device.Thermostat.Action.PLUS,
-                        newValue);
-            }
-        });
-        holder.buttonPlus.setId(mDeviceInfo.getIdx());
-        holder.buttonMinus.setId(mDeviceInfo.getIdx());
+        holder.buttonOn.setId(mDeviceInfo.getIdx());
 
         holder.switch_name.setText(mDeviceInfo.getName());
         if (holder.switch_battery_level != null)
@@ -679,8 +662,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
-    public void handleThermostatClick(int idx, int action, double newSetPoint) {
-        listener.onThermostatClick(idx, action, newSetPoint);
+    public void handleThermostatClick(int idx) {
+        listener.onThermostatClick(idx);
     }
 
     private void setPushOnOffSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder, boolean action) {

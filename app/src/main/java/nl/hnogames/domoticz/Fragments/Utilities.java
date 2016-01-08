@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -273,6 +274,15 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         hideProgressDialog();
     }
 
+    private UtilitiesInfo getUtility(int idx){
+        for (UtilitiesInfo info : mUtilitiesInfos) {
+            if (info.getIdx() == idx) {
+               return info;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void onClick(UtilitiesInfo utility) {
     }
@@ -313,26 +323,46 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onThermostatClick(final int idx, int action, double newSetPoint) {
+    public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
-        thermostatSetPointValue = newSetPoint;
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+        TemperatureDialog tempDialog = new TemperatureDialog(
+                getActivity(),
+                idx,
+                20);
 
-        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
-            public void onReceiveResult(String result) {
-                updateThermostatSetPointValue(idx, thermostatSetPointValue);
-                successHandling(result, false);
-            }
+            public void onDismiss(double newSetPoint) {
+                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                UtilitiesInfo tempUtil = getUtility(idx);
+                if(tempUtil!=null) {
+                    thermostatSetPointValue = newSetPoint;
+                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
+                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                    if (newSetPoint < tempUtil.getSetPoint())
+                        action = Domoticz.Device.Thermostat.Action.MIN;
+
+                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+                            @Override
+                            public void onReceiveResult(String result) {
+                                updateThermostatSetPointValue(idx, thermostatSetPointValue);
+                                successHandling(result, false);
+                            }
+
+                            @Override
+                            public void onError(Exception error) {
+                                errorHandling(error);
+                            }
+                    });
+                }
             }
         });
+
+        tempDialog.show();
     }
+
 
     @Override
     public void onLogButtonClick(int idx) {
@@ -348,7 +378,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
             }
         });
     }
-
 
     private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {
         if (switchLogs.size() <= 0) {

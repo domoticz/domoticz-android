@@ -727,6 +727,7 @@ public class Domoticz {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
         Log.v(TAG, "Action: " + url);
+
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),

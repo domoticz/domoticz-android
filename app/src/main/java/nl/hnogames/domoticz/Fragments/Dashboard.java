@@ -39,6 +39,7 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -48,6 +49,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -470,25 +472,44 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onThermostatClick(final int idx, int action, final double newSetPoint) {
+    public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+        TemperatureDialog tempDialog = new TemperatureDialog(
+                getActivity(),
+                idx,
+                20);
 
-        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                processDashboard();
-            }
+            public void onDismiss(double newSetPoint) {
+                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                DevicesInfo tempUtil = getDevice(idx);
+                if(tempUtil!=null) {
+                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
+                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                    if (newSetPoint < tempUtil.getSetPoint())
+                        action = Domoticz.Device.Thermostat.Action.MIN;
+                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            successHandling(result, false);
+                            processDashboard();
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error);
+                        }
+                    });
+                }
             }
         });
+
+        tempDialog.show();
     }
+
 
     @Override
     public void onSecurityPanelButtonClick(int idx) {
