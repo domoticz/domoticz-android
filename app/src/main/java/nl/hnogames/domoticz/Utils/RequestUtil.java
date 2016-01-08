@@ -89,7 +89,7 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonVersionRequest(parser, username, password, url, sessionUtil, false, retryCounter);
+                            makeJsonVersionRequest(parser, username, password, url, sessionUtil, false, counter);
                         }
                     }
                 }) {
@@ -147,7 +147,7 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonGetRequest(parser, username, password, url, sessionUtil, false, retryCounter);
+                            makeJsonGetRequest(parser, username, password, url, sessionUtil, false, counter);
                         }
                     }
                 }) {
@@ -220,7 +220,7 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonGetResultRequest(parser, username, password, url, sessionUtil, false, retryCounter);
+                            makeJsonGetResultRequest(parser, username, password, url, sessionUtil, false, counter);
                         }
                     }
                 }) {
@@ -293,7 +293,7 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonPutRequest(parser, username, password, url, sessionUtil, false, retryCounter);
+                            makeJsonPutRequest(parser, username, password, url, sessionUtil, false, counter);
                         }
                     }
                 }) {
