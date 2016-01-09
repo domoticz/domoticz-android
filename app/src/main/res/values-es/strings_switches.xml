@@ -11,5 +11,5 @@
   <string name="error_logs">No se pudo encontrar ningún registros para mostrar</string>
   <string name="error_color">No se pudo cambiar el color</string>
   <string name="error_timer">No se pudo mostrar los temporizadores</string>
-  <string name="error_level">Setting level for switch</string>
+  <string name="error_level">Nivel de ajuste para el interruptor</string>
 </resources>

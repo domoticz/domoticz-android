@@ -30,6 +30,8 @@
   <string name="welcome_remote_server_directory">Directory</string>
   <string name="welcome_local_server_used_switch_title">Endereço de servidor diferente</string>
   <string name="welcome_local_server_used_switch_summary">Use diferentes endereços para conexão local</string>
+  <string name="welcome_advancedSettings">Advanced server settings</string>
+  <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
   <string name="welcome_local_server_ssid">Local wifi SSID</string>
   <string name="welcome_local_server_address">Endereço do servidor local</string>
   <string name="welcome_local_server_protocol">Protocolo local</string>

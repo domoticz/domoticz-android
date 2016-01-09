@@ -5,7 +5,7 @@
   <string name="choose_switch">Elige un dispositivo</string>
   <string name="failed_to_get_switches">No se pudo obtener dispositivos</string>
   <string name="failed_toggle_switch">No se pudo alternar dispositivo</string>
-  <string name="switch_toggled">"Switch device"</string>
+  <string name="switch_toggled">"Dispositivo de Apagador"</string>
   <string name="text_loading">Cargando...</string>
   <string name="text_go">IR</string>
 </resources>

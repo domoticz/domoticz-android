@@ -15,7 +15,7 @@
   <string name="extra_data_title">Datos adicionales en el tablero</string>
   <string name="show_extra_data_on">Mostrar datos adicionales en el tablero</string>
   <string name="show_extra_data_off">Ocultar datos adicionales en el tablero</string>
-  <string name="always_on_title">Wake Lock</string>
+  <string name="always_on_title">Mantener Despierto</string>
   <string name="always_on_on">Bloquear la pantalla siempre Encendido</string>
   <string name="always_on_off">No bloquear la pantalla siempre Encendido</string>
   <string name="enable_wear_select">Elementos específicos de Android Wear</string>
