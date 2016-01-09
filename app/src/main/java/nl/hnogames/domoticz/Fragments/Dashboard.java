@@ -106,6 +106,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onConnectionOk() {
         getActionBar().setTitle(R.string.title_dashboard);
 
+        listView = (ListView) getView().findViewById(R.id.listView);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+
         if (planName != null && planName.length() > 0)
             getActionBar().setTitle(planName + "");
 
@@ -113,12 +117,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
-        showProgressDialog();
-
-        if (listView != null) {
-            //switch toggled, refresh listview
-            state = listView.onSaveInstanceState();
-        }
+        //switch toggled, refresh listview
+        state = listView.onSaveInstanceState();
+        mSwipeRefreshLayout.setRefreshing(true);
 
         mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
@@ -152,7 +153,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             }
         }
         if (extendedStatusSwitches.size() <= 0) {
-            hideProgressDialog();
             setMessage(mContext.getString(R.string.no_data_on_domoticz));
         } else
             createListView(extendedStatusSwitches);
@@ -190,8 +190,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
         if (getView() != null) {
             try {
-                coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
                 ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
                 final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
                 final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
@@ -226,7 +224,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
                 final switchesClickListener listener = this;
                 adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
-                listView = (ListView) getView().findViewById(R.id.listView);
                 listView.setAdapter(adapter);
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
@@ -252,7 +249,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 ex.printStackTrace();
             }
         }
-        hideProgressDialog();
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
@@ -584,37 +580,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         }
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null)
-            initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
     @Override
     public void onPause() {
         super.onPause();
-        hideProgressDialog();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -622,7 +590,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

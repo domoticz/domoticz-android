@@ -24,7 +24,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
+    private ListView listView;
 
     @Override
     public void refreshFragment() {
@@ -53,12 +53,16 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
         mDomoticz = new Domoticz(mContext);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        listView = (ListView) getView().findViewById(R.id.listView);
+
         processUserVariables();
     }
 
     private void processUserVariables() {
+        mSwipeRefreshLayout.setRefreshing(true);
+
         mDomoticz.getUserVariables(new UserVariablesReceiver() {
             @Override
             public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
@@ -66,7 +70,6 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                 successHandling(mUserVariableInfos.toString(), false);
                 adapter = new UserVariablesAdapter(mContext, mUserVariableInfos);
                 createListView();
-                hideProgressDialog();
             }
 
             @Override
@@ -78,9 +81,6 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     private void createListView() {
         if (getView() != null) {
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
-            ListView listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
 
             mSwipeRefreshLayout.setRefreshing(false);
@@ -93,44 +93,11 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
         }
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        hideProgressDialog();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     @Override
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

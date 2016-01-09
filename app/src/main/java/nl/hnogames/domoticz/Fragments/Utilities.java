@@ -96,13 +96,19 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
+
+        listView = (ListView) getView().findViewById(R.id.listView);
 
         mDomoticz = new Domoticz(mContext);
         processUtilities();
     }
 
     private void processUtilities() {
+        mSwipeRefreshLayout.setRefreshing(true);
+
         final UtilityClickListener listener = this;
         mDomoticz.getUtilities(new UtilitiesReceiver() {
 
@@ -114,7 +120,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 adapter = new UtilityAdapter(mContext, mUtilitiesInfos, listener);
 
                 createListView();
-                hideProgressDialog();
             }
 
             @Override
@@ -127,11 +132,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private void createListView() {
 
         if (getView() != null) {
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                    .coordinatorLayout);
-
-            listView = (ListView) getView().findViewById(R.id.listView);
             listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -228,35 +228,9 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         int top = (v == null) ? 0 : v.getTop();
 
         adapter.notifyDataSetChanged();
+
         listView.setAdapter(adapter);
-
         listView.setSelectionFromTop(index, top);
-    }
-
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -264,14 +238,12 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        hideProgressDialog();
     }
 
     private UtilitiesInfo getUtility(int idx) {
@@ -289,7 +261,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onLogClick(final UtilitiesInfo utility, final String range) {
-        showProgressDialog();
         final String graphType = utility.getSubType()
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
@@ -299,7 +270,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 Log.i("GRAPH", mGraphList.toString());
-                hideProgressDialog();
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
                         mGraphList,
@@ -317,7 +287,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
             public void onError(Exception error) {
                 errorHandling(error);
                 Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
-                hideProgressDialog();
             }
         });
     }
