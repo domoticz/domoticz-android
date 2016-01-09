@@ -9,7 +9,7 @@
   <string name="color_set">Szín beállítása</string>
   <string name="error_favorite">Nem sikerült kedvencnek beállítani</string>
   <string name="error_logs">Nem találtam megjelenítésre egyetlen naplót sem</string>
-  <string name="error_color">Nem lehet megváltoztatni a színt</string>
+  <string name="error_color">Nem sikerült megváltoztatni a színt</string>
   <string name="error_timer">Az időzítők mutatása nem lehetséges</string>
   <string name="error_level">Kapcsolási szint beállítása</string>
 </resources>

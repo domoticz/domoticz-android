@@ -30,6 +30,8 @@
   <string name="welcome_remote_server_directory">Folder (optioneel)</string>
   <string name="welcome_local_server_used_switch_title">Verschillende server gegevens</string>
   <string name="welcome_local_server_used_switch_summary">Gebruik verschillende server gegevens voor uw thuis netwerk</string>
+  <string name="welcome_advancedSettings">Geavanceerde serverinstellingen</string>
+  <string name="welcome_advancedSettings_summary">Alleen gebruikt voor niet-standaard Domoticz servers</string>
   <string name="welcome_local_server_ssid">Wifi SSID\'s van uw thuis netwerk</string>
   <string name="welcome_local_server_address">Server adres van uw thuis netwerk</string>
   <string name="welcome_local_server_protocol">Protocol van uw thuis netwerk</string>

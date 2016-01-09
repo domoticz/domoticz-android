@@ -32,6 +32,8 @@ Remote-Einstellungen werden verwendet, wenn Sie nicht mit ihrem Home WiFi-Netzwe
   <string name="welcome_remote_server_directory">Directory</string>
   <string name="welcome_local_server_used_switch_title">Andere Server Adresse</string>
   <string name="welcome_local_server_used_switch_summary">Benutze andere Adresse für lokale Verbindung</string>
+  <string name="welcome_advancedSettings">Advanced server settings</string>
+  <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
   <string name="welcome_local_server_ssid">Lokale Wlan SSID\'s</string>
   <string name="welcome_local_server_address">Lokale Server Adresse</string>
   <string name="welcome_local_server_protocol">Lokales protokoll</string>

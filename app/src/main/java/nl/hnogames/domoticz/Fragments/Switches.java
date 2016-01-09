@@ -104,21 +104,21 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
-
         mDomoticz = new Domoticz(mContext);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
+        listView = (ListView) getView().findViewById(R.id.listView);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+
         getSwitchesData();
     }
 
     private void getSwitchesData() {
-        if (listView != null) {
-            //switch toggled, refresh listview
-            state = listView.onSaveInstanceState();
-            WidgetUtils.RefreshWidgets(mContext);
-        }
 
-        if (mDomoticz == null)
-            mDomoticz = new Domoticz(mContext);
+        //switch toggled, refresh listview
+        state = listView.onSaveInstanceState();
+        mSwipeRefreshLayout.setRefreshing(true);
+        WidgetUtils.RefreshWidgets(mContext);
+
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
@@ -143,9 +143,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private void createListView(ArrayList<DevicesInfo> switches) {
         if (getView() != null) {
             try {
-                coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-
-                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
                 ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
                 final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
@@ -178,7 +175,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
                 final switchesClickListener listener = this;
                 adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
-                listView = (ListView) getView().findViewById(R.id.listView);
                 listView.setAdapter(adapter);
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
@@ -203,7 +199,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             } catch (Exception ex) {
                 errorHandling(ex);
             }
-            hideProgressDialog();
         }
     }
 
@@ -547,36 +542,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         }
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
     @Override
     public void onPause() {
         super.onPause();
-        hideProgressDialog();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -584,7 +552,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

@@ -11,7 +11,7 @@
   <string name="wizard_geo">Geofencing</string>
   <string name="wizard_geo_description">Kezdőképernyőjét a Beállításokban szabhatja saját ízlésére!</string>
   <string name="wizard_wear">Android Wear</string>
-  <string name="wizard_wear_description">Megadhat Android Wear eszközről vezérelhető kapcsolókat!</string>
+  <string name="wizard_wear_description">Megadhatja Android Wear eszközéről vezérelhető kapcsolókat!</string>
   <string name="wizard_graph">Grafikon</string>
   <string name="wizard_graph_description">A Vegyes, Időjárás és Hőmérséklet historikus adatait grafikonokon nézheti meg.</string>
   <string name="wizard_filter">Szűrők</string>

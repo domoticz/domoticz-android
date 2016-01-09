@@ -85,8 +85,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     public void getCameras() {
-        showProgressDialog();
-
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
         mDomoticz = new Domoticz(mActivity);
@@ -116,7 +114,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                     }
                 });
                 mRecyclerView.setAdapter(mAdapter);
-                hideProgressDialog();
             }
 
             @Override
@@ -143,43 +140,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getActionBar().setTitle(R.string.title_cameras);
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        hideProgressDialog();
-    }
-
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 

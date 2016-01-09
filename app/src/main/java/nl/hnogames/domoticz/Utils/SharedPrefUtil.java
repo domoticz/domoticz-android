@@ -551,6 +551,7 @@ public class SharedPrefUtil {
         setDomoticzLocalPassword(getDomoticzRemotePassword());
         setDomoticzLocalUrl(getDomoticzRemoteUrl());
         setDomoticzLocalPort(getDomoticzRemotePort());
+        setDomoticzLocalDirectory(getDomoticzRemoteDirectory());
         setDomoticzLocalSecure(isDomoticzRemoteSecure());
         setDomoticzLocalAuthenticationMethod(getDomoticzRemoteAuthenticationMethod());
     }

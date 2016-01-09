@@ -59,8 +59,9 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private ListView listView;
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
     private CoordinatorLayout coordinatorLayout;
+
+
 
     @Override
     public void refreshFragment() {
@@ -90,13 +91,17 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
+        listView = (ListView) getView().findViewById(R.id.listView);
 
         mDomoticz = new Domoticz(mContext);
         processTemperature();
     }
 
     private void processTemperature() {
+        mSwipeRefreshLayout.setRefreshing(true);
         final TemperatureClickListener listener = this;
 
         mDomoticz.getTemperatures(new TemperatureReceiver() {
@@ -106,12 +111,8 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                 successHandling(mTemperatureInfos.toString(), false);
 
                 if (getView() != null) {
-                    mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-                    coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                            .coordinatorLayout);
 
                     adapter = new TemperatureAdapter(mContext, mTemperatureInfos, listener);
-                    listView = (ListView) getView().findViewById(R.id.listView);
                     listView.setAdapter(adapter);
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
@@ -129,7 +130,6 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                             processTemperature();
                         }
                     });
-                    hideProgressDialog();
                 }
             }
 
@@ -187,55 +187,24 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         });
     }
 
-
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     @Override
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        hideProgressDialog();
     }
 
     @Override
     public void onLogClick(final TemperatureInfo temp, final String range) {
-        showProgressDialog();
         mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
-                hideProgressDialog();
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
                         mGraphList,
@@ -250,7 +219,6 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             public void onError(Exception error) {
                 // Let's check if were still attached to an activity
                 if (isAdded()) {
-                    hideProgressDialog();
                     Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
                 }
             }

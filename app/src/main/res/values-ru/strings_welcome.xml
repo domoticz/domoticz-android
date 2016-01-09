@@ -30,6 +30,8 @@
   <string name="welcome_remote_server_directory">Directory</string>
   <string name="welcome_local_server_used_switch_title">Адрес другого сервера</string>
   <string name="welcome_local_server_used_switch_summary">Используйте другой адрес для локального подключения</string>
+  <string name="welcome_advancedSettings">Advanced server settings</string>
+  <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
   <string name="welcome_local_server_ssid">Местные SSID wifi</string>
   <string name="welcome_local_server_address">Адрес локального сервера</string>
   <string name="welcome_local_server_protocol">Локальный протокол</string>
