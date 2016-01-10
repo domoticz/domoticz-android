@@ -113,11 +113,13 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         holder.isProtected = mTemperatureInfo.isProtected();
+        holder.setButton = (Button) convertView.findViewById(R.id.set_button);
         holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
+        holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
 
@@ -128,6 +130,17 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                 mTemperatureInfo.getType(),
                 null, toHot, false, null)).into(holder.iconRow);
+
+        holder.setButton.setId(mTemperatureInfo.getIdx());
+        holder.setButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onSetClick(t);
+                }
+            }
+        });
 
         holder.dayButton.setId(mTemperatureInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +177,18 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
             holder.data.setText(R.string.wind);
             holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
-        } else holder.data.append(": " + mTemperatureInfo.getData());
+        } else {
+            double temperature = mTemperatureInfo.getTemperature();
+            double setPoint = mTemperatureInfo.getSetPoint();
+            if (Double.isNaN(temperature) || Double.isNaN(setPoint)) {
+                holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
+                holder.data2.setVisibility(View.GONE);
+            } else {
+                holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " C");
+                holder.data2.setText(context.getString(R.string.set_point) + ": " + mTemperatureInfo.getSetPoint() + " C");
+                holder.data2.setVisibility(View.VISIBLE);
+            }
+        }
 
         convertView.setTag(holder);
         return convertView;
@@ -173,7 +197,9 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder {
         TextView name;
         TextView data;
+        TextView data2;
         ImageView iconRow;
+        Button setButton;
         Button dayButton;
         Button monthButton;
         Button yearButton;

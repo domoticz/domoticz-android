@@ -34,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.DialogAction;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -50,6 +52,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.UI.PasswordDialog;
+import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -562,60 +565,123 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     idx,
                     tempUtil.getSetPoint());
 
-            tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
+            tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
                 @Override
-                public void onDismiss(final double newSetPoint) {
+                public void onDialogAction(final double newSetPoint, DialogAction dialogAction) {
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                    if (dialogAction == DialogAction.POSITIVE) {
+                        if (tempUtil.isProtected()) {
+                            PasswordDialog passwordDialog = new PasswordDialog(
+                                    getActivity());
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(final String password) {
+                                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+                                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                                    if (newSetPoint < tempUtil.getSetPoint())
+                                        action = Domoticz.Device.Thermostat.Action.MIN;
+                                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, password,
+                                            new setCommandReceiver() {
+                                                @Override
+                                                public void onReceiveResult(String result) {
+                                                    successHandling(result, false);
+                                                    processDashboard();
+                                                }
 
-                    if (tempUtil.isProtected()) {
-                        PasswordDialog passwordDialog = new PasswordDialog(
-                                getActivity());
-                        passwordDialog.show();
-                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                            @Override
-                            public void onDismiss(final String password) {
-                                int jsonUrl = Domoticz.Json.Url.Set.TEMP;
-                                int action = Domoticz.Device.Thermostat.Action.PLUS;
-                                if (newSetPoint < tempUtil.getSetPoint())
-                                    action = Domoticz.Device.Thermostat.Action.MIN;
-                                mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, password,
-                                        new setCommandReceiver() {
-                                            @Override
-                                            public void onReceiveResult(String result) {
-                                                successHandling(result, false);
-                                                processDashboard();
-                                            }
+                                                @Override
+                                                public void onError(Exception error) {
+                                                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+                        } else {
+                            int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+                            int action = Domoticz.Device.Thermostat.Action.PLUS;
+                            if (newSetPoint < tempUtil.getSetPoint())
+                                action = Domoticz.Device.Thermostat.Action.MIN;
+                            mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, null,
+                                    new setCommandReceiver() {
+                                        @Override
+                                        public void onReceiveResult(String result) {
+                                            successHandling(result, false);
+                                            processDashboard();
+                                        }
 
-                                            @Override
-                                            public void onError(Exception error) {
-                                                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
-                        });
-                    } else {
-                        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
-                        int action = Domoticz.Device.Thermostat.Action.PLUS;
-                        if (newSetPoint < tempUtil.getSetPoint())
-                            action = Domoticz.Device.Thermostat.Action.MIN;
-                        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, null,
-                                new setCommandReceiver() {
-                                    @Override
-                                    public void onReceiveResult(String result) {
-                                        successHandling(result, false);
-                                        processDashboard();
-                                    }
-
-                                    @Override
-                                    public void onError(Exception error) {
-                                        errorHandling(error);
-                                    }
-                                });
+                                        @Override
+                                        public void onError(Exception error) {
+                                            errorHandling(error);
+                                        }
+                                    });
+                        }
                     }
                 }
             });
             tempDialog.show();
+        };
+    }
 
+    @Override
+    public void onSetTemperatureClick(final int idx) {
+        addDebugText("onSetTemperatureClick");
+        final DevicesInfo tempUtil = getDevice(idx);
+        if (tempUtil != null) {
+            final setCommandReceiver commandReceiver = new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                    processDashboard();
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            };
+
+            final boolean evohomeZone = "evohome".equals(tempUtil.getHardwareName());
+
+            TemperatureDialog tempDialog;
+            if (evohomeZone) {
+                tempDialog = new ScheduledTemperatureDialog(
+                        getActivity(),
+                        idx,
+                        tempUtil.getSetPoint(),
+                        !"auto".equalsIgnoreCase(tempUtil.getStatus()));
+            } else {
+                tempDialog = new TemperatureDialog(
+                        getActivity(),
+                        idx,
+                        tempUtil.getSetPoint());
+            }
+
+            tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
+                @Override
+                public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
+                    if (dialogAction == DialogAction.POSITIVE) {
+                        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+                        String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                                "&mode=PermanentOverride";
+
+                        // add query parameters
+                        mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
+                    } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
+                        addDebugText("Set idx " + idx + " to Auto");
+
+                        String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                                "&mode=Auto";
+
+                        // add query parameters
+                        mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
+                    } else {
+                        addDebugText("Not updating idx " + idx);
+                    }
+                }
+            });
+
+            tempDialog.show();
         }
     }
 

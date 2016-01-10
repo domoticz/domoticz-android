@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
+import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -235,5 +238,67 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                 }
             }
         });
+    }
+
+    @Override
+    public void onSetClick(final TemperatureInfo t) {
+        addDebugText("onSetClick");
+        final int idx = t.getIdx();
+
+        final setCommandReceiver commandReceiver = new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                successHandling(result, false);
+                processTemperature();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        };
+
+        final boolean evohomeZone = "evohome".equals(t.getHardwareName());
+
+        TemperatureDialog tempDialog;
+        if (evohomeZone) {
+            tempDialog = new ScheduledTemperatureDialog(
+                    getActivity(),
+                    idx,
+                    t.getSetPoint(),
+                    !"auto".equalsIgnoreCase(t.getStatus()));
+        } else {
+            tempDialog = new TemperatureDialog(
+                    getActivity(),
+                    idx,
+                    t.getSetPoint());
+        }
+
+        tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
+            @Override
+            public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
+                if (dialogAction == DialogAction.POSITIVE) {
+                    addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                            "&mode=PermanentOverride";
+
+                    // add query parameters
+                    mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+                } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
+                    addDebugText("Set idx " + idx + " to Auto");
+
+                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                            "&mode=Auto";
+
+                    // add query parameters
+                    mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+                } else {
+                    addDebugText("Not updating idx " + idx);
+                }
+            }
+        });
+
+        tempDialog.show();
     }
 }

@@ -33,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -315,24 +316,29 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 idx,
                 tempUtil.getSetPoint());
 
-        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
+        tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
             @Override
-            public void onDismiss(final double newSetPoint) {
-                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
-                if (tempUtil != null) {
-                    if (tempUtil.isProtected()) {
-                        PasswordDialog passwordDialog = new PasswordDialog(
-                                getActivity());
-                        passwordDialog.show();
-                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                            @Override
-                            public void onDismiss(String password) {
-                                setThermostateAction(tempUtil, newSetPoint, password);
-                            }
-                        });
-                    } else {
-                        setThermostateAction(tempUtil, newSetPoint, null);
-                    }
+            public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
+                if (dialogAction == DialogAction.POSITIVE) {
+                    addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                            "&mode=PermanentOverride";
+
+                    mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            updateThermostatSetPointValue(idx, thermostatSetPointValue);
+                            successHandling(result, false);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error);
+                        }
+                    });
+                } else {
+                    addDebugText("Not updating idx " + idx);
                 }
             }
         });

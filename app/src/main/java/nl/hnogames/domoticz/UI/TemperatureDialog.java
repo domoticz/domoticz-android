@@ -24,12 +24,13 @@ package nl.hnogames.domoticz.UI;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.triggertrap.seekarc.SeekArc;
 
@@ -38,10 +39,10 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class TemperatureDialog implements DialogInterface.OnDismissListener {
+public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
-    private DismissListener dismissListener;
+    private DialogActionListener dialogActionListener;
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private int idx;
@@ -59,8 +60,9 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
-                .positiveText(android.R.string.ok);
-        mdb.dismissListener(this);
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.ok)
+                .onAny(this);
         currentTemperature = temp;
     }
 
@@ -146,20 +148,24 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialogInterface) {
-        if (dismissListener != null) {
+    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        if (dialogActionListener != null) {
             if (isFahrenheit)
-                dismissListener.onDismiss(((double) temperatureControl.getProgress()));
+                dialogActionListener.onDialogAction(((double) temperatureControl.getProgress()), which);
             else
-                dismissListener.onDismiss(((double) temperatureControl.getProgress() / 2));
+                dialogActionListener.onDialogAction(((double) temperatureControl.getProgress() / 2), which);
         }
     }
 
-    public void onDismissListener(DismissListener dismissListener) {
-        this.dismissListener = dismissListener;
+    public void onDismissListener(DialogActionListener dialogActionListener) {
+        this.dialogActionListener = dialogActionListener;
     }
 
-    public interface DismissListener {
-        void onDismiss(double setPoint);
+    public interface DialogActionListener {
+        void onDialogAction(double setPoint, DialogAction dialogAction);
+    }
+
+    protected MaterialDialog.Builder getMaterialDialogBuilder() {
+        return mdb;
     }
 }

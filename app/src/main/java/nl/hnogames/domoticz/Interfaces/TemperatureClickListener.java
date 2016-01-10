@@ -26,4 +26,6 @@ import nl.hnogames.domoticz.Containers.TemperatureInfo;
 
 public interface TemperatureClickListener {
     void onLogClick(TemperatureInfo temp, String range);
+
+    void onSetClick(TemperatureInfo t);
 }

@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Containers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +38,9 @@ public class DevicesInfo implements Comparable {
     private boolean timers;
     private int idx;
     private String Name;
+    private String Description;
     private String LastUpdate;
+    private double temp;
     private double setPoint;
     private String Type;
     private String SubType;
@@ -186,10 +189,23 @@ public class DevicesInfo implements Comparable {
         }
 
         try {
-            if (row.has("SetPoint")) {
-                setPoint = Double.parseDouble(row.getString("SetPoint"));
+            if (row.has("Temp")) {
+                temp = row.getDouble("Temp");
+            } else {
+                temp = Double.NaN;
             }
         } catch (Exception ex) {
+            temp = Double.NaN;
+        }
+
+        try {
+            if (row.has("SetPoint")) {
+                setPoint = row.getDouble("SetPoint");
+            } else {
+                setPoint = Double.NaN;
+            }
+        } catch (Exception ex) {
+            setPoint = Double.NaN;
         }
     }
 
@@ -203,6 +219,9 @@ public class DevicesInfo implements Comparable {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
     }
+
+
+    public double getTemperature() { return temp; }
 
     public double getSetPoint() {
         return setPoint;
@@ -274,7 +293,10 @@ public class DevicesInfo implements Comparable {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
-                new Gson().toJson(this) +
+                new GsonBuilder()
+                        .serializeSpecialFloatingPointValues()
+                        .create()
+                        .toJson(this) +
                 '}';
     }
 
@@ -293,6 +315,10 @@ public class DevicesInfo implements Comparable {
     public void setName(String name) {
         Name = name;
     }
+
+    public String getDescription() { return Description; }
+
+    public void setDescription(String description) { Description = description; }
 
     public boolean getUseCustomImage() {
         return useCustomImage;

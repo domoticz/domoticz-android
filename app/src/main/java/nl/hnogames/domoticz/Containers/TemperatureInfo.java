@@ -34,13 +34,15 @@ public class TemperatureInfo {
     String Name;
     String Data;
     String LastUpdate;
-    long setPoint;
+    double setPoint;
     String Type;
     int Favorite;
     int HardwareID;
     String HardwareName;
+    String Status;
     String TypeImg;
     String Direction;
+    String Description;
     double Temp;
     int signalLevel;
 
@@ -52,20 +54,24 @@ public class TemperatureInfo {
         isProtected = row.getBoolean("Protected");
         if (row.has("HardwareID"))
             HardwareID = row.getInt("HardwareID");
-        if (row.has("Type"))
-            HardwareName = row.getString("Type");
+        if (row.has("HardwareName"))
+            HardwareName = row.getString("HardwareName");
         if (row.has("Temp"))
             Temp = row.getDouble("Temp");
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
+        if (row.has("Status"))
+            Status = row.getString("Status");
         if (row.has("TypeImg"))
             TypeImg = row.getString("TypeImg");
         if (row.has("DirectionStr"))
             Direction = row.getString("DirectionStr");
         if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
+            setPoint = row.getDouble("SetPoint");
         if (row.has("Name"))
             Name = row.getString("Name");
+        if (row.has("Description"))
+            Description = row.getString("Description");
         if (row.has("Data")) {
             Data = row.getString("Data");
             if (Data.indexOf(';') >= 0) {
@@ -117,6 +123,10 @@ public class TemperatureInfo {
         return Temp;
     }
 
+    public double getSetPoint() {
+        return setPoint;
+    }
+
     public String getName() {
         return Name;
     }
@@ -131,6 +141,10 @@ public class TemperatureInfo {
 
     public String getDirection() {
         return Direction;
+    }
+
+    public String getDescription() {
+        return Description;
     }
 
     public String getHardwareName() {
@@ -154,6 +168,10 @@ public class TemperatureInfo {
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+    public String getStatus() {
+        return Status;
     }
 
     public String getTypeImg() {
