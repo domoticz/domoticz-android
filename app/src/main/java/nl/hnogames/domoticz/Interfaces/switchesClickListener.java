@@ -41,4 +41,6 @@ public interface switchesClickListener {
     void onThermostatClick(int idx);
 
     void onSecurityPanelButtonClick(int idx);
+
+    void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
 }

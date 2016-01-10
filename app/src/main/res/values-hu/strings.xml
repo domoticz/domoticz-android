@@ -28,6 +28,12 @@
   <string name="action_success">Sikeres művelet</string>
   <string name="action_failed">Sikertelen művelet</string>
   <string name="action_unknown">A művelet eredménye nem ismert</string>
+  <string name="normal">Normál</string>
+  <string name="economy">Takarékos</string>
+  <string name="away">Távollét</string>
+  <string name="day_off">Szabadnap</string>
+  <string name="custom">Egyéni</string>
+  <string name="heating_off">Fütés kikapcsolása</string>
   <string name="debug_textview_title">Hibakeresési információ</string>
   <string name="msg_copiedToClipboard">Szöveg a vágólapra másolva</string>
   <string name="favorite">Kedvenc</string>

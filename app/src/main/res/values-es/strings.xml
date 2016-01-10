@@ -28,6 +28,12 @@
   <string name="action_success">Acción exitosa</string>
   <string name="action_failed">Acción fallida</string>
   <string name="action_unknown">Resultado de la acción desconocida</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economía</string>
+  <string name="away">Salir</string>
+  <string name="day_off">Día festivo</string>
+  <string name="custom">Personal</string>
+  <string name="heating_off">Calef.apagada</string>
   <string name="debug_textview_title">Información de depuración</string>
   <string name="msg_copiedToClipboard">Texto copiado al portapapeles</string>
   <string name="favorite">Favorito</string>

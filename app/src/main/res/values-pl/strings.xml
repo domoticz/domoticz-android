@@ -28,6 +28,12 @@
   <string name="action_success">Akcja zakończona skucesem</string>
   <string name="action_failed">Akcja nie powiodła się</string>
   <string name="action_unknown">Nieznany rezultat akcji</string>
+  <string name="normal">Normalny</string>
+  <string name="economy">Tryb ekonomiczny</string>
+  <string name="away">Wyjście</string>
+  <string name="day_off">Dzień wolny</string>
+  <string name="custom">Tryb niestandardowy</string>
+  <string name="heating_off">Ogrzewanie wyłączone</string>
   <string name="debug_textview_title">Informacje debugowania</string>
   <string name="msg_copiedToClipboard">Tekst skopiowany do schowka</string>
   <string name="favorite">Ulubione</string>
