@@ -74,6 +74,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         listView = (ListView) getView().findViewById(R.id.listView);
         mDomoticz = new Domoticz(mContext);
@@ -109,6 +110,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
                 }
             });
         }
+        super.showSpinner(false);
     }
 
     @Override

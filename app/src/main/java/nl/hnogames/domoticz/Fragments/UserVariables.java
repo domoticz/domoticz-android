@@ -53,6 +53,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mDomoticz = new Domoticz(mContext);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         listView = (ListView) getView().findViewById(R.id.listView);
@@ -90,6 +91,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                     processUserVariables();
                 }
             });
+            super.showSpinner(false);
         }
     }
 

@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 57
-        versionName '0.1.212'
+        versionCode 59
+        versionName '0.1.214'
         multiDexEnabled true
     }
 
@@ -89,6 +89,7 @@ dependencies {
     compile 'com.github.hotchemi:android-rate:0.5.6'
     compile 'com.github.Triggertrap:SeekArc:v1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
 
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 }

@@ -96,6 +96,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
@@ -148,6 +149,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                     processUtilities();
                 }
             });
+            super.showSpinner(false);
         }
     }
 

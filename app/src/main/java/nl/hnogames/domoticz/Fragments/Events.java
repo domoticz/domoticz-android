@@ -77,6 +77,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
@@ -122,6 +123,8 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
                     processUserVariables();
                 }
             });
+            super.showSpinner(false);
+
         }
     }
 

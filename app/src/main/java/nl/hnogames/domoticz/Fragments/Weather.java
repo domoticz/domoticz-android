@@ -68,6 +68,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
@@ -80,32 +81,13 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private void processWeather() {
         mSwipeRefreshLayout.setRefreshing(true);
 
-        final WeatherClickListener listener = this;
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
                 if (getView() != null) {
                     successHandling(mWeatherInfos.toString(), false);
-
-                    adapter = new WeatherAdapter(mContext, mWeatherInfos, listener);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                       int index, long id) {
-                            showInfoDialog(adapter.filteredData.get(index));
-                            return true;
-                        }
-                    });
-
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            processWeather();
-                        }
-                    });
+                    createListView(mWeatherInfos);
                 }
             }
 
@@ -114,6 +96,28 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                 errorHandling(error);
             }
         });
+    }
+
+    private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
+        adapter = new WeatherAdapter(mContext, mWeatherInfos, this);
+        listView.setAdapter(adapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                           int index, long id) {
+                showInfoDialog(adapter.filteredData.get(index));
+                return true;
+            }
+        });
+
+        mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                processWeather();
+            }
+        });
+        super.showSpinner(false);
     }
 
     private void showInfoDialog(final WeatherInfo mWeatherInfo) {

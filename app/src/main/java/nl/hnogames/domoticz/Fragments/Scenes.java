@@ -84,6 +84,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         listView = (ListView) getView().findViewById(R.id.listView);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
@@ -162,6 +163,8 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 listView.onRestoreInstanceState(state);
             }
         }
+        super.showSpinner(false);
+
     }
 
     private boolean isOnOffScene(SceneInfo testSwitch) {

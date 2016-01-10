@@ -104,6 +104,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mDomoticz = new Domoticz(mContext);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
         listView = (ListView) getView().findViewById(R.id.listView);
@@ -200,6 +201,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 errorHandling(ex);
             }
         }
+        super.showSpinner(false);
+
     }
 
     private boolean isOnOffSwitch(DevicesInfo testSwitch) {

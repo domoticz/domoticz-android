@@ -105,6 +105,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onConnectionOk() {
         getActionBar().setTitle(R.string.title_dashboard);
+        super.showSpinner(true);
 
         listView = (ListView) getView().findViewById(R.id.listView);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
@@ -117,6 +118,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
+
         //switch toggled, refresh listview
         state = listView.onSaveInstanceState();
         mSwipeRefreshLayout.setRefreshing(true);
@@ -248,6 +250,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+            super.showSpinner(false);
         }
     }
 
