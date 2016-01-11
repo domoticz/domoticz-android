@@ -31,6 +31,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
@@ -60,8 +62,6 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
-
-
 
     @Override
     public void refreshFragment() {
@@ -119,11 +119,13 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         });
     }
 
-    private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos)
-    {
+    private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
             adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
-            listView.setAdapter(adapter);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,

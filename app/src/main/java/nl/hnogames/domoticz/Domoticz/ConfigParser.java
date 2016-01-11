@@ -28,10 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Containers.SettingsInfo;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
-import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
 
 public class ConfigParser implements JSONParserInterface {
 

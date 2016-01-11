@@ -131,12 +131,13 @@ public class MainActivity extends AppCompatActivity {
                     domoticz.GetConfig(new ConfigReceiver() {
                         @Override
                         public void onReceiveConfig(ConfigInfo settings) {
-                            if(settings!=null)
+                            if (settings != null)
                                 mSharedPrefs.saveConfig(settings);
                         }
 
                         @Override
-                        public void onError(Exception error) {}
+                        public void onError(Exception error) {
+                        }
                     });
                 }
 

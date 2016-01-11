@@ -22,8 +22,6 @@
 
 package nl.hnogames.domoticz.Containers;
 
-import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +42,7 @@ public class ConfigInfo {
         mapFields(row);
     }
 
-    public ConfigInfo(String json){
+    public ConfigInfo(String json) {
         try {
             mapFields(new JSONObject(json));
         } catch (JSONException e) {
@@ -75,27 +73,35 @@ public class ConfigInfo {
     public String getJsonObject() {
         return jsonObject.toString();
     }
+
     public String getWindSign() {
         return WindSign;
     }
+
     public String getTempSign() {
         return TempSign;
     }
+
     public double getLatitude() {
         return Latitude;
     }
+
     public double getLongitude() {
         return Longitude;
     }
+
     public double getDegreeDaysBaseTemperature() {
         return DegreeDaysBaseTemperature;
     }
+
     public double getTempScale() {
         return TempScale;
     }
+
     public double getWindScale() {
         return WindScale;
     }
+
     public int getFiveMinuteHistoryDays() {
         return FiveMinuteHistoryDays;
     }

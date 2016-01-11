@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
@@ -100,7 +102,10 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
         adapter = new WeatherAdapter(mContext, mWeatherInfos, this);
-        listView.setAdapter(adapter);
+        AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+        animationAdapter.setAbsListView(listView);
+        listView.setAdapter(animationAdapter);
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view,

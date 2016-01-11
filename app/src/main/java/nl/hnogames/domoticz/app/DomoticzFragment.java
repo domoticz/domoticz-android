@@ -85,7 +85,7 @@ public class DomoticzFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.default_layout, null);
-        oSpinner = (SpinnerLoader)root.findViewById(R.id.spinner);
+        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
         return root;
     }
 
@@ -119,12 +119,10 @@ public class DomoticzFragment extends Fragment {
         }
     }
 
-    public void showSpinner(boolean show){
-        if(show)
-        {
+    public void showSpinner(boolean show) {
+        if (show) {
             oSpinner.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             oSpinner.setVisibility(View.GONE);
         }
     }

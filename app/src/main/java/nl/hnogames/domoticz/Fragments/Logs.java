@@ -27,6 +27,8 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.LogAdapter;
@@ -45,7 +47,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private  ListView listView;
+    private ListView listView;
 
     @Override
     public void refreshFragment() {
@@ -101,7 +103,10 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     private void createListView() {
         if (getView() != null) {
-            listView.setAdapter(adapter);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

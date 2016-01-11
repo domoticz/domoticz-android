@@ -1284,7 +1284,7 @@ public class Domoticz {
     public interface Temperature {
         interface Sign {
             String CELCIUS = "C";
-            String FAHRENHEIT  = "F";
+            String FAHRENHEIT = "F";
         }
     }
 

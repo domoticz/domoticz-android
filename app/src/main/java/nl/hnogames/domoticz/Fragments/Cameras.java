@@ -123,7 +123,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         });
     }
 
-    private void processImage(Bitmap savePic, String title){
+    private void processImage(Bitmap savePic, String title) {
         File dir = mDomoticz.saveSnapShot(savePic, title);
         if (dir != null) {
             Intent intent = new Intent(getActivity(), CameraActivity.class);

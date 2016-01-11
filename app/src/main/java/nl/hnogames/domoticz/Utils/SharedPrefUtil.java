@@ -36,8 +36,6 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

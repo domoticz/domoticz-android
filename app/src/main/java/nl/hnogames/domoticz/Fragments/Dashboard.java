@@ -34,6 +34,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,16 +69,16 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private String planName = "";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
-
-    private Parcelable state;
     private ListView listView;
+
+    private Parcelable state = null;
+    private boolean busy = false;
 
 
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processDashboard();
     }
 
@@ -118,9 +120,13 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
+        busy = true;
+        if(extendedStatusSwitches!=null && extendedStatusSwitches.size()>0)
+        {
+            state = listView.onSaveInstanceState();
+        }
 
         //switch toggled, refresh listview
-        state = listView.onSaveInstanceState();
         mSwipeRefreshLayout.setRefreshing(true);
 
         mDomoticz = new Domoticz(mContext);
@@ -226,7 +232,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
                 final switchesClickListener listener = this;
                 adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
-                listView.setAdapter(adapter);
+                AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                animationAdapter.setAbsListView(listView);
+                listView.setAdapter(animationAdapter);
+
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
@@ -243,14 +252,13 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     }
                 });
 
-                if (state != null) {
-                    // Restore previous state (including selected item index and scroll position)
+                if(state!=null){
                     listView.onRestoreInstanceState(state);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
+            busy = false;
             super.showSpinner(false);
         }
     }
@@ -314,6 +322,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onSwitchClick(int idx, boolean checked) {
+        if(busy)
+            return;
+
         addDebugText("onSwitchClick");
         addDebugText("Set idx " + idx + " to " + checked);
 
@@ -378,6 +389,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onButtonClick(int idx, boolean checked) {
+        if(busy)
+            return;
+
         addDebugText("onButtonClick");
         addDebugText("Set idx " + idx + " to ON");
 
@@ -527,6 +541,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {
+        if(busy)
+            return;
+
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
         DevicesInfo clickedSwitch = getDevice(idx);
@@ -559,6 +576,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onDimmerChange(int idx, int value, boolean selector) {
+        if(busy)
+            return;
+
         addDebugText("onDimmerChange for " + idx + " to " + value);
         DevicesInfo clickedSwitch = getDevice(idx);
         if (clickedSwitch != null) {

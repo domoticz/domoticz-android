@@ -26,5 +26,6 @@ import nl.hnogames.domoticz.Containers.ConfigInfo;
 
 public interface ConfigReceiver {
     void onReceiveConfig(ConfigInfo settings);
+
     void onError(Exception error);
 }
