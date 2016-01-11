@@ -78,6 +78,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private ListView listView;
     private Parcelable state = null;
     private boolean busy = false;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -96,6 +97,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -206,6 +208,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 if(state!=null){
                     listView.onRestoreInstanceState(state);
                 }
+                this.Filter(filter);
                 busy=false;
             } catch (Exception ex) {
                 errorHandling(ex);

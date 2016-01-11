@@ -27,6 +27,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -44,6 +45,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -97,6 +99,8 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                 }
             });
             super.showSpinner(false);
+            this.Filter(filter);
+
         }
     }
 

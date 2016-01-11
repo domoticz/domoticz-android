@@ -68,6 +68,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String filter = "";
 
 
     @Override
@@ -87,6 +88,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -155,6 +157,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 }
             });
             super.showSpinner(false);
+            this.Filter(filter);
         }
     }
 

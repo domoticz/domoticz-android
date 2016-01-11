@@ -48,6 +48,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -65,6 +66,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -116,6 +118,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
             });
         }
         super.showSpinner(false);
+        this.Filter(filter);
     }
 
     @Override

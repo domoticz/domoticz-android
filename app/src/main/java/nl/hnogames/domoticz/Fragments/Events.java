@@ -51,6 +51,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
     private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -68,6 +69,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -128,7 +130,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
                 }
             });
             super.showSpinner(false);
-
+            this.Filter(filter);
         }
     }
 

@@ -62,6 +62,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -80,6 +81,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -142,6 +144,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                     processTemperature();
                 }
             });
+            this.Filter(filter);
         }
         super.showSpinner(false);
     }

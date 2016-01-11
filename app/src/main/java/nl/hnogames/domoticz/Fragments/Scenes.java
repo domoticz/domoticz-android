@@ -63,10 +63,12 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     private ArrayList<SceneInfo> mScenes;
     private Parcelable state;
     private ListView listView;
+    private String filter = "";
 
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -169,6 +171,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             }
         }
         super.showSpinner(false);
+        this.Filter(filter);
 
     }
 

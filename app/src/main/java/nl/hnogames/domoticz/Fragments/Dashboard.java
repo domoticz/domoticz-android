@@ -74,6 +74,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private Parcelable state = null;
     private boolean busy = false;
 
+    private String filter = "";
+
 
     @Override
     public void refreshFragment() {
@@ -95,6 +97,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -258,6 +261,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+            this.Filter(filter);
             busy = false;
             super.showSpinner(false);
         }

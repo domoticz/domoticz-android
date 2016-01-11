@@ -41,6 +41,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -59,6 +60,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -123,6 +125,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
             }
         });
         super.showSpinner(false);
+        this.Filter(filter);
     }
 
     private void showInfoDialog(final WeatherInfo mWeatherInfo) {
