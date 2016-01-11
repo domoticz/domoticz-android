@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="premium_category">Köp premium!</string>
   <string name="premium_title">Skaffa premium versionen!</string>
-  <string name="premium_feature">är en premium funktion, vänligen köp betal versionen för att stödja utvecklarna!</string>
+  <string name="premium_feature">är en premium funktion, vänligen köp betalversionen för att stödja utvecklarna!</string>
   <string name="drawer_open">Öppna navigeringsmenyn</string>
   <string name="drawer_close">Stäng navigeringsmenyn</string>
   <string name="msg_please_wait">Vänligen vänta&#8230;</string>
@@ -13,7 +13,7 @@
   <string name="button_status_day">Dag</string>
   <string name="button_status_month">Månad</string>
   <string name="button_status_year">År</string>
-  <string name="button_status_timer">Tajmer</string>
+  <string name="button_status_timer">Timer</string>
   <string name="button_color">Färg</string>
   <string name="button_arm">Aktivera</string>
   <string name="button_disarm">Avaktivera</string>
@@ -28,7 +28,7 @@
   <string name="action_success">Åtgärden lyckades</string>
   <string name="action_failed">Åtgärden misslyckades</string>
   <string name="action_unknown">Okänd resultat av åtgärden</string>
-  <string name="debug_textview_title">Felsöknings information</string>
+  <string name="debug_textview_title">Felsökningsinformation</string>
   <string name="msg_copiedToClipboard">Texten kopierad till urklipp</string>
   <string name="favorite">Favorit</string>
   <string name="yes">Ja</string>
@@ -54,7 +54,7 @@
   <string name="filter_devices">Filtrera enheter</string>
   <string name="choose_color">Välj färg</string>
   <string name="no_data_on_domoticz">Ingen data på Domoticz server</string>
-  <string name="row_icon_description">rad ikon</string>
+  <string name="row_icon_description">radikon</string>
   <string name="error_image_description">Fel bild</string>
   <string name="white">Vit</string>
 </resources>

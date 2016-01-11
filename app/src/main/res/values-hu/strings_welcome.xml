@@ -12,7 +12,7 @@
   <string name="welcome_info_checkingConnection">A kapcsolat beállításainak ellenőrzése</string>
   <string name="welcome_msg_connectionDataIncomplete">A csatlakozási adat hiányos vagy üres</string>
   <string name="welcome_msg_connectionDataInvalid">Az URL nem kell kezdődhet http-vel</string>
-  <string name="welcome_msg_correctOnPreviousPage">Kérjük, javítsa az előző oldalon az adatokat</string>
+  <string name="welcome_msg_correctOnPreviousPage">Kérjük, javítsa az adatok az előző oldalon</string>
   <string name="welcome_msg_serverVersion">Domoticz verzió</string>
   <string name="welcome_msg_numberOfDevices">%1$d-eszköz észlelve</string>
   <string name="welcome_msg_no_ssid_found">Nem találtam wifi SSID-t</string>
@@ -30,8 +30,8 @@
   <string name="welcome_remote_server_directory">Mappa</string>
   <string name="welcome_local_server_used_switch_title">Eltérő kiszolgáló cím</string>
   <string name="welcome_local_server_used_switch_summary">Eltérő cím a helyi kapcsolat használatához</string>
-  <string name="welcome_advancedSettings">Advanced server settings</string>
-  <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
+  <string name="welcome_advancedSettings">Szerver haladó beállítások</string>
+  <string name="welcome_advancedSettings_summary">Csak nem szabvány Domoticz szerver esetén</string>
   <string name="welcome_local_server_ssid">Helyi wifi SSID</string>
   <string name="welcome_local_server_address">Helyi szerver címe</string>
   <string name="welcome_local_server_protocol">Helyi protokoll</string>

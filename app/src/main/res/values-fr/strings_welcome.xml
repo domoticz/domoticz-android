@@ -28,8 +28,8 @@
   <string name="welcome_remote_server_directory">Répertoire</string>
   <string name="welcome_local_server_used_switch_title">Autre adresse de serveur</string>
   <string name="welcome_local_server_used_switch_summary">Utiliser une adresse différente pour les connexions locales</string>
-  <string name="welcome_advancedSettings">Advanced server settings</string>
-  <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
+  <string name="welcome_advancedSettings">Paramètres de serveur avancés</string>
+  <string name="welcome_advancedSettings_summary">Utilisé uniquement pour les serveurs non standards Domoticz</string>
   <string name="welcome_local_server_ssid">SSID du wifi local</string>
   <string name="welcome_local_server_address">Adresse locale du serveur</string>
   <string name="welcome_local_server_protocol">Protocole local</string>

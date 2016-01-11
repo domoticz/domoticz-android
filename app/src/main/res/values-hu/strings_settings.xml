@@ -9,7 +9,7 @@
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Információ</string>
   <string name="category_debug">Hibakeresés</string>
-  <string name="category_export">Adatexportálási /-importálási beállítások</string>
+  <string name="category_export">Export/Import Beállítások</string>
   <string name="startup_screen">Kezdőképernyő</string>
   <string name="enable_items">Elemek engedélyezése/tiltása</string>
   <string name="extra_data_title">Extra elemek a kezdőlapon</string>
