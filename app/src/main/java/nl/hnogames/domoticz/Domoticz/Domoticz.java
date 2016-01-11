@@ -47,6 +47,7 @@ import java.util.Set;
 import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
+import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
@@ -373,6 +374,10 @@ public class Domoticz {
 
             case Json.Url.Request.SETTINGS:
                 url = Url.System.SETTINGS;
+                break;
+
+            case Json.Url.Request.CONFIG:
+                url = Url.System.CONFIG;
                 break;
 
             case Json.Url.Request.GRAPH:
@@ -794,6 +799,15 @@ public class Domoticz {
     public void getSettings(SettingsReceiver receiver) {
         SettingsParser parser = new SettingsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.SETTINGS);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    public void GetConfig(ConfigReceiver receiver) {
+        ConfigParser parser = new ConfigParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.CONFIG);
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -1226,6 +1240,7 @@ public class Domoticz {
                 int EVENTXML = 19;
                 int GRAPH = 20;
                 int SETTINGS = 22;
+                int CONFIG = 25;
                 int SETSECURITY = 23;
                 int TEXTLOG = 24;
             }
@@ -1263,6 +1278,13 @@ public class Domoticz {
             String DAY = "day";
             String MONTH = "month";
             String YEAR = "year";
+        }
+    }
+
+    public interface Temperature {
+        interface Sign {
+            String CELCIUS = "C";
+            String FAHRENHEIT  = "F";
         }
     }
 
@@ -1389,6 +1411,7 @@ public class Domoticz {
             String EVENTSTATUS = "&eventstatus=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
             String SETTINGS = "/json.htm?type=settings";
+            String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
         }
     }
