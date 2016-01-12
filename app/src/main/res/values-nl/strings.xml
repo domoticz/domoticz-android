@@ -24,7 +24,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatuur</string>
   <string name="status">Status</string>
-  <string name="set_point">Temperatuur</string>
+  <string name="set_point">Ingestelde temperatuur</string>
   <string name="action_success">Actie succesvol</string>
   <string name="action_failed">Actie mislukt</string>
   <string name="action_unknown">Actie resultaat onbekend</string>
