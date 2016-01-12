@@ -86,11 +86,14 @@ public class SessionUtil {
     }
 
     public Calendar parseStringToDate(String expires) {
-        if (expires == null || expires.length() <= 0)
-            return null;
+
+        if (UsefulBits.isEmpty(expires)) return null;
+
+        expires = expires.trim();
 
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.US);
+
         try {
             cal.setTime(sdf.parse(expires));
             return cal;
