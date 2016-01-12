@@ -95,7 +95,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 successHandling(Cameras.toString(), false);
 
                 Cameras.this.mCameras = Cameras;
-                mAdapter = new CamerasAdapter(Cameras, getActivity());
+                mAdapter = new CamerasAdapter(Cameras, getActivity(), mDomoticz);
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
