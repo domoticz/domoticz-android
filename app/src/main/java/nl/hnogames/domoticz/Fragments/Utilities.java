@@ -272,7 +272,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         final String graphType = utility.getSubType()
-                .replace("YouLess counter", "counter")
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
                 .replace("Energy", "counter");
