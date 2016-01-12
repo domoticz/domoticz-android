@@ -54,10 +54,12 @@ import java.util.List;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             mSharedPrefs.setGeoFenceService();
 
             //get latest update version
-            Domoticz domoticz = new Domoticz(this);
+            final Domoticz domoticz = new Domoticz(this);
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {
@@ -126,6 +128,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     mSharedPrefs.setUpdateAvailable(version);
+                    domoticz.GetConfig(new ConfigReceiver() {
+                        @Override
+                        public void onReceiveConfig(ConfigInfo settings) {
+                            if (settings != null)
+                                mSharedPrefs.saveConfig(settings);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                        }
+                    });
                 }
 
                 @Override

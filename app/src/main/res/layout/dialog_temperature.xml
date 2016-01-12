@@ -23,7 +23,7 @@
             android:paddingLeft="30dp"
             seekarc:arcColor="@color/material_red_400"
             seekarc:clockwise="true"
-            seekarc:max="100"
+            seekarc:max="200"
             seekarc:progressColor="@color/material_orange_600"
             seekarc:rotation="180"
             seekarc:startAngle="30"
@@ -49,28 +49,29 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/plus"
+                android:id="@+id/min"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
-                android:text="+"
+                android:text="-"
                 android:textSize="12dp"
                 android:layout_gravity="bottom" />
 
             <Button
-                android:id="@+id/min"
+                android:id="@+id/plus"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
-                android:text="-"
+                android:text="+"
                 android:textSize="12dp"
                 android:layout_gravity="bottom" />
+
         </LinearLayout>
     </FrameLayout>
 

@@ -31,6 +31,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
@@ -60,8 +62,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
-
-
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -80,6 +81,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -91,6 +93,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
@@ -102,35 +105,13 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     private void processTemperature() {
         mSwipeRefreshLayout.setRefreshing(true);
-        final TemperatureClickListener listener = this;
-
         mDomoticz.getTemperatures(new TemperatureReceiver() {
 
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 successHandling(mTemperatureInfos.toString(), false);
 
-                if (getView() != null) {
-
-                    adapter = new TemperatureAdapter(mContext, mTemperatureInfos, listener);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                       int index, long id) {
-                            showInfoDialog(adapter.filteredData.get(index));
-                            return true;
-                        }
-                    });
-                    mSwipeRefreshLayout.setRefreshing(false);
-
-                    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            processTemperature();
-                        }
-                    });
-                }
+                createListView(mTemperatureInfos);
             }
 
             @Override
@@ -138,6 +119,34 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                 errorHandling(error);
             }
         });
+    }
+
+    private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
+        if (getView() != null) {
+            adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                               int index, long id) {
+                    showInfoDialog(adapter.filteredData.get(index));
+                    return true;
+                }
+            });
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    processTemperature();
+                }
+            });
+            this.Filter(filter);
+        }
+        super.showSpinner(false);
     }
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {

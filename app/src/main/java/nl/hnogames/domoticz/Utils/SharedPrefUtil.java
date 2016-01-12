@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
@@ -67,6 +68,7 @@ public class SharedPrefUtil {
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
+    public static final String PREF_CONFIG = "domoticz_config";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
     public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
@@ -554,6 +556,22 @@ public class SharedPrefUtil {
         setDomoticzLocalDirectory(getDomoticzRemoteDirectory());
         setDomoticzLocalSecure(isDomoticzRemoteSecure());
         setDomoticzLocalAuthenticationMethod(getDomoticzRemoteAuthenticationMethod());
+    }
+
+    public void saveConfig(ConfigInfo config) {
+        editor.putString(PREF_CONFIG, config.getJsonObject());
+        editor.commit();
+    }
+
+    public ConfigInfo getConfig() {
+        ConfigInfo config = null;
+        if (prefs.contains(PREF_CONFIG)) {
+            String jsonConfig = prefs.getString(PREF_CONFIG, null);
+            config = new ConfigInfo(jsonConfig);
+        } else
+            return null;
+
+        return config;
     }
 
     // This four methods are used for maintaining locations.

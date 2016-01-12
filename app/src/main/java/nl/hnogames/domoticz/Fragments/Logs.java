@@ -27,6 +27,8 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.LogAdapter;
@@ -45,7 +47,8 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private  ListView listView;
+    private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -63,6 +66,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -74,6 +78,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         listView = (ListView) getView().findViewById(R.id.listView);
         mDomoticz = new Domoticz(mContext);
@@ -100,7 +105,10 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     private void createListView() {
         if (getView() != null) {
-            listView.setAdapter(adapter);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -109,6 +117,8 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
                 }
             });
         }
+        super.showSpinner(false);
+        this.Filter(filter);
     }
 
     @Override

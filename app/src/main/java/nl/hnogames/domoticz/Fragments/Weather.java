@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
@@ -39,6 +41,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -57,6 +60,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -68,6 +72,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
@@ -80,32 +85,13 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private void processWeather() {
         mSwipeRefreshLayout.setRefreshing(true);
 
-        final WeatherClickListener listener = this;
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
                 if (getView() != null) {
                     successHandling(mWeatherInfos.toString(), false);
-
-                    adapter = new WeatherAdapter(mContext, mWeatherInfos, listener);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                       int index, long id) {
-                            showInfoDialog(adapter.filteredData.get(index));
-                            return true;
-                        }
-                    });
-
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            processWeather();
-                        }
-                    });
+                    createListView(mWeatherInfos);
                 }
             }
 
@@ -114,6 +100,32 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                 errorHandling(error);
             }
         });
+    }
+
+    private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
+        adapter = new WeatherAdapter(mContext, mWeatherInfos, this);
+        AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+        animationAdapter.setAbsListView(listView);
+        listView.setAdapter(animationAdapter);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                           int index, long id) {
+                showInfoDialog(adapter.filteredData.get(index));
+                return true;
+            }
+        });
+
+        mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                processWeather();
+            }
+        });
+        super.showSpinner(false);
+        this.Filter(filter);
     }
 
     private void showInfoDialog(final WeatherInfo mWeatherInfo) {

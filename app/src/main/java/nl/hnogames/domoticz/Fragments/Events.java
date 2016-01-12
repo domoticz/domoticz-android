@@ -29,6 +29,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
@@ -49,6 +51,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
     private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -66,6 +69,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -77,6 +81,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
                 .coordinatorLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
@@ -113,7 +118,9 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     private void createListView() {
         if (getView() != null) {
-           listView.setAdapter(adapter);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
 
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -122,6 +129,8 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
                     processUserVariables();
                 }
             });
+            super.showSpinner(false);
+            this.Filter(filter);
         }
     }
 

@@ -38,6 +38,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fenjuly.mylibrary.SpinnerLoader;
+
 import org.json.JSONException;
 
 import java.util.List;
@@ -61,6 +63,8 @@ public class DomoticzFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
 
+    private SpinnerLoader oSpinner;
+
     public DomoticzFragment() {
     }
 
@@ -81,7 +85,7 @@ public class DomoticzFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.default_layout, null);
-
+        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
         return root;
     }
 
@@ -115,14 +119,20 @@ public class DomoticzFragment extends Fragment {
         }
     }
 
+    public void showSpinner(boolean show) {
+        if (show) {
+            oSpinner.setVisibility(View.VISIBLE);
+        } else {
+            oSpinner.setVisibility(View.GONE);
+        }
+    }
+
     /**
      * Checks for a active connection
      */
     public void checkConnection() {
-
         List<Fragment> fragments = getFragmentManager().getFragments();
         onAttachFragment(fragments.get(0));                           // Get only the last fragment
-
         PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] entries) {

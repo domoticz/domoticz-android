@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 57
-        versionName '0.1.212'
+        versionCode 60
+        versionName '0.1.215'
         multiDexEnabled true
     }
 
@@ -79,7 +79,6 @@ dependencies {
     }
     compile 'com.mcxiaoke.volley:library:1.0.15'
     compile 'com.android.support:design:23.1.1'
-    compile 'de.hdodenhof:circleimageview:1.2.1'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
     compile 'com.splunk.mint:mint:4.4.0'
@@ -87,8 +86,10 @@ dependencies {
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.dexafree:materiallist:3.1.2'
     compile 'com.github.hotchemi:android-rate:0.5.6'
-    compile 'com.github.Triggertrap:SeekArc:v1.1'
+    compile 'com.github.Triggertrap:SeekArc:+'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
 
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 }

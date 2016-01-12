@@ -35,6 +35,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +75,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private ArrayList<DevicesInfo> extendedStatusSwitches;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private Parcelable state;
     private ListView listView;
+    private Parcelable state = null;
+    private boolean busy = false;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -93,6 +97,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -104,6 +109,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onConnectionOk() {
+        super.showSpinner(true);
         mDomoticz = new Domoticz(mContext);
         coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
         listView = (ListView) getView().findViewById(R.id.listView);
@@ -113,9 +119,12 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void getSwitchesData() {
-
+        busy=true;
+        if(extendedStatusSwitches!=null && extendedStatusSwitches.size()>0)
+        {
+            state = listView.onSaveInstanceState();
+        }
         //switch toggled, refresh listview
-        state = listView.onSaveInstanceState();
         mSwipeRefreshLayout.setRefreshing(true);
         WidgetUtils.RefreshWidgets(mContext);
 
@@ -175,7 +184,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
                 final switchesClickListener listener = this;
                 adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
-                listView.setAdapter(adapter);
+                AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                animationAdapter.setAbsListView(listView);
+                listView.setAdapter(animationAdapter);
+
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view,
@@ -192,14 +204,18 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         getSwitchesData();
                     }
                 });
-                if (state != null) {
-                    // Restore previous state (including selected item index and scroll position)
+
+                if(state!=null){
                     listView.onRestoreInstanceState(state);
                 }
+                this.Filter(filter);
+                busy=false;
             } catch (Exception ex) {
                 errorHandling(ex);
             }
         }
+        super.showSpinner(false);
+
     }
 
     private boolean isOnOffSwitch(DevicesInfo testSwitch) {
@@ -225,7 +241,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
-
         SwitchInfoDialog infoDialog = new SwitchInfoDialog(
                 getActivity(),
                 mSwitch,
@@ -269,6 +284,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
+        if(busy)
+            return;
+
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
@@ -301,6 +319,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onLogButtonClick(int idx) {
+
         mDomoticz.getSwitchLogs(idx, new SwitchLogReceiver() {
             @Override
             public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
@@ -383,7 +402,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onSecurityPanelButtonClick(int idx) {
-
         SecurityPanelDialog securityDialog = new SecurityPanelDialog(
                 getActivity(),
                 getSwitch(idx));
@@ -409,6 +427,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onSwitchClick(int idx, boolean checked) {
+        if(busy)
+            return;
+
         try {
             addDebugText("onSwitchClick");
             addDebugText("Set idx " + idx + " to " + checked);
@@ -452,6 +473,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onButtonClick(int idx, boolean checked) {
+        if(busy)
+            return;
+
         addDebugText("onButtonClick");
         addDebugText("Set idx " + idx + " to ON");
         DevicesInfo clickedSwitch = getSwitch(idx);
@@ -485,6 +509,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {
+        if(busy)
+            return;
+
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
         DevicesInfo clickedSwitch = getSwitch(idx);
@@ -517,6 +544,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onDimmerChange(int idx, int value, boolean selector) {
+        if(busy)
+            return;
+
         addDebugText("onDimmerChange for " + idx + " to " + value);
         DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch != null) {

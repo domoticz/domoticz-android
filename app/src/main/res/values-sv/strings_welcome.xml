@@ -30,8 +30,8 @@
   <string name="welcome_remote_server_directory">Katalog</string>
   <string name="welcome_local_server_used_switch_title">Annan serveradress</string>
   <string name="welcome_local_server_used_switch_summary">Använda annan adress för lokal anslutning</string>
-  <string name="welcome_advancedSettings">Advanced server settings</string>
-  <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
+  <string name="welcome_advancedSettings">Avancerade server-inställningar</string>
+  <string name="welcome_advancedSettings_summary">Används endast för icke-standard Domotics-servrar</string>
   <string name="welcome_local_server_ssid">Lokala wifi SSIDs</string>
   <string name="welcome_local_server_address">Lokala serveradress</string>
   <string name="welcome_local_server_protocol">Lokalt protokoll</string>
