@@ -47,10 +47,10 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private ArrayList<CameraInfo> mDataset;
     private Domoticz domoticz;
 
-    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext) {
+    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz) {
         this.mDataset = data;
         this.mContext = mContext;
-        this.domoticz = new Domoticz(mContext);
+        this.domoticz=domoticz;
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
@@ -71,7 +71,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
             String address = cameraInfo.getAddress();
-            String imageUrl = domoticz.getSnapshotUrl(cameraInfo);
+            String imageUrl = cameraInfo.getSnapShotURL();
 
             int numberOfDevices = cameraInfo.getDevices();
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);

@@ -76,6 +76,7 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.VolleyUtil;
 
+
 public class Domoticz {
 
     public static final int batteryLevelMax = 100;
@@ -652,7 +653,7 @@ public class Domoticz {
     }
 
     public void getCameras(CameraReceiver receiver) {
-        CameraParser parser = new CameraParser(receiver);
+        CameraParser parser = new CameraParser(receiver, this);
         String url = constructGetUrl(Json.Url.Request.CAMERAS);
 
         RequestUtil.makeJsonGetResultRequest(parser,

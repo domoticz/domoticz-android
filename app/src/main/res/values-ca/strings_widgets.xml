@@ -5,7 +5,7 @@
   <string name="choose_switch">Escolliu dispositiu</string>
   <string name="failed_to_get_switches">No s\'ha pogut obtenir els dispositius</string>
   <string name="failed_toggle_switch">No s\'ha pogut canviar el dispositiu</string>
-  <string name="switch_toggled">"Switch device"</string>
+  <string name="switch_toggled">"Canvia dispositiu"</string>
   <string name="text_loading">Carregant...</string>
-  <string name="text_go">GO</string>
+  <string name="text_go">ANAR-HI</string>
 </resources>
