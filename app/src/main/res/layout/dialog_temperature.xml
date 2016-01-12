@@ -1,6 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:seekarc="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,12 +6,12 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
     <FrameLayout
         android:id="@+id/seekArcContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1" >
 
         <com.triggertrap.seekarc.SeekArc
@@ -25,8 +23,7 @@
             android:paddingLeft="30dp"
             seekarc:arcColor="@color/material_red_400"
             seekarc:clockwise="true"
-            seekarc:max="400"
-            seekarc:progress="200"
+            seekarc:max="100"
             seekarc:progressColor="@color/material_orange_600"
             seekarc:rotation="180"
             seekarc:startAngle="30"
@@ -38,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:text="20"
+            android:text="0"
             android:textSize="40sp" />
 
         <LinearLayout
@@ -60,7 +57,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="+"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:layout_gravity="bottom" />
 
             <Button
@@ -72,7 +69,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="-"
-                android:textSize="12sp"
+                android:textSize="12dp"
                 android:layout_gravity="bottom" />
         </LinearLayout>
     </FrameLayout>

@@ -40,7 +40,6 @@
             style="@style/row_body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:text="@string/last_update" />
 
         <TextView
