@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/bordershadow"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="?android:attr/listPreferredItemHeight"
@@ -12,8 +13,7 @@
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="0dp"
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout

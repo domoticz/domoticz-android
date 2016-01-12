@@ -1,5 +1,4 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -89,9 +88,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingRight="15dp"
                 android:inputType="textNoSuggestions"
                 android:minWidth="@dimen/width_min_welcomePage3_username_input"
+                android:paddingRight="15dp"
                 app:flw_inputWidgetTextColor="@color/default_text_color_light"
                 app:flw_inputWidgetTextSize="@dimen/text_size_large"
                 app:flw_labelText="@string/welcome_remote_server_username"
@@ -306,7 +305,7 @@
                     app:flw_labelText="@string/welcome_local_server_directory"
                     app:flw_labelTextColor="@color/default_text_color_light"
                     app:flw_labelTextSize="@dimen/text_size_medium" />
-                </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
