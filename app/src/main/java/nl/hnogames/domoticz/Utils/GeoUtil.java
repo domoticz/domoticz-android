@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.util.List;
 
+import nl.hnogames.domoticz.Containers.LocationInfo;
+
 public class GeoUtil {
     Context mContext;
 
@@ -78,6 +80,36 @@ public class GeoUtil {
 
         try {
             addressList = mGeocoder.getFromLocation(mLocation.getLatitude(), mLocation.getLongitude(), 5);
+
+            if (addressList == null) {
+                return null;
+            }
+            mAddress = addressList.get(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return mAddress;
+    }
+
+    /**
+     *
+     * @param locationInfo The location information
+     *
+     * @return first address which matches latitude and longitude in the given location info
+     */
+    public Address getAddressFromLocationInfo(LocationInfo locationInfo) {
+        Geocoder mGeocoder;
+        mGeocoder = new Geocoder(mContext);
+        List<Address> addressList;
+        Address mAddress = null;
+
+        try {
+            addressList =
+                    mGeocoder.getFromLocation(
+                            locationInfo.getLocation().latitude,
+                            locationInfo.getLocation().longitude, 5);
 
             if (addressList == null) {
                 return null;

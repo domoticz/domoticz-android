@@ -247,6 +247,12 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
+                showEditLocationDialog(locations.get(item));
+            }
+        });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -263,7 +269,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
-                return false;
+                return true;
             }
         });
     }
@@ -450,15 +456,14 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     public void showAddLocationDialog() {
-        LocationDialog infoDialog = new LocationDialog(
+        LocationDialog locationDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
-        infoDialog.setCurrentLocation(currentLocation);
-        infoDialog.onDismissListener(new LocationDialog.DismissListener() {
+        locationDialog.setCurrentLocation(currentLocation);
+        locationDialog.setLocationToEdit(null);             // Set to null so its in add mode
+        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
             @Override
             public void onDismiss(LocationInfo location) {
-                //save location
-                Log.d(TAG, "Location Added: " + location.getName());
 
                 mSharedPrefs.addLocation(location);
                 locations = mSharedPrefs.getLocations();
@@ -479,7 +484,43 @@ public class GeoSettingsActivity extends AppCompatActivity
                 //nothing selected
             }
         });
-        infoDialog.show();
+        locationDialog.show();
+    }
+
+    public void showEditLocationDialog(LocationInfo location) {
+        LocationDialog locationDialog = new LocationDialog(
+                this,
+                R.layout.dialog_location);
+
+        locationDialog.setTitle(getString(R.string.title_edit_location));
+        locationDialog.setLocationToEdit(location);
+        locationDialog.setRadius(location.getRadius());
+        locationDialog.setCurrentLocation(null);            // Set to null so its in edit mode
+
+        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
+            @Override
+            public void onDismiss(LocationInfo location) {
+
+                mSharedPrefs.updateLocation(location);
+                locations = mSharedPrefs.getLocations();
+
+                mGeofenceList = new ArrayList<>();      //reset values
+
+                if (locations != null)
+                    for (LocationInfo l : locations)
+                        if (l.getEnabled())
+                            mGeofenceList.add(l.toGeofence());
+
+                setGeoFenceService();
+                createListView();
+            }
+
+            @Override
+            public void onDismissEmpty() {
+                //nothing selected
+            }
+        });
+        locationDialog.show();
     }
 
     @Override

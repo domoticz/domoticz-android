@@ -110,18 +110,23 @@
                 android:text="@string/radius"
                 android:textSize="@dimen/text_size_large" />
 
-            <EditText
+            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                 android:id="@+id/radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                tools:text="120" />
+                app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                app:flw_labelTextColor="@color/default_text_color_light"
+                app:flw_labelTextSize="@dimen/text_size_medium"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
