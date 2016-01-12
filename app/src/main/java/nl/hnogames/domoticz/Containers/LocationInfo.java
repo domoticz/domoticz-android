@@ -26,24 +26,26 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
 public class LocationInfo {
-    String Name;
-    LatLng Location;
-    int id = 0;
-    int switchidx = 0;
-    int radius = 400;           //meters
-    boolean enabled = false;
+    private String name;
+    private LatLng latLng;
+    private int id = 0;
+    private int switchIdx = 0;
+    private int radius = 400;           //meters
+    private boolean enabled = false;
 
-
-    public LocationInfo(int i, String n, LatLng l, int radius) {
-        this.Name = n;
-        this.Location = l;
-        this.id = i;
+    public LocationInfo(int id, String name, LatLng latLng, int radius) {
+        this.name = name;
+        this.latLng = latLng;
+        this.id = id;
         this.radius = radius;
     }
 
-
     public String getName() {
-        return Name;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean getEnabled() {
@@ -59,11 +61,11 @@ public class LocationInfo {
     }
 
     public int getSwitchidx() {
-        return switchidx;
+        return switchIdx;
     }
 
     public void setSwitchidx(int idx) {
-        switchidx = idx;
+        switchIdx = idx;
     }
 
     public int getRadius() {
@@ -75,7 +77,11 @@ public class LocationInfo {
     }
 
     public LatLng getLocation() {
-        return Location;
+        return latLng;
+    }
+
+    public void setLocation(LatLng latLng) {
+        this.latLng = latLng;
     }
 
 
@@ -93,7 +99,7 @@ public class LocationInfo {
                 .setRequestId(String.valueOf(id))
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setCircularRegion(Location.latitude, Location.longitude, radius)
+                .setCircularRegion(latLng.latitude, latLng.longitude, radius)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .build();
     }

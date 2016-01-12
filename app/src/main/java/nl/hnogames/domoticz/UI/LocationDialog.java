@@ -29,7 +29,6 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +43,7 @@ import java.util.Random;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.GeoUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
@@ -59,7 +59,8 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private TextView resolvedCountry;
     private DismissListener dismissListener;
     private Location currentLocation;
-    private EditText radiusText;
+    private LocationInfo locationToEdit;
+    private FloatingLabelEditText radiusText;
     private int radius;
     private LatLng mLatLong;
 
@@ -67,6 +68,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private int radiusDefaultValue = 120;
     private Button editModeButton;
     private LinearLayout layout_latLong;
+    private String title;
 
     public LocationDialog(final Context mContext, int layout) {
         this.mContext = mContext;
@@ -86,29 +88,45 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
             public void onClick(@NonNull MaterialDialog materialDialog,
                                 @NonNull DialogAction dialogAction) {
 
-                if (valuesAreValid() && dismissListener != null) {
-                    dismissListener.onDismiss(
-                            new LocationInfo(new Random().nextInt(999999),
-                                    editName.getInputWidgetText().toString(),
-                                    mLatLong,
-                                    radius));
+                if (dismissListener != null && valuesAreValid()) {
+                    if (locationToEdit != null) {
+                        // In edit mode
+                        locationToEdit.setName(getEditName());
+                        if (mLatLong != null) locationToEdit.setLocation(mLatLong);
+                        locationToEdit.setRadius(radius);
+
+                        dismissListener.onDismiss(locationToEdit);
+
+                    } else {
+                        // In add mode
+                        dismissListener.onDismiss(
+                                new LocationInfo(new Random().nextInt(999999),
+                                        getEditName(),
+                                        mLatLong,
+                                        radius));
+                    }
                 } else
                     Toast.makeText(mContext,
-                            R.string.location_not_found,
-                            Toast.LENGTH_SHORT).show();
+                        R.string.location_not_found,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private boolean valuesAreValid() {
 
-        setRadiusValue();
+        if (!UsefulBits.isEmpty(radiusText.getInputWidgetText().toString())) {
+            try {
+                radius = Integer.parseInt(radiusText.getInputWidgetText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                radius = radiusDefaultValue;
+            }
+        } else radius = radiusDefaultValue;
 
-        String name = editName.getInputWidgetText().toString();
+        String name = getEditName();
 
-        if (name.isEmpty() || name.length() <= 0) {
-            return false;
-        }
+        if (UsefulBits.isEmpty(name)) return false;
 
         if (foundLocation != null) {
             mLatLong = new LatLng(foundLocation.getLatitude(), foundLocation.getLongitude());
@@ -116,25 +134,26 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         } else if (currentLocation != null) {
             mLatLong = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             return true;
+        } else if (locationToEdit != null) {
+            mLatLong = new LatLng(
+                    locationToEdit.getLocation().latitude,
+                    locationToEdit.getLocation().longitude);
+            return true;
         }
 
         return false;
     }
 
-    private void setRadiusValue() {
-
-        if (!radiusText.getText().toString().isEmpty()) {
-            try {
-                radius = Integer.parseInt(radiusText.getText().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-                radius = radiusDefaultValue;
-            }
-        } else radius = radiusDefaultValue;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public void setLocationToEdit(LocationInfo locationToEdit) {
+        this.locationToEdit = locationToEdit;
     }
 
     public void setRadius(int radius) {
@@ -142,7 +161,10 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-        mdb.title(mContext.getString(R.string.title_add_location));
+
+        if (UsefulBits.isEmpty(title)) mdb.title(R.string.title_add_location);
+        else mdb.title(title);
+
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
@@ -151,21 +173,31 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         initViews(view);
 
         if (radius <= 0) radius = radiusDefaultValue;
-        radiusText.setText(String.valueOf(radius));
+        setRadiusText(String.valueOf(radius));
 
         if (currentLocation != null) {
-            editName.setInputWidgetText(mContext.getString(R.string.currentLocation));
+            // Adding a new location
+            setAddressName(mContext.getString(R.string.currentLocation));
 
             Address currentAddress = mGeoUtil.getAddressFromLocation(currentLocation);
-            if (currentAddress != null) {
-                String addressLine =
-                        currentAddress.getAddressLine(0) + ", " + currentAddress.getLocality();
-                resolvedAddress.setText(addressLine);
-            } else resolvedAddress.setText(R.string.unknown);
+            if (currentAddress != null)
+                setAddressData(currentAddress);
+            else {
+                resolvedAddress.setText(R.string.unknown);
+                resolvedCountry.setText(R.string.unknown);
+            }
+        } else if (locationToEdit != null) {
+            // Editing a location
+            setAddressName(locationToEdit.getName());
 
-            if (currentAddress != null) {
-                resolvedCountry.setText(currentAddress.getCountryName());
-            } else resolvedCountry.setText(R.string.unknown);
+            Address addressToEdit = mGeoUtil.getAddressFromLocationInfo(locationToEdit);
+            if (addressToEdit != null)
+                setAddressData(addressToEdit);
+            else {
+                resolvedAddress.setText(R.string.unknown);
+                resolvedCountry.setText(R.string.unknown);
+            }
+
         }
 
         getLocation.setOnClickListener(new View.OnClickListener() {
@@ -213,10 +245,22 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         md.show();
     }
 
+    private String getEditName() {
+        return editName.getInputWidgetText().toString();
+    }
+
+    private void setAddressName(String name) {
+        editName.setInputWidgetText(name);
+    }
+
     private void setAddressData(Address foundLocation) {
         String address = foundLocation.getAddressLine(0) + ", " + foundLocation.getLocality();
         resolvedAddress.setText(address);
         resolvedCountry.setText(foundLocation.getCountryName());
+    }
+
+    private void setRadiusText(String radius) {
+        radiusText.setInputWidgetText(radius);
     }
 
     private boolean inManualMode() {
@@ -236,7 +280,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     }
 
     public void initViews(View view) {
-        radiusText = (EditText) view.findViewById(R.id.radius);
+        radiusText = (FloatingLabelEditText) view.findViewById(R.id.radius);
 
         resolvedAddress = (TextView) view.findViewById(R.id.resolvedAddress);
         resolvedCountry = (TextView) view.findViewById(R.id.resolvedCountry);
