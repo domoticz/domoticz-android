@@ -39,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,6 +245,7 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DOORBELL);
         switchesSupported.add(Device.Type.Name.SECURITY);
         switchesSupported.add(Device.Type.Name.SELECTOR);
+        switchesSupported.add(Device.Type.Name.EVOHOME);
         return switchesSupported;
     }
 
@@ -514,6 +516,29 @@ public class Domoticz {
                 actionUrl = Url.Switch.COLOR;
                 break;
 
+            case Device.ModalSwitch.Action.AUTO:
+                actionUrl = Url.ModalAction.AUTO;
+                break;
+
+            case Device.ModalSwitch.Action.ECONOMY:
+                actionUrl = Url.ModalAction.ECONOMY;
+                break;
+
+            case Device.ModalSwitch.Action.AWAY:
+                actionUrl = Url.ModalAction.AWAY;
+                break;
+
+            case Device.ModalSwitch.Action.DAY_OFF:
+                actionUrl = Url.ModalAction.DAY_OFF;
+                break;
+
+            case Device.ModalSwitch.Action.CUSTOM:
+                actionUrl = Url.ModalAction.CUSTOM;
+                break;
+
+            case Device.ModalSwitch.Action.HEATING_OFF:
+                actionUrl = Url.ModalAction.HEATING_OFF;
+                break;
 
             default:
                 throw new NullPointerException(
@@ -533,6 +558,13 @@ public class Domoticz {
                 jsonUrl = url
                         + String.valueOf(idx)
                         + Url.Switch.CMD + actionUrl;
+                break;
+
+            case Json.Url.Set.MODAL_SWITCHES:
+                url = Url.ModalSwitch.GET;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + Url.ModalSwitch.STATUS + actionUrl;
                 break;
 
             case Json.Url.Set.TEMP:
@@ -755,6 +787,22 @@ public class Domoticz {
             url = url.replace("&iswhite=false", "&iswhite=true");
 
         Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    public void setModalAction(int id,
+                               int status, // one of Domoticz.Device.ModalSwitch.Action
+                               int action, // behaves like this action == 1 ? 1 : 0
+                               Calendar until,
+                               setCommandReceiver receiver) {
+        String url = constructSetUrl(Domoticz.Json.Url.Set.MODAL_SWITCHES, id, status, 0);
+        url += "&action=" + action;
+
+        Log.v(TAG, "Action: " + url);
+        setCommandParser parser = new setCommandParser(receiver);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -1081,6 +1129,8 @@ public class Domoticz {
         }
 
         switch (Type.toLowerCase()) {
+            case "heating":
+                return R.drawable.heating;
             case "thermostat":
                 return R.drawable.flame;
         }
@@ -1139,6 +1189,17 @@ public class Domoticz {
             }
         }
 
+        interface ModalSwitch {
+            interface Action {
+                int AUTO = 60;
+                int ECONOMY = 61;
+                int AWAY = 62;
+                int DAY_OFF = 63;
+                int CUSTOM = 64;
+                int HEATING_OFF = 65;
+            }
+        }
+
         interface Type {
             @SuppressWarnings("unused")
             interface Value {
@@ -1186,6 +1247,7 @@ public class Domoticz {
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
                 String WIND = "Wind";
                 String SELECTOR = "Selector";
+                String EVOHOME = "evohome";
             }
         }
 
@@ -1194,12 +1256,14 @@ public class Domoticz {
             interface Value {
                 int RGB = 1;
                 int SECURITYPANEL = 2;
+                int EVOHOME = 3;
             }
 
             @SuppressWarnings("unused")
             interface Name {
                 String RGB = "RGB";
                 String SECURITYPANEL = "Security Panel";
+                String EVOHOME = "Evohome";
             }
         }
 
@@ -1254,6 +1318,7 @@ public class Domoticz {
                 int SCENEFAVORITE = 106;
                 int EVENT = 105;
                 int RGBCOLOR = 107;
+                int MODAL_SWITCHES = 108;
             }
         }
 
@@ -1320,6 +1385,15 @@ public class Domoticz {
             String MIN = "Min";
         }
 
+        interface ModalAction {
+            String AUTO = "Auto";
+            String ECONOMY = "AutoWithEco";
+            String AWAY = "Away";
+            String DAY_OFF = "DayOff";
+            String CUSTOM = "Custom";
+            String HEATING_OFF = "HeatingOff";
+        }
+
         @SuppressWarnings("SpellCheckingInspection")
         interface Category {
             String ALLDEVICES = "/json.htm?type=devices";
@@ -1346,6 +1420,11 @@ public class Domoticz {
             String GET = "/json.htm?type=command&param=switchlight&idx=";
             String CMD = "&switchcmd=";
             String LEVEL = "&level=";
+        }
+
+        interface ModalSwitch {
+            String GET = "/json.htm?type=command&param=switchmodal&idx=";
+            String STATUS = "&status=";
         }
 
         @SuppressWarnings("SpellCheckingInspection")

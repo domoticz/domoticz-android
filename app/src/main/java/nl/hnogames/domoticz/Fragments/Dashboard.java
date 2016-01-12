@@ -34,9 +34,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
@@ -75,7 +77,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private boolean busy = false;
 
     private String filter = "";
-
 
     @Override
     public void refreshFragment() {
@@ -398,7 +399,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             return;
 
         addDebugText("onButtonClick");
-        addDebugText("Set idx " + idx + " to ON");
+        addDebugText("Set idx " + idx + " to " + (checked ? "ON" : "OFF"));
 
         DevicesInfo clickedSwitch = getDevice(idx);
 
@@ -545,6 +546,50 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
+    public void onStateButtonClick(final int idx, int itemsRes, final int[] stateIds) {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_status)
+                .items(itemsRes)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        setState(idx, stateIds[which], null);
+                    }
+                })
+                .show();;
+    }
+
+    private void setState(final int idx, int state, Calendar until) {
+        mDomoticz.setModalAction(idx,
+                state,
+                1,
+                until,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        processDashboard();
+                        ; //refresh
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_state), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private DevicesInfo getSwitch(int idx) {
+        DevicesInfo clickedSwitch = null;
+        for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
+            if (mDevicesInfo.getIdx() == idx) {
+                clickedSwitch = mDevicesInfo;
+            }
+        }
+        return clickedSwitch;
+    }
+
+    @Override
     public void onBlindClick(int idx, int jsonAction) {
         if(busy)
             return;
@@ -562,6 +607,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;

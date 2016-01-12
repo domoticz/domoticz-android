@@ -28,6 +28,13 @@
   <string name="action_success">Actie succesvol</string>
   <string name="action_failed">Actie mislukt</string>
   <string name="action_unknown">Actie resultaat onbekend</string>
+  <string name="choose_status">Status kiezen</string>
+  <string name="normal">Auto</string>
+  <string name="eco">Besparing - eco</string>
+  <string name="away">Afwezig</string>
+  <string name="day_off">Vrije dag</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Verwarming uit</string>
   <string name="debug_textview_title">Debugging info</string>
   <string name="msg_copiedToClipboard">Tekst gekopieerd naar klembord</string>
   <string name="favorite">Favoriet</string>

@@ -34,6 +34,14 @@
     <string name="action_failed">Action failed</string>
     <string name="action_unknown">Action result unknown</string>
 
+    <string name="choose_status">Choose state</string>
+    <string name="normal">Normal</string>
+    <string name="economy">Economy</string>
+    <string name="away">Away</string>
+    <string name="day_off">Day off</string>
+    <string name="custom">Custom</string>
+    <string name="heating_off">Heating off</string>
+
     <string name="debug_textview_title">Debugging info</string>
 
     <string name="msg_copiedToClipboard">Text copied to clipboard</string>

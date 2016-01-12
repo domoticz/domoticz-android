@@ -28,6 +28,12 @@
   <string name="action_success">Vorgang erfolgreich</string>
   <string name="action_failed">Vorgang gescheitert</string>
   <string name="action_unknown">-Ergebnis der Aktion unbekannt</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Abwesend</string>
+  <string name="day_off">Ausnahmetag</string>
+  <string name="custom">Sonderprogramm</string>
+  <string name="heating_off">Heizung aus</string>
   <string name="debug_textview_title">Debuginformationen</string>
   <string name="msg_copiedToClipboard">Text in Zwischenablage kopiert</string>
   <string name="favorite">Favorit</string>

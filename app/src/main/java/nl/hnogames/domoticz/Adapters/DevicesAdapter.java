@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -56,6 +58,15 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     public final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
+
+    private final int[] EVOHOME_STATE_IDS = {
+            Domoticz.Device.ModalSwitch.Action.AUTO,
+            Domoticz.Device.ModalSwitch.Action.ECONOMY,
+            Domoticz.Device.ModalSwitch.Action.AWAY,
+            Domoticz.Device.ModalSwitch.Action.AWAY,
+            Domoticz.Device.ModalSwitch.Action.CUSTOM,
+            Domoticz.Device.ModalSwitch.Action.HEATING_OFF
+    };
 
     public ArrayList<DevicesInfo> filteredData = null;
     private Domoticz domoticz;
@@ -153,6 +164,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                         if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
                             if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
                                 row = setSecurityPanelSwitchRowId(holder);
+                            else
+                                row = setDefaultRowId(holder);
+                        } else if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.EVOHOME)) {
+                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
+                                row = setModalSwitchRowId(holder);
                             else
                                 row = setDefaultRowId(holder);
                         } else
@@ -382,6 +398,31 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    private View setModalSwitchRowId(ViewHolder holder) {
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_modal;
+        else layoutResourceId = R.layout.switch_row_modal_small;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.buttonSetStatus = (Button) row.findViewById(R.id.set_status_button);
+
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+
+        if (holder.buttonLog != null)
+            holder.buttonLog.setVisibility(View.GONE);
+        if (holder.buttonTimer != null)
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        return row;
+    }
+
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder,
                                   View convertView) {
@@ -416,6 +457,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
                         if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
                             setSecurityPanelSwitchRowData(mDeviceInfo, holder);
+                        else
+                            setDefaultRowData(mDeviceInfo, holder);
+                    } else if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.EVOHOME)) {
+                        if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
+                            setModalSwitchRowData(mDeviceInfo, holder, R.array.evohome_states, R.array.evohome_state_names, EVOHOME_STATE_IDS);
                         else
                             setDefaultRowData(mDeviceInfo, holder);
                     } else
@@ -1039,6 +1085,51 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    private void setModalSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder, final int stateArrayRes, final int stateNamesArrayRes, final int[] stateIds) {
+        holder.switch_name.setText(mDevicesInfo.getName());
+
+        String text = context.getString(R.string.last_update) + ": " +
+                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+        holder.signal_level.setText(text);
+
+        text = context.getString(R.string.status) + ": " +
+                getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
+        holder.switch_battery_level.setText(text);
+
+        holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
+        holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open state dialog
+                handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
+            }
+        });
+
+        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.INVISIBLE);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
+                mDevicesInfo.getType(),
+                mDevicesInfo.getSwitchType(),
+                mDevicesInfo.getStatusBoolean(),
+                mDevicesInfo.getUseCustomImage(),
+                mDevicesInfo.getImage())).into(holder.iconRow);
+    }
+
+    private String getStatus(int statusArrayRes, int statusNamesArrayRes, String text) {
+        Resources res = context.getResources();
+        String[] states = res.getStringArray(statusArrayRes);
+        String[] stateNames = res.getStringArray(statusNamesArrayRes);
+
+        int length = states.length;
+        for (int i = 0; i < length; i++) {
+            if (states[i].equals(text)) {
+                return stateNames[i];
+            }
+        }
+        return text;
+    }
+
     private void handleColorButtonClick(int idx) {
         listener.onColorButtonClick(idx);
     }
@@ -1068,6 +1159,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         listener.onDimmerChange(idx, value, selector);
     }
 
+    private void handleStateButtonClick(final int idx, int itemsRes, int[] itemIds) {
+        listener.onStateButtonClick(idx, itemsRes, itemIds);
+    }
+
     private void handleLogButtonClick(int idx) {
         listener.onLogButtonClick(idx);
     }
@@ -1077,7 +1172,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageButton buttonUp, buttonDown, buttonStop, buttonPlus, buttonMinus;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus;
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;
