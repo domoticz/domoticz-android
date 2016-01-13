@@ -94,13 +94,18 @@ public class LocationInfo {
         if (radius <= 0)
             radius = 400;//default
 
-        // Build a new Geofence object.
-        return new Geofence.Builder()
-                .setRequestId(String.valueOf(id))
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setCircularRegion(latLng.latitude, latLng.longitude, radius)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .build();
+        try {
+            // Build a new Geofence object.
+            return new Geofence.Builder()
+                    .setRequestId(String.valueOf(id))
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .setCircularRegion(latLng.latitude, latLng.longitude, radius)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .build();
+        }catch(Exception ex){
+            // Wrong LocationInfo data detected
+            return null;
+        }
     }
 }

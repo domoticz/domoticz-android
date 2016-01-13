@@ -29,7 +29,9 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
@@ -45,8 +47,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -583,18 +588,33 @@ public class SharedPrefUtil {
     }
 
     public ArrayList<LocationInfo> getLocations() {
+        List<LocationInfo> returnValue = new ArrayList<LocationInfo>();
         List<LocationInfo> locations;
+        boolean incorrectDetected=false;
+
         if (prefs.contains(PREF_GEOFENCE_LOCATIONS)) {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
             Gson gson = new Gson();
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
                     LocationInfo[].class);
             locations = Arrays.asList(locationItem);
-            locations = new ArrayList<>(locations);
+
+            for (LocationInfo l : locations){
+                if(l.toGeofence() != null){
+                    returnValue.add(l);
+                }
+                else {
+                    incorrectDetected=true;
+                }
+            }
+            if(incorrectDetected) {
+                saveLocations(returnValue);
+                Toast.makeText(mContext, "Due to changes on Geofencing, please recreate your locations", Toast.LENGTH_LONG).show();
+            }
         } else
             return null;
 
-        return (ArrayList<LocationInfo>) locations;
+        return (ArrayList<LocationInfo>) returnValue;
     }
 
     public LocationInfo getLocation(int id) {

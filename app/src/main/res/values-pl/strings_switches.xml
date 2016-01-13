@@ -4,12 +4,13 @@
   <string name="title_switches">Przełączniki</string>
   <string name="txt_notAvailable">Niedostępny</string>
   <string name="idx">IDX</string>
-  <string name="idx_valuePlaceholder">33</string>
   <string name="placeholder_value">255</string>
   <string name="color_set">Ustawiony kolor dla</string>
+  <string name="state_set">State set for</string>
   <string name="error_favorite">Nie można ustawić jako ulubiony</string>
   <string name="error_logs">Nie można odnaleźć żadnych logów do wyświetlenia</string>
   <string name="error_color">Nie można zmienić koloru</string>
+  <string name="error_state">Could not change the state</string>
   <string name="error_timer">Nie można pokazać planów czasowych</string>
-  <string name="error_level">Ustawiony poziom dla przełacznika</string>
+  <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
 </resources>

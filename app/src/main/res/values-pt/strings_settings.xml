@@ -16,8 +16,8 @@
   <string name="show_extra_data_on">Mostrar dados adicionais no painel de entrada</string>
   <string name="show_extra_data_off">Ocultar dados extras no painel de entrada</string>
   <string name="always_on_title">Bloqueio de Ecrã</string>
-  <string name="always_on_on">Desativar suspenção de ecrã</string>
-  <string name="always_on_off">Ativada a suspenção de ecrã</string>
+  <string name="always_on_on">Suspensão de ecrã desativada</string>
+  <string name="always_on_off">Suspensão de ecrã ativada</string>
   <string name="enable_wear_select">Itens personalizados no android Wear</string>
   <string name="custom_wear_select">Selecionar Interruptores</string>
   <string name="custom_wear_select_desc">Selecione quais interruptores que gostaria de ver no Android Wear</string>

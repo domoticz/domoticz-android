@@ -32,9 +32,9 @@
   <string name="normal">Normal</string>
   <string name="economy">Economy</string>
   <string name="away">Away</string>
-  <string name="day_off">Day off</string>
-  <string name="custom">Custom</string>
-  <string name="heating_off">Heating off</string>
+  <string name="day_off">Ausnahmetag</string>
+  <string name="custom">Sonderprogramm</string>
+  <string name="heating_off">Heizung aus</string>
   <string name="debug_textview_title">Debuginformationen</string>
   <string name="msg_copiedToClipboard">Text in Zwischenablage kopiert</string>
   <string name="favorite">Favorit</string>
