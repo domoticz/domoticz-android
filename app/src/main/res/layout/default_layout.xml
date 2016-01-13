@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/material_grey_300_"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.fenjuly.mylibrary.SpinnerLoader
+            android:id="@+id/spinner"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:alpha="0.5"
+            android:visibility="gone"
+            app:point_color="@color/material_orange_600" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -91,6 +111,10 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:animationCache="false"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="@dimen/row_space"
+                android:paddingBottom="@dimen/row_space"
+                android:paddingTop="@dimen/row_space"
                 android:scrollingCache="false"
                 android:smoothScrollbar="true" />
 

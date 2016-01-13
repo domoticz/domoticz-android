@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customPreference="http://schemas.android.com/apk/res-auto"
     android:key="settingsscreen">
 
     <PreferenceCategory
-        android:title="@string/premium_category"
-        android:key="premium_category">
+        android:key="premium_category"
+        android:title="@string/premium_category">
         <Preference
             android:key="premium_settings"
-            android:title="@string/premium_title"/>
+            android:title="@string/premium_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_generic">
+    <PreferenceCategory android:title="@string/category_generic">
         <ListPreference
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
@@ -31,15 +29,20 @@
             android:summaryOff="@string/show_extra_data_off"
             android:summaryOn="@string/show_extra_data_on"
             android:title="@string/extra_data_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="alwayson"
+            android:summaryOff="@string/always_on_off"
+            android:summaryOn="@string/always_on_on"
+            android:title="@string/always_on_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_wear">
+    <PreferenceCategory android:title="@string/category_wear">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableWearItems"
-            android:summaryOff="@string/wear_custom_on"
-            android:summaryOn="@string/wear_custom_off"
+            android:summaryOff="@string/wear_custom_off"
+            android:summaryOn="@string/wear_custom_on"
             android:title="@string/enable_wear_select" />
         <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
             android:defaultValue="@array/empty_array"
@@ -53,22 +56,19 @@
             customPreference:selectAllValuesByDefault="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_server">
+    <PreferenceCategory android:title="@string/category_server">
         <Preference
             android:key="server_settings"
-            android:title="@string/server_settings"/>
+            android:title="@string/server_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_geofencing">
+    <PreferenceCategory android:title="@string/category_geofencing">
         <Preference
             android:key="geo_settings"
-            android:title="@string/geofencing_configure"/>
+            android:title="@string/geofencing_configure" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_export">
+    <PreferenceCategory android:title="@string/category_export">
         <Preference
             android:key="export_settings"
             android:title="@string/export_settings" />
@@ -77,8 +77,7 @@
             android:title="@string/import_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_info">
+    <PreferenceCategory android:title="@string/category_info">
         <Preference
             android:key="version"
             android:summary="Version 1.0.2"
@@ -95,8 +94,7 @@
             android:title="@string/info_credits" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/category_debug">
+    <PreferenceCategory android:title="@string/category_debug">
         <SwitchPreference
             android:defaultValue="false"
             android:key="debugging"

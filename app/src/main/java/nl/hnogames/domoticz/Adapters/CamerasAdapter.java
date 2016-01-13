@@ -27,27 +27,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.RequestUtil;
+import nl.hnogames.domoticz.Utils.SessionUtil;
+
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
     private static onClickListener onClickListener;
     private final Context mContext;
     private ArrayList<CameraInfo> mDataset;
+    private Domoticz domoticz;
 
-    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext) {
+    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz) {
         this.mDataset = data;
         this.mContext = mContext;
+        this.domoticz=domoticz;
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
@@ -64,23 +67,19 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-
         if (mDataset != null && mDataset.size() > 0) {
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
             String address = cameraInfo.getAddress();
-            String imageUrl = cameraInfo.getImageURL();
+            String imageUrl = cameraInfo.getSnapShotURL();
 
-            int numberOfDevices = mDataset.get(position).getDevices();
+            int numberOfDevices = cameraInfo.getDevices();
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
-
             holder.name.setText(name);
 
-            Picasso.with(mContext)
-                    .load(cameraInfo.getFullURL())
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(holder.camera);
+            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
+            holder.camera.setImageUrl(imageUrl, imageLoader);
+            holder.camera.setDefaultImageResId(R.drawable.placeholder);
         }
     }
 
@@ -89,7 +88,6 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         return mDataset.size();
     }
 
-
     public interface onClickListener {
         void onItemClick(int position, View v);
     }
@@ -97,12 +95,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView name;
-        ImageView camera;
+        com.android.volley.toolbox.NetworkImageView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
-            camera = (ImageView) itemView.findViewById(R.id.image);
+            camera = (com.android.volley.toolbox.NetworkImageView) itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
 

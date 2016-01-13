@@ -1,8 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -51,7 +51,6 @@
                     android:id="@+id/remote_protocol_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:text="@string/welcome_remote_server_protocol"
                     android:textColor="@color/default_text_color_light"
                     android:textSize="@dimen/text_size_large" />
@@ -78,173 +77,235 @@
 
         </LinearLayout>
 
-        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-            android:id="@+id/remote_username_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:inputType="textNoSuggestions"
-            android:minWidth="@dimen/width_min_welcomePage3_username_input"
-            app:flw_inputWidgetTextColor="@color/default_text_color_light"
-            app:flw_inputWidgetTextSize="@dimen/text_size_large"
-            app:flw_labelText="@string/welcome_remote_server_username"
-            app:flw_labelTextColor="@color/default_text_color_light"
-            app:flw_labelTextSize="@dimen/text_size_medium" />
-
-        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-            android:id="@+id/remote_password_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            app:flw_inputWidgetTextColor="@color/default_text_color_light"
-            app:flw_inputWidgetTextSize="@dimen/text_size_large"
-            app:flw_labelText="@string/welcome_remote_server_password"
-            app:flw_labelTextColor="@color/default_text_color_light"
-            app:flw_labelTextSize="@dimen/text_size_medium" />
-
-        <TextView
-            android:id="@+id/startScreen_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/welcome_server_startScreen"
-            android:textColor="@color/default_text_color_light"
-            android:textSize="@dimen/text_size_large" />
-
-        <Spinner
-            android:id="@+id/startScreen_spinner"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
-
-        <TextView
-            android:id="@+id/local_server_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/welcome_local_server_used_switch_title"
-            android:textColor="@color/default_text_color_light"
-            android:textSize="@dimen/text_size_large" />
-
-        <TextView
-            android:id="@+id/local_server_summary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/welcome_local_server_used_switch_summary"
-            android:textColor="@color/default_text_color_light" />
-
-        <Switch
-            android:id="@+id/localServer_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:checked="false" />
-
         <LinearLayout
-            android:id="@+id/local_server_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/local_ssid_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:text="@string/welcome_local_server_ssid"
-                android:textColor="@color/default_text_color_light"
-                android:textSize="@dimen/text_size_large" />
-
-            <nl.hnogames.domoticz.UI.MultiSelectionSpinner
-                android:id="@+id/local_wifi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:prompt="@string/welcome_ssid_spinner_prompt"/>
+            android:orientation="horizontal">
 
             <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/local_server_input"
-                android:layout_width="match_parent"
+                android:id="@+id/remote_username_input"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:inputType="textNoSuggestions"
-                app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_local_server_address"
-                app:flw_labelTextColor="@color/default_text_color_light"
-                app:flw_labelTextSize="@dimen/text_size_medium" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/local_protocol_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:text="@string/welcome_local_server_protocol"
-                        android:textColor="@color/default_text_color_light"
-                        android:textSize="@dimen/text_size_large" />
-
-                    <Spinner
-                        android:id="@+id/local_protocol_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp" />
-                </LinearLayout>
-
-                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                    android:id="@+id/local_port_input"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="numberSigned"
-                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                    app:flw_labelText="@string/welcome_local_server_port"
-                    app:flw_labelTextColor="@color/default_text_color_light"
-                    app:flw_labelTextSize="@dimen/text_size_medium" />
-            </LinearLayout>
-
-            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/local_username_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_weight="1"
                 android:inputType="textNoSuggestions"
                 android:minWidth="@dimen/width_min_welcomePage3_username_input"
+                android:paddingRight="15dp"
                 app:flw_inputWidgetTextColor="@color/default_text_color_light"
                 app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_local_server_username"
+                app:flw_labelText="@string/welcome_remote_server_username"
                 app:flw_labelTextColor="@color/default_text_color_light"
                 app:flw_labelTextSize="@dimen/text_size_medium" />
 
             <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/local_password_input"
-                android:layout_width="match_parent"
+                android:id="@+id/remote_password_input"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:ems="10"
+                android:layout_weight="1"
                 android:inputType="textPassword"
                 app:flw_inputWidgetTextColor="@color/default_text_color_light"
                 app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_local_server_password"
+                app:flw_labelText="@string/welcome_remote_server_password"
+                app:flw_labelTextColor="@color/default_text_color_light"
+                app:flw_labelTextSize="@dimen/text_size_medium" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/advancedSettings_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/welcome_advancedSettings"
+            android:textColor="@color/default_text_color_light"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            android:id="@+id/advancedSettings_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/welcome_advancedSettings_summary"
+            android:textColor="@color/default_text_color_light" />
+
+        <Switch
+            android:id="@+id/advancedSettings_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="false" />
+
+        <LinearLayout
+            android:id="@+id/advancedSettings_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+                android:id="@+id/remote_directory_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                app:flw_labelText="@string/welcome_remote_server_directory"
                 app:flw_labelTextColor="@color/default_text_color_light"
                 app:flw_labelTextSize="@dimen/text_size_medium" />
 
+            <TextView
+                android:id="@+id/startScreen_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/welcome_server_startScreen"
+                android:textColor="@color/default_text_color_light"
+                android:textSize="@dimen/text_size_large" />
+
+            <Spinner
+                android:id="@+id/startScreen_spinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/local_server_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/welcome_local_server_used_switch_title"
+                android:textColor="@color/default_text_color_light"
+                android:textSize="@dimen/text_size_large" />
+
+            <TextView
+                android:id="@+id/local_server_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/welcome_local_server_used_switch_summary"
+                android:textColor="@color/default_text_color_light" />
+
+            <Switch
+                android:id="@+id/localServer_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:checked="false" />
+
+            <LinearLayout
+                android:id="@+id/local_server_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/local_ssid_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:text="@string/welcome_local_server_ssid"
+                    android:textColor="@color/default_text_color_light"
+                    android:textSize="@dimen/text_size_large" />
+
+                <nl.hnogames.domoticz.UI.MultiSelectionSpinner
+                    android:id="@+id/local_wifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/welcome_ssid_spinner_prompt" />
+
+                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+                    android:id="@+id/local_server_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:inputType="textNoSuggestions"
+                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                    app:flw_labelText="@string/welcome_local_server_address"
+                    app:flw_labelTextColor="@color/default_text_color_light"
+                    app:flw_labelTextSize="@dimen/text_size_medium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/local_protocol_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/welcome_local_server_protocol"
+                            android:textColor="@color/default_text_color_light"
+                            android:textSize="@dimen/text_size_large" />
+
+                        <Spinner
+                            android:id="@+id/local_protocol_spinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp" />
+                    </LinearLayout>
+
+                    <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+                        android:id="@+id/local_port_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="numberSigned"
+                        app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                        app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                        app:flw_labelText="@string/welcome_local_server_port"
+                        app:flw_labelTextColor="@color/default_text_color_light"
+                        app:flw_labelTextSize="@dimen/text_size_medium" />
+                </LinearLayout>
+
+                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+                    android:id="@+id/local_username_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:inputType="textNoSuggestions"
+                    android:minWidth="@dimen/width_min_welcomePage3_username_input"
+                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                    app:flw_labelText="@string/welcome_local_server_username"
+                    app:flw_labelTextColor="@color/default_text_color_light"
+                    app:flw_labelTextSize="@dimen/text_size_medium" />
+
+                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+                    android:id="@+id/local_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:inputType="textPassword"
+                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                    app:flw_labelText="@string/welcome_local_server_password"
+                    app:flw_labelTextColor="@color/default_text_color_light"
+                    app:flw_labelTextSize="@dimen/text_size_medium" />
+
+                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
+                    android:id="@+id/local_directory_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:inputType="textNoSuggestions"
+                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
+                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
+                    app:flw_labelText="@string/welcome_local_server_directory"
+                    app:flw_labelTextColor="@color/default_text_color_light"
+                    app:flw_labelTextSize="@dimen/text_size_medium" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -44,6 +44,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -53,10 +54,12 @@ import java.util.List;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -111,9 +114,10 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             drawNavigationMenu();
             WidgetUtils.RefreshWidgets(this);
+            mSharedPrefs.setGeoFenceService();
 
             //get latest update version
-            Domoticz domoticz = new Domoticz(this);
+            final Domoticz domoticz = new Domoticz(this);
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {
@@ -124,6 +128,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     mSharedPrefs.setUpdateAvailable(version);
+                    domoticz.GetConfig(new ConfigReceiver() {
+                        @Override
+                        public void onReceiveConfig(ConfigInfo settings) {
+                            if (settings != null)
+                                mSharedPrefs.saveConfig(settings);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                        }
+                    });
                 }
 
                 @Override
@@ -131,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(coordinatorLayout, "Could not check for updates:" + error.getMessage(), Snackbar.LENGTH_SHORT).show();
                 }
             });
-
 
             AppRate.with(this)
                     .setInstallDays(0) // default 10, 0 means install day.
@@ -150,8 +164,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void drawNavigationMenu() {
-            addDrawerItems();
-            addFragment();
+        setWakeLock();
+        addDrawerItems();
+        addFragment();
+    }
+
+    private void setWakeLock() {
+        if (mSharedPrefs.getAwaysOn())
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     /* Called when the second activity's finished */
@@ -167,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
+                    drawNavigationMenu();
                     refreshFragment();
                     updateDrawerItems();
                     break;

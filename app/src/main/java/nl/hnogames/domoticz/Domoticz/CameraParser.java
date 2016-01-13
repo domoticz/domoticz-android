@@ -22,6 +22,7 @@
 
 package nl.hnogames.domoticz.Domoticz;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -38,8 +39,10 @@ public class CameraParser implements JSONParserInterface {
 
     private static final String TAG = CameraParser.class.getSimpleName();
     private CameraReceiver receiver;
+    private Domoticz domoticz;
 
-    public CameraParser(CameraReceiver receiver) {
+    public CameraParser(CameraReceiver receiver, Domoticz domoticz) {
+        this.domoticz = domoticz;
         this.receiver = receiver;
     }
 
@@ -52,6 +55,7 @@ public class CameraParser implements JSONParserInterface {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject row = jsonArray.getJSONObject(i);
                     CameraInfo cameraInfo = new CameraInfo(row);
+                    cameraInfo.setSnapShotURL(this.domoticz.getSnapshotUrl(cameraInfo));
                     if (cameraInfo.getEnabled())
                         mCameras.add(cameraInfo);
                 }

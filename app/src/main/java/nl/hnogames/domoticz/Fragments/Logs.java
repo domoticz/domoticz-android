@@ -27,6 +27,8 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.LogAdapter;
@@ -45,6 +47,8 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -62,6 +66,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -73,22 +78,22 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
-
+        super.showSpinner(true);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        listView = (ListView) getView().findViewById(R.id.listView);
         mDomoticz = new Domoticz(mContext);
+
         processLogs();
     }
 
     private void processLogs() {
+        mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getLogs(new LogsReceiver() {
             @Override
             public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
                 successHandling(mLogInfos.toString(), false);
-
                 adapter = new LogAdapter(mContext, mLogInfos);
-
                 createListView();
-                hideProgressDialog();
             }
 
             @Override
@@ -100,10 +105,9 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     private void createListView() {
         if (getView() != null) {
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
-            ListView listView = (ListView) getView().findViewById(R.id.listView);
-            listView.setAdapter(adapter);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
 
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -113,32 +117,13 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
                 }
             });
         }
+        super.showSpinner(false);
+        this.Filter(filter);
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -146,7 +131,6 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

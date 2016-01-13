@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/bordershadow"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -28,6 +28,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/temperature"
                 android:textColor="@color/md_material_blue_600"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/legend_set_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_point"
+                android:textColor="@color/material_pink_600"
                 android:visibility="gone" />
 
             <TextView

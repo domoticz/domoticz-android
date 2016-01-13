@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
-    android:hint="Device Name"
-    android:label="Filter"/>
+    android:hint="@string/pick_device_title"
+    android:label="@string/filter_devices"
+    />

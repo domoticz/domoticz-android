@@ -15,6 +15,9 @@
   <string name="extra_data_title">Extra gegevens op dashboard</string>
   <string name="show_extra_data_on">Extra gegevens weergeven op dashboard</string>
   <string name="show_extra_data_off">Extra gegevens op dashboard verbergen</string>
+  <string name="always_on_title">Scherm Aan</string>
+  <string name="always_on_on">Hou het scherm altijd aan</string>
+  <string name="always_on_off">Hou het scherm niet altijd aan</string>
   <string name="enable_wear_select">Android Wear aangepaste lijst</string>
   <string name="custom_wear_select">Selecteer Wear schakelaars</string>
   <string name="custom_wear_select_desc">Selecteer welke schakelaars u graag wilt zien op uw Android Wear horloge</string>

@@ -25,7 +25,11 @@ package nl.hnogames.domoticz.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,7 +37,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
@@ -43,6 +50,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -56,6 +64,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private RecyclerView mRecyclerView;
     private CamerasAdapter mAdapter;
     private ArrayList<CameraInfo> mCameras;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -76,8 +85,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     public void getCameras() {
-        showProgressDialog();
-
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
         mDomoticz = new Domoticz(mActivity);
         mDomoticz.getCameras(new CameraReceiver() {
 
@@ -86,20 +95,25 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 successHandling(Cameras.toString(), false);
 
                 Cameras.this.mCameras = Cameras;
-                mAdapter = new CamerasAdapter(Cameras, getActivity());
+                mAdapter = new CamerasAdapter(Cameras, getActivity(), mDomoticz);
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Intent intent = new Intent(getActivity(), CameraActivity.class);
-                        //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGEURL", mCameras.get(position).getFullURL());
-                        //noinspection SpellCheckingInspection
-                        intent.putExtra("IMAGETITLE", mCameras.get(position).getName());
-                        startActivity(intent);
+                        ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
+                        TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                        Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                                requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                            } else
+                                processImage(savePic, (String) cameraTitle.getText());
+                        } else {
+                            processImage(savePic, (String) cameraTitle.getText());
+                        }
                     }
                 });
                 mRecyclerView.setAdapter(mAdapter);
-                hideProgressDialog();
             }
 
             @Override
@@ -109,6 +123,16 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         });
     }
 
+    private void processImage(Bitmap savePic, String title) {
+        File dir = mDomoticz.saveSnapShot(savePic, title);
+        if (dir != null) {
+            Intent intent = new Intent(getActivity(), CameraActivity.class);
+            intent.putExtra("IMAGETITLE", title);
+            intent.putExtra("IMAGEURL", dir.getPath());
+            startActivity(intent);
+        }
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -116,38 +140,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getActionBar().setTitle(R.string.title_cameras);
     }
 
-
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 

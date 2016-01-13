@@ -34,7 +34,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
@@ -47,16 +51,16 @@ import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
+import nl.hnogames.domoticz.UI.SecurityPanelDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
         switchesClickListener {
 
     @SuppressWarnings("unused")
-    private static final String TAG = Switches.class.getSimpleName();
-    private ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
+    private static final String TAG = Dashboard.class.getSimpleName();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
     private Context mContext;
@@ -67,16 +71,17 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private String planName = "";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CoordinatorLayout coordinatorLayout;
-
-    private Parcelable state;
     private ListView listView;
 
+    private Parcelable state = null;
+    private boolean busy = false;
+
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processDashboard();
     }
 
@@ -93,6 +98,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -105,6 +111,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onConnectionOk() {
         getActionBar().setTitle(R.string.title_dashboard);
+        super.showSpinner(true);
+
+        listView = (ListView) getView().findViewById(R.id.listView);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
         if (planName != null && planName.length() > 0)
             getActionBar().setTitle(planName + "");
@@ -113,29 +124,31 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processDashboard() {
-            showProgressDialog();
+        busy = true;
+        if(extendedStatusSwitches!=null && extendedStatusSwitches.size()>0)
+        {
+            state = listView.onSaveInstanceState();
+        }
 
-            if (listView != null) {
-                //switch toggled, refresh listview
-                state = listView.onSaveInstanceState();
+        //switch toggled, refresh listview
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        mDomoticz = new Domoticz(mContext);
+        mDomoticz.getDevices(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                processDevices(switches);
             }
 
-            mDomoticz = new Domoticz(mContext);
-            mDomoticz.getDevices(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                    processDevices(switches);
-                }
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
 
-                @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            }, planID, null);
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        }, planID, null);
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
@@ -152,7 +165,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             }
         }
         if (extendedStatusSwitches.size() <= 0) {
-            hideProgressDialog();
             setMessage(mContext.getString(R.string.no_data_on_domoticz));
         } else
             createListView(extendedStatusSwitches);
@@ -188,11 +200,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (switches == null)
             return;
 
-        if(getView()!=null) {
+        if (getView() != null) {
             try {
-                coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-                mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-                supportedSwitches = new ArrayList<>();
+                ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
                 final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
                 final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
@@ -207,7 +217,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         } else {
-                            Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, getString(R.string.filterOn_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
                             if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
                                     isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
@@ -226,8 +236,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
                 final switchesClickListener listener = this;
                 adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
-                listView = (ListView) getView().findViewById(R.id.listView);
-                listView.setAdapter(adapter);
+                SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+                animationAdapter.setAbsListView(listView);
+                listView.setAdapter(animationAdapter);
+
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
@@ -244,15 +256,17 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     }
                 });
 
-                if (state != null) {
-                    // Restore previous state (including selected item index and scroll position)
+                if(state!=null){
                     listView.onRestoreInstanceState(state);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+            this.Filter(filter);
+            busy = false;
+            super.showSpinner(false);
         }
-        hideProgressDialog();
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
@@ -314,6 +328,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onSwitchClick(int idx, boolean checked) {
+        if(busy)
+            return;
+
         addDebugText("onSwitchClick");
         addDebugText("Set idx " + idx + " to " + checked);
 
@@ -323,7 +340,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         else
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
-        if (clickedSwitch != null) {
+        if (clickedSwitch.getIdx() > 0) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
@@ -378,8 +395,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onButtonClick(int idx, boolean checked) {
+        if(busy)
+            return;
+
         addDebugText("onButtonClick");
-        addDebugText("Set idx " + idx + " to ON");
+        addDebugText("Set idx " + idx + " to " + (checked ? "ON" : "OFF"));
 
         DevicesInfo clickedSwitch = getDevice(idx);
 
@@ -436,14 +456,14 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         });
     }
 
-    private void setColor(int selectedColor, final int idx)
-    {
+    private void setColor(int selectedColor, final int idx) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: "+selectedColor);
+        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+        addDebugText("Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
-        if(selectedColor==-1) {
+        if (selectedColor == -1) {
             isWhite = true;
         }
 
@@ -456,7 +476,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     @Override
                     public void onReceiveResult(String result) {
                         Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT).show();
-                        processDashboard();
+                        //processDashboard();
                     }
 
                     @Override
@@ -471,28 +491,109 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onThermostatClick(final int idx, int action, final double newSetPoint) {
+    public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+        final DevicesInfo tempUtil = getDevice(idx);
 
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+        TemperatureDialog tempDialog = new TemperatureDialog(
+                getActivity(),
+                idx,
+                tempUtil.getSetPoint());
 
-        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                processDashboard();
+            public void onDismiss(double newSetPoint) {
+                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                if (tempUtil != null) {
+                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+
+                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                    if (newSetPoint < tempUtil.getSetPoint())
+                        action = Domoticz.Device.Thermostat.Action.MIN;
+                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            successHandling(result, false);
+                            processDashboard();
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error);
+                        }
+                    });
+                }
             }
+        });
 
+        tempDialog.show();
+    }
+
+
+    @Override
+    public void onSecurityPanelButtonClick(int idx) {
+        SecurityPanelDialog securityDialog = new SecurityPanelDialog(
+                getActivity(),
+                getDevice(idx));
+        securityDialog.show();
+
+        securityDialog.onDismissListener(new SecurityPanelDialog.DismissListener() {
             @Override
-            public void onError(Exception error) {
-                errorHandling(error);
+            public void onDismiss() {
+                processDashboard();//refresh
             }
         });
     }
 
     @Override
+    public void onStateButtonClick(final int idx, int itemsRes, final int[] stateIds) {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_status)
+                .items(itemsRes)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        setState(idx, stateIds[which], null);
+                    }
+                })
+                .show();;
+    }
+
+    private void setState(final int idx, int state, Calendar until) {
+        mDomoticz.setModalAction(idx,
+                state,
+                1,
+                until,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        processDashboard();
+                        ; //refresh
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_state), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private DevicesInfo getSwitch(int idx) {
+        DevicesInfo clickedSwitch = null;
+        for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
+            if (mDevicesInfo.getIdx() == idx) {
+                clickedSwitch = mDevicesInfo;
+            }
+        }
+        return clickedSwitch;
+    }
+
+    @Override
     public void onBlindClick(int idx, int jsonAction) {
+        if(busy)
+            return;
+
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
         DevicesInfo clickedSwitch = getDevice(idx);
@@ -506,6 +607,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
+            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -524,53 +626,38 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onDimmerChange(int idx, int value) {
-        addDebugText("onDimmerChange");
+    public void onDimmerChange(int idx, int value, boolean selector) {
+        if(busy)
+            return;
+
+        addDebugText("onDimmerChange for " + idx + " to " + value);
         DevicesInfo clickedSwitch = getDevice(idx);
-        Snackbar.make(coordinatorLayout, "Setting level for switch: " + clickedSwitch.getName() + " to " + (value-1), Snackbar.LENGTH_SHORT).show();
+        if (clickedSwitch != null) {
+            String text = String.format(mContext.getString(R.string.set_level_switch),
+                    clickedSwitch.getName(),
+                    !selector ? (value - 1) : ((value) / 10));
+            Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-        int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
+            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+            int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
 
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                //processDashboard();
-            }
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
+        }
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null)
-            initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -578,7 +665,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

@@ -15,6 +15,8 @@
   <string name="button_status_year">Jaar</string>
   <string name="button_status_timer">Timer</string>
   <string name="button_color">Kleur</string>
+  <string name="button_arm">Aan</string>
+  <string name="button_disarm">Uit</string>
   <string name="last_update">Laatst gezien</string>
   <string name="signal_level">Signaalniveau</string>
   <string name="battery_level">Batterijniveau</string>
@@ -22,10 +24,17 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatuur</string>
   <string name="status">Status</string>
-  <string name="set_point">Temperatuur</string>
+  <string name="set_point">Ingestelde temperatuur</string>
   <string name="action_success">Actie succesvol</string>
   <string name="action_failed">Actie mislukt</string>
   <string name="action_unknown">Actie resultaat onbekend</string>
+  <string name="choose_status">Status kiezen</string>
+  <string name="normal">Auto</string>
+  <string name="economy">Besparing - Eco</string>
+  <string name="away">Afwezig</string>
+  <string name="day_off">Vrije dag</string>
+  <string name="custom">Aangepast</string>
+  <string name="heating_off">Verwarming uit</string>
   <string name="debug_textview_title">Debugging info</string>
   <string name="msg_copiedToClipboard">Tekst gekopieerd naar klembord</string>
   <string name="favorite">Favoriet</string>
@@ -38,6 +47,7 @@
   <string name="something_went_wrong">Oeps, er ging iets mis</string>
   <string name="no_network_available">Fout: Geen netwerkverbinding beschikbaar</string>
   <string name="oops">OEPS!</string>
+  <string name="to">"naar"</string>
   <string name="switch_on">Zet schakelaar aan</string>
   <string name="switch_off">Zet schakelaar uit</string>
   <string name="blind_up">Draai gordijnen omhoog</string>
@@ -49,8 +59,10 @@
   <string name="filterOn_all">Alle apparaten</string>
   <string name="Filter">Filter</string>
   <string name="filter_devices">Filter apparaten</string>
+  <string name="filtered_on">Filteren op</string>
   <string name="choose_color">Kleur kiezen</string>
   <string name="no_data_on_domoticz">Geen gegevens beschikbaar op de Domoticz server</string>
   <string name="row_icon_description">Rij afbeelding</string>
   <string name="error_image_description">Fout afbeelding</string>
+  <string name="white">Wit</string>
 </resources>

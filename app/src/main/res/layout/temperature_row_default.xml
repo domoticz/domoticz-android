@@ -3,87 +3,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:longClickable="true"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+    android:background="@color/material_grey_300_"
+    android:paddingLeft="@dimen/row_space"
+    android:paddingRight="@dimen/row_space">
 
-    <ImageView
-        android:id="@+id/rowIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/row_icon_description"
-        tools:src="@drawable/clock48" />
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@drawable/bordershadow"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:longClickable="true"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/rowIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/row_icon_description"
+            tools:src="@drawable/clock48" />
 
-            <TextView
-                android:id="@+id/temperature_name"
-                style="@style/row_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                tools:text="Utility name" />
 
-            <TextView
-                android:id="@+id/temperature_data"
-                style="@style/row_body2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/temperature_name"
-                android:text="@string/temperature" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/extra_panel_button"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/day_button"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:background="@drawable/button_status"
-                android:text="@string/button_status_day" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/month_button"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/button_status"
-                android:text="@string/button_status_month" />
+                <TextView
+                    android:id="@+id/temperature_name"
+                    style="@style/row_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    tools:text="Utility name" />
 
-            <Button
-                android:id="@+id/year_button"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/button_status"
-                android:text="@string/button_status_year" />
+                <TextView
+                    android:id="@+id/temperature_data"
+                    style="@style/row_body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/temperature_name"
+                    android:text="@string/temperature" />
 
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/extra_panel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp">
+
+                <Button
+                    android:id="@+id/day_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_day" />
+
+                <Button
+                    android:id="@+id/month_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_month" />
+
+                <Button
+                    android:id="@+id/year_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_year" />
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-
-
-

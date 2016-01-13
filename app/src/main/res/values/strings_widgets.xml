@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-            <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
 
     <string name="pick_device_title">Pick a device</string>
     <string name="choose_switch">Choose device</string>

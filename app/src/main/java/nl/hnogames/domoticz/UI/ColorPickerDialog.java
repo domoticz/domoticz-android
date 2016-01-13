@@ -24,18 +24,13 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.ColorInt;
-import android.view.DragEvent;
 import android.view.View;
-import android.widget.Button;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.larswerkman.lobsterpicker.LobsterPicker;
 import com.larswerkman.lobsterpicker.OnColorListener;
-import com.larswerkman.lobsterpicker.sliders.LobsterOpacitySlider;
 import com.larswerkman.lobsterpicker.sliders.LobsterShadeSlider;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -51,8 +46,8 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
 
     public ColorPickerDialog(Context mContext, int idx) {
         this.mContext = mContext;
-        mSharedPrefs=new SharedPrefUtil(mContext);
-        this.idx=idx;
+        mSharedPrefs = new SharedPrefUtil(mContext);
+        this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         mdb.customView(R.layout.dialog_color, wrapInScrollView)
@@ -99,6 +94,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(int color);
+
         void onChangeColor(int color);
     }
 }

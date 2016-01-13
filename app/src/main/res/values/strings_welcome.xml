@@ -32,14 +32,19 @@
     <string name="welcome_remote_server_port">Port</string>
     <string name="welcome_remote_server_username">Username</string>
     <string name="welcome_remote_server_password">Password</string>
+    <string name="welcome_remote_server_directory">Directory</string>
 
     <string name="welcome_local_server_used_switch_title">Different server address</string>
     <string name="welcome_local_server_used_switch_summary">Use different address for local connection</string>
+
+    <string name="welcome_advancedSettings">Advanced server settings</string>
+    <string name="welcome_advancedSettings_summary">Only used for non-standard Domoticz servers</string>
 
     <string name="welcome_local_server_ssid">Local wifi SSID\'s</string>
     <string name="welcome_local_server_address">Local server address</string>
     <string name="welcome_local_server_protocol">Local protocol</string>
     <string name="welcome_local_server_port">Local port</string>
+    <string name="welcome_local_server_directory">Local directory (leave empty if not used)</string>
     <string name="welcome_local_server_username">Local username (leave empty if not used)</string>
     <string name="welcome_local_server_password">Local password (leave empty if not used)</string>
 

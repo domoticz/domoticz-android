@@ -32,6 +32,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
@@ -59,12 +61,14 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<SceneInfo> mScenes;
-
     private Parcelable state;
     private ListView listView;
+    private String filter = "";
+
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -84,18 +88,21 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
-
+        super.showSpinner(true);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        listView = (ListView) getView().findViewById(R.id.listView);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
         mDomoticz = new Domoticz(mContext);
         processScenes();
     }
 
     private void processScenes() {
-        if (listView != null) {
-            //switch toggled, refresh listview
-            state = listView.onSaveInstanceState();
-            WidgetUtils.RefreshWidgets(mContext);
-        }
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        state = listView.onSaveInstanceState();
+        WidgetUtils.RefreshWidgets(mContext);
+
 
         mDomoticz.getScenes(new ScenesReceiver() {
             @Override
@@ -119,10 +126,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         ArrayList<SceneInfo> supportedScenes = new ArrayList<>();
         if (getView() != null) {
             mScenes = scenes;
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
 
-            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                    .coordinatorLayout);
             final ScenesClickListener listener = this;
 
             for (SceneInfo s : scenes) {
@@ -140,8 +144,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             }
 
             adapter = new SceneAdapter(mContext, supportedScenes, listener);
-            listView = (ListView) getView().findViewById(R.id.listView);
-            listView.setAdapter(adapter);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,
@@ -163,8 +169,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 // Restore previous state (including selected item index and scroll position)
                 listView.onRestoreInstanceState(state);
             }
-            hideProgressDialog();
         }
+        super.showSpinner(false);
+        this.Filter(filter);
+
     }
 
     private boolean isOnOffScene(SceneInfo testSwitch) {
@@ -272,38 +280,18 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         });
     }
 
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 
     @Override
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

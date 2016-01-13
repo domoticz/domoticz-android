@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5sp"
     android:background="@drawable/appwidget_bg_clickable"
     android:orientation="horizontal">
@@ -35,8 +35,8 @@
                 android:layout_marginBottom="0dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
-                tools:text="Switch name"
-                android:textColor="@color/primary_dark" />
+                android:textColor="@color/primary_dark"
+                tools:text="Switch name" />
 
             <TextView
                 android:id="@+id/desc"

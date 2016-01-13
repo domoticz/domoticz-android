@@ -15,6 +15,8 @@
   <string name="button_status_year">Rok</string>
   <string name="button_status_timer">Plan czasowy</string>
   <string name="button_color">Kolor</string>
+  <string name="button_arm">Uzbrój</string>
+  <string name="button_disarm">Rozbrój</string>
   <string name="last_update">Ostatnio widoczny</string>
   <string name="signal_level">Poziom sygnału</string>
   <string name="battery_level">Poziom baterii</string>
@@ -26,6 +28,13 @@
   <string name="action_success">Akcja zakończona skucesem</string>
   <string name="action_failed">Akcja nie powiodła się</string>
   <string name="action_unknown">Nieznany rezultat akcji</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Informacje debugowania</string>
   <string name="msg_copiedToClipboard">Tekst skopiowany do schowka</string>
   <string name="favorite">Ulubione</string>
@@ -38,6 +47,7 @@
   <string name="something_went_wrong">Coś poszło nie tak</string>
   <string name="no_network_available">Błąd: Brak dostępnego połączenia sieciowego</string>
   <string name="oops">UPS!</string>
+  <string name="to">"do"</string>
   <string name="switch_on">Przełącznik przełączony na wł.</string>
   <string name="switch_off">Przełącznik przełączony na wył.</string>
   <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
@@ -49,8 +59,10 @@
   <string name="filterOn_all">Wszystkie urządzenia</string>
   <string name="Filter">Filtr</string>
   <string name="filter_devices">Filtr urządzeń</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Wybierz kolor</string>
   <string name="no_data_on_domoticz">Brak danych na serwerze Domoticz</string>
   <string name="row_icon_description">rząd ikon</string>
   <string name="error_image_description">Błąd obrazu</string>
+  <string name="white">Biały</string>
 </resources>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
@@ -24,7 +26,8 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
+    private ListView listView;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -42,6 +45,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -53,12 +57,17 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
+        super.showSpinner(true);
         mDomoticz = new Domoticz(mContext);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        listView = (ListView) getView().findViewById(R.id.listView);
+
         processUserVariables();
     }
 
     private void processUserVariables() {
+        mSwipeRefreshLayout.setRefreshing(true);
+
         mDomoticz.getUserVariables(new UserVariablesReceiver() {
             @Override
             public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
@@ -66,7 +75,6 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                 successHandling(mUserVariableInfos.toString(), false);
                 adapter = new UserVariablesAdapter(mContext, mUserVariableInfos);
                 createListView();
-                hideProgressDialog();
             }
 
             @Override
@@ -78,10 +86,10 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     private void createListView() {
         if (getView() != null) {
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
 
-            ListView listView = (ListView) getView().findViewById(R.id.listView);
-            listView.setAdapter(adapter);
 
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,33 +98,10 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
                     processUserVariables();
                 }
             });
+            super.showSpinner(false);
+            this.Filter(filter);
+
         }
-    }
-
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -124,7 +109,6 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 }

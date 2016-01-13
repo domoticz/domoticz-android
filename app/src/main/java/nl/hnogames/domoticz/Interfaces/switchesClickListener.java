@@ -28,7 +28,7 @@ public interface switchesClickListener {
 
     void onBlindClick(int idx, int action);
 
-    void onDimmerChange(int idx, int value);
+    void onDimmerChange(int idx, int value, boolean selector);
 
     void onButtonClick(int idx, boolean action);
 
@@ -38,5 +38,9 @@ public interface switchesClickListener {
 
     void onTimerButtonClick(int idx);
 
-    void onThermostatClick(int idx, int action, double newSetPoint);
+    void onThermostatClick(int idx);
+
+    void onSecurityPanelButtonClick(int idx);
+
+    void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
 }

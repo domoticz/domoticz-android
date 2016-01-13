@@ -106,8 +106,8 @@ public class WelcomePage4 extends Fragment {
             SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
             mSharedPrefs.setWelcomeWizardSuccess(false);
             tempText = "";
-        }catch(Exception ex)
-        {}
+        } catch (Exception ex) {
+        }
     }
 
     private void setSuccessText(String message) {

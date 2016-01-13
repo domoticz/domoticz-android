@@ -47,18 +47,13 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,41 +74,33 @@ public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private final String TAG = "GeoSettings";
     @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_INTERVAL = 100000;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_FASTEST_INTERVAL = 50000;
-
-    private final int ACTION_MAP_LOCATION = 10;
     private final int ACTION_SET_GEOFENCE_SERVICE = 11;
     private final int ACTION_GET_LOCATION = 12;
-
-    private final int REQUEST_MAP_LOCATION = 20;
     private final int REQUEST_GEOFENCE_SERVICE = 21;
     private final int REQUEST_GET_LOCATION = 22;
-
-    private GoogleMap map;
+    private String TAG = GeoSettingsActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
 
     private Domoticz domoticz;
-
     // Stores the PendingIntent used to request geofence monitoring.
     private PendingIntent mGeofenceRequestIntent;
     private GoogleApiClient mApiClient;
     private List<Geofence> mGeofenceList;
     private ArrayList<LocationInfo> locations;
-    private LocationAdapter adapter;
 
+    private LocationAdapter adapter;
     private CoordinatorLayout coordinatorLayout;
     private Location currentLocation;
     private LocationRequest mLocationRequest;
     private boolean requestInProgress;
     private boolean isGeofenceServiceStarted;
     private boolean isLocationUpdatesStarted;
-    private boolean isMyLocationOnMapStarted;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -138,20 +125,21 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
-        domoticz = new Domoticz(this);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         if (!isGooglePlayServicesAvailable()) {
             Toast.makeText(
                     GeoSettingsActivity.this,
                     R.string.google_play_services_unavailable,
                     Toast.LENGTH_SHORT).show();
-                    // Snackbar not possible since we're ending the activity
+            // Snackbar not possible since we're ending the activity
             finish();
             return;
         }
 
+        domoticz = new Domoticz(this);
         mSharedPrefs = new SharedPrefUtil(this);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
         createListView();
         initSwitches();
         createLocationRequest();
@@ -201,13 +189,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             mApiClient.connect();
         }
-        if (map == null) {
-            map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-            map.getUiSettings().setMapToolbarEnabled(true);
-            map.getUiSettings().setTiltGesturesEnabled(false);
-            checkForLocationPermission(ACTION_MAP_LOCATION);
-        }
-
     }
 
     public void showSwitchesDialog(
@@ -268,8 +249,8 @@ public class GeoSettingsActivity extends AppCompatActivity
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setMarker(locations.get(position).getLocation());
+            public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
+                showEditLocationDialog(locations.get(item));
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -288,7 +269,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
-                return false;
+                return true;
             }
         });
     }
@@ -315,7 +296,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
                     startGeofenceService();
-                    setMyLocationOnMap();
                 }
                 break;
 
@@ -324,7 +304,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startGeofenceService();
                     if (!isLocationUpdatesStarted) startLocationUpdates();
-                    if (!isMyLocationOnMapStarted) setMyLocationOnMap();
                 } else {
                     stopGeofenceService();
                 }
@@ -335,16 +314,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startLocationUpdates();
                     if (!isGeofenceServiceStarted) stopGeofenceService();
-                    if (!isMyLocationOnMapStarted) setMyLocationOnMap();
-                }
-                break;
-
-            case REQUEST_MAP_LOCATION:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    setMyLocationOnMap();
-                    if (!isLocationUpdatesStarted) startLocationUpdates();
-                    if (!isGeofenceServiceStarted) startGeofenceService();
                 }
                 break;
         }
@@ -361,10 +330,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                     getLocationServices();
                     break;
 
-                case ACTION_MAP_LOCATION:
-                    setMyLocationOnMap();
-                    break;
-
                 case ACTION_SET_GEOFENCE_SERVICE:
                     startGeofenceService();
                     break;
@@ -376,7 +341,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(
+                    ActivityCompat.shouldShowRequestPermissionRationale(
                             this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
                 // User has declined already somewhere, we should explain why we need this
@@ -411,18 +376,12 @@ public class GeoSettingsActivity extends AppCompatActivity
                                                     PermissionsUtil.INITIAL_LOCATION_PERMS,
                                                     REQUEST_GET_LOCATION);
                                             break;
+
                                         case ACTION_SET_GEOFENCE_SERVICE:
                                             ActivityCompat.requestPermissions(
                                                     GeoSettingsActivity.this,
                                                     PermissionsUtil.INITIAL_LOCATION_PERMS,
                                                     REQUEST_GEOFENCE_SERVICE);
-                                            break;
-
-                                        case ACTION_MAP_LOCATION:
-                                            ActivityCompat.requestPermissions(
-                                                    GeoSettingsActivity.this,
-                                                    PermissionsUtil.INITIAL_LOCATION_PERMS,
-                                                    REQUEST_MAP_LOCATION);
                                             break;
                                     }
                                 }
@@ -456,10 +415,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                     switch (actionToStart) {
                         case ACTION_GET_LOCATION:
                             requestCode = REQUEST_GET_LOCATION;
-                            break;
-
-                        case ACTION_MAP_LOCATION:
-                            requestCode = REQUEST_MAP_LOCATION;
                             break;
 
                         case ACTION_SET_GEOFENCE_SERVICE:
@@ -500,32 +455,15 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     }
 
-    private void setMyLocationOnMap() {
-        //noinspection ResourceType
-        map.setMyLocationEnabled(true);
-        isMyLocationOnMapStarted = true;
-    }
-
-    private void setMarker(LatLng currentLatLng) {
-        map.addMarker(new MarkerOptions().position(currentLatLng));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
-        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-    }
-
     public void showAddLocationDialog() {
-        LocationDialog infoDialog = new LocationDialog(
+        LocationDialog locationDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
-        infoDialog.setCurrentLocation(currentLocation);
-        infoDialog.onDismissListener(new LocationDialog.DismissListener() {
+        locationDialog.setCurrentLocation(currentLocation);
+        locationDialog.setLocationToEdit(null);             // Set to null so its in add mode
+        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
             @Override
             public void onDismiss(LocationInfo location) {
-                //save location
-                Log.d(TAG, "Location Added: " + location.getName());
-
-                map.addMarker(new MarkerOptions().position(location.getLocation()));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLocation(), 15));
-                map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
                 mSharedPrefs.addLocation(location);
                 locations = mSharedPrefs.getLocations();
@@ -546,7 +484,43 @@ public class GeoSettingsActivity extends AppCompatActivity
                 //nothing selected
             }
         });
-        infoDialog.show();
+        locationDialog.show();
+    }
+
+    public void showEditLocationDialog(LocationInfo location) {
+        LocationDialog locationDialog = new LocationDialog(
+                this,
+                R.layout.dialog_location);
+
+        locationDialog.setTitle(getString(R.string.title_edit_location));
+        locationDialog.setLocationToEdit(location);
+        locationDialog.setRadius(location.getRadius());
+        locationDialog.setCurrentLocation(null);            // Set to null so its in edit mode
+
+        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
+            @Override
+            public void onDismiss(LocationInfo location) {
+
+                mSharedPrefs.updateLocation(location);
+                locations = mSharedPrefs.getLocations();
+
+                mGeofenceList = new ArrayList<>();      //reset values
+
+                if (locations != null)
+                    for (LocationInfo l : locations)
+                        if (l.getEnabled())
+                            mGeofenceList.add(l.toGeofence());
+
+                setGeoFenceService();
+                createListView();
+            }
+
+            @Override
+            public void onDismissEmpty() {
+                //nothing selected
+            }
+        });
+        locationDialog.show();
     }
 
     @Override
@@ -580,7 +554,8 @@ public class GeoSettingsActivity extends AppCompatActivity
      * @return true if it is.
      */
     private boolean isGooglePlayServicesAvailable() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+        int resultCode = api.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == resultCode) {
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "Google Play services is available.");

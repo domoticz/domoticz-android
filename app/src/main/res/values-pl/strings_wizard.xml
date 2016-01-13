@@ -20,7 +20,7 @@
   <string name="wizard_widgets_description">Możesz umieścić kilka widżetów na ekranie głównym!</string>
   <string name="wizard_menuitem">Wyłącz kreator</string>
   <string name="wizard_menuitem_description">Możesz teraz usunąć ten kreator z menu nawigacji!</string>
-  <string name="wizard_button_nice">Miły</string>
+  <string name="wizard_button_nice">Dobrze</string>
   <string name="wizard_button_switches">Przełączniki</string>
   <string name="wizard_button_settings">Ustawienia</string>
   <string name="wizard_button_wizard">Usuń</string>

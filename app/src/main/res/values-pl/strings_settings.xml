@@ -15,6 +15,9 @@
   <string name="extra_data_title">Dodatkowe dane na pulpicie</string>
   <string name="show_extra_data_on">Pokaż dodatkowe dane na pulpicie</string>
   <string name="show_extra_data_off">Ukryj dodatkowe dane na pulpicie</string>
+  <string name="always_on_title">Blokada budzenia</string>
+  <string name="always_on_on">Zablokuj ekran aby był zawsze włączony</string>
+  <string name="always_on_off">Nie blokuj ekranu aby był zawsze włączony</string>
   <string name="enable_wear_select">Android Wear własne pozycje</string>
   <string name="custom_wear_select">Wybierz przełączniki Wear</string>
   <string name="custom_wear_select_desc">Wybierz które przełączniki chcesz zobaczyć na Twoim urządzeniu Android Wear</string>

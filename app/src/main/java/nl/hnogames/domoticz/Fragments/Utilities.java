@@ -31,20 +31,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
 import nl.hnogames.domoticz.Containers.GraphPointInfo;
+import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
+import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -61,6 +68,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private ProgressDialog progressDialog;
     private Context mContext;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String filter = "";
 
 
     @Override
@@ -80,6 +88,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -91,13 +100,20 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
+        super.showSpinner(true);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
+
+        listView = (ListView) getView().findViewById(R.id.listView);
 
         mDomoticz = new Domoticz(mContext);
         processUtilities();
     }
 
     private void processUtilities() {
+        mSwipeRefreshLayout.setRefreshing(true);
+
         final UtilityClickListener listener = this;
         mDomoticz.getUtilities(new UtilitiesReceiver() {
 
@@ -109,7 +125,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 adapter = new UtilityAdapter(mContext, mUtilitiesInfos, listener);
 
                 createListView();
-                hideProgressDialog();
             }
 
             @Override
@@ -122,12 +137,10 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private void createListView() {
 
         if (getView() != null) {
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                    .coordinatorLayout);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
 
-            listView = (ListView) getView().findViewById(R.id.listView);
-            listView.setAdapter(adapter);
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,
@@ -143,6 +156,8 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                     processUtilities();
                 }
             });
+            super.showSpinner(false);
+            this.Filter(filter);
         }
     }
 
@@ -223,35 +238,9 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         int top = (v == null) ? 0 : v.getTop();
 
         adapter.notifyDataSetChanged();
+
         listView.setAdapter(adapter);
-
         listView.setSelectionFromTop(index, top);
-    }
-
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -259,8 +248,21 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    private UtilitiesInfo getUtility(int idx) {
+        for (UtilitiesInfo info : mUtilitiesInfos) {
+            if (info.getIdx() == idx) {
+                return info;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -269,7 +271,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onLogClick(final UtilitiesInfo utility, final String range) {
-        showProgressDialog();
         final String graphType = utility.getSubType()
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
@@ -279,13 +280,15 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 Log.i("GRAPH", mGraphList.toString());
-                hideProgressDialog();
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
                         mGraphList,
                         R.layout.dialog_graph);
                 infoDialog.setRange(range);
-                infoDialog.setSteps(4);
+
+                if (range.equals("day"))
+                    infoDialog.setSteps(3);
+
                 infoDialog.setTitle(graphType.toUpperCase());
                 infoDialog.show();
             }
@@ -294,30 +297,76 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
             public void onError(Exception error) {
                 errorHandling(error);
                 Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
-                hideProgressDialog();
             }
         });
     }
 
     @Override
-    public void onThermostatClick(final int idx, int action, double newSetPoint) {
+    public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+        final UtilitiesInfo tempUtil = getUtility(idx);
 
-        thermostatSetPointValue = newSetPoint;
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+        TemperatureDialog tempDialog = new TemperatureDialog(
+                getActivity(),
+                idx,
+                tempUtil.getSetPoint());
 
-        mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
-            public void onReceiveResult(String result) {
-                updateThermostatSetPointValue(idx, thermostatSetPointValue);
-                successHandling(result, false);
+            public void onDismiss(double newSetPoint) {
+                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                if (tempUtil != null) {
+                    thermostatSetPointValue = newSetPoint;
+                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+
+                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                    if (newSetPoint < tempUtil.getSetPoint())
+                        action = Domoticz.Device.Thermostat.Action.MIN;
+
+                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            updateThermostatSetPointValue(idx, thermostatSetPointValue);
+                            successHandling(result, false);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error);
+                        }
+                    });
+                }
+            }
+        });
+
+        tempDialog.show();
+    }
+
+
+    @Override
+    public void onLogButtonClick(int idx) {
+        mDomoticz.getTextLogs(idx, new SwitchLogReceiver() {
+            @Override
+            public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
+                showLogDialog(switchesLogs);
             }
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {
+        if (switchLogs.size() <= 0) {
+            Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
+        } else {
+            SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
+                    getActivity(),
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
+            infoDialog.show();
+        }
     }
 }

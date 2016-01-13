@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/selectableItemBackground"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:longClickable="true"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+    android:background="@color/material_grey_300_"
+    android:paddingLeft="@dimen/row_space"
+    android:paddingRight="@dimen/row_space">
 
-    <ImageView
-        android:id="@+id/rowIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:paddingRight="5dp"
-        android:src="@drawable/clock48" />
-
-    <TextView
-        android:id="@+id/logs_name"
-        style="@style/row_name_small"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/rowIcon"
-        tools:text="Event name" />
+        android:background="@drawable/bordershadow"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:longClickable="true"
+        android:minHeight="80dp"
+        android:orientation="horizontal"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
-    <TextView
-        android:id="@+id/logs_message"
-        style="@style/row_body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/logs_name"
-        android:layout_toRightOf="@id/rowIcon"
-        tools:text="Value: " />
+        <ImageView
+            android:id="@+id/rowIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="5dp"
+            android:src="@drawable/clock48" />
 
-    <Switch
-        android:id="@+id/switch_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        <TextView
+            android:id="@+id/logs_name"
+            style="@style/row_name_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/rowIcon"
+            tools:text="Event name" />
 
+        <TextView
+            android:id="@+id/logs_message"
+            style="@style/row_body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logs_name"
+            android:layout_toRightOf="@id/rowIcon"
+            tools:text="Value: " />
+
+        <Switch
+            android:id="@+id/switch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
 </RelativeLayout>

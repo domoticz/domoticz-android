@@ -24,13 +24,8 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -44,8 +39,6 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
@@ -70,20 +63,12 @@ public class Camera extends Fragment {
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
-                    } else
-                        processImage();
-                } else {
-                    processImage();
-                }
+                processImage();
             }
         });
 
         if (this.url.length() > 0)
             setImage(this.url);
-
         return group;
     }
 
@@ -101,7 +86,8 @@ public class Camera extends Fragment {
 
     private void processImage() {
         // Get access to the URI for the bitmap
-        Uri bmpUri = getLocalBitmapUri(root);
+        File file = new File(url);
+        Uri bmpUri = Uri.fromFile(file);
         if (bmpUri != null) {
             // Construct a ShareIntent with link to image
             Intent shareIntent = new Intent();
@@ -115,37 +101,14 @@ public class Camera extends Fragment {
 
     public void setImage(String url) {
         this.url = url;
-        if (root != null && !root.equals(null))
+        if (root != null && !root.equals(null)) {
+            File file = new File(url);
+            Uri uri = Uri.fromFile(file);
             Picasso.with(getActivity())
-                    .load(url)
+                    .load(uri)
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(root);
-    }
-
-    // Returns the URI path to the Bitmap displayed in specified ImageView
-    public Uri getLocalBitmapUri(ImageView imageView) {
-        // Extract Bitmap from ImageView drawable
-        Drawable drawable = imageView.getDrawable();
-        Bitmap bmp;
-        if (drawable instanceof BitmapDrawable) {
-            bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        } else {
-            return null;
         }
-        // Store image to default external storage directory
-        Uri bmpUri = null;
-        try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-            file.getParentFile().mkdirs();
-            FileOutputStream out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.close();
-            bmpUri = Uri.fromFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bmpUri;
     }
 }

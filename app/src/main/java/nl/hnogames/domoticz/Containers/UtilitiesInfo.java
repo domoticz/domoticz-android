@@ -63,7 +63,7 @@ public class UtilitiesInfo {
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
 
-        if (row.has("SetPoint")){
+        if (row.has("SetPoint")) {
             setPoint = Double.parseDouble(row.getString("SetPoint"));
         }
 

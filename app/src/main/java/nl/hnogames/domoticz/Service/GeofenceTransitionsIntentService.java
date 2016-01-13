@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 /**
  * Listens for geofence transition changes.
@@ -120,71 +121,75 @@ public class GeofenceTransitionsIntentService extends IntentService
     private void handleSwitch(final int idx, final boolean checked) {
         domoticz = new Domoticz(this);
         domoticz.getSwitches(new SwitchesReceiver() {
-             @Override
-             public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                 for (SwitchInfo s : switches) {
-                     if (s.getIdx() == idx) {
-                         domoticz.getStatus(idx, new StatusReceiver() {
-                             @Override
-                             public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
+                                 @Override
+                                 public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+                                     for (SwitchInfo s : switches) {
+                                         if (s.getIdx() == idx) {
+                                             domoticz.getStatus(idx, new StatusReceiver() {
+                                                 @Override
+                                                 public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
 
-                                 int jsonAction;
-                                 int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+                                                     int jsonAction;
+                                                     int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
-                                 if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                                         extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-                                     if (checked)
-                                         jsonAction = Domoticz.Device.Switch.Action.OFF;
-                                     else
-                                         jsonAction = Domoticz.Device.Switch.Action.ON;
-                                 } else {
-                                     if (checked)
-                                         jsonAction = Domoticz.Device.Switch.Action.ON;
-                                     else
-                                         jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                         if (checked)
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         else
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                     } else {
+                                                         if (checked)
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         else
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                     }
+
+                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                                                         @Override
+                                                         public void onReceiveResult(String result) {
+                                                             Log.d(TAG, result);
+                                                         }
+
+                                                         @Override
+                                                         public void onError(Exception error) {
+                                                             if(error != null)
+                                                                 onErrorHandling(error);
+                                                         }
+                                                     });
+                                                 }
+
+                                                 @Override
+                                                 public void onError(Exception error) {
+                                                     if(error != null)
+                                                         onErrorHandling(error);
+                                                 }
+                                             });
+                                         }
+                                     }
                                  }
 
-                                 domoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
-                                     @Override
-                                     public void onReceiveResult(String result) {
-                                         Log.d(TAG, result);
-                                     }
-
-                                     @Override
-                                     public void onError(Exception error) {
-                                         Toast.makeText(
-                                                 GeofenceTransitionsIntentService.this,
-                                                 "Domoticz: " +
-                                                 getString(R.string.unable_to_get_switches),
-                                                 Toast.LENGTH_SHORT).show();
-                                         Log.e(TAG, domoticz.getErrorMessage(error));
-                                     }
-                                 });
+                                 @Override
+                                 public void onError(Exception error) {
+                                     if(error != null)
+                                         onErrorHandling(error);
+                                 }
                              }
-
-                             @Override
-                             public void onError(Exception error) {
-                                 Toast.makeText(
-                                         GeofenceTransitionsIntentService.this,
-                                         "Domoticz: "
-                                         + getString(R.string.unable_to_get_switches),
-                                         Toast.LENGTH_SHORT).show();
-                                 Log.e(TAG, domoticz.getErrorMessage(error));
-                             }
-                         });
-                     }
-                 }
-             }
-
-             @Override
-             public void onError(Exception error) {
-                 Toast.makeText(GeofenceTransitionsIntentService.this,
-                         "Domoticz: " +
-                                 getString(R.string.unable_to_get_switches),
-                         Toast.LENGTH_SHORT).show();
-             }
-         }
         );
+    }
+
+    private void onErrorHandling(Exception error)
+    {
+        if(error!=null) {
+            Toast.makeText(
+                    GeofenceTransitionsIntentService.this,
+                    "Domoticz: " +
+                            getString(R.string.unable_to_get_switches),
+                    Toast.LENGTH_SHORT).show();
+
+            if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
+                Log.e(TAG, domoticz.getErrorMessage(error));
+        }
     }
 
     private void sendNotification(String title, String text) {

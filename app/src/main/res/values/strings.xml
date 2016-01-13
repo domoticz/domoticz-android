@@ -9,7 +9,6 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-
     <string name="msg_please_wait">Please wait…</string>
 
     <string name="button_state_on">On</string>
@@ -20,6 +19,8 @@
     <string name="button_status_year">Year</string>
     <string name="button_status_timer">Timer</string>
     <string name="button_color">Color</string>
+    <string name="button_arm">Arm</string>
+    <string name="button_disarm">Disarm</string>
 
     <string name="last_update">Last seen</string>
     <string name="signal_level">Signal level</string>
@@ -32,6 +33,14 @@
     <string name="action_success">Action successful</string>
     <string name="action_failed">Action failed</string>
     <string name="action_unknown">Action result unknown</string>
+
+    <string name="choose_status">Choose state</string>
+    <string name="normal">Normal</string>
+    <string name="economy">Economy</string>
+    <string name="away">Away</string>
+    <string name="day_off">Day off</string>
+    <string name="custom">Custom</string>
+    <string name="heating_off">Heating off</string>
 
     <string name="debug_textview_title">Debugging info</string>
 
@@ -61,6 +70,7 @@
     <string name="filterOn_all">All devices</string>
     <string name="Filter">Filter</string>
     <string name="filter_devices">Filter devices</string>
+    <string name="filtered_on">Filter on</string>
 
     <string name="choose_color">Choose color</string>
 

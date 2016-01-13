@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
@@ -60,13 +61,16 @@ public class SharedPrefUtil {
 
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    public static final String PREF_ALWAYS_ON = "alwayson";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
+    public static final String PREF_CONFIG = "domoticz_config";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
     public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     public static final String PREF_DEBUGGING = "debugging";
     public static final int INVALID_IDX = 999999;
@@ -76,6 +80,7 @@ public class SharedPrefUtil {
     private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
     private static final String REMOTE_SERVER_URL = "remote_server_url";
     private static final String REMOTE_SERVER_PORT = "remote_server_port";
+    private static final String REMOTE_SERVER_DIRECTORY = "remote_server_directory";
     private static final String REMOTE_SERVER_SECURE = "remote_server_secure";
     private static final String REMOTE_SERVER_AUTHENTICATION_METHOD =
             "remote_server_authentication_method";
@@ -84,10 +89,13 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_PASSWORD = "local_server_password";
     private static final String LOCAL_SERVER_URL = "local_server_url";
     private static final String LOCAL_SERVER_PORT = "local_server_port";
+    private static final String LOCAL_SERVER_DIRECTORY = "local_server_directory";
     private static final String LOCAL_SERVER_SECURE = "local_server_secure";
     private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
             "local_server_authentication_method";
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
+
+
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -103,6 +111,10 @@ public class SharedPrefUtil {
         editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
+    public boolean getAwaysOn() {
+        return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
+
     public boolean isCardCompleted(String cardTag) {
         return prefs.getBoolean("CARD" + cardTag, false);
     }
@@ -116,6 +128,7 @@ public class SharedPrefUtil {
     public int getPreviousColor(int idx) {
         return prefs.getInt("COLOR" + idx, 0);
     }
+
     public int getPreviousColorPosition(int idx) {
         return prefs.getInt("COLORPOSITION" + idx, 0);
     }
@@ -170,16 +183,18 @@ public class SharedPrefUtil {
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        for (String s : selections) {
-            if (s.equals(allNames[0])) {
-                removeWizard = allNames[0];
-                break;
+        if (selections != null) {
+            for (String s : selections) {
+                if (s.equals(allNames[0])) {
+                    removeWizard = allNames[0];
+                    break;
+                }
             }
-        }
-        if (removeWizard.length() > 0) {
-            selections.remove(removeWizard);
-            editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
-            editor.commit();
+            if (removeWizard.length() > 0) {
+                selections.remove(removeWizard);
+                editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
+                editor.commit();
+            }
         }
     }
 
@@ -220,18 +235,20 @@ public class SharedPrefUtil {
     }
 
     public String[] getWearSwitches() {
-        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS))
-            return null;
+        if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS)) return null;
 
         Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
-        String[] selectionValues = new String[selections.size()];
 
-        int i = 0;
-        for (String s : selections) {
-            selectionValues[i] = s;
-            i++;
-        }
-        return selectionValues;
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
     }
 
     public String[] getNavigationFragments() {
@@ -284,11 +301,10 @@ public class SharedPrefUtil {
                 }
             }
 
-            if(i < selections.size()){
+            if (i < selections.size()) {
                 setNavigationDefaults();
                 return getNavigationActions();
-            }
-            else
+            } else
                 return selectionValues;
 
         }
@@ -301,30 +317,44 @@ public class SharedPrefUtil {
     }
 
     public int[] getNavigationIcons() {
-        if (!prefs.contains(PREF_NAVIGATION_ITEMS))
-            setNavigationDefaults();
+        if (!prefs.contains(PREF_NAVIGATION_ITEMS)) setNavigationDefaults();
 
-        TypedArray ICONS = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
+        TypedArray icons = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
-        int[] selectedICONS = new int[selections.size()];
-        int iconIndex = 0;
-        int index = 0;
-        for (String v : allNames) {
-            for (String s : selections) {
-                if (s.equals(v)) {
-                    selectedICONS[iconIndex] = ICONS.getResourceId(index, 0);
-                    iconIndex++;
-                }
-            }
-            index++;
-        }
 
-        return selectedICONS;
+        if (selections != null) {
+
+            int[] selectedICONS = new int[selections.size()];
+            int iconIndex = 0;
+            int index = 0;
+            for (String v : allNames) {
+                for (String s : selections) {
+                    if (s.equals(v)) {
+                        selectedICONS[iconIndex] = icons.getResourceId(index, 0);
+                        iconIndex++;
+                    }
+                }
+                index++;
+            }
+            icons.recycle();
+            return selectedICONS;
+        } else {
+            icons.recycle();
+            return null;
+        }
     }
 
     public boolean isDebugEnabled() {
         return prefs.getBoolean(PREF_DEBUGGING, false);
+    }
+
+    public boolean isAdvancedSettingsEnabled() {
+        return prefs.getBoolean(PREF_ADVANCED_SETTINGS_ENABLED, false);
+    }
+
+    public void setAdvancedSettingsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ADVANCED_SETTINGS_ENABLED, enabled).apply();
     }
 
     public boolean showExtraData() {
@@ -376,6 +406,14 @@ public class SharedPrefUtil {
 
     public void setDomoticzRemotePort(String port) {
         editor.putString(REMOTE_SERVER_PORT, port).apply();
+    }
+
+    public String getDomoticzRemoteDirectory() {
+        return prefs.getString(REMOTE_SERVER_DIRECTORY, "");
+    }
+
+    public void setDomoticzRemoteDirectory(String directory) {
+        editor.putString(REMOTE_SERVER_DIRECTORY, directory).apply();
     }
 
     public boolean isDomoticzRemoteSecure() {
@@ -441,6 +479,14 @@ public class SharedPrefUtil {
         editor.putString(LOCAL_SERVER_PORT, port).apply();
     }
 
+    public String getDomoticzLocalDirectory() {
+        return prefs.getString(LOCAL_SERVER_DIRECTORY, "");
+    }
+
+    public void setDomoticzLocalDirectory(String directory) {
+        editor.putString(LOCAL_SERVER_DIRECTORY, directory).apply();
+    }
+
     public boolean isDomoticzLocalSecure() {
         return prefs.getBoolean(LOCAL_SERVER_SECURE, true);
     }
@@ -465,6 +511,7 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
     }
 
+    @SuppressWarnings("unused")
     public String getDomoticzLocalAuthenticationMethod() {
         boolean localServerAuthenticationMethodIsLoginForm =
                 prefs.getBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, true);
@@ -478,11 +525,9 @@ public class SharedPrefUtil {
     }
 
     public void setDomoticzLocalAuthenticationMethod(String method) {
-
         boolean methodIsLoginForm;
-
-        methodIsLoginForm = method.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
-
+        methodIsLoginForm =
+                method.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
         editor.putBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, methodIsLoginForm).apply();
     }
 
@@ -508,8 +553,25 @@ public class SharedPrefUtil {
         setDomoticzLocalPassword(getDomoticzRemotePassword());
         setDomoticzLocalUrl(getDomoticzRemoteUrl());
         setDomoticzLocalPort(getDomoticzRemotePort());
+        setDomoticzLocalDirectory(getDomoticzRemoteDirectory());
         setDomoticzLocalSecure(isDomoticzRemoteSecure());
         setDomoticzLocalAuthenticationMethod(getDomoticzRemoteAuthenticationMethod());
+    }
+
+    public void saveConfig(ConfigInfo config) {
+        editor.putString(PREF_CONFIG, config.getJsonObject());
+        editor.commit();
+    }
+
+    public ConfigInfo getConfig() {
+        ConfigInfo config = null;
+        if (prefs.contains(PREF_CONFIG)) {
+            String jsonConfig = prefs.getString(PREF_CONFIG, null);
+            config = new ConfigInfo(jsonConfig);
+        } else
+            return null;
+
+        return config;
     }
 
     // This four methods are used for maintaining locations.
@@ -591,6 +653,7 @@ public class SharedPrefUtil {
         boolean res = false;
         ObjectOutputStream output = null;
 
+        //noinspection TryWithIdenticalCatches
         try {
             output = new ObjectOutputStream(new FileOutputStream(dst));
             output.writeObject(this.prefs.getAll());
@@ -616,6 +679,7 @@ public class SharedPrefUtil {
     public boolean loadSharedPreferencesFromFile(File src) {
         boolean res = false;
         ObjectInputStream input = null;
+        //noinspection TryWithIdenticalCatches
         try {
             input = new ObjectInputStream(new FileInputStream(src));
             editor.clear();
@@ -662,29 +726,37 @@ public class SharedPrefUtil {
     }
 
     public void setGeoFenceService() {
-        final List<Geofence> mGeofenceList = new ArrayList<>();
-        final ArrayList<LocationInfo> locations = getLocations();
-        if (locations != null)
-            for (LocationInfo locationInfo : locations)
-                if (locationInfo.getEnabled())
-                    mGeofenceList.add(locationInfo.toGeofence());
+        if (isGeofenceEnabled()) {
+            final List<Geofence> mGeofenceList = new ArrayList<>();
+            final ArrayList<LocationInfo> locations = getLocations();
+            if (locations != null)
+                for (LocationInfo locationInfo : locations)
+                    if (locationInfo.getEnabled())
+                        mGeofenceList.add(locationInfo.toGeofence());
 
-        if (locations != null && locations.size() > 0) {
-            mApiClient = new GoogleApiClient.Builder(mContext)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle bundle) {
-                            PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
-                            LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
-                        }
+            if (locations != null && mGeofenceList.size() > 0) {
+                mApiClient = new GoogleApiClient.Builder(mContext)
+                        .addApi(LocationServices.API)
+                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                            @Override
+                            public void onConnected(Bundle bundle) {
+                                PendingIntent mGeofenceRequestIntent =
+                                        getGeofenceTransitionPendingIntent();
+                                //noinspection ResourceType
+                                LocationServices
+                                        .GeofencingApi
+                                        .addGeofences(mApiClient,
+                                                mGeofenceList,
+                                                mGeofenceRequestIntent);
+                            }
 
-                        @Override
-                        public void onConnectionSuspended(int i) {
-                        }
-                    })
-                    .build();
-            mApiClient.connect();
+                            @Override
+                            public void onConnectionSuspended(int i) {
+                            }
+                        })
+                        .build();
+                mApiClient.connect();
+            }
         }
     }
 
@@ -696,4 +768,6 @@ public class SharedPrefUtil {
         Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
+
 }

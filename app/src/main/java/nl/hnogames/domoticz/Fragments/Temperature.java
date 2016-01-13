@@ -31,6 +31,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
@@ -59,8 +61,8 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private ListView listView;
     private TemperatureAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
     private CoordinatorLayout coordinatorLayout;
+    private String filter = "";
 
     @Override
     public void refreshFragment() {
@@ -79,6 +81,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void Filter(String text) {
+        filter=text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -90,47 +93,25 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void onConnectionOk() {
-        showProgressDialog();
+        super.showSpinner(true);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
+                .coordinatorLayout);
+        listView = (ListView) getView().findViewById(R.id.listView);
 
         mDomoticz = new Domoticz(mContext);
         processTemperature();
     }
 
     private void processTemperature() {
-        final TemperatureClickListener listener = this;
-
+        mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getTemperatures(new TemperatureReceiver() {
 
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 successHandling(mTemperatureInfos.toString(), false);
 
-                if (getView() != null) {
-                    mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-                    coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                            .coordinatorLayout);
-
-                    adapter = new TemperatureAdapter(mContext, mTemperatureInfos, listener);
-                    listView = (ListView) getView().findViewById(R.id.listView);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                       int index, long id) {
-                            showInfoDialog(adapter.filteredData.get(index));
-                            return true;
-                        }
-                    });
-                    mSwipeRefreshLayout.setRefreshing(false);
-
-                    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            processTemperature();
-                        }
-                    });
-                    hideProgressDialog();
-                }
+                createListView(mTemperatureInfos);
             }
 
             @Override
@@ -138,6 +119,34 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                 errorHandling(error);
             }
         });
+    }
+
+    private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
+        if (getView() != null) {
+            adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                               int index, long id) {
+                    showInfoDialog(adapter.filteredData.get(index));
+                    return true;
+                }
+            });
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    processTemperature();
+                }
+            });
+            this.Filter(filter);
+        }
+        super.showSpinner(false);
     }
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
@@ -187,49 +196,24 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         });
     }
 
-
-    /**
-     * Initializes the progress dialog
-     */
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage(getString(R.string.msg_please_wait));
-        progressDialog.setCancelable(false);
-    }
-
-    /**
-     * Shows the progress dialog if isn't already showing
-     */
-    private void showProgressDialog() {
-        if (progressDialog == null) initProgressDialog();
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    /**
-     * Hides the progress dialog if it is showing
-     */
-    private void hideProgressDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     @Override
     public void errorHandling(Exception error) {
         // Let's check if were still attached to an activity
         if (isAdded()) {
             super.errorHandling(error);
-            hideProgressDialog();
         }
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onLogClick(final TemperatureInfo temp, final String range) {
-        showProgressDialog();
         mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
-                hideProgressDialog();
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
                         mGraphList,
@@ -244,7 +228,6 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             public void onError(Exception error) {
                 // Let's check if were still attached to an activity
                 if (isAdded()) {
-                    hideProgressDialog();
                     Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
                 }
             }

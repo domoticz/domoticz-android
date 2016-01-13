@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="title_plans">Plans</string>
   <plurals name="devices">
-    <item quantity="one">%1d device</item>
-    <item quantity="other">%1d devices</item>
+    <item quantity="one">%1d dispositif</item>
+    <item quantity="other">%1d dispositifs</item>
   </plurals>
 </resources>
