@@ -28,6 +28,13 @@
   <string name="action_success">Åtgärden lyckades</string>
   <string name="action_failed">Åtgärden misslyckades</string>
   <string name="action_unknown">Okänd resultat av åtgärden</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Felsökningsinformation</string>
   <string name="msg_copiedToClipboard">Texten kopierad till urklipp</string>
   <string name="favorite">Favorit</string>
@@ -52,6 +59,7 @@
   <string name="filterOn_all">Alla enheter</string>
   <string name="Filter">Filtrera</string>
   <string name="filter_devices">Filtrera enheter</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Välj färg</string>
   <string name="no_data_on_domoticz">Ingen data på Domoticz server</string>
   <string name="row_icon_description">radikon</string>

@@ -12,7 +12,7 @@
 
     <string-array name="evohome_state_names" translatable="false">
         <item>@string/normal</item>
-        <item>@string/eco</item>
+        <item>@string/economy</item>
         <item>@string/away</item>
         <item>@string/day_off</item>
         <item>@string/custom</item>

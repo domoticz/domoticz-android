@@ -28,12 +28,13 @@
   <string name="action_success">Acción exitosa</string>
   <string name="action_failed">Acción fallida</string>
   <string name="action_unknown">Resultado de la acción desconocida</string>
+  <string name="choose_status">Choose state</string>
   <string name="normal">Normal</string>
-  <string name="economy">Economía</string>
-  <string name="away">Salir</string>
-  <string name="day_off">Día festivo</string>
-  <string name="custom">Personal</string>
-  <string name="heating_off">Calef.apagada</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Información de depuración</string>
   <string name="msg_copiedToClipboard">Texto copiado al portapapeles</string>
   <string name="favorite">Favorito</string>
@@ -58,6 +59,7 @@
   <string name="filterOn_all">Todos los dispositivos</string>
   <string name="Filter">Filtro</string>
   <string name="filter_devices">Filtrar dispositivos</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Selecciona el color</string>
   <string name="no_data_on_domoticz">No hay datos en el servidor de Domoticz</string>
   <string name="row_icon_description">icono de la fila</string>

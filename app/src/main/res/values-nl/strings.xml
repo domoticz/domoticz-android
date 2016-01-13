@@ -30,10 +30,10 @@
   <string name="action_unknown">Actie resultaat onbekend</string>
   <string name="choose_status">Status kiezen</string>
   <string name="normal">Auto</string>
-  <string name="eco">Besparing - eco</string>
+  <string name="economy">Besparing - Eco</string>
   <string name="away">Afwezig</string>
   <string name="day_off">Vrije dag</string>
-  <string name="custom">Custom</string>
+  <string name="custom">Aangepast</string>
   <string name="heating_off">Verwarming uit</string>
   <string name="debug_textview_title">Debugging info</string>
   <string name="msg_copiedToClipboard">Tekst gekopieerd naar klembord</string>
@@ -59,6 +59,7 @@
   <string name="filterOn_all">Alle apparaten</string>
   <string name="Filter">Filter</string>
   <string name="filter_devices">Filter apparaten</string>
+  <string name="filtered_on">Filteren op</string>
   <string name="choose_color">Kleur kiezen</string>
   <string name="no_data_on_domoticz">Geen gegevens beschikbaar op de Domoticz server</string>
   <string name="row_icon_description">Rij afbeelding</string>
