@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 /**
  * Listens for geofence transition changes.
@@ -152,24 +153,16 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                          @Override
                                                          public void onError(Exception error) {
-                                                             Toast.makeText(
-                                                                     GeofenceTransitionsIntentService.this,
-                                                                     "Domoticz: " +
-                                                                             getString(R.string.unable_to_get_switches),
-                                                                     Toast.LENGTH_SHORT).show();
-                                                             Log.e(TAG, domoticz.getErrorMessage(error));
+                                                             if(error != null)
+                                                                 onErrorHandling(error);
                                                          }
                                                      });
                                                  }
 
                                                  @Override
                                                  public void onError(Exception error) {
-                                                     Toast.makeText(
-                                                             GeofenceTransitionsIntentService.this,
-                                                             "Domoticz: "
-                                                                     + getString(R.string.unable_to_get_switches),
-                                                             Toast.LENGTH_SHORT).show();
-                                                     Log.e(TAG, domoticz.getErrorMessage(error));
+                                                     if(error != null)
+                                                         onErrorHandling(error);
                                                  }
                                              });
                                          }
@@ -178,13 +171,25 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                  @Override
                                  public void onError(Exception error) {
-                                     Toast.makeText(GeofenceTransitionsIntentService.this,
-                                             "Domoticz: " +
-                                                     getString(R.string.unable_to_get_switches),
-                                             Toast.LENGTH_SHORT).show();
+                                     if(error != null)
+                                         onErrorHandling(error);
                                  }
                              }
         );
+    }
+
+    private void onErrorHandling(Exception error)
+    {
+        if(error!=null) {
+            Toast.makeText(
+                    GeofenceTransitionsIntentService.this,
+                    "Domoticz: " +
+                            getString(R.string.unable_to_get_switches),
+                    Toast.LENGTH_SHORT).show();
+
+            if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
+                Log.e(TAG, domoticz.getErrorMessage(error));
+        }
     }
 
     private void sendNotification(String title, String text) {
