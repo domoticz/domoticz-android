@@ -35,7 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -236,7 +236,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
                 final switchesClickListener listener = this;
                 adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
-                AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
                 animationAdapter.setAbsListView(listView);
                 listView.setAdapter(animationAdapter);
 

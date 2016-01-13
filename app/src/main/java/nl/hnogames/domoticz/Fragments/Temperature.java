@@ -31,7 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
@@ -124,7 +124,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
             adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
-            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
 

@@ -38,7 +38,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -188,7 +189,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
                 final switchesClickListener listener = this;
                 adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
-                AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
                 animationAdapter.setAbsListView(listView);
                 listView.setAdapter(animationAdapter);
 

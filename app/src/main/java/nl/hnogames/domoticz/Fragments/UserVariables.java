@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ListView;
 
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
@@ -86,7 +86,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     private void createListView() {
         if (getView() != null) {
-            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
 
