@@ -28,6 +28,13 @@
   <string name="action_success">Vorgang erfolgreich</string>
   <string name="action_failed">Vorgang gescheitert</string>
   <string name="action_unknown">-Ergebnis der Aktion unbekannt</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Debuginformationen</string>
   <string name="msg_copiedToClipboard">Text in Zwischenablage kopiert</string>
   <string name="favorite">Favorit</string>
@@ -52,6 +59,7 @@
   <string name="filterOn_all">Alle Geräte</string>
   <string name="Filter">Filter</string>
   <string name="filter_devices">Filter-Geräte</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Wählen Sie eine Farbe</string>
   <string name="no_data_on_domoticz">Keine Daten auf Domoticz server</string>
   <string name="row_icon_description">Zeile-Symbol</string>

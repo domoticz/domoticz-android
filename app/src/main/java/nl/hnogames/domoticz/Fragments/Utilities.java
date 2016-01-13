@@ -33,7 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
@@ -137,7 +137,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private void createListView() {
 
         if (getView() != null) {
-            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
 

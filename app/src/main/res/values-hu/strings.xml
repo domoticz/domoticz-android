@@ -28,6 +28,13 @@
   <string name="action_success">Sikeres művelet</string>
   <string name="action_failed">Sikertelen művelet</string>
   <string name="action_unknown">A művelet eredménye nem ismert</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Hibakeresési információ</string>
   <string name="msg_copiedToClipboard">Szöveg a vágólapra másolva</string>
   <string name="favorite">Kedvenc</string>
@@ -52,6 +59,7 @@
   <string name="filterOn_all">Minden eszköz</string>
   <string name="Filter">Szűrő</string>
   <string name="filter_devices">Eszközök szűrése</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Szín választása</string>
   <string name="no_data_on_domoticz">Nincs adat a Domoticz szerveren</string>
   <string name="row_icon_description">sor ikon</string>

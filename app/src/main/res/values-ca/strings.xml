@@ -28,6 +28,13 @@
   <string name="action_success">Action successful</string>
   <string name="action_failed">L\'acció ha fallat</string>
   <string name="action_unknown">Resultat de l\'acció desconegut</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Informació de depuració</string>
   <string name="msg_copiedToClipboard">S\'ha copiat el text al porta-retalls</string>
   <string name="favorite">Preferit</string>
@@ -52,6 +59,7 @@
   <string name="filterOn_all">Tots els dispositius</string>
   <string name="Filter">Filtra</string>
   <string name="filter_devices">Filtra dispositius</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Tria el color</string>
   <string name="no_data_on_domoticz">No hi ha dades al servidor Domoticz</string>
   <string name="row_icon_description">icona de fila</string>

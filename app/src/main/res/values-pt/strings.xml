@@ -28,6 +28,13 @@
   <string name="action_success">Acção bem sucedida</string>
   <string name="action_failed">Ação falhada</string>
   <string name="action_unknown">Resultado da ação desconhecido</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Informação de depuração</string>
   <string name="msg_copiedToClipboard">Texto copiado para a área de transferência</string>
   <string name="favorite">Favorito</string>
@@ -52,6 +59,7 @@
   <string name="filterOn_all">Todos os dispositivos</string>
   <string name="Filter">Filtro</string>
   <string name="filter_devices">Filtro de dispositivos</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Escolher a cor</string>
   <string name="no_data_on_domoticz">Não há dados no servidor Domoticz</string>
   <string name="row_icon_description">linha do icon</string>

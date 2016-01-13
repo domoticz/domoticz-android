@@ -22,8 +22,10 @@
 
 package nl.hnogames.domoticz.Fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
@@ -35,9 +37,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
@@ -184,7 +189,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
                 final switchesClickListener listener = this;
                 adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
-                AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
                 animationAdapter.setAbsListView(listView);
                 listView.setAdapter(animationAdapter);
 
@@ -413,6 +418,40 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 getSwitchesData();//refresh
             }
         });
+    }
+
+    @Override
+    public void onStateButtonClick(final int idx, int itemsRes, final int[] stateIds) {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_status)
+                .items(itemsRes)
+                .itemsIds(stateIds)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        setState(idx, stateIds[which], null);
+                    }
+                })
+                .show();;
+    }
+
+    private void setState(final int idx, int state, Calendar until) {
+        mDomoticz.setModalAction(idx,
+                state,
+                1,
+                until,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        getSwitchesData(); //refresh
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_state), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private DevicesInfo getSwitch(int idx) {

@@ -24,6 +24,7 @@
 package nl.hnogames.domoticz.Containers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,8 @@ public class GraphPointInfo {
     private String dateTime;
     private String hu;
     private String ba;
-    private long te;
+    private float te = Float.NaN;
+    private float se = Float.NaN;
     private String v;
     private String c;
     private String di;
@@ -49,7 +51,9 @@ public class GraphPointInfo {
         this.jsonObject = row;
 
         if (row.has("te"))
-            te = row.getLong("te");
+            te = (float) row.optDouble("te");
+        if (row.has("se"))
+            se = (float) row.optDouble("se");
         if (row.has("d"))
             dateTime = row.getString("d");
         if (row.has("v"))
@@ -81,7 +85,10 @@ public class GraphPointInfo {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
-                new Gson().toJson(this) +
+                new GsonBuilder()
+                        .serializeSpecialFloatingPointValues()
+                        .create()
+                        .toJson(this) +
                 '}';
     }
 
@@ -89,8 +96,12 @@ public class GraphPointInfo {
         return v;
     }
 
-    public long getTemperature() {
+    public float getTemperature() {
         return te;
+    }
+
+    public float getSetPoint() {
+        return se;
     }
 
     public String getHumidity() {

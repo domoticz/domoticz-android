@@ -28,6 +28,13 @@
   <string name="action_success">Операция выполнена</string>
   <string name="action_failed">Операция не выполнена</string>
   <string name="action_unknown">Результат действия неизвестен</string>
+  <string name="choose_status">Choose state</string>
+  <string name="normal">Normal</string>
+  <string name="economy">Economy</string>
+  <string name="away">Away</string>
+  <string name="day_off">Day off</string>
+  <string name="custom">Custom</string>
+  <string name="heating_off">Heating off</string>
   <string name="debug_textview_title">Отладочная информация</string>
   <string name="msg_copiedToClipboard">Текст скопирован в буфер обмена</string>
   <string name="favorite">Избранное</string>
@@ -52,6 +59,7 @@
   <string name="filterOn_all">Все устройства</string>
   <string name="Filter">Фильтр</string>
   <string name="filter_devices">Фильтр устройств</string>
+  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Выберите цвет</string>
   <string name="no_data_on_domoticz">Нет данных на сервере Domoticz</string>
   <string name="row_icon_description">значок строки</string>
