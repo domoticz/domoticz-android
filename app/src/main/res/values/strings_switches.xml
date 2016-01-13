@@ -4,7 +4,6 @@
     <string name="title_switches">Switches</string>
     <string name="txt_notAvailable">N/A</string>
     <string name="idx">IDX</string>
-    <string name="idx_valuePlaceholder">33</string>
     <string name="placeholder_value">255</string>
 
     <string name="color_set">Color set for</string>
@@ -16,7 +15,6 @@
     <string name="error_color">Could not change the color</string>
     <string name="error_state">Could not change the state</string>
     <string name="error_timer">Could not show the timers</string>
-    <string name="error_level">Setting level for switch</string>
     <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
 
 </resources>
