@@ -29,8 +29,9 @@
             android:src="@drawable/clock48" />
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="151dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/switch_name"
@@ -58,14 +59,16 @@
                 android:layout_below="@id/switch_battery_level"
                 android:text="@string/signal_level" />
 
-            <Button
-                android:id="@+id/set_status_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/button"
-                android:text="@string/set_temperature" />
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/set_status_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/button"
+            android:text="@string/set_temperature"
+            android:layout_gravity="center" />
     </LinearLayout>
 </LinearLayout>
