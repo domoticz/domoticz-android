@@ -59,7 +59,7 @@
   <string name="filterOn_all">Wszystkie urządzenia</string>
   <string name="Filter">Filtr</string>
   <string name="filter_devices">Filtr urządzeń</string>
-  <string name="filtered_on">Filter on</string>
+  <string name="filtered_on">Ustawiono filtr</string>
   <string name="choose_color">Wybierz kolor</string>
   <string name="no_data_on_domoticz">Brak danych na serwerze Domoticz</string>
   <string name="row_icon_description">rząd ikon</string>

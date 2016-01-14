@@ -8,6 +8,7 @@
   <string name="category_server">Serwer</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informacje</string>
+  <string name="category_notification">Notifications</string>
   <string name="category_debug">Debugowanie</string>
   <string name="category_export">Eksport/Import ustawień</string>
   <string name="startup_screen">Ekran startowy</string>
@@ -30,6 +31,9 @@
   <string name="title_activity_server_settings">Ustawienia serwera</string>
   <string name="export_settings">Eksport ustawień</string>
   <string name="import_settings">Import ustawień</string>
+  <string name="notification_settings">Notification Settings ID</string>
+  <string name="notification_settings_copy">Copy your registration id to clipboard</string>
+  <string name="notification_settings_copied">Copied to clipboard</string>
   <string name="info_version">Wersja</string>
   <string name="info_domoticz_version">Wersja Domoticz</string>
   <string name="info_about">O Domoticz</string>
