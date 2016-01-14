@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
         tx.commitAllowingStateLoss();
         addFragmentStack(fragment);
-        saveScreenToAnaliticz(fragment);
+        saveScreenToAnalytics(fragment);
     }
 
     private void addFragment() {
@@ -239,16 +239,16 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
         tx.commitAllowingStateLoss();
         addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-        saveScreenToAnaliticz(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+        saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
     }
 
-    private void saveScreenToAnaliticz(String screen) {
+    private void saveScreenToAnalytics(String screen) {
         try {
             AppController application = (AppController) getApplication();
             Tracker mTracker = application.getDefaultTracker();
             mTracker.setScreenName(screen);
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 

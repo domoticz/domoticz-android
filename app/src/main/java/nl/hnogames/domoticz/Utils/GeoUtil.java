@@ -79,7 +79,8 @@ public class GeoUtil {
         Address mAddress = null;
 
         try {
-            addressList = mGeocoder.getFromLocation(mLocation.getLatitude(), mLocation.getLongitude(), 5);
+            addressList = mGeocoder.getFromLocation(mLocation.getLatitude(),
+                    mLocation.getLongitude(), 5);
 
             if (addressList == null) {
                 return null;

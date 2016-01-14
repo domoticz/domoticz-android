@@ -429,7 +429,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     }
                 })
                 .show();
-        ;
     }
 
     private void setState(final int idx, int state, Calendar until) {

@@ -105,7 +105,7 @@ public class LocationAdapter extends BaseAdapter {
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
         if(mLocationInfo.getAddress() != null) {
-            Address address =mLocationInfo.getAddress();
+            Address address = mLocationInfo.getAddress();
 
             String addressString;
             String countryString;

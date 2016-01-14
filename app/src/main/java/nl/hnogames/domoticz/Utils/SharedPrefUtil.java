@@ -613,7 +613,9 @@ public class SharedPrefUtil {
             }
             if (incorrectDetected) {
                 saveLocations(returnValue);
-                Toast.makeText(mContext, "Due to changes on Geofencing, please recreate your locations", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,
+                        R.string.geofence_error_recreateLocations,
+                        Toast.LENGTH_LONG).show();
             }
         } else
             return null;
