@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Domoticz;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;

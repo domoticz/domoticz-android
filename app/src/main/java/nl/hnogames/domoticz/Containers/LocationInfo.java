@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.location.Address;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -32,6 +34,7 @@ public class LocationInfo {
     private int switchIdx = 0;
     private int radius = 400;           //meters
     private boolean enabled = false;
+    private Address address;
 
     public LocationInfo(int id, String name, LatLng latLng, int radius) {
         this.name = name;
@@ -79,6 +82,12 @@ public class LocationInfo {
     public LatLng getLocation() {
         return latLng;
     }
+    public Address getAddress() {
+        return address;
+    }
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public void setLocation(LatLng latLng) {
         this.latLng = latLng;
@@ -103,7 +112,7 @@ public class LocationInfo {
                     .setCircularRegion(latLng.latitude, latLng.longitude, radius)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .build();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             // Wrong LocationInfo data detected
             return null;
         }

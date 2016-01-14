@@ -29,7 +29,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,11 +46,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,6 +63,7 @@ public class SharedPrefUtil {
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     public static final String PREF_ALWAYS_ON = "alwayson";
+    public static final String PREF_NOTIFICATION_ID = "notification_id";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
@@ -177,6 +174,14 @@ public class SharedPrefUtil {
 
     public void setWelcomeWizardSuccess(boolean success) {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
+    }
+
+    public String getNotificationRegistrationID() {
+        return prefs.getString(PREF_NOTIFICATION_ID, "");
+    }
+
+    public void setNotificationRegistrationID(String id) {
+        editor.putString(PREF_NOTIFICATION_ID, id).apply();
     }
 
     public void removeWizard() {
@@ -590,7 +595,7 @@ public class SharedPrefUtil {
     public ArrayList<LocationInfo> getLocations() {
         List<LocationInfo> returnValue = new ArrayList<LocationInfo>();
         List<LocationInfo> locations;
-        boolean incorrectDetected=false;
+        boolean incorrectDetected = false;
 
         if (prefs.contains(PREF_GEOFENCE_LOCATIONS)) {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
@@ -599,15 +604,14 @@ public class SharedPrefUtil {
                     LocationInfo[].class);
             locations = Arrays.asList(locationItem);
 
-            for (LocationInfo l : locations){
-                if(l.toGeofence() != null){
+            for (LocationInfo l : locations) {
+                if (l.toGeofence() != null) {
                     returnValue.add(l);
-                }
-                else {
-                    incorrectDetected=true;
+                } else {
+                    incorrectDetected = true;
                 }
             }
-            if(incorrectDetected) {
+            if (incorrectDetected) {
                 saveLocations(returnValue);
                 Toast.makeText(mContext, "Due to changes on Geofencing, please recreate your locations", Toast.LENGTH_LONG).show();
             }

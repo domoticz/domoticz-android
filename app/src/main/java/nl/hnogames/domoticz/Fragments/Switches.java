@@ -22,10 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
@@ -38,7 +36,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -102,7 +99,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -124,9 +121,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void getSwitchesData() {
-        busy=true;
-        if(extendedStatusSwitches!=null && extendedStatusSwitches.size()>0)
-        {
+        busy = true;
+        if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
             state = listView.onSaveInstanceState();
         }
         //switch toggled, refresh listview
@@ -210,11 +206,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     }
                 });
 
-                if(state!=null){
+                if (state != null) {
                     listView.onRestoreInstanceState(state);
                 }
                 this.Filter(filter);
-                busy=false;
+                busy = false;
             } catch (Exception ex) {
                 errorHandling(ex);
             }
@@ -289,7 +285,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("changeFavorite");
@@ -432,7 +428,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         setState(idx, stateIds[which], null);
                     }
                 })
-                .show();;
+                .show();
+        ;
     }
 
     private void setState(final int idx, int state, Calendar until) {
@@ -466,7 +463,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onSwitchClick(int idx, boolean checked) {
-        if(busy)
+        if (busy)
             return;
 
         try {
@@ -512,7 +509,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onButtonClick(int idx, boolean checked) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onButtonClick");
@@ -548,7 +545,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onBlindClick");
@@ -583,7 +580,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onDimmerChange(int idx, int value, boolean selector) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onDimmerChange for " + idx + " to " + value);

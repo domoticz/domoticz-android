@@ -50,7 +50,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz) {
         this.mDataset = data;
         this.mContext = mContext;
-        this.domoticz=domoticz;
+        this.domoticz = domoticz;
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {

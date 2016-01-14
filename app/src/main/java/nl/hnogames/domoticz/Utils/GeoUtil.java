@@ -94,9 +94,7 @@ public class GeoUtil {
     }
 
     /**
-     *
      * @param locationInfo The location information
-     *
      * @return first address which matches latitude and longitude in the given location info
      */
     public Address getAddressFromLocationInfo(LocationInfo locationInfo) {

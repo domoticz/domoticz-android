@@ -243,10 +243,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveScreenToAnaliticz(String screen) {
-        AppController application = (AppController) getApplication();
-        Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName(screen);
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        try {
+            AppController application = (AppController) getApplication();
+            Tracker mTracker = application.getDefaultTracker();
+            mTracker.setScreenName(screen);
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        } catch (Exception ex) {
+        }
     }
 
     private void updateDrawerItems() {

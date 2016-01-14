@@ -107,8 +107,8 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                     }
                 } else
                     Toast.makeText(mContext,
-                        R.string.location_not_found,
-                        Toast.LENGTH_SHORT).show();
+                            R.string.location_not_found,
+                            Toast.LENGTH_SHORT).show();
             }
         });
     }

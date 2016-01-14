@@ -22,6 +22,9 @@
 
 package nl.hnogames.domoticz.Preference;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -82,6 +85,20 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), ServerSettingsActivity.class);
                 startActivity(intent);
+                return true;
+            }
+        });
+
+        android.preference.Preference NotificatioID = findPreference("notification_registration_id");
+        NotificatioID.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                String id = mSharedPrefs.getNotificationRegistrationID();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.notification_settings_copied) + ": " + id, Toast.LENGTH_SHORT).show();
+
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("id", id);
+                clipboard.setPrimaryClip(clip);
                 return true;
             }
         });

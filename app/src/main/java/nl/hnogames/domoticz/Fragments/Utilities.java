@@ -88,7 +88,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
