@@ -54,6 +54,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
+import nl.hnogames.domoticz.Utils.GeoUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -204,7 +206,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                 selectedLocation.setSwitchidx(selectedSwitchIDX);
                 mSharedPrefs.updateLocation(selectedLocation);
 
-                adapter.data = mSharedPrefs.getLocations();
+                adapter.data =  mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();
             }
         });
@@ -213,6 +215,20 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private void createListView() {
         locations = mSharedPrefs.getLocations();
+        boolean addressChanged = false;
+        for (LocationInfo l : locations)
+        {
+            if(l.getAddress() == null && l.getLocation() != null)
+            {
+                //load the address
+                l.setAddress(new GeoUtil(GeoSettingsActivity.this).getAddressFromLatLng(
+                        new LatLng(l.getLocation().latitude, l.getLocation().longitude)));
+                addressChanged=true;
+            }
+        }
+        if(addressChanged)
+            mSharedPrefs.saveLocations(locations);
+
         mGeofenceList = new ArrayList<>();
 
         if (locations != null)

@@ -104,23 +104,24 @@ public class LocationAdapter extends BaseAdapter {
         holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
-        Address address = mGeoUtil.getAddressFromLatLng(
-                new LatLng(mLocationInfo.getLocation().latitude, mLocationInfo.getLocation().longitude));
+        if(mLocationInfo.getAddress() != null) {
+            Address address =mLocationInfo.getAddress();
 
-        String addressString;
-        String countryString;
+            String addressString;
+            String countryString;
 
-        if (address != null) {
-            addressString = address.getAddressLine(0) + ", " + address.getLocality();
-            countryString = address.getCountryName();
-        } else {
-            addressString = context.getString(R.string.unknown);
-            countryString = context.getString(R.string.unknown);
+            if (address != null) {
+                addressString = address.getAddressLine(0) + ", " + address.getLocality();
+                countryString = address.getCountryName();
+            } else {
+                addressString = context.getString(R.string.unknown);
+                countryString = context.getString(R.string.unknown);
+            }
+            holder.address.setText(addressString);
+            holder.country.setText(countryString);
         }
 
         holder.name.setText(mLocationInfo.getName());
-        holder.address.setText(addressString);
-        holder.country.setText(countryString);
         String text = context.getString(R.string.radius) + ": " + mLocationInfo.getRadius();
         holder.radius.setText(text);
 
