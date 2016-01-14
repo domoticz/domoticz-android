@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -91,9 +92,8 @@ public class GeofenceTransitionsIntentService extends IntentService
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
-
                         if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                            sendNotification("Entering " + locationFound.getName(), "Entering one of the locations");
+                            NotificationUtil.sendSimpleNotification("Entering " + locationFound.getName(), "Entering one of the locations", this);
 
                         if (locationFound.getSwitchidx() > 0) {
                             handleSwitch(locationFound.getSwitchidx(), true);
@@ -103,9 +103,8 @@ public class GeofenceTransitionsIntentService extends IntentService
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
-
                         if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                            sendNotification("Leaving " + locationFound.getName(), "Leaving one of the locations");
+                            NotificationUtil.sendSimpleNotification("Leaving " + locationFound.getName(), "Leaving one of the locations", this);
 
                         if (locationFound.getSwitchidx() > 0) {
                             handleSwitch(locationFound.getSwitchidx(), false);
@@ -192,20 +191,6 @@ public class GeofenceTransitionsIntentService extends IntentService
         }
     }
 
-    private void sendNotification(String title, String text) {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(title)
-                        .setContentText(text);
-        int NOTIFICATION_ID = 12345;
-
-        Intent targetIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nManager.notify(NOTIFICATION_ID, builder.build());
-    }
 
 
     @Override
