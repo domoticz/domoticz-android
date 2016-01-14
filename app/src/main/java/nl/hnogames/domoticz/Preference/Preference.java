@@ -96,7 +96,7 @@ public class Preference extends PreferenceFragment {
                 String id = mSharedPrefs.getNotificationRegistrationID();
                 Toast.makeText(getActivity(), getActivity().getString(R.string.notification_settings_copied) + ": " + id, Toast.LENGTH_SHORT).show();
 
-                ClipboardManager clipboard = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("id", id);
                 clipboard.setPrimaryClip(clip);
                 return true;

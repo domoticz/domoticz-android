@@ -98,7 +98,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -125,8 +125,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private void processDashboard() {
         busy = true;
-        if(extendedStatusSwitches!=null && extendedStatusSwitches.size()>0)
-        {
+        if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
             state = listView.onSaveInstanceState();
         }
 
@@ -256,7 +255,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     }
                 });
 
-                if(state!=null){
+                if (state != null) {
                     listView.onRestoreInstanceState(state);
                 }
             } catch (Exception ex) {
@@ -328,7 +327,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onSwitchClick(int idx, boolean checked) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onSwitchClick");
@@ -395,7 +394,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onButtonClick(int idx, boolean checked) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onButtonClick");
@@ -556,7 +555,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         setState(idx, stateIds[which], null);
                     }
                 })
-                .show();;
+                .show();
+        ;
     }
 
     private void setState(final int idx, int state, Calendar until) {
@@ -591,7 +591,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onBlindClick(int idx, int jsonAction) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onBlindClick");
@@ -608,7 +608,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
@@ -627,7 +627,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onDimmerChange(int idx, int value, boolean selector) {
-        if(busy)
+        if (busy)
             return;
 
         addDebugText("onDimmerChange for " + idx + " to " + value);

@@ -60,7 +60,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);

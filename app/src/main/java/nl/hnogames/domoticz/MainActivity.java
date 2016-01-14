@@ -248,8 +248,8 @@ public class MainActivity extends AppCompatActivity {
             Tracker mTracker = application.getDefaultTracker();
             mTracker.setScreenName(screen);
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        }catch(Exception ex)
-        {}
+        } catch (Exception ex) {
+        }
     }
 
     private void updateDrawerItems() {

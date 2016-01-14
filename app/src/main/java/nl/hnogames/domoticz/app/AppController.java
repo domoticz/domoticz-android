@@ -143,8 +143,7 @@ public class AppController extends Application implements GcmListener {
 
     @Override
     public void onMessage(String s, Bundle bundle) {
-        if(bundle.containsKey("message"))
-        {
+        if (bundle.containsKey("message")) {
             String message = bundle.getString("message");
             NotificationUtil.sendSimpleNotification("Domoticz", message, this);
         }

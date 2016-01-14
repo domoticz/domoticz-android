@@ -68,7 +68,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);

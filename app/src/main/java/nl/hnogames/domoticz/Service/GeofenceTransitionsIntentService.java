@@ -23,12 +23,8 @@
 package nl.hnogames.domoticz.Service;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -46,7 +42,6 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -152,7 +147,7 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                          @Override
                                                          public void onError(Exception error) {
-                                                             if(error != null)
+                                                             if (error != null)
                                                                  onErrorHandling(error);
                                                          }
                                                      });
@@ -160,7 +155,7 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                  @Override
                                                  public void onError(Exception error) {
-                                                     if(error != null)
+                                                     if (error != null)
                                                          onErrorHandling(error);
                                                  }
                                              });
@@ -170,16 +165,15 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                  @Override
                                  public void onError(Exception error) {
-                                     if(error != null)
+                                     if (error != null)
                                          onErrorHandling(error);
                                  }
                              }
         );
     }
 
-    private void onErrorHandling(Exception error)
-    {
-        if(error!=null) {
+    private void onErrorHandling(Exception error) {
+        if (error != null) {
             Toast.makeText(
                     GeofenceTransitionsIntentService.this,
                     "Domoticz: " +
@@ -190,7 +184,6 @@ public class GeofenceTransitionsIntentService extends IntentService
                 Log.e(TAG, domoticz.getErrorMessage(error));
         }
     }
-
 
 
     @Override
