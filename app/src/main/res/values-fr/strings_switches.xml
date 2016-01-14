@@ -4,12 +4,13 @@
   <string name="title_switches">Interrupteurs</string>
   <string name="txt_notAvailable">N/A</string>
   <string name="idx">IDX</string>
-  <string name="idx_valuePlaceholder">33</string>
   <string name="placeholder_value">255</string>
   <string name="color_set">Couleur pour</string>
+  <string name="state_set">State set for</string>
   <string name="error_favorite">Impossible d\'ajouter en favoris</string>
   <string name="error_logs">Impossible de trouver des logs à afficher</string>
   <string name="error_color">Impossible de changer la couleur</string>
+  <string name="error_state">Could not change the state</string>
   <string name="error_timer">Impossible d\'afficher les timers</string>
-  <string name="error_level">Définir le niveau pour l\'interrupteur</string>
+  <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
 </resources>

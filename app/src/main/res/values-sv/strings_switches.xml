@@ -4,12 +4,13 @@
   <string name="title_switches">Switchar</string>
   <string name="txt_notAvailable">Ej tillämpbar</string>
   <string name="idx">IDX</string>
-  <string name="idx_valuePlaceholder">33</string>
   <string name="placeholder_value">255</string>
   <string name="color_set">Färguppsättning för</string>
+  <string name="state_set">State set for</string>
   <string name="error_favorite">Gick inte att ange favorit</string>
   <string name="error_logs">Kunde inte hitta några loggar att Visa</string>
   <string name="error_color">Kunde inte ändra färg</string>
+  <string name="error_state">Could not change the state</string>
   <string name="error_timer">Kunde inte visa timers</string>
-  <string name="error_level">Anger nivån för strömbrytare</string>
+  <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
 </resources>
