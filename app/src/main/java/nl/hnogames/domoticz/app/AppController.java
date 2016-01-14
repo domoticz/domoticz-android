@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,10 +46,14 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
+import eu.inloop.easygcm.EasyGcm;
+import eu.inloop.easygcm.GcmListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
-public class AppController extends Application {
+public class AppController extends Application implements GcmListener {
 
     public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
@@ -66,6 +71,7 @@ public class AppController extends Application {
 
         //for debugging & receiving crash reports
         Mint.initAndStartSession(this, "a61b1e35");
+        EasyGcm.init(this);
 
         mInstance = this;
     }
@@ -133,5 +139,19 @@ public class AppController extends Application {
             mTracker = analytics.newTracker(getString(R.string.analiticsapikey));
         }
         return mTracker;
+    }
+
+    @Override
+    public void onMessage(String s, Bundle bundle) {
+        if(bundle.containsKey("message"))
+        {
+            String message = bundle.getString("message");
+            NotificationUtil.sendSimpleNotification("Domoticz", message, this);
+        }
+    }
+
+    @Override
+    public void sendRegistrationIdToBackend(String s) {
+        new SharedPrefUtil(this).setNotificationRegistrationID(s);
     }
 }

@@ -11,7 +11,8 @@
     <string name="category_wear">Android Wear</string>
     <string name="category_server">Server</string>
     <string name="category_geofencing">Geofencing</string>
-    <string name="category_info">Information</string>
+    <string name="category_info">Information</string>>
+    <string name="category_notification">Notifications</string>
     <string name="category_debug">Debugging</string>
     <string name="category_export">Export/Import Settings</string>
 
@@ -49,6 +50,12 @@
     <string name="title_activity_server_settings">Server settings</string>
     <string name="export_settings">Export settings</string>
     <string name="import_settings">Import settings</string>
+
+
+    <!--        Notification settings      -->
+    <string name="notification_settings">Notification Settings ID</string>
+    <string name="notification_settings_copy">Copy your registration id to clipboard</string>
+    <string name="notification_settings_copied">Copied to clipboard</string>
 
 
     <!--        Information category       -->

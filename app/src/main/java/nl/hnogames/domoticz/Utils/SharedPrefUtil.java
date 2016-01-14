@@ -67,6 +67,7 @@ public class SharedPrefUtil {
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     public static final String PREF_ALWAYS_ON = "alwayson";
+    public static final String PREF_NOTIFICATION_ID = "notification_id";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
@@ -177,6 +178,14 @@ public class SharedPrefUtil {
 
     public void setWelcomeWizardSuccess(boolean success) {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
+    }
+
+    public String getNotificationRegistrationID() {
+        return prefs.getString(PREF_NOTIFICATION_ID, "");
+    }
+
+    public void setNotificationRegistrationID(String id) {
+        editor.putString(PREF_NOTIFICATION_ID, id).apply();
     }
 
     public void removeWizard() {

@@ -77,6 +77,13 @@
             android:title="@string/import_settings" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_notification">
+        <Preference
+            android:key="notification_registration_id"
+            android:title="@string/notification_settings"
+            android:summary="@string/notification_settings_copy" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_info">
         <Preference
             android:key="version"
