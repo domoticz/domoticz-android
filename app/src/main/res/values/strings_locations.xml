@@ -27,5 +27,10 @@
     <string name="title_geofence_notifications">Enable notifications</string>
     <string name="description_geofence_notifications">Enable notifications for triggering events</string>
     <string name="geofence_place">Place: %s</string>
+    <string name="geofence_location_entering">"Entering %1$s"</string>
+    <string name="geofence_location_leaving">Leaving  %1$s</string>
+    <string name="geofence_location_entering_text">Entering one of the locations</string>
+    <string name="geofence_location_leaving_text">Leaving one of the locations</string>
+    <string name="geofence_error_recreateLocations">Due to changes on Geofencing, please recreate your locations</string>
 
 </resources>

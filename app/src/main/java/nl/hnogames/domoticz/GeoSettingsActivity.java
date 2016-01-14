@@ -216,18 +216,16 @@ public class GeoSettingsActivity extends AppCompatActivity
     private void createListView() {
         locations = mSharedPrefs.getLocations();
         boolean addressChanged = false;
-        for (LocationInfo l : locations)
-        {
-            if(l.getAddress() == null && l.getLocation() != null)
-            {
+
+        for (LocationInfo l : locations) {
+            if(l.getAddress() == null && l.getLocation() != null) {
                 //load the address
                 l.setAddress(new GeoUtil(GeoSettingsActivity.this).getAddressFromLatLng(
                         new LatLng(l.getLocation().latitude, l.getLocation().longitude)));
-                addressChanged=true;
+                addressChanged = true;
             }
         }
-        if(addressChanged)
-            mSharedPrefs.saveLocations(locations);
+        if (addressChanged) mSharedPrefs.saveLocations(locations);
 
         mGeofenceList = new ArrayList<>();
 

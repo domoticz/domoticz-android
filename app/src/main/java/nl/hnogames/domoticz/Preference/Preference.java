@@ -89,8 +89,8 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.Preference NotificatioID = findPreference("notification_registration_id");
-        NotificatioID.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+        android.preference.Preference registrationId = findPreference("notification_registration_id");
+        registrationId.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 String id = mSharedPrefs.getNotificationRegistrationID();

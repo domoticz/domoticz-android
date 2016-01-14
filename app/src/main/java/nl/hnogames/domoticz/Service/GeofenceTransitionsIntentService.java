@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -85,10 +86,17 @@ public class GeofenceTransitionsIntentService extends IntentService
                 int transitionType = geoFenceEvent.getGeofenceTransition();
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                        LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
-                        Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
-                        if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                            NotificationUtil.sendSimpleNotification("Entering " + locationFound.getName(), "Entering one of the locations", this);
+                        LocationInfo locationFound =
+                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        Log.d(TAG, "Triggered entering a geofence location: "
+                                + locationFound.getName());
+                        if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
+                            String text = String.format(
+                                    getString(R.string.geofence_location_entering),
+                                    locationFound.getName());
+                            NotificationUtil.sendSimpleNotification(text,
+                                    getString(R.string.geofence_location_entering_text), this);
+                        }
 
                         if (locationFound.getSwitchidx() > 0) {
                             handleSwitch(locationFound.getSwitchidx(), true);
@@ -96,14 +104,22 @@ public class GeofenceTransitionsIntentService extends IntentService
                     }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                        LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
-                        Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
-                        if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                            NotificationUtil.sendSimpleNotification("Leaving " + locationFound.getName(), "Leaving one of the locations", this);
+                        LocationInfo locationFound
+                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        Log.d(TAG, "Triggered leaving a geofence location: "
+                                + locationFound.getName());
 
-                        if (locationFound.getSwitchidx() > 0) {
-                            handleSwitch(locationFound.getSwitchidx(), false);
+                        if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
+                            String text = String.format(
+                                    getString(R.string.geofence_location_leaving),
+                                    locationFound.getName());
+                            NotificationUtil.sendSimpleNotification(text,
+                                    getString(R.string.geofence_location_leaving_text), this);
                         }
+
+                        if (locationFound.getSwitchidx() > 0)
+                            handleSwitch(locationFound.getSwitchidx(), false);
+
                     }
                 }
             }
@@ -195,6 +211,6 @@ public class GeofenceTransitionsIntentService extends IntentService
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
     }
 }
