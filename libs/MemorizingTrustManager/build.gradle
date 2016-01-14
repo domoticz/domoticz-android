@@ -10,9 +10,13 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
+dependencies {
+	compile "com.android.support:support-v4:23.0.+"
+}
+
 android {
-	compileSdkVersion 22
-	buildToolsVersion "22.0.1"
+	compileSdkVersion 23
+	buildToolsVersion "23.0.2"
 	//noinspection GroovyAssignabilityCheck
 	defaultConfig {
         	minSdkVersion 7
@@ -32,5 +36,4 @@ android {
 			assets.srcDirs = ['assets']
 		}
 	}
-
 }
