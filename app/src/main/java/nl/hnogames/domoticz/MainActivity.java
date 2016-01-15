@@ -114,9 +114,15 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             drawNavigationMenu();
             WidgetUtils.RefreshWidgets(this);
-            mSharedPrefs.setGeoFenceService();
 
-            //get latest update version
+            // Only start Geofences when not started
+            // Geofences are already started on device boot up by the BootUpReceiver
+            if (!mSharedPrefs.isGeofenceEnabled()) {
+                mSharedPrefs.setGeofenceEnabled(true);
+                mSharedPrefs.setGeoFenceService();
+            }
+
+            // Get latest Domoticz version
             final Domoticz domoticz = new Domoticz(this);
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override

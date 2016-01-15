@@ -74,6 +74,7 @@ public class SharedPrefUtil {
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     public static final String PREF_CONFIG = "domoticz_config";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    public static final String PREF_GEOFENCE_STARTED = "geofence_started";
     public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
     public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     public static final String PREF_DEBUGGING = "debugging";
@@ -683,6 +684,10 @@ public class SharedPrefUtil {
     }
 
     public boolean saveSharedPreferencesToFile(File dst) {
+        // Before saving to file set geofences to false so on restore of settings
+        // fences are started
+        setGeofenceEnabled(false);
+
         if (dst.exists())
             dst.delete();
 
@@ -761,7 +766,16 @@ public class SharedPrefUtil {
         return res;
     }
 
+    public boolean isGeofencingStarted() {
+        return prefs.getBoolean(PREF_GEOFENCE_STARTED, false);
+    }
+
+    public void setGeofencingStarted(boolean started) {
+        editor.putBoolean(PREF_GEOFENCE_STARTED, started).apply();
+    }
+
     public void setGeoFenceService() {
+
         if (isGeofenceEnabled()) {
             final List<Geofence> mGeofenceList = new ArrayList<>();
             final ArrayList<LocationInfo> locations = getLocations();
@@ -778,6 +792,13 @@ public class SharedPrefUtil {
                             public void onConnected(Bundle bundle) {
                                 PendingIntent mGeofenceRequestIntent =
                                         getGeofenceTransitionPendingIntent();
+
+                                // First remove all GeoFences
+                                try {
+                                    LocationServices.GeofencingApi.removeGeofences(mApiClient,
+                                            mGeofenceRequestIntent);
+                                } catch (Exception ignored) {}
+
                                 //noinspection ResourceType
                                 LocationServices
                                         .GeofencingApi
