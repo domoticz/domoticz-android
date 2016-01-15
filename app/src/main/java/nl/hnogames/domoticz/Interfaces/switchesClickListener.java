@@ -43,4 +43,6 @@ public interface switchesClickListener {
     void onSecurityPanelButtonClick(int idx);
 
     void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
+
+    void onSelectorDimmerClick(int idx, String[] levelNames);
 }

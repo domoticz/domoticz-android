@@ -900,34 +900,33 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected)
-            holder.dimmer.setEnabled(false);
-
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
         holder.dimmer.setMax(levelNames.length - 1);
+
+        if(holder.isProtected)
+            holder.dimmer.setEnabled(false);
+        holder.dimmer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
+            }
+        });
+
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String value = levelNames[progress];
-                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
-                        .findViewById(mDevicesInfo.getIdx() + ID_TEXTVIEW);
-                switch_dimmer_level.setText(value);
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                previousDimmerValue = seekBar.getProgress();
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress() * 10;
-                Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
-                        .findViewById(mDevicesInfo.getIdx() + ID_SWITCH);
-
-                handleDimmerChange(mDevicesInfo.getIdx(), progress, true);
-                mDevicesInfo.setLevel(progress);
+                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
             }
         });
 
@@ -1160,6 +1159,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void handleStateButtonClick(final int idx, int itemsRes, int[] itemIds) {
         listener.onStateButtonClick(idx, itemsRes, itemIds);
+    }
+
+    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
+        listener.onSelectorDimmerClick(idx, levelNames);
     }
 
     private void handleLogButtonClick(int idx) {
