@@ -206,7 +206,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                 selectedLocation.setSwitchidx(selectedSwitchIDX);
                 mSharedPrefs.updateLocation(selectedLocation);
 
-                adapter.data =  mSharedPrefs.getLocations();
+                adapter.data = mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();
             }
         });
@@ -217,18 +217,19 @@ public class GeoSettingsActivity extends AppCompatActivity
         locations = mSharedPrefs.getLocations();
         boolean addressChanged = false;
 
-        for (LocationInfo l : locations) {
-            if(l.getAddress() == null && l.getLocation() != null) {
-                //load the address
-                l.setAddress(new GeoUtil(GeoSettingsActivity.this).getAddressFromLatLng(
-                        new LatLng(l.getLocation().latitude, l.getLocation().longitude)));
-                addressChanged = true;
+        if(locations != null) {
+            for (LocationInfo l : locations) {
+                if (l.getAddress() == null && l.getLocation() != null) {
+                    //load the address
+                    l.setAddress(new GeoUtil(GeoSettingsActivity.this).getAddressFromLatLng(
+                            new LatLng(l.getLocation().latitude, l.getLocation().longitude)));
+                    addressChanged = true;
+                }
             }
+            if (addressChanged) mSharedPrefs.saveLocations(locations);
         }
-        if (addressChanged) mSharedPrefs.saveLocations(locations);
 
         mGeofenceList = new ArrayList<>();
-
         if (locations != null)
             for (LocationInfo locationInfo : locations)
                 if (locationInfo.getEnabled())
