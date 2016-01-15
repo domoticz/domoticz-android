@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_id": "domoticz-1127",
-    "project_number": "661310329417",
+    "project_id": "domoticz-1191",
+    "project_number": "705545900899",
     "name": "Domoticz"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:661310329417:android:b74c4323e1f98430",
+        "mobilesdk_app_id": "1:705545900899:android:b74c4323e1f98430",
         "client_id": "android:nl.hnogames.domoticz",
         "client_type": 1,
         "android_client_info": {
@@ -18,10 +18,7 @@
       "api_key": [],
       "services": {
         "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-71812306-1"
-          }
+          "status": 1
         },
         "cloud_messaging_service": {
           "status": 2,
@@ -39,9 +36,9 @@
         }
       }
     },
-	   {
+    {
       "client_info": {
-        "mobilesdk_app_id": "1:661310329417:android:b74c4323e1f98430",
+        "mobilesdk_app_id": "1:705545900899:android:a4327c5a10906b46",
         "client_id": "android:nl.hnogames.domoticz.premium",
         "client_type": 1,
         "android_client_info": {
@@ -52,10 +49,7 @@
       "api_key": [],
       "services": {
         "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-71812306-1"
-          }
+          "status": 1
         },
         "cloud_messaging_service": {
           "status": 2,
