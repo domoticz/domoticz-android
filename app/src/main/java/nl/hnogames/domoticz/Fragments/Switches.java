@@ -431,6 +431,25 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 .show();
     }
 
+    @Override
+    public void onSelectorDimmerClick(final int idx, final String[] levelNames) {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_status)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        for(int i =0; i< levelNames.length;i++)
+                        {
+                            if(levelNames[i].equals(text)){
+                                onDimmerChange(idx, i*10, true);
+                            }
+                        }
+                    }
+                })
+                .show();
+    }
+
     private void setState(final int idx, int state, Calendar until) {
         mDomoticz.setModalAction(idx,
                 state,
@@ -578,7 +597,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
-    public void onDimmerChange(int idx, int value, boolean selector) {
+    public void onDimmerChange(int idx, int value, final boolean selector) {
         if (busy)
             return;
 
@@ -597,6 +616,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    if(selector)
+                        getSwitchesData();
                 }
 
                 @Override

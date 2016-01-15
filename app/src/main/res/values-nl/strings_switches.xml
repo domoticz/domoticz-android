@@ -6,11 +6,11 @@
   <string name="idx">IDX</string>
   <string name="placeholder_value">255</string>
   <string name="color_set">Kleur ingesteld voor</string>
-  <string name="state_set">State set for</string>
+  <string name="state_set">Ingesteld voor</string>
   <string name="error_favorite">Kon favoriete niet instellen</string>
   <string name="error_logs">Het lukte niet om de logs op te halen</string>
   <string name="error_color">De kleur kon niet gewijzigd worden</string>
-  <string name="error_state">Could not change the state</string>
+  <string name="error_state">De status kan niet worden gewijzigd</string>
   <string name="error_timer">De timers konden niet opgehaald worden</string>
-  <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
+  <string name="set_level_switch">"Ingesteld voor schakelaar: %1$s naar %2$d"</string>
 </resources>

@@ -8,6 +8,7 @@
   <string name="category_server">Serveur</string>
   <string name="category_geofencing">Géorepérage</string>
   <string name="category_info">Informations</string>
+  <string name="category_notification">Notifications</string>
   <string name="category_debug">Debuggage</string>
   <string name="category_export">Export/Import des paramètres</string>
   <string name="startup_screen">Écran d\'accueil</string>
@@ -19,8 +20,8 @@
   <string name="always_on_on">Toujours verrouiller l\'écran</string>
   <string name="always_on_off">Ne jamais verrouiller l\'écran</string>
   <string name="enable_wear_select">Activer Android Wear</string>
-  <string name="custom_wear_select">Intérrupteurs Wear</string>
-  <string name="custom_wear_select_desc">Sélectionner les intérrupteurs à contrôler sur vôtre Android Wear</string>
+  <string name="custom_wear_select">Interrupteurs Wear</string>
+  <string name="custom_wear_select_desc">Sélectionner les interrupteurs à contrôler sur vôtre Android Wear</string>
   <string name="wear_custom_on">Éléments spécifiques Android Wear activés</string>
   <string name="wear_custom_off">Éléments spécifique Android Wear désactivés</string>
   <string name="geofencing_configure">Configurer le Géorepérage</string>
@@ -30,6 +31,9 @@
   <string name="title_activity_server_settings">Paramètres du serveur</string>
   <string name="export_settings">Exporter les paramètres</string>
   <string name="import_settings">Importer les paramètres</string>
+  <string name="notification_settings">Notification Settings ID</string>
+  <string name="notification_settings_copy">Copy your registration id to clipboard</string>
+  <string name="notification_settings_copied">Copied to clipboard</string>
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Version de Domoticz</string>
   <string name="info_about">À propos de Domoticz</string>

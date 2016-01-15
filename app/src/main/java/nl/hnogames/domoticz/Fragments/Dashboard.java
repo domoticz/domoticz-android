@@ -434,8 +434,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onLogButtonClick(int idx) {
-    }
+    public void onLogButtonClick(int idx) {}
 
     @Override
     public void onColorButtonClick(final int idx) {
@@ -486,8 +485,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onTimerButtonClick(int idx) {
-    }
+    public void onTimerButtonClick(int idx) {}
 
     @Override
     public void onThermostatClick(final int idx) {
@@ -528,7 +526,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         tempDialog.show();
     }
 
-
     @Override
     public void onSecurityPanelButtonClick(int idx) {
         SecurityPanelDialog securityDialog = new SecurityPanelDialog(
@@ -559,6 +556,25 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         ;
     }
 
+    @Override
+    public void onSelectorDimmerClick(final int idx, final String[] levelNames) {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_status)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        for(int i =0; i< levelNames.length;i++)
+                        {
+                            if(levelNames[i].equals(text)){
+                                onDimmerChange(idx, i*10, true);
+                            }
+                        }
+                    }
+                })
+                .show();
+    }
+
     private void setState(final int idx, int state, Calendar until) {
         mDomoticz.setModalAction(idx,
                 state,
@@ -569,7 +585,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     public void onReceiveResult(String result) {
                         Snackbar.make(coordinatorLayout, getContext().getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                         processDashboard();
-                        ; //refresh
                     }
 
                     @Override
@@ -626,7 +641,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onDimmerChange(int idx, int value, boolean selector) {
+    public void onDimmerChange
+            (int idx, int value, final boolean selector) {
         if (busy)
             return;
 
@@ -645,6 +661,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    if(selector)
+                        processDashboard();
                 }
 
                 @Override

@@ -28,7 +28,7 @@
   <string name="action_success">Action succes</string>
   <string name="action_failed">Action échec</string>
   <string name="action_unknown">Action resultat inconnu</string>
-  <string name="choose_status">Choose state</string>
+  <string name="choose_status">Choisissez l\'État</string>
   <string name="normal">Normal</string>
   <string name="economy">Économie</string>
   <string name="away">Innocupé</string>
@@ -59,7 +59,7 @@
   <string name="filterOn_all">Tous les dispositifs</string>
   <string name="Filter">Filtrer</string>
   <string name="filter_devices">Filtrer les dispositifs</string>
-  <string name="filtered_on">Filter on</string>
+  <string name="filtered_on">Filtre activé</string>
   <string name="choose_color">Sélectionnez la couleur</string>
   <string name="no_data_on_domoticz">Aucune donnée sur le serveur Domoticz</string>
   <string name="row_icon_description">icône de la ligne</string>
