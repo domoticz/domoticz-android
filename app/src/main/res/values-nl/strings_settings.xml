@@ -31,7 +31,7 @@
   <string name="title_activity_server_settings">Server instellingen</string>
   <string name="export_settings">Exporteer Instellingen</string>
   <string name="import_settings">Importeer Instellingen</string>
-  <string name="notification_settings">Notificatie Registratie ID</string>
+  <string name="notification_settings_id">Notificatie Registratie ID</string>
   <string name="notification_settings_copy">Uw registratie ID naar Klembord kopiëren</string>
   <string name="notification_settings_copied">Gekopieerd naar klipbord</string>
   <string name="info_version">Versie</string>

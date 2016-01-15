@@ -31,7 +31,7 @@
   <string name="title_activity_server_settings">Definições do servidor</string>
   <string name="export_settings">Exportar Definições</string>
   <string name="import_settings">Importar Definições</string>
-  <string name="notification_settings">Notification Settings ID</string>
+  <string name="notification_settings_id">Notification Settings ID</string>
   <string name="notification_settings_copy">Copy your registration id to clipboard</string>
   <string name="notification_settings_copied">Copied to clipboard</string>
   <string name="info_version">Versão</string>

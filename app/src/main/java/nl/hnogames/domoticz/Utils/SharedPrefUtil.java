@@ -64,6 +64,8 @@ public class SharedPrefUtil {
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     public static final String PREF_ALWAYS_ON = "alwayson";
     public static final String PREF_NOTIFICATION_ID = "notification_id";
+    public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
+    public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_EXTRA_DATA = "extradata";
@@ -182,6 +184,14 @@ public class SharedPrefUtil {
 
     public void setNotificationRegistrationID(String id) {
         editor.putString(PREF_NOTIFICATION_ID, id).apply();
+    }
+
+    public boolean getNotificationVibrate() {
+        return prefs.getBoolean(PREF_NOTIFICATION_VIBRATE, true);
+    }
+
+    public String getNotificationSound() {
+        return prefs.getString(PREF_NOTIFICATION_SOUND, null);
     }
 
     public void removeWizard() {

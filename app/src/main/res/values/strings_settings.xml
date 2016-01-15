@@ -53,9 +53,14 @@
 
 
     <!--        Notification settings      -->
-    <string name="notification_settings">Notification Settings ID</string>
+    <string name="notification_settings_id">Notification Settings ID</string>
     <string name="notification_settings_copy">Copy your registration id to clipboard</string>
     <string name="notification_settings_copied">Copied to clipboard</string>
+    <string name="notification_vibrate_title">Vibrate</string>
+    <string name="notification_vibrate_on">Vibrate when an notification is received</string>
+    <string name="notification_vibrate_off">Do not vibrate</string>
+    <string name="notification_sound_title">Notification sound</string>
+    <string name="notification_sound_summary">Use notification sound when notification arrives</string>
 
 
     <!--        Information category       -->

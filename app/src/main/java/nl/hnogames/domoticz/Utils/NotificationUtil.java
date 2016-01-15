@@ -27,6 +27,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import nl.hnogames.domoticz.MainActivity;
@@ -42,6 +43,12 @@ public class NotificationUtil {
                         .setContentTitle(title)
                         .setContentText(text);
         int NOTIFICATION_ID = 12345;
+
+        SharedPrefUtil prefUtil = new SharedPrefUtil(context);
+
+        if (prefUtil.getNotificationVibrate()) builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE );
+
+        builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
 
         Intent targetIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);

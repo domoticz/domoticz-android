@@ -17,6 +17,7 @@
 
     <uses-permission android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
