@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
@@ -48,7 +49,15 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         this.domoticz = new Domoticz(mContext);
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
-                .positiveText(android.R.string.ok);
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        if (dismissListener != null)
+                            dismissListener.onDismiss(editPasscode.getInputWidgetText().toString());
+                    }
+                });
         mdb.dismissListener(this);
     }
 
@@ -61,10 +70,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialogInterface) {
-        if (dismissListener != null)
-            dismissListener.onDismiss(editPasscode.getInputWidgetText().toString());
-    }
+    public void onDismiss(DialogInterface dialogInterface) {}
 
     public void onDismissListener(DismissListener dismissListener) {
         this.dismissListener = dismissListener;

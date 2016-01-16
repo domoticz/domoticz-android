@@ -124,10 +124,13 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         getActionBar().setTitle(R.string.title_plans);
     }
 
+    @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 

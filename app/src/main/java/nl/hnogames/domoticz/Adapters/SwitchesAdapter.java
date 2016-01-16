@@ -1063,6 +1063,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         return text;
     }
 
+    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
+        listener.onSelectorDimmerClick(idx, levelNames);
+    }
+
     static class ViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
@@ -1071,10 +1075,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;
-    }
-
-    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
-        listener.onSelectorDimmerClick(idx, levelNames);
     }
 
     private class ItemFilter extends Filter {

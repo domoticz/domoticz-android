@@ -60,7 +60,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        if(view != null) {
+        if (view != null) {
             lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
             shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
             lobsterPicker.addDecorator(shadeSlider);
@@ -108,6 +108,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(int color);
+
         void onChangeColor(int color);
     }
 }

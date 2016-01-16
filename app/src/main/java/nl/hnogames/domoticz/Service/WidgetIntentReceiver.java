@@ -214,7 +214,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             else jsonAction = Domoticz.Scene.Action.OFF;
             idx = idx - 4000;
         }
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0,  null, new setCommandReceiver() {
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -242,7 +242,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 else jsonAction = Domoticz.Device.Switch.Action.OFF;
             }
 
-            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, null,  new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -267,7 +267,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
 
-            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0,  null, new setCommandReceiver() {
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();

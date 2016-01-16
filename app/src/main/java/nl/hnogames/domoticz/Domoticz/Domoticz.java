@@ -22,11 +22,8 @@
 
 package nl.hnogames.domoticz.Domoticz;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.TextView;
@@ -39,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -760,8 +756,7 @@ public class Domoticz {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
 
-        if(!UsefulBits.isEmpty(password))
-        {
+        if (!UsefulBits.isEmpty(password)) {
             url += "&passcode=" + password;
         }
 
@@ -787,8 +782,7 @@ public class Domoticz {
         if (isWhite)
             url = url.replace("&iswhite=false", "&iswhite=true");
 
-        if(!UsefulBits.isEmpty(password))
-        {
+        if (!UsefulBits.isEmpty(password)) {
             url += "&passcode=" + password;
         }
         Log.v(TAG, "Action: " + url);
@@ -806,8 +800,7 @@ public class Domoticz {
         String url = constructSetUrl(Domoticz.Json.Url.Set.MODAL_SWITCHES, id, status, 0);
         url += "&action=" + action;
 
-        if(!UsefulBits.isEmpty(password))
-        {
+        if (!UsefulBits.isEmpty(password)) {
             url += "&passcode=" + password;
         }
         Log.v(TAG, "Action: " + url);

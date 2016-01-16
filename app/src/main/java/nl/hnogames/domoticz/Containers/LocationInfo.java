@@ -82,17 +82,18 @@ public class LocationInfo {
     public LatLng getLocation() {
         return latLng;
     }
-    public Address getAddress() {
-        return address;
-    }
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     public void setLocation(LatLng latLng) {
         this.latLng = latLng;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     /**
      * Creates a Location Services Geofence object from a SimpleGeofence.
