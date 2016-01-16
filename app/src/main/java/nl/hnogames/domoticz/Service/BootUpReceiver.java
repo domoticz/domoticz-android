@@ -32,7 +32,11 @@ import nl.hnogames.domoticz.Utils.WidgetUtils;
 public class BootUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(context);
+
         WidgetUtils.RefreshWidgets(context);
-        new SharedPrefUtil(context).setGeoFenceService();
+
+        mSharedPrefUtil.setGeoFenceService();
+        mSharedPrefUtil.setGeofencingStarted(true);
     }
 }
