@@ -80,4 +80,6 @@
     <string name="error_image_description">Error image</string>
 
     <string name="white">White</string>
+    <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
 </resources>

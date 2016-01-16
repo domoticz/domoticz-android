@@ -45,6 +45,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -61,8 +62,10 @@ import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -127,29 +130,63 @@ public class MainActivity extends AppCompatActivity {
             domoticz.getUpdate(new UpdateReceiver() {
                 @Override
                 public void onReceiveUpdate(String version) {
-                    if (version != null && version.length() > 0) {
-                        String prefVersion = mSharedPrefs.getUpdateAvailable();
-                        if (!prefVersion.equals(version)) {
-                            Snackbar.make(coordinatorLayout, MainActivity.this.getString(R.string.update_available) + ": " + version, Snackbar.LENGTH_LONG).show();
-                        }
-                    }
                     mSharedPrefs.setUpdateAvailable(version);
-                    domoticz.GetConfig(new ConfigReceiver() {
-                        @Override
-                        public void onReceiveConfig(ConfigInfo settings) {
-                            if (settings != null)
-                                mSharedPrefs.saveConfig(settings);
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                        }
-                    });
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    Snackbar.make(coordinatorLayout, "Could not check for updates:" + error.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
+                    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+                    // TODO find out why snackbar doesn't work!
+                }
+            });
+
+            // Get current Domoticz server version
+            domoticz.getVersion(new VersionReceiver() {
+                @Override
+                public void onReceiveVersion(String serverVersion) {
+                    if (!UsefulBits.isEmpty(serverVersion)) {
+                        // Server version starts with a major version number
+                        // Update version doesn't have a major version number
+                        String serverVersionCheck = serverVersion.substring(2);
+                        String updateVersion = mSharedPrefs.getUpdateAvailable();
+                        if (!updateVersion.equals(serverVersionCheck)) {
+                            // Snackbar.make(coordinatorLayout, getString(R.string.update_available) + ": " + serverVersion, Snackbar.LENGTH_LONG).show();
+                            // TODO find out why snackbar doesn't work!
+                            Toast.makeText(MainActivity.this,
+                                    getString(R.string.update_available) + ": " + serverVersion,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
+                    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+                    // TODO find out why snackbar doesn't work!
+                }
+            });
+
+            // Get Domoticz server configuration
+            domoticz.GetConfig(new ConfigReceiver() {
+                @Override
+                public void onReceiveConfig(ConfigInfo settings) {
+                    if (settings != null)
+                        mSharedPrefs.saveConfig(settings);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForConfig),
+                            domoticz.getErrorMessage(error));
+                    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+                    // TODO find out why snackbar doesn't work!
                 }
             });
 
