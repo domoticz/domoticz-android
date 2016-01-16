@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class Preference extends PreferenceFragment {
 
@@ -60,6 +61,7 @@ public class Preference extends PreferenceFragment {
     private final String TAG_EXPORT = "Export Settings";
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
+    private Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,8 @@ public class Preference extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        mSharedPrefs = new SharedPrefUtil(getActivity());
+        mContext = getActivity();
+        mSharedPrefs = new SharedPrefUtil(mContext);
 
         setPreferences();
         setStartUpScreenDefaultValue();
@@ -83,7 +86,7 @@ public class Preference extends PreferenceFragment {
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                Intent intent = new Intent(getActivity(), ServerSettingsActivity.class);
+                Intent intent = new Intent(mContext, ServerSettingsActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -94,11 +97,9 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 String id = mSharedPrefs.getNotificationRegistrationID();
-                Toast.makeText(getActivity(), getActivity().getString(R.string.notification_settings_copied) + ": " + id, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getString(R.string.notification_settings_copied) + ": " + id, Toast.LENGTH_SHORT).show();
 
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("id", id);
-                clipboard.setPrimaryClip(clip);
+                UsefulBits.copyToClipboard(mContext, "id", id);
                 return true;
             }
         });
@@ -108,10 +109,10 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(getActivity(), getString(R.string.geofence) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, getString(R.string.geofence) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
-                    Intent intent = new Intent(getActivity(), GeoSettingsActivity.class);
+                    Intent intent = new Intent(mContext, GeoSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -123,7 +124,7 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
                 if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(getActivity(), getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
                 return true;
@@ -135,7 +136,7 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
                 if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(getActivity(), getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
                 return true;
@@ -152,7 +153,7 @@ public class Preference extends PreferenceFragment {
             premiumPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    String packageID = getActivity().getPackageName() + ".premium";
+                    String packageID = mContext.getPackageName() + ".premium";
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
                     } catch (android.content.ActivityNotFoundException anfe) {
@@ -170,7 +171,7 @@ public class Preference extends PreferenceFragment {
         about.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                SimpleTextDialog td = new SimpleTextDialog(getActivity());
+                SimpleTextDialog td = new SimpleTextDialog(mContext);
                 td.setTitle(R.string.info_about);
                 td.setText(R.string.welcome_info_domoticz);
                 td.show();
@@ -184,7 +185,7 @@ public class Preference extends PreferenceFragment {
                 String text = getString(R.string.info_credits_text);
                 text = text + ":\n\n" + getString(R.string.info_credits_text_urls);
 
-                SimpleTextDialog td = new SimpleTextDialog(getActivity());
+                SimpleTextDialog td = new SimpleTextDialog(mContext);
                 td.setTitle(R.string.info_credits);
                 td.setText(text);
                 td.show();
@@ -207,7 +208,7 @@ public class Preference extends PreferenceFragment {
                     @Override
                     public boolean onPreferenceClick(android.preference.Preference preference) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                            if (!PermissionsUtil.canAccessStorage(mContext)) {
                                 requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
                                         PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
                             } else
@@ -224,7 +225,7 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                    if (!PermissionsUtil.canAccessStorage(mContext)) {
                         requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
                                 PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
                     } else
@@ -243,12 +244,12 @@ public class Preference extends PreferenceFragment {
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(getActivity())) {
+                if (PermissionsUtil.canAccessStorage(mContext)) {
                     importSettings();
                 }
                 break;
             case PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(getActivity())) {
+                if (PermissionsUtil.canAccessStorage(mContext)) {
                     exportSettings();
                 }
                 break;
@@ -259,11 +260,11 @@ public class Preference extends PreferenceFragment {
         Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
         mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(getActivity(),
+            Toast.makeText(mContext,
                     R.string.settings_imported,
                     Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(getActivity(),
+            Toast.makeText(mContext,
                     R.string.settings_import_failed,
                     Toast.LENGTH_SHORT).show();
     }
@@ -271,29 +272,29 @@ public class Preference extends PreferenceFragment {
     private void exportSettings() {
         Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Settings Exported.", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
     }
 
     private void setVersionInfo() {
         PackageInfo pInfo = null;
         try {
-            pInfo = getActivity()
+            pInfo = mContext
                     .getPackageManager()
-                    .getPackageInfo(getActivity()
+                    .getPackageInfo(mContext
                             .getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String appVersionStr = getActivity().getString(R.string.unknown);
+        String appVersionStr = mContext.getString(R.string.unknown);
         if (pInfo != null) appVersionStr = pInfo.versionName;
 
         final android.preference.Preference appVersion = findPreference("version");
         final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
         appVersion.setSummary(appVersionStr);
 
-        Domoticz domoticz = new Domoticz(getActivity());
+        Domoticz domoticz = new Domoticz(mContext);
         domoticz.getVersion(new VersionReceiver() {
             @Override
             public void onReceiveVersion(String version) {

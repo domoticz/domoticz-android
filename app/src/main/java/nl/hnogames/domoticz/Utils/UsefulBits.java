@@ -22,6 +22,10 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -104,4 +108,9 @@ public class UsefulBits {
         return hexString.toString();
     }
 
+    public static void copyToClipboard(Context mContext, String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+    }
 }
