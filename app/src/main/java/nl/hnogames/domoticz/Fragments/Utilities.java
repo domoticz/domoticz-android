@@ -50,6 +50,7 @@ import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
+import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
@@ -193,7 +194,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mUtilitiesInfo.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mUtilitiesInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -313,33 +314,51 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
         tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
             @Override
-            public void onDismiss(double newSetPoint) {
+            public void onDismiss(final double newSetPoint) {
                 addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
                 if (tempUtil != null) {
-                    thermostatSetPointValue = newSetPoint;
-                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
-
-                    int action = Domoticz.Device.Thermostat.Action.PLUS;
-                    if (newSetPoint < tempUtil.getSetPoint())
-                        action = Domoticz.Device.Thermostat.Action.MIN;
-
-                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
-                        @Override
-                        public void onReceiveResult(String result) {
-                            updateThermostatSetPointValue(idx, thermostatSetPointValue);
-                            successHandling(result, false);
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            errorHandling(error);
-                        }
-                    });
+                    if(tempUtil.isProtected())
+                    {
+                        PasswordDialog passwordDialog = new PasswordDialog(
+                                getActivity());
+                        passwordDialog.show();
+                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                            @Override
+                            public void onDismiss(String password) {
+                                setThermostateAction(tempUtil, newSetPoint, password);
+                            }
+                        });
+                    }
+                    else{
+                        setThermostateAction(tempUtil, newSetPoint, null);
+                    }
                 }
             }
         });
 
         tempDialog.show();
+    }
+
+    public void setThermostateAction(final UtilitiesInfo tempUtil, double newSetPoint, String password){
+        thermostatSetPointValue = newSetPoint;
+        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+
+        int action = Domoticz.Device.Thermostat.Action.PLUS;
+        if (newSetPoint < tempUtil.getSetPoint())
+            action = Domoticz.Device.Thermostat.Action.MIN;
+
+        mDomoticz.setAction(tempUtil.getIdx(), jsonUrl, action, newSetPoint, password, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
+                successHandling(result, false);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 
 

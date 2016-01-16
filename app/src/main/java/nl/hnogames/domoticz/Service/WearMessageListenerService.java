@@ -250,7 +250,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             else jsonAction = Domoticz.Device.Switch.Action.OFF;
         }
 
-        domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
             }
@@ -268,7 +268,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
         else jsonAction = Domoticz.Device.Switch.Action.OFF;
 
-        domoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        domoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
             }

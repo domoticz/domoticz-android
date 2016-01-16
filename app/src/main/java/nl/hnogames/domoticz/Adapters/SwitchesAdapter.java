@@ -463,8 +463,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
-        if (holder.isProtected) holder.onOffSwitch.setEnabled(false);
-
         holder.onOffSwitch.setId(mDevicesInfo.getIdx());
         holder.onOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
 
@@ -529,9 +527,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
-
-        if (holder.isProtected)
-            holder.buttonOn.setEnabled(false);
 
         holder.buttonOn.setId(mDevicesInfo.getIdx());
         if (action) {
@@ -598,9 +593,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
-        if (holder.isProtected)
-            holder.buttonOn.setEnabled(false);
-
         holder.buttonOn.setId(mDevicesInfo.getIdx());
         if (mDevicesInfo.getData().startsWith("Arm"))
             holder.buttonOn.setText(context.getString(R.string.button_disarm));
@@ -664,7 +656,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
-        if (holder.isProtected) holder.buttonUp.setEnabled(false);
         holder.buttonUp.setId(mDevicesInfo.getIdx());
         holder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -682,7 +673,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected) holder.buttonStop.setEnabled(false);
         holder.buttonStop.setId(mDevicesInfo.getIdx());
         holder.buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -695,7 +685,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected) holder.buttonDown.setEnabled(false);
+
         holder.buttonDown.setId(mDevicesInfo.getIdx());
         holder.buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -748,7 +738,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_dimmer_level.setText(percentage);
 
         holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
-        if (holder.isProtected) holder.dimmerOnOffSwitch.setEnabled(false);
+
 
         holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -777,8 +767,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected)
-            holder.dimmer.setEnabled(false);
 
         holder.dimmer.setProgress(mDevicesInfo.getLevel());
         holder.dimmer.setMax(mDevicesInfo.getMaxDimLevel());
@@ -887,7 +875,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_dimmer_level.setText(levelNames[loadLevel]);
 
         holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
-        if (holder.isProtected) holder.dimmerOnOffSwitch.setEnabled(false);
 
         holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -909,9 +896,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     holder.iconRow.setAlpha(1f);
             }
         });
-
-        if (holder.isProtected)
-            holder.dimmer.setEnabled(false);
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);

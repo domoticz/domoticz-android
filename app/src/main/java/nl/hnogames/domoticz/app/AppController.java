@@ -49,8 +49,8 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 
 
 public class AppController extends Application implements GcmListener {
@@ -145,7 +145,7 @@ public class AppController extends Application implements GcmListener {
     public void onMessage(String s, Bundle bundle) {
         if (bundle.containsKey("message")) {
             String message = bundle.getString("message");
-            NotificationUtil.sendSimpleNotification("Domoticz", message, this);
+            NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name), message, this);
         }
     }
 

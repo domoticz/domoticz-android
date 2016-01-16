@@ -141,7 +141,6 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                      int jsonAction;
                                                      int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-
                                                      if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
                                                              extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
                                                          if (checked)
@@ -155,7 +154,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                                              jsonAction = Domoticz.Device.Switch.Action.OFF;
                                                      }
 
-                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
                                                          @Override
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
