@@ -246,9 +246,11 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 
@@ -317,8 +319,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
             public void onDismiss(final double newSetPoint) {
                 addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
                 if (tempUtil != null) {
-                    if(tempUtil.isProtected())
-                    {
+                    if (tempUtil.isProtected()) {
                         PasswordDialog passwordDialog = new PasswordDialog(
                                 getActivity());
                         passwordDialog.show();
@@ -328,8 +329,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                                 setThermostateAction(tempUtil, newSetPoint, password);
                             }
                         });
-                    }
-                    else{
+                    } else {
                         setThermostateAction(tempUtil, newSetPoint, null);
                     }
                 }
@@ -339,7 +339,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         tempDialog.show();
     }
 
-    public void setThermostateAction(final UtilitiesInfo tempUtil, double newSetPoint, String password){
+    public void setThermostateAction(final UtilitiesInfo tempUtil, double newSetPoint, String password) {
         thermostatSetPointValue = newSetPoint;
         int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 

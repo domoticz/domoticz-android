@@ -34,8 +34,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
@@ -104,7 +102,7 @@ public class LocationAdapter extends BaseAdapter {
         holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
-        if(mLocationInfo.getAddress() != null) {
+        if (mLocationInfo.getAddress() != null) {
             Address address = mLocationInfo.getAddress();
 
             String addressString;

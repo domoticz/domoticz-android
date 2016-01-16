@@ -256,8 +256,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         addDebugText("onSceneClick");
         addDebugText("Set " + idx + " to " + action);
         final SceneInfo clickedScene = getScene(idx);
-        if(clickedScene.isProtected())
-        {
+        if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
                     getActivity());
             passwordDialog.show();
@@ -267,13 +266,12 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                     setScene(clickedScene, action, password);
                 }
             });
-        }
-        else{
+        } else {
             setScene(clickedScene, action, null);
         }
     }
 
-    public void setScene(SceneInfo clickedScene, boolean action, String password){
+    public void setScene(SceneInfo clickedScene, boolean action, String password) {
         if (action)
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT).show();
         else
@@ -306,9 +304,11 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 }

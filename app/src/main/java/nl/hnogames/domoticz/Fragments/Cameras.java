@@ -140,10 +140,13 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getActionBar().setTitle(R.string.title_cameras);
     }
 
+    @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 

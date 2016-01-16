@@ -47,9 +47,11 @@ public class NotificationUtil {
 
         SharedPrefUtil prefUtil = new SharedPrefUtil(context);
 
-        if (prefUtil.getNotificationVibrate()) builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE );
+        if (prefUtil.getNotificationVibrate())
+            builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 
-        if (!UsefulBits.isEmpty(prefUtil.getNotificationSound())) builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
+        if (!UsefulBits.isEmpty(prefUtil.getNotificationSound()))
+            builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
 
         Intent targetIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);

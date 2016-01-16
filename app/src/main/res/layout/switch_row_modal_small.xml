@@ -67,8 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_gravity="center"
             android:background="@drawable/button"
-            android:text="@string/set_temperature"
-            android:layout_gravity="center" />
+            android:text="@string/set_temperature" />
     </LinearLayout>
 </LinearLayout>

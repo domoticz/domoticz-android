@@ -797,7 +797,8 @@ public class SharedPrefUtil {
                                 try {
                                     LocationServices.GeofencingApi.removeGeofences(mApiClient,
                                             mGeofenceRequestIntent);
-                                } catch (Exception ignored) {}
+                                } catch (Exception ignored) {
+                                }
 
                                 //noinspection ResourceType
                                 LocationServices

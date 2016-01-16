@@ -80,8 +80,8 @@
     <PreferenceCategory android:title="@string/category_notification">
         <Preference
             android:key="notification_registration_id"
-            android:title="@string/notification_settings_id"
-            android:summary="@string/notification_settings_copy" />
+            android:summary="@string/notification_settings_copy"
+            android:title="@string/notification_settings_id" />
 
         <SwitchPreference
             android:defaultValue="true"
@@ -92,11 +92,11 @@
 
         <RingtonePreference
             android:key="notification_sound"
-            android:title="@string/notification_sound_title"
-            android:summary="@string/notification_sound_summary"
-            android:showSilent="true"
+            android:ringtoneType="notification"
             android:showDefault="true"
-            android:ringtoneType="notification" />
+            android:showSilent="true"
+            android:summary="@string/notification_sound_summary"
+            android:title="@string/notification_sound_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_info">

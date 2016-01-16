@@ -49,8 +49,8 @@ import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
 public class AppController extends Application implements GcmListener {
