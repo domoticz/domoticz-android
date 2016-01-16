@@ -760,12 +760,17 @@ public class Domoticz {
                           int jsonUrl,
                           int jsonAction,
                           double value,
+                          String password,
                           setCommandReceiver receiver) {
-
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
-        Log.v(TAG, "Action: " + url);
 
+        if(!UsefulBits.isEmpty(password))
+        {
+            url += "&passcode=" + password;
+        }
+
+        Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -777,6 +782,7 @@ public class Domoticz {
                                   long hue,
                                   int brightness,
                                   boolean isWhite,
+                                  String password,
                                   setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
 
@@ -786,6 +792,10 @@ public class Domoticz {
         if (isWhite)
             url = url.replace("&iswhite=false", "&iswhite=true");
 
+        if(!UsefulBits.isEmpty(password))
+        {
+            url += "&passcode=" + password;
+        }
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -796,11 +806,15 @@ public class Domoticz {
     public void setModalAction(int id,
                                int status, // one of Domoticz.Device.ModalSwitch.Action
                                int action, // behaves like this action == 1 ? 1 : 0
-                               Calendar until,
+                               String password,
                                setCommandReceiver receiver) {
         String url = constructSetUrl(Domoticz.Json.Url.Set.MODAL_SWITCHES, id, status, 0);
         url += "&action=" + action;
 
+        if(!UsefulBits.isEmpty(password))
+        {
+            url += "&passcode=" + password;
+        }
         Log.v(TAG, "Action: " + url);
         setCommandParser parser = new setCommandParser(receiver);
         RequestUtil.makeJsonPutRequest(parser,
@@ -809,6 +823,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    /*
     public void setEventAction(int id,
                                String xmlStatement,
                                int jsonUrl,
@@ -823,7 +838,7 @@ public class Domoticz {
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3);
-    }
+    }*/
 
     public void getStatus(int idx, StatusReceiver receiver) {
         StatusInfoParser parser = new StatusInfoParser(receiver);

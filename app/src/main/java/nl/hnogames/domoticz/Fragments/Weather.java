@@ -159,7 +159,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mWeatherInfo.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mWeatherInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);

@@ -182,7 +182,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);

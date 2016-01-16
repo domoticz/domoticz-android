@@ -217,7 +217,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         locations = mSharedPrefs.getLocations();
         boolean addressChanged = false;
 
-        if(locations != null) {
+        if (locations != null) {
             for (LocationInfo l : locations) {
                 if (l.getAddress() == null && l.getLocation() != null) {
                     //load the address
@@ -290,7 +290,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void createLocationRequest() {
-
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(LOCATION_INTERVAL);
         mLocationRequest.setFastestInterval(LOCATION_FASTEST_INTERVAL);

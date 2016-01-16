@@ -44,6 +44,7 @@ import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -227,7 +228,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -251,11 +252,28 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     @Override
-    public void onSceneClick(int idx, boolean action) {
+    public void onSceneClick(int idx, final boolean action) {
         addDebugText("onSceneClick");
         addDebugText("Set " + idx + " to " + action);
-        SceneInfo clickedScene = getScene(idx);
+        final SceneInfo clickedScene = getScene(idx);
+        if(clickedScene.isProtected())
+        {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    getActivity());
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    setScene(clickedScene, action, password);
+                }
+            });
+        }
+        else{
+            setScene(clickedScene, action, null);
+        }
+    }
 
+    public void setScene(SceneInfo clickedScene, boolean action, String password){
         if (action)
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT).show();
         else
@@ -267,7 +285,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         if (action) jsonAction = Domoticz.Scene.Action.ON;
         else jsonAction = Domoticz.Scene.Action.OFF;
 
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(clickedScene.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 processScenes();
@@ -279,7 +297,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             }
         });
     }
-
 
     @Override
     public void onPause() {
