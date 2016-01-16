@@ -279,12 +279,7 @@ public class Domoticz {
 
     public void debugTextToClipboard(TextView debugText) {
         String message = debugText.getText().toString();
-
-        ClipboardManager clipboard =
-                (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Domoticz debug data", message);
-        clipboard.setPrimaryClip(clip);
-
+        UsefulBits.copyToClipboard(mContext, "Domoticz debug data", message);
         Toast.makeText(mContext, R.string.msg_copiedToClipboard, Toast.LENGTH_SHORT).show();
     }
 
