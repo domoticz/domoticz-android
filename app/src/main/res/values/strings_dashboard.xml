@@ -3,7 +3,7 @@
 
 
     <string name="title_dashboard">Dashboard</string>
-    <string name="update_available">Domoticz server update available</string>
+    <string name="update_available">Server update available: %1$s to version: %2$s</string>
 
     <string name="usage">Usage</string>
     <string name="today">Today</string>
