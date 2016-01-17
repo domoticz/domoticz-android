@@ -270,9 +270,9 @@ public class Preference extends PreferenceFragment {
     private void exportSettings() {
         Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(mContext, "Settings Exported.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.settings_imported, Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(mContext, "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
     }
 
     private void setVersionInfo() {
