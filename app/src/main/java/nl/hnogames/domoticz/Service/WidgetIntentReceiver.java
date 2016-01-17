@@ -38,6 +38,7 @@ import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
@@ -53,6 +54,9 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     }
 
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {
+        if(mExtendedStatusInfo == null)
+            return false;
+
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
             switch (mExtendedStatusInfo.getType()) {
@@ -119,12 +123,14 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onReceiveDevice(DevicesInfo s) {
-                    if (isOnOffSwitch(s))
-                        onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
-                    if (isPushOffSwitch(s))
-                        onButtonClick(s, false, domoticz, context);
-                    if (isPushOnSwitch(s))
-                        onButtonClick(s, true, domoticz, context);
+                    if(s != null) {
+                        if (isOnOffSwitch(s))
+                            onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
+                        if (isPushOffSwitch(s))
+                            onButtonClick(s, false, domoticz, context);
+                        if (isPushOnSwitch(s))
+                            onButtonClick(s, true, domoticz, context);
+                    }
                 }
 
                 @Override
