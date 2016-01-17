@@ -68,6 +68,7 @@ public class SharedPrefUtil {
     public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
 
     public static final String PREF_UPDATE_VERSION = "updateversion";
+    public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
@@ -405,11 +406,19 @@ public class SharedPrefUtil {
         editor.putString(REMOTE_SERVER_PASSWORD, password).apply();
     }
 
-    public String getUpdateAvailable() {
+    public boolean isServerUpdateAvailable() {
+        return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
+    }
+
+    public void setServerUpdateAvailable(boolean haveUpdate) {
+        editor.putBoolean(PREF_UPDATE_SERVER_AVAILABLE, haveUpdate).apply();
+    }
+
+    public String getUpdateVersionAvailable() {
         return prefs.getString(PREF_UPDATE_VERSION, "");
     }
 
-    public void setUpdateAvailable(String version) {
+    public void setUpdateVersionAvailable(String version) {
         editor.putString(PREF_UPDATE_VERSION, version).apply();
     }
 
@@ -684,14 +693,26 @@ public class SharedPrefUtil {
     }
 
     public boolean saveSharedPreferencesToFile(File dst) {
+        boolean isServerUpdateAvailableValue = false;
+        boolean isGeofenceEnabledValue = false;
         // Before saving to file set geofences to false so on restore of settings
         // fences are started
-        setGeofenceEnabled(false);
+        if (isGeofenceEnabled()) {
+            isGeofenceEnabledValue = true;
+            setGeofenceEnabled(false);
+        }
+
+        // Before saving to file set server update available preference to false
+        if (isServerUpdateAvailable()) {
+            isServerUpdateAvailableValue = true;
+            setServerUpdateAvailable(false);
+        }
+
         boolean result = false;
 
         if (dst.exists()) result = dst.delete();
 
-        if (result ) {
+        if (result) {
             ObjectOutputStream output = null;
 
             //noinspection TryWithIdenticalCatches
@@ -714,6 +735,9 @@ public class SharedPrefUtil {
                 }
             }
         }
+        // Write original settings to preferences
+        if (isServerUpdateAvailableValue) setServerUpdateAvailable(true);
+        if (isGeofenceEnabledValue) setGeofenceEnabled(true);
         return result;
     }
 

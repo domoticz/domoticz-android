@@ -298,7 +298,7 @@ public class Preference extends PreferenceFragment {
             public void onReceiveVersion(String version) {
                 try {
                     String sVersion = version;
-                    String sUpdateVersion = mSharedPrefs.getUpdateAvailable();
+                    String sUpdateVersion = mSharedPrefs.getUpdateVersionAvailable();
                     if (sUpdateVersion != null && sUpdateVersion.length() > 0)
                         sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
                     domoticzVersion.setSummary(sVersion);

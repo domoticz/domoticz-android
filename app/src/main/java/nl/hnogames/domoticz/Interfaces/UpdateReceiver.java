@@ -24,7 +24,7 @@ package nl.hnogames.domoticz.Interfaces;
 
 public interface UpdateReceiver {
 
-    void onReceiveUpdate(String version);
+    void onReceiveUpdate(String version, boolean haveUpdate);
 
     void onError(Exception error);
 

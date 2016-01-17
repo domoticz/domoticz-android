@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
-    public CoordinatorLayout coordinatorLayout;
 
     @SuppressWarnings("unused")
     private String TAG = MainActivity.class.getSimpleName();
@@ -88,20 +87,14 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchViewAction;
 
     private ArrayList<String> stackFragments = new ArrayList<>();
+    private Domoticz domoticz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSharedPrefs = new SharedPrefUtil(this);
-
-        WidgetUtils.RefreshWidgets(this);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                .coordinatorLayout);
-
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        domoticz = new Domoticz(this);
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
@@ -118,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
             drawNavigationMenu();
             WidgetUtils.RefreshWidgets(this);
 
+            //noinspection ConstantConditions
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
             // Only start Geofences when not started
             // Geofences are already started on device boot up by the BootUpReceiver
             if (!mSharedPrefs.isGeofencingStarted()) {
@@ -125,79 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPrefs.setGeoFenceService();
             }
 
-            // Get latest Domoticz version
-            final Domoticz domoticz = new Domoticz(this);
-            domoticz.getUpdate(new UpdateReceiver() {
-                @Override
-                public void onReceiveUpdate(String version) {
-                    mSharedPrefs.setUpdateAvailable(version);
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    String message = String.format(
-                            getString(R.string.error_couldNotCheckForUpdates),
-                            domoticz.getErrorMessage(error));
-                    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-                    // TODO find out why snackbar doesn't work!
-                }
-            });
-
-            // Get current Domoticz server version
-            domoticz.getVersion(new VersionReceiver() {
-                @Override
-                public void onReceiveVersion(String serverVersion) {
-                    if (!UsefulBits.isEmpty(serverVersion)) {
-                        // Server version starts with a major version number
-                        // Update version doesn't have a major version number
-                        String serverVersionCheck = serverVersion.substring(2);
-                        String updateVersion = mSharedPrefs.getUpdateAvailable();
-                        if (!updateVersion.equals(serverVersionCheck)) {
-                            // Snackbar.make(coordinatorLayout, getString(R.string.update_available) + ": " + serverVersion, Snackbar.LENGTH_LONG).show();
-                            // TODO find out why snackbar doesn't work!
-                            Toast.makeText(MainActivity.this,
-                                    getString(R.string.update_available) + ": " + serverVersion,
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    String message = String.format(
-                            getString(R.string.error_couldNotCheckForUpdates),
-                            domoticz.getErrorMessage(error));
-                    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-                    // TODO find out why snackbar doesn't work!
-                }
-            });
-
-            // Get Domoticz server configuration
-            domoticz.GetConfig(new ConfigReceiver() {
-                @Override
-                public void onReceiveConfig(ConfigInfo settings) {
-                    if (settings != null)
-                        mSharedPrefs.saveConfig(settings);
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    String message = String.format(
-                            getString(R.string.error_couldNotCheckForConfig),
-                            domoticz.getErrorMessage(error));
-                    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-                    // TODO find out why snackbar doesn't work!
-                }
-            });
-
-            AppRate.with(this)
-                    .setInstallDays(0) // default 10, 0 means install day.
-                    .setLaunchTimes(3) // default 10
-                    .setRemindInterval(2) // default 1
-                    .monitor();
-
-            // Show a dialog if meets conditions
-            AppRate.showRateDialogIfMeetsConditions(this);
+            checkDomoticzServerUpdate();
+            saveServerConfigToSharedPreferences();
+            appRate();
 
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -207,12 +134,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void drawNavigationMenu() {
-        setWakeLock();
         addDrawerItems();
         addFragment();
     }
 
-    private void setWakeLock() {
+    private void setScreenOn() {
         if (mSharedPrefs.getAwaysOn())
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
@@ -440,6 +366,102 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void appRate() {
+        AppRate.with(this)
+                .setInstallDays(0) // default 10, 0 means install day.
+                .setLaunchTimes(3) // default 10
+                .setRemindInterval(2) // default 1
+                .monitor();
+
+        // Show a dialog if meets conditions
+        AppRate.showRateDialogIfMeetsConditions(this);
+    }
+
+    private void checkDomoticzServerUpdate() {
+
+        // Get latest Domoticz version
+        domoticz.getUpdate(new UpdateReceiver() {
+            @Override
+            public void onReceiveUpdate(String version, boolean haveUpdate) {
+                // Write update version to shared preferences
+                mSharedPrefs.setUpdateVersionAvailable(version);
+                mSharedPrefs.setServerUpdateAvailable(haveUpdate);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                String message = String.format(
+                        getString(R.string.error_couldNotCheckForUpdates),
+                        domoticz.getErrorMessage(error));
+                showSimpleSnackbar(message);
+                mSharedPrefs.setUpdateVersionAvailable("");
+            }
+        });
+
+        if (mSharedPrefs.isServerUpdateAvailable()) {
+            // Get current Domoticz server version
+            domoticz.getVersion(new VersionReceiver() {
+                @Override
+                public void onReceiveVersion(String serverVersion) {
+                    if (!UsefulBits.isEmpty(serverVersion)) {
+                        String[] version
+                                = serverVersion.split("\\.");
+                        // Update version is only revision number
+                        String updateVersion =
+                                version[0] + "." + mSharedPrefs.getUpdateVersionAvailable();
+                        String message
+                                = String.format(getString(R.string.update_available),
+                                serverVersion,
+                                updateVersion);
+                        showSimpleSnackbar(message);
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
+                    showSimpleSnackbar(message);
+                }
+            });
+        }
+
+    }
+
+    private void saveServerConfigToSharedPreferences() {
+        // Get Domoticz server configuration
+        domoticz.GetConfig(new ConfigReceiver() {
+            @Override
+            public void onReceiveConfig(ConfigInfo settings) {
+                if (settings != null)
+                    mSharedPrefs.saveConfig(settings);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                String message = String.format(
+                        getString(R.string.error_couldNotCheckForConfig),
+                        domoticz.getErrorMessage(error));
+                showSimpleSnackbar(message);
+            }
+        });
+    }
+
+    private void showSimpleSnackbar(String message) {
+        try {
+            CoordinatorLayout fragmentCoordinatorLayout = (CoordinatorLayout) getVisibleFragment()
+                    .getView()
+                    .findViewById(R.id.coordinatorLayout);
+            Snackbar.make(fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
+            Log.e(TAG, "Showing toast instead of snackbar");
+            ex.printStackTrace();
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = getVisibleFragment();
@@ -514,6 +536,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        setScreenOn();
         refreshFragment();
     }
 
