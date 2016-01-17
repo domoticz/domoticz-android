@@ -585,7 +585,7 @@ public class SharedPrefUtil {
     }
 
     public ConfigInfo getConfig() {
-        ConfigInfo config = null;
+        ConfigInfo config;
         if (prefs.contains(PREF_CONFIG)) {
             String jsonConfig = prefs.getString(PREF_CONFIG, null);
             config = new ConfigInfo(jsonConfig);
@@ -604,7 +604,7 @@ public class SharedPrefUtil {
     }
 
     public ArrayList<LocationInfo> getLocations() {
-        List<LocationInfo> returnValue = new ArrayList<LocationInfo>();
+        List<LocationInfo> returnValue = new ArrayList<>();
         List<LocationInfo> locations;
         boolean incorrectDetected = false;
 
@@ -687,33 +687,34 @@ public class SharedPrefUtil {
         // Before saving to file set geofences to false so on restore of settings
         // fences are started
         setGeofenceEnabled(false);
+        boolean result = false;
 
-        if (dst.exists())
-            dst.delete();
+        if (dst.exists()) result = dst.delete();
 
-        boolean res = false;
-        ObjectOutputStream output = null;
+        if (result ) {
+            ObjectOutputStream output = null;
 
-        //noinspection TryWithIdenticalCatches
-        try {
-            output = new ObjectOutputStream(new FileOutputStream(dst));
-            output.writeObject(this.prefs.getAll());
-            res = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+            //noinspection TryWithIdenticalCatches
             try {
-                if (output != null) {
-                    output.flush();
-                    output.close();
+                output = new ObjectOutputStream(new FileOutputStream(dst));
+                output.writeObject(this.prefs.getAll());
+                result = true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (output != null) {
+                        output.flush();
+                        output.close();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
         }
-        return res;
+        return result;
     }
 
     @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})

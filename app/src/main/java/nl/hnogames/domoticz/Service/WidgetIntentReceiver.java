@@ -58,13 +58,14 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             return false;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+
             switch (mExtendedStatusInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
                     return true;
             }
         } else {
-            boolean switchFound = true;
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case Domoticz.Device.Type.Value.ON_OFF:
                 case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -79,7 +80,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private boolean isPushOnSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case Domoticz.Scene.Type.SCENE:
                     return true;
@@ -99,7 +101,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             return false;
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
@@ -113,7 +116,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         final Domoticz domoticz = new Domoticz(context);
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
-        int testIDX = mSharedPrefs.getWidgetIDX(widgetID);
 
         if (!isScene) {
             domoticz.getDevice(new DevicesReceiver() {
