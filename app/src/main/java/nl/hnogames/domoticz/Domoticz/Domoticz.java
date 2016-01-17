@@ -120,19 +120,17 @@ public class Domoticz {
     public boolean isUserOnLocalWifi() {
 
         boolean userIsLocal = false;
-
         if (mSharedPrefUtil.isLocalServerAddressDifferent()) {
             Set<String> localSsid = mSharedPrefUtil.getLocalSsid();
 
-            if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null) {
-
+            if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null && localSsid.size() > 0) {
                 String currentSsid = mPhoneConnectionUtil.getCurrentSsid();
-
-                // Remove quotes from current SSID read out
-                currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
-
-                for (String ssid : localSsid) {
-                    if (ssid.equals(currentSsid)) userIsLocal = true;
+                if(!UsefulBits.isEmpty(currentSsid)) {
+                    // Remove quotes from current SSID read out
+                    currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
+                    for (String ssid : localSsid) {
+                        if (ssid.equals(currentSsid)) userIsLocal = true;
+                    }
                 }
             }
         }
