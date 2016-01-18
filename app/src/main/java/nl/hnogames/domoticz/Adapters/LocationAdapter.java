@@ -39,14 +39,12 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.GeoUtil;
 
 public class LocationAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = LocationAdapter.class.getSimpleName();
     public ArrayList<LocationInfo> data = null;
-    private GeoUtil mGeoUtil;
     private Context context;
 
     private LocationClickListener listener;
@@ -55,8 +53,6 @@ public class LocationAdapter extends BaseAdapter {
                            ArrayList<LocationInfo> data,
                            LocationClickListener l) {
         super();
-
-        mGeoUtil = new GeoUtil(context);
 
         this.context = context;
         this.data = data;
@@ -108,7 +104,7 @@ public class LocationAdapter extends BaseAdapter {
             String addressString;
             String countryString;
 
-            if (address != null) {
+            if (!address.getAddressLine(0).isEmpty()) {
                 addressString = address.getAddressLine(0) + ", " + address.getLocality();
                 countryString = address.getCountryName();
             } else {
