@@ -76,6 +76,7 @@
     <string name="debug_switch_title">Debugging</string>
     <string name="debug_switch_summary_on">Debugging enabled</string>
     <string name="debug_switch_summary_off">Debugging disabled</string>
+    <string name="error_atLeastOneItemInDrawer">You need at least one item in the drawer</string>
 
 
 </resources>

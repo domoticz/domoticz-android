@@ -31,12 +31,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.HashSet;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -79,6 +81,26 @@ public class Preference extends PreferenceFragment {
     }
 
     private void setPreferences() {
+
+        MultiSelectListPreference drawerItems =
+                (MultiSelectListPreference) findPreference("enable_menu_items");
+        drawerItems.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                try {
+                    final HashSet selectedDrawerItems = (HashSet) newValue;
+                    if (selectedDrawerItems.size() < 1) {
+                        Toast.makeText(mContext, R.string.error_atLeastOneItemInDrawer,
+                                Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
+                return true;
+            }
+        });
 
         android.preference.Preference ServerSettings = findPreference("server_settings");
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
