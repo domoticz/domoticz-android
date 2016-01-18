@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 65
-        versionName '0.1.219'
+        versionCode 66
+        versionName '0.1.220'
         multiDexEnabled true
     }
 
