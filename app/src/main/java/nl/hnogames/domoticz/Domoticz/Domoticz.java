@@ -125,7 +125,7 @@ public class Domoticz {
 
             if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null && localSsid.size() > 0) {
                 String currentSsid = mPhoneConnectionUtil.getCurrentSsid();
-                if(!UsefulBits.isEmpty(currentSsid)) {
+                if (!UsefulBits.isEmpty(currentSsid)) {
                     // Remove quotes from current SSID read out
                     currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
                     for (String ssid : localSsid) {

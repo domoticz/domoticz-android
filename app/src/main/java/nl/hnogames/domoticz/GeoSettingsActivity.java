@@ -199,17 +199,20 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         SwitchDialog infoDialog = new SwitchDialog(
                 GeoSettingsActivity.this, switches,
-                R.layout.dialog_switch_logs);
+                R.layout.dialog_switch_logs,
+                domoticz);
+
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
                 selectedLocation.setSwitchidx(selectedSwitchIDX);
+                selectedLocation.setSwitchPassword(selectedSwitchPassword);
                 mSharedPrefs.updateLocation(selectedLocation);
-
                 adapter.data = mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();
             }
         });
+
         infoDialog.show();
     }
 
@@ -244,7 +247,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             @Override
             public void onRemoveClick(final LocationInfo location) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
                 builder.setMessage(R.string.are_you_sure)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -592,15 +594,17 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     public void startGeofenceService() {
-        if (mGeofenceList != null && mGeofenceList.size() > 0) {
-            mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
-            //noinspection ResourceType
-            LocationServices.GeofencingApi
-                    .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
-            if (domoticz.isDebugEnabled())
-                Snackbar.make(coordinatorLayout,
-                        R.string.starting_geofence_service, Snackbar.LENGTH_LONG).show();
-            isGeofenceServiceStarted = true;
+        if (mSharedPrefs.isGeofenceEnabled()) {
+            if (mGeofenceList != null && mGeofenceList.size() > 0) {
+                mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
+                //noinspection ResourceType
+                LocationServices.GeofencingApi
+                        .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+                if (domoticz.isDebugEnabled())
+                    Snackbar.make(coordinatorLayout,
+                            R.string.starting_geofence_service, Snackbar.LENGTH_LONG).show();
+                isGeofenceServiceStarted = true;
+            }
         }
     }
 

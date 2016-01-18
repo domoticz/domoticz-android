@@ -33,7 +33,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
+import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.R;
 
 public class SwitchDialog implements DialogInterface.OnDismissListener {
@@ -42,12 +45,15 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     private ArrayList<SwitchInfo> info;
     private DismissListener dismissListener;
     private Context mContext;
+    private Domoticz mDomoticz;
 
     public SwitchDialog(Context c,
                         ArrayList<SwitchInfo> _info,
-                        int layout) {
+                        int layout,
+                        Domoticz domoticz) {
         this.info = _info;
         this.mContext = c;
+        this.mDomoticz = domoticz;
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
@@ -69,9 +75,30 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                 android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (dismissListener != null)
-                    dismissListener.onDismiss(info.get(position).getIdx());
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                mDomoticz.getStatus(info.get(position).getIdx(), new StatusReceiver() {
+                    @Override
+                    public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
+                        if (!extendedStatusInfo.isProtected()) {
+                            if (dismissListener != null)
+                                dismissListener.onDismiss(info.get(position).getIdx(), null);
+                        } else {
+                            PasswordDialog passwordDialog = new PasswordDialog(mContext);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(String password) {
+                                    dismissListener.onDismiss(info.get(position).getIdx(), password);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                    }
+                });
+
 
                 md.dismiss();
             }
@@ -97,6 +124,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     }
 
     public interface DismissListener {
-        void onDismiss(int selectedSwitchIDX);
+        void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword);
     }
 }

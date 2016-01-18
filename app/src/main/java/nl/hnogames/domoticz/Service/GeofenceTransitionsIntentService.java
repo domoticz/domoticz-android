@@ -99,7 +99,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                         }
 
                         if (locationFound.getSwitchidx() > 0) {
-                            handleSwitch(locationFound.getSwitchidx(), true);
+                            handleSwitch(locationFound.getSwitchidx(), locationFound.getSwitchPassword(), true);
                         }
                     }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
@@ -118,8 +118,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                         }
 
                         if (locationFound.getSwitchidx() > 0)
-                            handleSwitch(locationFound.getSwitchidx(), false);
-
+                            handleSwitch(locationFound.getSwitchidx(), locationFound.getSwitchPassword(), false);
                     }
                 }
             }
@@ -128,7 +127,7 @@ public class GeofenceTransitionsIntentService extends IntentService
         }
     }
 
-    private void handleSwitch(final int idx, final boolean checked) {
+    private void handleSwitch(final int idx, final String password, final boolean checked) {
         domoticz = new Domoticz(this);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
@@ -154,7 +153,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                                              jsonAction = Domoticz.Device.Switch.Action.OFF;
                                                      }
 
-                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);

@@ -110,7 +110,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onConnectionOk() {
         getActionBar().setTitle(R.string.title_dashboard);
         super.showSpinner(true);
-        if(getView()!=null) {
+        if (getView() != null) {
             listView = (ListView) getView().findViewById(R.id.listView);
             coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
@@ -515,7 +515,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private void setColor(int selectedColor, final int idx, final String password) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        if(hsv.length>0)
+        if (hsv.length > 0)
             return;
 
         Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
@@ -617,7 +617,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     }
                 }
             });
-        tempDialog.show();
+            tempDialog.show();
 
         }
     }
