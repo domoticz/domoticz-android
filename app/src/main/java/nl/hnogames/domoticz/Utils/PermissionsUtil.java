@@ -39,10 +39,10 @@ public class PermissionsUtil {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    public static final int INITIAL_LOCATION_REQUEST = 1337;
-    public static final int INITIAL_IMPORT_SETTINGS_REQUEST = 1887;
-    public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 1997;
-    public static final int INITIAL_CAMERA_REQUEST = 1777;
+    public static final int INITIAL_LOCATION_REQUEST = 133;
+    public static final int INITIAL_IMPORT_SETTINGS_REQUEST = 188;
+    public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 199;
+    public static final int INITIAL_CAMERA_REQUEST = 177;
 
     @SuppressWarnings("unused")
     private static final String TAG = PermissionsUtil.class.getSimpleName();
