@@ -4,11 +4,14 @@ import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -47,6 +50,7 @@ public class WelcomePage3 extends Fragment {
     private int callingInstance;
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Switch advancedSettings_switch;
+    private CheckBox cbShowPassword, cbShowPasswordLocal;
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -101,6 +105,8 @@ public class WelcomePage3 extends Fragment {
         local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
+        cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
+        cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
 
@@ -143,6 +149,27 @@ public class WelcomePage3 extends Fragment {
             }
         });
 
+        cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    remote_password_input.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    remote_password_input.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
+
+        cbShowPasswordLocal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    local_password_input.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    local_password_input.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
     }
 
     private void setPreferenceValues() {

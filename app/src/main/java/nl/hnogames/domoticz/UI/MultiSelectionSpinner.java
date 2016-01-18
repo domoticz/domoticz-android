@@ -103,7 +103,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
 
     @SuppressWarnings("unused")
     public void setItems(String[] items) {
-        if (items != null && _items.length > 0) {
+        if (items != null && items.length > 0) {
             _items = items;
             mSelection = new boolean[_items.length];
             simple_adapter.clear();
@@ -113,7 +113,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
     }
 
     public void setItems(List<String> items) {
-        if (items != null && _items.length > 0) {
+        if (items != null && items.size() > 0) {
             _items = items.toArray(new String[items.size()]);
             mSelection = new boolean[_items.length];
             simple_adapter.clear();

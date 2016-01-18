@@ -24,7 +24,12 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.WindowInsets;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -42,7 +47,8 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private Context mContext;
     private Domoticz domoticz;
     private MaterialDialog md;
-    private FloatingLabelEditText editPasscode;
+    private FloatingLabelEditText editPassword;
+    private CheckBox showPassword;
 
     public PasswordDialog(Context c) {
         this.mContext = c;
@@ -55,7 +61,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         if (dismissListener != null)
-                            dismissListener.onDismiss(editPasscode.getInputWidgetText().toString());
+                            dismissListener.onDismiss(editPassword.getInputWidgetText().toString());
                     }
                 });
         mdb.dismissListener(this);
@@ -65,13 +71,27 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         mdb.title(mContext.getString(R.string.welcome_remote_server_password));
         md = mdb.build();
         View view = md.getCustomView();
-        editPasscode = (FloatingLabelEditText) view.findViewById(R.id.password);
+        editPassword = (FloatingLabelEditText) view.findViewById(R.id.password);
+        showPassword = (CheckBox) view.findViewById(R.id.showpassword);
+        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // checkbox status is changed from uncheck to checked.
+                if (!isChecked) {
+                    // show password
+                    editPassword.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    // hide password
+                    editPassword.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
+
         md.show();
     }
 
     @Override
-    public void onDismiss(DialogInterface dialogInterface) {
-    }
+    public void onDismiss(DialogInterface dialogInterface) {}
 
     public void onDismissListener(DismissListener dismissListener) {
         this.dismissListener = dismissListener;
