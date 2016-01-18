@@ -70,7 +70,8 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialogInterface) {}
+    public void onDismiss(DialogInterface dialogInterface) {
+    }
 
     public void onDismissListener(DismissListener dismissListener) {
         this.dismissListener = dismissListener;

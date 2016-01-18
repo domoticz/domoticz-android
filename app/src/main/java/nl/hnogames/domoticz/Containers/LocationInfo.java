@@ -32,6 +32,7 @@ public class LocationInfo {
     private LatLng latLng;
     private int id = 0;
     private int switchIdx = 0;
+    private String switchPassword = "";
     private int radius = 400;           //meters
     private boolean enabled = false;
     private Address address;
@@ -95,6 +96,14 @@ public class LocationInfo {
         this.address = address;
     }
 
+    public String getSwitchPassword() {
+        return switchPassword;
+    }
+
+    public void setSwitchPassword(String switchPassword) {
+        this.switchPassword = switchPassword;
+    }
+
     /**
      * Creates a Location Services Geofence object from a SimpleGeofence.
      *
@@ -118,4 +127,5 @@ public class LocationInfo {
             return null;
         }
     }
+
 }

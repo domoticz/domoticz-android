@@ -54,7 +54,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     }
 
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {
-        if(mExtendedStatusInfo == null)
+        if (mExtendedStatusInfo == null)
             return false;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
@@ -125,7 +125,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onReceiveDevice(DevicesInfo s) {
-                    if(s != null) {
+                    if (s != null) {
                         if (isOnOffSwitch(s))
                             onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
                         if (isPushOffSwitch(s))
