@@ -77,18 +77,16 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
 
         if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELCIUS))
             isFahrenheit = true;
-//        Log.i("bryan", String.valueOf(currentTemperature));
         temperatureText.setText(String.valueOf(currentTemperature) + " " + config.getTempSign());
         int progress = (int) (currentTemperature);
         if (!isFahrenheit)
             progress = (int) (currentTemperature * 2);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
-//            ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", progress);
-//            animation.setDuration(1000); // 0.5 second
-//            animation.setInterpolator(new DecelerateInterpolator());
-//            animation.start();
-            temperatureControl.setProgress(progress); // no animation on Gingerbread or lower
+            ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", progress);
+            animation.setDuration(1000); // 0.5 second
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
         } else
             temperatureControl.setProgress(progress); // no animation on Gingerbread or lower
 
