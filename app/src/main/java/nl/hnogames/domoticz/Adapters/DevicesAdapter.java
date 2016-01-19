@@ -576,20 +576,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        holder.buttonOn.setId(mDevicesInfo.getIdx());
-        if (mDevicesInfo.getData().startsWith("Arm"))
-            holder.buttonOn.setText(context.getString(R.string.button_disarm));
-        else
-            holder.buttonOn.setText(context.getString(R.string.button_arm));
+        if(holder.buttonOn!=null) {
+            holder.buttonOn.setId(mDevicesInfo.getIdx());
+            if (mDevicesInfo.getData().startsWith("Arm"))
+                holder.buttonOn.setText(context.getString(R.string.button_disarm));
+            else
+                holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-        holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
-        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open security panel
-                handleSecurityPanel(v.getId());
-            }
-        });
+            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //open security panel
+                    handleSecurityPanel(v.getId());
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
