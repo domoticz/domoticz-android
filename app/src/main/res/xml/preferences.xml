@@ -77,26 +77,36 @@
             android:title="@string/import_settings" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_language">
+        <ListPreference
+            android:key="displayLanguage"
+            android:title="@string/category_language"
+            android:entries="@array/domoticz_language_entries"
+            android:entryValues="@array/domoticz_language_entryValues"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_notification">
-        <Preference
-            android:key="notification_registration_id"
-            android:summary="@string/notification_settings_copy"
-            android:title="@string/notification_settings_id" />
+        <PreferenceScreen android:title="@string/notification_screen_title">
+            <Preference
+                android:key="notification_registration_id"
+                android:summary="@string/notification_settings_copy"
+                android:title="@string/notification_settings_id" />
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="notification_vibrate"
-            android:summaryOff="@string/notification_vibrate_off"
-            android:summaryOn="@string/notification_vibrate_on"
-            android:title="@string/notification_vibrate_title" />
+            <SwitchPreference
+                android:defaultValue="true"
+                android:key="notification_vibrate"
+                android:summaryOff="@string/notification_vibrate_off"
+                android:summaryOn="@string/notification_vibrate_on"
+                android:title="@string/notification_vibrate_title" />
 
-        <RingtonePreference
-            android:key="notification_sound"
-            android:ringtoneType="notification"
-            android:showDefault="true"
-            android:showSilent="true"
-            android:summary="@string/notification_sound_summary"
-            android:title="@string/notification_sound_title" />
+            <RingtonePreference
+                android:key="notification_sound"
+                android:ringtoneType="notification"
+                android:showDefault="true"
+                android:showSilent="true"
+                android:summary="@string/notification_sound_summary"
+                android:title="@string/notification_sound_title" />
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_info">

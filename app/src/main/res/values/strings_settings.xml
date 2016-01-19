@@ -11,7 +11,8 @@
     <string name="category_wear">Android Wear</string>
     <string name="category_server">Server</string>
     <string name="category_geofencing">Geofencing</string>
-    <string name="category_info">Information</string>>
+    <string name="category_info">Information</string>
+    <string name="category_language">Language</string>
     <string name="category_notification">Notifications</string>
     <string name="category_debug">Debugging</string>
     <string name="category_export">Export/Import Settings</string>
@@ -51,11 +52,13 @@
     <string name="export_settings">Export settings</string>
     <string name="import_settings">Import settings</string>
 
-
-    <!--        Notification settings      -->
+    <!--        GCM settings      -->
     <string name="notification_settings_id">Google Cloud Messaging ID</string>
     <string name="notification_settings_copy">Copy your registration id to clipboard</string>
     <string name="notification_settings_copied">Copied to clipboard</string>
+
+    <!--        Notification settings      -->
+    <string name="notification_screen_title">Notification settings</string>
     <string name="notification_vibrate_title">Vibrate</string>
     <string name="notification_vibrate_on">Vibrate when an notification is received</string>
     <string name="notification_vibrate_off">Do not vibrate</string>

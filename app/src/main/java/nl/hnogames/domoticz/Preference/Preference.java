@@ -37,6 +37,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.io.File;
 import java.util.HashSet;
 
@@ -108,6 +111,15 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 Intent intent = new Intent(mContext, ServerSettingsActivity.class);
                 startActivity(intent);
+                return true;
+            }
+        });
+
+        android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
+        displayLanguage.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                showRestartMessage(newValue.toString());
                 return true;
             }
         });
@@ -184,6 +196,25 @@ public class Preference extends PreferenceFragment {
                 }
             });
         }
+    }
+
+    private void showRestartMessage(String language) {
+        UsefulBits.setLocale(mContext, language);
+        new MaterialDialog.Builder(mContext)
+                .title("Restart required")
+                .content("For the language settings to become to effect an application restart is required"
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + "Restart now?")
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        UsefulBits.restartApplication(getActivity());
+                    }
+                })
+                .show();
     }
 
     private void handleInfoAndAbout() {
