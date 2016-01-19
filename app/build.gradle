@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 69
-        versionName '0.1.222'
+        versionCode 67
+        versionName '0.1.221'
         multiDexEnabled true
     }
 
@@ -70,6 +70,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-wearable:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
         transitive = true
@@ -90,6 +91,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'eu.inloop:easygcm:1.6.1@aar'
 
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 }
+
+
+apply plugin: 'com.google.gms.google-services'
