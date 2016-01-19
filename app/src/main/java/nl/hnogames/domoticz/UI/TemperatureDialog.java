@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.UI;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -76,17 +77,18 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
 
         if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELCIUS))
             isFahrenheit = true;
-
-        temperatureText.setText(String.valueOf(currentTemperature));
+//        Log.i("bryan", String.valueOf(currentTemperature));
+        temperatureText.setText(String.valueOf(currentTemperature) + " " + config.getTempSign());
         int progress = (int) (currentTemperature);
         if (!isFahrenheit)
             progress = (int) (currentTemperature * 2);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
-            ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", progress);
-            animation.setDuration(1000); // 0.5 second
-            animation.setInterpolator(new DecelerateInterpolator());
-            animation.start();
+//            ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", progress);
+//            animation.setDuration(1000); // 0.5 second
+//            animation.setInterpolator(new DecelerateInterpolator());
+//            animation.start();
+            temperatureControl.setProgress(progress); // no animation on Gingerbread or lower
         } else
             temperatureControl.setProgress(progress); // no animation on Gingerbread or lower
 
@@ -122,19 +124,25 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFahrenheit)
+                if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 2);
-                else
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + config.getTempSign());
+                } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 1);
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + config.getTempSign());
+                }
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFahrenheit)
+                if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 2);
-                else
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + config.getTempSign());
+                } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 1);
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + config.getTempSign());
+                }
             }
         });
         md.show();
