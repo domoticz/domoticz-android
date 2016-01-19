@@ -45,6 +45,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -77,17 +79,17 @@ public class MainActivity extends AppCompatActivity {
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
 
-    @SuppressWarnings("unused")
     private String TAG = MainActivity.class.getSimpleName();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawer;
     private String[] fragments;
     private SharedPrefUtil mSharedPrefs;
-    private NavigationAdapter mAdapter;                        // Declaring Adapter For Recycler View
+    private NavigationAdapter mAdapter;
     private SearchView searchViewAction;
 
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
+    private boolean onPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,13 +104,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-            buildScreen();
-        }
-    }
 
-    public void buildScreen() {
-        if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            drawNavigationMenu();
             WidgetUtils.RefreshWidgets(this);
 
             //noinspection ConstantConditions
@@ -126,7 +122,15 @@ public class MainActivity extends AppCompatActivity {
             saveServerConfigToSharedPreferences();
             appRate();
 
-        } else {
+            TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
+            if (usingTabletLayout == null) onPhone = true;
+            buildScreen();
+        }
+    }
+
+    public void buildScreen() {
+        if (mSharedPrefs.isWelcomeWizardSuccess()) drawNavigationMenu();
+        else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -283,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     invalidateOptionsMenu();
-                    mDrawer.closeDrawer(GravityCompat.START);
+                    if (onPhone) mDrawer.closeDrawer(GravityCompat.START);
 
                     return true;
                 }
@@ -307,35 +311,40 @@ public class MainActivity extends AppCompatActivity {
      * Sets the drawer with listeners for open and closed
      */
     private void setupDrawer() {
-        // final CharSequence currentTitle = getSupportActionBar().getTitle();
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawer, R.string.drawer_open, R.string.drawer_close) {
+        if (onPhone) {
+            mDrawerToggle = new ActionBarDrawerToggle(
+                    this, mDrawer, R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a mDrawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
+                /**
+                 * Called when a mDrawer has settled in a completely open state.
+                 */
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
 
-                try {
-                    if (searchViewAction != null)
-                        searchViewAction.clearFocus();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    try {
+                        if (searchViewAction != null)
+                            searchViewAction.clearFocus();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //getSupportActionBar().setTitle(R.string.drawer_navigation_title);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
 
-                //getSupportActionBar().setTitle(R.string.drawer_navigation_title);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+                /**
+                 * Called when a mDrawer has settled in a completely closed state.
+                 */
+                public void onDrawerClosed(View view) {
+                    super.onDrawerClosed(view);
+                    //getSupportActionBar().setTitle(currentTitle);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            };
 
-            /** Called when a mDrawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                //getSupportActionBar().setTitle(currentTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
-        mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+            mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
+            mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+        }
     }
 
     @Override

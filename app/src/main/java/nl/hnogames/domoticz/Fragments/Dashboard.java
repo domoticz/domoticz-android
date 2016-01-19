@@ -369,6 +369,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 jsonUrl = Domoticz.Json.Url.Set.SCENES;
                 if (checked) jsonAction = Domoticz.Scene.Action.ON;
                 else jsonAction = Domoticz.Scene.Action.OFF;
+                idx = idx - adapter.ID_SCENE_SWITCH;
             }
 
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -448,6 +449,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             jsonUrl = Domoticz.Json.Url.Set.SCENES;
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
+            idx = idx - adapter.ID_SCENE_SWITCH;
         }
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override

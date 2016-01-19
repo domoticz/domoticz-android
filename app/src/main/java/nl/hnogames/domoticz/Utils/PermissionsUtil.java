@@ -46,6 +46,7 @@ public class PermissionsUtil {
     public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 133;
     public static final int INITIAL_CAMERA_REQUEST = 144;
 
+
     @SuppressWarnings("unused")
     private static final String TAG = PermissionsUtil.class.getSimpleName();
 
