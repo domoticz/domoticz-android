@@ -66,7 +66,7 @@ public class SharedPrefUtil {
     public static final String PREF_NOTIFICATION_ID = "notification_id";
     public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
-
+    public static final String PREF_LANGUAGE = "displayLanguage";
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
     public static final String PREF_EXTRA_DATA = "extradata";
@@ -789,6 +789,10 @@ public class SharedPrefUtil {
             }
         }
         return res;
+    }
+
+    public String getLanguage() {
+        return prefs.getString(PREF_LANGUAGE, "");
     }
 
     public boolean isGeofencingStarted() {

@@ -149,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
             getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
+    private void applyLanguage() {
+        if (!UsefulBits.isEmpty(mSharedPrefs.getLanguage())) {
+            UsefulBits.setLocale(this, mSharedPrefs.getLanguage());
+        }
+    }
+
     /* Called when the second activity's finished */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
