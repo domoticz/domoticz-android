@@ -46,6 +46,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
@@ -271,7 +272,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         }
     }
 
-    public void setScene(SceneInfo clickedScene, boolean action, String password) {
+    public void setScene(SceneInfo clickedScene, boolean action, final String password) {
         if (action)
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT).show();
         else
@@ -291,7 +292,10 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                if (!UsefulBits.isEmpty(password))
+                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                else
+                    errorHandling(error);
             }
         });
     }

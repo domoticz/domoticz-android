@@ -137,9 +137,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
                         handleClick(view.getId(), true);
                     }
                 });
-                if (holder.isProtected) {
-                    holder.buttonOn.setEnabled(false);
-                }
             }
 
         } else if (mSceneInfo.getType().equalsIgnoreCase(Domoticz.Scene.Type.GROUP)) {
@@ -160,9 +157,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
 
             if (holder.onOffSwitch != null) {
-                if (holder.isProtected) {
-                    holder.onOffSwitch.setEnabled(false);
-                }
                 holder.onOffSwitch.setId(mSceneInfo.getIdx());
                 holder.onOffSwitch.setChecked(mSceneInfo.getStatusInBoolean());
                 holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
