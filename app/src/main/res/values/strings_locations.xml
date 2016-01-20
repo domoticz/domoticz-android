@@ -9,6 +9,7 @@
     <string name="connectedSwitch">Connected switch</string>
     <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
     <string name="delete_short">DEL</string>
+    <string name="delete">Delete</string>
     <string name="Location_name">Location name</string>
     <string name="currentLocation">Current location</string>
     <string name="manual">Manual</string>

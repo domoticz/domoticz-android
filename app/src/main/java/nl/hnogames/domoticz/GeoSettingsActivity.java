@@ -46,6 +46,8 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -240,24 +242,29 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         adapter = new LocationAdapter(this, locations, new LocationClickListener() {
             @Override
-            public void onEnableClick(LocationInfo location, boolean checked) {
-                location.setEnabled(checked);
-                mSharedPrefs.updateLocation(location);
+            public boolean onEnableClick(LocationInfo locationInfo, boolean checked) {
+                if (locationInfo.getSwitchidx() <= 0 && checked)
+                    return showNoDeviceAttachedDialog(locationInfo);
+                else {
+                    locationInfo.setEnabled(checked);
+                    mSharedPrefs.updateLocation(locationInfo);
+                    return checked;
+                }
             }
 
             @Override
-            public void onRemoveClick(final LocationInfo location) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
-                builder.setMessage(R.string.are_you_sure)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onRemoveClick(final LocationInfo locationInfo) {
+                new MaterialDialog.Builder(GeoSettingsActivity.this)
+                        .title(R.string.delete)
+                        .content(R.string.are_you_sure)
+                        .positiveText(R.string.yes)
+                        .negativeText(R.string.no)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                adapter.data.remove(location);
-                                mSharedPrefs.removeLocation(location);
-                                adapter.notifyDataSetChanged();
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                removeLocation(locationInfo);
                             }
                         })
-                        .setNegativeButton(getString(R.string.no), null)
                         .show();
             }
         });
@@ -273,24 +280,54 @@ public class GeoSettingsActivity extends AppCompatActivity
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                domoticz.getSwitches(new SwitchesReceiver() {
-                    @Override
-                    public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                        showSwitchesDialog(locations.get(position), switches);
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        Snackbar.make(coordinatorLayout,
-                                R.string.unable_to_get_switches,
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+                getSwitchesAndShowSwitchesDialog(locations.get(position));
                 return true;
             }
         });
     }
 
+    private void removeLocation(LocationInfo locationInfo) {
+        adapter.data.remove(locationInfo);
+        mSharedPrefs.removeLocation(locationInfo);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void getSwitchesAndShowSwitchesDialog(final LocationInfo locationInfo) {
+        domoticz.getSwitches(new SwitchesReceiver() {
+            @Override
+            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+                showSwitchesDialog(locationInfo, switches);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout,
+                        R.string.unable_to_get_switches,
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    boolean result = false;
+    private boolean showNoDeviceAttachedDialog(final LocationInfo locationInfo) {
+        new MaterialDialog.Builder(this)
+                .title("No switch selected")
+                .content("For GeoFencing to have effect, a switch should be connected to an GeoFence"
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + "Connect one now?")
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        getSwitchesAndShowSwitchesDialog(locationInfo);
+                        result = true;
+                    }
+                })
+                .show();
+        return result;
+    }
     private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(LOCATION_INTERVAL);
