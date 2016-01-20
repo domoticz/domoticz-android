@@ -39,14 +39,12 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.GeoUtil;
 
 public class LocationAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = LocationAdapter.class.getSimpleName();
     public ArrayList<LocationInfo> data = null;
-    private GeoUtil mGeoUtil;
     private Context context;
 
     private LocationClickListener listener;
@@ -55,8 +53,6 @@ public class LocationAdapter extends BaseAdapter {
                            ArrayList<LocationInfo> data,
                            LocationClickListener l) {
         super();
-
-        mGeoUtil = new GeoUtil(context);
 
         this.context = context;
         this.data = data;
@@ -148,9 +144,15 @@ public class LocationAdapter extends BaseAdapter {
         holder.enable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (LocationInfo l : data) {
-                    if (l.getID() == buttonView.getId())
-                        handleEnableChanged(l, holder.enable.isChecked());
+                for (LocationInfo locationInfo : data) {
+                    if (locationInfo.getID() == buttonView.getId()) {
+                        if (!handleEnableChanged(locationInfo, holder.enable.isChecked())) {
+                            buttonView.setChecked(false);
+                        } else {
+                            buttonView.setChecked(true);
+                        }
+                        break;
+                    }
                 }
             }
         });
@@ -163,8 +165,8 @@ public class LocationAdapter extends BaseAdapter {
         listener.onRemoveClick(removeLocation);
     }
 
-    private void handleEnableChanged(LocationInfo location, boolean enabled) {
-        listener.onEnableClick(location, enabled);
+    private boolean handleEnableChanged(LocationInfo location, boolean enabled) {
+        return listener.onEnableClick(location, enabled);
     }
 
     static class ViewHolder {

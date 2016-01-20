@@ -188,7 +188,7 @@ public class Preference extends PreferenceFragment {
                     String packageID = mContext.getPackageName() + ".premium";
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
+                    } catch (android.content.ActivityNotFoundException ignored) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageID)));
                     }
 
