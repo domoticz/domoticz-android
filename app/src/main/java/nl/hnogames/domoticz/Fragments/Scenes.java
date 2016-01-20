@@ -99,7 +99,8 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     private void processScenes() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         state = listView.onSaveInstanceState();
         WidgetUtils.RefreshWidgets(mContext);

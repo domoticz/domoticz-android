@@ -83,7 +83,8 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     }
 
     private void processWeather() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         mDomoticz.getWeathers(new WeatherReceiver() {
 

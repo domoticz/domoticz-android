@@ -127,9 +127,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
             state = listView.onSaveInstanceState();
         }
-
-        //switch toggled, refresh listview
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
@@ -369,7 +368,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 jsonUrl = Domoticz.Json.Url.Set.SCENES;
                 if (checked) jsonAction = Domoticz.Scene.Action.ON;
                 else jsonAction = Domoticz.Scene.Action.OFF;
-                idx = idx - adapter.ID_SCENE_SWITCH;
             }
 
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -449,7 +447,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             jsonUrl = Domoticz.Json.Url.Set.SCENES;
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
-            idx = idx - adapter.ID_SCENE_SWITCH;
         }
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override

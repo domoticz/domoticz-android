@@ -37,7 +37,7 @@
   <string name="notification_vibrate_title">Vibrar</string>
   <string name="notification_vibrate_on">Vibra cuando se reciba una notificación</string>
   <string name="notification_vibrate_off">No vibrar</string>
-  <string name="notification_sound_title">Sound</string>
+  <string name="notification_sound_title">Sonido</string>
   <string name="notification_sound_summary">Use notification sound when notification arrives</string>
   <string name="info_version">Versión</string>
   <string name="info_domoticz_version">Versión de Domoticz</string>

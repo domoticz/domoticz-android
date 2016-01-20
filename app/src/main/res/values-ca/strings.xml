@@ -7,8 +7,8 @@
   <string name="drawer_open">Obre el calaix de navegació</string>
   <string name="drawer_close">Tanca el calaix de navegació</string>
   <string name="msg_please_wait">Espereu&#8230;</string>
-  <string name="button_state_on">Encès</string>
-  <string name="button_state_off">Apagat</string>
+  <string name="button_state_on">Encén</string>
+  <string name="button_state_off">Apaga</string>
   <string name="button_status_log">Registre</string>
   <string name="button_status_day">Dia</string>
   <string name="button_status_month">Mes</string>
@@ -65,6 +65,6 @@
   <string name="row_icon_description">icona de fila</string>
   <string name="error_image_description">Imatge d\'error</string>
   <string name="white">Blanc</string>
-  <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
+  <string name="error_couldNotCheckForUpdates">"No s'ha pogut comprovar si hi ha actualitzacions: %1$s"</string>
+  <string name="error_couldNotCheckForConfig">"No s'ha pogut obtenir la configuració del servidor Domoticz: %1$s"</string>
 </resources>

@@ -65,6 +65,6 @@
   <string name="row_icon_description">sor ikon</string>
   <string name="error_image_description">Hiba kép</string>
   <string name="white">Fehér</string>
-  <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
+  <string name="error_couldNotCheckForUpdates">"Nem tudta ellenőrizni a frissítést: %1$s"</string>
+  <string name="error_couldNotCheckForConfig">"Nem sikerült beolvasni a Domoticz szerver konfigurációt: %1$s"</string>
 </resources>

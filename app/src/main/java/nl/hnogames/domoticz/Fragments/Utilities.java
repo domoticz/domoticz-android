@@ -113,7 +113,8 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     private void processUtilities() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         final UtilityClickListener listener = this;
         mDomoticz.getUtilities(new UtilitiesReceiver() {
