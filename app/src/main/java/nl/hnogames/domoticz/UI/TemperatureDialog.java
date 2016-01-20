@@ -76,8 +76,7 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
 
         if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELCIUS))
             isFahrenheit = true;
-
-        temperatureText.setText(String.valueOf(currentTemperature));
+        temperatureText.setText(String.valueOf(currentTemperature) + " " + config.getTempSign());
         int progress = (int) (currentTemperature);
         if (!isFahrenheit)
             progress = (int) (currentTemperature * 2);
@@ -122,19 +121,25 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFahrenheit)
+                if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 2);
-                else
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + config.getTempSign());
+                } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 1);
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + config.getTempSign());
+                }
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFahrenheit)
+                if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 2);
-                else
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + config.getTempSign());
+                } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 1);
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + config.getTempSign());
+                }
             }
         });
         md.show();
