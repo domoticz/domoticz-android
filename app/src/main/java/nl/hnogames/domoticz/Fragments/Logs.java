@@ -87,7 +87,8 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     }
 
     private void processLogs() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getLogs(new LogsReceiver() {
             @Override
             public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {

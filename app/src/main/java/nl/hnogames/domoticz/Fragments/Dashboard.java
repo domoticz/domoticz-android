@@ -127,9 +127,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
             state = listView.onSaveInstanceState();
         }
-
-        //switch toggled, refresh listview
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {

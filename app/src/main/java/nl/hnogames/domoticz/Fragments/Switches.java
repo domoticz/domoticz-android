@@ -124,7 +124,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             state = listView.onSaveInstanceState();
         }
         //switch toggled, refresh listview
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         WidgetUtils.RefreshWidgets(mContext);
 
         mDomoticz.getDevices(new DevicesReceiver() {

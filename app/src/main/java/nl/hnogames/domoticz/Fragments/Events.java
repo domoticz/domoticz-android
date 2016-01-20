@@ -92,7 +92,8 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     }
 
     private void processUserVariables() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getEvents(new EventReceiver() {
             @Override
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
