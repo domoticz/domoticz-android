@@ -100,9 +100,9 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                             if (!PermissionsUtil.canAccessStorage(context)) {
                                 requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
                             } else
-                                processImage(savePic, (String) cameraTitle.getText());
+                                processImage(savePic, cameraTitle.getText().toString());
                         } else {
-                            processImage(savePic, (String) cameraTitle.getText());
+                            processImage(savePic, cameraTitle.getText().toString());
                         }
                     }
                 });
