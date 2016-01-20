@@ -31,13 +31,13 @@
   <string name="title_activity_server_settings">Szerver beállítások</string>
   <string name="export_settings">Beállítások exportálása</string>
   <string name="import_settings">Beállítások importálása</string>
-  <string name="notification_settings_id">Google Cloud Messaging ID</string>
+  <string name="notification_settings_id">Google Cloud üzenetküldő ID</string>
   <string name="notification_settings_copy">A regisztrációs id másolása a vágólapra</string>
   <string name="notification_settings_copied">Vágólapra másolva</string>
   <string name="notification_vibrate_title">Rezgés</string>
   <string name="notification_vibrate_on">Rezgés értesítésnél</string>
   <string name="notification_vibrate_off">Ne rezegjen</string>
-  <string name="notification_sound_title">Sound</string>
+  <string name="notification_sound_title">Hang</string>
   <string name="notification_sound_summary">Hang használata értesítés érkezésénél</string>
   <string name="info_version">Verzió</string>
   <string name="info_domoticz_version">Domoticz verzió</string>
