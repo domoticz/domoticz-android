@@ -3,8 +3,8 @@
 buildscript {
     repositories {
         maven { url "https://jitpack.io" };
-        jcenter();
         mavenCentral();
+        jcenter()
     }
     //noinspection GroovyAssignabilityCheck
     dependencies {
