@@ -20,31 +20,19 @@
  *
  */
 
-package nl.hnogames.domoticz.Interfaces;
+package nl.hnogames.domoticz.UI;
 
-public interface switchesClickListener {
+import android.content.Context;
 
-    void onSwitchClick(int idx, boolean action);
+import nl.hnogames.domoticz.R;
 
-    void onBlindClick(int idx, int action);
+public class ScheduledTemperatureDialog extends TemperatureDialog {
+    public ScheduledTemperatureDialog(Context mContext, int idx, double temp, boolean canCancel) {
+        super(mContext, idx, temp);
 
-    void onDimmerChange(int idx, int value, boolean selector);
-
-    void onButtonClick(int idx, boolean action);
-
-    void onLogButtonClick(int idx);
-
-    void onColorButtonClick(int idx);
-
-    void onTimerButtonClick(int idx);
-
-    void onThermostatClick(int idx);
-
-    void onSetTemperatureClick(int idx);
-
-    void onSecurityPanelButtonClick(int idx);
-
-    void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
-
-    void onSelectorDimmerClick(int idx, String[] levelNames);
+        if (canCancel) {
+            getMaterialDialogBuilder()
+                    .neutralText(R.string.follow_schedule);
+        }
+    }
 }

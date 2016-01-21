@@ -146,6 +146,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.UTILITIES_TYPE_THERMOSTAT:
                     row = setThermostatRowId(holder);
                     break;
+                case Domoticz.UTILITIES_TYPE_HEATING:
+                    row = setTemperatureRowId(holder);
+                    break;
                 default:
                     row = setDefaultRowId(holder);
                     break;
@@ -343,6 +346,27 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    private View setTemperatureRowId(ViewHolder holder) {
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.temperature_row_default;
+        else layoutResourceId = R.layout.temperature_row_small;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View convertView = inflater.inflate(layoutResourceId, null);
+
+        holder.switch_name = (TextView) convertView.findViewById(R.id.temperature_name);
+        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+
+        holder.switch_battery_level = (TextView) convertView.findViewById(R.id.temperature_data);
+        holder.signal_level = (TextView) convertView.findViewById(R.id.temperature_data2);
+        holder.buttonSet = (Button) convertView.findViewById(R.id.set_button);
+        holder.extrapanel = (LinearLayout) convertView.findViewById(R.id.extra_panel_button);
+
+        if (holder.extrapanel != null)
+            holder.extrapanel.setVisibility(View.GONE);
+
+        return convertView;
+    }
+
     private View setBlindsRowId(ViewHolder holder) {
 
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_blinds;
@@ -411,9 +435,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.buttonSetStatus = (Button) row.findViewById(R.id.set_status_button);
 
+        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel_button);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
+        if (holder.extrapanel != null)
+            holder.extrapanel.setVisibility(View.GONE);
         if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
         if (holder.buttonTimer != null)
@@ -436,6 +463,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     break;
                 case Domoticz.UTILITIES_TYPE_THERMOSTAT:
                     setThermostatRowData(mDeviceInfo, holder);
+                    break;
+                case Domoticz.UTILITIES_TYPE_HEATING:
+                    setTemperatureRowData(mDeviceInfo, holder);
                     break;
                 default:
                     setDefaultRowData(mDeviceInfo, holder);
@@ -698,8 +728,55 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
+    private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
+        final double temperature = mDeviceInfo.getTemperature();
+        final double setPoint = mDeviceInfo.getSetPoint();
+        holder.isProtected = mDeviceInfo.isProtected();
+
+        holder.switch_name.setText(mDeviceInfo.getName());
+
+        if (Double.isNaN(temperature) || Double.isNaN(setPoint)) {
+            if (holder.signal_level != null)
+                holder.signal_level.setVisibility(View.GONE);
+
+            if (holder.switch_battery_level != null)
+                holder.switch_battery_level.setText(context.getString(R.string.temperature) + ": " + mDeviceInfo.getData());
+        } else {
+            if (holder.signal_level != null)
+                holder.signal_level.setVisibility(View.VISIBLE);
+
+            if (holder.switch_battery_level != null)
+                holder.switch_battery_level.setText(context.getString(R.string.temperature) + ": " + String.valueOf(temperature) + " C");
+
+            if (holder.signal_level != null)
+                holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(mDeviceInfo.getSetPoint() + " C"));
+        }
+
+        if (holder.isProtected)
+            holder.buttonSet.setEnabled(false);
+
+        if (true || "evohome".equals(mDeviceInfo.getHardwareName())) {
+            holder.buttonSet.setText(context.getString(R.string.set_temperature));
+            holder.buttonSet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleSetTemperatureClick(v.getId());
+                }
+            });
+            holder.buttonSet.setId(mDeviceInfo.getIdx());
+        } else {
+            holder.buttonSet.setVisibility(View.GONE);
+        }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
+    }
+
     public void handleThermostatClick(int idx) {
         listener.onThermostatClick(idx);
+    }
+
+    public void handleSetTemperatureClick(int idx) {
+        listener.onSetTemperatureClick(idx);
     }
 
     private void setPushOnOffSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder, boolean action) {
@@ -1158,7 +1235,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageButton buttonUp, buttonDown, buttonStop, buttonPlus, buttonMinus;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet;
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;

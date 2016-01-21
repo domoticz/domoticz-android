@@ -426,6 +426,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     }
 
     @Override
+    public void onSetTemperatureClick(int idx) {
+    }
+
+    @Override
     public void onSecurityPanelButtonClick(int idx) {
         SecurityPanelDialog securityDialog = new SecurityPanelDialog(
                 getActivity(),
