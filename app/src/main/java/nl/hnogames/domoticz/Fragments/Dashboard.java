@@ -62,6 +62,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @SuppressWarnings("unused")
     private static final String TAG = Dashboard.class.getSimpleName();
+
+    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
+    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
+    public static final String AUTO = "Auto";
+
     private Domoticz mDomoticz;
     private Context mContext;
     private DevicesAdapter adapter;
@@ -639,7 +644,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         getActivity(),
                         idx,
                         tempUtil.getSetPoint(),
-                        !"auto".equalsIgnoreCase(tempUtil.getStatus()));
+                        !AUTO.equalsIgnoreCase(tempUtil.getStatus()));
             } else {
                 tempDialog = new TemperatureDialog(
                         getActivity(),
@@ -654,7 +659,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
                         String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                                "&mode=PermanentOverride";
+                                "&mode=" + PERMANENT_OVERRIDE;
 
                         // add query parameters
                         mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
@@ -662,7 +667,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         addDebugText("Set idx " + idx + " to Auto");
 
                         String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                                "&mode=Auto";
+                                "&mode=" + AUTO;
 
                         // add query parameters
                         mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);

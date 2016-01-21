@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -54,11 +56,11 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
-    public final int ID_SCENE_SWITCH = 2000;
-    private final int ID_TEXTVIEW = 1000;
-    private final int ID_SWITCH = 0;
+    public static final int ID_SCENE_SWITCH = 2000;
+    private static final int ID_TEXTVIEW = 1000;
+    private static final int ID_SWITCH = 0;
 
-    private final int[] EVOHOME_STATE_IDS = {
+    private static final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
             Domoticz.Device.ModalSwitch.Action.AWAY,
@@ -382,6 +384,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
 
         holder.switch_battery_level = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.signal_level = (TextView) convertView.findViewById(R.id.temperature_data2);
@@ -820,6 +823,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         final double temperature = mDeviceInfo.getTemperature();
         final double setPoint = mDeviceInfo.getSetPoint();
+        int modeIconRes = 0;
         holder.isProtected = mDeviceInfo.isProtected();
 
         holder.switch_name.setText(mDeviceInfo.getName());
@@ -844,7 +848,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.buttonSet.setEnabled(false);
 
-        if (true || "evohome".equals(mDeviceInfo.getHardwareName())) {
+        if ("evohome".equals(mDeviceInfo.getHardwareName())) {
             holder.buttonSet.setText(context.getString(R.string.set_temperature));
             holder.buttonSet.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -853,8 +857,20 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 }
             });
             holder.buttonSet.setId(mDeviceInfo.getIdx());
+            holder.buttonSet.setVisibility(View.VISIBLE);
+
+            modeIconRes = getEvohomeStateIcon(mDeviceInfo.getStatus());
         } else {
             holder.buttonSet.setVisibility(View.GONE);
+        }
+
+        if (holder.iconMode != null) {
+            if (0 == modeIconRes) {
+                holder.iconMode.setVisibility(View.GONE);
+            } else {
+                holder.iconMode.setImageResource(modeIconRes);
+                holder.iconMode.setVisibility(View.VISIBLE);
+            }
         }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
@@ -1328,7 +1344,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         ImageButton buttonUp, buttonDown, buttonStop;
         Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Boolean isProtected;
-        ImageView iconRow;
+        ImageView iconRow, iconMode;
         SeekBar dimmer;
         LinearLayout extrapanel;
     }
@@ -1365,5 +1381,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             filteredData = (ArrayList<DevicesInfo>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_state_names);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
     }
 }

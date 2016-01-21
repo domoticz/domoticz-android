@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,16 +122,25 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
 
-
-        boolean toHot = false;
+        int modeIconRes = 0;
+        boolean tooHot = false;
         if (mTemperatureInfo.getTemperature() > 30)
-            toHot = true;
+            tooHot = true;
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                 mTemperatureInfo.getType(),
-                null, toHot, false, null)).into(holder.iconRow);
+                null, tooHot, false, null)).into(holder.iconRow);
 
+        if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
+            holder.setButton.setVisibility(View.VISIBLE);
+            modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
+        } else {
+            holder.setButton.setVisibility(View.GONE);
+        }
+
+        holder.setButton.setText(context.getString(R.string.set_temperature));
         holder.setButton.setId(mTemperatureInfo.getIdx());
         holder.setButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +200,15 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             }
         }
 
+        if (holder.iconMode != null) {
+            if (modeIconRes == 0) {
+                holder.iconMode.setVisibility(View.GONE);
+            } else {
+                holder.iconMode.setImageResource(modeIconRes);
+                holder.iconMode.setVisibility(View.VISIBLE);
+            }
+        }
+
         convertView.setTag(holder);
         return convertView;
     }
@@ -199,6 +218,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         TextView data;
         TextView data2;
         ImageView iconRow;
+        ImageView iconMode;
         Button setButton;
         Button dayButton;
         Button monthButton;
@@ -240,5 +260,24 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             filteredData = (ArrayList<TemperatureInfo>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_zone_states);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
     }
 }

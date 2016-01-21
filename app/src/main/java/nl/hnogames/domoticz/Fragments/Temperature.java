@@ -57,6 +57,10 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     @SuppressWarnings("unused")
     private static final String TAG = Temperature.class.getSimpleName();
 
+    public static final String AUTO = "Auto";
+    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
+    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
+
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
     private Context mContext;
@@ -281,7 +285,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                            "&mode=PermanentOverride";
+                            "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
@@ -289,7 +293,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
                     addDebugText("Set idx " + idx + " to Auto");
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                            "&mode=Auto";
+                            "&mode=" + AUTO;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);

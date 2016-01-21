@@ -64,6 +64,15 @@
                     android:layout_below="@+id/temperature_data"
                     android:text="@string/temperature" />
 
+                <ImageView
+                    android:id="@+id/mode_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_schedule_black_18dp"
+                    android:paddingLeft="5dp"
+                    android:layout_toRightOf="@+id/temperature_data2"
+                    android:layout_alignTop="@+id/temperature_data2"/>
+
                 <Button
                     android:id="@+id/set_button"
                     android:layout_width="50dp"
