@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -53,9 +55,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
-
-    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
-    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
 
     public static final int ID_SCENE_SWITCH = 2000;
     private static final int ID_TEXTVIEW = 1000;
@@ -860,20 +859,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.buttonSet.setId(mDeviceInfo.getIdx());
             holder.buttonSet.setVisibility(View.VISIBLE);
 
-            switch (mDeviceInfo.getStatus()) {
-                case PERMANENT_OVERRIDE:
-                    modeIconRes = R.drawable.ic_repeat_black_18dp;
-                    break;
-                case TEMPORARY_OVERRIDE:
-                    modeIconRes = R.drawable.ic_schedule_black_18dp;
-                    break;
-            }
+            modeIconRes = getEvohomeStateIcon(mDeviceInfo.getStatus());
         } else {
             holder.buttonSet.setVisibility(View.GONE);
         }
 
         if (holder.iconMode != null) {
-            if (modeIconRes == 0) {
+            if (0 == modeIconRes) {
                 holder.iconMode.setVisibility(View.GONE);
             } else {
                 holder.iconMode.setImageResource(modeIconRes);
@@ -1389,5 +1381,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             filteredData = (ArrayList<DevicesInfo>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_state_names);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
     }
 }

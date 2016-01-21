@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,6 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
     @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
-
-    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
-    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
 
     private final TemperatureClickListener listener;
     public ArrayList<TemperatureInfo> filteredData = null;
@@ -137,15 +135,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
         if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
             holder.setButton.setVisibility(View.VISIBLE);
-
-            switch (mTemperatureInfo.getStatus()) {
-                case PERMANENT_OVERRIDE:
-                    modeIconRes = R.drawable.ic_repeat_black_18dp;
-                    break;
-                case TEMPORARY_OVERRIDE:
-                    modeIconRes = R.drawable.ic_schedule_black_18dp;
-                    break;
-            }
+            modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
         } else {
             holder.setButton.setVisibility(View.GONE);
         }
@@ -270,5 +260,24 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             filteredData = (ArrayList<TemperatureInfo>) results.values;
             notifyDataSetChanged();
         }
+    }
+
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_zone_states);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
     }
 }
