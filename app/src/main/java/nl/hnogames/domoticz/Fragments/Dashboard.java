@@ -497,25 +497,16 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onChangeColor(final int selectedColor) {
-                if (getDevice(idx).isProtected()) {
-                    PasswordDialog passwordDialog = new PasswordDialog(
-                            getActivity());
-                    passwordDialog.show();
-                    passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                        @Override
-                        public void onDismiss(String password) {
-                            setColor(selectedColor, idx, password);
-                        }
-                    });
-                } else
+                if (!getDevice(idx).isProtected()) {
                     setColor(selectedColor, idx, null);
+                }
             }
         });
     }
 
     private void setColor(int selectedColor, final int idx, final String password) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        if (hsv.length > 0)
+        if (hsv.length <= 0)
             return;
 
         Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
