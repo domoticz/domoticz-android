@@ -94,8 +94,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
+        applyLanguage();
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
