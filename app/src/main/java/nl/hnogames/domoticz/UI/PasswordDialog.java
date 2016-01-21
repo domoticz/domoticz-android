@@ -27,7 +27,6 @@ import android.content.DialogInterface;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.view.WindowInsets;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -91,7 +90,8 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialogInterface) {}
+    public void onDismiss(DialogInterface dialogInterface) {
+    }
 
     public void onDismissListener(DismissListener dismissListener) {
         this.dismissListener = dismissListener;

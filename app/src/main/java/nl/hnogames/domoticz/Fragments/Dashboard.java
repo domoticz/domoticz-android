@@ -33,8 +33,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -42,7 +42,6 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -610,7 +609,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 }
             });
             tempDialog.show();
-        };
+        }
+        ;
     }
 
     @Override

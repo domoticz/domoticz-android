@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Containers;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -221,7 +220,9 @@ public class DevicesInfo implements Comparable {
     }
 
 
-    public double getTemperature() { return temp; }
+    public double getTemperature() {
+        return temp;
+    }
 
     public double getSetPoint() {
         return setPoint;
@@ -316,9 +317,13 @@ public class DevicesInfo implements Comparable {
         Name = name;
     }
 
-    public String getDescription() { return Description; }
+    public String getDescription() {
+        return Description;
+    }
 
-    public void setDescription(String description) { Description = description; }
+    public void setDescription(String description) {
+        Description = description;
+    }
 
     public boolean getUseCustomImage() {
         return useCustomImage;

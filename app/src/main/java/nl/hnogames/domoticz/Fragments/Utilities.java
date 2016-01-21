@@ -51,7 +51,6 @@ import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
-import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;

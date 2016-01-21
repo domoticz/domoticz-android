@@ -606,7 +606,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        if(holder.buttonOn!=null) {
+        if (holder.buttonOn != null) {
             holder.buttonOn.setId(mDevicesInfo.getIdx());
             if (mDevicesInfo.getData().startsWith("Arm"))
                 holder.buttonOn.setText(context.getString(R.string.button_disarm));

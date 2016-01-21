@@ -88,16 +88,15 @@ public class GeoSettingsActivity extends AppCompatActivity
     private final int ACTION_GET_LOCATION = 12;
     private final int REQUEST_GEOFENCE_SERVICE = 21;
     private final int REQUEST_GET_LOCATION = 22;
+    boolean result = false;
     private String TAG = GeoSettingsActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
-
     private Domoticz domoticz;
     // Stores the PendingIntent used to request geofence monitoring.
     private PendingIntent mGeofenceRequestIntent;
     private GoogleApiClient mApiClient;
     private List<Geofence> mGeofenceList;
     private ArrayList<LocationInfo> locations;
-
     private LocationAdapter adapter;
     private CoordinatorLayout coordinatorLayout;
     private Location currentLocation;
@@ -308,7 +307,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
     }
 
-    boolean result = false;
     private boolean showNoDeviceAttachedDialog(final LocationInfo locationInfo) {
         new MaterialDialog.Builder(this)
                 .title("No switch selected")
@@ -328,6 +326,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                 .show();
         return result;
     }
+
     private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(LOCATION_INTERVAL);

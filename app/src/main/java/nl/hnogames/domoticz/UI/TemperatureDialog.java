@@ -161,11 +161,11 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         this.dialogActionListener = dialogActionListener;
     }
 
-    public interface DialogActionListener {
-        void onDialogAction(double setPoint, DialogAction dialogAction);
-    }
-
     protected MaterialDialog.Builder getMaterialDialogBuilder() {
         return mdb;
+    }
+
+    public interface DialogActionListener {
+        void onDialogAction(double setPoint, DialogAction dialogAction);
     }
 }
