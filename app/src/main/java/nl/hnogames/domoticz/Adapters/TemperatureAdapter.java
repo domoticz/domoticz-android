@@ -51,6 +51,9 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
 
+    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
+    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
+
     private final TemperatureClickListener listener;
     public ArrayList<TemperatureInfo> filteredData = null;
     private Domoticz domoticz;
@@ -121,16 +124,33 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
 
-
-        boolean toHot = false;
+        int modeIconRes = 0;
+        boolean tooHot = false;
         if (mTemperatureInfo.getTemperature() > 30)
-            toHot = true;
+            tooHot = true;
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                 mTemperatureInfo.getType(),
-                null, toHot, false, null)).into(holder.iconRow);
+                null, tooHot, false, null)).into(holder.iconRow);
 
+        if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
+            holder.setButton.setVisibility(View.VISIBLE);
+
+            switch (mTemperatureInfo.getStatus()) {
+                case PERMANENT_OVERRIDE:
+                    modeIconRes = R.drawable.ic_repeat_black_18dp;
+                    break;
+                case TEMPORARY_OVERRIDE:
+                    modeIconRes = R.drawable.ic_schedule_black_18dp;
+                    break;
+            }
+        } else {
+            holder.setButton.setVisibility(View.GONE);
+        }
+
+        holder.setButton.setText(context.getString(R.string.set_temperature));
         holder.setButton.setId(mTemperatureInfo.getIdx());
         holder.setButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +210,15 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             }
         }
 
+        if (holder.iconMode != null) {
+            if (modeIconRes == 0) {
+                holder.iconMode.setVisibility(View.GONE);
+            } else {
+                holder.iconMode.setImageResource(modeIconRes);
+                holder.iconMode.setVisibility(View.VISIBLE);
+            }
+        }
+
         convertView.setTag(holder);
         return convertView;
     }
@@ -199,6 +228,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         TextView data;
         TextView data2;
         ImageView iconRow;
+        ImageView iconMode;
         Button setButton;
         Button dayButton;
         Button monthButton;

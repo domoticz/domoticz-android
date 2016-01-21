@@ -54,11 +54,14 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
-    public final int ID_SCENE_SWITCH = 2000;
-    private final int ID_TEXTVIEW = 1000;
-    private final int ID_SWITCH = 0;
+    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
+    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
 
-    private final int[] EVOHOME_STATE_IDS = {
+    public static final int ID_SCENE_SWITCH = 2000;
+    private static final int ID_TEXTVIEW = 1000;
+    private static final int ID_SWITCH = 0;
+
+    private static final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
             Domoticz.Device.ModalSwitch.Action.AWAY,
@@ -382,6 +385,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
 
         holder.switch_battery_level = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.signal_level = (TextView) convertView.findViewById(R.id.temperature_data2);
@@ -820,6 +824,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         final double temperature = mDeviceInfo.getTemperature();
         final double setPoint = mDeviceInfo.getSetPoint();
+        int modeIconRes = 0;
         holder.isProtected = mDeviceInfo.isProtected();
 
         holder.switch_name.setText(mDeviceInfo.getName());
@@ -844,7 +849,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.isProtected)
             holder.buttonSet.setEnabled(false);
 
-        if (true || "evohome".equals(mDeviceInfo.getHardwareName())) {
+        if ("evohome".equals(mDeviceInfo.getHardwareName())) {
             holder.buttonSet.setText(context.getString(R.string.set_temperature));
             holder.buttonSet.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -853,8 +858,27 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 }
             });
             holder.buttonSet.setId(mDeviceInfo.getIdx());
+            holder.buttonSet.setVisibility(View.VISIBLE);
+
+            switch (mDeviceInfo.getStatus()) {
+                case PERMANENT_OVERRIDE:
+                    modeIconRes = R.drawable.ic_repeat_black_18dp;
+                    break;
+                case TEMPORARY_OVERRIDE:
+                    modeIconRes = R.drawable.ic_schedule_black_18dp;
+                    break;
+            }
         } else {
             holder.buttonSet.setVisibility(View.GONE);
+        }
+
+        if (holder.iconMode != null) {
+            if (modeIconRes == 0) {
+                holder.iconMode.setVisibility(View.GONE);
+            } else {
+                holder.iconMode.setImageResource(modeIconRes);
+                holder.iconMode.setVisibility(View.VISIBLE);
+            }
         }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
@@ -1328,7 +1352,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         ImageButton buttonUp, buttonDown, buttonStop;
         Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Boolean isProtected;
-        ImageView iconRow;
+        ImageView iconRow, iconMode;
         SeekBar dimmer;
         LinearLayout extrapanel;
     }
