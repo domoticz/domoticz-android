@@ -65,12 +65,14 @@
 
                 <Button
                     android:id="@+id/set_status_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/button"
+                    android:background="@drawable/button_status"
+                    android:textSize="10dp"
                     android:text="@string/set_temperature" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -85,6 +87,7 @@
                     android:id="@+id/log_button"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:textSize="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_log" />
 
@@ -92,6 +95,7 @@
                     android:id="@+id/timer_button"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:textSize="10dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_timer" />

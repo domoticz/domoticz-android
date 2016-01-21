@@ -68,18 +68,21 @@
                 android:id="@+id/switch_button_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="10dp"
                 android:src="@drawable/ic_arrow_up" />
 
             <ImageButton
                 android:id="@+id/switch_button_stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="10dp"
                 android:src="@drawable/ic_stop" />
 
             <ImageButton
                 android:id="@+id/switch_button_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="10dp"
                 android:src="@drawable/ic_arrow_down" />
         </LinearLayout>
 

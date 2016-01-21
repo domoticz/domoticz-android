@@ -18,7 +18,8 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:weightSum="1">
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -29,7 +30,7 @@
             android:src="@drawable/clock48" />
 
         <RelativeLayout
-            android:layout_width="151dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
@@ -59,16 +60,18 @@
                 android:layout_below="@id/switch_battery_level"
                 android:text="@string/signal_level" />
 
+            <Button
+                android:id="@+id/set_status_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:background="@drawable/button_status"
+                android:text="@string/set_temperature"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/set_status_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:background="@drawable/button"
-            android:text="@string/set_temperature" />
     </LinearLayout>
 </LinearLayout>

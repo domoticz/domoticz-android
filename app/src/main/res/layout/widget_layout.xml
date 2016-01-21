@@ -51,12 +51,13 @@
 
             <Button
                 android:id="@+id/on_button"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/button"
+                android:layout_weight="1"
+                android:background="@drawable/button_status"
+                android:textSize="10dp"
                 android:text="@string/text_go" />
 
         </RelativeLayout>

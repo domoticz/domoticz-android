@@ -83,6 +83,7 @@
                     android:id="@+id/log_button"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:textSize="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_log" />
 
@@ -90,6 +91,7 @@
                     android:id="@+id/timer_button"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:textSize="10dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_timer" />
