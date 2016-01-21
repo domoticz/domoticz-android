@@ -940,11 +940,13 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
+        String statusText = context.getString(R.string.unknown);
+        if(levelNames.length >= loadLevel)
+            statusText = levelNames[loadLevel];
+
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
-        holder.switch_dimmer_level.setText(levelNames[loadLevel]);
-
+        holder.switch_dimmer_level.setText(statusText);
         holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
-
         holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
