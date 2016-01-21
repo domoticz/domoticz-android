@@ -127,7 +127,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         convertView = setSwitchRowId(extendedStatusInfo, holder);
         convertView.setTag(holder);
 
-        setSwitchRowData(extendedStatusInfo, holder, convertView);
+        setSwitchRowData(extendedStatusInfo, holder);
 
         return convertView;
     }
@@ -138,7 +138,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
-                    row = setOnOffSwitchRowId(holder);
+                    row = setOnOffButtonRowId(holder);
                     break;
                 case Domoticz.Scene.Type.SCENE:
                     row = setPushOnOffSwitchRowId(holder);
@@ -173,9 +173,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                 row = setModalSwitchRowId(holder);
                             else
                                 row = setDefaultRowId(holder);
-                        } else
+                        } else {
                             row = setOnOffSwitchRowId(holder);
-
+                        }
                         break;
 
                     case Domoticz.Device.Type.Value.MOTION:
@@ -215,6 +215,33 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 }
             }
         }
+        return row;
+    }
+
+    private View setOnOffButtonRowId(ViewHolder holder) {
+        if (mSharedPrefs.showExtraData())
+            layoutResourceId = R.layout.scene_row_group;
+        else layoutResourceId = R.layout.scene_row_group_small;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonOff = (Button) row.findViewById(R.id.off_button);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+
+        if (holder.buttonLog != null)
+            holder.buttonLog.setVisibility(View.GONE);
+        if (holder.buttonTimer != null)
+            holder.buttonTimer.setVisibility(View.GONE);
+
         return row;
     }
 
@@ -450,13 +477,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
-                                  ViewHolder holder,
-                                  View convertView) {
+                                  ViewHolder holder) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
-                    setOnOffSwitchRowData(mDeviceInfo, holder);
+                    setOnOffButtonRowData(mDeviceInfo, holder);
                     break;
                 case Domoticz.Scene.Type.SCENE:
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
@@ -635,6 +661,69 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         else
             holder.iconRow.setAlpha(1f);
 
+    }
+
+    private void setOnOffButtonRowData(final DevicesInfo mDeviceInfo,
+                                       final ViewHolder holder) {
+
+        holder.isProtected = mDeviceInfo.isProtected();
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mDeviceInfo.getName());
+
+        String text = context.getString(R.string.last_update) + ": " +
+                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        if (holder.signal_level != null)
+            holder.signal_level.setText(text);
+
+        text = context.getString(R.string.status) + ": " +
+                String.valueOf(mDeviceInfo.getData());
+        if (holder.switch_battery_level != null)
+            holder.switch_battery_level.setText(text);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+                }
+            });
+        }
+
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+        if (holder.buttonLog != null) {
+            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonLog.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            else
+                holder.buttonLog.setId(mDeviceInfo.getIdx());
+
+            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleLogButtonClick(v.getId());
+                }
+            });
+        }
     }
 
     private void setOnOffSwitchRowData(final DevicesInfo mDeviceInfo,
@@ -1236,8 +1325,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     static class ViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
-        ImageButton buttonUp, buttonDown, buttonStop, buttonPlus, buttonMinus;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet;
+        ImageButton buttonUp, buttonDown, buttonStop;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;

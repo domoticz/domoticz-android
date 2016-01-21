@@ -148,7 +148,8 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
-            holder.onOffSwitch = (Switch) convertView.findViewById(R.id.switch_button);
+            holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
+            holder.buttonOff = (Button) convertView.findViewById(R.id.off_button);
             holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
             holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
             holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
@@ -159,16 +160,21 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
 
-            if (holder.onOffSwitch != null) {
-                if (holder.isProtected) {
-                    holder.onOffSwitch.setEnabled(false);
-                }
-                holder.onOffSwitch.setId(mSceneInfo.getIdx());
-                holder.onOffSwitch.setChecked(mSceneInfo.getStatusInBoolean());
-                holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            if (holder.buttonOn != null) {
+                holder.buttonOn.setId(mSceneInfo.getIdx());
+                holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                        handleClick(compoundButton.getId(), checked);
+                    public void onClick(View v) {
+                        handleClick(v.getId(), true);
+                    }
+                });
+            }
+            if (holder.buttonOff != null) {
+                holder.buttonOff.setId(mSceneInfo.getIdx());
+                holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleClick(v.getId(), false);
                     }
                 });
             }
@@ -191,9 +197,8 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     }
 
     static class ViewHolder {
-        TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
-        Switch onOffSwitch, dimmerOnOffSwitch;
-        Button buttonOn;
+        TextView switch_name, signal_level, switch_battery_level;
+        Button buttonOn, buttonOff;
         Boolean isProtected;
         ImageView iconRow;
     }
