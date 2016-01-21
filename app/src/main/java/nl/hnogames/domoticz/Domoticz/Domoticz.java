@@ -560,6 +560,12 @@ public class Domoticz {
                         + String.valueOf(idx)
                         + Url.ModalSwitch.STATUS + actionUrl;
                 break;
+            case Json.Url.Set.TEMP:
+                url = Url.Temp.GET;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + Url.Temp.VALUE + actionUrl;
+                break;
 
             case Json.Url.Set.SCENEFAVORITE:
                 url = Url.Favorite.SCENE;
@@ -599,10 +605,6 @@ public class Domoticz {
         logger("Constructed url: " + fullString);
 
         return fullString;
-    }
-
-    private double roundToNearestHalf(double value) {
-        return Math.round(value * 2) / 2.0;
     }
 
     public String getUserCredentials(String credential) {
