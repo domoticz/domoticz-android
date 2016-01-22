@@ -28,13 +28,13 @@
   <string name="action_success">Операция выполнена</string>
   <string name="action_failed">Операция не выполнена</string>
   <string name="action_unknown">Результат действия неизвестен</string>
-  <string name="choose_status">Choose state</string>
-  <string name="normal">Normal</string>
-  <string name="economy">Economy</string>
-  <string name="away">Away</string>
-  <string name="day_off">Day off</string>
-  <string name="custom">Custom</string>
-  <string name="heating_off">Heating off</string>
+  <string name="choose_status">Выберите состояние</string>
+  <string name="normal">Стандарт</string>
+  <string name="economy">Эконом</string>
+  <string name="away">Отсутствие</string>
+  <string name="day_off">Выходной день</string>
+  <string name="custom">Пользовательский</string>
+  <string name="heating_off">Выкл отопление</string>
   <string name="debug_textview_title">Отладочная информация</string>
   <string name="msg_copiedToClipboard">Текст скопирован в буфер обмена</string>
   <string name="favorite">Избранное</string>
@@ -59,12 +59,12 @@
   <string name="filterOn_all">Все устройства</string>
   <string name="Filter">Фильтр</string>
   <string name="filter_devices">Фильтр устройств</string>
-  <string name="filtered_on">Filter on</string>
+  <string name="filtered_on">Вкл фильтр</string>
   <string name="choose_color">Выберите цвет</string>
   <string name="no_data_on_domoticz">Нет данных на сервере Domoticz</string>
   <string name="row_icon_description">значок строки</string>
   <string name="error_image_description">Изображение ошибки</string>
   <string name="white">Белый</string>
-  <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
+  <string name="error_couldNotCheckForUpdates">"Невозможно проверить наличие обновлений: %1$s"</string>
+  <string name="error_couldNotCheckForConfig">"Не удалось получить конфигурацию сервера Domoticz: %1$s"</string>
 </resources>
