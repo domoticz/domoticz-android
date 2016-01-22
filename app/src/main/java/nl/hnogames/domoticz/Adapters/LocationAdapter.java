@@ -132,10 +132,14 @@ public class LocationAdapter extends BaseAdapter {
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                LocationInfo removeLocation = null;
                 for (LocationInfo l : data) {
-                    if (l.getID() == v.getId())
-                        handleRemoveButtonClick(l);
+                    if (l.getID() == v.getId()){
+                        removeLocation=l;
+                    }
                 }
+                if(removeLocation != null)
+                    handleRemoveButtonClick(removeLocation);
             }
         });
 
