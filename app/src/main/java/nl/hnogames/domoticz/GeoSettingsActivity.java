@@ -113,9 +113,8 @@ public class GeoSettingsActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 // The user picked a place.
                 Place place = PlacePicker.getPlace(data, this);
-                Snackbar.make(coordinatorLayout,
-                        String.format(getString(R.string.geofence_place), place.getName()),
-                        Snackbar.LENGTH_SHORT).show();
+                String text = String.format(getString(R.string.geofence_place), place.getName());
+                showSimpleSnackbar(text);
             }
         }
     }
@@ -253,18 +252,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             @Override
             public void onRemoveClick(final LocationInfo locationInfo) {
-                new MaterialDialog.Builder(GeoSettingsActivity.this)
-                        .title(R.string.delete)
-                        .content(R.string.are_you_sure)
-                        .positiveText(R.string.yes)
-                        .negativeText(R.string.no)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                removeLocation(locationInfo);
-                            }
-                        })
-                        .show();
+                showRemoveUndoSnackbar(locationInfo);
             }
         });
 
@@ -285,6 +273,30 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
     }
 
+    private void showRemoveUndoSnackbar(final LocationInfo locationInfo) {
+        String text = String.format(getString(R.string.something_deleted),
+                getString(R.string.geofence));
+        Snackbar.make(coordinatorLayout,
+                text,
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // User clicked button
+                    }
+                })
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                            removeLocation(locationInfo);
+                        }
+                    }
+                })
+                .show();
+    }
+
     private void removeLocation(LocationInfo locationInfo) {
         adapter.data.remove(locationInfo);
         mSharedPrefs.removeLocation(locationInfo);
@@ -302,18 +314,26 @@ public class GeoSettingsActivity extends AppCompatActivity
             public void onError(Exception error) {
                 Snackbar.make(coordinatorLayout,
                         R.string.unable_to_get_switches,
-                        Snackbar.LENGTH_SHORT).show();
+                        Snackbar.LENGTH_SHORT)
+                        .setAction(R.string.retry, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // User clicked retry button
+                                getSwitchesAndShowSwitchesDialog(locationInfo);
+                            }
+                        })
+                        .show();
             }
         });
     }
 
     private boolean showNoDeviceAttachedDialog(final LocationInfo locationInfo) {
         new MaterialDialog.Builder(this)
-                .title("No switch selected")
-                .content("For GeoFencing to have effect, a switch should be connected to an GeoFence"
+                .title(R.string.noSwitchSelected_title)
+                .content(getString(R.string.noSwitchSelected_explanation)
                         + UsefulBits.newLine()
                         + UsefulBits.newLine()
-                        + "Connect one now?")
+                        + getString(R.string.noSwitchSelected_connectOneNow))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -573,6 +593,10 @@ public class GeoSettingsActivity extends AppCompatActivity
             }
         });
         locationDialog.show();
+    }
+
+    private void showSimpleSnackbar(String message) {
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
