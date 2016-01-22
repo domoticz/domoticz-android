@@ -4,8 +4,8 @@
   <string name="title_security_panel">Panneau de sécurité</string>
   <string name="security_pin">Code Pin</string>
   <string name="security_disarm">Désarmer</string>
-  <string name="security_arm_home">Désactiver</string>
-  <string name="security_arm_away">Activer</string>
+  <string name="security_arm_home">Armement partiel</string>
+  <string name="security_arm_away">Armement total</string>
   <string name="security_wrong_code">Code incorrect entré!</string>
   <string name="security_generic_error">Impossible de changer le statut du panneau de sécurité</string>
 </resources>

@@ -31,13 +31,13 @@
   <string name="title_activity_server_settings">Definições do servidor</string>
   <string name="export_settings">Exportar Definições</string>
   <string name="import_settings">Importar Definições</string>
-  <string name="notification_settings_id">Google Cloud Messaging ID</string>
+  <string name="notification_settings_id">ID de mensagens do Google Cloud</string>
   <string name="notification_settings_copy">Copiar o id do registro para a área de transferência</string>
   <string name="notification_settings_copied">Copiado para a área de transferência</string>
   <string name="notification_vibrate_title">Vibrar</string>
   <string name="notification_vibrate_on">Vibrar quando uma notificação é recebida</string>
   <string name="notification_vibrate_off">Não vibrar</string>
-  <string name="notification_sound_title">Sound</string>
+  <string name="notification_sound_title">Som</string>
   <string name="notification_sound_summary">Usar o som de notificação quando chega notificação</string>
   <string name="info_version">Versão</string>
   <string name="info_domoticz_version">Versão Domoticz</string>

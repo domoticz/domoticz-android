@@ -54,13 +54,11 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Temperature extends DomoticzFragment implements DomoticzFragmentListener, TemperatureClickListener {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = Temperature.class.getSimpleName();
-
     public static final String AUTO = "Auto";
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
-
+    @SuppressWarnings("unused")
+    private static final String TAG = Temperature.class.getSimpleName();
     private ProgressDialog progressDialog;
     private Domoticz mDomoticz;
     private Context mContext;

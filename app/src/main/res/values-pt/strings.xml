@@ -65,6 +65,6 @@
   <string name="row_icon_description">linha do icon</string>
   <string name="error_image_description">Imagem de erro</string>
   <string name="white">Branco</string>
-  <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
+  <string name="error_couldNotCheckForUpdates">"Poderá não verificar se há atualizações: %1$s"</string>
+  <string name="error_couldNotCheckForConfig">"Poderá não conseguir a configuração do servidor Domoticz: %1$s"</string>
 </resources>

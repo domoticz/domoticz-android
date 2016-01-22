@@ -43,6 +43,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private int widgetID = 0;
+    private String password = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -114,6 +115,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private void toggleSwitch(final Context context, int idx) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
+        password = mSharedPrefs.getWidgetPassword(widgetID);
         final Domoticz domoticz = new Domoticz(context);
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
 
@@ -124,7 +126,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onReceiveDevice(DevicesInfo s) {
+                public void onReceiveDevice(final DevicesInfo s) {
                     if (s != null) {
                         if (isOnOffSwitch(s))
                             onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
@@ -151,7 +153,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onReceiveScene(SceneInfo scene) {
+                public void onReceiveScene(final SceneInfo scene) {
                     if (scene != null) {
                         if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
                             onButtonClick(scene, true, domoticz, context);
@@ -162,23 +164,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
             }, idx);
         }
-    }
-
-    public void onBlindClick(final DevicesInfo clickedSwitch, int jsonAction, Domoticz mDomoticz, final Context context) {
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-        int idx = clickedSwitch.getIdx();
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
@@ -194,7 +179,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
         }
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -203,7 +188,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                if (!UsefulBits.isEmpty(password))
+                    Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -222,7 +210,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             else jsonAction = Domoticz.Scene.Action.OFF;
             idx = idx - 4000;
         }
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -231,7 +219,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                if (!UsefulBits.isEmpty(password))
+                    Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -250,7 +241,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 else jsonAction = Domoticz.Device.Switch.Action.OFF;
             }
 
-            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -259,7 +250,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                    if (!UsefulBits.isEmpty(password))
+                        Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -275,7 +269,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
 
-            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -284,7 +278,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                    if (!UsefulBits.isEmpty(password))
+                        Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }

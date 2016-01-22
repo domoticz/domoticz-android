@@ -46,7 +46,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -465,7 +464,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.buttonSetStatus = (Button) row.findViewById(R.id.set_status_button);
 
-        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel_button);
+        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
@@ -1046,7 +1045,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
-        if(levelNames.length >= loadLevel)
+        if (levelNames.length >= loadLevel)
             statusText = levelNames[loadLevel];
 
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
@@ -1337,6 +1336,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         listener.onLogButtonClick(idx);
     }
 
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_state_names);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
+    }
 
     static class ViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
@@ -1381,24 +1398,5 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             filteredData = (ArrayList<DevicesInfo>) results.values;
             notifyDataSetChanged();
         }
-    }
-
-    public int getEvohomeStateIcon(String stateName) {
-        if (stateName == null) return 0;
-
-        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
-        String[] states = context.getResources().getStringArray(R.array.evohome_state_names);
-        int i = 0;
-        int iconRes = 0;
-        for (String state : states) {
-            if (stateName.equals(state)) {
-                iconRes = icons.getResourceId(i, 0);
-                break;
-            }
-            i++;
-        }
-
-        icons.recycle();
-        return iconRes;
     }
 }

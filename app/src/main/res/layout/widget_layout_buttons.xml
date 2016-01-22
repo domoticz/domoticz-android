@@ -57,10 +57,22 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/on_button"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/button_status"
+                    android:textSize="10dp"
+                    android:textColor="@color/black"
+                    android:text="@string/button_state_on" />
+
+                <Button
+                    android:id="@+id/off_button"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
@@ -69,7 +81,7 @@
                     android:background="@drawable/button_status"
                     android:textSize="10dp"
                     android:textColor="@color/black"
-                    android:text="@string/button_state_on" />
+                    android:text="@string/button_state_off" />
 
             </LinearLayout>
         </RelativeLayout>
