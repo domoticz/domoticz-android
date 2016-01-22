@@ -104,9 +104,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                     @Override
                     public void onReceiveDevice(DevicesInfo s) {
                         if (s != null) {
-                            boolean withButtons = withButtons(s);
-                            if (withButtons)
+                            int withButtons = withButtons(s);
+                            if (withButtons == 1)
                                 views = new RemoteViews(packageName, R.layout.widget_layout);//default
+                            if (withButtons == 2)
+                                views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
 
                             String text = s.getData();
                             views.setTextViewText(R.id.title, s.getName());
@@ -119,8 +121,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 text += " Total: " + s.getCounter();
 
                             views.setTextViewText(R.id.desc, text);
-
-                            if (withButtons && s.getStatus() != null) {
+                            if (withButtons == 1 && s.getStatus() != null) {
                                 if (s.getStatusBoolean())
                                     views.setTextViewText(R.id.on_button, "off");
                                 else
@@ -129,8 +130,22 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                         UpdateWidgetService.this,
                                         mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
-                                        s.getIdx()));
+                                        s.getIdx(),
+                                        !s.getStatusBoolean()));
                                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
+
+                            } else if (withButtons == 2 && s.getStatus() != null) {
+                                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                                        UpdateWidgetService.this,
+                                        mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                        s.getIdx(), true));
+                                views.setViewVisibility(R.id.on_button, View.VISIBLE);
+
+                                views.setOnClickPendingIntent(R.id.off_button, buildButtonPendingIntent(
+                                        UpdateWidgetService.this,
+                                        mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                        s.getIdx(), false));
+                                views.setViewVisibility(R.id.off_button, View.VISIBLE);
                             } else {
                                 views.setViewVisibility(R.id.on_button, View.GONE);
                             }
@@ -157,26 +172,40 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                     @Override
                     public void onReceiveScene(SceneInfo s) {
                         if (s != null) {
-                            views = new RemoteViews(packageName, R.layout.widget_layout);//scenes and groups always contain buttons
-                            views.setTextViewText(R.id.title, s.getName());
-                            views.setTextViewText(R.id.desc, s.getStatusInString());
-
                             if (s.getStatusInString() != null) {
                                 if (s.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                                    views = new RemoteViews(packageName, R.layout.widget_layout);
+                                    views.setTextViewText(R.id.title, s.getName());
+                                    views.setTextViewText(R.id.desc, s.getStatusInString());
+
                                     views.setTextViewText(R.id.on_button, "on");
+                                    views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                                            UpdateWidgetService.this,
+                                            mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                            idx,
+                                            !s.getStatusInBoolean()));
+                                    views.setViewVisibility(R.id.on_button, View.VISIBLE);
                                 } else {
-                                    if (s.getStatusInBoolean())
-                                        views.setTextViewText(R.id.on_button, "off");
-                                    else
-                                        views.setTextViewText(R.id.on_button, "on");
+                                    views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                                    views.setTextViewText(R.id.title, s.getName());
+                                    views.setTextViewText(R.id.desc, s.getStatusInString());
+
+                                    views.setTextViewText(R.id.off_button, "off");
+                                    views.setTextViewText(R.id.on_button, "on");
+                                    views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                                            UpdateWidgetService.this,
+                                            mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                            idx,
+                                            true));
+                                    views.setViewVisibility(R.id.on_button, View.VISIBLE);
+
+                                    views.setOnClickPendingIntent(R.id.off_button, buildButtonPendingIntent(
+                                            UpdateWidgetService.this,
+                                            mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
+                                            idx,
+                                            false));
+                                    views.setViewVisibility(R.id.off_button, View.VISIBLE);
                                 }
-
-                                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
-                                        UpdateWidgetService.this,
-                                        mSharedPrefs.getWidgetIDforIDX(s.getIdx()),
-                                        idx));
-
-                                views.setViewVisibility(R.id.on_button, View.VISIBLE);
                             } else {
                                 views.setViewVisibility(R.id.on_button, View.GONE);
                             }
@@ -189,23 +218,26 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             }
         }
 
-        public PendingIntent buildButtonPendingIntent(Context context, int widgetid, int idx) {
+        public PendingIntent buildButtonPendingIntent(Context context, int widgetid, int idx, boolean action) {
             Intent intent = new Intent();
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widgetid);
+            intent.putExtra("WIDGETACTION", action);
             return PendingIntent.getBroadcast(context, widgetid, intent, 0);
         }
 
-        private boolean withButtons(DevicesInfo s) {
-            boolean withButton = false;
+        private int withButtons(DevicesInfo s) {
+            int withButton = 0;
             if (s != null && !s.isProtected()) {
                 if (s.getSwitchTypeVal() == 0 &&
                         (s.getSwitchType() == null || s.getSwitchType().equals(null))) {
                     switch (s.getType()) {
-                        case Domoticz.Scene.Type.GROUP:
                         case Domoticz.Scene.Type.SCENE:
-                            withButton = true;
+                            withButton = 1;
+                            break;
+                        case Domoticz.Scene.Type.GROUP:
+                            withButton = 2;
                             break;
                     }
                 } else {
@@ -219,7 +251,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case Domoticz.Device.Type.Value.DOORBELL:
                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
                         case Domoticz.Device.Type.Value.DIMMER:
-                            withButton = true;
+                            withButton = 1;
                             break;
                     }
                 }
