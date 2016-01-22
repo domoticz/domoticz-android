@@ -99,7 +99,7 @@ public class WidgetActionActivity extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
-                            if(mDeviceInfo.isProtected()){
+                            if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
                                         WidgetActionActivity.this);
                                 passwordDialog.show();
@@ -109,8 +109,7 @@ public class WidgetActionActivity extends AppCompatActivity {
                                         showAppWidget(mDeviceInfo, password);
                                     }
                                 });
-                            }
-                            else{
+                            } else {
                                 showAppWidget(mDeviceInfo, null);
                             }
                         }

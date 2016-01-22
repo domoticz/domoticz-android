@@ -213,6 +213,25 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_zone_states);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
+    }
+
     static class ViewHolder {
         TextView name;
         TextView data;
@@ -260,24 +279,5 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             filteredData = (ArrayList<TemperatureInfo>) results.values;
             notifyDataSetChanged();
         }
-    }
-
-    public int getEvohomeStateIcon(String stateName) {
-        if (stateName == null) return 0;
-
-        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
-        String[] states = context.getResources().getStringArray(R.array.evohome_zone_states);
-        int i = 0;
-        int iconRes = 0;
-        for (String state : states) {
-            if (stateName.equals(state)) {
-                iconRes = icons.getResourceId(i, 0);
-                break;
-            }
-            i++;
-        }
-
-        icons.recycle();
-        return iconRes;
     }
 }

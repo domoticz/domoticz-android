@@ -60,13 +60,11 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
         switchesClickListener {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = Dashboard.class.getSimpleName();
-
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
     public static final String AUTO = "Auto";
-
+    @SuppressWarnings("unused")
+    private static final String TAG = Dashboard.class.getSimpleName();
     private Domoticz mDomoticz;
     private Context mContext;
     private DevicesAdapter adapter;
