@@ -694,13 +694,6 @@ public class SharedPrefUtil {
 
     public boolean saveSharedPreferencesToFile(File dst) {
         boolean isServerUpdateAvailableValue = false;
-        boolean isGeofenceEnabledValue = false;
-        // Before saving to file set geofences to false so on restore of settings
-        // fences are started
-        if (isGeofenceEnabled()) {
-            isGeofenceEnabledValue = true;
-            setGeofenceEnabled(false);
-        }
 
         // Before saving to file set server update available preference to false
         if (isServerUpdateAvailable()) {
@@ -737,7 +730,6 @@ public class SharedPrefUtil {
         }
         // Write original settings to preferences
         if (isServerUpdateAvailableValue) setServerUpdateAvailable(true);
-        if (isGeofenceEnabledValue) setGeofenceEnabled(true);
         return result;
     }
 
