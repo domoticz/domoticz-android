@@ -274,6 +274,10 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void showRemoveUndoSnackbar(final LocationInfo locationInfo) {
+        // remove location from list view
+        removeLocationFromListView(locationInfo);
+
+        // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
                 getString(R.string.geofence));
         Snackbar.make(coordinatorLayout,
@@ -282,7 +286,9 @@ public class GeoSettingsActivity extends AppCompatActivity
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // User clicked button
+                        // User clicked undo button
+                        // Let's undo the action on the list view
+                        addLocationToListView(locationInfo);
                     }
                 })
                 .setCallback(new Snackbar.Callback() {
@@ -290,16 +296,26 @@ public class GeoSettingsActivity extends AppCompatActivity
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
                         if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                            removeLocation(locationInfo);
+                            // Snackbar was timed out so let's remove the data from
+                            // shared preferences
+                            removeLocationFromPreferences(locationInfo);
                         }
                     }
                 })
                 .show();
     }
 
-    private void removeLocation(LocationInfo locationInfo) {
+    private void removeLocationFromListView(LocationInfo locationInfo) {
         adapter.data.remove(locationInfo);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void removeLocationFromPreferences(LocationInfo locationInfo) {
         mSharedPrefs.removeLocation(locationInfo);
+    }
+
+    private void addLocationToListView(LocationInfo locationInfo) {
+        adapter.data.add(locationInfo);
         adapter.notifyDataSetChanged();
     }
 
