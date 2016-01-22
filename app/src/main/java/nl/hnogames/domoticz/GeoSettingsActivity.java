@@ -52,6 +52,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
@@ -148,7 +149,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void initSwitches() {
-        Switch notSwitch = (Switch) findViewById(R.id.switch_notifications_button);
+        final Switch notSwitch = (Switch) findViewById(R.id.switch_notifications_button);
         Switch geoSwitch = (Switch) findViewById(R.id.switch_button);
 
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
@@ -157,10 +158,12 @@ public class GeoSettingsActivity extends AppCompatActivity
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mSharedPrefs.setGeofenceEnabled(isChecked);
                 invalidateOptionsMenu();
+                notSwitch.setEnabled(isChecked);
             }
         });
 
         notSwitch.setChecked(mSharedPrefs.isGeofenceNotificationsEnabled());
+        if (!mSharedPrefs.isGeofenceEnabled()) notSwitch.setEnabled(false);
         notSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -174,6 +177,11 @@ public class GeoSettingsActivity extends AppCompatActivity
         super.onPause();
 
         if (mApiClient.isConnected()) mApiClient.disconnect();
+        if (mGeofenceList.size() == 0 && !mSharedPrefs.isGeofenceEnabled()) {
+            mSharedPrefs.setGeofenceEnabled(false);
+            Toast.makeText(this, R.string.geofencing_disabled_no_enabled_fences,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -295,10 +303,15 @@ public class GeoSettingsActivity extends AppCompatActivity
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         super.onDismissed(snackbar, event);
-                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                            // Snackbar was timed out so let's remove the data from
-                            // shared preferences
-                            removeLocationFromPreferences(locationInfo);
+
+                        switch (event) {
+                            case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                            case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                            case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                                // Snackbar was timed out so let's remove the data from
+                                // shared preferences
+                                removeLocationFromPreferences(locationInfo);
+                                break;
                         }
                     }
                 })
@@ -428,7 +441,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             // No permission, check if the dialog has already been shown to user
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+                    this, Manifest.permission.ACCESS_FINE_LOCATION) ||
                     ActivityCompat.shouldShowRequestPermissionRationale(
                             this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
@@ -531,7 +544,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         //noinspection ResourceType
         LocationServices.FusedLocationApi.requestLocationUpdates(
-                mApiClient, mLocationRequest, new com.google.android.gms.location.LocationListener() {
+                mApiClient, mLocationRequest, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
                         //noinspection ResourceType
