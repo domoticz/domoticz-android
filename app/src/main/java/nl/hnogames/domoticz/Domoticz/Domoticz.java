@@ -82,6 +82,7 @@ public class Domoticz {
     public static final String HIDDEN_CHARACTER = "$";
 
     public static final String UTILITIES_TYPE_THERMOSTAT = "Thermostat";
+    public static final String UTILITIES_TYPE_HEATING = "Heating";
     public static final String UTILITIES_SUBTYPE_TEXT = "Text";
 
     /*
@@ -376,6 +377,10 @@ public class Domoticz {
                 url = Url.Log.GRAPH;
                 break;
 
+            case Json.Url.Request.SET_DEVICE_USED:
+                url = Url.Device.SET_USED;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -555,7 +560,6 @@ public class Domoticz {
                         + String.valueOf(idx)
                         + Url.ModalSwitch.STATUS + actionUrl;
                 break;
-
             case Json.Url.Set.TEMP:
                 url = Url.Temp.GET;
                 jsonUrl = url
@@ -825,6 +829,28 @@ public class Domoticz {
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3);
     }*/
+
+    public void setDeviceUsed(int id,
+                              String name,
+                              String description,
+                              String extraParams,
+                              setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.SET_DEVICE_USED);
+        url += id;
+        url += "&name=" + name;
+        url += "&description=" + description;
+        if (extraParams != null) {
+            url += extraParams;
+        }
+        url += "&used=true";
+
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
 
     public void getStatus(int idx, StatusReceiver receiver) {
         StatusInfoParser parser = new StatusInfoParser(receiver);
@@ -1309,6 +1335,7 @@ public class Domoticz {
                 int CONFIG = 25;
                 int SETSECURITY = 23;
                 int TEXTLOG = 24;
+                int SET_DEVICE_USED = 26;
             }
 
             interface Set {
@@ -1454,6 +1481,7 @@ public class Domoticz {
         @SuppressWarnings("SpellCheckingInspection")
         interface Device {
             String STATUS = "/json.htm?type=devices&rid=";
+            String SET_USED = "/json.htm?type=setused&idx=";
         }
 
         @SuppressWarnings("unused")

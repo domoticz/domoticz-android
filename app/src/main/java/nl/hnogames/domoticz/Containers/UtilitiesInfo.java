@@ -34,6 +34,7 @@ public class UtilitiesInfo {
 
     private int idx;
     private String Name;
+    private String Description;
     private String Data;
     private String LastUpdate;
     private double setPoint;
@@ -69,6 +70,8 @@ public class UtilitiesInfo {
 
         if (row.has("Name"))
             Name = row.getString("Name");
+        if (row.has("Description"))
+            Description = row.getString("Description");
         if (row.has("Data"))
             Data = row.getString("Data");
         if (row.has("Type"))
@@ -125,6 +128,10 @@ public class UtilitiesInfo {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getDescription() {
+        return Description;
     }
 
     public String getCounter() {

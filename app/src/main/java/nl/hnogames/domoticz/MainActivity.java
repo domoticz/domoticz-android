@@ -45,7 +45,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,8 +94,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
+        applyLanguage();
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();

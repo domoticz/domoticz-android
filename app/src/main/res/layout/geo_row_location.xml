@@ -80,10 +80,14 @@
 
         <Button
             android:id="@+id/remove_button"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
             android:layout_gravity="center"
-            android:background="@drawable/button_off"
+            android:background="@drawable/button_status"
+            android:textSize="10dp"
             android:text="@string/delete_short" />
 
     </LinearLayout>

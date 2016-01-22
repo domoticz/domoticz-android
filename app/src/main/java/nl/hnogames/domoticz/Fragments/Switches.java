@@ -338,6 +338,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         ColorPickerDialog colorDialog = new ColorPickerDialog(
                 getActivity(), idx);
         colorDialog.show();
+
         colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
             @Override
             public void onDismiss(final int selectedColor) {
@@ -357,18 +358,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onChangeColor(final int selectedColor) {
-                if (getSwitch(idx).isProtected()) {
-                    PasswordDialog passwordDialog = new PasswordDialog(
-                            getActivity());
-                    passwordDialog.show();
-                    passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                        @Override
-                        public void onDismiss(String password) {
-                            setColor(selectedColor, idx, password);
-                        }
-                    });
-                } else
+                if (!getSwitch(idx).isProtected()) {
                     setColor(selectedColor, idx, null);
+                }
             }
         });
     }
@@ -376,6 +368,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private void setColor(int selectedColor, final int idx, final String password) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
         Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+        if (hsv.length <= 0)
+            return;
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
@@ -423,6 +417,10 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @Override
     public void onThermostatClick(int idx) {
+    }
+
+    @Override
+    public void onSetTemperatureClick(int idx) {
     }
 
     @Override

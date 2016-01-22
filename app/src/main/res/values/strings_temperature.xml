@@ -3,7 +3,9 @@
 
 
     <string name="title_temperature">Temperature</string>
+    <string name="cancel_override">Cancel override</string>
     <string name="wind">Wind</string>
     <string name="error_log">Could not get log data for</string>
+    <string name="follow_schedule">Follow schedule</string>
 
 </resources>

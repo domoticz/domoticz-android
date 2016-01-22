@@ -18,7 +18,8 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:weightSum="1">
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -29,8 +30,9 @@
             android:src="@drawable/clock48" />
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.93">
 
             <TextView
                 android:id="@+id/switch_name"
@@ -58,14 +60,28 @@
                 android:layout_below="@id/switch_battery_level"
                 android:text="@string/signal_level" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical|right"
+            android:gravity="right|end">
+
             <Button
                 android:id="@+id/on_button"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:background="@drawable/button_status"
+                android:textSize="10dp"
+                android:text="@string/button_state_on"
                 android:layout_centerVertical="true"
-                android:background="@drawable/button"
-                android:text="@string/button_state_on" />
+                android:layout_toLeftOf="@+id/off_button"/>
 
         </RelativeLayout>
     </LinearLayout>
