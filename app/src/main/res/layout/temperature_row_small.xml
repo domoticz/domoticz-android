@@ -30,12 +30,12 @@
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="247dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -73,19 +73,32 @@
                     android:layout_toRightOf="@+id/temperature_data2"
                     android:layout_alignTop="@+id/temperature_data2"/>
 
-                <Button
-                    android:id="@+id/set_button"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/button_status"
-                    android:textSize="10dp"
-                    android:text="@string/set_temperature" />
-
-
             </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <Button
+                android:id="@+id/set_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_status"
+                android:textSize="10dp"
+                android:text="@string/set_temperature" />
+
+
 
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
