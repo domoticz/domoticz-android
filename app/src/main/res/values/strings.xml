@@ -56,6 +56,9 @@
     <string name="no_network_available">Error: No network connection available</string>
     <string name="oops">OOPS!</string>
     <string name="to">"to"</string>
+    <string name="retry">Retry</string>
+    <string name="undo">Undo</string>
+    <string name="something_deleted">%1$s deleted</string>
 
     <string name="switch_on">Turning switch on</string>
     <string name="switch_off">Turning switch off</string>
