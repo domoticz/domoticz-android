@@ -40,9 +40,9 @@ import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.R;
 
 public class ListAdapter extends WearableListView.Adapter {
-    private ArrayList<DevicesInfo> mDataset;
     private final Context mContext;
     private final LayoutInflater mInflater;
+    private ArrayList<DevicesInfo> mDataset;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ListAdapter(Context context, ArrayList<DevicesInfo> dataset) {
@@ -52,8 +52,7 @@ public class ListAdapter extends WearableListView.Adapter {
         setData(dataset);
     }
 
-    public void setData(ArrayList<DevicesInfo> dataset)
-    {
+    public void setData(ArrayList<DevicesInfo> dataset) {
         mDataset = dataset;
         Collections.sort(dataset, new Comparator<DevicesInfo>() {
             @Override
@@ -61,20 +60,6 @@ public class ListAdapter extends WearableListView.Adapter {
                 return left.getName().compareTo(right.getName());
             }
         });
-    }
-
-    // Provide a reference to the type of views you're using
-    public static class ItemViewHolder extends WearableListView.ViewHolder {
-        private TextView textView;
-        private TextView statusView;
-        private ImageView imageView;
-        public ItemViewHolder(View itemView) {
-            super(itemView);
-            // find the text view within the custom item's layout
-            textView = (TextView) itemView.findViewById(R.id.name);
-            statusView = (TextView) itemView.findViewById(R.id.status);
-            imageView = (ImageView) itemView.findViewById(R.id.circle);
-        }
     }
 
     // Create new views for list items
@@ -100,7 +85,7 @@ public class ListAdapter extends WearableListView.Adapter {
         status.setText(mDataset.get(position).getData());
 
         String imageType = mDataset.get(position).getTypeImg();
-        if(imageType!=null && imageType.length()>0) {
+        if (imageType != null && imageType.length() > 0) {
             Picasso.with(this.mContext).load(
                     getDrawableIcon(mDataset.get(position).getTypeImg(),
                             mDataset.get(position).getType(),
@@ -120,12 +105,10 @@ public class ListAdapter extends WearableListView.Adapter {
         holder.itemView.setTag(position);
     }
 
-
-    public int getDrawableIcon(String imgType, String Type , String switchType, boolean State, boolean useCustomImage, String CustomImage) {
+    public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
-        if(useCustomImage && CustomImage!=null && CustomImage.length()>0)
-        {
+        if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
             switch (CustomImage) {
                 case "Alarm":
                     return R.drawable.alarm;
@@ -170,7 +153,7 @@ public class ListAdapter extends WearableListView.Adapter {
         return standardImage;
     }
 
-    private int getDrawableIcon(String imgType, String Type , String switchType, boolean State) {
+    private int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
             case "scene":
@@ -272,5 +255,20 @@ public class ListAdapter extends WearableListView.Adapter {
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    // Provide a reference to the type of views you're using
+    public static class ItemViewHolder extends WearableListView.ViewHolder {
+        private TextView textView;
+        private TextView statusView;
+        private ImageView imageView;
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+            // find the text view within the custom item's layout
+            textView = (TextView) itemView.findViewById(R.id.name);
+            statusView = (TextView) itemView.findViewById(R.id.status);
+            imageView = (ImageView) itemView.findViewById(R.id.circle);
+        }
     }
 }
