@@ -465,7 +465,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.buttonSetStatus = (Button) row.findViewById(R.id.set_status_button);
 
-        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel_button);
+        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
