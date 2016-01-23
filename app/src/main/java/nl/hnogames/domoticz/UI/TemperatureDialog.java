@@ -76,7 +76,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         bntPlus = (Button) view.findViewById(R.id.plus);
         btnMin = (Button) view.findViewById(R.id.min);
 
-        if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELCIUS))
+        if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
             isFahrenheit = true;
         temperatureText.setText(String.valueOf(currentTemperature) + " " + config.getTempSign());
         int progress = (int) (currentTemperature);
