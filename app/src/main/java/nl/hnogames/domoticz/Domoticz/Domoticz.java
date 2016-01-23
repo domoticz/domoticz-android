@@ -57,6 +57,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
@@ -282,6 +283,9 @@ public class Domoticz {
         String url;
 
         switch (jsonGetUrl) {
+            case Json.Url.Request.UPDATE_DOWNLOAD_READY:
+                url = Url.Category.DOWNLOAD_READY;
+                break;
             case Json.Url.Request.VERSION:
                 url = Url.Category.VERSION;
                 break;
@@ -650,6 +654,15 @@ public class Domoticz {
                 url, mSessionUtil, false, 1);
     }
 
+    public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
+        UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.UPDATE_DOWNLOAD_READY);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.SCENES);
@@ -733,6 +746,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setSecurityPanelAction(int secStatus,
                                        String seccode,
                                        setCommandReceiver receiver) {
@@ -749,6 +763,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
@@ -769,6 +784,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setRGBColorAction(int idx,
                                   int jsonUrl,
                                   long hue,
@@ -794,6 +810,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setModalAction(int id,
                                int status, // one of Domoticz.Device.ModalSwitch.Action
                                int action, // behaves like this action == 1 ? 1 : 0
@@ -1016,6 +1033,7 @@ public class Domoticz {
         return null;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
@@ -1064,6 +1082,7 @@ public class Domoticz {
         return standardImage;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
@@ -1226,7 +1245,7 @@ public class Domoticz {
         }
 
         interface Type {
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Value {
                 int DOORBELL = 1;
                 int CONTACT = 2;
@@ -1277,14 +1296,14 @@ public class Domoticz {
         }
 
         interface SubType {
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Value {
                 int RGB = 1;
                 int SECURITYPANEL = 2;
                 int EVOHOME = 3;
             }
 
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Name {
                 String RGB = "RGB";
                 String SECURITYPANEL = "Security Panel";
@@ -1306,7 +1325,7 @@ public class Domoticz {
         }
 
         interface Url {
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Request {
                 int DASHBOARD = 1;
                 int SCENES = 2;
@@ -1330,12 +1349,14 @@ public class Domoticz {
                 int EVENTXML = 19;
                 int GRAPH = 20;
                 int SETTINGS = 22;
-                int CONFIG = 25;
                 int SETSECURITY = 23;
                 int TEXTLOG = 24;
+                int CONFIG = 25;
                 int SET_DEVICE_USED = 26;
+                int UPDATE_DOWNLOAD_READY = 27;
             }
 
+            @SuppressWarnings("SpellCheckingInspection")
             interface Set {
                 int SCENES = 101;
                 int SWITCHES = 102;
@@ -1440,6 +1461,7 @@ public class Domoticz {
             String SWITCHLOG = "/json.htm?type=lightlog&idx=";
             String TEXTLOG = "/json.htm?type=textlog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
+            String DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
         }
 
         @SuppressWarnings({"SpellCheckingInspection", "unused"})
@@ -1451,6 +1473,7 @@ public class Domoticz {
             String LEVEL = "&level=";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface ModalSwitch {
             String GET = "/json.htm?type=command&param=switchmodal&idx=";
             String STATUS = "&status=";
