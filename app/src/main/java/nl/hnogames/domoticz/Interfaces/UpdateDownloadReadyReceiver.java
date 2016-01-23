@@ -24,7 +24,7 @@ package nl.hnogames.domoticz.Interfaces;
 
 public interface UpdateDownloadReadyReceiver {
 
-    void onUpdateDownloadReady (boolean downloadOk);
+    void onUpdateDownloadReady(boolean downloadOk);
 
     void onError(Exception error);
 

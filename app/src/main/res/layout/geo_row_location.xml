@@ -84,11 +84,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:background="@drawable/button_status"
-            android:textSize="10dp"
-            android:text="@string/delete_short" />
+            android:text="@string/delete_short"
+            android:textSize="10dp" />
 
     </LinearLayout>
 </LinearLayout>

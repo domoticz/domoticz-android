@@ -68,13 +68,14 @@
                     android:id="@+id/mode_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_schedule_black_18dp"
-                    android:paddingLeft="5dp"
+                    android:layout_alignTop="@+id/temperature_data2"
                     android:layout_toRightOf="@+id/temperature_data2"
-                    android:layout_alignTop="@+id/temperature_data2"/>
+                    android:paddingLeft="5dp"
+                    android:src="@drawable/ic_schedule_black_18dp" />
 
             </RelativeLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
@@ -82,9 +83,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/set_button"
@@ -93,9 +94,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/button_status"
-                android:textSize="10dp"
-                android:text="@string/set_temperature" />
-
+                android:text="@string/set_temperature"
+                android:textSize="10dp" />
 
 
         </LinearLayout>

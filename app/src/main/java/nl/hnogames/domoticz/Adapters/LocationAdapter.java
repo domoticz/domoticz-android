@@ -134,11 +134,11 @@ public class LocationAdapter extends BaseAdapter {
             public void onClick(final View v) {
                 LocationInfo removeLocation = null;
                 for (LocationInfo l : data) {
-                    if (l.getID() == v.getId()){
-                        removeLocation=l;
+                    if (l.getID() == v.getId()) {
+                        removeLocation = l;
                     }
                 }
-                if(removeLocation != null)
+                if (removeLocation != null)
                     handleRemoveButtonClick(removeLocation);
             }
         });

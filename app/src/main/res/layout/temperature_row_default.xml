@@ -42,10 +42,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_toStartOf="@+id/linearLayout4"
                     android:layout_toLeftOf="@+id/linearLayout4"
-                    >
+                    android:layout_toStartOf="@+id/linearLayout4"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/temperature_name"
@@ -64,9 +63,11 @@
                         android:layout_below="@+id/temperature_name"
                         android:text="@string/temperature" />
 
-                    <LinearLayout android:layout_width="175dp"
+                    <LinearLayout
+                        android:layout_width="175dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/temperature_data2"
                             style="@style/row_body2"
@@ -76,12 +77,12 @@
                             android:layout_below="@+id/temperature_data"
                             android:text="@string/temperature" />
 
-                            <ImageView
-                                android:id="@+id/mode_icon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_schedule_black_18dp"
-                                android:paddingLeft="5dp"/>
+                        <ImageView
+                            android:id="@+id/mode_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:src="@drawable/ic_schedule_black_18dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -92,8 +93,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical">
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical">
 
                     <Button
                         android:id="@+id/set_button"
@@ -101,10 +102,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:layout_gravity="right"
                         android:background="@drawable/button_status"
-                        android:textSize="10dp"
                         android:text="@string/set_temperature"
-                        android:layout_gravity="right" />
+                        android:textSize="10dp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -117,31 +118,31 @@
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp">
 
-                    <Button
-                        android:id="@+id/day_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:textSize="10dp"
-                        android:background="@drawable/button_status"
-                        android:text="@string/button_status_day" />
+                <Button
+                    android:id="@+id/day_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_day"
+                    android:textSize="10dp" />
 
-                    <Button
-                        android:id="@+id/month_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="10dp"
-                        android:background="@drawable/button_status"
-                        android:text="@string/button_status_month" />
+                <Button
+                    android:id="@+id/month_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_month"
+                    android:textSize="10dp" />
 
-                    <Button
-                        android:id="@+id/year_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:textSize="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/button_status"
-                        android:text="@string/button_status_year" />
+                <Button
+                    android:id="@+id/year_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_year"
+                    android:textSize="10dp" />
 
 
             </LinearLayout>
