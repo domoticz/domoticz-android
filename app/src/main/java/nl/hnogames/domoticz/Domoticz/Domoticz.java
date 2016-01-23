@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,6 +94,7 @@ public class Domoticz {
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private String snapshot_file_path = "/Domoticz/SnapShot";
 
 
@@ -1003,15 +1003,13 @@ public class Domoticz {
             dir.mkdirs();
 
         File file = new File(dir, "snapshot" + name + ".jpg");
-        FileOutputStream fOut = null;
+        FileOutputStream fOut;
         try {
             fOut = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
             fOut.flush();
             fOut.close();
             return file;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1376,13 +1374,15 @@ public class Domoticz {
     }
 
     public interface Temperature {
+        @SuppressWarnings("unused")
         interface Sign {
-            String CELCIUS = "C";
+            String CELSIUS = "C";
             String FAHRENHEIT = "F";
         }
     }
 
     public interface Event {
+        @SuppressWarnings("unused")
         interface Type {
             String EVENT = "Event";
         }
@@ -1394,6 +1394,7 @@ public class Domoticz {
     }
 
     public interface Security {
+        @SuppressWarnings("SpellCheckingInspection")
         interface Status {
             int ARMHOME = 1;
             int ARMAWAY = 2;
