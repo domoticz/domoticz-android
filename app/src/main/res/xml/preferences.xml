@@ -79,10 +79,10 @@
 
     <PreferenceCategory android:title="@string/category_language">
         <ListPreference
-            android:key="displayLanguage"
-            android:title="@string/category_language"
             android:entries="@array/domoticz_language_entries"
-            android:entryValues="@array/domoticz_language_entryValues"/>
+            android:entryValues="@array/domoticz_language_entryValues"
+            android:key="displayLanguage"
+            android:title="@string/category_language" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_notification">

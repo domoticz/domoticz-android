@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -60,6 +61,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;
     private CamerasAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean refreshTimer = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -71,6 +74,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
     @Override
     public void refreshFragment() {
+        refreshTimer = true;
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
         getCameras();
     }
 
@@ -80,6 +87,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     public void getCameras() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         mDomoticz = new Domoticz(context);
         mDomoticz.getCameras(new CameraReceiver() {
@@ -87,8 +96,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             @Override
             public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
                 successHandling(Cameras.toString(), false);
-
-                mAdapter = new CamerasAdapter(Cameras, context, mDomoticz);
+                mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
@@ -107,6 +115,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                     }
                 });
                 mRecyclerView.setAdapter(mAdapter);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -153,6 +162,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     public void onConnectionOk() {
         mDomoticz = new Domoticz(context);
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);

@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
@@ -73,14 +71,10 @@ public class UpdateActivity extends AppCompatActivity {
                 if (!UsefulBits.isEmpty(serverVersion)) {
                     String[] version
                             = serverVersion.split("\\.");
+
                     // Update version is only revision number
                     String updateVersion =
                             version[0] + "." + mSharedPrefs.getUpdateVersionAvailable();
-                    String message
-                            = String.format(getString(R.string.update_available),
-                            serverVersion,
-                            updateVersion);
-                    return message;
                 }
             }
 
@@ -92,6 +86,7 @@ public class UpdateActivity extends AppCompatActivity {
                 showSimpleSnackbar(message);
             }
         });
+        return mSharedPrefs.getUpdateVersionAvailable();
     }
 
     private void showSimpleSnackbar(String message) {

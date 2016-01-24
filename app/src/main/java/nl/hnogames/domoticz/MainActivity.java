@@ -53,11 +53,14 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
     private boolean onPhone;
+    private Timer cameraRefreshTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     drawNavigationMenu();
                     refreshFragment();
                     updateDrawerItems();
+                    invalidateOptionsMenu();
                     break;
             }
         }
@@ -482,8 +487,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = getVisibleFragment();
         if (!(f instanceof DomoticzFragment)) {
-            getMenuInflater().inflate(R.menu.menu_simple, menu);
-
+            if ((f instanceof Cameras)) {
+                if (cameraRefreshTimer != null)
+                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
+                else
+                    getMenuInflater().inflate(R.menu.menu_camera, menu);
+            } else
+                getMenuInflater().inflate(R.menu.menu_simple, menu);
         } else {
             if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                 getMenuInflater().inflate(R.menu.menu_main_sort, menu);
@@ -512,13 +522,42 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
+                case R.id.action_camera_play:
+                    if (cameraRefreshTimer == null) {
+                        cameraRefreshTimer = new Timer("camera", true);
+                        cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //call refresh fragment
+                                        Fragment f = getVisibleFragment();
+                                        if (f instanceof Cameras) {
+                                            ((Cameras) f).refreshFragment();
+                                        } else {
+                                            //we're not at the camera fragment? stop timer!
+                                            stopCameraTimer();
+                                            invalidateOptionsMenu();
+                                        }
+                                    }
+                                });
+                            }
+                        }, 0, 5000);//schedule in 5 seconds
+                    }
+                    invalidateOptionsMenu();//set pause button
+                    return true;
+                case R.id.action_camera_pause:
+                    stopCameraTimer();
+                    invalidateOptionsMenu();//set pause button
+                    return true;
                 case R.id.action_settings:
+                    stopCameraTimer();
                     startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
                     return true;
                 case R.id.action_sort:
@@ -557,6 +596,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopCameraTimer();
+    }
+
+    private void stopCameraTimer() {
+        if (cameraRefreshTimer != null) {
+            cameraRefreshTimer.cancel();
+            cameraRefreshTimer.purge();
+            cameraRefreshTimer = null;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (stackFragments == null || stackFragments.size() <= 1) {
             MainActivity.super.onBackPressed();
@@ -566,5 +619,8 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(previousFragment);
             stackFragments.remove(currentFragment);
         }
+
+        stopCameraTimer();
+        invalidateOptionsMenu();
     }
 }

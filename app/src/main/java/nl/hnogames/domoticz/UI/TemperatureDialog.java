@@ -50,6 +50,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     private SeekArc temperatureControl;
     private TextView temperatureText;
     private Button bntPlus, btnMin;
+    private String tempSign = "";
     private ConfigInfo config;
     private boolean isFahrenheit = false;
 
@@ -76,9 +77,14 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         bntPlus = (Button) view.findViewById(R.id.plus);
         btnMin = (Button) view.findViewById(R.id.min);
 
-        if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
-            isFahrenheit = true;
-        temperatureText.setText(String.valueOf(currentTemperature) + " " + config.getTempSign());
+        if (config != null) {
+            tempSign = config.getTempSign();
+            if (!config.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
+                isFahrenheit = true;
+        }
+
+        temperatureText.setText(String.valueOf(currentTemperature) + " " + tempSign);
+
         int progress = (int) (currentTemperature);
         if (!isFahrenheit)
             progress = (int) (currentTemperature * 2);
@@ -96,27 +102,27 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
                 double temp = ((double) temperatureControl.getProgress() / 2);
                 if (isFahrenheit)
-                    temperatureText.setText(String.valueOf(temp * 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp * 2) + " " + tempSign);
                 else
-                    temperatureText.setText(String.valueOf(temp) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp) + " " + tempSign);
             }
 
             @Override
             public void onStartTrackingTouch(SeekArc seekArc) {
                 double temp = ((double) temperatureControl.getProgress() / 2);
                 if (isFahrenheit)
-                    temperatureText.setText(String.valueOf(temp * 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp * 2) + " " + tempSign);
                 else
-                    temperatureText.setText(String.valueOf(temp) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp) + " " + tempSign);
             }
 
             @Override
             public void onStopTrackingTouch(SeekArc seekArc) {
                 double temp = ((double) temperatureControl.getProgress() / 2);
                 if (isFahrenheit)
-                    temperatureText.setText(String.valueOf(temp * 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp * 2) + " " + tempSign);
                 else
-                    temperatureText.setText(String.valueOf(temp) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp) + " " + tempSign);
             }
         });
 
@@ -125,10 +131,10 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             public void onClick(View v) {
                 if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 2);
-                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + tempSign);
                 } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 1);
-                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + tempSign);
                 }
             }
         });
@@ -137,10 +143,10 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             public void onClick(View v) {
                 if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 2);
-                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + tempSign);
                 } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 1);
-                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + tempSign);
                 }
             }
         });

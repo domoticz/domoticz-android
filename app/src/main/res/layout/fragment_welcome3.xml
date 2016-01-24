@@ -114,11 +114,11 @@
             android:id="@+id/showpassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginTop="10dp"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/default_text_color_light"
             android:text="@string/show_password"
-            android:layout_gravity="right" />
+            android:textColor="@color/default_text_color_light"
+            android:textSize="@dimen/text_size_small" />
 
         <TextView
             android:id="@+id/advancedSettings_label"
@@ -308,11 +308,11 @@
                     android:id="@+id/showpasswordlocal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:layout_marginTop="10dp"
-                    android:textSize="@dimen/text_size_small"
-                    android:textColor="@color/default_text_color_light"
                     android:text="@string/show_password"
-                    android:layout_gravity="right" />
+                    android:textColor="@color/default_text_color_light"
+                    android:textSize="@dimen/text_size_small" />
 
                 <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                     android:id="@+id/local_directory_input"
