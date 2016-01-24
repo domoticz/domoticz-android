@@ -69,6 +69,7 @@ public class SharedPrefUtil {
     public static final String PREF_LANGUAGE = "displayLanguage";
     public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
+    public static final String PREF_SERVER_VERSION = "serverversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
@@ -100,7 +101,6 @@ public class SharedPrefUtil {
     private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
             "local_server_authentication_method";
     private static final String LOCAL_SERVER_SSID = "local_server_ssid";
-
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -425,6 +425,14 @@ public class SharedPrefUtil {
 
     public void setUpdateVersionAvailable(String version) {
         editor.putString(PREF_UPDATE_VERSION, version).apply();
+    }
+
+    public void setServerVersion(String version) {
+        editor.putString(PREF_SERVER_VERSION, version).apply();
+    }
+
+    public String getServerVersion() {
+        return prefs.getString(PREF_SERVER_VERSION, "");
     }
 
     public String getDomoticzRemoteUrl() {
