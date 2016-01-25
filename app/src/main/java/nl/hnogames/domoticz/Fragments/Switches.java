@@ -25,13 +25,11 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Parcelable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -67,15 +65,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     @SuppressWarnings("unused")
     private static final String TAG = Switches.class.getSimpleName();
-    private Domoticz mDomoticz;
     private Context mContext;
     private SwitchesAdapter adapter;
-
-    private CoordinatorLayout coordinatorLayout;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private ListView listView;
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
@@ -84,7 +76,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         getSwitchesData();
     }
 
@@ -110,11 +101,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mDomoticz = new Domoticz(mContext);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
         getSwitchesData();
     }
 

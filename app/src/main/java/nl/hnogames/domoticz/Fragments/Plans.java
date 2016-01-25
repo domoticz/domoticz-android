@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +51,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     @SuppressWarnings("unused")
     private static final String TAG = Plans.class.getSimpleName();
 
-    private ProgressDialog progressDialog;
     private Context mContext;
     private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;

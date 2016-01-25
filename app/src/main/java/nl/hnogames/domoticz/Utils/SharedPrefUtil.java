@@ -427,12 +427,12 @@ public class SharedPrefUtil {
         editor.putString(PREF_UPDATE_VERSION, version).apply();
     }
 
-    public void setServerVersion(String version) {
-        editor.putString(PREF_SERVER_VERSION, version).apply();
-    }
-
     public String getServerVersion() {
         return prefs.getString(PREF_SERVER_VERSION, "");
+    }
+
+    public void setServerVersion(String version) {
+        editor.putString(PREF_SERVER_VERSION, version).apply();
     }
 
     public String getDomoticzRemoteUrl() {

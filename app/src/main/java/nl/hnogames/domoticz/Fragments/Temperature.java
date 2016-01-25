@@ -22,14 +22,11 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
@@ -59,14 +56,8 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
     @SuppressWarnings("unused")
     private static final String TAG = Temperature.class.getSimpleName();
-    private ProgressDialog progressDialog;
-    private Domoticz mDomoticz;
     private Context mContext;
-
-    private ListView listView;
     private TemperatureAdapter adapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
     private String filter = "";
 
     @Override
@@ -99,24 +90,17 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-
-        mDomoticz = new Domoticz(mContext);
         processTemperature();
     }
 
     private void processTemperature() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        mDomoticz.getTemperatures(new TemperatureReceiver() {
 
+        mDomoticz.getTemperatures(new TemperatureReceiver() {
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 successHandling(mTemperatureInfos.toString(), false);
-
                 createListView(mTemperatureInfos);
             }
 
