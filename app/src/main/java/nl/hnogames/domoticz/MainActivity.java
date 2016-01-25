@@ -25,7 +25,6 @@ package nl.hnogames.domoticz;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -65,7 +64,7 @@ import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
-import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -400,13 +399,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkDomoticzServerUpdate() {
 
-        // Get latest Domoticz version
-        domoticz.getUpdate(new UpdateReceiver() {
+        // Get latest Domoticz version update
+        domoticz.getUpdate(new UpdateVersionReceiver() {
             @Override
             public void onReceiveUpdate(String version, boolean haveUpdate) {
                 // Write update version to shared preferences
                 mSharedPrefs.setUpdateVersionAvailable(version);
                 mSharedPrefs.setServerUpdateAvailable(haveUpdate);
+                if (haveUpdate) getCurrentServerVersion();
             }
 
             @Override
@@ -418,36 +418,51 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPrefs.setUpdateVersionAvailable("");
             }
         });
+    }
 
-        if (mSharedPrefs.isServerUpdateAvailable()) {
-            // Get current Domoticz server version
-            domoticz.getVersion(new VersionReceiver() {
-                @Override
-                public void onReceiveVersion(String serverVersion) {
-                    if (!UsefulBits.isEmpty(serverVersion)) {
-                        String[] version
-                                = serverVersion.split("\\.");
-                        // Update version is only revision number
-                        String updateVersion =
-                                version[0] + "." + mSharedPrefs.getUpdateVersionAvailable();
-                        String message
-                                = String.format(getString(R.string.update_available),
-                                serverVersion,
-                                updateVersion);
-                        showSimpleSnackbar(message);
-                    }
-                }
+    private void getCurrentServerVersion() {
+        // Get current Domoticz server version
+        domoticz.getServerVersion(new VersionReceiver() {
+            @Override
+            public void onReceiveVersion(String serverVersion) {
+                if (!UsefulBits.isEmpty(serverVersion)) {
+                    mSharedPrefs.setServerVersion(serverVersion);
 
-                @Override
-                public void onError(Exception error) {
-                    String message = String.format(
-                            getString(R.string.error_couldNotCheckForUpdates),
-                            domoticz.getErrorMessage(error));
-                    showSimpleSnackbar(message);
+                    String[] version
+                            = serverVersion.split("\\.");
+                    // Update version is only revision number
+                    String updateVersion =
+                            version[0] + "." + mSharedPrefs.getUpdateVersionAvailable();
+                    String message
+                            = String.format(getString(R.string.update_available_enhanced),
+                            serverVersion,
+                            updateVersion);
+                    showSnackBarToUpdateServer(message);
                 }
-            });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                String message = String.format(
+                        getString(R.string.error_couldNotCheckForUpdates),
+                        domoticz.getErrorMessage(error));
+                showSimpleSnackbar(message);
+            }
+        });
+    }
+
+    private void showSnackBarToUpdateServer(String message) {
+        View layout = getFragmentCoordinatorLayout();
+        if (layout != null) {
+            Snackbar.make(layout, message, Snackbar.LENGTH_LONG)
+                    .setAction("Update server", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(MainActivity.this, UpdateActivity.class));
+                        }
+                    })
+                    .show();
         }
-
     }
 
     private void saveServerConfigToSharedPreferences() {
@@ -470,17 +485,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSimpleSnackbar(String message) {
+        View layout = getFragmentCoordinatorLayout();
+        if (layout != null) Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+        else Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public View getFragmentCoordinatorLayout() {
+        View layout = null;
         try {
-            CoordinatorLayout fragmentCoordinatorLayout = (CoordinatorLayout) getVisibleFragment()
-                    .getView()
-                    .findViewById(R.id.coordinatorLayout);
-            Snackbar.make(fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+            layout = getVisibleFragment().getView().findViewById(R.id.coordinatorLayout);
         } catch (Exception ex) {
             Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
-            Log.e(TAG, "Showing toast instead of snackbar");
             ex.printStackTrace();
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
+        return layout;
     }
 
     @Override

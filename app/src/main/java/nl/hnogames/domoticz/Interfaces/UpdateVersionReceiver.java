@@ -22,7 +22,10 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-public interface UpdateReceiver {
+/**
+ * Receiver which returns the version and if there is a update available
+ */
+public interface UpdateVersionReceiver {
 
     void onReceiveUpdate(String version, boolean haveUpdate);
 

@@ -23,11 +23,11 @@
 package nl.hnogames.domoticz.Interfaces;
 
 /**
- * Receiver which returns the version of the Domoticz server
+ * Receiver which returns if the update of the server is a success
  */
-public interface VersionReceiver {
+public interface UpdateDomoticzServerReceiver {
 
-    void onReceiveVersion(String version);
+    void onUpdateFinish(boolean updateSuccess);
 
     void onError(Exception error);
 

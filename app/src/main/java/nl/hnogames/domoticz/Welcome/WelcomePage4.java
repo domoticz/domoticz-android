@@ -61,7 +61,7 @@ public class WelcomePage4 extends Fragment {
             setResultText(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else {
-            mDomoticz.getVersion(new VersionReceiver() {
+            mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override
                 public void onReceiveVersion(String version) {
                     tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;

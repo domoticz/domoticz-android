@@ -28,14 +28,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
-import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 
-public class UpdateParser implements JSONParserInterface {
+public class UpdateVersionParser implements JSONParserInterface {
 
-    private static final String TAG = UpdateParser.class.getSimpleName();
-    private UpdateReceiver receiver;
+    private static final String TAG = UpdateVersionParser.class.getSimpleName();
+    private UpdateVersionReceiver receiver;
 
-    public UpdateParser(UpdateReceiver receiver) {
+    public UpdateVersionParser(UpdateVersionReceiver receiver) {
         this.receiver = receiver;
     }
 

@@ -1,124 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-        <ImageView
-            android:id="@+id/logo_domoticz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="25dp"
-            android:src="@drawable/ic_domoticz_logo_white" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/currentServerVersion_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:text="Server version"
-                android:textSize="@dimen/text_size_large" />
-
-            <TextView
-                android:id="@+id/currentServerVersion_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:textSize="@dimen/text_size_large"
-                tools:text="2.4321" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/updateServerVersion_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="75"
-                android:text="Server update version"
-                android:textSize="@dimen/text_size_large" />
-
-            <TextView
-                android:id="@+id/updateServerVersion_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="25"
-                android:textSize="@dimen/text_size_large"
-                tools:text="2.5432" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="25dp">
-
-            <TextView
-                android:id="@+id/buttonRefreshServerVersion_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Refresh server version"
-                android:textSize="@dimen/text_size_medium" />
-
-            <Button
+            <ImageView
+                android:id="@+id/logo_domoticz"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Refresh" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:src="@drawable/ic_domoticz_logo_white"
+                android:contentDescription="@string/domoticz_logo" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/currentServerVersion_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:textSize="@dimen/text_size_large"
+                    android:text="@string/server_version"/>
+
+                <TextView
+                    android:id="@+id/currentServerVersion_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:textSize="@dimen/text_size_large"
+                    tools:text="2.4321"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/updateServerVersion_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:textSize="@dimen/text_size_large"
+                    android:text="@string/server_update_revision"/>
+
+                <TextView
+                    android:id="@+id/updateServerVersion_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:textSize="@dimen/text_size_large"
+                    tools:text="2.5432"/>
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/buttonRefreshUpdateVersion_title"
-                android:layout_width="0dp"
+                android:id="@+id/updateSummary"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Refresh update version"
-                android:textSize="@dimen/text_size_medium" />
+                android:layout_marginTop="35dp"
+                android:textSize="@dimen/text_size_large"
+                android:text="@string/server_update_available"
+                android:gravity="center_horizontal" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/buttonUpdateServer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Refresh" />
-
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/update_server"/>
         </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="35dp"
-            android:text="Update server" />
-
-
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

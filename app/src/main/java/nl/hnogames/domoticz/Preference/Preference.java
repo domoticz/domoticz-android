@@ -44,12 +44,11 @@ import java.io.File;
 import java.util.HashSet;
 
 import nl.hnogames.domoticz.BuildConfig;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GeoSettingsActivity;
-import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
+import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -342,28 +341,25 @@ public class Preference extends PreferenceFragment {
         if (pInfo != null) appVersionStr = pInfo.versionName;
 
         final android.preference.Preference appVersion = findPreference("version");
-        final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
         appVersion.setSummary(appVersionStr);
 
-        Domoticz domoticz = new Domoticz(mContext);
-        domoticz.getVersion(new VersionReceiver() {
-            @Override
-            public void onReceiveVersion(String version) {
-                try {
-                    String sVersion = version;
-                    String sUpdateVersion = mSharedPrefs.getUpdateVersionAvailable();
-                    if (sUpdateVersion != null && sUpdateVersion.length() > 0)
-                        sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
-                    domoticzVersion.setSummary(sVersion);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+        final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
+        String message;
+        if (mSharedPrefs.isServerUpdateAvailable() || mSharedPrefs.isDebugEnabled()) {
+            message = String.format(getString(R.string.update_available_enhanced),
+                    mSharedPrefs.getServerVersion(),
+                    mSharedPrefs.getUpdateVersionAvailable());
+            message+=UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
+            domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    Intent intent = new Intent(mContext, UpdateActivity.class);
+                    startActivity(intent);
+                    return false;
                 }
-            }
-
-            @Override
-            public void onError(Exception error) {
-            }
-        });
+            });
+        } else message = mSharedPrefs.getServerVersion();
+        domoticzVersion.setSummary(message);
     }
 
     private void setStartUpScreenDefaultValue() {

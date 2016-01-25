@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Domoticz;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,8 +58,9 @@ import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
-import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
@@ -283,8 +285,11 @@ public class Domoticz {
         String url;
 
         switch (jsonGetUrl) {
+            case Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
+                url = Url.System.UPDATE_DOMOTICZ_SERVER;
+                break;
             case Json.Url.Request.UPDATE_DOWNLOAD_READY:
-                url = Url.Category.DOWNLOAD_READY;
+                url = Url.System.DOWNLOAD_READY;
                 break;
             case Json.Url.Request.VERSION:
                 url = Url.Category.VERSION;
@@ -636,7 +641,11 @@ public class Domoticz {
         } else return "";
     }
 
-    public void getVersion(VersionReceiver receiver) {
+    /**
+     * Get's version of the Domoticz server
+     * @param receiver to get the callback on
+     */
+    public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
         String url = constructGetUrl(Json.Url.Request.VERSION);
         RequestUtil.makeJsonVersionRequest(parser,
@@ -645,8 +654,12 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
-    public void getUpdate(UpdateReceiver receiver) {
-        UpdateParser parser = new UpdateParser(receiver);
+    /**
+     * Get's the version of the update (if available)
+     * @param receiver to get the callback on
+     */
+    public void getUpdate(UpdateVersionReceiver receiver) {
+        UpdateVersionParser parser = new UpdateVersionParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UPDATE);
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -654,6 +667,10 @@ public class Domoticz {
                 url, mSessionUtil, false, 1);
     }
 
+    /**
+     * Get's if the update is downloaded and ready
+     * @param receiver to get the callback on
+     */
     public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
         UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UPDATE_DOWNLOAD_READY);
@@ -661,6 +678,19 @@ public class Domoticz {
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, false, 1);
+    }
+
+    /**
+     * Gives the Domoticz server the command to install the latest update (if downloaded)
+     * @param receiver to get the callback on
+     */
+    public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {
+        UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
     }
 
     public void getScenes(ScenesReceiver receiver) {
@@ -1354,6 +1384,7 @@ public class Domoticz {
                 int CONFIG = 25;
                 int SET_DEVICE_USED = 26;
                 int UPDATE_DOWNLOAD_READY = 27;
+                int UPDATE_DOMOTICZ_SERVER = 28;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1461,7 +1492,6 @@ public class Domoticz {
             String SWITCHLOG = "/json.htm?type=lightlog&idx=";
             String TEXTLOG = "/json.htm?type=textlog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
-            String DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
         }
 
         @SuppressWarnings({"SpellCheckingInspection", "unused"})
@@ -1546,6 +1576,8 @@ public class Domoticz {
             String SETTINGS = "/json.htm?type=settings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
+            String DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
+            String UPDATE_DOMOTICZ_SERVER = "/json.htm?type=command&param=execute_script&scriptname=update_domoticz&direct=true";
         }
     }
 

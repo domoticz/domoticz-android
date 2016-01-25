@@ -83,7 +83,8 @@
     <string name="error_image_description">Error image</string>
 
     <string name="white">White</string>
-    <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
-    <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
-    <string name="title_activity_update">UpdateActivity</string>
+    <string name="refresh">Refresh</string>
+    <string name="domoticz_logo">Domoticz logo</string>
+    <string name="this_take_minutes">This could take several minutes.</string>
+    <string name="continue_question">Continue?</string>
 </resources>
