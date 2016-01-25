@@ -643,6 +643,7 @@ public class Domoticz {
 
     /**
      * Get's version of the Domoticz server
+     *
      * @param receiver to get the callback on
      */
     public void getServerVersion(VersionReceiver receiver) {
@@ -656,6 +657,7 @@ public class Domoticz {
 
     /**
      * Get's the version of the update (if available)
+     *
      * @param receiver to get the callback on
      */
     public void getUpdate(UpdateVersionReceiver receiver) {
@@ -669,6 +671,7 @@ public class Domoticz {
 
     /**
      * Get's if the update is downloaded and ready
+     *
      * @param receiver to get the callback on
      */
     public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
@@ -682,6 +685,7 @@ public class Domoticz {
 
     /**
      * Gives the Domoticz server the command to install the latest update (if downloaded)
+     *
      * @param receiver to get the callback on
      */
     public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {

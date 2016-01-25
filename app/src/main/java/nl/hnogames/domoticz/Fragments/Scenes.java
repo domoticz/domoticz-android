@@ -22,15 +22,12 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Parcelable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -54,18 +51,18 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
-    private ProgressDialog progressDialog;
     private Context mContext;
-    private Domoticz mDomoticz;
     private SceneAdapter adapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private CoordinatorLayout coordinatorLayout;
     private ArrayList<SceneInfo> mScenes;
     private Parcelable state;
-    private ListView listView;
     private String filter = "";
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        getActionBar().setTitle(R.string.title_scenes);
+    }
 
     @Override
     public void Filter(String text) {
@@ -83,18 +80,12 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processScenes();
     }
 
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        mDomoticz = new Domoticz(mContext);
         processScenes();
     }
 
@@ -104,7 +95,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
         state = listView.onSaveInstanceState();
         WidgetUtils.RefreshWidgets(mContext);
-
 
         mDomoticz.getScenes(new ScenesReceiver() {
             @Override
@@ -245,12 +235,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         });
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        getActionBar().setTitle(R.string.title_scenes);
-    }
 
     @Override
     public void onSceneClick(int idx, final boolean action) {

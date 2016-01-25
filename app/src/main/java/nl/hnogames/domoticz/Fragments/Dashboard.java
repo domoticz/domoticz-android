@@ -25,13 +25,11 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Parcelable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -63,23 +61,21 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
     public static final String AUTO = "Auto";
-    @SuppressWarnings("unused")
     private static final String TAG = Dashboard.class.getSimpleName();
-    private Domoticz mDomoticz;
     private Context mContext;
     private DevicesAdapter adapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-
     private int planID = 0;
     private String planName = "";
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
-    private ListView listView;
-
     private Parcelable state = null;
     private boolean busy = false;
-
     private String filter = "";
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public void refreshFragment() {
@@ -91,12 +87,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void selectedPlan(int plan, String name) {
         planID = plan;
         planName = name;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
     }
 
     @Override
@@ -116,13 +106,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         getActionBar().setTitle(R.string.title_dashboard);
         super.showSpinner(true);
         if (getView() != null) {
-            listView = (ListView) getView().findViewById(R.id.listView);
-            coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
             if (planName != null && planName.length() > 0)
                 getActionBar().setTitle(planName + "");
-
             processDashboard();
         }
     }
@@ -470,7 +455,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         });
     }
 
-
     @Override
     public void onLogButtonClick(int idx) {
     }
@@ -519,7 +503,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (selectedColor == -1) {
             isWhite = true;
         }
-
         mDomoticz.setRGBColorAction(idx,
                 Domoticz.Json.Url.Set.RGBCOLOR,
                 hue,

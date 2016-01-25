@@ -22,15 +22,12 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -60,18 +57,11 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 public class Utilities extends DomoticzFragment implements DomoticzFragmentListener,
         UtilityClickListener {
 
-    private Domoticz mDomoticz;
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
-    private CoordinatorLayout coordinatorLayout;
-
     private double thermostatSetPointValue;
-    private ListView listView;
     private UtilityAdapter adapter;
-    private ProgressDialog progressDialog;
     private Context mContext;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String filter = "";
-
 
     @Override
     public void refreshFragment() {
@@ -103,13 +93,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-
-        listView = (ListView) getView().findViewById(R.id.listView);
-
-        mDomoticz = new Domoticz(mContext);
         processUtilities();
     }
 

@@ -22,12 +22,9 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -35,7 +32,6 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
@@ -44,13 +40,8 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Events extends DomoticzFragment implements DomoticzFragmentListener {
 
-    private Domoticz mDomoticz;
     private EventsAdapter adapter;
-    private ProgressDialog progressDialog;
     private Context mContext;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
-    private ListView listView;
     private String filter = "";
 
     @Override
@@ -82,12 +73,6 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-
-        mDomoticz = new Domoticz(mContext);
         processUserVariables();
     }
 

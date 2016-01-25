@@ -54,8 +54,7 @@ public class UpdateDomoticzServerParser implements JSONParserInterface {
                 resultText = response.getString("status");
                 if (!UsefulBits.isEmpty(resultText))
                     updateSuccess = resultText.equalsIgnoreCase("true");
-            }
-            else updateSuccess = false;
+            } else updateSuccess = false;
 
             if (receiver != null) receiver.onUpdateFinish(updateSuccess);
         } catch (JSONException e) {

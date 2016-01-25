@@ -349,7 +349,7 @@ public class Preference extends PreferenceFragment {
             message = String.format(getString(R.string.update_available_enhanced),
                     mSharedPrefs.getServerVersion(),
                     mSharedPrefs.getUpdateVersionAvailable());
-            message+=UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
+            message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
             domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(android.preference.Preference preference) {

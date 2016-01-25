@@ -167,7 +167,7 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void showMessageUpdateNotReady() {
-        String title =getString(R.string.server_update_not_ready);
+        String title = getString(R.string.server_update_not_ready);
         String message = getString(R.string.update_server_warning) + UsefulBits.newLine()
                 + getString(R.string.update_server_downloadNotReady2);
         showSimpleDialog(title, message);
@@ -181,7 +181,7 @@ public class UpdateActivity extends AppCompatActivity {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(R.string.msg_please_wait)
                 .content(getString(R.string.please_wait_while_server_updated) + UsefulBits.newLine()
-                    + getString(R.string.this_take_minutes))
+                        + getString(R.string.this_take_minutes))
                 .cancelable(false)
                 .progress(false, SERVER_UPDATE_TIME * 60, showMinMax)
                 .show();
@@ -250,8 +250,7 @@ public class UpdateActivity extends AppCompatActivity {
                 if (haveUpdate) {
                     updateServerVersionValue.setText(version);
                     updateSummary.setText(R.string.server_update_available);
-                }
-                else updateSummary.setText(R.string.server_update_not_available);
+                } else updateSummary.setText(R.string.server_update_not_available);
 
                 mSwipeRefreshLayout.setRefreshing(false);
             }

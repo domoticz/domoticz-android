@@ -1,14 +1,11 @@
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -32,22 +29,14 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     @SuppressWarnings("unused")
     private static final String TAG = Weather.class.getSimpleName();
-    private ProgressDialog progressDialog;
-    private Domoticz mDomoticz;
     private Context mContext;
-
-    private ListView listView;
     private WeatherAdapter adapter;
-
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
     private String filter = "";
 
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processWeather();
     }
 
@@ -73,19 +62,12 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-
-        mDomoticz = new Domoticz(mContext);
         processWeather();
     }
 
     private void processWeather() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
