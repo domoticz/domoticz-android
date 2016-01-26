@@ -113,7 +113,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     private void showInfoDialog(final WeatherInfo mWeatherInfo) {
         WeatherInfoDialog infoDialog = new WeatherInfoDialog(
-                getActivity(),
+                mContext,
                 mWeatherInfo,
                 R.layout.dialog_weather);
         infoDialog.setWeatherInfo(mWeatherInfo);
@@ -132,9 +132,17 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout, mWeatherInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout,
+                    mWeatherInfo.getName()
+                            + " "
+                            + mContext.getString(R.string.favorite_added),
+                    Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mWeatherInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout,
+                    mWeatherInfo.getName()
+                            + " "
+                            + mContext.getString(R.string.favorite_removed),
+                    Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -142,7 +150,12 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mWeatherInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        mDomoticz.setAction(mWeatherInfo.getIdx(),
+                jsonUrl,
+                jsonAction,
+                0,
+                null,
+                new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -184,9 +197,8 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 Log.i("GRAPH", mGraphList.toString());
                 GraphDialog infoDialog = new GraphDialog(
-                        getActivity(),
-                        mGraphList,
-                        R.layout.dialog_graph);
+                        mContext,
+                        mGraphList);
                 infoDialog.setRange(range);
                 infoDialog.setSteps(4);
                 infoDialog.setTitle(graphType.toUpperCase());
@@ -195,7 +207,11 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + weather.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout,
+                        mContext.getString(R.string.error_log)
+                                + ": " + weather.getName()
+                                + " " + graphType,
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
