@@ -208,8 +208,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
-                        mGraphList,
-                        R.layout.dialog_graph);
+                        mGraphList);
                 infoDialog.setRange(range);
                 infoDialog.setSteps(3);
                 infoDialog.setTitle(getActivity().getString(R.string.title_temperature));
