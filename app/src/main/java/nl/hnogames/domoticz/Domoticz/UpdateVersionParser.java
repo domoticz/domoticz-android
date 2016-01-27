@@ -44,15 +44,12 @@ public class UpdateVersionParser implements JSONParserInterface {
         try {
             JSONObject response = new JSONObject(result);
             String version = "";
-            boolean haveUpdate = false;
-            if (response.has("revision"))
+            boolean haveUpdate;
+            if (response.has("revision") || response.has("Revision"))
                 version = response.getString("revision");
-            if (response.has("HaveUpdate") && !response.getBoolean("HaveUpdate")) {
+            if (response.has("HaveUpdate") && !response.getBoolean("HaveUpdate"))
                 haveUpdate = false;
-                version = "";
-            } else {
-                haveUpdate = true;
-            }
+            else haveUpdate = true;
 
             receiver.onReceiveUpdate(version, haveUpdate);
         } catch (JSONException e) {
