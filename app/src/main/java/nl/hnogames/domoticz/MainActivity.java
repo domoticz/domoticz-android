@@ -126,14 +126,13 @@ public class MainActivity extends AppCompatActivity {
             saveServerConfigToSharedPreferences();
             appRate();
 
-            TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
-            if (usingTabletLayout == null) onPhone = true;
             buildScreen();
         }
     }
 
     public void buildScreen() {
-        if (mSharedPrefs.isWelcomeWizardSuccess()) drawNavigationMenu();
+        if (mSharedPrefs.isWelcomeWizardSuccess())
+            drawNavigationMenu();
         else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -142,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void drawNavigationMenu() {
+        TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
+        if (usingTabletLayout == null)
+            onPhone = true;
+
         addDrawerItems();
         addFragment();
     }
@@ -298,7 +301,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     invalidateOptionsMenu();
-                    if (onPhone) mDrawer.closeDrawer(GravityCompat.START);
+                    if (onPhone)
+                        mDrawer.closeDrawer(GravityCompat.START);
 
                     return true;
                 }
