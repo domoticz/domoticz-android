@@ -93,7 +93,6 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
         mListView.setOnDismissCallback(new OnDismissCallback() {
             @Override
             public void onDismiss(@NonNull Card card, int position) {
-
                 String cardTag = "Unknown";
                 try {
                     //noinspection ConstantConditions
