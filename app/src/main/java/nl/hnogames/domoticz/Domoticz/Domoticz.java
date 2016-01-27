@@ -399,7 +399,6 @@ public class Domoticz {
     private String constructGetUrl(int jsonGetUrl) {
         String protocol, url, port, directory, jsonUrl;
         StringBuilder buildUrl = new StringBuilder();
-        SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
 
         if (isUserOnLocalWifi()) {
             if (mSharedPrefUtil.isDomoticzLocalSecure()) protocol = Url.Protocol.HTTPS;
@@ -434,7 +433,7 @@ public class Domoticz {
     public String constructSetUrl(int jsonSetUrl, int idx, int action, double value) {
         String protocol, baseUrl, url, port, directory, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
-        SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
+
         if (isUserOnLocalWifi()) {
             if (mSharedPrefUtil.isDomoticzLocalSecure()) {
                 protocol = Url.Protocol.HTTPS;
@@ -621,7 +620,6 @@ public class Domoticz {
         if (credential.equals(Authentication.USERNAME)
                 || credential.equals(Authentication.PASSWORD)) {
 
-            SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
             String username, password;
 
             if (isUserOnLocalWifi()) {
@@ -1036,8 +1034,8 @@ public class Domoticz {
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
         GraphDataParser parser = new GraphDataParser(receiver);
         String url = constructGetUrl(Json.Url.Request.GRAPH) + String.valueOf(idx);
-        url = url + Url.Log.GRAPH_RANGE + range;
-        url = url + Url.Log.GRAPH_TYPE + type;
+        url += Url.Log.GRAPH_RANGE + range;
+        url += Url.Log.GRAPH_TYPE + type;
 
         Log.i("GRAPH", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,

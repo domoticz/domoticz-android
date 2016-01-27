@@ -275,7 +275,7 @@ public class DomoticzFragment extends Fragment {
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 

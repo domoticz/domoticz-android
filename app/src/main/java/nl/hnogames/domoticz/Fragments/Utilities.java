@@ -270,8 +270,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 Log.i("GRAPH", mGraphList.toString());
                 GraphDialog infoDialog = new GraphDialog(
                         getActivity(),
-                        mGraphList,
-                        R.layout.dialog_graph);
+                        mGraphList);
                 infoDialog.setRange(range);
 
                 if (range.equals("day"))
