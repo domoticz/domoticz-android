@@ -67,28 +67,46 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/extra_panel_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp">
+                android:paddingBottom="10dp">
 
                 <Button
                     android:id="@+id/day_button"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_day"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
                 <Button
+                    android:id="@+id/week_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_status_week"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp">
+
+            <Button
                     android:id="@+id/month_button"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_month"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
                 <Button
@@ -98,6 +116,7 @@
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/button_status"
                     android:text="@string/button_status_year"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </LinearLayout>
