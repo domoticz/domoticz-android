@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 71
-        versionName '0.1.224'
+        versionCode 72
+        versionName '0.1.225'
         multiDexEnabled true
     }
 
@@ -29,6 +29,7 @@ android {
             applicationId 'nl.hnogames.domoticz'
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
@@ -36,6 +37,7 @@ android {
             applicationId 'nl.hnogames.domoticz.premium'
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }

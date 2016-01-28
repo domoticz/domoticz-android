@@ -50,6 +50,7 @@ import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
+import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
@@ -386,6 +387,14 @@ public class Domoticz {
                 url = Url.Log.GRAPH;
                 break;
 
+            case Json.Url.Request.ADD_MOBILE_DEVICE:
+                url = Url.System.ADD_MOBILE_DEVICE;
+                break;
+
+            case Json.Url.Request.CLEAN_MOBILE_DEVICE:
+                url = Url.System.CLEAN_MOBILE_DEVICE;
+                break;
+
             case Json.Url.Request.SET_DEVICE_USED:
                 url = Url.Device.SET_USED;
                 break;
@@ -638,6 +647,45 @@ public class Domoticz {
             return credentials.get(credential);
         } else return "";
     }
+
+    /**
+     * Register you device on Domoticz
+     *
+     * @param DeviceId UUID of the device
+     * @param SenderId sender id from the Google services
+     * @param receiver to get the callback on
+     */
+    public void AddMobileDevice(String DeviceId, String SenderId, MobileDeviceReceiver receiver) {
+        MobileDeviceParser parser = new MobileDeviceParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.ADD_MOBILE_DEVICE);
+        url += "&uuid=" + DeviceId;
+        url += "&senderid=" + SenderId;
+
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
+
+    /**
+     * Clean previous sender id's on Domoticz
+     *
+     * @param DeviceId UUID of the device
+     * @param SenderId sender id from the Google services
+     * @param receiver to get the callback on
+     */
+    public void CleanMobileDevice(String DeviceId, MobileDeviceReceiver receiver) {
+        MobileDeviceParser parser = new MobileDeviceParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.CLEAN_MOBILE_DEVICE);
+        url += "&uuid=" + DeviceId;
+
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
 
     /**
      * Get's version of the Domoticz server
@@ -1387,6 +1435,8 @@ public class Domoticz {
                 int SET_DEVICE_USED = 26;
                 int UPDATE_DOWNLOAD_READY = 27;
                 int UPDATE_DOMOTICZ_SERVER = 28;
+                int ADD_MOBILE_DEVICE = 29;
+                int CLEAN_MOBILE_DEVICE = 30;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1580,6 +1630,8 @@ public class Domoticz {
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
             String DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
             String UPDATE_DOMOTICZ_SERVER = "/json.htm?type=command&param=execute_script&scriptname=update_domoticz&direct=true";
+            String ADD_MOBILE_DEVICE = "/json.htm?type=command&param=addmobiledevice";
+            String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
         }
     }
 
