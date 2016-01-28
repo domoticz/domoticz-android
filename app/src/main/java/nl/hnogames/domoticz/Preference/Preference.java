@@ -44,14 +44,18 @@ import java.io.File;
 import java.util.HashSet;
 
 import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GeoSettingsActivity;
+import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
 
 public class Preference extends PreferenceFragment {
 
@@ -64,6 +68,7 @@ public class Preference extends PreferenceFragment {
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
     private Context mContext;
+    private Domoticz mDomoticz;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,7 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
+        mDomoticz = new Domoticz(mContext);
 
         setPreferences();
         setStartUpScreenDefaultValue();
@@ -127,10 +133,15 @@ public class Preference extends PreferenceFragment {
         registrationId.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                String id = mSharedPrefs.getNotificationRegistrationID();
-                Toast.makeText(mContext, mContext.getString(R.string.notification_settings_copied) + ": " + id, Toast.LENGTH_SHORT).show();
-
-                UsefulBits.copyToClipboard(mContext, "id", id);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessDeviceState(mContext)) {
+                        requestPermissions(PermissionsUtil.INITIAL_DEVICE_PERMS, PermissionsUtil.INITIAL_DEVICE_REQUEST);
+                    } else {
+                        pushGCMRegistrationIds();
+                    }
+                } else {
+                    pushGCMRegistrationIds();
+                }
                 return true;
             }
         });
@@ -195,6 +206,44 @@ public class Preference extends PreferenceFragment {
                 }
             });
         }
+    }
+
+    private void pushGCMRegistrationIds() {
+        final String UUID = DeviceUtils.getUniqueID(mContext);
+        final String senderid = AppController.getInstance().getGCMRegistrationId();
+        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
+            @Override
+            public void onSuccess() {
+                //previous id cleaned
+                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //nothing to clean..
+                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
     }
 
     private void showRestartMessage(String language) {
@@ -302,6 +351,10 @@ public class Preference extends PreferenceFragment {
                 if (PermissionsUtil.canAccessStorage(mContext)) {
                     exportSettings();
                 }
+                break;
+            case PermissionsUtil.INITIAL_DEVICE_REQUEST:
+                if (PermissionsUtil.canAccessDeviceState(mContext))
+                    pushGCMRegistrationIds();
                 break;
         }
     }

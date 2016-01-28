@@ -8,6 +8,7 @@
   <string name="category_server">Servidor</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informació</string>
+  <string name="category_language">Language</string>
   <string name="category_notification">Notificacions</string>
   <string name="category_debug">Depuració</string>
   <string name="category_export">Exporta/importa la configuració</string>
@@ -32,8 +33,10 @@
   <string name="export_settings">Exporta la configuració</string>
   <string name="import_settings">Importa configuració</string>
   <string name="notification_settings_id">ID de Google Cloud Messaging</string>
-  <string name="notification_settings_copy">Copia el vostre id de registre al porta-retalls</string>
-  <string name="notification_settings_copied">S\'ha copiat al porta-retalls</string>
+  <string name="notification_settings_push">Push your registration id to Domoticz</string>
+  <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
+  <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
+  <string name="notification_screen_title">Notification settings</string>
   <string name="notification_vibrate_title">Vibració</string>
   <string name="notification_vibrate_on">Vibra quan es rebi una notificació</string>
   <string name="notification_vibrate_off">Sense vibració</string>
@@ -47,4 +50,25 @@
   <string name="debug_switch_title">Depuració</string>
   <string name="debug_switch_summary_on">Depuració activada</string>
   <string name="debug_switch_summary_off">Depuració desactivada</string>
+  <string name="error_atLeastOneItemInDrawer">You need at least one item in the drawer</string>
+  <string name="title_activity_update">Update server</string>
+  <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
+  <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
+  <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>
+  <string name="update_server_warning">While your server is updating this app will not function properly.</string>
+  <string name="update_server_downloadNotReady1">The update isn\'t (completely) downloaded yet.</string>
+  <string name="update_server_downloadNotReady2">Please try again later.</string>
+  <string name="server_update_available">Server update available</string>
+  <string name="update_server">Update server</string>
+  <string name="server_update_revision">Server update revision</string>
+  <string name="server_version">Server version</string>
+  <string name="server_update">Server update</string>
+  <string name="please_wait_while_we_check">Please wait while we check if your server is ready to update</string>
+  <string name="server_update_not_ready">Server update not downloaded</string>
+  <string name="please_wait_while_server_updated">Please wait while the server is being updated.</string>
+  <string name="server_update_done">Server update done</string>
+  <string name="update_not_started">Update not started</string>
+  <string name="update_not_started_unknown_error">Update not started due to an unknown error</string>
+  <string name="server_update_not_available">Server update not available</string>
+  <string name="click_to_update_server">Click here to update your server</string>
 </resources>
