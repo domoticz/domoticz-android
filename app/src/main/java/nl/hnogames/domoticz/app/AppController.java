@@ -48,6 +48,7 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.R;
@@ -72,7 +73,10 @@ public class AppController extends Application implements GcmListener {
     @Override
     public void onCreate() {
         super.onCreate();
-        Mint.initAndStartSession(this, "a61b1e35");
+
+        if (!BuildConfig.DEBUG)
+            Mint.initAndStartSession(this, getString(R.string.mintapikey));
+
         if (PermissionsUtil.canAccessDeviceState(this)) {
             StartEasyGCM();
         }

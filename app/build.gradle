@@ -29,6 +29,7 @@ android {
             applicationId 'nl.hnogames.domoticz'
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
@@ -36,6 +37,7 @@ android {
             applicationId 'nl.hnogames.domoticz.premium'
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
