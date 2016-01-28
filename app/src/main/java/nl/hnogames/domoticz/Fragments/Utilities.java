@@ -123,7 +123,8 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private void createListView() {
 
         if (getView() != null) {
-            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+            SwingBottomInAnimationAdapter animationAdapter =
+                    new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
 
@@ -149,7 +150,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     private void showInfoDialog(final UtilitiesInfo mUtilitiesInfo) {
         UtilitiesInfoDialog infoDialog = new UtilitiesInfoDialog(
-                getActivity(),
+                mContext,
                 mUtilitiesInfo,
                 R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mUtilitiesInfo.getIdx()));
@@ -169,9 +170,13 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("Set idx " + mUtilitiesInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout,
+                    mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_added),
+                    Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mUtilitiesInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout,
+                    mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_removed),
+                    Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -179,7 +184,12 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mUtilitiesInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        mDomoticz.setAction(mUtilitiesInfo.getIdx(),
+                jsonUrl,
+                jsonAction,
+                0,
+                null,
+                new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -259,31 +269,39 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onLogClick(final UtilitiesInfo utility, final String range) {
-        final String graphType = utility.getSubType()
+        /*
+            Replace so we get the right log
+         */
+        String graphType = utility.getSubType()
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
-                .replace("Energy", "counter");
+                .replace("Energy", "counter")
+                .replace("YouLess counter", "counter");
 
         mDomoticz.getGraphData(utility.getIdx(), range, graphType, new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 Log.i("GRAPH", mGraphList.toString());
                 GraphDialog infoDialog = new GraphDialog(
-                        getActivity(),
+                        mContext,
                         mGraphList);
                 infoDialog.setRange(range);
 
                 if (range.equals("day"))
                     infoDialog.setSteps(3);
 
-                infoDialog.setTitle(graphType.toUpperCase());
+                infoDialog.setTitle(utility.getSubType().toUpperCase());
                 infoDialog.show();
             }
 
             @Override
             public void onError(Exception error) {
                 errorHandling(error);
-                Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + utility.getName() + " " + graphType, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout,
+                        mContext.getString(R.string.error_log)
+                                + ": " + utility.getName()
+                                + " " + utility.getSubType(),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -294,7 +312,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         final UtilitiesInfo tempUtil = getUtility(idx);
 
         TemperatureDialog tempDialog = new TemperatureDialog(
-                getActivity(),
+                mContext,
                 idx,
                 tempUtil.getSetPoint());
 
@@ -306,16 +324,16 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                     if (tempUtil != null) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                    getActivity());
+                                    mContext);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
                                 public void onDismiss(String password) {
-                                    setThermostateAction(tempUtil, newSetPoint, password);
+                                    setThermostatAction(tempUtil, newSetPoint, password);
                                 }
                             });
                         } else {
-                            setThermostateAction(tempUtil, newSetPoint, null);
+                            setThermostatAction(tempUtil, newSetPoint, null);
                         }
                     }
                 } else {
@@ -327,7 +345,9 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         tempDialog.show();
     }
 
-    public void setThermostateAction(final UtilitiesInfo tempUtil, double newSetPoint, String password) {
+    public void setThermostatAction(final UtilitiesInfo tempUtil,
+                                    double newSetPoint,
+                                    String password) {
         thermostatSetPointValue = newSetPoint;
         int jsonUrl = Domoticz.Json.Url.Set.TEMP;
 
@@ -335,7 +355,12 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         if (newSetPoint < tempUtil.getSetPoint())
             action = Domoticz.Device.Thermostat.Action.MIN;
 
-        mDomoticz.setAction(tempUtil.getIdx(), jsonUrl, action, newSetPoint, password, new setCommandReceiver() {
+        mDomoticz.setAction(tempUtil.getIdx(),
+                jsonUrl,
+                action,
+                newSetPoint,
+                password,
+                new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
@@ -360,17 +385,19 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout,
+                        mContext.getString(R.string.error_logs),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
 
     private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {
         if (switchLogs.size() <= 0) {
-            Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                    getActivity(),
+                    mContext,
                     switchLogs,
                     R.layout.dialog_switch_logs);
             infoDialog.show();
