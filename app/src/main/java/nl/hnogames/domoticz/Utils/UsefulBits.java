@@ -90,6 +90,7 @@ public class UsefulBits {
         return new double[]{computedH, computedS, computedV};
     }
 
+
     public static String getMd5String(String password) {
         StringBuilder hexString = new StringBuilder();
         MessageDigest md;
@@ -132,16 +133,5 @@ public class UsefulBits {
         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, text);
         clipboard.setPrimaryClip(clip);
-    }
-
-    /**
-     * Determine if the device is a tablet (i.e. it has a large screen).
-     *
-     * @param context The calling context.
-     */
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

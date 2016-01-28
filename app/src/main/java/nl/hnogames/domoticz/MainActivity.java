@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
+    private boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
     @Override
@@ -124,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
             checkDomoticzServerUpdate();
             saveServerConfigToSharedPreferences();
             appRate();
+
+            TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
+            if (usingTabletLayout == null) onPhone = true;
             buildScreen();
         }
     }
@@ -294,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     invalidateOptionsMenu();
-                    mDrawer.closeDrawer(GravityCompat.START);
+                    if (onPhone) mDrawer.closeDrawer(GravityCompat.START);
 
                     return true;
                 }
@@ -318,38 +322,40 @@ public class MainActivity extends AppCompatActivity {
      * Sets the drawer with listeners for open and closed
      */
     private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawer, R.string.drawer_open, R.string.drawer_close) {
+        if (onPhone) {
+            mDrawerToggle = new ActionBarDrawerToggle(
+                    this, mDrawer, R.string.drawer_open, R.string.drawer_close) {
 
-            /**
-             * Called when a mDrawer has settled in a completely open state.
-             */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
+                /**
+                 * Called when a mDrawer has settled in a completely open state.
+                 */
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
 
-                try {
-                    if (searchViewAction != null)
-                        searchViewAction.clearFocus();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    try {
+                        if (searchViewAction != null)
+                            searchViewAction.clearFocus();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //getSupportActionBar().setTitle(R.string.drawer_navigation_title);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
 
-                //getSupportActionBar().setTitle(R.string.drawer_navigation_title);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+                /**
+                 * Called when a mDrawer has settled in a completely closed state.
+                 */
+                public void onDrawerClosed(View view) {
+                    super.onDrawerClosed(view);
+                    //getSupportActionBar().setTitle(currentTitle);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            };
 
-            /**
-             * Called when a mDrawer has settled in a completely closed state.
-             */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                //getSupportActionBar().setTitle(currentTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
-        mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+            mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
+            mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+        }
     }
 
     @Override

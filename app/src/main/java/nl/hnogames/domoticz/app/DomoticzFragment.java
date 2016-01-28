@@ -33,9 +33,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +55,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzFragment extends Fragment {
 
-    public GridView listView;
+    public ListView listView;
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
@@ -66,7 +66,6 @@ public class DomoticzFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
     private SpinnerLoader oSpinner;
-    private boolean onTablet;
 
     public DomoticzFragment() {
     }
@@ -81,12 +80,7 @@ public class DomoticzFragment extends Fragment {
     }
 
     public void initViews(View root) {
-
-        onTablet = UsefulBits.isTablet(getContext());
-
-        listView = (GridView) root.findViewById(R.id.listView);
-        if (onTablet) listView.setNumColumns(2);
-
+        listView = (ListView) root.findViewById(R.id.listView);
         oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
         coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
