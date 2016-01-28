@@ -48,8 +48,9 @@
 
     <!--        GCM settings      -->
     <string name="notification_settings_id">Google Cloud Messaging ID</string>
-    <string name="notification_settings_copy">Copy your registration id to clipboard</string>
-    <string name="notification_settings_copied">Copied to clipboard</string>
+    <string name="notification_settings_push">Push your registration id to Domoticz</string>
+    <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
+    <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
 
     <!--        Notification settings      -->
     <string name="notification_screen_title">Notification settings</string>

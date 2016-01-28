@@ -57,7 +57,6 @@ import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-
 public class AppController extends Application implements GcmListener {
 
     public static final String TAG = AppController.class.getSimpleName();
@@ -156,6 +155,10 @@ public class AppController extends Application implements GcmListener {
             String message = bundle.getString("message");
             NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name), message, this);
         }
+    }
+
+    public String getGCMRegistrationId() {
+        return EasyGcm.getRegistrationId(this);
     }
 
     @Override

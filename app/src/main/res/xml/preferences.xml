@@ -89,7 +89,7 @@
         <PreferenceScreen android:title="@string/notification_screen_title">
             <Preference
                 android:key="notification_registration_id"
-                android:summary="@string/notification_settings_copy"
+                android:summary="@string/notification_settings_push"
                 android:title="@string/notification_settings_id" />
 
             <SwitchPreference

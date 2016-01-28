@@ -185,14 +185,6 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
     }
 
-    public String getNotificationRegistrationID() {
-        return prefs.getString(PREF_NOTIFICATION_ID, "");
-    }
-
-    public void setNotificationRegistrationID(String id) {
-        editor.putString(PREF_NOTIFICATION_ID, id).apply();
-    }
-
     public boolean getNotificationVibrate() {
         return prefs.getBoolean(PREF_NOTIFICATION_VIBRATE, true);
     }

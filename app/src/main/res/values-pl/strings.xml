@@ -48,9 +48,9 @@
   <string name="no_network_available">Błąd: Brak dostępnego połączenia sieciowego</string>
   <string name="oops">UPS!</string>
   <string name="to">"do"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Ponów</string>
+  <string name="undo">Cofnij</string>
+  <string name="something_deleted">%1$s usuniętych</string>
   <string name="switch_on">Przełącznik przełączony na wł.</string>
   <string name="switch_off">Przełącznik przełączony na wył.</string>
   <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
@@ -67,8 +67,8 @@
   <string name="row_icon_description">rząd ikon</string>
   <string name="error_image_description">Błąd obrazu</string>
   <string name="white">Biały</string>
-  <string name="refresh">Refresh</string>
+  <string name="refresh">Odśwież</string>
   <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
+  <string name="this_take_minutes">Może to potrwać kilka minut.</string>
+  <string name="continue_question">Kontynuować?</string>
 </resources>

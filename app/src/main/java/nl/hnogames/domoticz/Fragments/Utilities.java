@@ -190,17 +190,17 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 0,
                 null,
                 new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                mUtilitiesInfo.setFavoriteBoolean(isFavorite);
-            }
+                    @Override
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        mUtilitiesInfo.setFavoriteBoolean(isFavorite);
+                    }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
     /**
@@ -361,17 +361,17 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 newSetPoint,
                 password,
                 new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
-                successHandling(result, false);
-            }
+                    @Override
+                    public void onReceiveResult(String result) {
+                        updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
+                        successHandling(result, false);
+                    }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
 
