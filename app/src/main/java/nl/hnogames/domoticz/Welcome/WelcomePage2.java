@@ -54,10 +54,10 @@ public class WelcomePage2 extends Fragment {
     private void importSettings() {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
         if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
-            Toast.makeText(getActivity(), "Settings Imported, we need to restart Domoticz!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.settings_imported, Toast.LENGTH_LONG).show();
             ((WelcomeViewActivity) getActivity()).finishWithResult(true);
         } else
-            Toast.makeText(getActivity(), "Failed to Import Settings.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.settings_imported_failed, Toast.LENGTH_SHORT).show();
     }
 
     @Override
