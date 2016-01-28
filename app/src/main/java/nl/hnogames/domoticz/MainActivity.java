@@ -24,7 +24,9 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -67,6 +69,7 @@ import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
@@ -108,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-
             WidgetUtils.RefreshWidgets(this);
 
             //noinspection ConstantConditions
@@ -122,18 +124,18 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPrefs.setGeoFenceService();
             }
 
-            checkDomoticzServerUpdate();
-            saveServerConfigToSharedPreferences();
-            appRate();
-
             buildScreen();
         }
     }
 
     public void buildScreen() {
-        if (mSharedPrefs.isWelcomeWizardSuccess())
+        if (mSharedPrefs.isWelcomeWizardSuccess()) {
+            setupMobileDevice();
+            checkDomoticzServerUpdate();
+            saveServerConfigToSharedPreferences();
+            appRate();
             drawNavigationMenu();
-        else {
+        } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -329,7 +331,6 @@ public class MainActivity extends AppCompatActivity {
         if (onPhone) {
             mDrawerToggle = new ActionBarDrawerToggle(
                     this, mDrawer, R.string.drawer_open, R.string.drawer_close) {
-
                 /**
                  * Called when a mDrawer has settled in a completely open state.
                  */
@@ -399,6 +400,29 @@ public class MainActivity extends AppCompatActivity {
 
         // Show a dialog if meets conditions
         AppRate.showRateDialogIfMeetsConditions(this);
+    }
+
+    private void setupMobileDevice() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!PermissionsUtil.canAccessDeviceState(this)) {
+                requestPermissions(PermissionsUtil.INITIAL_DEVICE_PERMS, PermissionsUtil.INITIAL_DEVICE_REQUEST);
+            } else {
+                AppController.getInstance().StartEasyGCM();
+            }
+        } else {
+            AppController.getInstance().StartEasyGCM();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PermissionsUtil.INITIAL_DEVICE_REQUEST:
+                if (PermissionsUtil.canAccessDeviceState(this))
+                    AppController.getInstance().StartEasyGCM();
+                break;
+        }
     }
 
     private void checkDomoticzServerUpdate() {

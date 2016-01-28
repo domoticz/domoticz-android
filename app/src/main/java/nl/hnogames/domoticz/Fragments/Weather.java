@@ -156,17 +156,17 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                 0,
                 null,
                 new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                successHandling(result, false);
-                mWeatherInfo.setFavoriteBoolean(isFavorite);
-            }
+                    @Override
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        mWeatherInfo.setFavoriteBoolean(isFavorite);
+                    }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
 

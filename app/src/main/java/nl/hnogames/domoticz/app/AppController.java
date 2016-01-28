@@ -48,9 +48,13 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 
 public class AppController extends Application implements GcmListener {
@@ -68,19 +72,20 @@ public class AppController extends Application implements GcmListener {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //for debugging & receiving crash reports
         Mint.initAndStartSession(this, "a61b1e35");
-        EasyGcm.init(this);
-
+        if (PermissionsUtil.canAccessDeviceState(this)) {
+            StartEasyGCM();
+        }
         mInstance = this;
+    }
+
+    public void StartEasyGCM() {
+        EasyGcm.init(this);
     }
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            // register MemorizingTrustManager for HTTPS
             Context context = getApplicationContext();
-
             try {
                 Log.d(TAG, "Initializing SSL");
                 SSLContext sc = SSLContext.getInstance("TLS");
@@ -150,7 +155,46 @@ public class AppController extends Application implements GcmListener {
     }
 
     @Override
-    public void sendRegistrationIdToBackend(String s) {
-        new SharedPrefUtil(this).setNotificationRegistrationID(s);
+    public void sendRegistrationIdToBackend(final String senderid) {
+        final String UUID = DeviceUtils.getUniqueID(this);
+        if (UsefulBits.isEmpty(senderid) || UsefulBits.isEmpty(UUID))
+            return;
+
+        final Domoticz mDomoticz = new Domoticz(this);
+        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
+            @Override
+            public void onSuccess() {
+                //previous id cleaned
+                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i("GCM", "Device registered on Domoticz");
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (error != null)
+                            Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //nothing to clean..
+                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i("GCM", "Device registered on Domoticz");
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (error != null)
+                            Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
+                    }
+                });
+            }
+        });
     }
 }
