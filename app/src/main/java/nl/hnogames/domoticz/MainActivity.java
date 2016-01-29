@@ -49,6 +49,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -60,6 +61,7 @@ import java.util.TimerTask;
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
+import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
@@ -70,6 +72,7 @@ import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private String[] fragments;
     private SharedPrefUtil mSharedPrefs;
+    private ServerUtil mServerUtil;
     private NavigationAdapter mAdapter;
     private SearchView searchViewAction;
 
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mServerUtil = new ServerUtil(this);
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
         applyLanguage();
@@ -565,6 +570,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        if (mSharedPrefs.isMultiServerEnabled()) {
+            //set multi server actionbar item
+            MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
+            if (searchMenuItem != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
+                searchMenuItem.setVisible(true);
+            } else {
+                searchMenuItem.setVisible(false);
+            }
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -622,6 +638,9 @@ public class MainActivity extends AppCompatActivity {
                     });
                     infoDialog.show();
                     return true;
+                case R.id.action_switch_server:
+                    showServerDialog();
+                    return true;
             }
 
             // Activate the navigation drawer toggle
@@ -632,6 +651,38 @@ public class MainActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showServerDialog() {
+        String[] serverNames = new String[mServerUtil.getServerList().size()];
+        int count = 0;
+        for (ServerInfo s : mServerUtil.getEnabledServerList()) {
+            serverNames[count] = s.getServerName();
+            count++;
+        }
+
+        //show dialog with servers
+        new MaterialDialog.Builder(this)
+                .title(R.string.choose_server)
+                .items(serverNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        ServerInfo setNew = null;
+                        for (ServerInfo s : mServerUtil.getEnabledServerList()) {
+                            if (s.getServerName().equals(text)) {
+                                showSimpleSnackbar("Switching server to " + s.getServerName());
+                                setNew = s;
+                            }
+                        }
+                        if (setNew != null) {
+                            mServerUtil.setActiveServer(setNew);
+                            buildScreen();
+                            invalidateOptionsMenu();
+                        }
+                    }
+                })
+                .show();
     }
 
     @Override

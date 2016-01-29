@@ -43,6 +43,7 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
@@ -88,6 +89,7 @@ public class Domoticz {
     public static final String UTILITIES_TYPE_THERMOSTAT = "Thermostat";
     public static final String UTILITIES_TYPE_HEATING = "Heating";
     public static final String UTILITIES_SUBTYPE_TEXT = "Text";
+    public static final String DOMOTICZ_DEFAULT_SERVER = "DEFAULT";
 
     /*
     *  Log tag
@@ -147,13 +149,13 @@ public class Domoticz {
         return userIsLocal;
     }
 
-    public boolean isConnectionDataComplete() {
+    public boolean isConnectionDataComplete(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
-        stringHashMap.put("Domoticz local URL", mServerUtil.getActiveServer().getLocalServerUrl());
-        stringHashMap.put("Domoticz local port", mServerUtil.getActiveServer().getLocalServerPort());
-        stringHashMap.put("Domoticz remote URL", mServerUtil.getActiveServer().getRemoteServerUrl());
-        stringHashMap.put("Domoticz remote port", mServerUtil.getActiveServer().getRemoteServerPort());
+        stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
+        stringHashMap.put("Domoticz local port", server.getLocalServerPort());
+        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
+        stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
@@ -168,11 +170,11 @@ public class Domoticz {
         return result;
     }
 
-    public boolean isUrlValid() {
+    public boolean isUrlValid(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
-        stringHashMap.put("Domoticz local URL", mServerUtil.getActiveServer().getLocalServerUrl());
-        stringHashMap.put("Domoticz remote URL", mServerUtil.getActiveServer().getRemoteServerUrl());
+        stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
+        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
@@ -688,7 +690,6 @@ public class Domoticz {
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, false, 1);
     }
-
 
     /**
      * Get's version of the Domoticz server

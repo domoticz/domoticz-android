@@ -59,6 +59,7 @@ import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
+    public static final String PREF_MULTI_SERVER = "enableMultiServers";
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     public static final String PREF_ALWAYS_ON = "alwayson";
@@ -91,6 +92,14 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+    }
+
+    public boolean isMultiServerEnabled() {
+        return prefs.getBoolean(PREF_MULTI_SERVER, false);
+    }
+
+    public void setMultiServerEnabled(boolean enabled) {
+        editor.putBoolean(PREF_MULTI_SERVER, enabled).apply();
     }
 
     public void completeCard(String cardTag) {

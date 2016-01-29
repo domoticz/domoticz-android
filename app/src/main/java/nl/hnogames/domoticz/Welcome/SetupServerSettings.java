@@ -1,9 +1,11 @@
 package nl.hnogames.domoticz.Welcome;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -20,11 +23,12 @@ import android.widget.Switch;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.ArrayList;
-import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
@@ -32,18 +36,17 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class WelcomePage3 extends Fragment {
+public class SetupServerSettings extends Fragment {
 
     private static final String INSTANCE = "INSTANCE";
-    private static final int WELCOME_WIZARD = 1;
-    private static final int SETTINGS = 2;
+    private static final int ADDSERVER = 22;
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
     private FloatingLabelEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
-            local_username_input, local_port_input, local_directory_input;
+            local_username_input, local_port_input, local_directory_input, server_name_input;
 
     private Spinner remote_protocol_spinner, local_protocol_spinner, startScreen_spinner;
     private Switch localServer_switch;
@@ -55,9 +58,13 @@ public class WelcomePage3 extends Fragment {
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Switch advancedSettings_switch;
     private CheckBox cbShowPassword, cbShowPasswordLocal;
+    private Button saveButton;
+    private Switch useSameAddress;
+    private ServerInfo newServer = new ServerInfo();
 
-    public static WelcomePage3 newInstance(int instance) {
-        WelcomePage3 f = new WelcomePage3();
+
+    public static SetupServerSettings newInstance(int instance) {
+        SetupServerSettings f = new SetupServerSettings();
 
         Bundle bdl = new Bundle(1);
         bdl.putInt(INSTANCE, instance);
@@ -69,13 +76,9 @@ public class WelcomePage3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        try {
-            callingInstance = getArguments().getInt(INSTANCE);
-        } catch (Exception e) {
-            callingInstance = WELCOME_WIZARD;
-        }
 
-        v = inflater.inflate(R.layout.fragment_welcome3, container, false);
+        callingInstance = getArguments().getInt(INSTANCE);
+        v = inflater.inflate(R.layout.fragment_add_server, container, false);
 
         mSharedPrefs = new SharedPrefUtil(getActivity());
         mServerUtil = new ServerUtil(getActivity());
@@ -97,6 +100,9 @@ public class WelcomePage3 extends Fragment {
 
     private void getLayoutReferences() {
 
+        useSameAddress = (Switch) v.findViewById(R.id.localServer_switch);
+        saveButton = (Button) v.findViewById(R.id.save_server);
+        server_name_input = (FloatingLabelEditText) v.findViewById(R.id.server_name_input);
         remote_server_input = (FloatingLabelEditText) v.findViewById(R.id.remote_server_input);
         remote_port_input = (FloatingLabelEditText) v.findViewById(R.id.remote_port_input);
         remote_username_input = (FloatingLabelEditText) v.findViewById(R.id.remote_username_input);
@@ -114,14 +120,12 @@ public class WelcomePage3 extends Fragment {
         cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
+        // Hide these settings if being called by settings (instead of welcome wizard)
+        startScreen_spinner.setVisibility(View.GONE);
+        v.findViewById(R.id.startScreen_title).setVisibility(View.GONE);
+        v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
 
-        if (callingInstance == SETTINGS) {
-            // Hide these settings if being called by settings (instead of welcome wizard)
-            startScreen_spinner.setVisibility(View.GONE);
-            v.findViewById(R.id.startScreen_title).setVisibility(View.GONE);
-            v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
-        }
-
+        useSameAddress.setChecked(false);
         final LinearLayout localServerSettingsLayout = (LinearLayout)
                 v.findViewById(R.id.local_server_settings);
         localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
@@ -139,11 +143,9 @@ public class WelcomePage3 extends Fragment {
                 v.findViewById(R.id.advancedSettings_layout);
 
         advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
-        advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
 
         if (mSharedPrefs.isAdvancedSettingsEnabled())
             advancedSettings_layout.setVisibility(View.VISIBLE);
-
         advancedSettings_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -153,6 +155,8 @@ public class WelcomePage3 extends Fragment {
                 else advancedSettings_layout.setVisibility(View.GONE);
             }
         });
+
+        advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
 
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -175,23 +179,45 @@ public class WelcomePage3 extends Fragment {
                 }
             }
         });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkConnectionData();
+            }
+        });
+    }
+
+    private void checkConnectionData() {
+        buildServerInfo();
+        final Domoticz mDomoticz = new Domoticz(getActivity());
+        if (!mDomoticz.isConnectionDataComplete(newServer)) {
+            showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
+        } else if (!mDomoticz.isUrlValid(newServer)) {
+            showErrorPopup(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
+        } else if (!mServerUtil.checkUniqueServerName(newServer)) {
+            showErrorPopup("Server name must be unique!");
+        } else {
+            writePreferenceValues();
+        }
+    }
+
+    private void showErrorPopup(String error) {
+        new AlertDialog.Builder(getActivity())
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Failed")
+                .setMessage(error)
+                .setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
     }
 
     private void setPreferenceValues() {
-        remote_username_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUsername());
-        remote_password_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPassword());
-        remote_server_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUrl());
-        remote_port_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPort());
-        remote_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerDirectory());
-
-        localServer_switch.setChecked(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent());
-
-        local_username_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUsername());
-        local_password_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPassword());
-        local_server_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUrl());
-        local_port_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPort());
-        local_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerDirectory());
-
         setProtocol_spinner();
         setStartScreen_spinner();
 
@@ -222,20 +248,8 @@ public class WelcomePage3 extends Fragment {
     }
 
     private void setSsid_spinner() {
-        Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-        //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
-
-        if (ssidFromPrefs != null) {
-            if (ssidFromPrefs.size() > 0) {
-                for (String wifi : ssidFromPrefs) {
-                    ssids.add(wifi);
-                    ssidListFromPrefs.add(wifi);
-                }
-            }
-        }
-
         mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] ssidFound) {
@@ -314,44 +328,50 @@ public class WelcomePage3 extends Fragment {
         });
     }
 
-    private void writePreferenceValues() {
-        mServerUtil.getActiveServer().setRemoteServerUsername(
+    private void buildServerInfo() {
+        newServer = new ServerInfo();
+        newServer.setRemoteServerUsername(
                 remote_username_input.getInputWidgetText().toString());
-        mServerUtil.getActiveServer().setRemoteServerPassword(
+        newServer.setRemoteServerPassword(
                 remote_password_input.getInputWidgetText().toString());
-        mServerUtil.getActiveServer().setRemoteServerUrl(
+        newServer.setRemoteServerUrl(
                 remote_server_input.getInputWidgetText().toString());
-        mServerUtil.getActiveServer().setRemoteServerPort(
+        newServer.setRemoteServerPort(
                 remote_port_input.getInputWidgetText().toString());
-        mServerUtil.getActiveServer().setRemoteServerDirectory(
+        newServer.setRemoteServerDirectory(
                 remote_directory_input.getInputWidgetText().toString());
-        mServerUtil.getActiveServer().setRemoteServerSecure(
+        newServer.setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
-        if (callingInstance == WELCOME_WIZARD)
-            mSharedPrefs.setStartupScreenIndex(startScreenSelectedPosition);
-
-        Switch useSameAddress = (Switch) v.findViewById(R.id.localServer_switch);
+        newServer.setEnabled(false);
         if (!useSameAddress.isChecked()) {
-            mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
-            mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
+            newServer.setLocalSameAddressAsRemote();
+            newServer.setIsLocalServerAddressDifferent(false);
         } else {
-            mServerUtil.getActiveServer().setLocalServerUsername(
+            newServer.setLocalServerUsername(
                     local_username_input.getInputWidgetText().toString());
-            mServerUtil.getActiveServer().setLocalServerPassword(
+            newServer.setLocalServerPassword(
                     local_password_input.getInputWidgetText().toString());
-            mServerUtil.getActiveServer().setLocalServerUrl(
+            newServer.setLocalServerUrl(
                     local_server_input.getInputWidgetText().toString());
-            mServerUtil.getActiveServer().setLocalServerPort(
+            newServer.setLocalServerPort(
                     local_port_input.getInputWidgetText().toString());
-            mServerUtil.getActiveServer().setLocalServerDirectory(
+            newServer.setLocalServerDirectory(
                     local_directory_input.getInputWidgetText().toString());
-            mServerUtil.getActiveServer().setLocalServerSecure(
+            newServer.setLocalServerSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
-            mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);
+            newServer.setIsLocalServerAddressDifferent(true);
         }
+        newServer.setServerName(server_name_input.getInputWidgetText().toString());
+        newServer.setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
+    }
 
-        mServerUtil.getActiveServer().setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
-        mServerUtil.saveDomoticzServers(true);
+    private void writePreferenceValues() {
+        buildServerInfo();
+        if (mServerUtil.addDomoticzServer(newServer)) {
+            ((ServerSettingsActivity) getActivity()).ServerAdded(true);
+        } else {
+            showErrorPopup("Server name must be unique!");
+        }
     }
 
     private boolean getSpinnerDomoticzRemoteSecureBoolean() {
@@ -365,7 +385,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private int getPrefsDomoticzRemoteSecureIndex() {
-        boolean isSecure = mServerUtil.getActiveServer().getRemoteServerSecure();
+        boolean isSecure = false;
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
@@ -381,7 +401,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private int getPrefsDomoticzLocalSecureIndex() {
-        boolean isSecure = mServerUtil.getActiveServer().getLocalServerSecure();
+        boolean isSecure = false;
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
@@ -407,8 +427,5 @@ public class WelcomePage3 extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (callingInstance == SETTINGS) {
-            writePreferenceValues();   // Only when used by settings
-        }
     }
 }

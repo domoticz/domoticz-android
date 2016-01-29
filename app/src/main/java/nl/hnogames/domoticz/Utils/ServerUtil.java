@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Containers.ServerInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 
 public class ServerUtil {
 
@@ -98,8 +99,16 @@ public class ServerUtil {
                             ssidList.add(jsonSSIDList.getString(j));
                         oPrefServer.setLocalServerSsid(ssidList);
                     }
+                    oPrefServer.setEnabled(jsonServer.getBoolean("ENABLED"));
 
-                    mServerList.add(oPrefServer);
+                    boolean alreadyContains = false;
+                    for (ServerInfo s : mServerList) {
+                        if (s.getServerName().equals(oPrefServer.getServerName()))
+                            alreadyContains = true;
+                    }
+
+                    if (!alreadyContains)
+                        mServerList.add(oPrefServer);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -128,6 +137,7 @@ public class ServerUtil {
                         oPrefServer.setLocalServerPort(jsonServer.getString("LOCAL_SERVER_PORT"));
                         oPrefServer.setLocalServerDirectory(jsonServer.getString("LOCAL_SERVER_DIRECTORY"));
                         oPrefServer.setLocalServerSecure(jsonServer.getBoolean("LOCAL_SERVER_SECURE"));
+                        oPrefServer.setEnabled(jsonServer.getBoolean("ENABLED"));
 
                         if (jsonServer.has("LOCAL_SERVER_SSID")) {
                             JSONArray jsonSSIDList = jsonServer.getJSONArray("LOCAL_SERVER_SSID");
@@ -147,8 +157,9 @@ public class ServerUtil {
         }
     }
 
-    public void saveDomoticzServers() {
-        putServerInList(mActiveServer);
+    public void saveDomoticzServers(boolean writeCurrent) {
+        if (writeCurrent)
+            putServerInList(mActiveServer);
 
         String activeServer = gson.toJson(mActiveServer);
         String serversSettings = gson.toJson(mServerList);
@@ -186,23 +197,79 @@ public class ServerUtil {
         return mActiveServer;
     }
 
-    private void setActiveServer(ServerInfo mActiveServer) {
+    public void setActiveServer(ServerInfo mActiveServer) {
         this.mActiveServer = mActiveServer;
-        saveDomoticzServers();
+        saveDomoticzServers(false);
+    }
+
+    public void removeServer(ServerInfo server) {
+        if (server == null || mServerList == null || mServerList.size() <= 0)
+            return;
+
+        if (!server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
+            boolean found = false;
+            int i = 0;
+            for (ServerInfo s : mServerList) {
+                if (s.getServerName().equals(server.getServerName())) {
+                    found = true;
+                    break;
+                }
+                i++;
+            }
+            if (found) {
+                mServerList.remove(i);
+            }
+        }
+        saveDomoticzServers(false);
     }
 
     public ArrayList<ServerInfo> getServerList() {
         return mServerList;
     }
 
-    public void addDomoticzServer(ServerInfo server) {
+    public ArrayList<ServerInfo> getEnabledServerList() {
+        ArrayList<ServerInfo> activeServers = new ArrayList<>();
+        for (ServerInfo s : mServerList) {
+            if (s.isEnabled())
+                activeServers.add(s);
+        }
+
+        return activeServers;
+    }
+
+    public boolean addDomoticzServer(ServerInfo server) {
         if (mServerList == null)
             mServerList = new ArrayList<>();
 
-        mServerList.add(server);
-        saveDomoticzServers();
+        boolean alreadyContains = false;
+        for (ServerInfo s : mServerList) {
+            if (s.getServerName().equals(server.getServerName()))
+                alreadyContains = true;
+        }
+
+        if (!alreadyContains) {
+            mServerList.add(server);
+            saveDomoticzServers(false);
+            return true;
+        } else
+            return false;
     }
 
+    public boolean checkUniqueServerName(ServerInfo server) {
+        boolean alreadyContains = false;
+        for (ServerInfo s : mServerList) {
+            if (s.getServerName().equals(server.getServerName()))
+                alreadyContains = true;
+        }
+        return !alreadyContains;
+    }
+
+    public void updateServerInfo(ServerInfo server) {
+        putServerInList(server);
+        saveDomoticzServers(false);
+    }
+
+    // this method is to parse the previous settings from shared preferences into the new structure
     public void loadPreviousSettingsToServerInfo() {
         String REMOTE_SERVER_USERNAME = "remote_server_username";
         String REMOTE_SERVER_PASSWORD = "remote_server_password";
@@ -244,12 +311,13 @@ public class ServerUtil {
         oPrefServer.setLocalServerSecure(prefs.getBoolean(LOCAL_SERVER_SECURE, false));
         oPrefServer.setLocalServerAuthentication(prefs.getBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, false));
         oPrefServer.setLocalServerSsid(prefs.getStringSet(LOCAL_SERVER_SSID, null));
+        oPrefServer.setEnabled(true);
 
         setActiveServer(oPrefServer);
         if (mServerList == null || mServerList.size() <= 0)
             mServerList = new ArrayList<>();
         mServerList.add(oPrefServer);
 
-        saveDomoticzServers();
+        saveDomoticzServers(false);
     }
 }
