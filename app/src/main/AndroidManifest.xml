@@ -161,6 +161,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.GeoSettingsActivity" />
         </activity>
+
+        <activity
+            android:name=".ServerListSettingsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_server_settings"
+            android:parentActivityName=".SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.ServerListSettingsActivity" />
+        </activity>
+
         <activity
             android:name=".Welcome.WelcomeViewActivity"
             android:configChanges="orientation|screenSize"

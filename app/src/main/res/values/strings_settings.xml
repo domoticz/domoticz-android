@@ -43,8 +43,11 @@
     <!--        Preference screens      -->
     <string name="server_settings">Server connection settings</string>
     <string name="title_activity_server_settings">Server settings</string>
+    <string name="multi_server">Multi Server</string>
     <string name="export_settings">Export settings</string>
     <string name="import_settings">Import settings</string>
+    <string name="multi_server_settings">Enable multiple server support</string>
+    <string name="server">Server</string>
 
     <!--        GCM settings      -->
     <string name="notification_settings_id">Google Cloud Messaging ID</string>

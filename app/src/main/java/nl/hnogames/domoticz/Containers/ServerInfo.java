@@ -7,7 +7,7 @@ import java.util.Set;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 
 public class ServerInfo {
-    private String SERVER_NAME = "DEFAULT";
+    private String SERVER_NAME = Domoticz.DOMOTICZ_DEFAULT_SERVER;
     private String REMOTE_SERVER_USERNAME = "";
     private String REMOTE_SERVER_PASSWORD = "";
     private String REMOTE_SERVER_URL = "";
@@ -22,6 +22,7 @@ public class ServerInfo {
     private String LOCAL_SERVER_PORT = "";
     private String LOCAL_SERVER_DIRECTORY = "";
     private boolean LOCAL_SERVER_SECURE = false;
+    private boolean ENABLED = true;
     private boolean LOCAL_SERVER_AUTHENTICATION_METHOD = false;
     private Set<String> LOCAL_SERVER_SSID;
 
@@ -179,10 +180,6 @@ public class ServerInfo {
         return LOCAL_SERVER_SSID;
     }
 
-    public void setLocalServerSsid(Set<String> set) {
-        LOCAL_SERVER_SSID = set;
-    }
-
     public void setLocalServerSsid(List<String> ssids) {
         if (ssids != null) {
             Set<String> set = new HashSet<>();
@@ -191,6 +188,10 @@ public class ServerInfo {
             }
             LOCAL_SERVER_SSID = set;
         }
+    }
+
+    public void setLocalServerSsid(Set<String> set) {
+        LOCAL_SERVER_SSID = set;
     }
 
     public String getServerName() {
@@ -212,5 +213,13 @@ public class ServerInfo {
         setLocalServerDirectory(getRemoteServerDirectory());
         setLocalServerSecure(getRemoteServerSecure());
         setLocalServerAuthenticationMethod(getRemoteServerAuthenticationMethod());
+    }
+
+    public boolean isEnabled() {
+        return ENABLED;
+    }
+
+    public void setEnabled(boolean enable) {
+        this.ENABLED = enable;
     }
 }

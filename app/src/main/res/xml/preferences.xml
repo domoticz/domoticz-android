@@ -57,6 +57,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableMultiServers"
+            android:summaryOff="@string/multi_server_settings"
+            android:summaryOn="@string/multi_server_settings"
+            android:title="@string/multi_server" />
         <Preference
             android:key="server_settings"
             android:title="@string/server_settings" />

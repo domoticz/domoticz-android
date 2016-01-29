@@ -15,4 +15,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_switch_server"
+        android:orderInCategory="400"
+        android:visible="false"
+        android:title="@string/action_switch_server"
+        app:showAsAction="never" />
+
 </menu>
