@@ -28,6 +28,7 @@
   <string name="action_success">L\'acció ha acabat amb éxit</string>
   <string name="action_failed">L\'acció ha fallat</string>
   <string name="action_unknown">Resultat de l\'acció desconegut</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Tria l\'estat</string>
   <string name="normal">Normal</string>
   <string name="economy">Estalvi</string>
@@ -48,9 +49,9 @@
   <string name="no_network_available">Error: Cap connexió de xarxa disponible</string>
   <string name="oops">UI!</string>
   <string name="to">"a"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Torna-ho a provar</string>
+  <string name="undo">Desfés</string>
+  <string name="something_deleted">%1$s eliminat</string>
   <string name="switch_on">Encenent l\'interruptor</string>
   <string name="switch_off">Apagant l\'interruptor</string>
   <string name="blind_up">Pujant cortines</string>
@@ -67,8 +68,8 @@
   <string name="row_icon_description">icona de fila</string>
   <string name="error_image_description">Imatge d\'error</string>
   <string name="white">Blanc</string>
-  <string name="refresh">Refresh</string>
-  <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
+  <string name="refresh">Actualitza</string>
+  <string name="domoticz_logo">Logo de Domoticz</string>
+  <string name="this_take_minutes">Això pot durar uns quants minuts.</string>
+  <string name="continue_question">Voleu continuar?</string>
 </resources>

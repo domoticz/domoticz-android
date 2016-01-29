@@ -28,6 +28,7 @@
   <string name="action_success">Actie succesvol</string>
   <string name="action_failed">Actie mislukt</string>
   <string name="action_unknown">Actie resultaat onbekend</string>
+  <string name="choose_server">Kies Server</string>
   <string name="choose_status">Status kiezen</string>
   <string name="normal">Normaal</string>
   <string name="economy">Besparing - Eco</string>
@@ -48,9 +49,9 @@
   <string name="no_network_available">Fout: Geen netwerkverbinding beschikbaar</string>
   <string name="oops">OEPS!</string>
   <string name="to">"naar"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Probeer opnieuw</string>
+  <string name="undo">Ongedaan</string>
+  <string name="something_deleted">%1$s verwijderd</string>
   <string name="switch_on">Zet schakelaar aan</string>
   <string name="switch_off">Zet schakelaar uit</string>
   <string name="blind_up">Draai gordijnen omhoog</string>
@@ -67,8 +68,8 @@
   <string name="row_icon_description">rij icoon</string>
   <string name="error_image_description">Fout afbeelding</string>
   <string name="white">Wit</string>
-  <string name="refresh">Refresh</string>
+  <string name="refresh">Vernieuw</string>
   <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
+  <string name="this_take_minutes">Dit kan enkele minuten duren.</string>
+  <string name="continue_question">Doorgaan?</string>
 </resources>

@@ -28,6 +28,9 @@
   <string name="welcome_remote_server_username">Имя пользователя</string>
   <string name="welcome_remote_server_password">Пароль</string>
   <string name="welcome_remote_server_directory">Каталог</string>
+  <string name="remote">Remote</string>
+  <string name="local">Local</string>
+  <string name="servername">Server Name</string>
   <string name="welcome_local_server_used_switch_title">Адрес другого сервера</string>
   <string name="welcome_local_server_used_switch_summary">Используйте другой адрес для локального подключения</string>
   <string name="welcome_advancedSettings">Дополнительные установки сервера</string>

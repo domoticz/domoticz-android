@@ -12,7 +12,7 @@ android {
         versionName '0.1.225'
         multiDexEnabled true
     }
-
+    
     //noinspection GroovyAssignabilityCheck
     buildTypes {
         release {

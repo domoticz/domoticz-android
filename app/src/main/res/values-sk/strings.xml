@@ -28,6 +28,7 @@
   <string name="action_success">Akcia úspešná</string>
   <string name="action_failed">Akcia Neúspešná</string>
   <string name="action_unknown">Neznámy výsledok akcie</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Vybrať stav</string>
   <string name="normal">Normálny</string>
   <string name="economy">Ekonomický</string>

@@ -28,6 +28,7 @@
   <string name="action_success">Action succes</string>
   <string name="action_failed">Action échec</string>
   <string name="action_unknown">Action resultat inconnu</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Choisissez l\'État</string>
   <string name="normal">Normal</string>
   <string name="economy">Économie</string>
@@ -48,9 +49,9 @@
   <string name="no_network_available">Erreur : aucune connexion disponible</string>
   <string name="oops">Oops !</string>
   <string name="to">"à "</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Réessayer</string>
+  <string name="undo">Annuler</string>
+  <string name="something_deleted">%1$s supprimé</string>
   <string name="switch_on">Allumer</string>
   <string name="switch_off">Éteindre</string>
   <string name="blind_up">Ouvrir les stores</string>
@@ -67,8 +68,8 @@
   <string name="row_icon_description">icône de la ligne</string>
   <string name="error_image_description">Image d\'erreur</string>
   <string name="white">Blanc</string>
-  <string name="refresh">Refresh</string>
+  <string name="refresh">Actualiser</string>
   <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
+  <string name="this_take_minutes">Cela peut prendre plusieurs minutes.</string>
+  <string name="continue_question">Continuer ?</string>
 </resources>
