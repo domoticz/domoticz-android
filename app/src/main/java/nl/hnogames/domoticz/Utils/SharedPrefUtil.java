@@ -53,7 +53,6 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.LocationInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
@@ -63,7 +62,6 @@ public class SharedPrefUtil {
     public static final String PREF_CUSTOM_WEAR = "enableWearItems";
     public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     public static final String PREF_ALWAYS_ON = "alwayson";
-    public static final String PREF_NOTIFICATION_ID = "notification_id";
     public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
     public static final String PREF_LANGUAGE = "displayLanguage";
@@ -83,24 +81,6 @@ public class SharedPrefUtil {
     public static final int INVALID_IDX = 999999;
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
-    private static final String REMOTE_SERVER_USERNAME = "remote_server_username";
-    private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
-    private static final String REMOTE_SERVER_URL = "remote_server_url";
-    private static final String REMOTE_SERVER_PORT = "remote_server_port";
-    private static final String REMOTE_SERVER_DIRECTORY = "remote_server_directory";
-    private static final String REMOTE_SERVER_SECURE = "remote_server_secure";
-    private static final String REMOTE_SERVER_AUTHENTICATION_METHOD =
-            "remote_server_authentication_method";
-    private static final String IS_LOCAL_SERVER_ADDRESS_DIFFERENT = "local_server_different_address";
-    private static final String LOCAL_SERVER_USERNAME = "local_server_username";
-    private static final String LOCAL_SERVER_PASSWORD = "local_server_password";
-    private static final String LOCAL_SERVER_URL = "local_server_url";
-    private static final String LOCAL_SERVER_PORT = "local_server_port";
-    private static final String LOCAL_SERVER_DIRECTORY = "local_server_directory";
-    private static final String LOCAL_SERVER_SECURE = "local_server_secure";
-    private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
-            "local_server_authentication_method";
-    private static final String LOCAL_SERVER_SSID = "local_server_ssid";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -384,25 +364,6 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
     }
 
-    /*
-     *      Remote server settings
-     */
-    public String getDomoticzRemoteUsername() {
-        return prefs.getString(REMOTE_SERVER_USERNAME, "");
-    }
-
-    public void setDomoticzRemoteUsername(String username) {
-        editor.putString(REMOTE_SERVER_USERNAME, username).apply();
-    }
-
-    public String getDomoticzRemotePassword() {
-        return prefs.getString(REMOTE_SERVER_PASSWORD, "");
-    }
-
-    public void setDomoticzRemotePassword(String password) {
-        editor.putString(REMOTE_SERVER_PASSWORD, password).apply();
-    }
-
     public boolean isServerUpdateAvailable() {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
@@ -427,108 +388,6 @@ public class SharedPrefUtil {
         editor.putString(PREF_SERVER_VERSION, version).apply();
     }
 
-    public String getDomoticzRemoteUrl() {
-        return prefs.getString(REMOTE_SERVER_URL, "");
-    }
-
-    public void setDomoticzRemoteUrl(String url) {
-        editor.putString(REMOTE_SERVER_URL, url).apply();
-    }
-
-    public String getDomoticzRemotePort() {
-        return prefs.getString(REMOTE_SERVER_PORT, "");
-    }
-
-    public void setDomoticzRemotePort(String port) {
-        editor.putString(REMOTE_SERVER_PORT, port).apply();
-    }
-
-    public String getDomoticzRemoteDirectory() {
-        return prefs.getString(REMOTE_SERVER_DIRECTORY, "");
-    }
-
-    public void setDomoticzRemoteDirectory(String directory) {
-        editor.putString(REMOTE_SERVER_DIRECTORY, directory).apply();
-    }
-
-    public boolean isDomoticzRemoteSecure() {
-        return prefs.getBoolean(REMOTE_SERVER_SECURE, true);
-    }
-
-    public void setDomoticzRemoteSecure(boolean secure) {
-        editor.putBoolean(REMOTE_SERVER_SECURE, secure).apply();
-    }
-
-    public String getDomoticzRemoteAuthenticationMethod() {
-        boolean remoteServerAuthenticationMethodIsLoginForm =
-                prefs.getBoolean(REMOTE_SERVER_AUTHENTICATION_METHOD, true);
-        String method;
-
-        if (remoteServerAuthenticationMethodIsLoginForm)
-            method = Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM;
-        else method = Domoticz.Authentication.Method.AUTH_METHOD_BASIC_AUTHENTICATION;
-
-        return method;
-    }
-
-    /*
-     *      Local server settings
-     */
-    public boolean isLocalServerAddressDifferent() {
-        return prefs.getBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, false);
-    }
-
-    public void setLocalServerUsesSameAddress(boolean b) {
-        editor.putBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, b).apply();
-    }
-
-    public String getDomoticzLocalUsername() {
-        return prefs.getString(LOCAL_SERVER_USERNAME, "");
-    }
-
-    public void setDomoticzLocalUsername(String username) {
-        editor.putString(LOCAL_SERVER_USERNAME, username).apply();
-    }
-
-    public String getDomoticzLocalPassword() {
-        return prefs.getString(LOCAL_SERVER_PASSWORD, "");
-    }
-
-    public void setDomoticzLocalPassword(String password) {
-        editor.putString(LOCAL_SERVER_PASSWORD, password).apply();
-    }
-
-    public String getDomoticzLocalUrl() {
-        return prefs.getString(LOCAL_SERVER_URL, "");
-    }
-
-    public void setDomoticzLocalUrl(String url) {
-        editor.putString(LOCAL_SERVER_URL, url).apply();
-    }
-
-    public String getDomoticzLocalPort() {
-        return prefs.getString(LOCAL_SERVER_PORT, "");
-    }
-
-    public void setDomoticzLocalPort(String port) {
-        editor.putString(LOCAL_SERVER_PORT, port).apply();
-    }
-
-    public String getDomoticzLocalDirectory() {
-        return prefs.getString(LOCAL_SERVER_DIRECTORY, "");
-    }
-
-    public void setDomoticzLocalDirectory(String directory) {
-        editor.putString(LOCAL_SERVER_DIRECTORY, directory).apply();
-    }
-
-    public boolean isDomoticzLocalSecure() {
-        return prefs.getBoolean(LOCAL_SERVER_SECURE, true);
-    }
-
-    public void setDomoticzLocalSecure(boolean secure) {
-        editor.putBoolean(LOCAL_SERVER_SECURE, secure).apply();
-    }
 
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);
@@ -544,53 +403,6 @@ public class SharedPrefUtil {
 
     public void setGeofenceNotificationsEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
-    }
-
-    @SuppressWarnings("unused")
-    public String getDomoticzLocalAuthenticationMethod() {
-        boolean localServerAuthenticationMethodIsLoginForm =
-                prefs.getBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, true);
-        String method;
-
-        if (localServerAuthenticationMethodIsLoginForm)
-            method = Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM;
-        else method = Domoticz.Authentication.Method.AUTH_METHOD_BASIC_AUTHENTICATION;
-
-        return method;
-    }
-
-    public void setDomoticzLocalAuthenticationMethod(String method) {
-        boolean methodIsLoginForm;
-        methodIsLoginForm =
-                method.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
-        editor.putBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, methodIsLoginForm).apply();
-    }
-
-    public Set<String> getLocalSsid() {
-        return prefs.getStringSet(LOCAL_SERVER_SSID, null);
-    }
-
-    public void setLocalSsid(List<String> ssids) {
-        if (ssids != null) {
-            Set<String> set = new HashSet<>();
-            for (String ssid : ssids) {
-                set.add(ssid);
-            }
-            editor.putStringSet(LOCAL_SERVER_SSID, set).apply();
-        }
-    }
-
-    /**
-     * Method for setting local server addresses the same as the remote server addresses
-     */
-    public void setLocalSameAddressAsRemote() {
-        setDomoticzLocalUsername(getDomoticzRemoteUsername());
-        setDomoticzLocalPassword(getDomoticzRemotePassword());
-        setDomoticzLocalUrl(getDomoticzRemoteUrl());
-        setDomoticzLocalPort(getDomoticzRemotePort());
-        setDomoticzLocalDirectory(getDomoticzRemoteDirectory());
-        setDomoticzLocalSecure(isDomoticzRemoteSecure());
-        setDomoticzLocalAuthenticationMethod(getDomoticzRemoteAuthenticationMethod());
     }
 
     public void saveConfig(ConfigInfo config) {

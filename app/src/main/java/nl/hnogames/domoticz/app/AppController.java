@@ -79,7 +79,7 @@ public class AppController extends Application implements GcmListener {
         if (PermissionsUtil.canAccessDeviceState(this)) {
             StartEasyGCM();
         }
-        
+
         mInstance = this;
     }
 

@@ -71,6 +71,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.RequestUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SessionUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -94,6 +95,7 @@ public class Domoticz {
     private static final String TAG = Domoticz.class.getSimpleName();
     public static boolean debug;
     private final SharedPrefUtil mSharedPrefUtil;
+    private final ServerUtil mServerUtil;
     private final SessionUtil mSessionUtil;
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
@@ -104,7 +106,10 @@ public class Domoticz {
 
     public Domoticz(Context mContext) {
         this.mContext = mContext;
+
         mSharedPrefUtil = new SharedPrefUtil(mContext);
+        mServerUtil = new ServerUtil(mContext);
+
         mSessionUtil = new SessionUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
             @Override
@@ -123,10 +128,9 @@ public class Domoticz {
     }
 
     public boolean isUserOnLocalWifi() {
-
         boolean userIsLocal = false;
-        if (mSharedPrefUtil.isLocalServerAddressDifferent()) {
-            Set<String> localSsid = mSharedPrefUtil.getLocalSsid();
+        if (mServerUtil.getActiveServer().getIsLocalServerAddressDifferent()) {
+            Set<String> localSsid = mServerUtil.getActiveServer().getLocalServerSsid();
 
             if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null && localSsid.size() > 0) {
                 String currentSsid = mPhoneConnectionUtil.getCurrentSsid();
@@ -146,10 +150,10 @@ public class Domoticz {
     public boolean isConnectionDataComplete() {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
-        stringHashMap.put("Domoticz local URL", mSharedPrefUtil.getDomoticzLocalUrl());
-        stringHashMap.put("Domoticz local port", mSharedPrefUtil.getDomoticzLocalPort());
-        stringHashMap.put("Domoticz remote URL", mSharedPrefUtil.getDomoticzRemoteUrl());
-        stringHashMap.put("Domoticz remote port", mSharedPrefUtil.getDomoticzRemotePort());
+        stringHashMap.put("Domoticz local URL", mServerUtil.getActiveServer().getLocalServerUrl());
+        stringHashMap.put("Domoticz local port", mServerUtil.getActiveServer().getLocalServerPort());
+        stringHashMap.put("Domoticz remote URL", mServerUtil.getActiveServer().getRemoteServerUrl());
+        stringHashMap.put("Domoticz remote port", mServerUtil.getActiveServer().getRemoteServerPort());
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
@@ -167,8 +171,8 @@ public class Domoticz {
     public boolean isUrlValid() {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
-        stringHashMap.put("Domoticz local URL", mSharedPrefUtil.getDomoticzLocalUrl());
-        stringHashMap.put("Domoticz remote URL", mSharedPrefUtil.getDomoticzRemoteUrl());
+        stringHashMap.put("Domoticz local URL", mServerUtil.getActiveServer().getLocalServerUrl());
+        stringHashMap.put("Domoticz remote URL", mServerUtil.getActiveServer().getRemoteServerUrl());
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
@@ -410,20 +414,21 @@ public class Domoticz {
         StringBuilder buildUrl = new StringBuilder();
 
         if (isUserOnLocalWifi()) {
-            if (mSharedPrefUtil.isDomoticzLocalSecure()) protocol = Url.Protocol.HTTPS;
+            if (mServerUtil.getActiveServer().getLocalServerSecure()) protocol = Url.Protocol.HTTPS;
             else protocol = Url.Protocol.HTTP;
 
-            url = mSharedPrefUtil.getDomoticzLocalUrl();
-            port = mSharedPrefUtil.getDomoticzLocalPort();
-            directory = mSharedPrefUtil.getDomoticzLocalDirectory();
+            url = mServerUtil.getActiveServer().getLocalServerUrl();
+            port = mServerUtil.getActiveServer().getLocalServerPort();
+            directory = mServerUtil.getActiveServer().getLocalServerDirectory();
 
         } else {
-            if (mSharedPrefUtil.isDomoticzRemoteSecure()) protocol = Url.Protocol.HTTPS;
+            if (mServerUtil.getActiveServer().getRemoteServerSecure())
+                protocol = Url.Protocol.HTTPS;
             else protocol = Url.Protocol.HTTP;
 
-            url = mSharedPrefUtil.getDomoticzRemoteUrl();
-            port = mSharedPrefUtil.getDomoticzRemotePort();
-            directory = mSharedPrefUtil.getDomoticzRemoteDirectory();
+            url = mServerUtil.getActiveServer().getRemoteServerUrl();
+            port = mServerUtil.getActiveServer().getRemoteServerPort();
+            directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
 
         }
         jsonUrl = getJsonGetUrl(jsonGetUrl);
@@ -444,21 +449,20 @@ public class Domoticz {
         StringBuilder buildUrl = new StringBuilder();
 
         if (isUserOnLocalWifi()) {
-            if (mSharedPrefUtil.isDomoticzLocalSecure()) {
+            if (mServerUtil.getActiveServer().getLocalServerSecure()) {
                 protocol = Url.Protocol.HTTPS;
             } else protocol = Url.Protocol.HTTP;
 
-            baseUrl = mSharedPrefUtil.getDomoticzLocalUrl();
-            port = mSharedPrefUtil.getDomoticzLocalPort();
-            directory = mSharedPrefUtil.getDomoticzLocalDirectory();
-
+            baseUrl = mServerUtil.getActiveServer().getLocalServerUrl();
+            port = mServerUtil.getActiveServer().getLocalServerPort();
+            directory = mServerUtil.getActiveServer().getLocalServerDirectory();
         } else {
-            if (mSharedPrefUtil.isDomoticzRemoteSecure()) {
+            if (mServerUtil.getActiveServer().getRemoteServerSecure()) {
                 protocol = Url.Protocol.HTTPS;
             } else protocol = Url.Protocol.HTTP;
-            baseUrl = mSharedPrefUtil.getDomoticzRemoteUrl();
-            port = mSharedPrefUtil.getDomoticzRemotePort();
-            directory = mSharedPrefUtil.getDomoticzRemoteDirectory();
+            baseUrl = mServerUtil.getActiveServer().getRemoteServerUrl();
+            port = mServerUtil.getActiveServer().getRemoteServerPort();
+            directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
         }
 
         switch (action) {
@@ -633,12 +637,12 @@ public class Domoticz {
 
             if (isUserOnLocalWifi()) {
                 logger("On local wifi");
-                username = mSharedPrefUtil.getDomoticzLocalUsername();
-                password = mSharedPrefUtil.getDomoticzLocalPassword();
+                username = mServerUtil.getActiveServer().getLocalServerUsername();
+                password = mServerUtil.getActiveServer().getLocalServerPassword();
             } else {
                 logger("Not on local wifi");
-                username = mSharedPrefUtil.getDomoticzRemoteUsername();
-                password = mSharedPrefUtil.getDomoticzRemotePassword();
+                username = mServerUtil.getActiveServer().getRemoteServerUsername();
+                password = mServerUtil.getActiveServer().getRemoteServerPassword();
             }
             HashMap<String, String> credentials = new HashMap<>();
             credentials.put(Authentication.USERNAME, username);
@@ -672,7 +676,6 @@ public class Domoticz {
      * Clean previous sender id's on Domoticz
      *
      * @param DeviceId UUID of the device
-     * @param SenderId sender id from the Google services
      * @param receiver to get the callback on
      */
     public void CleanMobileDevice(String DeviceId, MobileDeviceReceiver receiver) {

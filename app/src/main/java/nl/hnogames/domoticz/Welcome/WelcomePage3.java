@@ -28,6 +28,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -37,10 +38,13 @@ public class WelcomePage3 extends Fragment {
     private static final int WELCOME_WIZARD = 1;
     private static final int SETTINGS = 2;
     private SharedPrefUtil mSharedPrefs;
+    private ServerUtil mServerUtil;
+
     private FloatingLabelEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
             local_username_input, local_port_input, local_directory_input;
+
     private Spinner remote_protocol_spinner, local_protocol_spinner, startScreen_spinner;
     private Switch localServer_switch;
     private int remoteProtocolSelectedPosition, localProtocolSelectedPosition, startScreenSelectedPosition;
@@ -51,6 +55,7 @@ public class WelcomePage3 extends Fragment {
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Switch advancedSettings_switch;
     private CheckBox cbShowPassword, cbShowPasswordLocal;
+
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -74,6 +79,7 @@ public class WelcomePage3 extends Fragment {
         v = inflater.inflate(R.layout.fragment_welcome3, container, false);
 
         mSharedPrefs = new SharedPrefUtil(getActivity());
+        mServerUtil = new ServerUtil(getActivity());
 
         getLayoutReferences();
         setPreferenceValues();
@@ -173,19 +179,19 @@ public class WelcomePage3 extends Fragment {
     }
 
     private void setPreferenceValues() {
-        remote_username_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteUsername());
-        remote_password_input.setInputWidgetText(mSharedPrefs.getDomoticzRemotePassword());
-        remote_server_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteUrl());
-        remote_port_input.setInputWidgetText(mSharedPrefs.getDomoticzRemotePort());
-        remote_directory_input.setInputWidgetText(mSharedPrefs.getDomoticzRemoteDirectory());
+        remote_username_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUsername());
+        remote_password_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPassword());
+        remote_server_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUrl());
+        remote_port_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPort());
+        remote_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerDirectory());
 
-        localServer_switch.setChecked(mSharedPrefs.isLocalServerAddressDifferent());
+        localServer_switch.setChecked(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent());
 
-        local_username_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalUsername());
-        local_password_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalPassword());
-        local_server_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalUrl());
-        local_port_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalPort());
-        local_directory_input.setInputWidgetText(mSharedPrefs.getDomoticzLocalDirectory());
+        local_username_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUsername());
+        local_password_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPassword());
+        local_server_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUrl());
+        local_port_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPort());
+        local_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerDirectory());
 
         setProtocol_spinner();
         setStartScreen_spinner();
@@ -217,7 +223,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private void setSsid_spinner() {
-        Set<String> ssidFromPrefs = mSharedPrefs.getLocalSsid();
+        Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
         //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
@@ -310,44 +316,43 @@ public class WelcomePage3 extends Fragment {
     }
 
     private void writePreferenceValues() {
-
-        mSharedPrefs.setDomoticzRemoteUsername(
+        mServerUtil.getActiveServer().setRemoteServerUsername(
                 remote_username_input.getInputWidgetText().toString());
-        mSharedPrefs.setDomoticzRemotePassword(
+        mServerUtil.getActiveServer().setRemoteServerPassword(
                 remote_password_input.getInputWidgetText().toString());
-        mSharedPrefs.setDomoticzRemoteUrl(
+        mServerUtil.getActiveServer().setRemoteServerUrl(
                 remote_server_input.getInputWidgetText().toString());
-        mSharedPrefs.setDomoticzRemotePort(
+        mServerUtil.getActiveServer().setRemoteServerPort(
                 remote_port_input.getInputWidgetText().toString());
-        mSharedPrefs.setDomoticzRemoteDirectory(
+        mServerUtil.getActiveServer().setRemoteServerDirectory(
                 remote_directory_input.getInputWidgetText().toString());
-        mSharedPrefs.setDomoticzRemoteSecure(
+        mServerUtil.getActiveServer().setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         if (callingInstance == WELCOME_WIZARD)
             mSharedPrefs.setStartupScreenIndex(startScreenSelectedPosition);
 
         Switch useSameAddress = (Switch) v.findViewById(R.id.localServer_switch);
         if (!useSameAddress.isChecked()) {
-            mSharedPrefs.setLocalSameAddressAsRemote();
-            mSharedPrefs.setLocalServerUsesSameAddress(false);
+            mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
+            mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
         } else {
-            mSharedPrefs.setDomoticzLocalUsername(
+            mServerUtil.getActiveServer().setLocalServerUsername(
                     local_username_input.getInputWidgetText().toString());
-            mSharedPrefs.setDomoticzLocalPassword(
+            mServerUtil.getActiveServer().setLocalServerPassword(
                     local_password_input.getInputWidgetText().toString());
-            mSharedPrefs.setDomoticzLocalUrl(
+            mServerUtil.getActiveServer().setLocalServerUrl(
                     local_server_input.getInputWidgetText().toString());
-            mSharedPrefs.setDomoticzLocalPort(
+            mServerUtil.getActiveServer().setLocalServerPort(
                     local_port_input.getInputWidgetText().toString());
-            mSharedPrefs.setDomoticzLocalDirectory(
+            mServerUtil.getActiveServer().setLocalServerDirectory(
                     local_directory_input.getInputWidgetText().toString());
-            mSharedPrefs.setDomoticzLocalSecure(
+            mServerUtil.getActiveServer().setLocalServerSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
-            mSharedPrefs.setLocalServerUsesSameAddress(true);
+            mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);
         }
 
-        mSharedPrefs.setLocalSsid(local_wifi_spinner.getSelectedStrings());
-
+        mServerUtil.getActiveServer().setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
+        mServerUtil.saveDomoticzServers();
     }
 
     private boolean getSpinnerDomoticzRemoteSecureBoolean() {
@@ -361,8 +366,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private int getPrefsDomoticzRemoteSecureIndex() {
-
-        boolean isSecure = mSharedPrefs.isDomoticzRemoteSecure();
+        boolean isSecure = mServerUtil.getActiveServer().getRemoteServerSecure();
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
@@ -378,7 +382,7 @@ public class WelcomePage3 extends Fragment {
     }
 
     private int getPrefsDomoticzLocalSecureIndex() {
-        boolean isSecure = mSharedPrefs.isDomoticzLocalSecure();
+        boolean isSecure = mServerUtil.getActiveServer().getLocalServerSecure();
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
