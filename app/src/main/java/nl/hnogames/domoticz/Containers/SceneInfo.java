@@ -25,6 +25,9 @@ package nl.hnogames.domoticz.Containers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SceneInfo {
 
     private final boolean isProtected;
@@ -110,6 +113,17 @@ public class SceneInfo {
 
     public String getLastUpdate() {
         return lastUpdate;
+    }
+
+    public Date getLastUpdateDateTime() {
+        //2016-01-30 12:48:37
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(lastUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getName() {

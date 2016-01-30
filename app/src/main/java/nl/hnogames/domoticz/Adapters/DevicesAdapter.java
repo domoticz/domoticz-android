@@ -52,6 +52,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
@@ -587,7 +588,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+                UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -624,7 +626,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
@@ -672,8 +674,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -735,8 +736,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -811,7 +811,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
         if (holder.switch_battery_level != null)
-            holder.switch_battery_level.setText(mDeviceInfo.getLastUpdate());
+            holder.switch_battery_level.setText(UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime()));
 
         if (holder.signal_level != null)
             holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
@@ -888,8 +888,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -958,8 +957,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        String text = context.getString(R.string.last_update) + ": " +UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.switch_status != null)
             holder.switch_status.setText(text);
 
@@ -1033,7 +1031,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -1130,8 +1128,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -1254,7 +1251,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +

@@ -29,13 +29,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.Locale;
 
 import nl.hnogames.domoticz.MainActivity;
+import nl.hnogames.domoticz.R;
 
 public class UsefulBits {
 
@@ -133,5 +136,17 @@ public class UsefulBits {
         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, text);
         clipboard.setPrimaryClip(clip);
+    }
+
+    public static String getFormattedDate(Context context, long lTimeInMilis) {
+        Calendar smsTime = Calendar.getInstance();
+        smsTime.setTimeInMillis(lTimeInMilis);
+
+        Calendar now = Calendar.getInstance();
+        final String timeFormatString = "h:mm aa";
+        if(now.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ){
+            return DateFormat.format(timeFormatString, smsTime) + "";
+        }else
+            return DateFormat.format("dd/MM HH:mm aa", smsTime).toString();
     }
 }
