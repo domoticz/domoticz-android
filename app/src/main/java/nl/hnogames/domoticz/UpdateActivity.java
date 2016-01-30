@@ -37,7 +37,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
@@ -130,7 +129,7 @@ public class UpdateActivity extends AppCompatActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        checkForUpdatePrerequisites();
+                        updateServer();
                     }
                 })
                 .show();
@@ -168,19 +167,21 @@ public class UpdateActivity extends AppCompatActivity {
 
     private void showMessageUpdateNotReady() {
         String title = getString(R.string.server_update_not_ready);
-        String message = getString(R.string.update_server_warning) + UsefulBits.newLine()
+        String message = getString(R.string.update_server_downloadNotReady1)
+                + UsefulBits.newLine()
                 + getString(R.string.update_server_downloadNotReady2);
         showSimpleDialog(title, message);
     }
 
     private void updateServer() {
         // Cancel the check prerequisites dialog
-        progressDialog.cancel();
+        if (progressDialog != null) progressDialog.cancel();
 
         final boolean showMinMax = false;
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(R.string.msg_please_wait)
-                .content(getString(R.string.please_wait_while_server_updated) + UsefulBits.newLine()
+                .content(getString(R.string.please_wait_while_server_updated)
+                        + UsefulBits.newLine()
                         + getString(R.string.this_take_minutes))
                 .cancelable(false)
                 .progress(false, SERVER_UPDATE_TIME * 60, showMinMax)
@@ -196,13 +197,18 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 dialog.cancel();
+                showMessageUpdateSuccess();
                 refreshData();
             }
         };
 
         mCountDownTimer.start();
         if (!mDomoticz.isDebugEnabled() || mSharedPrefs.isServerUpdateAvailable()) {
-            mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
+            mDomoticz.updateDomoticzServer(null);
+            // No feedback is provided when updating
+
+            /*
+                    new UpdateDomoticzServerReceiver() {
                 @Override
                 public void onUpdateFinish(boolean updateSuccess) {
                     if (!updateSuccess) showMessageUpdateFailed();
@@ -214,6 +220,7 @@ public class UpdateActivity extends AppCompatActivity {
                     showMessageUpdateNotStarted();
                 }
             });
+            */
         }
     }
 
