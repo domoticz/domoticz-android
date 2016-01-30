@@ -28,6 +28,7 @@
   <string name="action_success">Операция выполнена</string>
   <string name="action_failed">Операция не выполнена</string>
   <string name="action_unknown">Результат действия неизвестен</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Выберите состояние</string>
   <string name="normal">Стандарт</string>
   <string name="economy">Эконом</string>

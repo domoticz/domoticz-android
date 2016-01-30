@@ -30,8 +30,11 @@
   <string name="settings_import_failed">Falha ao importar configurações</string>
   <string name="server_settings">Configurações de conexão do servidor</string>
   <string name="title_activity_server_settings">Definições do servidor</string>
+  <string name="multi_server">Multi Server</string>
   <string name="export_settings">Exportar Definições</string>
   <string name="import_settings">Importar Definições</string>
+  <string name="multi_server_settings">Enable multiple server support</string>
+  <string name="server">Server</string>
   <string name="notification_settings_id">ID de mensagens do Google Cloud</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>
   <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>

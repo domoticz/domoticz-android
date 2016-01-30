@@ -28,6 +28,7 @@
   <string name="action_success">Acción exitosa</string>
   <string name="action_failed">Acción fallida</string>
   <string name="action_unknown">Resultado de la acción desconocida</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Elegir estado</string>
   <string name="normal">Normal</string>
   <string name="economy">Economía</string>

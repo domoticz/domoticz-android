@@ -28,6 +28,7 @@
   <string name="action_success">Akcja zakończona skucesem</string>
   <string name="action_failed">Akcja nie powiodła się</string>
   <string name="action_unknown">Nieznany rezultat akcji</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Wybierz stan</string>
   <string name="normal">Normalny</string>
   <string name="economy">Tryb ekonomiczny</string>

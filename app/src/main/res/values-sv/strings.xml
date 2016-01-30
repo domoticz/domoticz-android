@@ -28,6 +28,7 @@
   <string name="action_success">Åtgärden lyckades</string>
   <string name="action_failed">Åtgärden misslyckades</string>
   <string name="action_unknown">Okänd resultat av åtgärden</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Choose state</string>
   <string name="normal">Normal</string>
   <string name="economy">Economy</string>

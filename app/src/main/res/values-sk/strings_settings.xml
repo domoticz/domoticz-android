@@ -30,8 +30,11 @@
   <string name="settings_import_failed">Nepodarilo sa importovať nastavenia</string>
   <string name="server_settings">Nastavenia pripojenia servera</string>
   <string name="title_activity_server_settings">Nastavenia servera</string>
+  <string name="multi_server">Multi Server</string>
   <string name="export_settings">Exportovať nastavenia</string>
   <string name="import_settings">Importovať nastavenia</string>
+  <string name="multi_server_settings">Enable multiple server support</string>
+  <string name="server">Server</string>
   <string name="notification_settings_id">ID správy Google Cloud</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>
   <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>

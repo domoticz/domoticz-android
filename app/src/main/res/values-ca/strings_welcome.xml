@@ -29,6 +29,9 @@
   <string name="welcome_remote_server_username">Nom d’usuari</string>
   <string name="welcome_remote_server_password">Contrasenya</string>
   <string name="welcome_remote_server_directory">Carpeta</string>
+  <string name="remote">Remote</string>
+  <string name="local">Local</string>
+  <string name="servername">Server Name</string>
   <string name="welcome_local_server_used_switch_title">Adreça de servidor alternativa</string>
   <string name="welcome_local_server_used_switch_summary">Utilitza l\'adreça alternativa per connexions locals</string>
   <string name="welcome_advancedSettings">Configuració avançada del servidor</string>

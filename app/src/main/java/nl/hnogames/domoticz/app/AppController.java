@@ -38,6 +38,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.splunk.mint.Mint;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -154,7 +156,12 @@ public class AppController extends Application implements GcmListener {
     public void onMessage(String s, Bundle bundle) {
         if (bundle.containsKey("message")) {
             String message = bundle.getString("message");
-            NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name), message, this);
+            try {
+                message = URLDecoder.decode(message, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
         }
     }
 

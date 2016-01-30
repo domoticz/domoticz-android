@@ -28,6 +28,7 @@
   <string name="action_success">Sikeres művelet</string>
   <string name="action_failed">Sikertelen művelet</string>
   <string name="action_unknown">A művelet eredménye nem ismert</string>
+  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Állapot kiválasztása</string>
   <string name="normal">Normál</string>
   <string name="economy">Gazdaságos</string>

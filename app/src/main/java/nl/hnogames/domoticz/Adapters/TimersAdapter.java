@@ -104,6 +104,22 @@ public class TimersAdapter extends BaseAdapter {
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunset);
                 else if (mSwitchTimerInfo.getType() == 5)
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_fixed);
+                else  if (mSwitchTimerInfo.getType() == 6)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_day_numbers);
+                else if (mSwitchTimerInfo.getType() == 7)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.even_day_numbers);
+                else if (mSwitchTimerInfo.getType() == 8)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_week_numbers);
+                else if (mSwitchTimerInfo.getType() == 9)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.even_week_numbers);
+                else if (mSwitchTimerInfo.getType() == 10)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.monthly);
+                else if (mSwitchTimerInfo.getType() == 11)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.monthly_weekday);
+                else if (mSwitchTimerInfo.getType() == 12)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly);
+                else if (mSwitchTimerInfo.getType() == 13)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly_weekday);
                 else
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.notapplicable);
 

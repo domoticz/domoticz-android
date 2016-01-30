@@ -8,7 +8,7 @@
   <string name="category_server">Servidor</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informació</string>
-  <string name="category_language">Language</string>
+  <string name="category_language">Idioma</string>
   <string name="category_notification">Notificacions</string>
   <string name="category_debug">Depuració</string>
   <string name="category_export">Exporta/importa la configuració</string>
@@ -30,8 +30,11 @@
   <string name="settings_import_failed">No s\'ha pogut importar la configuració</string>
   <string name="server_settings">Configuració de connexió al servidor</string>
   <string name="title_activity_server_settings">Configuració del servidor</string>
+  <string name="multi_server">Multi Server</string>
   <string name="export_settings">Exporta la configuració</string>
   <string name="import_settings">Importa configuració</string>
+  <string name="multi_server_settings">Enable multiple server support</string>
+  <string name="server">Server</string>
   <string name="notification_settings_id">ID de Google Cloud Messaging</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>
   <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
@@ -50,7 +53,7 @@
   <string name="debug_switch_title">Depuració</string>
   <string name="debug_switch_summary_on">Depuració activada</string>
   <string name="debug_switch_summary_off">Depuració desactivada</string>
-  <string name="error_atLeastOneItemInDrawer">You need at least one item in the drawer</string>
+  <string name="error_atLeastOneItemInDrawer">Heu de tenir com a mínim un element al calaix</string>
   <string name="title_activity_update">Update server</string>
   <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
   <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>

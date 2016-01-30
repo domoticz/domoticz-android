@@ -28,6 +28,9 @@
   <string name="welcome_remote_server_username">Nombre de usuario</string>
   <string name="welcome_remote_server_password">Contaseña</string>
   <string name="welcome_remote_server_directory">Directorio</string>
+  <string name="remote">Remote</string>
+  <string name="local">Local</string>
+  <string name="servername">Server Name</string>
   <string name="welcome_local_server_used_switch_title">Dirección de servidor diferente</string>
   <string name="welcome_local_server_used_switch_summary">Utilice otra dirección para la conexión local</string>
   <string name="welcome_advancedSettings">Configuración avanzada del servidor</string>
