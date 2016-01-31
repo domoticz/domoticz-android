@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +125,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         convertView.setTag(holder);
         //} else holder = (ViewHolder) convertView.getTag();
 
-        setSwitchRowData(DevicesInfo, holder, convertView);
+        setSwitchRowData(DevicesInfo, holder);
 
         return convertView;
     }
@@ -334,8 +335,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     }
 
     private void setSwitchRowData(DevicesInfo mDevicesInfo,
-                                  ViewHolder holder,
-                                  View convertView) {
+                                  ViewHolder holder) {
 
         switch (mDevicesInfo.getSwitchTypeVal()) {
             case Domoticz.Device.Type.Value.ON_OFF:
@@ -407,7 +407,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -416,8 +416,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
-            holder.switch_battery_level.setText(context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage());
+        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
+            String usage = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+            holder.switch_battery_level.setText(usage);
+        }
         if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
             holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
         if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
@@ -457,7 +459,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -522,7 +524,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -532,10 +534,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonOn.setId(mDevicesInfo.getIdx());
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button_off));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
         }
 
         holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -587,7 +589,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -600,7 +602,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         else
             holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-        holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+        holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
         holder.buttonOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -650,7 +652,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.switch_status.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -726,7 +728,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -863,7 +865,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -968,7 +970,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -1091,19 +1093,19 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             final ArrayList<DevicesInfo> list = data;
 
             int count = list.size();
-            final ArrayList<DevicesInfo> nlist = new ArrayList<DevicesInfo>(count);
+            final ArrayList<DevicesInfo> devicesInfos = new ArrayList<>(count);
 
             DevicesInfo filterableObject;
 
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    devicesInfos.add(filterableObject);
                 }
             }
 
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = devicesInfos;
+            results.count = devicesInfos.size();
 
             return results;
         }

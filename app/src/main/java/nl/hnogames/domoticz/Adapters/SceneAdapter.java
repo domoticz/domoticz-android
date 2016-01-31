@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SceneAdapter extends BaseAdapter implements Filterable {
 
+    @SuppressWarnings("unused")
     private static final String TAG = SceneAdapter.class.getSimpleName();
 
     private final ScenesClickListener listener;
@@ -121,7 +123,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
 
             holder.switch_name.setText(mSceneInfo.getName());
             String text = context.getString(R.string.last_update) + ": " +
-                    UsefulBits.getFormattedDate(context, mSceneInfo.getLastUpdateDateTime().getTime());
+                    UsefulBits.getFormattedDate(mSceneInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
 
@@ -130,7 +132,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setText(context.getString(R.string.button_state_on));
-                holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -158,7 +160,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.switch_name.setText(mSceneInfo.getName());
 
             String text = context.getString(R.string.last_update) + ": " +
-                    UsefulBits.getFormattedDate(context, mSceneInfo.getLastUpdateDateTime().getTime());
+                    UsefulBits.getFormattedDate(mSceneInfo.getLastUpdateDateTime().getTime());
 
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
@@ -217,19 +219,19 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             final ArrayList<SceneInfo> list = data;
 
             int count = list.size();
-            final ArrayList<SceneInfo> nlist = new ArrayList<SceneInfo>(count);
+            final ArrayList<SceneInfo> sceneInfos = new ArrayList<>(count);
 
             SceneInfo filterableObject;
 
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    sceneInfos.add(filterableObject);
                 }
             }
 
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = sceneInfos;
+            results.count = sceneInfos.size();
 
             return results;
         }
