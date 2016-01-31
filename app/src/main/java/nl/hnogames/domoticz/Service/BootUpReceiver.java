@@ -36,7 +36,9 @@ public class BootUpReceiver extends BroadcastReceiver {
 
         WidgetUtils.RefreshWidgets(context);
 
-        mSharedPrefUtil.setGeoFenceService();
-        mSharedPrefUtil.setGeofencingStarted(true);
+        if (mSharedPrefUtil.isGeofenceEnabled()) {
+            mSharedPrefUtil.enableGeoFenceService();
+            mSharedPrefUtil.setGeofencingStarted(true);
+        }
     }
 }

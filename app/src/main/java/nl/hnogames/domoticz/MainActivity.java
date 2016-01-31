@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             // Geofences are already started on device boot up by the BootUpReceiver
             if (!mSharedPrefs.isGeofencingStarted()) {
                 mSharedPrefs.setGeofencingStarted(true);
-                mSharedPrefs.setGeoFenceService();
+                mSharedPrefs.enableGeoFenceService();
             }
 
             buildScreen();
