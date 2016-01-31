@@ -44,6 +44,7 @@ import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SceneAdapter extends BaseAdapter implements Filterable {
 
@@ -119,7 +120,8 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.switch_battery_level = (TextView) convertView.findViewById(R.id.switch_battery_level);
 
             holder.switch_name.setText(mSceneInfo.getName());
-            String text = context.getText(R.string.last_update) + ": " + String.valueOf(mSceneInfo.getLastUpdate());
+            String text = context.getString(R.string.last_update) + ": " +
+                    UsefulBits.getFormattedDate(context, mSceneInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
 
@@ -154,7 +156,10 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.switch_battery_level = (TextView) convertView.findViewById(R.id.switch_battery_level);
 
             holder.switch_name.setText(mSceneInfo.getName());
-            String text = context.getText(R.string.last_update) + ": " + String.valueOf(mSceneInfo.getLastUpdate());
+
+            String text = context.getString(R.string.last_update) + ": " +
+                    UsefulBits.getFormattedDate(context, mSceneInfo.getLastUpdateDateTime().getTime());
+
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
 

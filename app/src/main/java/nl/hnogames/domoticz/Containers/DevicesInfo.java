@@ -27,6 +27,8 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class DevicesInfo implements Comparable {
@@ -375,6 +377,17 @@ public class DevicesInfo implements Comparable {
 
     public String getLastUpdate() {
         return LastUpdate;
+    }
+
+    public Date getLastUpdateDateTime() {
+        //2016-01-30 12:48:37
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(LastUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setLastUpdate(String lastUpdate) {
