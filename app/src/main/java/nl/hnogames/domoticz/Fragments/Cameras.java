@@ -161,11 +161,14 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     @Override
     public void onConnectionOk() {
         mDomoticz = new Domoticz(context);
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        getCameras();
+
+        if (getView() != null) {
+            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+            mRecyclerView.setHasFixedSize(true);
+            GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            getCameras();
+        }
     }
 }

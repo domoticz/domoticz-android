@@ -40,10 +40,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -503,7 +501,12 @@ public class MainActivity extends AppCompatActivity {
     public View getFragmentCoordinatorLayout() {
         View layout = null;
         try {
-            layout = getVisibleFragment().getView().findViewById(R.id.coordinatorLayout);
+            Fragment f = getVisibleFragment();
+            if (f != null) {
+                View v = f.getView();
+                if (v != null)
+                    layout = v.findViewById(R.id.coordinatorLayout);
+            }
         } catch (Exception ex) {
             Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
             ex.printStackTrace();
@@ -553,9 +556,8 @@ public class MainActivity extends AppCompatActivity {
             MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
             if (searchMenuItem != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
                 searchMenuItem.setVisible(true);
-            } else {
+            } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
-            }
         }
 
         return super.onCreateOptionsMenu(menu);

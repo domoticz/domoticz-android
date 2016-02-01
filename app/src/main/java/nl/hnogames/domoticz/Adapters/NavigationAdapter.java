@@ -38,15 +38,13 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private static final int TYPE_HEADER = 0;  // Declaring Variable to Understand which View is being worked on
     // IF the view under inflation and population is header or Item
     private static final int TYPE_ITEM = 1;
-
+    private static ClickListener mClickListener;
     private String mNavTitles[]; // String Array to store the passed titles Value from MainActivity.java
     private int mIcons[];       // Int Array to store the passed icons resource value from MainActivity.java
-
     private String name;        //String Resource for header View Name
     private int profile;        //int Resource for header view profile picture
     private String email;       //String Resource for header view email
     private Context mContext;
-    private static  ClickListener mClickListener;
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
     // ViewHolder are used to to store the inflated views in order to recycle them
@@ -129,7 +127,15 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         return position == 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public void onClickListener(ClickListener clickListener) {
+        mClickListener = clickListener;
+    }
+
+    public interface ClickListener {
+        void onClick(View child, int position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         int Holderid;
 
         TextView textView;
@@ -155,20 +161,10 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         }
 
         @Override
-        public void onClick(View v)
-        {
-            if(mClickListener != null)
-            {
+        public void onClick(View v) {
+            if (mClickListener != null) {
                 mClickListener.onClick(v, this.getLayoutPosition());
             }
         }
-    }
-
-    public void onClickListener(ClickListener clickListener) {
-        mClickListener = clickListener;
-    }
-
-    public interface ClickListener {
-        void onClick(View child, int position);
     }
 }

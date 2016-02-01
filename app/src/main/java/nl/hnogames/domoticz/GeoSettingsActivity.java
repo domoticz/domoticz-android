@@ -659,11 +659,11 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private void startGeofenceService() {
         if (mSharedPrefs.isGeofenceEnabled()) {
-                mSharedPrefs.enableGeoFenceService();
-                if (domoticz.isDebugEnabled())
-                    Snackbar.make(coordinatorLayout,
-                            R.string.starting_geofence_service, Snackbar.LENGTH_LONG).show();
-                isGeofenceServiceStarted = true;
+            mSharedPrefs.enableGeoFenceService();
+            if (domoticz.isDebugEnabled())
+                Snackbar.make(coordinatorLayout,
+                        R.string.starting_geofence_service, Snackbar.LENGTH_LONG).show();
+            isGeofenceServiceStarted = true;
         }
     }
 

@@ -161,7 +161,7 @@ public class ServerUtil {
         String activeServer = gson.toJson(mActiveServer);
         String serversSettings = gson.toJson(mServerList);
 
-        if(editor == null)
+        if (editor == null)
             editor = prefs.edit();
 
         editor.putString(SERVER_PREFS_ACTIVE, activeServer).apply();
