@@ -34,7 +34,6 @@
     <string name="action_failed">Action failed</string>
     <string name="action_unknown">Action result unknown</string>
 
-    <string name="choose_server">Choose Server</string>
     <string name="choose_status">Choose state</string>
     <string name="normal">Normal</string>
     <string name="economy">Economy</string>
@@ -87,4 +86,5 @@
     <string name="domoticz_logo">Domoticz logo</string>
     <string name="this_take_minutes">This could take several minutes.</string>
     <string name="continue_question">Continue?</string>
+    <string name="cant_remove_default_server">Can\'t remove the default server</string>
 </resources>

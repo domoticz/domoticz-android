@@ -44,14 +44,13 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 
 public class ServerListSettingsActivity extends AppCompatActivity {
 
-    private final int REQUEST_ADD_SERVER = 54;
+    @SuppressWarnings("unused")
     private String TAG = ServerListSettingsActivity.class.getSimpleName();
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int REQUEST_ADD_SERVER = 54;
     private ServerUtil mServerUtil;
-    private Domoticz domoticz;
-
-    private ArrayList<ServerInfo> mServerList;
     private CoordinatorLayout coordinatorLayout;
-
     private ServerAdapter adapter;
 
     @Override
@@ -63,7 +62,6 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.server_settings);
 
-        domoticz = new Domoticz(this);
         mServerUtil = new ServerUtil(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -71,14 +69,14 @@ public class ServerListSettingsActivity extends AppCompatActivity {
     }
 
     private void createListView() {
-        mServerList = mServerUtil.getServerList();
+        ArrayList<ServerInfo> mServerList = mServerUtil.getServerList();
         adapter = new ServerAdapter(this, mServerList, new ServerClickListener() {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    showSimpleSnackbar("Can't disable the default server settings.");
+                    showSimpleSnackbar(getString(R.string.cant_disable_default_server));
                     server.setEnabled(!checked);
-                    createListView();//reset values
+                    createListView();                           //reset values
                 } else {
                     server.setEnabled(checked);
                     mServerUtil.updateServerInfo(server);
@@ -89,7 +87,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             @Override
             public void onRemoveClick(ServerInfo server) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    showSimpleSnackbar("Can't remove the default server settings.");
+                    showSimpleSnackbar(getString(R.string.cant_remove_default_server));
                 } else
                     showRemoveUndoSnackbar(server);
             }
@@ -162,6 +160,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
     public void showAddServerActivity() {
         //TODO: Add Server Activity
         Intent i = new Intent(ServerListSettingsActivity.this, ServerSettingsActivity.class);
+        //noinspection SpellCheckingInspection
         i.putExtra("ADDSERVER", true);
         startActivityForResult(i, REQUEST_ADD_SERVER);
     }
