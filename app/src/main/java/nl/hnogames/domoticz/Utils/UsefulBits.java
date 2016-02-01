@@ -143,9 +143,9 @@ public class UsefulBits {
 
         Calendar now = Calendar.getInstance();
         final String timeFormatString = "h:mm aa";
-        if(now.get(Calendar.DATE) == smsTime.get(Calendar.DATE) ){
+        if (now.get(Calendar.DATE) == smsTime.get(Calendar.DATE)) {
             return DateFormat.format(timeFormatString, smsTime) + "";
-        }else
+        } else
             return DateFormat.format("dd/MM HH:mm aa", smsTime).toString();
     }
 }

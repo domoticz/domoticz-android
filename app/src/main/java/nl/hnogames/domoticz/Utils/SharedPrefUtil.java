@@ -696,6 +696,7 @@ public class SharedPrefUtil {
     /**
      * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
      * transition occurs.
+     *
      * @return Intent which will be called
      */
     public PendingIntent getGeofenceTransitionPendingIntent() {

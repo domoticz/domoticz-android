@@ -382,6 +382,10 @@ public class DevicesInfo implements Comparable {
         return LastUpdate;
     }
 
+    public void setLastUpdate(String lastUpdate) {
+        LastUpdate = lastUpdate;
+    }
+
     public Date getLastUpdateDateTime() {
         //2016-01-30 12:48:37
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -391,10 +395,6 @@ public class DevicesInfo implements Comparable {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void setLastUpdate(String lastUpdate) {
-        LastUpdate = lastUpdate;
     }
 
     public JSONObject getJsonObject() {

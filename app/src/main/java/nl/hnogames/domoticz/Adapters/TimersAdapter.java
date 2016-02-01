@@ -104,7 +104,7 @@ public class TimersAdapter extends BaseAdapter {
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunset);
                 else if (mSwitchTimerInfo.getType() == 5)
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_fixed);
-                else  if (mSwitchTimerInfo.getType() == 6)
+                else if (mSwitchTimerInfo.getType() == 6)
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_day_numbers);
                 else if (mSwitchTimerInfo.getType() == 7)
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.even_day_numbers);

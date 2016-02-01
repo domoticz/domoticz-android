@@ -28,7 +28,7 @@
   <string name="action_success">Sikeres művelet</string>
   <string name="action_failed">Sikertelen művelet</string>
   <string name="action_unknown">A művelet eredménye nem ismert</string>
-  <string name="choose_server">Choose Server</string>
+  <string name="choose_server">Válassz szervert</string>
   <string name="choose_status">Állapot kiválasztása</string>
   <string name="normal">Normál</string>
   <string name="economy">Gazdaságos</string>
@@ -49,9 +49,9 @@
   <string name="no_network_available">Hiba: Nincs elérhető hálózati kapcsolat</string>
   <string name="oops">HOPPÁ!</string>
   <string name="to">"eddig"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Újra</string>
+  <string name="undo">Visszavonás</string>
+  <string name="something_deleted">%1$s törölve</string>
   <string name="switch_on">Kapcsoló bekapcsolása</string>
   <string name="switch_off">Kapcsoló kikapcsolása</string>
   <string name="blind_up">Redőny felhúzása</string>
@@ -68,8 +68,8 @@
   <string name="row_icon_description">sor ikon</string>
   <string name="error_image_description">Hiba kép</string>
   <string name="white">Fehér</string>
-  <string name="refresh">Refresh</string>
-  <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
+  <string name="refresh">Frissités</string>
+  <string name="domoticz_logo">Domoticz logó</string>
+  <string name="this_take_minutes">Ez több percig is eltarthat.</string>
+  <string name="continue_question">Folytatja?</string>
 </resources>

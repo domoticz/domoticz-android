@@ -59,7 +59,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         switchesClickListener {
 
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
-    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
     public static final String AUTO = "Auto";
     private static final String TAG = Dashboard.class.getSimpleName();
     private Context mContext;
@@ -388,7 +387,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (clickedSwitch == null) {
             for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 if (mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                    if (mExtendedStatusInfo.getIdx() == (idx - adapter.ID_SCENE_SWITCH)) {
+                    if (mExtendedStatusInfo.getIdx() == (idx - DevicesAdapter.ID_SCENE_SWITCH)) {
                         clickedSwitch = mExtendedStatusInfo;
                     }
                 }
@@ -492,7 +491,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private void setColor(int selectedColor, final int idx, final String password) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        if (hsv.length <= 0)
+        if (hsv == null || hsv.length <= 0)
             return;
 
         Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
@@ -596,7 +595,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             });
             tempDialog.show();
         }
-        ;
     }
 
     @Override
@@ -700,7 +698,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     }
                 })
                 .show();
-        ;
     }
 
     @Override

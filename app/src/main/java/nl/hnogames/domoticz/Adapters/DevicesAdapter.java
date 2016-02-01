@@ -968,7 +968,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.switch_status != null)
             holder.switch_status.setText(text);
 

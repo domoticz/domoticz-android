@@ -28,7 +28,7 @@
   <string name="action_success">Action succes</string>
   <string name="action_failed">Action échec</string>
   <string name="action_unknown">Action resultat inconnu</string>
-  <string name="choose_server">Choose Server</string>
+  <string name="choose_server">Choisir le Serveur</string>
   <string name="choose_status">Choisissez l\'État</string>
   <string name="normal">Normal</string>
   <string name="economy">Économie</string>

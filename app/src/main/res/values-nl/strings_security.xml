@@ -8,4 +8,5 @@
   <string name="security_arm_away">Volledig inschakelen</string>
   <string name="security_wrong_code">Verkeerde pincode ingevoerd!</string>
   <string name="security_generic_error">Kan de beveiligings-status niet aanpassen</string>
+  <string name="show_password">Toon wachtwoord</string>
 </resources>

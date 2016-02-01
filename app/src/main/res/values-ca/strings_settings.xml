@@ -34,7 +34,7 @@
   <string name="export_settings">Exporta la configuració</string>
   <string name="import_settings">Importa configuració</string>
   <string name="multi_server_settings">Enable multiple server support</string>
-  <string name="server">Server</string>
+  <string name="server">Servidor</string>
   <string name="notification_settings_id">ID de Google Cloud Messaging</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>
   <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
@@ -60,12 +60,12 @@
   <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>
   <string name="update_server_warning">While your server is updating this app will not function properly.</string>
   <string name="update_server_downloadNotReady1">The update isn\'t (completely) downloaded yet.</string>
-  <string name="update_server_downloadNotReady2">Please try again later.</string>
+  <string name="update_server_downloadNotReady2">Torneu-ho a provar més tard.</string>
   <string name="server_update_available">Server update available</string>
   <string name="update_server">Update server</string>
   <string name="server_update_revision">Server update revision</string>
-  <string name="server_version">Server version</string>
-  <string name="server_update">Server update</string>
+  <string name="server_version">Versió del servidor</string>
+  <string name="server_update">Actualització del servidor</string>
   <string name="please_wait_while_we_check">Please wait while we check if your server is ready to update</string>
   <string name="server_update_not_ready">Server update not downloaded</string>
   <string name="please_wait_while_server_updated">Please wait while the server is being updated.</string>
@@ -73,5 +73,5 @@
   <string name="update_not_started">Update not started</string>
   <string name="update_not_started_unknown_error">Update not started due to an unknown error</string>
   <string name="server_update_not_available">Server update not available</string>
-  <string name="click_to_update_server">Click here to update your server</string>
+  <string name="click_to_update_server">Feu clic aquí per actualitzar el vostre servidor</string>
 </resources>
