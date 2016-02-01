@@ -644,13 +644,15 @@ public class MainActivity extends AppCompatActivity {
         new MaterialDialog.Builder(this)
                 .title(R.string.choose_server)
                 .items(serverNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         ServerInfo setNew = null;
                         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
                             if (s.getServerName().equals(text)) {
-                                showSimpleSnackbar("Switching server to " + s.getServerName());
+                                String message = String.format(
+                                        getString(R.string.switch_to_server), s.getServerName());
+                                showSimpleSnackbar(message);
                                 setNew = s;
                             }
                         }
@@ -659,6 +661,7 @@ public class MainActivity extends AppCompatActivity {
                             buildScreen();
                             invalidateOptionsMenu();
                         }
+                        return false;
                     }
                 })
                 .show();

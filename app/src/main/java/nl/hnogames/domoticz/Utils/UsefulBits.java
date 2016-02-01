@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 
 import java.security.MessageDigest;
@@ -137,15 +138,7 @@ public class UsefulBits {
         clipboard.setPrimaryClip(clip);
     }
 
-    public static String getFormattedDate(long lTimeInMillis) {
-        Calendar smsTime = Calendar.getInstance();
-        smsTime.setTimeInMillis(lTimeInMillis);
-
-        Calendar now = Calendar.getInstance();
-        final String timeFormatString = "h:mm aa";
-        if (now.get(Calendar.DATE) == smsTime.get(Calendar.DATE)) {
-            return DateFormat.format(timeFormatString, smsTime) + "";
-        } else
-            return DateFormat.format("dd/MM HH:mm aa", smsTime).toString();
+    public static String getFormattedDate(Context mContext, long timeInMillis) {
+        return DateUtils.getRelativeTimeSpanString(mContext, timeInMillis, false).toString();
     }
 }

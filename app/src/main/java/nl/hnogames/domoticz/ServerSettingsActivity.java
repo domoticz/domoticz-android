@@ -49,9 +49,8 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras != null) {
+            if (extras != null) //noinspection SpellCheckingInspection
                 addNew = extras.getBoolean("ADDSERVER");
-            }
         }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,7 +91,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
     public void ServerAdded(Boolean added) {
         if (!added) {
-            Toast.makeText(this, "Server name must be unique", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.server_must_be_unique, Toast.LENGTH_SHORT).show();
         } else {
             setResult(RESULT_OK);
             super.finish();
@@ -104,15 +103,15 @@ public class ServerSettingsActivity extends AppCompatActivity {
         if (addNew) {
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("Don't save new Server")
-                    .setMessage("Are you sure you want to go back?")
-                    .setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    .setTitle(getString(R.string.dont_save_new_server))
+                    .setMessage(R.string.are_you_sure)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ServerCancel();
                         }
                     })
-                    .setNegativeButton(this.getString(R.string.cancel), null)
+                    .setNegativeButton(R.string.cancel, null)
                     .show();
         } else
             super.onBackPressed();

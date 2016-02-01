@@ -402,23 +402,30 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
                                    ViewHolder holder) {
+
+        String text;
+
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
-        if (holder.signal_level != null)
-            holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
-        if (holder.switch_battery_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " + String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
+        }
 
         if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
-            String usage = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
-            holder.switch_battery_level.setText(usage);
+            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+            holder.switch_battery_level.setText(text);
         }
         if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
             holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
@@ -458,12 +465,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getData());
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
         holder.onOffSwitch.setId(mDevicesInfo.getIdx());
@@ -523,12 +531,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getData());
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
         holder.buttonOn.setId(mDevicesInfo.getIdx());
@@ -588,12 +597,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getData());
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
         holder.buttonOn.setId(mDevicesInfo.getIdx());
@@ -651,12 +661,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.switch_status.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getData());
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
         holder.buttonUp.setId(mDevicesInfo.getIdx());
@@ -727,12 +738,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                        mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getStatus());
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
@@ -864,12 +876,13 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getStatus());
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         int loadLevel = mDevicesInfo.getLevel() / 10;
@@ -969,12 +982,14 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     private void setModalSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder, final int stateArrayRes, final int stateNamesArrayRes, final int[] stateIds) {
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
+        text = context.getString(R.string.status) + ": "
+                + getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         holder.buttonSetState.setId(mDevicesInfo.getIdx());
