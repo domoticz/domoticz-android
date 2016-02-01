@@ -269,25 +269,11 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
-        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
-        mRecyclerView.setAdapter(mAdapter);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
-
-        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
+        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);
+        mAdapter.onClickListener(new NavigationAdapter.ClickListener() {
             @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-        });
-
-        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-
-                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+            public void onClick(View child, int position) {
+                if (child != null) {
                     try {
                         searchViewAction.setQuery("", false);
                         searchViewAction.clearFocus();
@@ -297,12 +283,11 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                        //tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
                         tx.replace(R.id.main,
                                 Fragment.instantiate(MainActivity.this,
-                                        fragments[recyclerView.getChildPosition(child) - 1]));
+                                        fragments[position - 1]));
                         tx.commitAllowingStateLoss();
-                        addFragmentStack(fragments[recyclerView.getChildPosition(child) - 1]);
+                        addFragmentStack(fragments[position - 1]);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -310,21 +295,13 @@ public class MainActivity extends AppCompatActivity {
                     invalidateOptionsMenu();
                     if (onPhone)
                         mDrawer.closeDrawer(GravityCompat.START);
-
-                    return true;
                 }
-
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
             }
         });
+
+        mRecyclerView.setAdapter(mAdapter);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         setupDrawer();
     }

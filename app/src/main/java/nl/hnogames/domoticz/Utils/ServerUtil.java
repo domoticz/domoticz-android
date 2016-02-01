@@ -46,7 +46,6 @@ public class ServerUtil {
     private ServerInfo mActiveServer;
     private ArrayList<ServerInfo> mServerList;
 
-    private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
@@ -54,10 +53,8 @@ public class ServerUtil {
 
 
     public ServerUtil(Context mContext) {
-        this.mContext = mContext;
         gson = new Gson();
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        editor = prefs.edit();
         loadDomoticzServers();
 
         if (mServerList == null || mServerList.size() <= 0) {
@@ -118,7 +115,7 @@ public class ServerUtil {
                 mActiveServer = mServerList.get(0);//set default
                 String activeServerSettings = prefs.getString(SERVER_PREFS_ACTIVE, "");
                 if (!UsefulBits.isEmpty(activeServerSettings)) {
-                    JSONObject jsonServer = null;
+                    JSONObject jsonServer;
                     try {
                         jsonServer = new JSONObject(activeServerSettings);
                         ServerInfo oPrefServer = new ServerInfo();
@@ -163,6 +160,9 @@ public class ServerUtil {
 
         String activeServer = gson.toJson(mActiveServer);
         String serversSettings = gson.toJson(mServerList);
+
+        if(editor == null)
+            editor = prefs.edit();
 
         editor.putString(SERVER_PREFS_ACTIVE, activeServer).apply();
         editor.putString(SERVER_PREFS, serversSettings).apply();
