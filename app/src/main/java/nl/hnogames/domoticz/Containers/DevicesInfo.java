@@ -33,8 +33,11 @@ import java.util.regex.Pattern;
 
 public class DevicesInfo implements Comparable {
 
-    private final String UNKNOWN = "Unknown";
+    @SuppressWarnings("unused")
     private final String TAG = DevicesInfo.class.getSimpleName();
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String UNKNOWN = "Unknown";
     private JSONObject jsonObject;
     private boolean timers;
     private int idx;
@@ -424,10 +427,6 @@ public class DevicesInfo implements Comparable {
 
     public int getSignalLevel() {
         return signalLevel;
-    }
-
-    public void setSignalLevel(int signalLevel) {
-        this.signalLevel = signalLevel;
     }
 
     public int getSwitchTypeVal() {

@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -228,7 +229,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
-        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
+        holder.extraPanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.buttonOn = (Button) row.findViewById(R.id.on_button);
         holder.buttonOff = (Button) row.findViewById(R.id.off_button);
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
@@ -255,7 +256,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
-        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
+        holder.extraPanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.onOffSwitch = (Switch) row.findViewById(R.id.switch_button);
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
@@ -389,10 +390,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_battery_level = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.signal_level = (TextView) convertView.findViewById(R.id.temperature_data2);
         holder.buttonSet = (Button) convertView.findViewById(R.id.set_button);
-        holder.extrapanel = (LinearLayout) convertView.findViewById(R.id.extra_panel_button);
+        holder.extraPanel = (LinearLayout) convertView.findViewById(R.id.extra_panel_button);
 
-        if (holder.extrapanel != null)
-            holder.extrapanel.setVisibility(View.GONE);
+        if (holder.extraPanel != null)
+            holder.extraPanel.setVisibility(View.GONE);
 
         return convertView;
     }
@@ -465,12 +466,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.buttonSetStatus = (Button) row.findViewById(R.id.set_status_button);
 
-        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
+        holder.extraPanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
-        if (holder.extrapanel != null)
-            holder.extrapanel.setVisibility(View.GONE);
+        if (holder.extraPanel != null)
+            holder.extraPanel.setVisibility(View.GONE);
         if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
         if (holder.buttonTimer != null)
@@ -588,7 +589,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
@@ -598,8 +599,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
-            holder.switch_battery_level.setText(context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage());
+        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
+            String usageText = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+            holder.switch_battery_level.setText(usageText);
+        }
         if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
             holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
         if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
@@ -626,7 +629,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
@@ -643,7 +646,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -674,7 +677,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -736,7 +739,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -811,10 +814,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
         if (holder.switch_battery_level != null)
-            holder.switch_battery_level.setText(UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime()));
+            holder.switch_battery_level.setText(UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime()));
 
-        if (holder.signal_level != null)
-            holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        if (holder.signal_level != null) {
+            String setPointText = context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
+            holder.signal_level.setText(setPointText);
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
@@ -831,17 +836,23 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             if (holder.signal_level != null)
                 holder.signal_level.setVisibility(View.GONE);
 
-            if (holder.switch_battery_level != null)
-                holder.switch_battery_level.setText(context.getString(R.string.temperature) + ": " + mDeviceInfo.getData());
+            if (holder.switch_battery_level != null) {
+                String batteryText = context.getString(R.string.temperature) + ": " + mDeviceInfo.getData();
+                holder.switch_battery_level.setText(batteryText);
+            }
         } else {
             if (holder.signal_level != null)
                 holder.signal_level.setVisibility(View.VISIBLE);
 
-            if (holder.switch_battery_level != null)
-                holder.switch_battery_level.setText(context.getString(R.string.temperature) + ": " + String.valueOf(temperature) + " C");
+            if (holder.switch_battery_level != null) {
+                String batteryLevelText = context.getString(R.string.temperature) + ": " + String.valueOf(temperature) + " C";
+                holder.switch_battery_level.setText(batteryLevelText);
+            }
 
-            if (holder.signal_level != null)
-                holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(mDeviceInfo.getSetPoint() + " C"));
+            if (holder.signal_level != null) {
+                String signalText = context.getString(R.string.set_point) + ": " + String.valueOf(mDeviceInfo.getSetPoint() + " C");
+                holder.signal_level.setText(signalText);
+            }
         }
 
         if (holder.isProtected)
@@ -888,7 +899,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -916,10 +927,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button_off));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
         }
 
         holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -931,7 +942,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                         handleOnButtonClick(v.getId(), true);
                     else
                         handleOnButtonClick(v.getId(), false);
-                } catch (Exception ex) {
+                } catch (Exception ignore) {
                 }
             }
         });
@@ -957,7 +968,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update) + ": " +UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.switch_status != null)
             holder.switch_status.setText(text);
 
@@ -1031,7 +1042,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -1128,7 +1139,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -1251,7 +1262,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
@@ -1360,7 +1371,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         Boolean isProtected;
         ImageView iconRow, iconMode;
         SeekBar dimmer;
-        LinearLayout extrapanel;
+        LinearLayout extraPanel;
     }
 
     private class ItemFilter extends Filter {
@@ -1374,17 +1385,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             final ArrayList<DevicesInfo> list = data;
 
             int count = list.size();
-            final ArrayList<DevicesInfo> nlist = new ArrayList<DevicesInfo>(count);
+            final ArrayList<DevicesInfo> devicesInfos = new ArrayList<>(count);
 
             DevicesInfo filterableObject;
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    devicesInfos.add(filterableObject);
                 }
             }
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = devicesInfos;
+            results.count = devicesInfos.size();
 
             return results;
         }

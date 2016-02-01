@@ -38,7 +38,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import nl.hnogames.domoticz.MainActivity;
-import nl.hnogames.domoticz.R;
 
 public class UsefulBits {
 
@@ -138,9 +137,9 @@ public class UsefulBits {
         clipboard.setPrimaryClip(clip);
     }
 
-    public static String getFormattedDate(Context context, long lTimeInMilis) {
+    public static String getFormattedDate(long lTimeInMillis) {
         Calendar smsTime = Calendar.getInstance();
-        smsTime.setTimeInMillis(lTimeInMilis);
+        smsTime.setTimeInMillis(lTimeInMillis);
 
         Calendar now = Calendar.getInstance();
         final String timeFormatString = "h:mm aa";
