@@ -49,9 +49,9 @@
   <string name="no_network_available">Fehler: Keine Netzwerkverbindung verfügbar</string>
   <string name="oops">HOPPLA!</string>
   <string name="to">"an"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Erneut versuchen</string>
+  <string name="undo">Rückgängig</string>
+  <string name="something_deleted">%1$s gelöscht</string>
   <string name="switch_on">Schalte ein</string>
   <string name="switch_off">Schalte aus</string>
   <string name="blind_up">Ziehe Vorhang hoch</string>
@@ -68,8 +68,8 @@
   <string name="row_icon_description">Zeile-Symbol</string>
   <string name="error_image_description">Fehlerbild</string>
   <string name="white">Weiß</string>
-  <string name="refresh">Refresh</string>
-  <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
+  <string name="refresh">Neu laden</string>
+  <string name="domoticz_logo">Domoticz-Logo</string>
+  <string name="this_take_minutes">Dies kann einige Minuten dauern.</string>
+  <string name="continue_question">Fortfahren?</string>
 </resources>

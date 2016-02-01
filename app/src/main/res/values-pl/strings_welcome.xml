@@ -27,9 +27,9 @@ Zdalne ustawienia są użyte kiedy nie jesteś podłączony do domowej sieci wif
   <string name="welcome_remote_server_username">Nazwa użytkownika</string>
   <string name="welcome_remote_server_password">Hasło</string>
   <string name="welcome_remote_server_directory">Katalog</string>
-  <string name="remote">Remote</string>
-  <string name="local">Local</string>
-  <string name="servername">Server Name</string>
+  <string name="remote">Zdalny</string>
+  <string name="local">Lokalny</string>
+  <string name="servername">Nazwa serwera</string>
   <string name="welcome_local_server_used_switch_title">Inny adres serwera</string>
   <string name="welcome_local_server_used_switch_summary">Użyj innego adresu dla lokalnego połączenia</string>
   <string name="welcome_advancedSettings">Zaawansowane ustawienia serwera</string>

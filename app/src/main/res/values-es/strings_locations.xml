@@ -9,6 +9,7 @@
   <string name="connectedSwitch">Interruptor conectado</string>
   <string name="unable_to_get_switches">Incapaz de conseguir todos los interruptores, por favor, inténtelo de nuevo</string>
   <string name="delete_short">SUPR</string>
+  <string name="delete">Delete</string>
   <string name="Location_name">Nombre de ubicación</string>
   <string name="currentLocation">Ubicación actual</string>
   <string name="manual">Manual</string>
@@ -32,4 +33,8 @@
   <string name="geofence_location_entering_text">Entrando en una de las ubicaciones</string>
   <string name="geofence_location_leaving_text">Saliendo de una de las ubicaciones</string>
   <string name="geofence_error_recreateLocations">Debido a los cambios en el Geofencing, por favor, recree las ubicaciones</string>
+  <string name="noSwitchSelected_title">No switch selected</string>
+  <string name="noSwitchSelected_explanation">For GeoFencing to have effect, a switch should be connected to an GeoFence</string>
+  <string name="noSwitchSelected_connectOneNow">Connect one now?</string>
+  <string name="geofencing_disabled_no_enabled_fences">Geofencing disabled since no geofences are enabled</string>
 </resources>

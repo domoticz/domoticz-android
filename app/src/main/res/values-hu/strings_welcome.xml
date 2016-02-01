@@ -28,9 +28,9 @@
   <string name="welcome_remote_server_username">felhasználónév</string>
   <string name="welcome_remote_server_password">Jelszó</string>
   <string name="welcome_remote_server_directory">Mappa</string>
-  <string name="remote">Remote</string>
-  <string name="local">Local</string>
-  <string name="servername">Server Name</string>
+  <string name="remote">Távoli</string>
+  <string name="local">Helyi</string>
+  <string name="servername">Szerver név</string>
   <string name="welcome_local_server_used_switch_title">Eltérő kiszolgáló cím</string>
   <string name="welcome_local_server_used_switch_summary">Eltérő cím a helyi kapcsolat használatához</string>
   <string name="welcome_advancedSettings">Szerver haladó beállítások</string>
