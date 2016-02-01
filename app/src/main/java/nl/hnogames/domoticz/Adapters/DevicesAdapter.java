@@ -584,24 +584,33 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
                                    ViewHolder holder) {
+
+        String text;
+
         holder.isProtected = mDeviceInfo.isProtected();
-        if (holder.switch_name != null)
+        if (holder.switch_name != null) {
             holder.switch_name.setText(mDeviceInfo.getName());
+        }
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
 
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status)
+                    + ": "
+                    + String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
+        }
 
         if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
-            String usageText = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
-            holder.switch_battery_level.setText(usageText);
+            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+            holder.switch_battery_level.setText(text);
         }
         if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
             holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
@@ -629,7 +638,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
@@ -672,19 +681,25 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setOnOffButtonRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
+        String text;
 
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                        mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -734,14 +749,18 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setOnOffSwitchRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
+        String text;
 
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDeviceInfo.getData());
@@ -813,15 +832,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonOn.setId(mDeviceInfo.getIdx());
 
         holder.switch_name.setText(mDeviceInfo.getName());
+
         if (holder.switch_battery_level != null)
-            holder.switch_battery_level.setText(UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime()));
+            holder.switch_battery_level.setText(UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime()));
 
         if (holder.signal_level != null) {
-            String setPointText = context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
+            String setPointText =
+                    context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
             holder.signal_level.setText(setPointText);
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(
+                mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                false,
+                false,
+                null)).into(holder.iconRow);
     }
 
     private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
@@ -837,7 +865,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 holder.signal_level.setVisibility(View.GONE);
 
             if (holder.switch_battery_level != null) {
-                String batteryText = context.getString(R.string.temperature) + ": " + mDeviceInfo.getData();
+                String batteryText = context.getString(R.string.temperature)
+                        + ": "
+                        + mDeviceInfo.getData();
                 holder.switch_battery_level.setText(batteryText);
             }
         } else {
@@ -845,12 +875,18 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 holder.signal_level.setVisibility(View.VISIBLE);
 
             if (holder.switch_battery_level != null) {
-                String batteryLevelText = context.getString(R.string.temperature) + ": " + String.valueOf(temperature) + " C";
+                String batteryLevelText = context.getString(R.string.temperature)
+                        + ": "
+                        + String.valueOf(temperature)
+                        + " C";
                 holder.switch_battery_level.setText(batteryLevelText);
             }
 
             if (holder.signal_level != null) {
-                String signalText = context.getString(R.string.set_point) + ": " + String.valueOf(mDeviceInfo.getSetPoint() + " C");
+                String signalText = context.getString(R.string.set_point)
+                        + ": "
+                        + String.valueOf(mDeviceInfo.getSetPoint()
+                        + " C");
                 holder.signal_level.setText(signalText);
             }
         }
@@ -899,7 +935,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -964,18 +1002,28 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setBlindsRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder) {
+
+        String text;
+
         holder.isProtected = mDeviceInfo.isProtected();
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
-        if (holder.switch_status != null)
+        if (holder.switch_status != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(
+                    context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.switch_status.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
-        if (holder.switch_battery_level != null)
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
+        }
 
         holder.buttonUp.setId(mDeviceInfo.getIdx());
         holder.buttonUp.setOnClickListener(new View.OnClickListener() {
@@ -1038,18 +1086,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setSelectorRowData(final DevicesInfo mDevicesInfo,
                                     final ViewHolder holder) {
+        String text;
+
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                        mDevicesInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getStatus());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDevicesInfo.getStatus());
             holder.switch_battery_level.setText(text);
+        }
 
         int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
@@ -1133,20 +1187,26 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private void setDimmerRowData(final DevicesInfo mDeviceInfo,
                                   final ViewHolder holder,
                                   final boolean isRGB) {
+        String text;
 
         holder.isProtected = mDeviceInfo.isProtected();
 
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " + UsefulBits.getFormattedDate(mDeviceInfo.getLastUpdateDateTime().getTime());
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                        mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getStatus());
             holder.switch_battery_level.setText(text);
+        }
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         String percentage = calculateDimPercentage(
@@ -1164,6 +1224,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
+
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
@@ -1262,7 +1323,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(context,
+                        mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
