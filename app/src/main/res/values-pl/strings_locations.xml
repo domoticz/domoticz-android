@@ -9,7 +9,7 @@
   <string name="connectedSwitch">Przełącznik podłączony</string>
   <string name="unable_to_get_switches">Nie można pobrać wszystkich przełączników, proszę spróbować ponownie</string>
   <string name="delete_short">USUŃ</string>
-  <string name="delete">Delete</string>
+  <string name="delete">Usuń</string>
   <string name="Location_name">Nazwa lokalizacji</string>
   <string name="currentLocation">Obecna lokalizacja</string>
   <string name="manual">Ręcznie</string>
@@ -33,8 +33,8 @@
   <string name="geofence_location_entering_text">Wprowadzenie jednej z lokalizacji</string>
   <string name="geofence_location_leaving_text">Pozostawienie jednej z lokalizacji</string>
   <string name="geofence_error_recreateLocations">W związku ze zmianami na Geofencing należy odtworzyć lokalizację</string>
-  <string name="noSwitchSelected_title">No switch selected</string>
-  <string name="noSwitchSelected_explanation">For GeoFencing to have effect, a switch should be connected to an GeoFence</string>
-  <string name="noSwitchSelected_connectOneNow">Connect one now?</string>
-  <string name="geofencing_disabled_no_enabled_fences">Geofencing disabled since no geofences are enabled</string>
+  <string name="noSwitchSelected_title">Brak wybranego przełącznika</string>
+  <string name="noSwitchSelected_explanation">Aby GeoFencing zadziałało, musi być podłączony jakiś przełącznik</string>
+  <string name="noSwitchSelected_connectOneNow">Podłącz jeden teraz?</string>
+  <string name="geofencing_disabled_no_enabled_fences">Geofencing wyłączony ponieważ nie ma żadnych ograniczeń terenowych</string>
 </resources>

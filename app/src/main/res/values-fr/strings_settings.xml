@@ -39,12 +39,17 @@
   <string name="notification_settings_push">Envoyer votre id d\'enregistrement à Domoticz</string>
   <string name="notification_settings_pushed">Votre id d\'enregistrement est enregistré dans Domoticz</string>
   <string name="notification_settings_push_failed">Impossible d\'enregistrer votre id d\'enregistrement dans Domoticz, veuillez réessayer plus tard.</string>
+  <string name="enable_notifications_title">Enable Notifications</string>
+  <string name="enable_notifications">Enable notifications on this device</string>
   <string name="notification_screen_title">Parramètre de notification</string>
   <string name="notification_vibrate_title">Vibrer</string>
   <string name="notification_vibrate_on">Vibrer lorsqu\'une notification est reçue</string>
   <string name="notification_vibrate_off">Ne pas vibrer</string>
   <string name="notification_sound_title">Sons</string>
   <string name="notification_sound_summary">Utilisez le son de notification lorsqu\'une notification arrive</string>
+  <string name="suppress_notifications_select">Select Notifications to Suppress</string>
+  <string name="suppress_notifications">Suppress specific Notifications on this device</string>
+  <string name="suppress_notifications_title">Suppress Notifications</string>
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Version de Domoticz</string>
   <string name="info_about">À propos de Domoticz</string>

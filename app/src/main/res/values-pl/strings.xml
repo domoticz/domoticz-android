@@ -28,7 +28,6 @@
   <string name="action_success">Akcja zakończona skucesem</string>
   <string name="action_failed">Akcja nie powiodła się</string>
   <string name="action_unknown">Nieznany rezultat akcji</string>
-  <string name="choose_server">Wybierz serwer</string>
   <string name="choose_status">Wybierz stan</string>
   <string name="normal">Normalny</string>
   <string name="economy">Tryb ekonomiczny</string>
@@ -72,4 +71,5 @@
   <string name="domoticz_logo">Domoticz logo</string>
   <string name="this_take_minutes">Może to potrwać kilka minut.</string>
   <string name="continue_question">Kontynuować?</string>
+  <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
 </resources>

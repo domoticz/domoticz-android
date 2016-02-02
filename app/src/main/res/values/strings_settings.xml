@@ -64,6 +64,9 @@
     <string name="notification_vibrate_off">Do not vibrate</string>
     <string name="notification_sound_title">Sound</string>
     <string name="notification_sound_summary">Use notification sound when notification arrives</string>
+    <string name="suppress_notifications_select">Select Notifications to Suppress</string>
+    <string name="suppress_notifications">Suppress specific Notifications on this device</string>
+    <string name="suppress_notifications_title">Suppress Notifications</string>
 
     <!--        Information category       -->
     <string name="info_version">Version</string>

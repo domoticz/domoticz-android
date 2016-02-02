@@ -97,16 +97,11 @@ public class Preference extends PreferenceFragment {
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
         android.preference.Preference GeoSettings = findPreference("geo_settings");
         android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
-        final android.preference.SwitchPreference NotificationVibratePreference = (android.preference.SwitchPreference) findPreference("notification_vibrate");
-        final android.preference.RingtonePreference NotificationRingtonePreference = (android.preference.RingtonePreference) findPreference("notification_sound");
-        final android.preference.SwitchPreference NotificationPreference = (android.preference.SwitchPreference) findPreference("enableNotifications");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
-
         android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
         android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
-
 
         drawerItems.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
@@ -125,7 +120,6 @@ public class Preference extends PreferenceFragment {
                 return true;
             }
         });
-
 
         MultiServerPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
@@ -196,32 +190,6 @@ public class Preference extends PreferenceFragment {
                 if (BuildConfig.LITE_VERSION) {
                     Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
-                }
-                return true;
-            }
-        });
-
-
-        if (NotificationPreference.isChecked()) {
-            registrationId.setEnabled(true);
-            NotificationVibratePreference.setEnabled(true);
-            NotificationRingtonePreference.setEnabled(true);
-        } else {
-            registrationId.setEnabled(false);
-            NotificationVibratePreference.setEnabled(false);
-            NotificationRingtonePreference.setEnabled(false);
-        }
-        NotificationPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if ((boolean)newValue) {
-                    registrationId.setEnabled(true);
-                    NotificationVibratePreference.setEnabled(true);
-                    NotificationRingtonePreference.setEnabled(true);
-                } else {
-                    registrationId.setEnabled(false);
-                    NotificationVibratePreference.setEnabled(false);
-                    NotificationRingtonePreference.setEnabled(false);
                 }
                 return true;
             }
