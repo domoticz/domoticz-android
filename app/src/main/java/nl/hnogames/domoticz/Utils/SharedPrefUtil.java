@@ -78,11 +78,11 @@ public class SharedPrefUtil {
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     public static final String PREF_GEOFENCE_STARTED = "geofence_started";
     public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
-    public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     public static final String PREF_DEBUGGING = "debugging";
     public static final int INVALID_IDX = 999999;
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
+    private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -99,8 +99,8 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_MULTI_SERVER, false);
     }
 
-    public void setMultiServerEnabled(boolean enabled) {
-        editor.putBoolean(PREF_MULTI_SERVER, enabled).apply();
+    public boolean isNotificationsEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_NOTIFICATIONS, true);
     }
 
     public void completeCard(String cardTag) {
@@ -405,14 +405,6 @@ public class SharedPrefUtil {
 
     public void setGeofenceEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
-    }
-
-    public boolean isGeofenceNotificationsEnabled() {
-        return prefs.getBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, false);
-    }
-
-    public void setGeofenceNotificationsEnabled(boolean enabled) {
-        editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
     }
 
     public void saveConfig(ConfigInfo config) {

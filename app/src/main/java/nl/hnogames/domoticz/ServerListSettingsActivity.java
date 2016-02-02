@@ -44,11 +44,10 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 
 public class ServerListSettingsActivity extends AppCompatActivity {
 
-    @SuppressWarnings("unused")
-    private String TAG = ServerListSettingsActivity.class.getSimpleName();
-
     @SuppressWarnings("FieldCanBeLocal")
     private final int REQUEST_ADD_SERVER = 54;
+    @SuppressWarnings("unused")
+    private String TAG = ServerListSettingsActivity.class.getSimpleName();
     private ServerUtil mServerUtil;
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;

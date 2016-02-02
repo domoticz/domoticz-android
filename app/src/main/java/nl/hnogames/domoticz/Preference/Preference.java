@@ -91,8 +91,23 @@ public class Preference extends PreferenceFragment {
 
     private void setPreferences() {
 
-        MultiSelectListPreference drawerItems =
-                (MultiSelectListPreference) findPreference("enable_menu_items");
+        final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
+        android.preference.Preference ServerSettings = findPreference("server_settings");
+        android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
+        final android.preference.Preference registrationId = findPreference("notification_registration_id");
+        android.preference.Preference GeoSettings = findPreference("geo_settings");
+        android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
+        final android.preference.SwitchPreference NotificationVibratePreference = (android.preference.SwitchPreference) findPreference("notification_vibrate");
+        final android.preference.RingtonePreference NotificationRingtonePreference = (android.preference.RingtonePreference) findPreference("notification_sound");
+        final android.preference.SwitchPreference NotificationPreference = (android.preference.SwitchPreference) findPreference("enableNotifications");
+        MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
+
+        android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+        android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
+        android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
+        android.preference.Preference premiumPreference = findPreference("premium_settings");
+
+
         drawerItems.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -112,7 +127,6 @@ public class Preference extends PreferenceFragment {
         });
 
 
-        final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         MultiServerPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -124,7 +138,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.Preference ServerSettings = findPreference("server_settings");
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -139,7 +152,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
         displayLanguage.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -148,7 +160,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.Preference registrationId = findPreference("notification_registration_id");
         registrationId.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -165,7 +176,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.Preference GeoSettings = findPreference("geo_settings");
         GeoSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -180,8 +190,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-
-        android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
         WearPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -193,7 +201,32 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+
+        if (NotificationPreference.isChecked()) {
+            registrationId.setEnabled(true);
+            NotificationVibratePreference.setEnabled(true);
+            NotificationRingtonePreference.setEnabled(true);
+        } else {
+            registrationId.setEnabled(false);
+            NotificationVibratePreference.setEnabled(false);
+            NotificationRingtonePreference.setEnabled(false);
+        }
+        NotificationPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if ((boolean)newValue) {
+                    registrationId.setEnabled(true);
+                    NotificationVibratePreference.setEnabled(true);
+                    NotificationRingtonePreference.setEnabled(true);
+                } else {
+                    registrationId.setEnabled(false);
+                    NotificationVibratePreference.setEnabled(false);
+                    NotificationRingtonePreference.setEnabled(false);
+                }
+                return true;
+            }
+        });
+
         AlwaysOnPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -205,9 +238,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
-        android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
-        android.preference.Preference premiumPreference = findPreference("premium_settings");
         //noinspection PointlessBooleanExpression
         if (!BuildConfig.LITE_VERSION) {
             preferenceScreen.removePreference(premiumCategory);

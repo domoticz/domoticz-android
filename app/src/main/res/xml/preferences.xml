@@ -93,6 +93,13 @@
 
     <PreferenceCategory android:title="@string/category_notification">
         <PreferenceScreen android:title="@string/notification_screen_title">
+            <SwitchPreference
+                android:defaultValue="true"
+                android:key="enableNotifications"
+                android:summaryOff="@string/enable_notifications"
+                android:summaryOn="@string/enable_notifications"
+                android:title="@string/enable_notifications_title" />
+
             <Preference
                 android:key="notification_registration_id"
                 android:summary="@string/notification_settings_push"

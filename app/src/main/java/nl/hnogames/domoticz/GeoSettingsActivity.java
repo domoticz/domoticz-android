@@ -143,7 +143,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void initSwitches() {
-        final Switch notSwitch = (Switch) findViewById(R.id.switch_notifications_button);
         Switch geoSwitch = (Switch) findViewById(R.id.switch_button);
 
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
@@ -152,16 +151,6 @@ public class GeoSettingsActivity extends AppCompatActivity
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mSharedPrefs.setGeofenceEnabled(isChecked);
                 invalidateOptionsMenu();
-                notSwitch.setEnabled(isChecked);
-            }
-        });
-
-        notSwitch.setChecked(mSharedPrefs.isGeofenceNotificationsEnabled());
-        if (!mSharedPrefs.isGeofenceEnabled()) notSwitch.setEnabled(false);
-        notSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSharedPrefs.setGeofenceNotificationsEnabled(isChecked);
             }
         });
     }

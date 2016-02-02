@@ -691,7 +691,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(context,
-                        mDeviceInfo.getLastUpdateDateTime().getTime());
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
@@ -1095,7 +1095,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(context,
-                        mDevicesInfo.getLastUpdateDateTime().getTime());
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
@@ -1198,7 +1198,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(context,
-                        mDeviceInfo.getLastUpdateDateTime().getTime());
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 

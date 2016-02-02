@@ -90,13 +90,11 @@ public class GeofenceTransitionsIntentService extends IntentService
                                 mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
                                 + locationFound.getName());
-                        if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
-                            String text = String.format(
-                                    getString(R.string.geofence_location_entering),
-                                    locationFound.getName());
-                            NotificationUtil.sendSimpleNotification(text,
-                                    getString(R.string.geofence_location_entering_text), this);
-                        }
+                        String text = String.format(
+                                getString(R.string.geofence_location_entering),
+                                locationFound.getName());
+                        NotificationUtil.sendSimpleNotification(text,
+                                getString(R.string.geofence_location_entering_text), this);
 
                         if (locationFound.getSwitchidx() > 0) {
                             handleSwitch(locationFound.getSwitchidx(), locationFound.getSwitchPassword(), true);
@@ -109,13 +107,11 @@ public class GeofenceTransitionsIntentService extends IntentService
                         Log.d(TAG, "Triggered leaving a geofence location: "
                                 + locationFound.getName());
 
-                        if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
-                            String text = String.format(
-                                    getString(R.string.geofence_location_leaving),
-                                    locationFound.getName());
-                            NotificationUtil.sendSimpleNotification(text,
-                                    getString(R.string.geofence_location_leaving_text), this);
-                        }
+                        String text = String.format(
+                                getString(R.string.geofence_location_leaving),
+                                locationFound.getName());
+                        NotificationUtil.sendSimpleNotification(text,
+                                getString(R.string.geofence_location_leaving_text), this);
 
                         if (locationFound.getSwitchidx() > 0)
                             handleSwitch(locationFound.getSwitchidx(), locationFound.getSwitchPassword(), false);

@@ -125,7 +125,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             String text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(context,
-                        mSceneInfo.getLastUpdateDateTime().getTime());
+                    mSceneInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
 
@@ -170,7 +170,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             String text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(context,
-                        mSceneInfo.getLastUpdateDateTime().getTime());
+                    mSceneInfo.getLastUpdateDateTime().getTime());
 
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
