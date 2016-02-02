@@ -468,7 +468,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
@@ -534,7 +534,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
@@ -600,7 +600,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
@@ -664,7 +664,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.switch_status.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
@@ -741,7 +741,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                        mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getStatus());
@@ -879,7 +879,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getStatus());
@@ -985,7 +985,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": "
