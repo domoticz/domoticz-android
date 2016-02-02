@@ -420,17 +420,22 @@ public class Preference extends PreferenceFragment {
         final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
 
         String message;
-        if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
+        if (serverUtil.getActiveServer().getServerUpdateInfo() != null &&
+                serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
                 || mSharedPrefs.isDebugEnabled()) {
             // Update is available or debugging is enabled
             String version;
-            if (mSharedPrefs.isDebugEnabled()) version = mContext.getString(R.string.debug_test_text);
-            else version = serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber();
+            if (mSharedPrefs.isDebugEnabled())
+                version = mContext.getString(R.string.debug_test_text);
+            else
+                version = (serverUtil.getActiveServer().getServerUpdateInfo() != null) ? serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber() : "";
 
             message = String.format(getString(R.string.update_available_enhanced),
                     mSharedPrefs.getServerVersion(),
                     version);
-            if (serverUtil.getActiveServer().getServerUpdateInfo().getSystemName().equalsIgnoreCase("linux")) {
+            if (serverUtil.getActiveServer().getServerUpdateInfo() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo().getSystemName() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo().getSystemName().equalsIgnoreCase("linux")) {
                 // Only offer remote/auto update on Linux systems
                 message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
                 domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
@@ -442,7 +447,9 @@ public class Preference extends PreferenceFragment {
                     }
                 });
             }
-        } else message = serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber();
+        } else {
+            message = (serverUtil.getActiveServer().getServerUpdateInfo() != null) ? serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber() : "";
+        }
         domoticzVersion.setSummary(message);
     }
 

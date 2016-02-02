@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Containers.ServerInfo;
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 
 public class ServerUtil {
@@ -52,6 +53,11 @@ public class ServerUtil {
     private Gson gson;
 
 
+    /**
+     * Constructor ServerUtils
+     *
+     * @param mContext Application Context
+     */
     public ServerUtil(Context mContext) {
         gson = new Gson();
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -64,6 +70,9 @@ public class ServerUtil {
         }
     }
 
+    /**
+     * Load settings from sharedprefs
+     */
     private void loadDomoticzServers() {
         String serverSettings = prefs.getString(SERVER_PREFS, "");
         if (!UsefulBits.isEmpty(serverSettings)) {
@@ -97,6 +106,12 @@ public class ServerUtil {
                         oPrefServer.setLocalServerSsid(ssidList);
                     }
                     oPrefServer.setEnabled(jsonServer.getBoolean("ENABLED"));
+
+                    if (jsonServer.has("serverUpdateInfo")) {
+                        JSONObject serverUpdateInfoJson = jsonServer.getJSONObject("serverUpdateInfo");
+                        JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject("jsonObject").getJSONObject("nameValuePairs");
+                        oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                    }
 
                     boolean alreadyContains = false;
                     for (ServerInfo s : mServerList) {
@@ -144,6 +159,12 @@ public class ServerUtil {
                             oPrefServer.setLocalServerSsid(ssidList);
                         }
 
+                        if (jsonServer.has("serverUpdateInfo")) {
+                            JSONObject serverUpdateInfoJson = jsonServer.getJSONObject("serverUpdateInfo");
+                            JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject("jsonObject").getJSONObject("nameValuePairs");
+                            oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                        }
+
                         oPrefServer.setLocalServerAuthentication(jsonServer.getBoolean("LOCAL_SERVER_AUTHENTICATION_METHOD"));
                         mActiveServer = oPrefServer;
                     } catch (JSONException e) {
@@ -157,10 +178,10 @@ public class ServerUtil {
     /**
      * Saves all Domoticz servers to shared preferences
      *
-     * @param writeCurrent true if server should be added to active server list
+     * @param saveActiveServer true if active server should be updated
      */
-    public void saveDomoticzServers(boolean writeCurrent) {
-        if (writeCurrent)
+    public void saveDomoticzServers(boolean saveActiveServer) {
+        if (saveActiveServer)
             putServerInList(mActiveServer);
 
         String activeServer = gson.toJson(mActiveServer);
@@ -173,6 +194,11 @@ public class ServerUtil {
         editor.putString(SERVER_PREFS, serversSettings).apply();
     }
 
+    /**
+     * Add a ServerInfo to the list, or update if Server with name already exists
+     *
+     * @param server ServerInfo object to be saved
+     */
     public void putServerInList(ServerInfo server) {
         if (server != null) {
             if (mServerList == null) {
@@ -196,17 +222,28 @@ public class ServerUtil {
         }
     }
 
+    /**
+     * Get current active server settings
+     */
     public ServerInfo getActiveServer() {
         if (mActiveServer == null)
             mActiveServer = new ServerInfo();
         return mActiveServer;
     }
 
+    /**
+     * Get current active server settings
+     */
     public void setActiveServer(ServerInfo mActiveServer) {
         this.mActiveServer = mActiveServer;
         saveDomoticzServers(false);
     }
 
+    /**
+     * Remove a ServerInfo from the list of servers
+     *
+     * @param server ServerInfo object to be removed
+     */
     public void removeServer(ServerInfo server) {
         if (server == null || mServerList == null || mServerList.size() <= 0)
             return;
@@ -228,20 +265,30 @@ public class ServerUtil {
         saveDomoticzServers(false);
     }
 
+    /**
+     * Get all servers (enabled and disabled)
+     */
     public ArrayList<ServerInfo> getServerList() {
         return mServerList;
     }
 
+    /**
+     * Get all servers that are Enabled
+     */
     public ArrayList<ServerInfo> getEnabledServerList() {
         ArrayList<ServerInfo> activeServers = new ArrayList<>();
         for (ServerInfo s : mServerList) {
             if (s.isEnabled())
                 activeServers.add(s);
         }
-
         return activeServers;
     }
 
+    /**
+     * add new Domoticz server to the list
+     *
+     * @param server ServerInfo add new server to the list
+     */
     public boolean addDomoticzServer(ServerInfo server) {
         if (mServerList == null)
             mServerList = new ArrayList<>();
@@ -260,6 +307,11 @@ public class ServerUtil {
             return false;
     }
 
+    /**
+     * Check if server name is Unique
+     *
+     * @param server ServerInfo to check the name from
+     */
     public boolean checkUniqueServerName(ServerInfo server) {
         boolean alreadyContains = false;
         for (ServerInfo s : mServerList) {
@@ -269,6 +321,11 @@ public class ServerUtil {
         return !alreadyContains;
     }
 
+    /**
+     * Update / Save specific ServerInfo object (so not the active!!)
+     *
+     * @param server ServerInfo to be saved
+     */
     public void updateServerInfo(ServerInfo server) {
         putServerInList(server);
         saveDomoticzServers(false);

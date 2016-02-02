@@ -407,25 +407,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDomoticzServerUpdate() {
-
         // Get latest Domoticz version update
         domoticz.getUpdate(new UpdateVersionReceiver() {
             @Override
             public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
-
                 boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
-
-                // Write update version to shared preferences
-                mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                mServerUtil.saveDomoticzServers(false);
-
-                if (haveUpdate && serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                    // Great! We can remote/auto update Linux systems
-                    getCurrentServerVersion();
-                }
-                else {
-                    // No remote/auto updating available for other systems (like Windows, Synology)
-                    showSimpleSnackbar(getString(R.string.server_update_available));
+                if (mServerUtil.getActiveServer() != null) {
+                    // Write update version to shared preferences
+                    mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                    mServerUtil.saveDomoticzServers(true);
+                    if (haveUpdate) {
+                        if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                            // Great! We can remote/auto update Linux systems
+                            getCurrentServerVersion();
+                        } else {
+                            // No remote/auto updating available for other systems (like Windows, Synology)
+                            showSimpleSnackbar(getString(R.string.server_update_available));
+                        }
+                    }
                 }
             }
 
@@ -435,8 +434,10 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.error_couldNotCheckForUpdates),
                         domoticz.getErrorMessage(error));
                 showSimpleSnackbar(message);
-                mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
-                mServerUtil.saveDomoticzServers(false);
+
+                if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
+                    mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                mServerUtil.saveDomoticzServers(true);
             }
         });
     }
@@ -447,18 +448,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceiveVersion(String serverVersion) {
                 if (!UsefulBits.isEmpty(serverVersion)) {
-                    mServerUtil.getActiveServer()
-                            .getServerUpdateInfo()
-                            .setCurrentServerVersion(serverVersion);
+
+                    if (mServerUtil.getActiveServer() != null &&
+                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) {
+                        mServerUtil.getActiveServer()
+                                .getServerUpdateInfo()
+                                .setCurrentServerVersion(serverVersion);
+                    }
 
                     String[] version
                             = serverVersion.split("\\.");
                     // Update version is only revision number
-                    String updateVersion =
+                    String updateVersion = (mServerUtil.getActiveServer() != null &&
+                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) ?
                             version[0] + "."
                                     + mServerUtil.getActiveServer()
-                                                .getServerUpdateInfo()
-                                                .getUpdateRevisionNumber();
+                                    .getServerUpdateInfo()
+                                    .getUpdateRevisionNumber() :
+                            version[0];
+                    
                     String message
                             = String.format(getString(R.string.update_available_enhanced),
                             serverVersion,
