@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
@@ -399,6 +400,8 @@ public class Preference extends PreferenceFragment {
     }
 
     private void setVersionInfo() {
+        ServerUtil serverUtil = new ServerUtil(mContext);
+
         PackageInfo pInfo = null;
         try {
             pInfo = mContext
@@ -415,21 +418,31 @@ public class Preference extends PreferenceFragment {
         appVersion.setSummary(appVersionStr);
 
         final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
+
         String message;
-        if (mSharedPrefs.isServerUpdateAvailable() || mSharedPrefs.isDebugEnabled()) {
+        if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
+                || mSharedPrefs.isDebugEnabled()) {
+            // Update is available or debugging is enabled
+            String version;
+            if (mSharedPrefs.isDebugEnabled()) version = mContext.getString(R.string.debug_test_text);
+            else version = serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber();
+
             message = String.format(getString(R.string.update_available_enhanced),
                     mSharedPrefs.getServerVersion(),
-                    mSharedPrefs.getUpdateVersionAvailable());
-            message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
-            domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(android.preference.Preference preference) {
-                    Intent intent = new Intent(mContext, UpdateActivity.class);
-                    startActivity(intent);
-                    return false;
-                }
-            });
-        } else message = mSharedPrefs.getServerVersion();
+                    version);
+            if (serverUtil.getActiveServer().getServerUpdateInfo().getSystemName().equalsIgnoreCase("linux")) {
+                // Only offer remote/auto update on Linux systems
+                message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
+                domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(android.preference.Preference preference) {
+                        Intent intent = new Intent(mContext, UpdateActivity.class);
+                        startActivity(intent);
+                        return false;
+                    }
+                });
+            }
+        } else message = serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber();
         domoticzVersion.setSummary(message);
     }
 

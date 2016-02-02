@@ -60,6 +60,7 @@ import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
@@ -410,11 +411,22 @@ public class MainActivity extends AppCompatActivity {
         // Get latest Domoticz version update
         domoticz.getUpdate(new UpdateVersionReceiver() {
             @Override
-            public void onReceiveUpdate(String version, boolean haveUpdate) {
+            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
+
+                boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+
                 // Write update version to shared preferences
-                mSharedPrefs.setUpdateVersionAvailable(version);
-                mSharedPrefs.setServerUpdateAvailable(haveUpdate);
-                if (haveUpdate) getCurrentServerVersion();
+                mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                mServerUtil.saveDomoticzServers(false);
+
+                if (haveUpdate && serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                    // Great! We can remote/auto update Linux systems
+                    getCurrentServerVersion();
+                }
+                else {
+                    // No remote/auto updating available for other systems (like Windows, Synology)
+                    showSimpleSnackbar(getString(R.string.server_update_available));
+                }
             }
 
             @Override
@@ -423,7 +435,8 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.error_couldNotCheckForUpdates),
                         domoticz.getErrorMessage(error));
                 showSimpleSnackbar(message);
-                mSharedPrefs.setUpdateVersionAvailable("");
+                mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                mServerUtil.saveDomoticzServers(false);
             }
         });
     }
@@ -434,13 +447,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceiveVersion(String serverVersion) {
                 if (!UsefulBits.isEmpty(serverVersion)) {
-                    mSharedPrefs.setServerVersion(serverVersion);
+                    mServerUtil.getActiveServer()
+                            .getServerUpdateInfo()
+                            .setCurrentServerVersion(serverVersion);
 
                     String[] version
                             = serverVersion.split("\\.");
                     // Update version is only revision number
                     String updateVersion =
-                            version[0] + "." + mSharedPrefs.getUpdateVersionAvailable();
+                            version[0] + "."
+                                    + mServerUtil.getActiveServer()
+                                                .getServerUpdateInfo()
+                                                .getUpdateRevisionNumber();
                     String message
                             = String.format(getString(R.string.update_available_enhanced),
                             serverVersion,
@@ -463,7 +481,7 @@ public class MainActivity extends AppCompatActivity {
         View layout = getFragmentCoordinatorLayout();
         if (layout != null) {
             Snackbar.make(layout, message, Snackbar.LENGTH_LONG)
-                    .setAction("Update server", new View.OnClickListener() {
+                    .setAction(R.string.update_server, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(MainActivity.this, UpdateActivity.class));
@@ -480,6 +498,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceiveConfig(ConfigInfo settings) {
                 if (settings != null)
                     mSharedPrefs.saveConfig(settings);
+                // TODO set config per server
             }
 
             @Override

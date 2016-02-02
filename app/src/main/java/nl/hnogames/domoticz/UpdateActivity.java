@@ -36,10 +36,12 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -50,7 +52,6 @@ public class UpdateActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     private String TAG = UpdateActivity.class.getSimpleName();
 
-    private SharedPrefUtil mSharedPrefs;
     private Domoticz mDomoticz;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -59,6 +60,7 @@ public class UpdateActivity extends AppCompatActivity {
     private TextView currentServerVersionValue;
     private TextView updateServerVersionValue;
     private TextView updateSummary;
+    private ServerUtil serverUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +72,8 @@ public class UpdateActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        mSharedPrefs = new SharedPrefUtil(this);
         mDomoticz = new Domoticz(this);
+        serverUtil = new ServerUtil(this);
 
         initViews();
     }
@@ -90,11 +92,15 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
 
-        currentServerVersionValue.setText(mSharedPrefs.getServerVersion());
+        currentServerVersionValue.setText(serverUtil.getActiveServer()
+                                                    .getServerUpdateInfo()
+                                                    .getCurrentServerVersion());
 
-        if (mSharedPrefs.isServerUpdateAvailable()) {
+        if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()) {
             updateSummary.setText(R.string.server_update_available);
-            updateServerVersionValue.setText(mSharedPrefs.getUpdateVersionAvailable());
+            updateServerVersionValue.setText(serverUtil.getActiveServer()
+                                                        .getServerUpdateInfo()
+                                                        .getUpdateRevisionNumber());
         } else if (mDomoticz.isDebugEnabled()) {
             String message = "Debugging: " + getString(R.string.server_update_available);
             updateSummary.setText(message);
@@ -108,7 +114,8 @@ public class UpdateActivity extends AppCompatActivity {
                 showServerUpdateWarningDialog();
             }
         });
-        if (!mSharedPrefs.isServerUpdateAvailable() && !mDomoticz.isDebugEnabled())
+        if (!serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
+                && !mDomoticz.isDebugEnabled())
             buttonUpdateServer.setEnabled(false);
     }
 
@@ -203,7 +210,9 @@ public class UpdateActivity extends AppCompatActivity {
         };
 
         mCountDownTimer.start();
-        if (!mDomoticz.isDebugEnabled() || mSharedPrefs.isServerUpdateAvailable()) {
+        if (!mDomoticz.isDebugEnabled() || serverUtil.getActiveServer()
+                                                        .getServerUpdateInfo()
+                                                        .isUpdateAvailable()) {
             mDomoticz.updateDomoticzServer(null);
             // No feedback is provided when updating
 
@@ -248,14 +257,17 @@ public class UpdateActivity extends AppCompatActivity {
         // Get latest Domoticz version update
         mDomoticz.getUpdate(new UpdateVersionReceiver() {
             @Override
-            public void onReceiveUpdate(String version, boolean haveUpdate) {
+            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                 // Write update version to shared preferences
-                mSharedPrefs.setUpdateVersionAvailable(version);
-                mSharedPrefs.setServerUpdateAvailable(haveUpdate);
+
+                boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+
+                serverUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                serverUtil.saveDomoticzServers(false);
                 if (!mDomoticz.isDebugEnabled()) buttonUpdateServer.setEnabled(haveUpdate);
 
                 if (haveUpdate) {
-                    updateServerVersionValue.setText(version);
+                    updateServerVersionValue.setText(serverUpdateInfo.getUpdateRevisionNumber());
                     updateSummary.setText(R.string.server_update_available);
                 } else updateSummary.setText(R.string.server_update_not_available);
 
@@ -268,7 +280,7 @@ public class UpdateActivity extends AppCompatActivity {
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
                 showSimpleSnackbar(message);
-                mSharedPrefs.setUpdateVersionAvailable("");
+                serverUtil.getActiveServer().getServerUpdateInfo().setUpdateRevisionNumber("");
                 updateServerVersionValue.setText(R.string.not_available);
 
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -286,9 +298,7 @@ public class UpdateActivity extends AppCompatActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
 
                 if (!UsefulBits.isEmpty(serverVersion)) {
-
-
-                    mSharedPrefs.setServerVersion(serverVersion);
+                    serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion(serverVersion);
                     currentServerVersionValue.setText(serverVersion);
                 } else currentServerVersionValue.setText(R.string.not_available);
             }
@@ -301,7 +311,7 @@ public class UpdateActivity extends AppCompatActivity {
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
                 showSimpleSnackbar(message);
-                mSharedPrefs.setServerVersion("");
+                serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
                 currentServerVersionValue.setText(R.string.not_available);
             }
         });
