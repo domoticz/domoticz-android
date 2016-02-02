@@ -36,7 +36,13 @@ import nl.hnogames.domoticz.R;
 public class NotificationUtil {
 
     public static void sendSimpleNotification(String title, String text, Context context) {
-        if (new SharedPrefUtil(context).isNotificationsEnabled()) {
+        if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
+            return;
+
+        SharedPrefUtil prefUtil = new SharedPrefUtil(context);
+
+        if (prefUtil.isNotificationsEnabled() &&
+                !prefUtil.getSuppressedNotifications().contains(text)) {
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.domoticz_white)
@@ -45,8 +51,6 @@ public class NotificationUtil {
                             .setContentText(text)
                             .setAutoCancel(true);
             int NOTIFICATION_ID = 12345;
-
-            SharedPrefUtil prefUtil = new SharedPrefUtil(context);
 
             if (prefUtil.getNotificationVibrate())
                 builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
@@ -61,5 +65,7 @@ public class NotificationUtil {
             NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nManager.notify(NOTIFICATION_ID, builder.build());
         }
+
+        prefUtil.addReceivedNotification(text);
     }
 }

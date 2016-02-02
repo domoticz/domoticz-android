@@ -100,13 +100,26 @@
                 android:summaryOn="@string/enable_notifications"
                 android:title="@string/enable_notifications_title" />
 
+            <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
+                android:defaultValue="@array/empty_array"
+                android:dependency="enableNotifications"
+                android:dialogTitle="@string/suppress_notifications_select"
+                android:entries="@array/empty_array"
+                android:entryValues="@array/empty_array"
+                android:key="suppressNotifications"
+                android:summary="@string/suppress_notifications"
+                android:title="@string/suppress_notifications_title"
+                customPreference:selectAllValuesByDefault="false" />
+
             <Preference
                 android:key="notification_registration_id"
+                android:dependency="enableNotifications"
                 android:summary="@string/notification_settings_push"
                 android:title="@string/notification_settings_id" />
 
             <SwitchPreference
                 android:defaultValue="true"
+                android:dependency="enableNotifications"
                 android:key="notification_vibrate"
                 android:summaryOff="@string/notification_vibrate_off"
                 android:summaryOn="@string/notification_vibrate_on"
@@ -114,6 +127,7 @@
 
             <RingtonePreference
                 android:key="notification_sound"
+                android:dependency="enableNotifications"
                 android:ringtoneType="notification"
                 android:showDefault="true"
                 android:showSilent="true"

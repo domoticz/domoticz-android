@@ -22,6 +22,7 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -83,12 +84,15 @@ public class SharedPrefUtil {
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
     private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
+    private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
+    private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
 
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private GoogleApiClient mApiClient = null;
 
+    @SuppressLint("CommitPrefEdits")
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -181,6 +185,54 @@ public class SharedPrefUtil {
 
     public String getNotificationSound() {
         return prefs.getString(PREF_NOTIFICATION_SOUND, null);
+    }
+
+
+    public List<String> getSuppressedNotifications() {
+        if (!prefs.contains(PREF_SUPPRESS_NOTIFICATIONS)) return null;
+
+        Set<String> notifications = prefs.getStringSet(PREF_SUPPRESS_NOTIFICATIONS, null);
+        if (notifications != null) {
+            List<String> notificationsValues = new ArrayList<>();
+
+            for (String s : notifications) {
+                notificationsValues.add(s);
+            }
+            return notificationsValues;
+        } else return null;
+    }
+
+    public List<String> getReceivedNotifications() {
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) return null;
+
+        Set<String> notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS, null);
+        if (notifications != null) {
+            List<String> notificationsValues = new ArrayList<>();
+
+            for (String s : notifications) {
+                notificationsValues.add(s);
+            }
+            return notificationsValues;
+        } else return null;
+    }
+
+    public void addReceivedNotification(String notification) {
+        if (UsefulBits.isEmpty(notification))
+            return;
+        Set<String> notifications;
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) {
+            notifications = new HashSet<>();
+            notifications.add(notification);
+            editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+        } else {
+            notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS, null);
+            if (notifications == null)
+                notifications = new HashSet<>();
+            if (!notifications.contains(notification)) {
+                notifications.add(notification);
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+            }
+        }
     }
 
     public void removeWizard() {

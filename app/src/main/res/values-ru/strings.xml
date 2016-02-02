@@ -28,7 +28,6 @@
   <string name="action_success">Операция выполнена</string>
   <string name="action_failed">Операция не выполнена</string>
   <string name="action_unknown">Результат действия неизвестен</string>
-  <string name="choose_server">Choose Server</string>
   <string name="choose_status">Выберите состояние</string>
   <string name="normal">Стандарт</string>
   <string name="economy">Эконом</string>
@@ -72,4 +71,5 @@
   <string name="domoticz_logo">Domoticz logo</string>
   <string name="this_take_minutes">This could take several minutes.</string>
   <string name="continue_question">Continue?</string>
+  <string name="cant_remove_default_server">Can\'t remove the default server</string>
 </resources>
