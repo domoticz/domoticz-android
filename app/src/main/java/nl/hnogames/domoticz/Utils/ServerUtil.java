@@ -154,6 +154,11 @@ public class ServerUtil {
         }
     }
 
+    /**
+     * Saves all Domoticz servers to shared preferences
+     *
+     * @param writeCurrent true if server should be added to active server list
+     */
     public void saveDomoticzServers(boolean writeCurrent) {
         if (writeCurrent)
             putServerInList(mActiveServer);
@@ -269,7 +274,9 @@ public class ServerUtil {
         saveDomoticzServers(false);
     }
 
-    // this method is to parse the previous settings from shared preferences into the new structure
+    /**
+     * this method is to parse the previous settings from shared preferences into the new structure
+     */
     public void loadPreviousSettingsToServerInfo() {
         String REMOTE_SERVER_USERNAME = "remote_server_username";
         String REMOTE_SERVER_PASSWORD = "remote_server_password";

@@ -27,6 +27,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 
@@ -43,17 +44,9 @@ public class UpdateVersionParser implements JSONParserInterface {
     public void parseResult(String result) {
         try {
             JSONObject response = new JSONObject(result);
-            String version = "";
-            boolean haveUpdate;
-            if (response.has("revision"))
-                version = response.getString("revision");
-            else if (response.has("Revision"))
-                version = response.getString("Revision");
-            if (response.has("HaveUpdate") && !response.getBoolean("HaveUpdate"))
-                haveUpdate = false;
-            else haveUpdate = true;
+            ServerUpdateInfo serverUpdateInfo = new ServerUpdateInfo(response);
 
-            receiver.onReceiveUpdate(version, haveUpdate);
+            receiver.onReceiveUpdate(serverUpdateInfo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,4 +57,5 @@ public class UpdateVersionParser implements JSONParserInterface {
         Log.e(TAG, "VersionParser of JSONParserInterface exception");
         receiver.onError(error);
     }
+
 }
