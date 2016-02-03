@@ -606,39 +606,45 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
         holder.switch_battery_level.setText(text);
 
-        holder.buttonOn.setId(mDevicesInfo.getIdx());
-        if (mDevicesInfo.getData().startsWith("Arm"))
-            holder.buttonOn.setText(context.getString(R.string.button_disarm));
-        else
-            holder.buttonOn.setText(context.getString(R.string.button_arm));
+        if(holder.buttonOn != null) {
+            holder.buttonOn.setId(mDevicesInfo.getIdx());
+            if (mDevicesInfo.getData().startsWith("Arm"))
+                holder.buttonOn.setText(context.getString(R.string.button_disarm));
+            else
+                holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-        holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
-        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open security panel
-                handleSecurityPanel(v.getId());
-            }
-        });
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //open security panel
+                    handleSecurityPanel(v.getId());
+                }
+            });
+        }
 
-        holder.buttonLog.setId(mDevicesInfo.getIdx());
-        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleLogButtonClick(v.getId());
-            }
-        });
-        holder.buttonTimer.setId(mDevicesInfo.getIdx());
-        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleTimerButtonClick(v.getId());
-            }
-        });
+        if(holder.buttonLog != null) {
+            holder.buttonLog.setId(mDevicesInfo.getIdx());
+            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleLogButtonClick(v.getId());
+                }
+            });
+        }
 
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+        if(holder.buttonTimer != null) {
+            holder.buttonTimer.setId(mDevicesInfo.getIdx());
+            holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleTimerButtonClick(v.getId());
+                }
+            });
 
+            if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
+                holder.buttonTimer.setVisibility(View.INVISIBLE);
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -651,9 +657,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
-
     }
-
 
     private void setBlindsRowData(DevicesInfo mDevicesInfo,
                                   ViewHolder holder) {
