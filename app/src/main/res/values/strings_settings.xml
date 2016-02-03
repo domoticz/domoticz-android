@@ -39,6 +39,8 @@
     <!--        Import/Export settings  -->
     <string name="settings_imported">Settings imported, please restart Domoticz</string>
     <string name="settings_import_failed">Failed to import Settings</string>
+    <string name="settings_exported">Settings exported, please restart Domoticz</string>
+    <string name="settings_export_failed">Failed to export Settings</string>
 
     <!--        Preference screens      -->
     <string name="server_settings">Server connection settings</string>
