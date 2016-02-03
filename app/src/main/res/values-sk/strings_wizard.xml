@@ -8,6 +8,10 @@
   <string name="wizard_favorites_description">Môžete pridať zariadenia na hlavný panel uložením ako obľúbené. Dlhým kliknutím na položku ho uložíte ako obľúbené!</string>
   <string name="wizard_startup">Úvodná obrazovka</string>
   <string name="wizard_startup_description">V nastaveniach môžete nastaviť úvodnú obrazovku!</string>
+  <string name="wizard_notifications">Setup Notifications</string>
+  <string name="wizard_notifications_description">You can now receive Notifications on your Android device! Change the way how notifications behave in the settings</string>
+  <string name="wizard_multiserver">Using Multiple Servers</string>
+  <string name="wizard_multiserver_description">You can configure multiple Domoticz servers in the settings.</string>
   <string name="wizard_geo">Geofencing</string>
   <string name="wizard_geo_description">V nastaveniach môžete nastaviť úvodnú obrazovku!</string>
   <string name="wizard_wear">Android Wear</string>
