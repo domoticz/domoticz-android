@@ -43,14 +43,19 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private int widgetID = 0;
+    private boolean action = false;
+    private boolean toggle = true;
     private String password = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         int idx = intent.getIntExtra("IDX", 999999);
+        action = intent.getBooleanExtra("WIDGETACTION", false);
+        toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
+
         if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
-            toggleSwitch(context, idx);
+            processSwitch(context, idx);
         }
     }
 
@@ -113,7 +118,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private void toggleSwitch(final Context context, int idx) {
+    private void processSwitch(final Context context, int idx) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         password = mSharedPrefs.getWidgetPassword(widgetID);
         final Domoticz domoticz = new Domoticz(context);
@@ -128,8 +133,12 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveDevice(final DevicesInfo s) {
                     if (s != null) {
-                        if (isOnOffSwitch(s))
-                            onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
+                        if (isOnOffSwitch(s)) {
+                            if(toggle)
+                                onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
+                            else
+                                onSwitchClick(s, action, domoticz, context);
+                        }
                         if (isPushOffSwitch(s))
                             onButtonClick(s, false, domoticz, context);
                         if (isPushOnSwitch(s))
@@ -156,9 +165,12 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 public void onReceiveScene(final SceneInfo scene) {
                     if (scene != null) {
                         if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
-                            onButtonClick(scene, true, domoticz, context);
+                            onButtonClick(scene, true, domoticz, context);//push on scene
                         } else {//switch
-                            onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
+                            if(toggle)
+                                onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
+                            else
+                                onSwitchClick(scene, action, domoticz, context);
                         }
                     }
                 }
