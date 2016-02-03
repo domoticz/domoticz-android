@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             saveServerConfigToSharedPreferences();
             appRate();
             drawNavigationMenu();
+            updateDrawerItems();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -466,7 +467,7 @@ public class MainActivity extends AppCompatActivity {
                                     .getServerUpdateInfo()
                                     .getUpdateRevisionNumber() :
                             version[0];
-                    
+
                     String message
                             = String.format(getString(R.string.update_available_enhanced),
                             serverVersion,

@@ -212,6 +212,7 @@ public class SharedPrefUtil {
             for (String s : notifications) {
                 notificationsValues.add(s);
             }
+            java.util.Collections.sort(notificationsValues);
             return notificationsValues;
         } else return null;
     }

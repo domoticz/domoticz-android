@@ -26,16 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ServerUpdateInfo {
-    JSONObject jsonObject;
-
-    String revision = "";
-    String currentServerVersion = "";
-    String systemName = "";
-    String url = "";
-    int statusCode = -1;
-    String updateChannel = "";
-    boolean haveUpdate;
-
     @SuppressWarnings("FieldCanBeLocal")
     private final String RESPONSE_SYSTEM_NAME = "SystemName";
     @SuppressWarnings("FieldCanBeLocal")
@@ -52,6 +42,14 @@ public class ServerUpdateInfo {
     private final String STRING_CHANNEL = "channel=";
     @SuppressWarnings("FieldCanBeLocal")
     private final String STRING_TYPE = "&type=";
+    JSONObject jsonObject;
+    String revision = "";
+    String currentServerVersion = "";
+    String systemName = "";
+    String url = "";
+    int statusCode = -1;
+    String updateChannel = "";
+    boolean haveUpdate;
 
     public ServerUpdateInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -71,7 +69,8 @@ public class ServerUpdateInfo {
         if (row.has(RESPONSE_STATUS_CODE)) {
             try {
                 statusCode = row.getInt(RESPONSE_STATUS_CODE);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         if (row.has(RESPONSE_URL)) {

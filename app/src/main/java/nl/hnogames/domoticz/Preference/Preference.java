@@ -42,6 +42,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -103,6 +104,15 @@ public class Preference extends PreferenceFragment {
         android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
+        NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
+
+        List<String> notifications = mSharedPrefs.getReceivedNotifications();
+        if(notifications == null || notifications.size() <= 0){
+            notificationsMultiSelectListPreference.setEnabled(false);
+        }
+        else{
+            notificationsMultiSelectListPreference.setEnabled(true);
+        }
 
         drawerItems.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
