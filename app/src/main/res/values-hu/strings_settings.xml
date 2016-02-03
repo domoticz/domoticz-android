@@ -28,6 +28,8 @@
   <string name="geofencing_configure">Geofencing beállítása</string>
   <string name="settings_imported">Beállítások importálva, indítsa újra a Domoticzot</string>
   <string name="settings_import_failed">A beállítások importálása nem sikerült</string>
+  <string name="settings_exported">Settings exported, please restart Domoticz</string>
+  <string name="settings_export_failed">Failed to export Settings</string>
   <string name="server_settings">Szerver kapcsolat beállításai</string>
   <string name="title_activity_server_settings">Szerver beállítások</string>
   <string name="multi_server">Több szerver</string>
@@ -79,4 +81,5 @@
   <string name="update_not_started_unknown_error">A frissítés egy ismeretlen hiba miatt nem indult</string>
   <string name="server_update_not_available">Nincs elérhető szerverfrissítés</string>
   <string name="click_to_update_server">Kattintson ide a kiszolgáló frissítéséhez</string>
+  <string name="debug_test_text">Debugging test</string>
 </resources>

@@ -48,9 +48,9 @@
   <string name="no_network_available">Ошибка: Сетевое соединение не доступно</string>
   <string name="oops">ОЙ!</string>
   <string name="to">"к"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Повторить</string>
+  <string name="undo">Отменить последнее действие</string>
+  <string name="something_deleted">%1$s удалено</string>
   <string name="switch_on">Включение переключателя</string>
   <string name="switch_off">Выключение переключателя</string>
   <string name="blind_up">Поднять занавески</string>
@@ -67,9 +67,9 @@
   <string name="row_icon_description">значок строки</string>
   <string name="error_image_description">Изображение ошибки</string>
   <string name="white">Белый</string>
-  <string name="refresh">Refresh</string>
-  <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
-  <string name="cant_remove_default_server">Can\'t remove the default server</string>
+  <string name="refresh">Обновить</string>
+  <string name="domoticz_logo">Domoticz лого</string>
+  <string name="this_take_minutes">Это может занять несколько минут.</string>
+  <string name="continue_question">Продолжить?</string>
+  <string name="cant_remove_default_server">Не удается удалить сервер по умолчанию</string>
 </resources>
