@@ -134,7 +134,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 public void onReceiveDevice(final DevicesInfo s) {
                     if (s != null) {
                         if (isOnOffSwitch(s)) {
-                            if(toggle)
+                            if (toggle)
                                 onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
                             else
                                 onSwitchClick(s, action, domoticz, context);
@@ -150,7 +150,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 public void onError(Exception error) {
                     Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
                 }
-            }, idx);
+            }, idx, false);
         } else {
             domoticz.getScene(new ScenesReceiver() {
                 @Override
@@ -167,7 +167,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                         if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
                             onButtonClick(scene, true, domoticz, context);//push on scene
                         } else {//switch
-                            if(toggle)
+                            if (toggle)
                                 onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
                             else
                                 onSwitchClick(scene, action, domoticz, context);

@@ -146,12 +146,11 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
                 mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password);
-            else
+            } else {
                 mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password);
-
-            mSharedPrefs.setWidgetIDforIDX(mAppWidgetId, idx);
+            }
             Intent startService = new Intent(WidgetConfigurationActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
