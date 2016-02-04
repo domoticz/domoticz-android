@@ -29,7 +29,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -71,6 +74,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
+    private LinearLayout lExtraPanel = null;
+    private Animation animShow, animHide;
 
     @Override
     public void refreshFragment() {
@@ -84,6 +89,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         super.onAttach(context);
         mContext = context;
         getActionBar().setTitle(R.string.title_switches);
+        initAnimation();
     }
 
     @Override
@@ -102,6 +108,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     public void onConnectionOk() {
         super.showSpinner(true);
         getSwitchesData();
+    }
+
+    private void initAnimation() {
+        animShow = AnimationUtils.loadAnimation(mContext, R.anim.enter_from_right);
+        animHide = AnimationUtils.loadAnimation(mContext, R.anim.exit_to_right);
     }
 
     private void getSwitchesData() {
@@ -180,6 +191,32 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                                                    int index, long id) {
                         showInfoDialog(adapter.filteredData.get(index));
                         return true;
+                    }
+                });
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+                        if (extra_panel != null) {
+                            if (extra_panel.getVisibility() == View.VISIBLE) {
+                                extra_panel.startAnimation(animHide);
+                                extra_panel.setVisibility(View.GONE);
+                            } else {
+                                extra_panel.setVisibility(View.VISIBLE);
+                                extra_panel.startAnimation(animShow);
+                            }
+
+                            if (extra_panel != lExtraPanel) {
+                                if (lExtraPanel != null) {
+                                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                                        lExtraPanel.startAnimation(animHide);
+                                        lExtraPanel.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+
+                            lExtraPanel = extra_panel;
+                        }
                     }
                 });
 

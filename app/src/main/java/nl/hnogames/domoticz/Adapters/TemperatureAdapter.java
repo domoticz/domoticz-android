@@ -101,14 +101,12 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         int layoutResourceId;
 
         TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
-        //if (convertView == null) {
         holder = new ViewHolder();
-
         layoutResourceId = R.layout.temperature_row_default;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
@@ -118,6 +116,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
         holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);
@@ -169,6 +168,16 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
                 for (TemperatureInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
                         listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                }
+            }
+        });
+        holder.weekButton.setId(mTemperatureInfo.getIdx());
+        holder.weekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
                 }
             }
         });
@@ -241,6 +250,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         Button setButton;
         Button dayButton;
         Button monthButton;
+        Button weekButton;
         Button yearButton;
         Boolean isProtected;
     }

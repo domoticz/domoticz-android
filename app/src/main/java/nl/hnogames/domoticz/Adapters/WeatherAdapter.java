@@ -118,6 +118,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
 
         holder.name.setText(mWeatherInfo.getName());
         holder.hardware.append(mWeatherInfo.getHardwareName());
@@ -181,6 +182,17 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        holder.weekButton.setId(mWeatherInfo.getIdx());
+        holder.weekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (WeatherInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                }
+            }
+        });
+
         convertView.setTag(holder);
         Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
         return convertView;
@@ -195,6 +207,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         Button dayButton;
         Button monthButton;
         Button yearButton;
+        Button weekButton;
     }
 
     private class ItemFilter extends Filter {
