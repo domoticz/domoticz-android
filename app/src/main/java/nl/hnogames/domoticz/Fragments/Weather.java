@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
@@ -24,6 +23,7 @@ import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.AnimationUtil;
 import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -92,8 +92,8 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     }
 
     private void initAnimation() {
-        animShow = AnimationUtils.loadAnimation(mContext, R.anim.enter_from_right);
-        animHide = AnimationUtils.loadAnimation(mContext, R.anim.exit_to_right);
+        animShow = AnimationUtil.getLogRowAnimationOpen(mContext);
+        animHide = AnimationUtil.getLogRowAnimationClose(mContext);
     }
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
