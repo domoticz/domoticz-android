@@ -11,6 +11,7 @@
   <string name="button_state_off">Aus</string>
   <string name="button_status_log">Protokoll</string>
   <string name="button_status_day">Tag</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Monat</string>
   <string name="button_status_year">Jahr</string>
   <string name="button_status_timer">Timer</string>

@@ -11,6 +11,7 @@
   <string name="button_state_off">Выключен</string>
   <string name="button_status_log">Журнал</string>
   <string name="button_status_day">День</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Месяц</string>
   <string name="button_status_year">Год</string>
   <string name="button_status_timer">Таймер</string>

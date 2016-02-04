@@ -11,6 +11,7 @@
   <string name="button_state_off">Off</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Día</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Mes</string>
   <string name="button_status_year">Año</string>
   <string name="button_status_timer">Temporizador</string>

@@ -8,11 +8,11 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 75
-        versionName '0.1.228'
+        versionCode 76
+        versionName '0.1.229'
         multiDexEnabled true
     }
-    
+
     //noinspection GroovyAssignabilityCheck
     buildTypes {
         release {

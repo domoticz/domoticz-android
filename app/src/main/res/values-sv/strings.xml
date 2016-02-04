@@ -11,6 +11,7 @@
   <string name="button_state_off">Av</string>
   <string name="button_status_log">Logg</string>
   <string name="button_status_day">Dag</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Månad</string>
   <string name="button_status_year">År</string>
   <string name="button_status_timer">Timer</string>

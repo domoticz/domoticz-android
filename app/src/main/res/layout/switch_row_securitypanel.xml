@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/material_grey_300_"
     android:paddingLeft="@dimen/row_space"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
     android:paddingRight="@dimen/row_space">
 
     <LinearLayout
@@ -11,7 +13,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bordershadow"
         android:foreground="?android:attr/selectableItemBackground"
-        android:longClickable="true"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
@@ -96,33 +97,36 @@
 
                 </LinearLayout>
             </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/extra_panel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp">
-
-                <Button
-                    android:id="@+id/log_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/button_status"
-                    android:text="@string/button_status_log"
-                    android:textSize="10dp" />
-
-                <Button
-                    android:id="@+id/timer_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/button_status"
-                    android:text="@string/button_status_timer"
-                    android:textSize="10dp" />
-
-            </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/extra_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:visibility="gone"
+        android:paddingLeft="10dp">
+
+        <Button
+            android:id="@+id/log_button"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
+            android:layout_height="25dp"
+            android:background="@drawable/button_status"
+            android:text="@string/button_status_log"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/timer_button"
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_status"
+            android:text="@string/button_status_timer"
+            android:textSize="10dp" />
+
     </LinearLayout>
 </LinearLayout>

@@ -26,7 +26,10 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
@@ -59,6 +62,8 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private Context mContext;
     private TemperatureAdapter adapter;
     private String filter = "";
+    private LinearLayout lExtraPanel = null;
+    private Animation animShow, animHide;
 
     @Override
     public void refreshFragment() {
@@ -73,6 +78,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         super.onAttach(context);
         mContext = context;
         getActionBar().setTitle(R.string.title_temperature);
+        initAnimation();
     }
 
     @Override
@@ -91,6 +97,11 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     public void onConnectionOk() {
         super.showSpinner(true);
         processTemperature();
+    }
+
+    private void initAnimation() {
+        animShow = AnimationUtils.loadAnimation(mContext, R.anim.enter_from_right);
+        animHide = AnimationUtils.loadAnimation(mContext, R.anim.exit_to_right);
     }
 
     private void processTemperature() {
@@ -117,13 +128,38 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
-
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view,
                                                int index, long id) {
                     showInfoDialog(adapter.filteredData.get(index));
                     return true;
+                }
+            });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+                    if (extra_panel != null) {
+                        if (extra_panel.getVisibility() == View.VISIBLE) {
+                            extra_panel.startAnimation(animHide);
+                            extra_panel.setVisibility(View.GONE);
+                        } else {
+                            extra_panel.setVisibility(View.VISIBLE);
+                            extra_panel.startAnimation(animShow);
+                        }
+
+                        if (extra_panel != lExtraPanel) {
+                            if (lExtraPanel != null) {
+                                if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                                    lExtraPanel.startAnimation(animHide);
+                                    lExtraPanel.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+
+                        lExtraPanel = extra_panel;
+                    }
                 }
             });
             mSwipeRefreshLayout.setRefreshing(false);

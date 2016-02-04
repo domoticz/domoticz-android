@@ -11,6 +11,7 @@
   <string name="button_state_off">Apaga</string>
   <string name="button_status_log">Registre</string>
   <string name="button_status_day">Dia</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Mes</string>
   <string name="button_status_year">Any</string>
   <string name="button_status_timer">Temporitzador</string>

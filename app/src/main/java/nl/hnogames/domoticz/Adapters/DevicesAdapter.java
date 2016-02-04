@@ -390,8 +390,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_battery_level = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.signal_level = (TextView) convertView.findViewById(R.id.temperature_data2);
         holder.buttonSet = (Button) convertView.findViewById(R.id.set_button);
-        holder.extraPanel = (LinearLayout) convertView.findViewById(R.id.extra_panel_button);
 
+        holder.extraPanel = (LinearLayout) convertView.findViewById(R.id.extra_panel);
         if (holder.extraPanel != null)
             holder.extraPanel.setVisibility(View.GONE);
 

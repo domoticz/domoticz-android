@@ -1467,6 +1467,7 @@ public class Domoticz {
             String DAY = "day";
             String MONTH = "month";
             String YEAR = "year";
+            String WEEK = "week";
         }
     }
 

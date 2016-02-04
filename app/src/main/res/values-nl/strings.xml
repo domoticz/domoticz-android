@@ -11,6 +11,7 @@
   <string name="button_state_off">Uit</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dag</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Maand</string>
   <string name="button_status_year">Jaar</string>
   <string name="button_status_timer">Timer</string>

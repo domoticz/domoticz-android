@@ -11,6 +11,7 @@
   <string name="button_state_off">Desligar</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dia</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Mês</string>
   <string name="button_status_year">Ano</string>
   <string name="button_status_timer">Temporizador</string>

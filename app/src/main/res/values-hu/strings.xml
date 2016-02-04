@@ -11,6 +11,7 @@
   <string name="button_state_off">Ki</string>
   <string name="button_status_log">Napló</string>
   <string name="button_status_day">Nap</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Hónap</string>
   <string name="button_status_year">Év</string>
   <string name="button_status_timer">Időzítő</string>
@@ -71,5 +72,5 @@
   <string name="domoticz_logo">Domoticz logó</string>
   <string name="this_take_minutes">Ez több percig is eltarthat.</string>
   <string name="continue_question">Folytatja?</string>
-  <string name="cant_remove_default_server">Can\'t remove the default server</string>
+  <string name="cant_remove_default_server">Nem lehet eltávolítani az alapértelmezett kiszolgálót</string>
 </resources>

@@ -11,6 +11,7 @@
   <string name="button_state_off">Vyp</string>
   <string name="button_status_log">Záznam</string>
   <string name="button_status_day">Deň</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Mesiac</string>
   <string name="button_status_year">Rok</string>
   <string name="button_status_timer">Častovač</string>
