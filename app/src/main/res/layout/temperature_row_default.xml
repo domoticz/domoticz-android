@@ -109,57 +109,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/extra_panel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:visibility="gone"
-        android:animateLayoutChanges="true">
+    <include layout="@layout/log_buttons_row_default"/>
 
-        <Button
-            android:id="@+id/day_button"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:background="@drawable/button_status"
-            android:text="@string/button_status_day"
-            android:layout_weight=".25"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/week_button"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_status"
-            android:text="@string/button_status_week"
-            android:elevation="0dp"
-            android:layout_weight=".25"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/month_button"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_status"
-            android:text="@string/button_status_month"
-            android:elevation="0dp"
-            android:layout_weight=".25"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/year_button"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_status"
-            android:text="@string/button_status_year"
-            android:elevation="0dp"
-            android:layout_weight=".25"
-            android:textSize="10dp" />
-    </LinearLayout>
 </LinearLayout>
