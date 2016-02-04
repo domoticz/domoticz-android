@@ -152,12 +152,18 @@ public class SharedPrefUtil {
         return prefs.getBoolean("WIDGETSCENE" + widgetID, false);
     }
 
-    public void setWidgetIDforIDX(int widgetID, int idx) {
-        editor.putInt("WIDGETIDX" + idx, widgetID).apply();
+    private void setWidgetIDforIDX(int widgetID, int idx, boolean isScene) {
+        if (!isScene)
+            editor.putInt("WIDGETIDX" + idx, widgetID).apply();
+        else
+            editor.putInt("WIDGETIDXSCENE" + idx, widgetID).apply();
     }
 
-    public int getWidgetIDforIDX(int idx) {
-        return prefs.getInt("WIDGETIDX" + idx, INVALID_IDX);
+    private int getWidgetIDforIDX(int idx, boolean isScene) {
+        if (!isScene)
+            return prefs.getInt("WIDGETIDX" + idx, INVALID_IDX);
+        else
+            return prefs.getInt("WIDGETIDXSCENE" + idx, INVALID_IDX);
     }
 
     /*
@@ -212,6 +218,7 @@ public class SharedPrefUtil {
             for (String s : notifications) {
                 notificationsValues.add(s);
             }
+            java.util.Collections.sort(notificationsValues);
             return notificationsValues;
         } else return null;
     }

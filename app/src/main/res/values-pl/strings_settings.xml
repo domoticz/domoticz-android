@@ -28,6 +28,8 @@
   <string name="geofencing_configure">Konfiguruj Geofencing</string>
   <string name="settings_imported">Ustawienia zaimportowane, proszę zrestartuj Domoticz</string>
   <string name="settings_import_failed">Nie udało się zaimportować ustawień</string>
+  <string name="settings_exported">Ustawienia wyeksportowane, proszę zrestartować Domoticz</string>
+  <string name="settings_export_failed">Nie udało się wyeksportować ustawień</string>
   <string name="server_settings">Ustawienia połączenia serwera</string>
   <string name="title_activity_server_settings">Ustawienia serwera</string>
   <string name="multi_server">Wielo-serwerowość</string>
@@ -39,17 +41,17 @@
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>
   <string name="notification_settings_pushed">Twój identyfikator rejestracji jest teraz zapisany w Domoticz</string>
   <string name="notification_settings_push_failed">Nie można zapisać Twojego identyfikatora rejestracji w Domoticz, prosimy spróbować ponownie później.</string>
-  <string name="enable_notifications_title">Enable Notifications</string>
-  <string name="enable_notifications">Enable notifications on this device</string>
+  <string name="enable_notifications_title">Włącz powiadomienia</string>
+  <string name="enable_notifications">Włącz powiadomienia na urządzeniu</string>
   <string name="notification_screen_title">Ustawienia powiadomień</string>
   <string name="notification_vibrate_title">Wibracja</string>
   <string name="notification_vibrate_on">Wibruj po odebraniu powiadomienia</string>
   <string name="notification_vibrate_off">Brak wibracji</string>
   <string name="notification_sound_title">Dźwięk</string>
   <string name="notification_sound_summary">Użyj dźwięku powiadomienia przy odebraniu powiadomienia</string>
-  <string name="suppress_notifications_select">Select Notifications to Suppress</string>
-  <string name="suppress_notifications">Suppress specific Notifications on this device</string>
-  <string name="suppress_notifications_title">Suppress Notifications</string>
+  <string name="suppress_notifications_select">Wybierz powiadomienia do pominięcia</string>
+  <string name="suppress_notifications">Pomijaj specyficzne powiadomienia na urządzeniu</string>
+  <string name="suppress_notifications_title">Pomijanie powiadomień</string>
   <string name="info_version">Wersja</string>
   <string name="info_domoticz_version">Wersja Domoticz</string>
   <string name="info_about">O Domoticz</string>
@@ -79,4 +81,5 @@
   <string name="update_not_started_unknown_error">Aktualizacja nie rozpoczęła się ze względu na nieznany błąd</string>
   <string name="server_update_not_available">Aktualizacja serwera nie dostępna</string>
   <string name="click_to_update_server">Kliknij tutaj, aby uaktualnić swój serwer</string>
+  <string name="debug_test_text">Test debugowania</string>
 </resources>

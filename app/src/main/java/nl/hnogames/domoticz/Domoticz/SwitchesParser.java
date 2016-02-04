@@ -45,7 +45,6 @@ public class SwitchesParser implements JSONParserInterface {
 
     @Override
     public void parseResult(String result) {
-
         try {
             JSONArray jsonArray = new JSONArray(result);
             ArrayList<SwitchInfo> mSwitches = new ArrayList<>();
@@ -56,8 +55,8 @@ public class SwitchesParser implements JSONParserInterface {
                     mSwitches.add(new SwitchInfo(row));
                 }
             }
-            switchesReceiver.onReceiveSwitches(mSwitches);
 
+            switchesReceiver.onReceiveSwitches(mSwitches);
         } catch (JSONException e) {
             Log.e(TAG, "ScenesParser JSON exception");
             e.printStackTrace();
@@ -70,5 +69,4 @@ public class SwitchesParser implements JSONParserInterface {
         Log.e(TAG, "ScenesParser of JSONParserInterface exception");
         switchesReceiver.onError(error);
     }
-
 }

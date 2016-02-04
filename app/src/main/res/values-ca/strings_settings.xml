@@ -28,6 +28,8 @@
   <string name="geofencing_configure">Configura Geofencing</string>
   <string name="settings_imported">Configuració importada, reinicieu Domoticz</string>
   <string name="settings_import_failed">No s\'ha pogut importar la configuració</string>
+  <string name="settings_exported">Settings exported, please restart Domoticz</string>
+  <string name="settings_export_failed">Failed to export Settings</string>
   <string name="server_settings">Configuració de connexió al servidor</string>
   <string name="title_activity_server_settings">Configuració del servidor</string>
   <string name="multi_server">Multi Server</string>
@@ -79,4 +81,5 @@
   <string name="update_not_started_unknown_error">Update not started due to an unknown error</string>
   <string name="server_update_not_available">Server update not available</string>
   <string name="click_to_update_server">Feu clic aquí per actualitzar el vostre servidor</string>
+  <string name="debug_test_text">Debugging test</string>
 </resources>

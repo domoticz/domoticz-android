@@ -42,6 +42,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -103,6 +104,14 @@ public class Preference extends PreferenceFragment {
         android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
+        NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
+
+        List<String> notifications = mSharedPrefs.getReceivedNotifications();
+        if (notifications == null || notifications.size() <= 0) {
+            notificationsMultiSelectListPreference.setEnabled(false);
+        } else {
+            notificationsMultiSelectListPreference.setEnabled(true);
+        }
 
         drawerItems.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
@@ -331,9 +340,9 @@ public class Preference extends PreferenceFragment {
                                         PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
                             } else
                                 exportSettings();
-                        } else {
+                        } else
                             exportSettings();
-                        }
+
                         return false;
                     }
                 });
@@ -348,9 +357,9 @@ public class Preference extends PreferenceFragment {
                                 PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
                     } else
                         importSettings();
-                } else {
+                } else
                     importSettings();
-                }
+
                 return false;
             }
         });
@@ -394,9 +403,9 @@ public class Preference extends PreferenceFragment {
     private void exportSettings() {
         Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(mContext, R.string.settings_imported, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.settings_exported, Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(mContext, R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.settings_export_failed, Toast.LENGTH_SHORT).show();
     }
 
     private void setVersionInfo() {

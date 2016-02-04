@@ -28,6 +28,8 @@
   <string name="geofencing_configure">Geofencing configureren</string>
   <string name="settings_imported">Instellingen geïmporteerd, herstart Domoticz a.u.b.</string>
   <string name="settings_import_failed">Kan de instellingen niet importeren, probeer opnieuw</string>
+  <string name="settings_exported">Instellingen geëxporteerd, herstart Domoticz a.u.b.</string>
+  <string name="settings_export_failed">Kan de instellingen niet exporteren, probeer opnieuw</string>
   <string name="server_settings">Server verbindingsinstellingen</string>
   <string name="title_activity_server_settings">Server instellingen</string>
   <string name="multi_server">Meerdere Servers</string>
@@ -79,4 +81,5 @@
   <string name="update_not_started_unknown_error">Update niet gestart vanwege een onbekende fout</string>
   <string name="server_update_not_available">De update van de server is niet beschikbaar</string>
   <string name="click_to_update_server">Klik hier als u wilt uw server bijwerken</string>
+  <string name="debug_test_text">Debugging test</string>
 </resources>

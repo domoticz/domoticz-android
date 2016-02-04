@@ -39,6 +39,8 @@
     <!--        Import/Export settings  -->
     <string name="settings_imported">Settings imported, please restart Domoticz</string>
     <string name="settings_import_failed">Failed to import Settings</string>
+    <string name="settings_exported">Settings exported, please restart Domoticz</string>
+    <string name="settings_export_failed">Failed to export Settings</string>
 
     <!--        Preference screens      -->
     <string name="server_settings">Server connection settings</string>
@@ -105,5 +107,6 @@
     <string name="update_not_started_unknown_error">Update not started due to an unknown error</string>
     <string name="server_update_not_available">Server update not available</string>
     <string name="click_to_update_server">Click here to update your server</string>
+
     <string name="debug_test_text">Debugging test</string>
 </resources>

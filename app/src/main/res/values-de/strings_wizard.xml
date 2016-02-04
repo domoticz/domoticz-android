@@ -8,6 +8,10 @@
   <string name="wizard_favorites_description">Sie können Geräte zum Dashboard hinzufügen, indem Sie es als Favoriten hinzufügen. Lange auf ein Element tippen, um es als Favorit zu speichern!</string>
   <string name="wizard_startup">Startbildschirm</string>
   <string name="wizard_startup_description">Sie können Ihr Startup Screen in den Einstellungen festlegen!</string>
+  <string name="wizard_notifications">Setup Notifications</string>
+  <string name="wizard_notifications_description">You can now receive Notifications on your Android device! Change the way how notifications behave in the settings</string>
+  <string name="wizard_multiserver">Using Multiple Servers</string>
+  <string name="wizard_multiserver_description">You can configure multiple Domoticz servers in the settings.</string>
   <string name="wizard_geo">Ortung</string>
   <string name="wizard_geo_description">Sie können Ihren Startup Screen in den Einstellungen festlegen!</string>
   <string name="wizard_wear">Android Wear</string>

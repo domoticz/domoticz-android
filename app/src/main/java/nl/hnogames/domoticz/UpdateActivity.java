@@ -42,7 +42,6 @@ import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Utils.ServerUtil;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class UpdateActivity extends AppCompatActivity {
@@ -93,14 +92,14 @@ public class UpdateActivity extends AppCompatActivity {
         });
 
         currentServerVersionValue.setText(serverUtil.getActiveServer()
-                                                    .getServerUpdateInfo()
-                                                    .getCurrentServerVersion());
+                .getServerUpdateInfo()
+                .getCurrentServerVersion());
 
         if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()) {
             updateSummary.setText(R.string.server_update_available);
             updateServerVersionValue.setText(serverUtil.getActiveServer()
-                                                        .getServerUpdateInfo()
-                                                        .getUpdateRevisionNumber());
+                    .getServerUpdateInfo()
+                    .getUpdateRevisionNumber());
         } else if (mDomoticz.isDebugEnabled()) {
             String message = "Debugging: " + getString(R.string.server_update_available);
             updateSummary.setText(message);
@@ -211,8 +210,8 @@ public class UpdateActivity extends AppCompatActivity {
 
         mCountDownTimer.start();
         if (!mDomoticz.isDebugEnabled() || serverUtil.getActiveServer()
-                                                        .getServerUpdateInfo()
-                                                        .isUpdateAvailable()) {
+                .getServerUpdateInfo()
+                .isUpdateAvailable()) {
             mDomoticz.updateDomoticzServer(null);
             // No feedback is provided when updating
 

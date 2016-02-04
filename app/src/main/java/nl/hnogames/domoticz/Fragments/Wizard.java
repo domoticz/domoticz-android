@@ -61,6 +61,8 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
     private final String WIDGETS = "WIDGETS_CARD";
     private final String GRAPH = "GRAPH_CARD";
     private final String STARTUP = "STARTUP_CARD";
+    private final String NOTIFICATIONS = "NOTIFICATIONS_CARD";
+    private final String MULTISERVER = "MULTISERVER_CARD";
     private final String FINISH = "FINISH";
 
     private final String TAG = Wizard.class.getSimpleName();
@@ -117,19 +119,18 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
         if (!mSharedPrefs.isCardCompleted(GRAPH)) cardsToGenerate.add(GRAPH);
         if (!mSharedPrefs.isCardCompleted(FILTER)) cardsToGenerate.add(FILTER);
         if (!mSharedPrefs.isCardCompleted(WIDGETS)) cardsToGenerate.add(WIDGETS);
+        if (!mSharedPrefs.isCardCompleted(NOTIFICATIONS)) cardsToGenerate.add(NOTIFICATIONS);
+        if (!mSharedPrefs.isCardCompleted(MULTISERVER)) cardsToGenerate.add(MULTISERVER);
 
         if (cardsToGenerate.size() <= 0) cardsToGenerate.add(FINISH);
         List<Card> cards = generateCards(cardsToGenerate);
-
         mListView.getAdapter().addAll(cards);
     }
 
     public List<Card> generateCards(List<String> cardsToGenerate) {
 
         List<Card> cards = new ArrayList<>();
-
         for (String card : cardsToGenerate) {
-
             if (card.equalsIgnoreCase(WELCOME)) {
                 cards.add((new Card.Builder(context)
                         .setTag(WELCOME)
@@ -247,6 +248,64 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_wear))
                         .setDescription(context.getString(R.string.wizard_wear_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
+            }
+            if (card.equalsIgnoreCase(NOTIFICATIONS)) {
+                cards.add(new Card.Builder(context)
+                        .setTag(NOTIFICATIONS)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_notifications))
+                        .setDescription(context.getString(R.string.wizard_notifications_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
+            }
+            if (card.equalsIgnoreCase(MULTISERVER)) {
+                cards.add(new Card.Builder(context)
+                        .setTag(MULTISERVER)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_multiserver))
+                        .setDescription(context.getString(R.string.wizard_multiserver_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))

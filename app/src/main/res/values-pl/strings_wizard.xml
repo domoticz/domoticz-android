@@ -8,6 +8,10 @@
   <string name="wizard_favorites_description">Możesz dodać urządzenia do Pulpitu, zapisując je jako ulubione. Długo kliknij element, aby zapisać je jako ulubione!</string>
   <string name="wizard_startup">Ekran startowy</string>
   <string name="wizard_startup_description">Możesz ustawić swój ekran startowy w ustawieniach!</string>
+  <string name="wizard_notifications">Setup Notifications</string>
+  <string name="wizard_notifications_description">You can now receive Notifications on your Android device! Change the way how notifications behave in the settings</string>
+  <string name="wizard_multiserver">Using Multiple Servers</string>
+  <string name="wizard_multiserver_description">You can configure multiple Domoticz servers in the settings.</string>
   <string name="wizard_geo">Geofencing</string>
   <string name="wizard_geo_description">Możesz ustawić swój ekran startowy w ustawieniach!</string>
   <string name="wizard_wear">Android Wear</string>
