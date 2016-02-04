@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/material_grey_300_"
@@ -11,11 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bordershadow"
-        android:descendantFocusability="blocksDescendants"
         android:foreground="?android:attr/selectableItemBackground"
+        android:longClickable="true"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
@@ -28,67 +26,91 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical" />
 
-        <RelativeLayout
-            android:layout_width="233dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/location_name"
-                style="@style/row_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                tools:text="Switch name" />
-
-            <TextView
-                android:id="@+id/location_address"
-                style="@style/row_body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/location_name"
-                tools:text="State 1, Ohio" />
-
-            <TextView
-                android:id="@+id/location_country"
-                style="@style/row_body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/location_address"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/location_address"
-                tools:text="United States" />
-
-            <TextView
-                android:id="@+id/location_radius"
-                style="@style/row_body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/location_country"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/location_country"
-                tools:text="Radius (meter): 120" />
-
-            <TextView
-                android:id="@+id/location_connectedSwitch"
-                style="@style/row_body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/location_radius" />
-
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/remove_button"
-            android:layout_width="60dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@drawable/button_status"
-            android:text="@string/delete_short"
-            android:textSize="10dp" />
+            android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/linearLayout4"
+                    android:layout_toStartOf="@+id/linearLayout4"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/location_name"
+                        style="@style/row_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="Switch name" />
+
+                    <TextView
+                        android:id="@+id/location_address"
+                        style="@style/row_body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/location_name"
+                        android:text="State 1, Ohio" />
+
+                    <TextView
+                        android:id="@+id/location_country"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/location_address"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/location_address"
+                        android:text="United States" />
+
+                    <TextView
+                        android:id="@+id/location_radius"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/location_country"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/location_country"
+                        android:text="Radius (meter): 120" />
+
+                    <TextView
+                        android:id="@+id/location_connectedSwitch"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_below="@+id/location_radius" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/remove_button"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/button_status"
+                        android:text="@string/button_state_on"
+                        android:textSize="10dp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
