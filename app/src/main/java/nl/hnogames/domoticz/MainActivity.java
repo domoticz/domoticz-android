@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mServerUtil = new ServerUtil(this);
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
         applyLanguage();
@@ -115,11 +114,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-            WidgetUtils.RefreshWidgets(this);
-
-            //noinspection ConstantConditions
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
 
             // Only start Geofences when not started
             // Geofences are already started on device boot up by the BootUpReceiver
@@ -134,12 +128,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
+            WidgetUtils.RefreshWidgets(this);
+
+            //noinspection ConstantConditions
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+            mServerUtil = new ServerUtil(this);
+            drawNavigationMenu();
+
             setupMobileDevice();
             checkDomoticzServerUpdate();
             saveServerConfigToSharedPreferences();
             appRate();
-            drawNavigationMenu();
-            updateDrawerItems();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -374,14 +375,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void appRate() {
-        AppRate.with(this)
-                .setInstallDays(0) // default 10, 0 means install day.
-                .setLaunchTimes(3) // default 10
-                .setRemindInterval(2) // default 1
-                .monitor();
+        if (!BuildConfig.DEBUG) {
+            AppRate.with(this)
+                    .setInstallDays(0) // default 10, 0 means install day.
+                    .setLaunchTimes(3) // default 10
+                    .setRemindInterval(2) // default 1
+                    .monitor();
 
-        // Show a dialog if meets conditions
-        AppRate.showRateDialogIfMeetsConditions(this);
+            // Show a dialog if meets conditions
+            AppRate.showRateDialogIfMeetsConditions(this);
+        }
     }
 
     private void setupMobileDevice() {
