@@ -76,6 +76,6 @@
         </LinearLayout>
     </LinearLayout>
 
-<include layout="@layout/log_buttons_row_default"/>
+<include layout="@layout/log_graph_buttons_row_default"/>
 
 </LinearLayout>

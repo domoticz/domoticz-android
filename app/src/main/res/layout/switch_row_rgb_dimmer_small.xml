@@ -73,15 +73,17 @@
 
             <Button
                 android:id="@+id/color_button"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
+                android:layout_weight=".25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="right"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/button_status"
-                android:text="@string/button_color" />
+                android:text="@string/button_color"
+                android:textSize="10dp" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

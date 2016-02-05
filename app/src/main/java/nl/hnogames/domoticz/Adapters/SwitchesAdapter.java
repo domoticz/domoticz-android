@@ -850,7 +850,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
 
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+            holder.buttonTimer.setVisibility(View.GONE);
 
         if (isRGB) {
             holder.buttonColor.setId(mDevicesInfo.getIdx());

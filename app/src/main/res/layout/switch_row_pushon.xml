@@ -100,31 +100,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/extra_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:visibility="gone"
-        android:paddingLeft="10dp">
 
-        <Button
-            android:id="@+id/log_button"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:background="@drawable/button_status"
-            android:text="@string/button_status_log"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/timer_button"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_status"
-            android:text="@string/button_status_timer"
-            android:textSize="10dp" />
-
-    </LinearLayout>
+    <include layout="@layout/log_timer_button_row_default"/>
 </LinearLayout>
