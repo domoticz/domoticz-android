@@ -170,6 +170,25 @@ public class Domoticz {
         return result;
     }
 
+    public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
+        HashMap<String, String> stringHashMap = new HashMap<>();
+        stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
+        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
+
+        if(validatePorts) {
+            stringHashMap.put("Domoticz local port", server.getLocalServerPort());
+            stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
+        }
+        for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
+
+            if (UsefulBits.isEmpty(entry.getValue())) {
+                return (entry.getKey() + " is empty");
+            }
+
+        }
+        return null;
+    }
+
     public boolean isUrlValid(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();

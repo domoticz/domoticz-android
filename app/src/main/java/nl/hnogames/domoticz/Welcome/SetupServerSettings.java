@@ -129,8 +129,7 @@ public class SetupServerSettings extends Fragment {
         final LinearLayout localServerSettingsLayout = (LinearLayout)
                 v.findViewById(R.id.local_server_settings);
         localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
-        localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
-
+        localServer_switch.setChecked(false);//default setting
         localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -141,11 +140,8 @@ public class SetupServerSettings extends Fragment {
 
         final LinearLayout advancedSettings_layout = (LinearLayout)
                 v.findViewById(R.id.advancedSettings_layout);
-
         advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
-
-        if (mSharedPrefs.isAdvancedSettingsEnabled())
-            advancedSettings_layout.setVisibility(View.VISIBLE);
+        advancedSettings_layout.setVisibility(View.INVISIBLE);
         advancedSettings_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -155,9 +151,8 @@ public class SetupServerSettings extends Fragment {
                 else advancedSettings_layout.setVisibility(View.GONE);
             }
         });
-
-        advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
-
+        advancedSettings_layout.setVisibility(View.GONE);
+        advancedSettings_switch.setChecked(false);
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -168,7 +163,6 @@ public class SetupServerSettings extends Fragment {
                 }
             }
         });
-
         cbShowPasswordLocal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -191,8 +185,9 @@ public class SetupServerSettings extends Fragment {
     private void checkConnectionData() {
         buildServerInfo();
         final Domoticz mDomoticz = new Domoticz(getActivity());
-        if (!mDomoticz.isConnectionDataComplete(newServer)) {
-            showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
+        String status = mDomoticz.isConnectionDataComplete(newServer, false);
+        if (!UsefulBits.isEmpty(status)) {
+            showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(newServer)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"

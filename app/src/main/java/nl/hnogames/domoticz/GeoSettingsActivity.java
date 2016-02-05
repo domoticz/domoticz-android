@@ -57,6 +57,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
@@ -243,7 +244,9 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+        animationAdapter.setAbsListView(listView);
+        listView.setAdapter(animationAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
