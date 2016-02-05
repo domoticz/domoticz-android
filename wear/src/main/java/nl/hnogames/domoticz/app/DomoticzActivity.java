@@ -44,7 +44,7 @@ public class DomoticzActivity extends Activity implements
     public final String SEND_DATA = "/send_data";
     public final String RECEIVE_DATA = "/receive_data";
     public final String SEND_ERROR = "/error";
-    public final String ERROR_NO_SWITCHES = "NO_SWTICHES";
+    public final String ERROR_NO_SWITCHES = "NO_SWITCHES";
     public final String PREF_SWITCH = "SWITCHES";
     public final String SEND_SWITCH = "/send_switch";
     public GoogleApiClient mApiClient;

@@ -115,6 +115,7 @@ public class WearActivity extends DomoticzActivity
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
+        Log.d(TAG, "Receive: " + messageEvent.getPath() + " - " + messageEvent.getData());
         if (messageEvent.getPath().equalsIgnoreCase(SEND_DATA)) {
             String[] rawData = new Gson().fromJson(new String(messageEvent.getData()), String[].class);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
