@@ -33,4 +33,14 @@
         android:text="@string/button_status_timer"
         android:textSize="10dp" />
 
+    <Button
+        android:id="@+id/notifications_button"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight=".25"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/button_white_status"
+        android:text="@string/button_status_notifications"
+        android:textSize="10dp" />
+
 </LinearLayout>

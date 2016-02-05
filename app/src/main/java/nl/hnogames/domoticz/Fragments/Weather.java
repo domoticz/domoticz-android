@@ -23,9 +23,9 @@ import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.AnimationUtil;
 import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
+import nl.hnogames.domoticz.Utils.AnimationUtil;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Weather extends DomoticzFragment implements DomoticzFragmentListener, WeatherClickListener {

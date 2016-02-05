@@ -221,6 +221,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
 
         return row;
     }
@@ -237,6 +238,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
 
         return row;
     }
@@ -249,6 +251,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonOn = (Button) row.findViewById(R.id.on_button);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
 
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
@@ -266,6 +269,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonOn = (Button) row.findViewById(R.id.on_button);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
 
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
@@ -309,6 +313,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
 
         if (isRGB)
             holder.buttonColor = (Button) row.findViewById(R.id.color_button);
@@ -330,6 +335,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
 
         return row;
     }
@@ -497,6 +503,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 handleLogButtonClick(v.getId());
             }
         });
+
         holder.buttonTimer.setId(mDevicesInfo.getIdx());
         holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -504,9 +511,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 handleTimerButtonClick(v.getId());
             }
         });
-
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
 
         if (!mDevicesInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -576,8 +592,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
 
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+            holder.buttonTimer.setVisibility(View.GONE);
 
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -643,8 +669,19 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             });
 
             if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-                holder.buttonTimer.setVisibility(View.INVISIBLE);
+                holder.buttonTimer.setVisibility(View.GONE);
         }
+
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -862,6 +899,18 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
+
+
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
                 mDevicesInfo.getSwitchType(),
@@ -968,7 +1017,19 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
 
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+            holder.buttonTimer.setVisibility(View.GONE);
+
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
+
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -1022,7 +1083,17 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
 
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -1065,6 +1136,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         listener.onTimerButtonClick(idx);
     }
 
+    private void handleNotificationButtonClick(int idx) {
+        listener.onNotificationButtonClick(idx);
+    }
+
     private void handleBlindsClick(int idx, int action) {
         listener.onBlindClick(idx, action);
     }
@@ -1095,7 +1170,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageButton buttonUp, buttonDown, buttonStop;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetState;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetState, buttonNotifications;
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;

@@ -22,31 +22,12 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-public interface switchesClickListener {
+import java.util.ArrayList;
 
-    void onSwitchClick(int idx, boolean action);
+import nl.hnogames.domoticz.Containers.NotificationInfo;
 
-    void onBlindClick(int idx, int action);
+public interface NotificationReceiver {
+    void onReceiveNotifications(ArrayList<NotificationInfo> mNotificationInfos);
 
-    void onDimmerChange(int idx, int value, boolean selector);
-
-    void onButtonClick(int idx, boolean action);
-
-    void onLogButtonClick(int idx);
-
-    void onColorButtonClick(int idx);
-
-    void onTimerButtonClick(int idx);
-
-    void onNotificationButtonClick(int idx);
-
-    void onThermostatClick(int idx);
-
-    void onSetTemperatureClick(int idx);
-
-    void onSecurityPanelButtonClick(int idx);
-
-    void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
-
-    void onSelectorDimmerClick(int idx, String[] levelNames);
+    void onError(Exception error);
 }

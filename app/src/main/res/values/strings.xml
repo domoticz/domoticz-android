@@ -19,6 +19,7 @@
     <string name="button_status_month">Month</string>
     <string name="button_status_year">Year</string>
     <string name="button_status_timer">Timer</string>
+    <string name="button_status_notifications">Notifications</string>
     <string name="button_color">Color</string>
     <string name="button_arm">Arm</string>
     <string name="button_disarm">Disarm</string>

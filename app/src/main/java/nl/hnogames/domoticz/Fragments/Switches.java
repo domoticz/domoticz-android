@@ -43,17 +43,20 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.NotificationInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
+import nl.hnogames.domoticz.UI.NotificationInfoDialog;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
@@ -306,6 +309,18 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         }
     }
 
+    private void showNotificationDialog(ArrayList<NotificationInfo> notificationInfo) {
+        if (notificationInfo.size() <= 0) {
+            Toast.makeText(getContext(), "No notifications found.", Toast.LENGTH_LONG).show();
+        } else {
+            NotificationInfoDialog infoDialog = new NotificationInfoDialog(
+                    getActivity(),
+                    notificationInfo);
+            infoDialog.show();
+        }
+    }
+
+
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
         if (busy)
             return;
@@ -429,6 +444,22 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             public void onReceiveSwitchTimers(ArrayList<SwitchTimerInfo> switchTimers) {
                 if (switchTimers != null)
                     showTimerDialog(switchTimers);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_timer), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onNotificationButtonClick(int idx) {
+        mDomoticz.getNotifications(idx, new NotificationReceiver() {
+            @Override
+            public void onReceiveNotifications(ArrayList<NotificationInfo> mNotificationInfos) {
+                if (mNotificationInfos != null)
+                    showNotificationDialog(mNotificationInfos);
             }
 
             @Override

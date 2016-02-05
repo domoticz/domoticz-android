@@ -107,6 +107,7 @@ public class SharedPrefUtil {
     public boolean isNotificationsEnabled() {
         return prefs.getBoolean(PREF_ENABLE_NOTIFICATIONS, true);
     }
+
     public boolean OverWriteNotifications() {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
