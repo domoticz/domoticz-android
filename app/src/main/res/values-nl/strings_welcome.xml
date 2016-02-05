@@ -28,9 +28,9 @@
   <string name="welcome_remote_server_username">Gebruikersnaam</string>
   <string name="welcome_remote_server_password">Wachtwoord</string>
   <string name="welcome_remote_server_directory">Map</string>
-  <string name="remote">Remote</string>
-  <string name="local">Local</string>
-  <string name="servername">Server Name</string>
+  <string name="remote">Extern</string>
+  <string name="local">Lokaal</string>
+  <string name="servername">Servernaam</string>
   <string name="welcome_local_server_used_switch_title">Ander serveradres</string>
   <string name="welcome_local_server_used_switch_summary">Gebruik verschillende serveradressen voor uw thuisnetwerk</string>
   <string name="welcome_advancedSettings">Geavanceerde serverinstellingen</string>

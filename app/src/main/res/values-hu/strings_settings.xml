@@ -28,8 +28,8 @@
   <string name="geofencing_configure">Geofencing beállítása</string>
   <string name="settings_imported">Beállítások importálva, indítsa újra a Domoticzot</string>
   <string name="settings_import_failed">A beállítások importálása nem sikerült</string>
-  <string name="settings_exported">Settings exported, please restart Domoticz</string>
-  <string name="settings_export_failed">Failed to export Settings</string>
+  <string name="settings_exported">Beállítások exportálva, indítsa újra az Domoticzot</string>
+  <string name="settings_export_failed">A beállítások exportálása nem sikerült</string>
   <string name="server_settings">Szerver kapcsolat beállításai</string>
   <string name="title_activity_server_settings">Szerver beállítások</string>
   <string name="multi_server">Több szerver</string>
@@ -41,8 +41,10 @@
   <string name="notification_settings_push">Push your registration id to Domoticz</string>
   <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
   <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
-  <string name="enable_notifications_title">Enable Notifications</string>
-  <string name="enable_notifications">Enable notifications on this device</string>
+  <string name="overwrite_notifications_title">Overwrite Notifications</string>
+  <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
+  <string name="enable_notifications_title">Értesítések engedélyezése</string>
+  <string name="enable_notifications">Engedélyezi az értesítéseket ezen az eszközön</string>
   <string name="notification_screen_title">Értesítési beálllítások</string>
   <string name="notification_vibrate_title">Rezgés</string>
   <string name="notification_vibrate_on">Rezgés értesítésnél</string>
@@ -81,5 +83,5 @@
   <string name="update_not_started_unknown_error">A frissítés egy ismeretlen hiba miatt nem indult</string>
   <string name="server_update_not_available">Nincs elérhető szerverfrissítés</string>
   <string name="click_to_update_server">Kattintson ide a kiszolgáló frissítéséhez</string>
-  <string name="debug_test_text">Debugging test</string>
+  <string name="debug_test_text">Hibakeresés teszt</string>
 </resources>

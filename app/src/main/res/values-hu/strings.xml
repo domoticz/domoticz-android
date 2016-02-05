@@ -11,10 +11,11 @@
   <string name="button_state_off">Ki</string>
   <string name="button_status_log">Napló</string>
   <string name="button_status_day">Nap</string>
-  <string name="button_status_week">Week</string>
+  <string name="button_status_week">Hét</string>
   <string name="button_status_month">Hónap</string>
   <string name="button_status_year">Év</string>
   <string name="button_status_timer">Időzítő</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Szín</string>
   <string name="button_arm">Élesít</string>
   <string name="button_disarm">Hatástalanít</string>

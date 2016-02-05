@@ -15,6 +15,7 @@
   <string name="button_status_month">Månad</string>
   <string name="button_status_year">År</string>
   <string name="button_status_timer">Timer</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Färg</string>
   <string name="button_arm">Aktivera</string>
   <string name="button_disarm">Avaktivera</string>

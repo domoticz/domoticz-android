@@ -11,10 +11,11 @@
   <string name="button_state_off">Desligar</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dia</string>
-  <string name="button_status_week">Week</string>
+  <string name="button_status_week">Semana</string>
   <string name="button_status_month">Mês</string>
   <string name="button_status_year">Ano</string>
   <string name="button_status_timer">Temporizador</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Cor</string>
   <string name="button_arm">Armar</string>
   <string name="button_disarm">Desarmar</string>
@@ -49,9 +50,9 @@
   <string name="no_network_available">Erro: Nenhuma rede conexão disponível</string>
   <string name="oops">UPSS!</string>
   <string name="to">"para"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Re-entrar</string>
+  <string name="undo">Desfazer</string>
+  <string name="something_deleted">%1$s excluído</string>
   <string name="switch_on">Ligando o interruptor</string>
   <string name="switch_off">Desligando o interruptor</string>
   <string name="blind_up">Abrindo persiana</string>
@@ -68,9 +69,9 @@
   <string name="row_icon_description">linha do icon</string>
   <string name="error_image_description">Imagem de erro</string>
   <string name="white">Branco</string>
-  <string name="refresh">Refresh</string>
-  <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
-  <string name="cant_remove_default_server">Can\'t remove the default server</string>
+  <string name="refresh">Atualizar</string>
+  <string name="domoticz_logo">Logotipo Domoticz</string>
+  <string name="this_take_minutes">Isto pode levar vários minutos.</string>
+  <string name="continue_question">Continuar?</string>
+  <string name="cant_remove_default_server">Não é possível remover o servidor padrão</string>
 </resources>

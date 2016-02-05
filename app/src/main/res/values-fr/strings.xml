@@ -11,10 +11,11 @@
   <string name="button_state_off">Off</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Jour</string>
-  <string name="button_status_week">Week</string>
+  <string name="button_status_week">Semaine</string>
   <string name="button_status_month">Mois</string>
   <string name="button_status_year">Année</string>
   <string name="button_status_timer">Planning</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Couleur</string>
   <string name="button_arm">Armer</string>
   <string name="button_disarm">Désarmer</string>
