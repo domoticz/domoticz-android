@@ -58,7 +58,7 @@ public class NotificationUtil {
                             .setGroup(GROUP_KEY_NOTIFICATIONS)
                             .setAutoCancel(true);
 
-            if(!prefUtil.OverWriteNotifications())
+            if (!prefUtil.OverWriteNotifications())
                 NOTIFICATION_ID = new Random().nextInt(9999);
 
             if (prefUtil.getNotificationVibrate())

@@ -51,6 +51,7 @@ import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
+import nl.hnogames.domoticz.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
@@ -402,6 +403,10 @@ public class Domoticz {
 
             case Json.Url.Request.SET_DEVICE_USED:
                 url = Url.Device.SET_USED;
+                break;
+
+            case Json.Url.Request.NOTIFICATIONS:
+                url = Url.Notification.NOTIFICATION;
                 break;
 
             default:
@@ -822,6 +827,17 @@ public class Domoticz {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.SWITCHTIMER) + String.valueOf(idx);
+
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    public void getNotifications(int idx, NotificationReceiver notificationReceiver) {
+        NotificationsParser parser = new NotificationsParser(notificationReceiver);
+        logger("for idx: " + String.valueOf(idx));
+        String url = constructGetUrl(Json.Url.Request.NOTIFICATIONS) + String.valueOf(idx);
 
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -1430,6 +1446,7 @@ public class Domoticz {
                 int UPDATE_DOMOTICZ_SERVER = 28;
                 int ADD_MOBILE_DEVICE = 29;
                 int CLEAN_MOBILE_DEVICE = 30;
+                int NOTIFICATIONS = 31;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1603,6 +1620,11 @@ public class Domoticz {
 
             String GET_LOG = "/json.htm?type=command&param=getlog";
             String GET_FROMLASTLOGTIME = "/json.htm?type=command&param=getlog&lastlogtime=";
+        }
+
+        @SuppressWarnings({"unused", "SpellCheckingInspection"})
+        interface Notification {
+            String NOTIFICATION = "/json.htm?type=notifications&idx=";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})

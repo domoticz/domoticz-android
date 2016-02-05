@@ -68,6 +68,7 @@ public class DevicesInfo implements Comparable {
     private String Image;
     private String Data;
     private String Timers;
+    private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
 
@@ -183,6 +184,8 @@ public class DevicesInfo implements Comparable {
             SubType = row.getString("SubType");
         if (row.has("Timers"))
             timers = row.getBoolean("Timers");
+        if (row.has("Notifications"))
+            Notifications = row.getBoolean("Notifications");
 
         idx = row.getInt("idx");
 
@@ -440,5 +443,13 @@ public class DevicesInfo implements Comparable {
     @Override
     public int compareTo(Object another) {
         return this.getName().compareTo(((DevicesInfo) another).getName());
+    }
+
+    public boolean hasNotifications() {
+        return Notifications;
+    }
+
+    public void setNotifications(boolean notifications) {
+        Notifications = notifications;
     }
 }

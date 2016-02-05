@@ -530,6 +530,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
+    public void onNotificationButtonClick(int idx) {
+    }
+
+    @Override
     public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
         final DevicesInfo tempUtil = getDevice(idx);
