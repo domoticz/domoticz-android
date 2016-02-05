@@ -15,6 +15,7 @@
   <string name="button_status_month">Месяц</string>
   <string name="button_status_year">Год</string>
   <string name="button_status_timer">Таймер</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Цвет</string>
   <string name="button_arm">Включить</string>
   <string name="button_disarm">Выключить</string>

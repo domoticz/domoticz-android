@@ -8,5 +8,5 @@
   <string name="security_arm_away">Távolléti élesítés</string>
   <string name="security_wrong_code">Rossz kódot adott meg!</string>
   <string name="security_generic_error">Nem lehet megváltoztatni a biztonsági állapotot.</string>
-  <string name="show_password">Show password</string>
+  <string name="show_password">Jelszó megjelenítése</string>
 </resources>

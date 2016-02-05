@@ -33,6 +33,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.ServerAdapter;
@@ -61,14 +63,16 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.server_settings);
 
-        mServerUtil = new ServerUtil(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         createListView();
     }
 
     private void createListView() {
+        mServerUtil = new ServerUtil(this);
         ArrayList<ServerInfo> mServerList = mServerUtil.getServerList();
+
+
         adapter = new ServerAdapter(this, mServerList, new ServerClickListener() {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
@@ -93,11 +97,13 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         });
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+        animationAdapter.setAbsListView(listView);
+        listView.setAdapter(animationAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                //edit function to be build
+                showEditServerActivity();
             }
         });
     }
@@ -157,11 +163,14 @@ public class ServerListSettingsActivity extends AppCompatActivity {
     }
 
     public void showAddServerActivity() {
-        //TODO: Add Server Activity
         Intent i = new Intent(ServerListSettingsActivity.this, ServerSettingsActivity.class);
         //noinspection SpellCheckingInspection
         i.putExtra("ADDSERVER", true);
         startActivityForResult(i, REQUEST_ADD_SERVER);
+    }
+
+    public void showEditServerActivity() {
+
     }
 
     private void showSimpleSnackbar(String message) {

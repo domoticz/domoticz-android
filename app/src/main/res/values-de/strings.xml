@@ -15,6 +15,7 @@
   <string name="button_status_month">Monat</string>
   <string name="button_status_year">Jahr</string>
   <string name="button_status_timer">Timer</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Farbe</string>
   <string name="button_arm">Scharfstellen</string>
   <string name="button_disarm">Entschärfen</string>

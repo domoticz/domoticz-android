@@ -41,6 +41,8 @@
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>
   <string name="notification_settings_pushed">Twój identyfikator rejestracji jest teraz zapisany w Domoticz</string>
   <string name="notification_settings_push_failed">Nie można zapisać Twojego identyfikatora rejestracji w Domoticz, prosimy spróbować ponownie później.</string>
+  <string name="overwrite_notifications_title">Overwrite Notifications</string>
+  <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
   <string name="enable_notifications_title">Włącz powiadomienia</string>
   <string name="enable_notifications">Włącz powiadomienia na urządzeniu</string>
   <string name="notification_screen_title">Ustawienia powiadomień</string>

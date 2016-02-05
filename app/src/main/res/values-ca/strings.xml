@@ -15,6 +15,7 @@
   <string name="button_status_month">Mes</string>
   <string name="button_status_year">Any</string>
   <string name="button_status_timer">Temporitzador</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Color</string>
   <string name="button_arm">Activa</string>
   <string name="button_disarm">Desactiva</string>

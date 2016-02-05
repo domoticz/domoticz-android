@@ -9,9 +9,9 @@
   <string name="wizard_startup">Kezdőképernyő</string>
   <string name="wizard_startup_description">Kezdőképernyőjét a Beállításokban szabhatja saját ízlésére!</string>
   <string name="wizard_notifications">Értesítések beállítása</string>
-  <string name="wizard_notifications_description">You can now receive Notifications on your Android device! Change the way how notifications behave in the settings</string>
-  <string name="wizard_multiserver">Using Multiple Servers</string>
-  <string name="wizard_multiserver_description">You can configure multiple Domoticz servers in the settings.</string>
+  <string name="wizard_notifications_description">Mostantól értesítést kaphat Android eszközére! A Beállításokban testreszabhatja az értesítéseket.</string>
+  <string name="wizard_multiserver">Több kiszolgáló használata</string>
+  <string name="wizard_multiserver_description">A Beállításokban több Domoticz szervert is konfigurálhat.</string>
   <string name="wizard_geo">Geofencing</string>
   <string name="wizard_geo_description">Kezdőképernyőjét a Beállításokban szabhatja saját ízlésére!</string>
   <string name="wizard_wear">Android Wear</string>
