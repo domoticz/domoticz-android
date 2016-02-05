@@ -18,8 +18,8 @@
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:background="@drawable/button_white_status"
-        android:text="@string/button_status_day"
         android:layout_weight=".25"
+        android:text="@string/button_status_day"
         android:textSize="10dp" />
 
     <Button

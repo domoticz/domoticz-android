@@ -1341,7 +1341,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         });
 
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+            holder.buttonTimer.setVisibility(View.GONE);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),

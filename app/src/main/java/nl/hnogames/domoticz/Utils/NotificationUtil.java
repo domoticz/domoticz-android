@@ -30,27 +30,36 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import java.util.Random;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 
 public class NotificationUtil {
 
+    final static String GROUP_KEY_NOTIFICATIONS = "domoticz_notifications";
+
     public static void sendSimpleNotification(String title, String text, Context context) {
         if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
             return;
 
+        int NOTIFICATION_ID = 12345;
         SharedPrefUtil prefUtil = new SharedPrefUtil(context);
-
         if (prefUtil.isNotificationsEnabled() &&
                 !prefUtil.getSuppressedNotifications().contains(text)) {
+
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.domoticz_white)
                             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
                             .setContentTitle(title)
                             .setContentText(text)
+                            .setGroupSummary(true)
+                            .setGroup(GROUP_KEY_NOTIFICATIONS)
                             .setAutoCancel(true);
-            int NOTIFICATION_ID = 12345;
+
+            if(!prefUtil.OverWriteNotifications())
+                NOTIFICATION_ID = new Random().nextInt(9999);
 
             if (prefUtil.getNotificationVibrate())
                 builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);

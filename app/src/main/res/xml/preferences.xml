@@ -111,11 +111,13 @@
                 android:title="@string/suppress_notifications_title"
                 customPreference:selectAllValuesByDefault="false" />
 
-            <Preference
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="overwriteNotifications"
                 android:dependency="enableNotifications"
-                android:key="notification_registration_id"
-                android:summary="@string/notification_settings_push"
-                android:title="@string/notification_settings_id" />
+                android:summaryOff="@string/overwrite_notifications"
+                android:summaryOn="@string/overwrite_notifications"
+                android:title="@string/overwrite_notifications_title" />
 
             <SwitchPreference
                 android:defaultValue="true"
@@ -133,6 +135,12 @@
                 android:showSilent="true"
                 android:summary="@string/notification_sound_summary"
                 android:title="@string/notification_sound_title" />
+
+            <Preference
+                android:dependency="enableNotifications"
+                android:key="notification_registration_id"
+                android:summary="@string/notification_settings_push"
+                android:title="@string/notification_settings_id" />
         </PreferenceScreen>
     </PreferenceCategory>
 

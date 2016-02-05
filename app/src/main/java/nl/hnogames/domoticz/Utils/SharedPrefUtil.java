@@ -84,6 +84,7 @@ public class SharedPrefUtil {
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
     private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
+    private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
 
@@ -105,6 +106,9 @@ public class SharedPrefUtil {
 
     public boolean isNotificationsEnabled() {
         return prefs.getBoolean(PREF_ENABLE_NOTIFICATIONS, true);
+    }
+    public boolean OverWriteNotifications() {
+        return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
     public void completeCard(String cardTag) {
