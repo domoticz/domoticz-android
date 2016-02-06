@@ -25,54 +25,36 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
+            android:paddingEnd="5dp"
             android:paddingRight="5dp"
             android:src="@drawable/clock48" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/weather_name"
+                style="@style/row_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:text="Utility name" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/linearLayout4"
-                    android:layout_toStartOf="@+id/linearLayout4"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/weather_hardware"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Hardware" />
 
-                    <TextView
-                        android:id="@+id/weather_name"
-                        style="@style/row_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        tools:text="Utility name" />
+            <TextView
+                android:id="@+id/weather_data"
+                style="@style/row_body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C"/>
 
-                    <TextView
-                        android:id="@+id/weather_hardware"
-                        style="@style/row_body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/weather_name"
-                        tools:text="Hardware" />
-
-                    <TextView
-                        android:id="@+id/weather_data"
-                        style="@style/row_body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/weather_hardware" />
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

@@ -96,8 +96,8 @@ public class GeofenceTransitionsIntentService extends IntentService
                         NotificationUtil.sendSimpleNotification(text,
                                 getString(R.string.geofence_location_entering_text), this);
 
-                        if (locationFound.getSwitchidx() > 0) {
-                            handleSwitch(locationFound.getSwitchidx(), locationFound.getSwitchPassword(), true);
+                        if (locationFound.getSwitchIdx() > 0) {
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true);
                         }
                     }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
@@ -113,8 +113,8 @@ public class GeofenceTransitionsIntentService extends IntentService
                         NotificationUtil.sendSimpleNotification(text,
                                 getString(R.string.geofence_location_leaving_text), this);
 
-                        if (locationFound.getSwitchidx() > 0)
-                            handleSwitch(locationFound.getSwitchidx(), locationFound.getSwitchPassword(), false);
+                        if (locationFound.getSwitchIdx() > 0)
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false);
                     }
                 }
             }

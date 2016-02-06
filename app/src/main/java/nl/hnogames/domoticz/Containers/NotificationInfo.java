@@ -28,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class NotificationInfo {
-    private JSONObject jsonObject;
     private int idx;
     private String ActiveSystems;
     private String Params;
@@ -37,7 +36,6 @@ public class NotificationInfo {
     private boolean SendAlways;
 
     public NotificationInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
         if (row.has("ActiveSystems"))
             setActiveSystems(row.getString("ActiveSystems"));
         if (row.has("Params"))

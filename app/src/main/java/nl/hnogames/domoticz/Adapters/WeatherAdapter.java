@@ -41,10 +41,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WeatherAdapter extends BaseAdapter implements Filterable {
@@ -101,6 +103,8 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         int layoutResourceId;
 
+        ConfigInfo mConfigInfo = new SharedPrefUtil(context).getConfig();
+
         WeatherInfo mWeatherInfo = filteredData.get(position);
 
         //if (convertView == null) {
@@ -125,27 +129,38 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
 
         holder.data.setEllipsize(TextUtils.TruncateAt.END);
         holder.data.setMaxLines(3);
-        holder.data.append(mWeatherInfo.getData());
+        String data = mWeatherInfo.getData();
+        String direction = mWeatherInfo.getDirection();
+        String directionStr = mWeatherInfo.getDirectionStr();
+        String type = mWeatherInfo.getType();
+        if (mWeatherInfo.getType().equals("Wind")) {
+            holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
+        }
+        else {
+            holder.data.append(mWeatherInfo.getData());
+        }
 
-        if (!UsefulBits.isEmpty(mWeatherInfo.getRain()))
-            holder.data.setText(context.getString(R.string.rain) + ": " + mWeatherInfo.getRain());
+        String text;
+
+        if (!UsefulBits.isEmpty(mWeatherInfo.getRain())) {
+            text = context.getString(R.string.rain) + ": " + mWeatherInfo.getRain();
+            holder.data.setText(text);
+        }
         if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
             holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
 
         if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
             holder.data.append(", " + mWeatherInfo.getForecastStr());
         if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
-            holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed());
+            holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + mConfigInfo.getWindSign());
         if (mWeatherInfo.getDewPoint() > 0)
-            holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint());
+            holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + mConfigInfo.getTempSign());
         if (mWeatherInfo.getTemp() > 0)
-            holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp());
+            holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + mConfigInfo.getTempSign());
         if (mWeatherInfo.getBarometer() > 0)
             holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
         if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
-            holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill());
-        if (!UsefulBits.isEmpty(mWeatherInfo.getDirectionStr()))
-            holder.data.append(", " + context.getString(R.string.direction) + ": " + mWeatherInfo.getDirectionStr());
+            holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + mConfigInfo.getTempSign());
         if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
             holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
 

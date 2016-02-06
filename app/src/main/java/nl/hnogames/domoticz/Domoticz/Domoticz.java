@@ -1016,7 +1016,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
-    public void GetConfig(ConfigReceiver receiver) {
+    public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
         String url = constructGetUrl(Json.Url.Request.CONFIG);
         RequestUtil.makeJsonGetRequest(parser,

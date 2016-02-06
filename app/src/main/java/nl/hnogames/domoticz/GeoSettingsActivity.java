@@ -198,7 +198,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
             public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
-                selectedLocation.setSwitchidx(selectedSwitchIDX);
+                selectedLocation.setSwitchIdx(selectedSwitchIDX);
                 selectedLocation.setSwitchPassword(selectedSwitchPassword);
                 mSharedPrefs.updateLocation(selectedLocation);
                 adapter.data = mSharedPrefs.getLocations();
@@ -228,7 +228,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         adapter = new LocationAdapter(this, locations, new LocationClickListener() {
             @Override
             public boolean onEnableClick(LocationInfo locationInfo, boolean checked) {
-                if (locationInfo.getSwitchidx() <= 0 && checked)
+                if (locationInfo.getSwitchIdx() <= 0 && checked)
                     return showNoDeviceAttachedDialog(locationInfo);
                 else {
                     locationInfo.setEnabled(checked);
