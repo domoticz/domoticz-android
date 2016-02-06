@@ -26,6 +26,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EventInfo {
+    @SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal"})
+    private final String EVENT_STATUS = "eventstatus";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String NAME = "name";
     JSONObject jsonObject;
 
     int id;
@@ -34,10 +38,10 @@ public class EventInfo {
 
     public EventInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
-        if (row.has("name"))
-            Name = row.getString("name");
-        if (row.has("eventstatus"))
-            Status = row.getString("eventstatus");
+        if (row.has(NAME))
+            Name = row.getString(NAME);
+        if (row.has(EVENT_STATUS))
+            Status = row.getString(EVENT_STATUS);
         id = row.getInt("id");
     }
 
@@ -50,10 +54,7 @@ public class EventInfo {
     }
 
     public boolean getStatusBoolean() {
-        if (getStatus().equals("1"))
-            return true;
-        else
-            return false;
+        return getStatus().equals("1");
     }
 
     public int getId() {

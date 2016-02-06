@@ -64,11 +64,11 @@ public class LocationInfo {
         return id;
     }
 
-    public int getSwitchidx() {
+    public int getSwitchIdx() {
         return switchIdx;
     }
 
-    public void setSwitchidx(int idx) {
+    public void setSwitchIdx(int idx) {
         switchIdx = idx;
     }
 

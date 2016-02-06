@@ -88,14 +88,11 @@ public class DevicesInfo implements Comparable {
         }
 
         try {
-            if (row.has("CustomImage")) {
-                if (row.getInt("CustomImage") > 0)
-                    useCustomImage = true;
-                else
-                    useCustomImage = false;
-            } else
+            if (row.has("CustomImage"))
+                useCustomImage = row.getInt("CustomImage") > 0;
+            else
                 useCustomImage = false;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             useCustomImage = false;
         }
 
@@ -390,7 +387,7 @@ public class DevicesInfo implements Comparable {
     }
 
     public Date getLastUpdateDateTime() {
-        //2016-01-30 12:48:37
+        //Time format: 2016-01-30 12:48:37
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return format.parse(LastUpdate);

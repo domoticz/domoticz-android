@@ -505,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveServerConfigToSharedPreferences() {
         // Get Domoticz server configuration
-        domoticz.GetConfig(new ConfigReceiver() {
+        domoticz.getConfig(new ConfigReceiver() {
             @Override
             public void onReceiveConfig(ConfigInfo settings) {
                 if (settings != null)
