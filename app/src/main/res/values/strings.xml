@@ -15,9 +15,11 @@
     <string name="button_state_off">Off</string>
     <string name="button_status_log">Log</string>
     <string name="button_status_day">Day</string>
+    <string name="button_status_week">Week</string>
     <string name="button_status_month">Month</string>
     <string name="button_status_year">Year</string>
     <string name="button_status_timer">Timer</string>
+    <string name="button_status_notifications">Notifications</string>
     <string name="button_color">Color</string>
     <string name="button_arm">Arm</string>
     <string name="button_disarm">Disarm</string>
@@ -56,6 +58,9 @@
     <string name="no_network_available">Error: No network connection available</string>
     <string name="oops">OOPS!</string>
     <string name="to">"to"</string>
+    <string name="retry">Retry</string>
+    <string name="undo">Undo</string>
+    <string name="something_deleted">%1$s deleted</string>
 
     <string name="switch_on">Turning switch on</string>
     <string name="switch_off">Turning switch off</string>
@@ -70,7 +75,6 @@
     <string name="filterOn_all">All devices</string>
     <string name="Filter">Filter</string>
     <string name="filter_devices">Filter devices</string>
-    <string name="filtered_on">Filter on</string>
 
     <string name="choose_color">Choose color</string>
 
@@ -80,4 +84,9 @@
     <string name="error_image_description">Error image</string>
 
     <string name="white">White</string>
+    <string name="refresh">Refresh</string>
+    <string name="domoticz_logo">Domoticz logo</string>
+    <string name="this_take_minutes">This could take several minutes.</string>
+    <string name="continue_question">Continue?</string>
+    <string name="cant_remove_default_server">Can\'t remove the default server</string>
 </resources>

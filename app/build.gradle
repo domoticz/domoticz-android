@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 67
-        versionName '0.1.221'
+        versionCode 77
+        versionName '0.1.230'
         multiDexEnabled true
     }
 
@@ -29,6 +29,7 @@ android {
             applicationId 'nl.hnogames.domoticz'
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
@@ -36,6 +37,7 @@ android {
             applicationId 'nl.hnogames.domoticz.premium'
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
@@ -66,7 +68,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.code.gson:gson:1.7.2'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-wearable:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
@@ -87,7 +89,7 @@ dependencies {
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.dexafree:materiallist:3.1.2'
     compile 'com.github.hotchemi:android-rate:0.5.6'
-    compile 'com.github.Triggertrap:SeekArc:+'
+    compile 'com.github.Triggertrap:SeekArc:v1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'

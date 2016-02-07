@@ -79,7 +79,8 @@ public class GeoUtil {
         Address mAddress = null;
 
         try {
-            addressList = mGeocoder.getFromLocation(mLocation.getLatitude(), mLocation.getLongitude(), 5);
+            addressList = mGeocoder.getFromLocation(mLocation.getLatitude(),
+                    mLocation.getLongitude(), 5);
 
             if (addressList == null) {
                 return null;
@@ -94,9 +95,7 @@ public class GeoUtil {
     }
 
     /**
-     *
      * @param locationInfo The location information
-     *
      * @return first address which matches latitude and longitude in the given location info
      */
     public Address getAddressFromLocationInfo(LocationInfo locationInfo) {

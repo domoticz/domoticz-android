@@ -22,22 +22,29 @@
 
 package nl.hnogames.domoticz.Containers;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class DevicesInfo implements Comparable {
 
-    private final String UNKNOWN = "Unknown";
+    @SuppressWarnings("unused")
     private final String TAG = DevicesInfo.class.getSimpleName();
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String UNKNOWN = "Unknown";
     private JSONObject jsonObject;
     private boolean timers;
     private int idx;
     private String Name;
+    private String Description;
     private String LastUpdate;
+    private double temp;
     private double setPoint;
     private String Type;
     private String SubType;
@@ -61,6 +68,7 @@ public class DevicesInfo implements Comparable {
     private String Image;
     private String Data;
     private String Timers;
+    private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
 
@@ -80,14 +88,11 @@ public class DevicesInfo implements Comparable {
         }
 
         try {
-            if (row.has("CustomImage")) {
-                if (row.getInt("CustomImage") > 0)
-                    useCustomImage = true;
-                else
-                    useCustomImage = false;
-            } else
+            if (row.has("CustomImage"))
+                useCustomImage = row.getInt("CustomImage") > 0;
+            else
                 useCustomImage = false;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             useCustomImage = false;
         }
 
@@ -176,6 +181,8 @@ public class DevicesInfo implements Comparable {
             SubType = row.getString("SubType");
         if (row.has("Timers"))
             timers = row.getBoolean("Timers");
+        if (row.has("Notifications"))
+            Notifications = row.getBoolean("Notifications");
 
         idx = row.getInt("idx");
 
@@ -186,10 +193,23 @@ public class DevicesInfo implements Comparable {
         }
 
         try {
-            if (row.has("SetPoint")) {
-                setPoint = Double.parseDouble(row.getString("SetPoint"));
+            if (row.has("Temp")) {
+                temp = row.getDouble("Temp");
+            } else {
+                temp = Double.NaN;
             }
         } catch (Exception ex) {
+            temp = Double.NaN;
+        }
+
+        try {
+            if (row.has("SetPoint")) {
+                setPoint = row.getDouble("SetPoint");
+            } else {
+                setPoint = Double.NaN;
+            }
+        } catch (Exception ex) {
+            setPoint = Double.NaN;
         }
     }
 
@@ -202,6 +222,11 @@ public class DevicesInfo implements Comparable {
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+
+    public double getTemperature() {
+        return temp;
     }
 
     public double getSetPoint() {
@@ -274,7 +299,10 @@ public class DevicesInfo implements Comparable {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
-                new Gson().toJson(this) +
+                new GsonBuilder()
+                        .serializeSpecialFloatingPointValues()
+                        .create()
+                        .toJson(this) +
                 '}';
     }
 
@@ -292,6 +320,14 @@ public class DevicesInfo implements Comparable {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
     }
 
     public boolean getUseCustomImage() {
@@ -350,6 +386,17 @@ public class DevicesInfo implements Comparable {
         LastUpdate = lastUpdate;
     }
 
+    public Date getLastUpdateDateTime() {
+        //Time format: 2016-01-30 12:48:37
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(LastUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public JSONObject getJsonObject() {
         return this.jsonObject;
     }
@@ -382,10 +429,6 @@ public class DevicesInfo implements Comparable {
         return signalLevel;
     }
 
-    public void setSignalLevel(int signalLevel) {
-        this.signalLevel = signalLevel;
-    }
-
     public int getSwitchTypeVal() {
         return switchTypeVal;
     }
@@ -397,5 +440,13 @@ public class DevicesInfo implements Comparable {
     @Override
     public int compareTo(Object another) {
         return this.getName().compareTo(((DevicesInfo) another).getName());
+    }
+
+    public boolean hasNotifications() {
+        return Notifications;
+    }
+
+    public void setNotifications(boolean notifications) {
+        Notifications = notifications;
     }
 }

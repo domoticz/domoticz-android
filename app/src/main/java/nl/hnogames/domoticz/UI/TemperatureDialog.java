@@ -24,12 +24,13 @@ package nl.hnogames.domoticz.UI;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.triggertrap.seekarc.SeekArc;
 
@@ -38,10 +39,10 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class TemperatureDialog implements DialogInterface.OnDismissListener {
+public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
-    private DismissListener dismissListener;
+    private DialogActionListener dialogActionListener;
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private int idx;
@@ -49,6 +50,7 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
     private SeekArc temperatureControl;
     private TextView temperatureText;
     private Button bntPlus, btnMin;
+    private String tempSign = "";
     private ConfigInfo config;
     private boolean isFahrenheit = false;
 
@@ -59,8 +61,9 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
-                .positiveText(android.R.string.ok);
-        mdb.dismissListener(this);
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.ok)
+                .onAny(this);
         currentTemperature = temp;
     }
 
@@ -74,10 +77,14 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
         bntPlus = (Button) view.findViewById(R.id.plus);
         btnMin = (Button) view.findViewById(R.id.min);
 
-        if (config != null && !config.getTempSign().equals(Domoticz.Temperature.Sign.CELCIUS))
-            isFahrenheit = true;
+        if (config != null) {
+            tempSign = config.getTempSign();
+            if (!config.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
+                isFahrenheit = true;
+        }
 
-        temperatureText.setText(String.valueOf(currentTemperature));
+        temperatureText.setText(String.valueOf(currentTemperature) + " " + tempSign);
+
         int progress = (int) (currentTemperature);
         if (!isFahrenheit)
             progress = (int) (currentTemperature * 2);
@@ -95,66 +102,76 @@ public class TemperatureDialog implements DialogInterface.OnDismissListener {
             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
                 double temp = ((double) temperatureControl.getProgress() / 2);
                 if (isFahrenheit)
-                    temperatureText.setText(String.valueOf(temp * 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp * 2) + " " + tempSign);
                 else
-                    temperatureText.setText(String.valueOf(temp) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp) + " " + tempSign);
             }
 
             @Override
             public void onStartTrackingTouch(SeekArc seekArc) {
                 double temp = ((double) temperatureControl.getProgress() / 2);
                 if (isFahrenheit)
-                    temperatureText.setText(String.valueOf(temp * 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp * 2) + " " + tempSign);
                 else
-                    temperatureText.setText(String.valueOf(temp) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp) + " " + tempSign);
             }
 
             @Override
             public void onStopTrackingTouch(SeekArc seekArc) {
                 double temp = ((double) temperatureControl.getProgress() / 2);
                 if (isFahrenheit)
-                    temperatureText.setText(String.valueOf(temp * 2) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp * 2) + " " + tempSign);
                 else
-                    temperatureText.setText(String.valueOf(temp) + " " + config.getTempSign());
+                    temperatureText.setText(String.valueOf(temp) + " " + tempSign);
             }
         });
 
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFahrenheit)
+                if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 2);
-                else
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + tempSign);
+                } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() + 1);
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + tempSign);
+                }
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFahrenheit)
+                if (isFahrenheit) {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 2);
-                else
+                    temperatureText.setText(String.valueOf(temperatureControl.getProgress()) + " " + tempSign);
+                } else {
                     temperatureControl.setProgress(temperatureControl.getProgress() - 1);
+                    temperatureText.setText(String.valueOf((double) temperatureControl.getProgress() / 2) + " " + tempSign);
+                }
             }
         });
         md.show();
     }
 
     @Override
-    public void onDismiss(DialogInterface dialogInterface) {
-        if (dismissListener != null) {
+    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        if (dialogActionListener != null) {
             if (isFahrenheit)
-                dismissListener.onDismiss(((double) temperatureControl.getProgress()));
+                dialogActionListener.onDialogAction(((double) temperatureControl.getProgress()), which);
             else
-                dismissListener.onDismiss(((double) temperatureControl.getProgress() / 2));
+                dialogActionListener.onDialogAction(((double) temperatureControl.getProgress() / 2), which);
         }
     }
 
-    public void onDismissListener(DismissListener dismissListener) {
-        this.dismissListener = dismissListener;
+    public void onDismissListener(DialogActionListener dialogActionListener) {
+        this.dialogActionListener = dialogActionListener;
     }
 
-    public interface DismissListener {
-        void onDismiss(double setPoint);
+    protected MaterialDialog.Builder getMaterialDialogBuilder() {
+        return mdb;
+    }
+
+    public interface DialogActionListener {
+        void onDialogAction(double setPoint, DialogAction dialogAction);
     }
 }

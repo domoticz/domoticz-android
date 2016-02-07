@@ -46,17 +46,20 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.LocationAdapter;
 import nl.hnogames.domoticz.Containers.LocationInfo;
@@ -66,13 +69,13 @@ import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
+import nl.hnogames.domoticz.Utils.GeoUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class GeoSettingsActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     @SuppressWarnings("FieldCanBeLocal")
     private final int PLACE_PICKER_REQUEST = 333;
@@ -84,16 +87,12 @@ public class GeoSettingsActivity extends AppCompatActivity
     private final int ACTION_GET_LOCATION = 12;
     private final int REQUEST_GEOFENCE_SERVICE = 21;
     private final int REQUEST_GET_LOCATION = 22;
+    boolean result = false;
     private String TAG = GeoSettingsActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
-
     private Domoticz domoticz;
-    // Stores the PendingIntent used to request geofence monitoring.
-    private PendingIntent mGeofenceRequestIntent;
     private GoogleApiClient mApiClient;
-    private List<Geofence> mGeofenceList;
     private ArrayList<LocationInfo> locations;
-
     private LocationAdapter adapter;
     private CoordinatorLayout coordinatorLayout;
     private Location currentLocation;
@@ -109,10 +108,9 @@ public class GeoSettingsActivity extends AppCompatActivity
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 // The user picked a place.
-                Place place = PlacePicker.getPlace(data, this);
-                Snackbar.make(coordinatorLayout,
-                        String.format(getString(R.string.geofence_place), place.getName()),
-                        Snackbar.LENGTH_SHORT).show();
+                Place place = PlacePicker.getPlace(this, data);
+                String text = String.format(getString(R.string.geofence_place), place.getName());
+                showSimpleSnackbar(text);
             }
         }
     }
@@ -146,7 +144,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void initSwitches() {
-        Switch notSwitch = (Switch) findViewById(R.id.switch_notifications_button);
         Switch geoSwitch = (Switch) findViewById(R.id.switch_button);
 
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
@@ -157,14 +154,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                 invalidateOptionsMenu();
             }
         });
-
-        notSwitch.setChecked(mSharedPrefs.isGeofenceNotificationsEnabled());
-        notSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSharedPrefs.setGeofenceNotificationsEnabled(isChecked);
-            }
-        });
     }
 
     @Override
@@ -172,6 +161,12 @@ public class GeoSettingsActivity extends AppCompatActivity
         super.onPause();
 
         if (mApiClient.isConnected()) mApiClient.disconnect();
+        if (mSharedPrefs.getEnabledGeofences().size() <= 0 && mSharedPrefs.isGeofenceEnabled()) {
+            mSharedPrefs.setGeofenceEnabled(false);
+            stopGeofenceService();
+            Toast.makeText(this, R.string.geofencing_disabled_no_enabled_fences,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -191,62 +186,67 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
     }
 
-    public void showSwitchesDialog(
+    private void showSwitchesDialog(
             final LocationInfo selectedLocation,
             ArrayList<SwitchInfo> switches) {
 
         SwitchDialog infoDialog = new SwitchDialog(
                 GeoSettingsActivity.this, switches,
-                R.layout.dialog_switch_logs);
+                R.layout.dialog_switch_logs,
+                domoticz);
+
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX) {
-                selectedLocation.setSwitchidx(selectedSwitchIDX);
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+                selectedLocation.setSwitchIdx(selectedSwitchIDX);
+                selectedLocation.setSwitchPassword(selectedSwitchPassword);
                 mSharedPrefs.updateLocation(selectedLocation);
-
                 adapter.data = mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();
             }
         });
+
         infoDialog.show();
     }
 
     private void createListView() {
         locations = mSharedPrefs.getLocations();
-        mGeofenceList = new ArrayList<>();
+        boolean addressChanged = false;
 
-        if (locations != null)
-            for (LocationInfo locationInfo : locations)
-                if (locationInfo.getEnabled())
-                    mGeofenceList.add(locationInfo.toGeofence());
+        if (locations != null) {
+            for (LocationInfo l : locations) {
+                if (l.getAddress() == null && l.getLocation() != null) {
+                    //load the address
+                    l.setAddress(new GeoUtil(GeoSettingsActivity.this).getAddressFromLatLng(
+                            new LatLng(l.getLocation().latitude, l.getLocation().longitude)));
+                    addressChanged = true;
+                }
+            }
+            if (addressChanged) mSharedPrefs.saveLocations(locations);
+        }
 
         adapter = new LocationAdapter(this, locations, new LocationClickListener() {
             @Override
-            public void onEnableClick(LocationInfo location, boolean checked) {
-                location.setEnabled(checked);
-                mSharedPrefs.updateLocation(location);
+            public boolean onEnableClick(LocationInfo locationInfo, boolean checked) {
+                if (locationInfo.getSwitchIdx() <= 0 && checked)
+                    return showNoDeviceAttachedDialog(locationInfo);
+                else {
+                    locationInfo.setEnabled(checked);
+                    mSharedPrefs.updateLocation(locationInfo);
+                    return checked;
+                }
             }
 
             @Override
-            public void onRemoveClick(final LocationInfo location) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
-                builder.setMessage(R.string.are_you_sure)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                adapter.data.remove(location);
-                                mSharedPrefs.removeLocation(location);
-                                adapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.no), null)
-                        .show();
+            public void onRemoveClick(final LocationInfo locationInfo) {
+                showRemoveUndoSnackbar(locationInfo);
             }
         });
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+        animationAdapter.setAbsListView(listView);
+        listView.setAdapter(animationAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
@@ -256,26 +256,108 @@ public class GeoSettingsActivity extends AppCompatActivity
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                domoticz.getSwitches(new SwitchesReceiver() {
-                    @Override
-                    public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                        showSwitchesDialog(locations.get(position), switches);
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        Snackbar.make(coordinatorLayout,
-                                R.string.unable_to_get_switches,
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+                getSwitchesAndShowSwitchesDialog(locations.get(position));
                 return true;
             }
         });
     }
 
-    private void createLocationRequest() {
+    private void showRemoveUndoSnackbar(final LocationInfo locationInfo) {
+        // remove location from list view
+        removeLocationFromListView(locationInfo);
 
+        // Show snackbar with undo option
+        String text = String.format(getString(R.string.something_deleted),
+                getString(R.string.geofence));
+        Snackbar.make(coordinatorLayout,
+                text,
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // User clicked undo button
+                        // Let's undo the action on the list view
+                        addLocationToListView(locationInfo);
+                    }
+                })
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+
+                        switch (event) {
+                            case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                            case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                            case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                                // Snackbar was timed out so let's remove the data from
+                                // shared preferences
+                                removeLocationFromPreferences(locationInfo);
+                                break;
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void removeLocationFromListView(LocationInfo locationInfo) {
+        adapter.data.remove(locationInfo);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void removeLocationFromPreferences(LocationInfo locationInfo) {
+        mSharedPrefs.removeLocation(locationInfo);
+    }
+
+    private void addLocationToListView(LocationInfo locationInfo) {
+        adapter.data.add(locationInfo);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void getSwitchesAndShowSwitchesDialog(final LocationInfo locationInfo) {
+        domoticz.getSwitches(new SwitchesReceiver() {
+            @Override
+            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+                showSwitchesDialog(locationInfo, switches);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Snackbar.make(coordinatorLayout,
+                        R.string.unable_to_get_switches,
+                        Snackbar.LENGTH_SHORT)
+                        .setAction(R.string.retry, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // User clicked retry button
+                                getSwitchesAndShowSwitchesDialog(locationInfo);
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
+    private boolean showNoDeviceAttachedDialog(final LocationInfo locationInfo) {
+        new MaterialDialog.Builder(this)
+                .title(R.string.noSwitchSelected_title)
+                .content(getString(R.string.noSwitchSelected_explanation)
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + getString(R.string.noSwitchSelected_connectOneNow))
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        getSwitchesAndShowSwitchesDialog(locationInfo);
+                        result = true;
+                    }
+                })
+                .show();
+        return result;
+    }
+
+    private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(LOCATION_INTERVAL);
         mLocationRequest.setFastestInterval(LOCATION_FASTEST_INTERVAL);
@@ -340,7 +422,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             // No permission, check if the dialog has already been shown to user
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+                    this, Manifest.permission.ACCESS_FINE_LOCATION) ||
                     ActivityCompat.shouldShowRequestPermissionRationale(
                             this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
@@ -443,7 +525,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         //noinspection ResourceType
         LocationServices.FusedLocationApi.requestLocationUpdates(
-                mApiClient, mLocationRequest, new com.google.android.gms.location.LocationListener() {
+                mApiClient, mLocationRequest, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
                         //noinspection ResourceType
@@ -455,7 +537,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     }
 
-    public void showAddLocationDialog() {
+    private void showAddLocationDialog() {
         LocationDialog locationDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
@@ -467,13 +549,6 @@ public class GeoSettingsActivity extends AppCompatActivity
 
                 mSharedPrefs.addLocation(location);
                 locations = mSharedPrefs.getLocations();
-
-                mGeofenceList = new ArrayList<>();//reset values
-
-                if (locations != null)
-                    for (LocationInfo l : locations)
-                        if (l.getEnabled())
-                            mGeofenceList.add(l.toGeofence());
 
                 setGeoFenceService();
                 createListView();
@@ -487,7 +562,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         locationDialog.show();
     }
 
-    public void showEditLocationDialog(LocationInfo location) {
+    private void showEditLocationDialog(LocationInfo location) {
         LocationDialog locationDialog = new LocationDialog(
                 this,
                 R.layout.dialog_location);
@@ -504,13 +579,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                 mSharedPrefs.updateLocation(location);
                 locations = mSharedPrefs.getLocations();
 
-                mGeofenceList = new ArrayList<>();      //reset values
-
-                if (locations != null)
-                    for (LocationInfo l : locations)
-                        if (l.getEnabled())
-                            mGeofenceList.add(l.toGeofence());
-
                 setGeoFenceService();
                 createListView();
             }
@@ -521,6 +589,10 @@ public class GeoSettingsActivity extends AppCompatActivity
             }
         });
         locationDialog.show();
+    }
+
+    private void showSimpleSnackbar(String message) {
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -573,16 +645,13 @@ public class GeoSettingsActivity extends AppCompatActivity
         startLocationUpdates();
     }
 
-    public void setGeoFenceService() {
+    private void setGeoFenceService() {
         checkForLocationPermission(ACTION_SET_GEOFENCE_SERVICE);
     }
 
-    public void startGeofenceService() {
-        if (mGeofenceList != null && mGeofenceList.size() > 0) {
-            mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
-            //noinspection ResourceType
-            LocationServices.GeofencingApi
-                    .addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+    private void startGeofenceService() {
+        if (mSharedPrefs.isGeofenceEnabled()) {
+            mSharedPrefs.enableGeoFenceService();
             if (domoticz.isDebugEnabled())
                 Snackbar.make(coordinatorLayout,
                         R.string.starting_geofence_service, Snackbar.LENGTH_LONG).show();
@@ -590,15 +659,18 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
     }
 
-    public void stopGeofenceService() {
-        if (mGeofenceRequestIntent != null)
-            LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
+    private void stopGeofenceService() {
+        if (mApiClient != null) mSharedPrefs.stopGeofenceService();
+        isGeofenceServiceStarted = false;
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        if (mGeofenceRequestIntent != null)
+        PendingIntent mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
+
+        if (mGeofenceRequestIntent != null && mApiClient != null)
             LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
+        isGeofenceServiceStarted = false;
     }
 
     @Override

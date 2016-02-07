@@ -10,6 +10,14 @@
   <string name="timer_before_sunrise">Före soluppgången</string>
   <string name="timer_after_sunrise">Efter soluppgången</string>
   <string name="timer_fixed">Fast datum/tid</string>
+  <string name="odd_day_numbers">Odd Day Numbers</string>
+  <string name="even_day_numbers">Even Day Numbers</string>
+  <string name="odd_week_numbers">Odd Week Numbers</string>
+  <string name="even_week_numbers">Even Week Numbers</string>
+  <string name="monthly">Monthly</string>
+  <string name="monthly_weekday">Monthly (Weekday)</string>
+  <string name="yearly">Yearly</string>
+  <string name="yearly_weekday">Yearly (Weekday)</string>
   <string name="timer_every_days">Varje dag</string>
   <string name="timer_working_days">Arbetsdagar</string>
   <string name="timer_weekend">Helg</string>

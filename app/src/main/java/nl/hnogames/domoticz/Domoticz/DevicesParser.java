@@ -39,20 +39,30 @@ public class DevicesParser implements JSONParserInterface {
     private static final String TAG = DevicesParser.class.getSimpleName();
     private DevicesReceiver receiver;
     private int idx = 999999;
+    private boolean scene_or_group = false;
 
     public DevicesParser(DevicesReceiver receiver) {
         this.receiver = receiver;
     }
 
-    public DevicesParser(DevicesReceiver receiver, int idx) {
+    public DevicesParser(DevicesReceiver receiver, int idx, boolean scene_or_group) {
         this.receiver = receiver;
         this.idx = idx;
+        this.scene_or_group = scene_or_group;
     }
 
-    private DevicesInfo getDevice(int idx, ArrayList<DevicesInfo> mDevicesInfo) {
+    private DevicesInfo getDevice(int idx, ArrayList<DevicesInfo> mDevicesInfo, boolean scene_or_group) {
         for (DevicesInfo s : mDevicesInfo) {
             if (s.getIdx() == idx) {
-                return s;
+                if (scene_or_group &&
+                        (s.getType().equals(Domoticz.Scene.Type.GROUP) || s.getType().equals(Domoticz.Scene.Type.SCENE))) {
+                    //looking for a scene or group
+                    return s;
+                } else { //not looking for a scene or group
+                    if (!s.getType().equals(Domoticz.Scene.Type.GROUP) && !s.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                        return s;
+                    }
+                }
             }
         }
         return null;
@@ -76,7 +86,7 @@ public class DevicesParser implements JSONParserInterface {
             if (idx == 999999)
                 receiver.onReceiveDevices(mDevices);
             else {
-                receiver.onReceiveDevice(getDevice(idx, mDevices));
+                receiver.onReceiveDevice(getDevice(idx, mDevices, scene_or_group));
             }
         } catch (JSONException e) {
             Log.e(TAG, "DevicesParser JSON exception");

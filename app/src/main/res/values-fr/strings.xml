@@ -11,12 +11,14 @@
   <string name="button_state_off">Off</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Jour</string>
+  <string name="button_status_week">Semaine</string>
   <string name="button_status_month">Mois</string>
   <string name="button_status_year">Année</string>
   <string name="button_status_timer">Planning</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Couleur</string>
-  <string name="button_arm">Activer</string>
-  <string name="button_disarm">Désactiver</string>
+  <string name="button_arm">Armer</string>
+  <string name="button_disarm">Désarmer</string>
   <string name="last_update">Dernière activité</string>
   <string name="signal_level">Niveau du signal</string>
   <string name="battery_level">Niveau de batterie</string>
@@ -28,10 +30,10 @@
   <string name="action_success">Action succes</string>
   <string name="action_failed">Action échec</string>
   <string name="action_unknown">Action resultat inconnu</string>
-  <string name="choose_status">Choose state</string>
+  <string name="choose_status">Choisissez l\'État</string>
   <string name="normal">Normal</string>
   <string name="economy">Économie</string>
-  <string name="away">Innocupé</string>
+  <string name="away">Absent</string>
   <string name="day_off">Jour de congé</string>
   <string name="custom">Personnalisé</string>
   <string name="heating_off">Chauffage arrêté</string>
@@ -48,6 +50,9 @@
   <string name="no_network_available">Erreur : aucune connexion disponible</string>
   <string name="oops">Oops !</string>
   <string name="to">"à "</string>
+  <string name="retry">Réessayer</string>
+  <string name="undo">Annuler</string>
+  <string name="something_deleted">%1$s supprimé</string>
   <string name="switch_on">Allumer</string>
   <string name="switch_off">Éteindre</string>
   <string name="blind_up">Ouvrir les stores</string>
@@ -59,10 +64,14 @@
   <string name="filterOn_all">Tous les dispositifs</string>
   <string name="Filter">Filtrer</string>
   <string name="filter_devices">Filtrer les dispositifs</string>
-  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Sélectionnez la couleur</string>
   <string name="no_data_on_domoticz">Aucune donnée sur le serveur Domoticz</string>
   <string name="row_icon_description">icône de la ligne</string>
   <string name="error_image_description">Image d\'erreur</string>
   <string name="white">Blanc</string>
+  <string name="refresh">Actualiser</string>
+  <string name="domoticz_logo">Domoticz logo</string>
+  <string name="this_take_minutes">Cela peut prendre plusieurs minutes.</string>
+  <string name="continue_question">Continuer ?</string>
+  <string name="cant_remove_default_server">Impossible de supprimer le serveur par défaut</string>
 </resources>

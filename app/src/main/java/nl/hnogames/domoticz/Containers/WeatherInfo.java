@@ -27,31 +27,29 @@ import org.json.JSONObject;
 
 public class WeatherInfo {
     private final boolean isProtected;
-    JSONObject jsonObject;
+    private JSONObject jsonObject;
+    private int idx;
 
-    int idx;
-    String Name;
-    String Data;
-    String LastUpdate;
-    long setPoint;
-    String Type;
-
-    String ForecastStr;
-    String HumidityStatus;
-    String DirectionStr;
-    String Chill;
-    String Rain;
-    String RainRate;
-    String Speed;
-    long DewPoint;
-    long Temp;
-
-    int Barometer;
-    int Favorite;
-    int HardwareID;
-    String HardwareName;
-    String TypeImg;
-    int signalLevel;
+    private String Name;
+    private String Data;
+    private String LastUpdate;
+    private String Type;
+    private String ForecastStr;
+    private String HumidityStatus;
+    private String DirectionStr;
+    private String Direction;
+    private String Chill;
+    private String Rain;
+    private String RainRate;
+    private String Speed;
+    private long DewPoint;
+    private long Temp;
+    private int Barometer;
+    private int Favorite;
+    private int HardwareID;
+    private String HardwareName;
+    private String TypeImg;
+    private int signalLevel;
 
 
     public WeatherInfo(JSONObject row) throws JSONException {
@@ -67,7 +65,6 @@ public class WeatherInfo {
         if (row.has("Type")) Type = row.getString("Type");
         if (row.has("TypeImg")) TypeImg = row.getString("TypeImg");
         if (row.has("LastUpdate")) LastUpdate = row.getString("LastUpdate");
-        if (row.has("SetPoint")) setPoint = row.getLong("SetPoint");
         if (row.has("Name")) Name = row.getString("Name");
         if (row.has("Data")) Data = row.getString("Data");
 
@@ -81,6 +78,7 @@ public class WeatherInfo {
         if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
         if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
+        if (row.has("Direction")) Direction = row.getString("Direction");
         if (row.has("DirectionStr")) DirectionStr = row.getString("DirectionStr");
         if (row.has("Chill")) Chill = row.getString("Chill");
         if (row.has("Speed")) Speed = row.getString("Speed");
@@ -96,16 +94,29 @@ public class WeatherInfo {
 
     @Override
     public String toString() {
-        return "TemperatureInfo{" +
+        return "WeatherInfo{" +
                 "isProtected=" + isProtected +
+                ", Direction='" + Direction + '\'' +
                 ", jsonObject=" + jsonObject +
                 ", idx=" + idx +
                 ", Name='" + Name + '\'' +
+                ", Data='" + Data + '\'' +
                 ", LastUpdate='" + LastUpdate + '\'' +
-                ", setPoint=" + setPoint +
                 ", Type='" + Type + '\'' +
+                ", ForecastStr='" + ForecastStr + '\'' +
+                ", HumidityStatus='" + HumidityStatus + '\'' +
+                ", DirectionStr='" + DirectionStr + '\'' +
+                ", Chill='" + Chill + '\'' +
+                ", Rain='" + Rain + '\'' +
+                ", RainRate='" + RainRate + '\'' +
+                ", Speed='" + Speed + '\'' +
+                ", DewPoint=" + DewPoint +
+                ", Temp=" + Temp +
+                ", Barometer=" + Barometer +
                 ", Favorite=" + Favorite +
                 ", HardwareID=" + HardwareID +
+                ", HardwareName='" + HardwareName + '\'' +
+                ", TypeImg='" + TypeImg + '\'' +
                 ", signalLevel=" + signalLevel +
                 '}';
     }
@@ -166,6 +177,10 @@ public class WeatherInfo {
         return DirectionStr;
     }
 
+    public String getDirection() {
+        return Direction;
+    }
+
     public String getChill() {
         return Chill;
     }
@@ -190,14 +205,6 @@ public class WeatherInfo {
         return HardwareName;
     }
 
-    public long getSetPoint() {
-        return setPoint;
-    }
-
-    public void setSetPoint(long setPoint) {
-        this.setPoint = setPoint;
-    }
-
     public int getFavorite() {
         return Favorite;
     }
@@ -219,10 +226,6 @@ public class WeatherInfo {
 
     public int getHardwareID() {
         return HardwareID;
-    }
-
-    public void setHardwareID(int hardwareID) {
-        HardwareID = hardwareID;
     }
 
     public String getType() {

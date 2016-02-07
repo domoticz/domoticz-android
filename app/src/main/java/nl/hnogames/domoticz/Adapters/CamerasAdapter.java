@@ -46,11 +46,13 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private final Context mContext;
     private ArrayList<CameraInfo> mDataset;
     private Domoticz domoticz;
+    private boolean refreshTimer;
 
-    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz) {
+    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz, boolean refreshTimer) {
         this.mDataset = data;
         this.mContext = mContext;
-        this.domoticz=domoticz;
+        this.refreshTimer = refreshTimer;
+        this.domoticz = domoticz;
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
@@ -79,7 +81,9 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
             ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
             holder.camera.setImageUrl(imageUrl, imageLoader);
-            holder.camera.setDefaultImageResId(R.drawable.placeholder);
+
+            if (!refreshTimer)
+                holder.camera.setDefaultImageResId(R.drawable.placeholder);
         }
     }
 

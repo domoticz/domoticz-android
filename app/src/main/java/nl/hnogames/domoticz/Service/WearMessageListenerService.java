@@ -208,7 +208,11 @@ public class WearMessageListenerService extends WearableListenerService implemen
         }
 
         if (supportedSwitches != null && supportedSwitches.size() > 0) {
-            String parsedData = new Gson().toJson(supportedSwitches);
+            String[] sendData = new String[supportedSwitches.size()];
+            for (int i = 0; i < supportedSwitches.size(); i++) {
+                sendData[i] = supportedSwitches.get(i).getJsonObject().toString();
+            }
+            String parsedData = new Gson().toJson(sendData);
             Log.v(TAG, "Sending data: " + parsedData);
             sendMessage(SEND_DATA, parsedData);
         } else {
@@ -250,7 +254,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             else jsonAction = Domoticz.Device.Switch.Action.OFF;
         }
 
-        domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
             }
@@ -268,7 +272,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
         else jsonAction = Domoticz.Device.Switch.Action.OFF;
 
-        domoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        domoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
             }

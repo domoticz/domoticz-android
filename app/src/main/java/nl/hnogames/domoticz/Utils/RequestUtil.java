@@ -86,10 +86,19 @@ public class RequestUtil {
                         int counter = retryCounter - 1;
                         if (counter <= 0) {
                             errorHandling(volleyError);
+                            Log.d(TAG, "No retries left");
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonVersionRequest(parser, username, password, url, sessionUtil, false, counter);
+                            Log.d(TAG, "Trying again without session ID. Retries left: "
+                                    + String.valueOf(counter));
+                            makeJsonVersionRequest(parser,
+                                    username,
+                                    password,
+                                    url,
+                                    sessionUtil,
+                                    false,
+                                    counter);
                         }
                     }
                 }) {
@@ -102,7 +111,7 @@ public class RequestUtil {
 
                         if (headers == null
                                 || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<String, String>();
+                            headers = new HashMap<>();
                         }
 
                         if (usePreviousSession)
@@ -112,7 +121,7 @@ public class RequestUtil {
 
                     @Override
                     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                        sessionUtil.checkSessionCookie(response.headers);//save cookie
+                        sessionUtil.checkSessionCookie(response.headers);           //save cookie
                         return super.parseNetworkResponse(response);
                     }
                 };
@@ -147,7 +156,15 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonGetRequest(parser, username, password, url, sessionUtil, false, counter);
+                            Log.d(TAG, "Trying again without session ID. Retries left: "
+                                    + String.valueOf(counter));
+                            makeJsonGetRequest(parser,
+                                    username,
+                                    password,
+                                    url,
+                                    sessionUtil,
+                                    false,
+                                    counter);
                         }
                     }
                 }) {
@@ -160,7 +177,7 @@ public class RequestUtil {
 
                         if (headers == null
                                 || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<String, String>();
+                            headers = new HashMap<>();
                         }
 
                         if (usePreviousSession)
@@ -220,7 +237,15 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonGetResultRequest(parser, username, password, url, sessionUtil, false, counter);
+                            Log.d(TAG, "Trying again without session ID. Retries left: "
+                                    + String.valueOf(counter));
+                            makeJsonGetResultRequest(parser,
+                                    username,
+                                    password,
+                                    url,
+                                    sessionUtil,
+                                    false,
+                                    counter);
                         }
                     }
                 }) {
@@ -233,7 +258,7 @@ public class RequestUtil {
 
                         if (headers == null
                                 || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<String, String>();
+                            headers = new HashMap<>();
                         }
 
                         if (usePreviousSession)
@@ -293,7 +318,15 @@ public class RequestUtil {
                             if (parser != null) parser.onError(volleyError);
                         } else {
                             //try again without session id
-                            makeJsonPutRequest(parser, username, password, url, sessionUtil, false, counter);
+                            Log.d(TAG, "Trying again without session ID. Retries left: "
+                                    + String.valueOf(counter));
+                            makeJsonPutRequest(parser,
+                                    username,
+                                    password,
+                                    url,
+                                    sessionUtil,
+                                    false,
+                                    counter);
                         }
                     }
                 }) {
@@ -306,7 +339,7 @@ public class RequestUtil {
 
                         if (headers == null
                                 || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<String, String>();
+                            headers = new HashMap<>();
                         }
 
                         if (usePreviousSession)
@@ -355,7 +388,7 @@ public class RequestUtil {
 
                         if (headers == null
                                 || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<String, String>();
+                            headers = new HashMap<>();
                         }
 
                         String credentials = domoticz.getUserCredentials(Domoticz.Authentication.USERNAME) + ":" + domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);

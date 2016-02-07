@@ -15,6 +15,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class WelcomePage4 extends Fragment {
@@ -53,15 +54,16 @@ public class WelcomePage4 extends Fragment {
 
     private void checkConnectionData() {
         final Domoticz mDomoticz = new Domoticz(getActivity());
+        ServerUtil mServerUtil = new ServerUtil(getActivity());
 
-        if (!mDomoticz.isConnectionDataComplete()) {
+        if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
-        } else if (!mDomoticz.isUrlValid()) {
+        } else if (!mDomoticz.isUrlValid(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else {
-            mDomoticz.getVersion(new VersionReceiver() {
+            mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override
                 public void onReceiveVersion(String version) {
                     tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;

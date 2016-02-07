@@ -22,15 +22,12 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Parcelable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -44,6 +41,7 @@ import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
@@ -53,22 +51,22 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
-    private ProgressDialog progressDialog;
     private Context mContext;
-    private Domoticz mDomoticz;
     private SceneAdapter adapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private CoordinatorLayout coordinatorLayout;
     private ArrayList<SceneInfo> mScenes;
     private Parcelable state;
-    private ListView listView;
     private String filter = "";
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        getActionBar().setTitle(R.string.title_scenes);
+    }
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -82,27 +80,21 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processScenes();
     }
 
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        mDomoticz = new Domoticz(mContext);
         processScenes();
     }
 
     private void processScenes() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         state = listView.onSaveInstanceState();
         WidgetUtils.RefreshWidgets(mContext);
-
 
         mDomoticz.getScenes(new ScenesReceiver() {
             @Override
@@ -227,7 +219,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
         else jsonAction = Domoticz.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -243,19 +235,28 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         });
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        getActionBar().setTitle(R.string.title_scenes);
-    }
 
     @Override
-    public void onSceneClick(int idx, boolean action) {
+    public void onSceneClick(int idx, final boolean action) {
         addDebugText("onSceneClick");
         addDebugText("Set " + idx + " to " + action);
-        SceneInfo clickedScene = getScene(idx);
+        final SceneInfo clickedScene = getScene(idx);
+        if (clickedScene.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    getActivity());
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    setScene(clickedScene, action, password);
+                }
+            });
+        } else {
+            setScene(clickedScene, action, null);
+        }
+    }
 
+    public void setScene(SceneInfo clickedScene, boolean action, String password) {
         if (action)
             Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT).show();
         else
@@ -267,7 +268,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         if (action) jsonAction = Domoticz.Scene.Action.ON;
         else jsonAction = Domoticz.Scene.Action.OFF;
 
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(clickedScene.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 processScenes();
@@ -280,7 +281,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         });
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -289,9 +289,11 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 }

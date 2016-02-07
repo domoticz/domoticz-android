@@ -103,24 +103,30 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
 
     @SuppressWarnings("unused")
     public void setItems(String[] items) {
-        _items = items;
-        mSelection = new boolean[_items.length];
-        simple_adapter.clear();
-        simple_adapter.add(_items[0]);
-        Arrays.fill(mSelection, false);
+        if (items != null && items.length > 0) {
+            _items = items;
+            mSelection = new boolean[_items.length];
+            simple_adapter.clear();
+            simple_adapter.add(_items[0]);
+            Arrays.fill(mSelection, false);
+        }
     }
 
     public void setItems(List<String> items) {
-        _items = items.toArray(new String[items.size()]);
-        mSelection = new boolean[_items.length];
-        simple_adapter.clear();
-        simple_adapter.add(_items[0]);
-        Arrays.fill(mSelection, false);
+        if (items != null && items.size() > 0) {
+            _items = items.toArray(new String[items.size()]);
+            mSelection = new boolean[_items.length];
+            simple_adapter.clear();
+            simple_adapter.add(_items[0]);
+            Arrays.fill(mSelection, false);
+        }
     }
 
     @SuppressWarnings("unused")
     public void setSelection(String[] selection) {
-        if (mSelection == null) throw new IllegalArgumentException("No items in adapter");
+        if (mSelection == null || selection.length <= 0)
+            throw new IllegalArgumentException("No items in adapter");
+
         for (String cell : selection) {
             for (int j = 0; j < _items.length; ++j) {
                 if (_items[j].equals(cell)) {
@@ -131,7 +137,9 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
     }
 
     public void setSelection(List<String> selection) {
-        if (mSelection == null) throw new IllegalArgumentException("No items in adapter");
+        if (mSelection == null || mSelection.length <= 0)
+            throw new IllegalArgumentException("No items in adapter");
+
         for (int i = 0; i < mSelection.length; i++) {
             mSelection[i] = false;
         }

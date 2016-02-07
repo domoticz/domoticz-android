@@ -22,10 +22,8 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -33,7 +31,6 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.LogAdapter;
 import nl.hnogames.domoticz.Containers.LogInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
@@ -41,13 +38,8 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
-    private Domoticz mDomoticz;
-
     private LogAdapter adapter;
-    private ProgressDialog progressDialog;
     private Context mContext;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ListView listView;
     private String filter = "";
 
     @Override
@@ -66,7 +58,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -79,15 +71,12 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-        mDomoticz = new Domoticz(mContext);
-
         processLogs();
     }
 
     private void processLogs() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getLogs(new LogsReceiver() {
             @Override
             public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
@@ -128,9 +117,11 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 }

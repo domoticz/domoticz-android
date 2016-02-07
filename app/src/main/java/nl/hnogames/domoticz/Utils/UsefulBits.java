@@ -22,8 +22,21 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+
+import nl.hnogames.domoticz.MainActivity;
 
 public class UsefulBits {
 
@@ -48,10 +61,8 @@ public class UsefulBits {
     }
 
     public static double[] rgb2hsv(int red, int green, int blue) {
-        double computedH = 0, computedS = 0, computedV = 0;
-        double r = 0;
-        double g = 0;
-        double b = 0;
+        double computedH, computedS, computedV;
+        double r, g, b;
 
         if (red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255) {
             return null;
@@ -82,19 +93,19 @@ public class UsefulBits {
 
 
     public static String getMd5String(String password) {
-        StringBuffer hexString = new StringBuffer();
+        StringBuilder hexString = new StringBuilder();
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
 
             byte[] hash = md.digest();
-            for (int i = 0; i < hash.length; i++) {
-                if ((0xff & hash[i]) < 0x10) {
+            for (byte aHash : hash) {
+                if ((0xff & aHash) < 0x10) {
                     hexString.append("0"
-                            + Integer.toHexString((0xFF & hash[i])));
+                            + Integer.toHexString((0xFF & aHash)));
                 } else {
-                    hexString.append(Integer.toHexString(0xFF & hash[i]));
+                    hexString.append(Integer.toHexString(0xFF & aHash));
                 }
             }
         } catch (NoSuchAlgorithmException e) {
@@ -104,4 +115,28 @@ public class UsefulBits {
         return hexString.toString();
     }
 
+    public static void setLocale(Context context, String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+    }
+
+    public static void restartApplication(Activity activity) {
+        Intent refresh = new Intent(activity, MainActivity.class);
+        activity.finish();
+        activity.startActivity(refresh);
+    }
+
+    public static void copyToClipboard(Context mContext, String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    public static String getFormattedDate(Context mContext, long timeInMillis) {
+        return DateUtils.getRelativeTimeSpanString(mContext, timeInMillis, false).toString();
+    }
 }

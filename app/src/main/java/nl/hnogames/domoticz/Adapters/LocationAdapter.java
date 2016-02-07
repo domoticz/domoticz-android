@@ -34,21 +34,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.GeoUtil;
 
 public class LocationAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = LocationAdapter.class.getSimpleName();
     public ArrayList<LocationInfo> data = null;
-    private GeoUtil mGeoUtil;
     private Context context;
 
     private LocationClickListener listener;
@@ -57,8 +53,6 @@ public class LocationAdapter extends BaseAdapter {
                            ArrayList<LocationInfo> data,
                            LocationClickListener l) {
         super();
-
-        mGeoUtil = new GeoUtil(context);
 
         this.context = context;
         this.data = data;
@@ -104,28 +98,29 @@ public class LocationAdapter extends BaseAdapter {
         holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
-        Address address = mGeoUtil.getAddressFromLatLng(
-                new LatLng(mLocationInfo.getLocation().latitude, mLocationInfo.getLocation().longitude));
+        if (mLocationInfo.getAddress() != null) {
+            Address address = mLocationInfo.getAddress();
 
-        String addressString;
-        String countryString;
+            String addressString;
+            String countryString;
 
-        if (address != null) {
-            addressString = address.getAddressLine(0) + ", " + address.getLocality();
-            countryString = address.getCountryName();
-        } else {
-            addressString = context.getString(R.string.unknown);
-            countryString = context.getString(R.string.unknown);
+            if (address != null) {
+                addressString = address.getAddressLine(0) + ", " + address.getLocality();
+                countryString = address.getCountryName();
+            } else {
+                addressString = context.getString(R.string.unknown);
+                countryString = context.getString(R.string.unknown);
+            }
+            holder.address.setText(addressString);
+            holder.country.setText(countryString);
         }
 
         holder.name.setText(mLocationInfo.getName());
-        holder.address.setText(addressString);
-        holder.country.setText(countryString);
         String text = context.getString(R.string.radius) + ": " + mLocationInfo.getRadius();
         holder.radius.setText(text);
 
-        if (mLocationInfo.getSwitchidx() > 0) {
-            text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchidx();
+        if (mLocationInfo.getSwitchIdx() > 0) {
+            text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx();
             holder.connectedSwitch.setText(text);
         } else {
             text = context.getString(R.string.connectedSwitch)
@@ -137,10 +132,14 @@ public class LocationAdapter extends BaseAdapter {
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                LocationInfo removeLocation = null;
                 for (LocationInfo l : data) {
-                    if (l.getID() == v.getId())
-                        handleRemoveButtonClick(l);
+                    if (l.getID() == v.getId()) {
+                        removeLocation = l;
+                    }
                 }
+                if (removeLocation != null)
+                    handleRemoveButtonClick(removeLocation);
             }
         });
 
@@ -149,9 +148,15 @@ public class LocationAdapter extends BaseAdapter {
         holder.enable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (LocationInfo l : data) {
-                    if (l.getID() == buttonView.getId())
-                        handleEnableChanged(l, holder.enable.isChecked());
+                for (LocationInfo locationInfo : data) {
+                    if (locationInfo.getID() == buttonView.getId()) {
+                        if (!handleEnableChanged(locationInfo, holder.enable.isChecked())) {
+                            buttonView.setChecked(false);
+                        } else {
+                            buttonView.setChecked(true);
+                        }
+                        break;
+                    }
                 }
             }
         });
@@ -164,8 +169,8 @@ public class LocationAdapter extends BaseAdapter {
         listener.onRemoveClick(removeLocation);
     }
 
-    private void handleEnableChanged(LocationInfo location, boolean enabled) {
-        listener.onEnableClick(location, enabled);
+    private boolean handleEnableChanged(LocationInfo location, boolean enabled) {
+        return listener.onEnableClick(location, enabled);
     }
 
     static class ViewHolder {

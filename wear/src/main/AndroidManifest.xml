@@ -11,7 +11,8 @@
 
         <activity
             android:name=".SplashActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode = "singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -20,6 +21,7 @@
 
         <activity
             android:name=".WearActivity"
+            android:launchMode = "singleTop"
             android:label="@string/app_name">
         </activity>
 
@@ -35,6 +37,7 @@
 
         <activity
             android:name=".app.DomoticzActivity"
+            android:launchMode = "singleTop"
             android:label="@string/app_name">
         </activity>
 

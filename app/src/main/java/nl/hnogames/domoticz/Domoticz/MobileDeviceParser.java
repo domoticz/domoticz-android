@@ -28,36 +28,39 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import nl.hnogames.domoticz.Interfaces.JSONParserInterface;
-import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 
-public class UpdateParser implements JSONParserInterface {
+public class MobileDeviceParser implements JSONParserInterface {
 
-    private static final String TAG = UpdateParser.class.getSimpleName();
-    private UpdateReceiver receiver;
+    private static final String TAG = MobileDeviceParser.class.getSimpleName();
+    private MobileDeviceReceiver mobileReceiver;
 
-    public UpdateParser(UpdateReceiver receiver) {
-        this.receiver = receiver;
+    public MobileDeviceParser(MobileDeviceReceiver mobileReceiver) {
+        this.mobileReceiver = mobileReceiver;
     }
 
     @Override
     public void parseResult(String result) {
         try {
-            JSONObject response = new JSONObject(result);
-            String version = "";
-            if (response.has("revision"))
-                version = response.getString("revision");
-            if (response.has("HaveUpdate") && !response.getBoolean("HaveUpdate"))
-                version = "";
-
-            receiver.onReceiveUpdate(version);
+            JSONObject jsonResult = new JSONObject(result);
+            if (jsonResult.has("status")) {
+                if (jsonResult.getString("status").equals("OK")) {
+                    mobileReceiver.onSuccess();
+                    return;
+                }
+            }
+            mobileReceiver.onError(null);
         } catch (JSONException e) {
+            Log.e(TAG, "MobileDeviceParser JSON exception");
             e.printStackTrace();
+            mobileReceiver.onError(e);
         }
     }
 
     @Override
     public void onError(Exception error) {
-        Log.e(TAG, "VersionParser of JSONParserInterface exception");
-        receiver.onError(error);
+        Log.e(TAG, "MobileDeviceParser of JSONParserInterface exception");
+        mobileReceiver.onError(error);
     }
+
 }

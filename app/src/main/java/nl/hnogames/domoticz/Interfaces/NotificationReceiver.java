@@ -22,10 +22,12 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-public interface UpdateReceiver {
+import java.util.ArrayList;
 
-    void onReceiveUpdate(String version);
+import nl.hnogames.domoticz.Containers.NotificationInfo;
+
+public interface NotificationReceiver {
+    void onReceiveNotifications(ArrayList<NotificationInfo> mNotificationInfos);
 
     void onError(Exception error);
-
 }

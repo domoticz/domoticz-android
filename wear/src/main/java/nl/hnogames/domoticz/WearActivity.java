@@ -23,7 +23,6 @@
 package nl.hnogames.domoticz;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,9 +33,8 @@ import android.util.Log;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Wearable;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,31 +59,30 @@ public class WearActivity extends DomoticzActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        // Get the list component from the layout of the activity
         listView = (WearableListView) findViewById(R.id.wearable_list);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String switchesRawData = prefs.getString(PREF_SWITCH, "");
-        createListView(switchesRawData);
+        if (switchesRawData != null && switchesRawData.length() > 0)
+            createListView(new Gson().fromJson(switchesRawData, String[].class));
     }
 
-    private  void createListView(String switchesRawData)
-    {
-        try {
-            JSONArray jsonSwitchArray = new JSONArray(switchesRawData);
-            switches = new ArrayList<>();
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected " + bundle);
+    }
 
-            for(int i=0; i<jsonSwitchArray.length();i++)
-            {
-                String json = jsonSwitchArray.getJSONObject(i).getString("jsonObject");
-                JSONObject row = new JSONObject(json);
-                switches.add(new DevicesInfo(new JSONObject(row.getString("nameValuePairs"))));
+    private void createListView(String[] switchesRawData) {
+        try {
+            switches = new ArrayList<>();
+            for (String s : switchesRawData) {
+                switches.add(new DevicesInfo(new JSONObject(s)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
             Log.v("WEAR", "Parsing error: " + e.getMessage());
         }
 
-        Log.v("WEAR", "Parsing information: "+switches.toString());
+        Log.v("WEAR", "Parsing information: " + switches.toString());
         adapter = new ListAdapter(this, switches);
         listView.setAdapter(adapter);
         listView.setClickListener(this);
@@ -100,7 +97,7 @@ public class WearActivity extends DomoticzActivity
 
         try {
             JSONObject switchJSON = switches.get(tag).getJsonObject();
-            if(switchJSON.has("nameValuePairs"))
+            if (switchJSON.has("nameValuePairs"))
                 sendData = switchJSON.getString("nameValuePairs").toString();
             else
                 sendData = switchJSON.toString();
@@ -113,14 +110,16 @@ public class WearActivity extends DomoticzActivity
     }
 
     @Override
-    public void onTopEmptyRegionClick() {}
+    public void onTopEmptyRegionClick() {
+    }
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
+        Log.d(TAG, "Receive: " + messageEvent.getPath() + " - " + messageEvent.getData());
         if (messageEvent.getPath().equalsIgnoreCase(SEND_DATA)) {
-            String rawData = new String(messageEvent.getData());
+            String[] rawData = new Gson().fromJson(new String(messageEvent.getData()), String[].class);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            prefs.edit().putString(PREF_SWITCH, rawData).apply();
+            prefs.edit().putString(PREF_SWITCH, new String(messageEvent.getData())).apply();
             createListView(rawData);
         }
     }

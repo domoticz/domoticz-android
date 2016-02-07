@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.ColorInt;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -49,8 +50,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
-        boolean wrapInScrollView = true;
-        mdb.customView(R.layout.dialog_color, wrapInScrollView)
+        mdb.customView(R.layout.dialog_color, true)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
@@ -60,24 +60,38 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
-        shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
-        lobsterPicker.addDecorator(shadeSlider);
-        lobsterPicker.setColorHistoryEnabled(true);
-        lobsterPicker.setHistory(mSharedPrefs.getPreviousColor(idx));
-        lobsterPicker.setColorPosition(mSharedPrefs.getPreviousColorPosition(idx));
+        if (view != null) {
+            lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
+            shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
+            lobsterPicker.addDecorator(shadeSlider);
+            lobsterPicker.setColorHistoryEnabled(true);
+            lobsterPicker.setHistory(mSharedPrefs.getPreviousColor(idx));
+            lobsterPicker.setColorPosition(mSharedPrefs.getPreviousColorPosition(idx));
 
-        lobsterPicker.addOnColorListener(new OnColorListener() {
-            @Override
-            public void onColorChanged(int color) {
-            }
+            shadeSlider.addOnColorListener(new OnColorListener() {
+                @Override
+                public void onColorChanged(@ColorInt int color) {
+                }
 
-            @Override
-            public void onColorSelected(int color) {
-                mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
-                dismissListener.onChangeColor(color);
-            }
-        });
+                @Override
+                public void onColorSelected(@ColorInt int color) {
+                    mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
+                    dismissListener.onChangeColor(color);
+                }
+            });
+
+            lobsterPicker.addOnColorListener(new OnColorListener() {
+                @Override
+                public void onColorChanged(@ColorInt int color) {
+                }
+
+                @Override
+                public void onColorSelected(@ColorInt int color) {
+                    mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
+                    dismissListener.onChangeColor(color);
+                }
+            });
+        }
 
         md.show();
     }
@@ -85,7 +99,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         if (dismissListener != null)
-            dismissListener.onDismiss(lobsterPicker.getColor());
+            dismissListener.onDismiss(shadeSlider.getColor());
     }
 
     public void onDismissListener(DismissListener dismissListener) {

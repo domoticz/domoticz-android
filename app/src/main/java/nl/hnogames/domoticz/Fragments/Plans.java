@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +51,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     @SuppressWarnings("unused")
     private static final String TAG = Plans.class.getSimpleName();
 
-    private ProgressDialog progressDialog;
     private Context mContext;
     private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;
@@ -124,10 +122,13 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         getActionBar().setTitle(R.string.title_plans);
     }
 
+    @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 

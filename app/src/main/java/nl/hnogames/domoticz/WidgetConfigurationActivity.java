@@ -21,6 +21,7 @@ import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Service.WidgetProviderLarge;
+import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
@@ -85,6 +86,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         }
     }
 
+
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             Log.i(TAG, "Showing switches for widget");
@@ -97,7 +99,20 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            showAppWidget((DevicesInfo) adapter.getItem(position));
+                            final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
+                            if (mDeviceInfo.isProtected()) {
+                                PasswordDialog passwordDialog = new PasswordDialog(
+                                        WidgetConfigurationActivity.this);
+                                passwordDialog.show();
+                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                    @Override
+                                    public void onDismiss(String password) {
+                                        showAppWidget(mDeviceInfo, password);
+                                    }
+                                });
+                            } else {
+                                showAppWidget(mDeviceInfo, null);
+                            }
                         }
                     });
 
@@ -121,23 +136,21 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         }
     }
 
-    private void showAppWidget(DevicesInfo mSelectedSwitch) {
+    private void showAppWidget(DevicesInfo mSelectedSwitch, String password) {
         mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-
         int idx = mSelectedSwitch.getIdx();
 
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE))
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true);
-            else
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false);
-
-            mSharedPrefs.setWidgetIDforIDX(mAppWidgetId, idx);
+            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password);
+            } else {
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password);
+            }
             Intent startService = new Intent(WidgetConfigurationActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);

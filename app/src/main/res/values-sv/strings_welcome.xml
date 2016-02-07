@@ -28,6 +28,9 @@
   <string name="welcome_remote_server_username">Användarnamn</string>
   <string name="welcome_remote_server_password">Lösenord</string>
   <string name="welcome_remote_server_directory">Katalog</string>
+  <string name="remote">Remote</string>
+  <string name="local">Local</string>
+  <string name="servername">Server Name</string>
   <string name="welcome_local_server_used_switch_title">Annan serveradress</string>
   <string name="welcome_local_server_used_switch_summary">Använda annan adress för lokal anslutning</string>
   <string name="welcome_advancedSettings">Avancerade server-inställningar</string>

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,34 +101,55 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         int layoutResourceId;
 
         TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
-        //if (convertView == null) {
         holder = new ViewHolder();
-
         layoutResourceId = R.layout.temperature_row_default;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         holder.isProtected = mTemperatureInfo.isProtected();
+        holder.setButton = (Button) convertView.findViewById(R.id.set_button);
         holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
         holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
+        holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
 
-
-        boolean toHot = false;
+        int modeIconRes = 0;
+        boolean tooHot = false;
         if (mTemperatureInfo.getTemperature() > 30)
-            toHot = true;
+            tooHot = true;
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                 mTemperatureInfo.getType(),
-                null, toHot, false, null)).into(holder.iconRow);
+                null, tooHot, false, null)).into(holder.iconRow);
+
+        if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
+            holder.setButton.setVisibility(View.VISIBLE);
+            modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
+        } else {
+            holder.setButton.setVisibility(View.GONE);
+        }
+
+        holder.setButton.setText(context.getString(R.string.set_temperature));
+        holder.setButton.setId(mTemperatureInfo.getIdx());
+        holder.setButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onSetClick(t);
+                }
+            }
+        });
 
         holder.dayButton.setId(mTemperatureInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +171,16 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
                 }
             }
         });
+        holder.weekButton.setId(mTemperatureInfo.getIdx());
+        holder.weekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (TemperatureInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                }
+            }
+        });
         holder.yearButton.setId(mTemperatureInfo.getIdx());
         holder.yearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,18 +196,61 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
             holder.data.setText(R.string.wind);
             holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
-        } else holder.data.append(": " + mTemperatureInfo.getData());
+        } else {
+            double temperature = mTemperatureInfo.getTemperature();
+            double setPoint = mTemperatureInfo.getSetPoint();
+            if (Double.isNaN(temperature) || Double.isNaN(setPoint)) {
+                holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
+                holder.data2.setVisibility(View.GONE);
+            } else {
+                holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " C");
+                holder.data2.setText(context.getString(R.string.set_point) + ": " + mTemperatureInfo.getSetPoint() + " C");
+                holder.data2.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (holder.iconMode != null) {
+            if (modeIconRes == 0) {
+                holder.iconMode.setVisibility(View.GONE);
+            } else {
+                holder.iconMode.setImageResource(modeIconRes);
+                holder.iconMode.setVisibility(View.VISIBLE);
+            }
+        }
 
         convertView.setTag(holder);
         return convertView;
     }
 
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_zone_states);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
+    }
+
     static class ViewHolder {
         TextView name;
         TextView data;
+        TextView data2;
         ImageView iconRow;
+        ImageView iconMode;
+        Button setButton;
         Button dayButton;
         Button monthButton;
+        Button weekButton;
         Button yearButton;
         Boolean isProtected;
     }

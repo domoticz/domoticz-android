@@ -18,4 +18,5 @@
     <dimen name="text_size_small">14sp</dimen>
 
     <dimen name="row_space">4.0sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

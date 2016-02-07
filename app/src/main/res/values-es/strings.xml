@@ -11,9 +11,11 @@
   <string name="button_state_off">Off</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Día</string>
+  <string name="button_status_week">Week</string>
   <string name="button_status_month">Mes</string>
   <string name="button_status_year">Año</string>
   <string name="button_status_timer">Temporizador</string>
+  <string name="button_status_notifications">Notifications</string>
   <string name="button_color">Color</string>
   <string name="button_arm">Armar</string>
   <string name="button_disarm">Desarmar</string>
@@ -28,7 +30,7 @@
   <string name="action_success">Acción exitosa</string>
   <string name="action_failed">Acción fallida</string>
   <string name="action_unknown">Resultado de la acción desconocida</string>
-  <string name="choose_status">Choose state</string>
+  <string name="choose_status">Elegir estado</string>
   <string name="normal">Normal</string>
   <string name="economy">Economía</string>
   <string name="away">Salir</string>
@@ -48,6 +50,9 @@
   <string name="no_network_available">Error: No hay conexión de red disponible</string>
   <string name="oops">¡VAYA!</string>
   <string name="to">"a"</string>
+  <string name="retry">Retry</string>
+  <string name="undo">Undo</string>
+  <string name="something_deleted">%1$s deleted</string>
   <string name="switch_on">Encender el interruptor</string>
   <string name="switch_off">Apagar el interruptor</string>
   <string name="blind_up">Subir persianas</string>
@@ -59,10 +64,14 @@
   <string name="filterOn_all">Todos los dispositivos</string>
   <string name="Filter">Filtro</string>
   <string name="filter_devices">Filtrar dispositivos</string>
-  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Selecciona el color</string>
   <string name="no_data_on_domoticz">No hay datos en el servidor de Domoticz</string>
   <string name="row_icon_description">icono de la fila</string>
   <string name="error_image_description">Imagen del error</string>
   <string name="white">Blanco</string>
+  <string name="refresh">Refresh</string>
+  <string name="domoticz_logo">Domoticz logo</string>
+  <string name="this_take_minutes">This could take several minutes.</string>
+  <string name="continue_question">Continue?</string>
+  <string name="cant_remove_default_server">Can\'t remove the default server</string>
 </resources>

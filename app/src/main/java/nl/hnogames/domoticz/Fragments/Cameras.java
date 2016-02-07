@@ -22,14 +22,13 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -58,13 +57,12 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     @SuppressWarnings("unused")
     private static final String TAG = Cameras.class.getSimpleName();
 
-    private ProgressDialog progressDialog;
-    private Activity mActivity;
+    private Context context;
     private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;
     private CamerasAdapter mAdapter;
-    private ArrayList<CameraInfo> mCameras;
-    private CoordinatorLayout coordinatorLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean refreshTimer = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -76,6 +74,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
     @Override
     public void refreshFragment() {
+        refreshTimer = true;
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
         getCameras();
     }
 
@@ -85,17 +87,16 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     public void getCameras() {
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        mDomoticz = new Domoticz(mActivity);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
+
+        mDomoticz = new Domoticz(context);
         mDomoticz.getCameras(new CameraReceiver() {
 
             @Override
             public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
                 successHandling(Cameras.toString(), false);
-
-                Cameras.this.mCameras = Cameras;
-                mAdapter = new CamerasAdapter(Cameras, getActivity(), mDomoticz);
+                mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
@@ -104,16 +105,17 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                         Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!PermissionsUtil.canAccessStorage(getActivity())) {
+                            if (!PermissionsUtil.canAccessStorage(context)) {
                                 requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
                             } else
-                                processImage(savePic, (String) cameraTitle.getText());
+                                processImage(savePic, cameraTitle.getText().toString());
                         } else {
-                            processImage(savePic, (String) cameraTitle.getText());
+                            processImage(savePic, cameraTitle.getText().toString());
                         }
                     }
                 });
                 mRecyclerView.setAdapter(mAdapter);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -126,38 +128,47 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private void processImage(Bitmap savePic, String title) {
         File dir = mDomoticz.saveSnapShot(savePic, title);
         if (dir != null) {
-            Intent intent = new Intent(getActivity(), CameraActivity.class);
+            Intent intent = new Intent(context, CameraActivity.class);
+            //noinspection SpellCheckingInspection
             intent.putExtra("IMAGETITLE", title);
+            //noinspection SpellCheckingInspection
             intent.putExtra("IMAGEURL", dir.getPath());
             startActivity(intent);
         }
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
         getActionBar().setTitle(R.string.title_cameras);
     }
 
+    @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 
     public ActionBar getActionBar() {
-        return ((AppCompatActivity) getActivity()).getSupportActionBar();
+        return ((AppCompatActivity) context).getSupportActionBar();
     }
 
     @Override
     public void onConnectionOk() {
-        mDomoticz = new Domoticz(getActivity());
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        getCameras();
+        mDomoticz = new Domoticz(context);
+
+        if (getView() != null) {
+            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+            mRecyclerView.setHasFixedSize(true);
+            GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            getCameras();
+        }
     }
 }

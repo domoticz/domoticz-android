@@ -8,6 +8,10 @@
   <string name="wizard_favorites_description">Podeu afegir dispositius al panell marcant-los com a preferits. Mantingueu premut un element per guardar-lo com a preferit!</string>
   <string name="wizard_startup">Pantalla d\'inici</string>
   <string name="wizard_startup_description">Podeu definir la pantalla d\'inici a la configuració!</string>
+  <string name="wizard_notifications">Setup Notifications</string>
+  <string name="wizard_notifications_description">You can now receive Notifications on your Android device! Change the way how notifications behave in the settings</string>
+  <string name="wizard_multiserver">Using Multiple Servers</string>
+  <string name="wizard_multiserver_description">You can configure multiple Domoticz servers in the settings.</string>
   <string name="wizard_geo">Geofencing</string>
   <string name="wizard_geo_description">You can set your startup screen in the settings!</string>
   <string name="wizard_wear">Android Wear</string>

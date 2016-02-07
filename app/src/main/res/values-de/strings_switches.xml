@@ -6,11 +6,11 @@
   <string name="idx">IDX</string>
   <string name="placeholder_value">255</string>
   <string name="color_set">Farbe einstellen für</string>
-  <string name="state_set">State set for</string>
+  <string name="state_set">Zustand gesetzt für</string>
   <string name="error_favorite">konnte Favorite nicht einstellen</string>
   <string name="error_logs">konnte keine Logs zum Anzeigen finden</string>
   <string name="error_color">Konnte Farbe nicht ändern</string>
-  <string name="error_state">Could not change the state</string>
+  <string name="error_state">Konnte den Zustand nicht wechseln</string>
   <string name="error_timer">Konnte Timer nicht anzeigen</string>
-  <string name="set_level_switch">"Setting level for switch: %1$s to %2$d"</string>
+  <string name="set_level_switch">"Setze Schalter %1$s auf Wert: %2$d"</string>
 </resources>

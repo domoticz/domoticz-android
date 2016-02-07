@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
@@ -43,8 +43,8 @@ public class SplashActivity extends DomoticzActivity implements
     }
 
     @Override
-    public void onMessageReceived( final MessageEvent messageEvent ) {
-        super.onMessageReceived(messageEvent);
+    public void onMessageReceived(final MessageEvent messageEvent) {
+        Log.d(TAG, "Splash Receive: " + messageEvent.getPath() + " - " + messageEvent.getData());
         if (messageEvent.getPath().equalsIgnoreCase(this.SEND_DATA)) {
             String rawData = new String(messageEvent.getData());
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -61,5 +61,6 @@ public class SplashActivity extends DomoticzActivity implements
                 this.finish();
             }
         }
+        super.onMessageReceived(messageEvent);
     }
 }
