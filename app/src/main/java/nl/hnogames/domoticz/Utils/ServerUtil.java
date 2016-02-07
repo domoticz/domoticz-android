@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -44,6 +45,12 @@ public class ServerUtil {
 
     private final String SERVER_PREFS = "remote_servers";
     private final String SERVER_PREFS_ACTIVE = "active_server";
+
+    private final String JSON_CONFIG_INFO = "configInfo";
+    private final String JSON_VALUE_PAIRS = "nameValuePairs";
+    private final String JSON_OBJECT = "jsonObject";
+    private final String serverUpdateInfoJSON_SERVER_UPDATE_INFO = "serverUpdateInfo";
+
     private ServerInfo mActiveServer;
     private ArrayList<ServerInfo> mServerList;
 
@@ -75,6 +82,7 @@ public class ServerUtil {
      */
     private void loadDomoticzServers() {
         String serverSettings = prefs.getString(SERVER_PREFS, "");
+
         if (!UsefulBits.isEmpty(serverSettings)) {
             mServerList = new ArrayList<>();
             try {
@@ -107,10 +115,16 @@ public class ServerUtil {
                     }
                     oPrefServer.setEnabled(jsonServer.getBoolean("ENABLED"));
 
-                    if (jsonServer.has("serverUpdateInfo")) {
-                        JSONObject serverUpdateInfoJson = jsonServer.getJSONObject("serverUpdateInfo");
-                        JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject("jsonObject").getJSONObject("nameValuePairs");
+                    if (jsonServer.has(serverUpdateInfoJSON_SERVER_UPDATE_INFO)) {
+                        JSONObject serverUpdateInfoJson = jsonServer.getJSONObject(serverUpdateInfoJSON_SERVER_UPDATE_INFO);
+                        JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
                         oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                    }
+
+                    if (jsonServer.has(JSON_CONFIG_INFO)) {
+                        JSONObject configInfoJson = jsonServer.getJSONObject(JSON_CONFIG_INFO);
+                        JSONObject jsonUpdate = configInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
+                        oPrefServer.setConfigInfo(new ConfigInfo(jsonUpdate));
                     }
 
                     boolean alreadyContains = false;
@@ -127,7 +141,7 @@ public class ServerUtil {
             }
 
             if (mServerList.size() > 0) {
-                mActiveServer = mServerList.get(0);//set default
+                mActiveServer = mServerList.get(0);         //set default
                 String activeServerSettings = prefs.getString(SERVER_PREFS_ACTIVE, "");
                 if (!UsefulBits.isEmpty(activeServerSettings)) {
                     JSONObject jsonServer;
@@ -159,10 +173,16 @@ public class ServerUtil {
                             oPrefServer.setLocalServerSsid(ssidList);
                         }
 
-                        if (jsonServer.has("serverUpdateInfo")) {
-                            JSONObject serverUpdateInfoJson = jsonServer.getJSONObject("serverUpdateInfo");
-                            JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject("jsonObject").getJSONObject("nameValuePairs");
+                        if (jsonServer.has(serverUpdateInfoJSON_SERVER_UPDATE_INFO)) {
+                            JSONObject serverUpdateInfoJson = jsonServer.getJSONObject(serverUpdateInfoJSON_SERVER_UPDATE_INFO);
+                            JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
                             oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                        }
+
+                        if (jsonServer.has(JSON_CONFIG_INFO)) {
+                            JSONObject configInfoJson = jsonServer.getJSONObject(JSON_CONFIG_INFO);
+                            JSONObject jsonUpdate = configInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
+                            oPrefServer.setConfigInfo(new ConfigInfo(jsonUpdate));
                         }
 
                         oPrefServer.setLocalServerAuthentication(jsonServer.getBoolean("LOCAL_SERVER_AUTHENTICATION_METHOD"));
@@ -232,7 +252,7 @@ public class ServerUtil {
     }
 
     /**
-     * Get current active server settings
+     * Set server as active server
      */
     public void setActiveServer(ServerInfo mActiveServer) {
         this.mActiveServer = mActiveServer;
@@ -308,7 +328,7 @@ public class ServerUtil {
     }
 
     /**
-     * Check if server name is Unique
+     * Check if server name is unique
      *
      * @param server ServerInfo to check the name from
      */

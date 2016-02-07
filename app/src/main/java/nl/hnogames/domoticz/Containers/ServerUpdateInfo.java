@@ -100,6 +100,10 @@ public class ServerUpdateInfo {
         return haveUpdate;
     }
 
+    public void setUpdateAvailable(boolean updateAvailable) {
+        haveUpdate = updateAvailable;
+    }
+
     public String getUpdateRevisionNumber() {
         return revision;
     }

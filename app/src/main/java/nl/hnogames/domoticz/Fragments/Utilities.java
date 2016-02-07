@@ -351,7 +351,6 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
 
         TemperatureDialog tempDialog = new TemperatureDialog(
                 mContext,
-                idx,
                 tempUtil.getSetPoint());
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {

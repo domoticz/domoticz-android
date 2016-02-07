@@ -52,6 +52,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
+    private final int DAYS_TO_CHECK_FOR_SERVER_CONFIG = 5;
 
     private String TAG = MainActivity.class.getSimpleName();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
-            saveServerConfigToSharedPreferences();
+            saveServerConfigToActiveServer();
             appRate();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -503,14 +505,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void saveServerConfigToSharedPreferences() {
+    /**
+     * Get's the server config data but only if it's older then 5 days
+     */
+    private void saveServerConfigToActiveServer() {
+
+        final long dateOfConfig = mServerUtil.getActiveServer().getConfigInfo().getDateOfConfig();
+        final long currentTime = Calendar.getInstance().getTimeInMillis();
+
+        if (dateOfConfig > 0) {
+            if (UsefulBits.differenceInDays(dateOfConfig, currentTime)
+                    < DAYS_TO_CHECK_FOR_SERVER_CONFIG)
+                return;
+        }
+
         // Get Domoticz server configuration
         domoticz.getConfig(new ConfigReceiver() {
             @Override
-            public void onReceiveConfig(ConfigInfo settings) {
-                if (settings != null)
-                    mSharedPrefs.saveConfig(settings);
-                // TODO set config per server
+            public void onReceiveConfig(ConfigInfo configInfo) {
+                if (configInfo != null) {
+                    configInfo.setDateOfConfig(currentTime);
+                    mServerUtil.getActiveServer().setConfigInfo(configInfo);
+                    mServerUtil.saveDomoticzServers(true);
+                }
             }
 
             @Override
