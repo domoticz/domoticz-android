@@ -26,6 +26,7 @@ public class ServerInfo {
     private boolean LOCAL_SERVER_AUTHENTICATION_METHOD = false;
     private Set<String> LOCAL_SERVER_SSID;
     private ServerUpdateInfo serverUpdateInfo;
+    private ConfigInfo configInfo;
 
     public String getRemoteServerUsername() {
         return REMOTE_SERVER_USERNAME;
@@ -209,6 +210,14 @@ public class ServerInfo {
 
     public void setServerUpdateInfo(ServerUpdateInfo serverUpdateInfo) {
         this.serverUpdateInfo = serverUpdateInfo;
+    }
+
+    public ConfigInfo getConfigInfo() {
+        return configInfo;
+    }
+
+    public void setConfigInfo(ConfigInfo configInfo) {
+        this.configInfo = configInfo;
     }
 
     /**

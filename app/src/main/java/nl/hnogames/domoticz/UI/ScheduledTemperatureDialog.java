@@ -27,8 +27,8 @@ import android.content.Context;
 import nl.hnogames.domoticz.R;
 
 public class ScheduledTemperatureDialog extends TemperatureDialog {
-    public ScheduledTemperatureDialog(Context mContext, int idx, double temp, boolean canCancel) {
-        super(mContext, idx, temp);
+    public ScheduledTemperatureDialog(Context mContext, double temp, boolean canCancel) {
+        super(mContext, temp);
 
         if (canCancel) {
             getMaterialDialogBuilder()

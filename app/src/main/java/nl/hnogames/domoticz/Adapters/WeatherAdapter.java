@@ -46,6 +46,7 @@ import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -103,7 +104,8 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         int layoutResourceId;
 
-        ConfigInfo mConfigInfo = new SharedPrefUtil(context).getConfig();
+        // ConfigInfo mConfigInfo = new SharedPrefUtil(context).getConfig();
+        ConfigInfo mConfigInfo = new ServerUtil(context).getActiveServer().getConfigInfo();
 
         WeatherInfo mWeatherInfo = filteredData.get(position);
 

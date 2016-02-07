@@ -34,6 +34,7 @@ import android.util.DisplayMetrics;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.Locale;
 
 import nl.hnogames.domoticz.MainActivity;
@@ -138,5 +139,9 @@ public class UsefulBits {
 
     public static String getFormattedDate(Context mContext, long timeInMillis) {
         return DateUtils.getRelativeTimeSpanString(mContext, timeInMillis, false).toString();
+    }
+
+    public static int differenceInDays(long day1, long day2) {
+        return (int) (day1 - day2) / (24 * 60 * 60 * 1000);
     }
 }

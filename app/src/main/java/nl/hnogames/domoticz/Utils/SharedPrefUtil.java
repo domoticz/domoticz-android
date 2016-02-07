@@ -53,8 +53,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
@@ -68,25 +68,23 @@ public class SharedPrefUtil {
     public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
     public static final String PREF_LANGUAGE = "displayLanguage";
-    public static final String PREF_UPDATE_VERSION = "updateversion";
     public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
-    public static final String PREF_SERVER_VERSION = "serverversion";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
     public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
-    public static final String PREF_CONFIG = "domoticz_config";
     public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     public static final String PREF_GEOFENCE_STARTED = "geofence_started";
     public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
     public static final String PREF_DEBUGGING = "debugging";
-    public static final int INVALID_IDX = 999999;
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
     private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
+
+    public static final int INVALID_IDX = 999999;
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -442,27 +440,6 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
 
-    public void setServerUpdateAvailable(boolean haveUpdate) {
-        editor.putBoolean(PREF_UPDATE_SERVER_AVAILABLE, haveUpdate).apply();
-    }
-
-    public String getUpdateVersionAvailable() {
-        return prefs.getString(PREF_UPDATE_VERSION, "");
-    }
-
-    public void setUpdateVersionAvailable(String version) {
-        editor.putString(PREF_UPDATE_VERSION, version).apply();
-    }
-
-    public String getServerVersion() {
-        return prefs.getString(PREF_SERVER_VERSION, "");
-    }
-
-    public void setServerVersion(String version) {
-        editor.putString(PREF_SERVER_VERSION, version).apply();
-    }
-
-
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);
     }
@@ -471,23 +448,6 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
     }
 
-    public void saveConfig(ConfigInfo config) {
-        editor.putString(PREF_CONFIG, config.getJsonObject());
-        editor.commit();
-    }
-
-    public ConfigInfo getConfig() {
-        ConfigInfo config;
-        if (prefs.contains(PREF_CONFIG)) {
-            String jsonConfig = prefs.getString(PREF_CONFIG, null);
-            config = new ConfigInfo(jsonConfig);
-        } else
-            return null;
-
-        return config;
-    }
-
-    // This four methods are used for maintaining locations.
     public void saveLocations(List<LocationInfo> locations) {
         Gson gson = new Gson();
         String jsonLocations = gson.toJson(locations);
@@ -578,10 +538,12 @@ public class SharedPrefUtil {
     public boolean saveSharedPreferencesToFile(File dst) {
         boolean isServerUpdateAvailableValue = false;
 
+        ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo();
+
         // Before saving to file set server update available preference to false
         if (isServerUpdateAvailable()) {
             isServerUpdateAvailableValue = true;
-            setServerUpdateAvailable(false);
+            mServerUpdateInfo.setUpdateAvailable(false);
         }
 
         boolean result = false;
@@ -612,7 +574,7 @@ public class SharedPrefUtil {
             }
         }
         // Write original settings to preferences
-        if (isServerUpdateAvailableValue) setServerUpdateAvailable(true);
+        if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
         return result;
     }
 
