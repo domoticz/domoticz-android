@@ -275,13 +275,16 @@ public class Preference extends PreferenceFragment {
     }
 
     private void showRestartMessage(String language) {
+
+        mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase());
+
         UsefulBits.setLocale(mContext, language);
         new MaterialDialog.Builder(mContext)
-                .title("Restart required")
-                .content("For the language settings to become to effect an application restart is required"
+                .title(R.string.restart_required_title)
+                .content(mContext.getString(R.string.restart_required_msg)
                         + UsefulBits.newLine()
                         + UsefulBits.newLine()
-                        + "Restart now?")
+                        + mContext.getString(R.string.restart_now))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
