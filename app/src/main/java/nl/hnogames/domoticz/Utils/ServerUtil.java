@@ -123,8 +123,11 @@ public class ServerUtil {
 
                     if (jsonServer.has(JSON_CONFIG_INFO)) {
                         JSONObject configInfoJson = jsonServer.getJSONObject(JSON_CONFIG_INFO);
+                        long dateOfConfig = configInfoJson.getLong("dateOfConfig");
                         JSONObject jsonUpdate = configInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
-                        oPrefServer.setConfigInfo(new ConfigInfo(jsonUpdate));
+                        ConfigInfo loadedConfigInfo = new ConfigInfo(jsonUpdate);
+                        loadedConfigInfo.setDateOfConfig(dateOfConfig);
+                        oPrefServer.setConfigInfo(loadedConfigInfo);
                     }
 
                     boolean alreadyContains = false;
@@ -181,8 +184,11 @@ public class ServerUtil {
 
                         if (jsonServer.has(JSON_CONFIG_INFO)) {
                             JSONObject configInfoJson = jsonServer.getJSONObject(JSON_CONFIG_INFO);
+                            long dateOfConfig = configInfoJson.getLong("dateOfConfig");
                             JSONObject jsonUpdate = configInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
-                            oPrefServer.setConfigInfo(new ConfigInfo(jsonUpdate));
+                            ConfigInfo loadedConfigInfo = new ConfigInfo(jsonUpdate);
+                            loadedConfigInfo.setDateOfConfig(dateOfConfig);
+                            oPrefServer.setConfigInfo(loadedConfigInfo);
                         }
 
                         oPrefServer.setLocalServerAuthentication(jsonServer.getBoolean("LOCAL_SERVER_AUTHENTICATION_METHOD"));

@@ -534,8 +534,7 @@ public class MainActivity extends AppCompatActivity {
         final long currentTime = Calendar.getInstance().getTimeInMillis();
 
         if (mConfigInfo != null) {
-            final long dateOfConfig = mServerUtil.getActiveServer().getConfigInfo().getDateOfConfig();
-
+            final long dateOfConfig = mConfigInfo.getDateOfConfig();
             if (dateOfConfig > 0) {
                 if (UsefulBits.differenceInDays(dateOfConfig, currentTime)
                         < DAYS_TO_CHECK_FOR_SERVER_CONFIG)
