@@ -32,11 +32,12 @@ public class DeviceUtils {
 
     /**
      * get Unique ID for this device
+     *
      * @param context
      * @return UUID (unique device id)
      */
     public static String getUniqueID(Context context) {
-        if(PermissionsUtil.canAccessDeviceState(context)) {
+        if (PermissionsUtil.canAccessDeviceState(context)) {
             final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
             final String tmDevice, tmSerial, androidId;
@@ -46,8 +47,7 @@ public class DeviceUtils {
 
             UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
             return deviceUuid.toString();
-        }
-        else
+        } else
             return null;
     }
 }

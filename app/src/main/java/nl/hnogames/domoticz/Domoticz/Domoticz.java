@@ -176,7 +176,7 @@ public class Domoticz {
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
 
-        if(validatePorts) {
+        if (validatePorts) {
             stringHashMap.put("Domoticz local port", server.getLocalServerPort());
             stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
         }
