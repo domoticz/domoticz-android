@@ -34,14 +34,8 @@ import android.util.DisplayMetrics;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Calendar;
 import java.util.Locale;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Containers.Language;
-import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.MainActivity;
 
 public class UsefulBits {

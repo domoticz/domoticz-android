@@ -149,8 +149,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.data.setMaxLines(3);
         if (mWeatherInfo.getType().equals("Wind")) {
             holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
-        }
-        else {
+        } else {
             holder.data.append(mWeatherInfo.getData());
         }
 

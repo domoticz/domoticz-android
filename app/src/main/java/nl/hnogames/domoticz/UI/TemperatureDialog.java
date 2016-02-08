@@ -102,8 +102,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 if (isFahrenheit) {
                     text = String.valueOf(temp * 2) + " " + tempSign;
                     temperatureText.setText(text);
-                }
-                else {
+                } else {
                     text = String.valueOf(temp) + " " + tempSign;
                     temperatureText.setText(text);
                 }
@@ -117,8 +116,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 if (isFahrenheit) {
                     text = String.valueOf(temp * 2) + " " + tempSign;
                     temperatureText.setText(text);
-                }
-                else {
+                } else {
                     text = String.valueOf(temp) + " " + tempSign;
                     temperatureText.setText(text);
                 }
@@ -132,8 +130,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 if (isFahrenheit) {
                     text = String.valueOf(temp * 2) + " " + tempSign;
                     temperatureText.setText(text);
-                }
-                else {
+                } else {
                     text = String.valueOf(temp) + " " + tempSign;
                     temperatureText.setText(text);
                 }
