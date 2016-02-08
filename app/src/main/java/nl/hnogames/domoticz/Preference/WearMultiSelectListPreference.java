@@ -71,8 +71,8 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                     int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                     String switchType = mExtendedStatusInfo.getSwitchType();
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) //&&
-                            //appSupportedSwitchesValues.contains(switchTypeVal) &&
-                            //appSupportedSwitchesNames.contains(switchType)
+                        //appSupportedSwitchesValues.contains(switchTypeVal) &&
+                        //appSupportedSwitchesNames.contains(switchType)
                             ) {
                         supportedSwitches.add(mExtendedStatusInfo);
                     }

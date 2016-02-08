@@ -665,21 +665,21 @@ public class SharedPrefUtil {
     }
 
     /**
-     * Set's the date (in milliseconds) when the language files are saved
-     *
-     * @param timeInMillis time in milliseconds
-     */
-    public void setSavedLanguageDate(long timeInMillis) {
-        editor.putLong(PREF_SAVED_LANGUAGE_DATE, timeInMillis).apply();
-    }
-
-    /**
      * Get's the date (in milliseconds) when the language files where saved
      *
      * @return time in milliseconds
      */
     public long getSavedLanguageDate() {
         return prefs.getLong(PREF_SAVED_LANGUAGE_DATE, 0);
+    }
+
+    /**
+     * Set's the date (in milliseconds) when the language files are saved
+     *
+     * @param timeInMillis time in milliseconds
+     */
+    public void setSavedLanguageDate(long timeInMillis) {
+        editor.putLong(PREF_SAVED_LANGUAGE_DATE, timeInMillis).apply();
     }
 
     /**
@@ -760,12 +760,12 @@ public class SharedPrefUtil {
         editor.putString(PREF_SAVED_LANGUAGE_STRING, language).apply();
     }
 
-    public void setTaskIsScheduled(boolean isScheduled) {
-        editor.putBoolean(PREF_TASK_SCHEDULED, isScheduled).apply();
-    }
-
     public boolean getTaskIsScheduled() {
         return prefs.getBoolean(PREF_TASK_SCHEDULED, false);
+    }
+
+    public void setTaskIsScheduled(boolean isScheduled) {
+        editor.putBoolean(PREF_TASK_SCHEDULED, isScheduled).apply();
     }
 
     public boolean isGeofencingStarted() {

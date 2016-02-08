@@ -34,8 +34,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
@@ -141,7 +141,7 @@ public class UsefulBits {
      * Set's the display language of the app
      *
      * @param context Context
-     * @param lang Language to display
+     * @param lang    Language to display
      */
     public static void setLocale(Context context, String lang) {
         Locale myLocale = new Locale(lang);
@@ -181,7 +181,7 @@ public class UsefulBits {
      * Checks the already downloaded languages if they are the correct ones
      * If not downloaded it will download them
      *
-     * @param context Context
+     * @param context       Context
      * @param forceDownload Force downloading the language anyway
      */
     public static void checkDownloadedLanguage(Context context, boolean forceDownload) {
@@ -194,7 +194,8 @@ public class UsefulBits {
             // Language files aren't there or should be downloaded anyway, let's download them
             mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase());
             if (mSharedPrefs.isDebugEnabled()) {
-                if (forceDownload) showSimpleToast(context, "Language files downloaded because it was forced");
+                if (forceDownload)
+                    showSimpleToast(context, "Language files downloaded because it was forced");
                 else showSimpleToast(context, "Language files downloaded because there were none");
             }
         } else {
@@ -205,7 +206,8 @@ public class UsefulBits {
             }
             // check if downloaded files are the correct ones
             if (!downloadedLanguage.equalsIgnoreCase(activeLanguage)) {
-                if (mSharedPrefs.isDebugEnabled()) showSimpleToast(context, "Downloaded language files not the same as preferred language");
+                if (mSharedPrefs.isDebugEnabled())
+                    showSimpleToast(context, "Downloaded language files not the same as preferred language");
                 mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase());
             }
         }
@@ -226,8 +228,8 @@ public class UsefulBits {
      * Copy text to the users clipboard
      *
      * @param mContext Context
-     * @param label Label of the to copy text
-     * @param text Text to copy
+     * @param label    Label of the to copy text
+     * @param text     Text to copy
      */
     public static void copyToClipboard(Context mContext, String label, String text) {
         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -238,7 +240,7 @@ public class UsefulBits {
     /**
      * Get's the relative formatted date
      *
-     * @param mContext Context
+     * @param mContext     Context
      * @param timeInMillis Time in milliseconds to format
      * @return Formatted date string
      */
@@ -285,14 +287,15 @@ public class UsefulBits {
 
             mGcmNetworkManager.schedule(task);
             mSharedPrefUtil.setTaskIsScheduled(true);
-        } else if (mSharedPrefUtil.isDebugEnabled()) showSimpleToast(context, "Tasks already scheduled");
+        } else if (mSharedPrefUtil.isDebugEnabled())
+            showSimpleToast(context, "Tasks already scheduled");
     }
 
     /**
      * Get's the config from the server data but only if it's older then 5 days
      *
      * @param context Context
-     * @param forced Force update the config
+     * @param forced  Force update the config
      */
     public static void saveServerConfigToActiveServer(final Context context, boolean forced) {
         final Domoticz domoticz = new Domoticz(context);
@@ -304,14 +307,14 @@ public class UsefulBits {
             final long dateOfConfig = mConfigInfo.getDateOfConfig();
             int age = UsefulBits.differenceInDays(dateOfConfig, currentTime);
             if (age < DAYS_TO_CHECK_FOR_SERVER_CONFIG) {
-                Log.i(TAG, "Skipping ConfigInfo fetch which is " + String.valueOf(age) +  " days old");
+                Log.i(TAG, "Skipping ConfigInfo fetch which is " + String.valueOf(age) + " days old");
                 if (domoticz.isDebugEnabled())
                     showSimpleToast(context,
                             "Skipping ConfigInfo fetch which is only "
-                            + String.valueOf(age)
-                            + " days old (max is: "
-                            + String.valueOf(DAYS_TO_CHECK_FOR_SERVER_CONFIG)
-                            + " days old)");
+                                    + String.valueOf(age)
+                                    + " days old (max is: "
+                                    + String.valueOf(DAYS_TO_CHECK_FOR_SERVER_CONFIG)
+                                    + " days old)");
                 return;
             }
         }
