@@ -161,7 +161,9 @@ public class GeoSettingsActivity extends AppCompatActivity
         super.onPause();
 
         if (mApiClient.isConnected()) mApiClient.disconnect();
-        if (mSharedPrefs.getEnabledGeofences().size() <= 0 && mSharedPrefs.isGeofenceEnabled()) {
+
+        if ((mSharedPrefs.getEnabledGeofences() == null || mSharedPrefs.getEnabledGeofences().size() <= 0) &&
+                mSharedPrefs.isGeofenceEnabled()) {
             mSharedPrefs.setGeofenceEnabled(false);
             stopGeofenceService();
             Toast.makeText(this, R.string.geofencing_disabled_no_enabled_fences,
