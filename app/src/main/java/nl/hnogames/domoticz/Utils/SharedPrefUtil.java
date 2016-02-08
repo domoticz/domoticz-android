@@ -48,6 +48,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -64,24 +65,26 @@ import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
-    public static final String PREF_MULTI_SERVER = "enableMultiServers";
-    public static final String PREF_CUSTOM_WEAR = "enableWearItems";
-    public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
-    public static final String PREF_ALWAYS_ON = "alwayson";
-    public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
-    public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
-    public static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
-    public static final String PREF_SAVED_LANGUAGE = "savedLanguage";
-    public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
-    public static final String PREF_EXTRA_DATA = "extradata";
-    public static final String PREF_STARTUP_SCREEN = "startup_screen";
-    public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
-    public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
-    public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
-    public static final String PREF_GEOFENCE_STARTED = "geofence_started";
-    public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
-    public static final String PREF_DEBUGGING = "debugging";
-    public static final int INVALID_IDX = 999999;
+    private static final String PREF_MULTI_SERVER = "enableMultiServers";
+    private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    private static final String PREF_ALWAYS_ON = "alwayson";
+    private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
+    private static final String PREF_NOTIFICATION_SOUND = "notification_sound";
+    private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
+    private static final String PREF_SAVED_LANGUAGE = "savedLanguage";
+    private static final String PREF_SAVED_LANGUAGE_DATE = "savedLanguageDate";
+    private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
+    private static final String PREF_EXTRA_DATA = "extradata";
+    private static final String PREF_STARTUP_SCREEN = "startup_screen";
+    private static final String PREF_TASK_SCHEDULED = "task_scheduled";
+    private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
+    private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    private static final String PREF_GEOFENCE_STARTED = "geofence_started";
+    private static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
+    private static final String PREF_DEBUGGING = "debugging";
+    private static final int INVALID_IDX = 999999;
     private static final String PREF_SAVED_LANGUAGE_STRING = "savedLanguageString";
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
@@ -117,7 +120,7 @@ public class SharedPrefUtil {
         editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
-    public boolean getAwaysOn() {
+    public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
     }
 
@@ -172,9 +175,6 @@ public class SharedPrefUtil {
             return prefs.getInt("WIDGETIDXSCENE" + idx, INVALID_IDX);
     }
 
-    /*
-     *      Generic settings
-     */
     public boolean isFirstStart() {
         return prefs.getBoolean(PREF_FIRST_START, true);
     }
@@ -191,15 +191,29 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
     }
 
+    /**
+     * Get's the users preference to vibrate on notifications
+     *
+     * @return true to vibrate
+     */
     public boolean getNotificationVibrate() {
         return prefs.getBoolean(PREF_NOTIFICATION_VIBRATE, true);
     }
 
+    /**
+     * Get's the URL for the notification sound
+     *
+     * @return Notification sound URL
+     */
     public String getNotificationSound() {
         return prefs.getString(PREF_NOTIFICATION_SOUND, null);
     }
 
-
+    /**
+     * Get's a list of suppressed notifications
+     *
+     * @return list of suppressed notifications
+     */
     public List<String> getSuppressedNotifications() {
         if (!prefs.contains(PREF_SUPPRESS_NOTIFICATIONS)) return null;
 
@@ -214,6 +228,11 @@ public class SharedPrefUtil {
         } else return null;
     }
 
+    /**
+     * Get's a list of received notifications
+     *
+     * @return List of received notifications
+     */
     public List<String> getReceivedNotifications() {
         if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) return null;
 
@@ -229,6 +248,11 @@ public class SharedPrefUtil {
         } else return null;
     }
 
+    /**
+     * Adds the notification to the list of received notifications
+     *
+     * @param notification Notification string to add
+     */
     public void addReceivedNotification(String notification) {
         if (UsefulBits.isEmpty(notification))
             return;
@@ -641,6 +665,24 @@ public class SharedPrefUtil {
     }
 
     /**
+     * Set's the date (in milliseconds) when the language files are saved
+     *
+     * @param timeInMillis time in milliseconds
+     */
+    public void setSavedLanguageDate(long timeInMillis) {
+        editor.putLong(PREF_SAVED_LANGUAGE_DATE, timeInMillis).apply();
+    }
+
+    /**
+     * Get's the date (in milliseconds) when the language files where saved
+     *
+     * @return time in milliseconds
+     */
+    public long getSavedLanguageDate() {
+        return prefs.getLong(PREF_SAVED_LANGUAGE_DATE, 0);
+    }
+
+    /**
      * Save language to shared preferences
      *
      * @param language The translated strings to save to shared preferences
@@ -650,11 +692,11 @@ public class SharedPrefUtil {
             Gson gson = new Gson();
             try {
                 String jsonLocations = gson.toJson(language);
-                editor.putString(PREF_SAVED_LANGUAGE, jsonLocations);
-                editor.commit();
+                editor.putString(PREF_SAVED_LANGUAGE, jsonLocations).apply();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
         }
     }
 
@@ -694,9 +736,11 @@ public class SharedPrefUtil {
             new Domoticz(mContext).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
+                    Calendar now = Calendar.getInstance();
                     saveLanguage(language);
                     // Write to shared preferences so we can use it to check later
                     setDownloadedLanguage(langToDownload);
+                    setSavedLanguageDate(now.getTimeInMillis());
                 }
 
                 @Override
@@ -714,6 +758,14 @@ public class SharedPrefUtil {
 
     public void setDownloadedLanguage(String language) {
         editor.putString(PREF_SAVED_LANGUAGE_STRING, language).apply();
+    }
+
+    public void setTaskIsScheduled(boolean isScheduled) {
+        editor.putBoolean(PREF_TASK_SCHEDULED, isScheduled).apply();
+    }
+
+    public boolean getTaskIsScheduled() {
+        return prefs.getBoolean(PREF_TASK_SCHEDULED, false);
     }
 
     public boolean isGeofencingStarted() {
