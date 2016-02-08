@@ -124,16 +124,6 @@ public class GeoSettingsActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
 
-        if (!isGooglePlayServicesAvailable()) {
-            Toast.makeText(
-                    GeoSettingsActivity.this,
-                    R.string.google_play_services_unavailable,
-                    Toast.LENGTH_SHORT).show();
-            // Snackbar not possible since we're ending the activity
-            finish();
-            return;
-        }
-
         domoticz = new Domoticz(this);
         mSharedPrefs = new SharedPrefUtil(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -620,25 +610,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Checks if Google Play services is available.
-     *
-     * @return true if it is.
-     */
-    private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
-        int resultCode = api.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == resultCode) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Google Play services is available.");
-            }
-            return true;
-        } else {
-            Log.e(TAG, "Google Play services is unavailable.");
-            return false;
-        }
     }
 
     @Override

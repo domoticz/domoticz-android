@@ -52,14 +52,12 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
-import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -67,7 +65,6 @@ import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
-import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
@@ -85,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int DAYS_TO_CHECK_FOR_SERVER_CONFIG = 5;
 
     private String TAG = MainActivity.class.getSimpleName();
     private ActionBarDrawerToggle mDrawerToggle;
@@ -107,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
+        if (!resolvableError) this.finish();
+
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
 
@@ -123,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPrefs.setGeofencingStarted(true);
                 mSharedPrefs.enableGeoFenceService();
             }
-
             buildScreen();
         }
     }
@@ -142,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
+            setScheduledTasks();
+            checkDownloadedLanguage();
             saveServerConfigToActiveServer();
             appRate();
         } else {
@@ -160,8 +159,8 @@ public class MainActivity extends AppCompatActivity {
         addFragment();
     }
 
-    private void setScreenOn() {
-        if (mSharedPrefs.getAwaysOn())
+    private void setScreenAlwaysOn() {
+        if (mSharedPrefs.getAlwaysOn())
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
             getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -172,25 +171,14 @@ public class MainActivity extends AppCompatActivity {
             // User has set a language in settings
             UsefulBits.setLocale(this, mSharedPrefs.getDisplayLanguage());
         }
+    }
 
-        if (mSharedPrefs.getSavedLanguage() == null) {
-            // Language files aren't there, let's download them
-            String language;
-            if (UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
-                language = UsefulBits.getDisplayLocale();
-            else language = mSharedPrefs.getDisplayLanguage();
-            mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase());
-        } else {
-            // check if downloaded files are the correct ones
-            String downloadedLanguage = mSharedPrefs.getDownloadedLanguage();
-            String userDisplayLanguage = mSharedPrefs.getDisplayLanguage();
-            String phoneDisplayLanguage = UsefulBits.getDisplayLocale();
+    private void checkDownloadedLanguage() {
+        UsefulBits.checkDownloadedLanguage(this, false);
+    }
 
-            if (userDisplayLanguage.equals("") && !downloadedLanguage.equalsIgnoreCase(phoneDisplayLanguage))
-                mSharedPrefs.getLanguageStringsFromServer(phoneDisplayLanguage.toLowerCase());
-            else if (downloadedLanguage.equalsIgnoreCase(userDisplayLanguage))
-                mSharedPrefs.getLanguageStringsFromServer(userDisplayLanguage.toLowerCase());
-        }
+    private void saveServerConfigToActiveServer() {
+        UsefulBits.saveServerConfigToActiveServer(this, false);
     }
 
     /* Called when the second activity's finishes */
@@ -527,40 +515,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Get's the server config data but only if it's older then 5 days
+     * Starts the scheduled tasks service via GCM Network manager
+     * Automatically detects if this has been done before
      */
-    private void saveServerConfigToActiveServer() {
-        ConfigInfo mConfigInfo = mServerUtil.getActiveServer().getConfigInfo();
-        final long currentTime = Calendar.getInstance().getTimeInMillis();
-
-        if (mConfigInfo != null) {
-            final long dateOfConfig = mConfigInfo.getDateOfConfig();
-            if (dateOfConfig > 0) {
-                if (UsefulBits.differenceInDays(dateOfConfig, currentTime)
-                        < DAYS_TO_CHECK_FOR_SERVER_CONFIG)
-                    return;
-            }
-        }
-
-        // Get Domoticz server configuration
-        domoticz.getConfig(new ConfigReceiver() {
-            @Override
-            public void onReceiveConfig(ConfigInfo configInfo) {
-                if (configInfo != null) {
-                    configInfo.setDateOfConfig(currentTime);
-                    mServerUtil.getActiveServer().setConfigInfo(configInfo);
-                    mServerUtil.saveDomoticzServers(true);
-                }
-            }
-
-            @Override
-            public void onError(Exception error) {
-                String message = String.format(
-                        getString(R.string.error_couldNotCheckForConfig),
-                        domoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
-            }
-        });
+    private void setScheduledTasks() {
+        UsefulBits.setScheduledTasks(this);
     }
 
     private void showSimpleSnackbar(String message) {
@@ -741,7 +700,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        setScreenOn();
+        setScreenAlwaysOn();
         refreshFragment();
     }
 
