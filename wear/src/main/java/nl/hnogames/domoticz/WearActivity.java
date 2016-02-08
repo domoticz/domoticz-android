@@ -42,6 +42,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapter.ListAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
 public class WearActivity extends DomoticzActivity
@@ -52,13 +53,14 @@ public class WearActivity extends DomoticzActivity
     private ArrayList<DevicesInfo> switches = null;
     private WearableListView listView;
     private ListAdapter adapter;
+    private Domoticz mDomoticz;
 
     // Sample dataset for the list
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
+        mDomoticz = new Domoticz();
         listView = (WearableListView) findViewById(R.id.wearable_list);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String switchesRawData = prefs.getString(PREF_SWITCH, "");
@@ -92,21 +94,31 @@ public class WearActivity extends DomoticzActivity
     @Override
     public void onClick(WearableListView.ViewHolder v) {
         Integer tag = (Integer) v.itemView.getTag();
-        Intent intent = new Intent(this, SendActivity.class);
-        String sendData = "";
+        DevicesInfo clickedDevice = switches.get(tag);
 
-        try {
-            JSONObject switchJSON = switches.get(tag).getJsonObject();
-            if (switchJSON.has("nameValuePairs"))
-                sendData = switchJSON.getString("nameValuePairs").toString();
-            else
-                sendData = switchJSON.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        int switchTypeVal = clickedDevice.getSwitchTypeVal();
+        String switchType = clickedDevice.getSwitchType();
+
+        //only handle click event for supported switches (others are read only!!)
+        if ((mDomoticz.getWearSupportedSwitchesValues().contains(switchTypeVal) &&
+                mDomoticz.getWearSupportedSwitchesNames().contains(switchType)) ||
+                (clickedDevice.getType().equals(Domoticz.Scene.Type.GROUP) || clickedDevice.getType().equals(Domoticz.Scene.Type.SCENE))) {
+            Intent intent = new Intent(this, SendActivity.class);
+            String sendData = "";
+
+            try {
+                JSONObject switchJSON = switches.get(tag).getJsonObject();
+                if (switchJSON.has("nameValuePairs"))
+                    sendData = switchJSON.getString("nameValuePairs").toString();
+                else
+                    sendData = switchJSON.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            intent.putExtra("SWITCH", sendData);
+            startActivity(intent);
         }
-
-        intent.putExtra("SWITCH", sendData);
-        startActivity(intent);
     }
 
     @Override
