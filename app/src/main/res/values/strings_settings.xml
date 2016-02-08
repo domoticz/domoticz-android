@@ -111,4 +111,6 @@
     <string name="click_to_update_server">Click here to update your server</string>
 
     <string name="debug_test_text">Debugging test</string>
+    <string name="restart_required_title">Restart required</string>
+    <string name="restart_now">Restart now?</string>
 </resources>

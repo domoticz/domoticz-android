@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int DAYS_TO_CHECK_FOR_SERVER_CONFIG = 5;
 
     private String TAG = MainActivity.class.getSimpleName();
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this);
-        applyLanguage();
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
+            applyLanguage();
             WidgetUtils.RefreshWidgets(this);
 
             //noinspection ConstantConditions
@@ -167,12 +168,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyLanguage() {
-        if (!UsefulBits.isEmpty(mSharedPrefs.getLanguage())) {
-            UsefulBits.setLocale(this, mSharedPrefs.getLanguage());
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
+            // User has set a language in settings
+            UsefulBits.setLocale(this, mSharedPrefs.getDisplayLanguage());
+        }
+
+        if (mSharedPrefs.getSavedLanguage() == null) {
+            // Language files aren't there, let's download them
+            String language;
+            if (UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+                language = UsefulBits.getDisplayLocale();
+            else language = mSharedPrefs.getDisplayLanguage();
+            mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase());
+        } else {
+            // check if downloaded files are the correct ones
+            String downloadedLanguage = mSharedPrefs.getDownloadedLanguage();
+            String userDisplayLanguage = mSharedPrefs.getDisplayLanguage();
+            String phoneDisplayLanguage = UsefulBits.getDisplayLocale();
+
+            if (userDisplayLanguage.equals("") && !downloadedLanguage.equalsIgnoreCase(phoneDisplayLanguage))
+                mSharedPrefs.getLanguageStringsFromServer(phoneDisplayLanguage.toLowerCase());
+            else if (downloadedLanguage.equalsIgnoreCase(userDisplayLanguage))
+                mSharedPrefs.getLanguageStringsFromServer(userDisplayLanguage.toLowerCase());
         }
     }
 
-    /* Called when the second activity's finished */
+    /* Called when the second activity's finishes */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -509,14 +530,17 @@ public class MainActivity extends AppCompatActivity {
      * Get's the server config data but only if it's older then 5 days
      */
     private void saveServerConfigToActiveServer() {
-
-        final long dateOfConfig = mServerUtil.getActiveServer().getConfigInfo().getDateOfConfig();
+        ConfigInfo mConfigInfo = mServerUtil.getActiveServer().getConfigInfo();
         final long currentTime = Calendar.getInstance().getTimeInMillis();
 
-        if (dateOfConfig > 0) {
-            if (UsefulBits.differenceInDays(dateOfConfig, currentTime)
-                    < DAYS_TO_CHECK_FOR_SERVER_CONFIG)
-                return;
+        if (mConfigInfo != null) {
+            final long dateOfConfig = mServerUtil.getActiveServer().getConfigInfo().getDateOfConfig();
+
+            if (dateOfConfig > 0) {
+                if (UsefulBits.differenceInDays(dateOfConfig, currentTime)
+                        < DAYS_TO_CHECK_FOR_SERVER_CONFIG)
+                    return;
+            }
         }
 
         // Get Domoticz server configuration

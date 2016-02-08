@@ -53,8 +53,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
@@ -67,7 +70,9 @@ public class SharedPrefUtil {
     public static final String PREF_ALWAYS_ON = "alwayson";
     public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
-    public static final String PREF_LANGUAGE = "displayLanguage";
+    public static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
+    public static final String PREF_SAVED_LANGUAGE = "savedLanguage";
+    private static final String PREF_SAVED_LANGUAGE_STRING = "savedLanguageString";
     public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
     public static final String PREF_EXTRA_DATA = "extradata";
     public static final String PREF_STARTUP_SCREEN = "startup_screen";
@@ -82,10 +87,10 @@ public class SharedPrefUtil {
     private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
+
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
 
     public static final int INVALID_IDX = 999999;
-
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -628,8 +633,89 @@ public class SharedPrefUtil {
         return res;
     }
 
-    public String getLanguage() {
-        return prefs.getString(PREF_LANGUAGE, "");
+    /**
+     * Get the user prefered display language
+     *
+     * @return Language string
+     */
+    public String getDisplayLanguage() {
+        return prefs.getString(PREF_DISPLAY_LANGUAGE, "");
+    }
+
+    /**
+     * Save language to shared preferences
+     *
+     * @param language The translated strings to save to shared preferences
+     */
+    public void saveLanguage(Language language) {
+        if (language != null) {
+            Gson gson = new Gson();
+            try {
+                String jsonLocations = gson.toJson(language);
+                editor.putString(PREF_SAVED_LANGUAGE, jsonLocations);
+                editor.commit();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Get the saved language from shared preferences
+     *
+     * @return Language with tranlated strings
+     */
+    public Language getSavedLanguage() {
+        Language returnValue;
+
+        if (prefs.contains(PREF_SAVED_LANGUAGE)) {
+            String languageStr = prefs.getString(PREF_SAVED_LANGUAGE, null);
+            if (languageStr != null) {
+                Gson gson = new Gson();
+                try {
+                    returnValue = gson.fromJson(languageStr, Language.class);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return null;
+                }
+            } else return null;
+        } else
+            return null;
+
+        return returnValue;
+    }
+
+    /**
+     * Get's the translated strings from the server and saves them to shared preferences
+     *
+     * @param langToDownload Language to get from the server
+     */
+    public void getLanguageStringsFromServer(final String langToDownload) {
+
+        if (!UsefulBits.isEmpty(langToDownload)) {
+            new Domoticz(mContext).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+                @Override
+                public void onReceiveLanguage(Language language) {
+                    saveLanguage(language);
+                    // Write to shared preferences so we can use it to check later
+                    setDownloadedLanguage(langToDownload);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Log.e("Shared Pref util", "Unable to get the language from the server: " + langToDownload);
+                    error.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public String getDownloadedLanguage() {
+        return prefs.getString(PREF_SAVED_LANGUAGE_STRING, "");
+    }
+
+    public void setDownloadedLanguage(String language) {
+        editor.putString(PREF_SAVED_LANGUAGE_STRING, language).apply();
     }
 
     public boolean isGeofencingStarted() {
