@@ -739,44 +739,44 @@ public class SharedPrefUtil {
     }
 
     public void enableGeoFenceService() {
-
         if (isGeofenceEnabled()) {
+            //only continue when we have the correct permissions!
+            if(PermissionsUtil.canAccessLocation(mContext)) {
+                final List<Geofence> mGeofenceList = getEnabledGeofences();
+                if (mGeofenceList != null && mGeofenceList.size() > 0) {
+                    mApiClient = new GoogleApiClient.Builder(mContext)
+                            .addApi(LocationServices.API)
+                            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                                @Override
+                                public void onConnected(Bundle bundle) {
+                                    PendingIntent mGeofenceRequestIntent =
+                                            getGeofenceTransitionPendingIntent();
 
-            final List<Geofence> mGeofenceList = getEnabledGeofences();
+                                    // First remove all GeoFences
+                                    try {
+                                        LocationServices.GeofencingApi.removeGeofences(mApiClient,
+                                                mGeofenceRequestIntent);
+                                    } catch (Exception ignored) {
+                                    }
 
-            if (mGeofenceList != null && mGeofenceList.size() > 0) {
-                mApiClient = new GoogleApiClient.Builder(mContext)
-                        .addApi(LocationServices.API)
-                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                            @Override
-                            public void onConnected(Bundle bundle) {
-                                PendingIntent mGeofenceRequestIntent =
-                                        getGeofenceTransitionPendingIntent();
-
-                                // First remove all GeoFences
-                                try {
-                                    LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                                            mGeofenceRequestIntent);
-                                } catch (Exception ignored) {
+                                    //noinspection ResourceType
+                                    LocationServices
+                                            .GeofencingApi
+                                            .addGeofences(mApiClient,
+                                                    getGeofencingRequest(mGeofenceList),
+                                                    mGeofenceRequestIntent);
                                 }
 
-                                //noinspection ResourceType
-                                LocationServices
-                                        .GeofencingApi
-                                        .addGeofences(mApiClient,
-                                                getGeofencingRequest(mGeofenceList),
-                                                mGeofenceRequestIntent);
-                            }
-
-                            @Override
-                            public void onConnectionSuspended(int i) {
-                            }
-                        })
-                        .build();
-                mApiClient.connect();
-            } else {
-                // No enabled geofences, disabling
-                setGeofenceEnabled(false);
+                                @Override
+                                public void onConnectionSuspended(int i) {
+                                }
+                            })
+                            .build();
+                    mApiClient.connect();
+                } else {
+                    // No enabled geofences, disabling
+                    setGeofenceEnabled(false);
+                }
             }
         }
     }
