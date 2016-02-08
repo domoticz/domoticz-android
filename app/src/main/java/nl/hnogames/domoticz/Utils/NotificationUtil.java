@@ -46,6 +46,7 @@ public class NotificationUtil {
         int NOTIFICATION_ID = 12345;
         SharedPrefUtil prefUtil = new SharedPrefUtil(context);
         if (prefUtil.isNotificationsEnabled() &&
+                prefUtil.getSuppressedNotifications() != null &&
                 !prefUtil.getSuppressedNotifications().contains(text)) {
 
             NotificationCompat.Builder builder =
