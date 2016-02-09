@@ -422,39 +422,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDomoticzServerUpdate() {
-        // Get latest Domoticz version update
-        domoticz.getUpdate(new UpdateVersionReceiver() {
-            @Override
-            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
-                boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
-                if (mServerUtil.getActiveServer() != null) {
-                    // Write update version to shared preferences
-                    mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                    mServerUtil.saveDomoticzServers(true);
-                    if (haveUpdate) {
-                        if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                            // Great! We can remote/auto update Linux systems
-                            getCurrentServerVersion();
-                        } else {
-                            // No remote/auto updating available for other systems (like Windows, Synology)
-                            showSimpleSnackbar(getString(R.string.server_update_available));
+        if(mSharedPrefs.checkForUpdatesEnabled()) {
+            // Get latest Domoticz version update
+            domoticz.getUpdate(new UpdateVersionReceiver() {
+                @Override
+                public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
+                    boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+                    if (mServerUtil.getActiveServer() != null) {
+                        // Write update version to shared preferences
+                        mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                        mServerUtil.saveDomoticzServers(true);
+                        if (haveUpdate) {
+                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                // Great! We can remote/auto update Linux systems
+                                getCurrentServerVersion();
+                            } else {
+                                // No remote/auto updating available for other systems (like Windows, Synology)
+                                showSimpleSnackbar(getString(R.string.server_update_available));
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onError(Exception error) {
-                String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        domoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                @Override
+                public void onError(Exception error) {
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
+                    showSimpleSnackbar(message);
 
-                if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                    mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
-                mServerUtil.saveDomoticzServers(true);
-            }
-        });
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    mServerUtil.saveDomoticzServers(true);
+                }
+            });
+        }
     }
 
     private void getCurrentServerVersion() {

@@ -92,6 +92,8 @@ public class SharedPrefUtil {
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
+    private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
+
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -102,6 +104,9 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+    }
+    public boolean checkForUpdatesEnabled() {
+        return prefs.getBoolean(PREF_CHECK_UPDATES, false);
     }
 
     public boolean isMultiServerEnabled() {

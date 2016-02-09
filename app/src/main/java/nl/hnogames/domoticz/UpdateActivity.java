@@ -78,7 +78,6 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-
         currentServerVersionValue = (TextView) findViewById(R.id.currentServerVersion_value);
         updateServerVersionValue = (TextView) findViewById(R.id.updateServerVersion_value);
         updateSummary = (TextView) findViewById(R.id.updateSummary);
@@ -142,7 +141,6 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private void checkForUpdatePrerequisites() {
-
         MaterialDialog.Builder mdb = new MaterialDialog.Builder(this);
         mdb.title(R.string.msg_please_wait)
                 .content(R.string.please_wait_while_we_check)
@@ -258,7 +256,6 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                 // Write update version to shared preferences
-
                 boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
                 serverUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);

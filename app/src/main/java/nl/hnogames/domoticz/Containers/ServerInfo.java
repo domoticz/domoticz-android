@@ -1,5 +1,7 @@
 package nl.hnogames.domoticz.Containers;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,24 +9,26 @@ import java.util.Set;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 
 public class ServerInfo {
-    private String SERVER_NAME = Domoticz.DOMOTICZ_DEFAULT_SERVER;
-    private String REMOTE_SERVER_USERNAME = "";
-    private String REMOTE_SERVER_PASSWORD = "";
-    private String REMOTE_SERVER_URL = "";
-    private String REMOTE_SERVER_PORT = "";
-    private String REMOTE_SERVER_DIRECTORY = "";
-    private boolean REMOTE_SERVER_SECURE = true;
-    private boolean REMOTE_SERVER_AUTHENTICATION_METHOD = false;
-    private boolean IS_LOCAL_SERVER_ADDRESS_DIFFERENT = false;
-    private String LOCAL_SERVER_USERNAME = "";
-    private String LOCAL_SERVER_PASSWORD = "";
-    private String LOCAL_SERVER_URL = "";
-    private String LOCAL_SERVER_PORT = "";
-    private String LOCAL_SERVER_DIRECTORY = "";
-    private boolean LOCAL_SERVER_SECURE = false;
-    private boolean ENABLED = true;
-    private boolean LOCAL_SERVER_AUTHENTICATION_METHOD = false;
-    private Set<String> LOCAL_SERVER_SSID;
+    @Expose private String SERVER_NAME = Domoticz.DOMOTICZ_DEFAULT_SERVER;
+    @Expose private String REMOTE_SERVER_USERNAME = "";
+    @Expose private String REMOTE_SERVER_PASSWORD = "";
+    @Expose private String REMOTE_SERVER_URL = "";
+    @Expose private String REMOTE_SERVER_PORT = "";
+    @Expose private String REMOTE_SERVER_DIRECTORY = "";
+    @Expose private boolean REMOTE_SERVER_SECURE = true;
+    @Expose private boolean REMOTE_SERVER_AUTHENTICATION_METHOD = false;
+    @Expose private boolean IS_LOCAL_SERVER_ADDRESS_DIFFERENT = false;
+    @Expose private String LOCAL_SERVER_USERNAME = "";
+    @Expose private String LOCAL_SERVER_PASSWORD = "";
+    @Expose private String LOCAL_SERVER_URL = "";
+    @Expose private String LOCAL_SERVER_PORT = "";
+    @Expose private String LOCAL_SERVER_DIRECTORY = "";
+    @Expose private boolean LOCAL_SERVER_SECURE = false;
+    @Expose private boolean ENABLED = true;
+    @Expose private boolean LOCAL_SERVER_AUTHENTICATION_METHOD = false;
+    @Expose private Set<String> LOCAL_SERVER_SSID;
+
+    /* Not saved yet because Gson can't serialize these classes!!!  */
     private ServerUpdateInfo serverUpdateInfo;
     private ConfigInfo configInfo;
 
@@ -182,10 +186,6 @@ public class ServerInfo {
         return LOCAL_SERVER_SSID;
     }
 
-    public void setLocalServerSsid(Set<String> set) {
-        LOCAL_SERVER_SSID = set;
-    }
-
     public void setLocalServerSsid(List<String> ssids) {
         if (ssids != null) {
             Set<String> set = new HashSet<>();
@@ -194,6 +194,10 @@ public class ServerInfo {
             }
             LOCAL_SERVER_SSID = set;
         }
+    }
+
+    public void setLocalServerSsid(Set<String> set) {
+        LOCAL_SERVER_SSID = set;
     }
 
     public String getServerName() {
