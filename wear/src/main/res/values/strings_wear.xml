@@ -2,4 +2,8 @@
     <string name="app_name">Domoticz</string>
     <string name="triggered">Switch Triggered!</string>
 
+    <string name="usage">Usage</string>
+    <string name="today">Today</string>
+    <string name="total">Total</string>
+
 </resources>

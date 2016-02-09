@@ -30,8 +30,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import java.util.Random;
-
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 
@@ -59,9 +57,9 @@ public class NotificationUtil {
                             .setGroup(GROUP_KEY_NOTIFICATIONS)
                             .setAutoCancel(true);
 
-            if (!prefUtil.OverWriteNotifications())
-                NOTIFICATION_ID = new Random().nextInt(9999);
-
+            if (!prefUtil.OverWriteNotifications()) {
+                NOTIFICATION_ID = text.hashCode();
+            }
             if (prefUtil.getNotificationVibrate())
                 builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 

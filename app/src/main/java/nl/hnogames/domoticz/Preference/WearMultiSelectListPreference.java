@@ -61,8 +61,8 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();
-                final List<String> appSupportedSwitchesNames = mDomoticz.getWearSupportedSwitchesNames();
+                //final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();
+                //final List<String> appSupportedSwitchesNames = mDomoticz.getWearSupportedSwitchesNames();
                 ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
 
                 for (DevicesInfo mExtendedStatusInfo : mDevicesInfo) {
@@ -70,9 +70,10 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
                     int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                     String switchType = mExtendedStatusInfo.getSwitchType();
-                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                            appSupportedSwitchesValues.contains(switchTypeVal) &&
-                            appSupportedSwitchesNames.contains(switchType)) {
+                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) //&&
+                        //appSupportedSwitchesValues.contains(switchTypeVal) &&
+                        //appSupportedSwitchesNames.contains(switchType)
+                            ) {
                         supportedSwitches.add(mExtendedStatusInfo);
                     }
                 }
@@ -90,7 +91,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                 if (error != null && error.getMessage() != null && error.getMessage().length() > 0)
                     Log.e(TAG, error.getMessage());
             }
-        }, 0, "lights");
+        }, 0, "all");
     }
 
     private void processSwitches(ArrayList<DevicesInfo> switches) {
