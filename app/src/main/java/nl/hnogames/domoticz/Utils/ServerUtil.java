@@ -59,7 +59,6 @@ public class ServerUtil {
     private SharedPreferences.Editor editor;
 
     private Gson gson;
-    private GsonBuilder gsonBuilder;
 
     /**
      * Constructor ServerUtils
@@ -67,7 +66,7 @@ public class ServerUtil {
      * @param mContext Application Context
      */
     public ServerUtil(Context mContext) {
-        gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         gson = gsonBuilder.create();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -412,5 +411,20 @@ public class ServerUtil {
         mServerList.add(oPrefServer);
 
         saveDomoticzServers(false);
+    }
+
+    /**
+     * Get specific ServerInfo
+     */
+    public ServerInfo getServerInfo(String updateServerName) {
+        if (UsefulBits.isEmpty(updateServerName) || this.mServerList == null || this.mServerList.size() <= 0)
+            return null;
+
+        for (ServerInfo s : mServerList) {
+            if (s.getServerName().equals(updateServerName))
+                return s;
+        }
+
+        return null;//not found
     }
 }

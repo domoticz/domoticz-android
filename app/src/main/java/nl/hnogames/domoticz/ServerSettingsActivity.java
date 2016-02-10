@@ -31,6 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.SetupServerSettings;
 import nl.hnogames.domoticz.Welcome.WelcomePage3;
 
@@ -41,7 +42,9 @@ public class ServerSettingsActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     private static final int SETTINGS = 2;
 
+    private String updateName = "";
     private boolean addNew = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +53,29 @@ public class ServerSettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) //noinspection SpellCheckingInspection
+            {
                 addNew = extras.getBoolean("ADDSERVER");
+                updateName = extras.getString("SERVERNAME");
+            }
         }
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (!addNew) {
+        if (!addNew && UsefulBits.isEmpty(updateName)) {
             Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content, serverSettings)
                     .commit();
         } else {
-            Fragment serverSettings = SetupServerSettings.newInstance(SETTINGS);
+            SetupServerSettings serverSettings = SetupServerSettings.newInstance(SETTINGS);
+
+            if (!UsefulBits.isEmpty(updateName)) {
+                Bundle data = new Bundle();
+                data.putString("SERVERNAME", updateName);
+                serverSettings.setArguments(data);
+            }
+
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content, serverSettings)
                     .commit();

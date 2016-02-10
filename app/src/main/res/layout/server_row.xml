@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/material_grey_300_"
+    android:descendantFocusability="blocksDescendants"
     android:paddingLeft="@dimen/row_space"
     android:paddingRight="@dimen/row_space">
 
@@ -11,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bordershadow"
-        android:descendantFocusability="blocksDescendants"
         android:foreground="?android:attr/selectableItemBackground"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
