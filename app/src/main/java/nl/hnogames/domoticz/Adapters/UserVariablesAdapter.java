@@ -52,11 +52,12 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public UserVariablesAdapter(Context context,
+                                Domoticz mDomoticz,
                                 ArrayList<UserVariableInfo> data) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
 
         Collections.reverse(data);
         this.data = data;

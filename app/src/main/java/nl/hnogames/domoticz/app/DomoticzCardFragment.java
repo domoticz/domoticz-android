@@ -44,17 +44,17 @@ import java.util.List;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzCardFragment extends Fragment {
 
+    public Domoticz mDomoticz;
     private DomoticzFragmentListener listener;
     private String fragmentName;
-
-    private Domoticz mDomoticz;
-
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
@@ -63,6 +63,10 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     public void refreshFragment() {
+    }
+
+    public ServerUtil getServerUtil() {
+        return ((MainActivity) getActivity()).geServerUtil();
     }
 
     @Override
@@ -78,7 +82,7 @@ public class DomoticzCardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mDomoticz = new Domoticz(getActivity());
+        mDomoticz = new Domoticz(getActivity(), getServerUtil());
         debug = mDomoticz.isDebugEnabled();
 
         if (debug) showDebugLayout();

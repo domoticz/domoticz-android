@@ -107,11 +107,15 @@ public class Domoticz {
     private String snapshot_file_path = "/Domoticz/SnapShot";
 
 
-    public Domoticz(Context mContext) {
+    public Domoticz(Context mContext, ServerUtil serverUtil) {
         this.mContext = mContext;
 
         mSharedPrefUtil = new SharedPrefUtil(mContext);
-        mServerUtil = new ServerUtil(mContext);
+
+        if (serverUtil == null) {
+            mServerUtil = new ServerUtil(mContext);
+        } else
+            mServerUtil = serverUtil;
 
         mSessionUtil = new SessionUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {

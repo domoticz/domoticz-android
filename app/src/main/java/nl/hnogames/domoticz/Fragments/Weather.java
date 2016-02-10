@@ -102,7 +102,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     }
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
-        adapter = new WeatherAdapter(mContext, mWeatherInfos, this);
+        adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);

@@ -96,7 +96,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
             String data = new String(messageEvent.getData());
             try {
                 DevicesInfo selectedSwitch = new DevicesInfo(new JSONObject(data));
-                domoticz = new Domoticz(getApplicationContext());
+                if (domoticz == null)
+                    domoticz = new Domoticz(getApplicationContext(), null);
 
                 if (selectedSwitch.getType() != null && (selectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || selectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE))) {
                     if (selectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP))
@@ -145,7 +146,10 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private void getSwitches() {
         extendedStatusSwitches = new ArrayList<>();
         currentSwitch = 1;
-        domoticz = new Domoticz(getApplicationContext());
+
+        if (domoticz == null)
+            domoticz = new Domoticz(getApplicationContext(), null);
+
         domoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {

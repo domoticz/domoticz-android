@@ -54,12 +54,13 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
     private SharedPrefUtil mSharedPrefs;
 
     public WidgetsAdapter(Context context,
+                          Domoticz mDomoticz,
                           ArrayList<DevicesInfo> data) {
         super();
         mSharedPrefs = new SharedPrefUtil(context);
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
 
         Collections.sort(data, new Comparator<DevicesInfo>() {
             @Override

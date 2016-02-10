@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class ServerUtil {
     private SharedPreferences.Editor editor;
 
     private Gson gson;
-
+    private GsonBuilder gsonBuilder;
 
     /**
      * Constructor ServerUtils
@@ -66,7 +67,9 @@ public class ServerUtil {
      * @param mContext Application Context
      */
     public ServerUtil(Context mContext) {
-        gson = new Gson();
+        gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        gson = gsonBuilder.create();
+
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         loadDomoticzServers();
 

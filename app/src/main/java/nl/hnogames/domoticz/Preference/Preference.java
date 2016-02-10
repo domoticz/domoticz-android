@@ -71,6 +71,7 @@ public class Preference extends PreferenceFragment {
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
     private Context mContext;
+    private ServerUtil mServerUtil;
     private Domoticz mDomoticz;
 
     @Override
@@ -82,7 +83,8 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mDomoticz = new Domoticz(mContext);
+        mServerUtil = new ServerUtil(mContext);
+        mDomoticz = new Domoticz(mContext, mServerUtil);
 
         setPreferences();
         setStartUpScreenDefaultValue();
@@ -275,8 +277,7 @@ public class Preference extends PreferenceFragment {
     }
 
     private void showRestartMessage(String language) {
-
-        mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase());
+        mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase(), mServerUtil);
 
         UsefulBits.setLocale(mContext, language);
         new MaterialDialog.Builder(mContext)

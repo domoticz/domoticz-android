@@ -60,12 +60,13 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public TemperatureAdapter(Context context,
+                              Domoticz mDomoticz,
                               ArrayList<TemperatureInfo> data,
                               TemperatureClickListener listener) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
         Collections.sort(data, new Comparator<TemperatureInfo>() {
             @Override
             public int compare(TemperatureInfo left, TemperatureInfo right) {

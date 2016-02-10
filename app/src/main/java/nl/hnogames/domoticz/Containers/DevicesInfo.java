@@ -68,6 +68,18 @@ public class DevicesInfo implements Comparable {
     private String Image;
     private String Data;
     private String Timers;
+
+    private String ForecastStr;
+    private String HumidityStatus;
+    private String DirectionStr;
+    private String Direction;
+    private String Chill;
+    private String Speed;
+
+    private long DewPoint;
+    private long Temp;
+    private int Barometer;
+
     private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
@@ -80,6 +92,17 @@ public class DevicesInfo implements Comparable {
         } catch (Exception e) {
             level = 0;
         }
+
+        if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
+        if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
+        if (row.has("Direction")) Direction = row.getString("Direction");
+        if (row.has("DirectionStr")) DirectionStr = row.getString("DirectionStr");
+        if (row.has("Chill")) Chill = row.getString("Chill");
+        if (row.has("Speed")) Speed = row.getString("Speed");
+        if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
+        if (row.has("Temp")) Temp = row.getLong("Temp");
+        if (row.has("Barometer")) Barometer = row.getInt("Barometer");
+
         try {
             if (row.has("MaxDimLevel"))
                 maxDimLevel = row.getInt("MaxDimLevel");
@@ -444,6 +467,42 @@ public class DevicesInfo implements Comparable {
 
     public boolean hasNotifications() {
         return Notifications;
+    }
+
+    public String getForecastStr() {
+        return ForecastStr;
+    }
+
+    public String getHumidityStatus() {
+        return HumidityStatus;
+    }
+
+    public String getDirectionStr() {
+        return DirectionStr;
+    }
+
+    public String getDirection() {
+        return Direction;
+    }
+
+    public String getChill() {
+        return Chill;
+    }
+
+    public String getSpeed() {
+        return Speed;
+    }
+
+    public int getBarometer() {
+        return Barometer;
+    }
+
+    public long getDewPoint() {
+        return DewPoint;
+    }
+
+    public long getTemp() {
+        return Temp;
     }
 
     public void setNotifications(boolean notifications) {

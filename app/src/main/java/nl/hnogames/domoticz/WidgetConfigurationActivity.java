@@ -50,7 +50,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         }
 
         mSharedPrefs = new SharedPrefUtil(this);
-        domoticz = new Domoticz(this);
+        domoticz = new Domoticz(this, null);
 
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
@@ -94,7 +94,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     ListView listView = (ListView) findViewById(R.id.list);
-                    adapter = new WidgetsAdapter(WidgetConfigurationActivity.this, mDevicesInfo);
+                    adapter = new WidgetsAdapter(WidgetConfigurationActivity.this, domoticz, mDevicesInfo);
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -102,7 +102,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                             final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
-                                        WidgetConfigurationActivity.this);
+                                        WidgetConfigurationActivity.this, domoticz);
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override

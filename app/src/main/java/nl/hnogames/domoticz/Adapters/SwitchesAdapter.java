@@ -76,11 +76,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public SwitchesAdapter(Context context,
+                           Domoticz mDomoticz,
                            ArrayList<DevicesInfo> data,
                            switchesClickListener listener) {
         super();
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
 
         Collections.sort(data, new Comparator<DevicesInfo>() {
             @Override

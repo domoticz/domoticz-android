@@ -64,13 +64,16 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
     private ArrayList<WeatherInfo> data = null;
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
+    private ConfigInfo mConfigInfo;
 
     public WeatherAdapter(Context context,
+                          Domoticz mDomoticz,
+                          ServerUtil serverUtil,
                           ArrayList<WeatherInfo> data,
                           WeatherClickListener listener) {
         super();
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
         Collections.sort(data, new Comparator<WeatherInfo>() {
             @Override
             public int compare(WeatherInfo left, WeatherInfo right) {
@@ -78,6 +81,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.data = data;
         this.filteredData = data;
         this.listener = listener;
@@ -113,7 +117,6 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
 
         String tempSign = "";
         String windSign = "";
-        ConfigInfo mConfigInfo = new ServerUtil(context).getActiveServer().getConfigInfo();
         if (mConfigInfo != null) {
             tempSign = mConfigInfo.getTempSign();
             windSign = mConfigInfo.getWindSign();

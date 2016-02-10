@@ -97,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
+    public ServerUtil geServerUtil() {
+        if (mServerUtil == null)
+            mServerUtil = new ServerUtil(this);
+        return mServerUtil;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
         if (!resolvableError) this.finish();
 
         mSharedPrefs = new SharedPrefUtil(this);
-        domoticz = new Domoticz(this);
-
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -128,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
-            WidgetUtils.RefreshWidgets(this);
 
             //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
 
             mServerUtil = new ServerUtil(this);
+            domoticz = new Domoticz(this, mServerUtil);
             drawNavigationMenu();
 
             setupMobileDevice();
@@ -142,7 +146,9 @@ public class MainActivity extends AppCompatActivity {
             setScheduledTasks();
             checkDownloadedLanguage();
             saveServerConfigToActiveServer();
+
             appRate();
+            WidgetUtils.RefreshWidgets(this);
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -174,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDownloadedLanguage() {
-        UsefulBits.checkDownloadedLanguage(this, false);
+        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false);
     }
 
     private void saveServerConfigToActiveServer() {
@@ -422,39 +428,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDomoticzServerUpdate() {
-        // Get latest Domoticz version update
-        domoticz.getUpdate(new UpdateVersionReceiver() {
-            @Override
-            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
-                boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
-                if (mServerUtil.getActiveServer() != null) {
-                    // Write update version to shared preferences
-                    mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                    mServerUtil.saveDomoticzServers(true);
-                    if (haveUpdate) {
-                        if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                            // Great! We can remote/auto update Linux systems
-                            getCurrentServerVersion();
-                        } else {
-                            // No remote/auto updating available for other systems (like Windows, Synology)
-                            showSimpleSnackbar(getString(R.string.server_update_available));
+        if (mSharedPrefs.checkForUpdatesEnabled()) {
+            // Get latest Domoticz version update
+            domoticz.getUpdate(new UpdateVersionReceiver() {
+                @Override
+                public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
+                    boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+                    if (mServerUtil.getActiveServer() != null) {
+                        // Write update version to shared preferences
+                        mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                        mServerUtil.saveDomoticzServers(true);
+                        if (haveUpdate) {
+                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                // Great! We can remote/auto update Linux systems
+                                getCurrentServerVersion();
+                            } else {
+                                // No remote/auto updating available for other systems (like Windows, Synology)
+                                showSimpleSnackbar(getString(R.string.server_update_available));
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onError(Exception error) {
-                String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        domoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                @Override
+                public void onError(Exception error) {
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
+                    showSimpleSnackbar(message);
 
-                if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                    mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
-                mServerUtil.saveDomoticzServers(true);
-            }
-        });
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    mServerUtil.saveDomoticzServers(true);
+                }
+            });
+        }
     }
 
     private void getCurrentServerVersion() {

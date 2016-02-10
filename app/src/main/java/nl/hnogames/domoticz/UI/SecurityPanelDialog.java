@@ -62,9 +62,9 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Button btnArmAway;
     private CountDownTimer countDownTimer;
 
-    public SecurityPanelDialog(Context c, DevicesInfo panelInfo) {
+    public SecurityPanelDialog(Context c, Domoticz mDomoticz, DevicesInfo panelInfo) {
         this.mContext = c;
-        this.domoticz = new Domoticz(mContext);
+        this.domoticz = mDomoticz;
         this.panelInfo = panelInfo;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_security, true)

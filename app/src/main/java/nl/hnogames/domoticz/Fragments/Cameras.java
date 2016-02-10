@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
 import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
@@ -58,7 +57,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private static final String TAG = Cameras.class.getSimpleName();
 
     private Context context;
-    private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;
     private CamerasAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -90,9 +88,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
-        mDomoticz = new Domoticz(context);
         mDomoticz.getCameras(new CameraReceiver() {
-
             @Override
             public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
                 successHandling(Cameras.toString(), false);
@@ -160,8 +156,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
     @Override
     public void onConnectionOk() {
-        mDomoticz = new Domoticz(context);
-
         if (getView() != null) {
             mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);

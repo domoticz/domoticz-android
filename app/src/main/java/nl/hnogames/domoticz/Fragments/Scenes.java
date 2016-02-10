@@ -135,7 +135,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 }
             }
 
-            adapter = new SceneAdapter(mContext, supportedScenes, listener);
+            adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
             SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
@@ -243,7 +243,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity());
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override

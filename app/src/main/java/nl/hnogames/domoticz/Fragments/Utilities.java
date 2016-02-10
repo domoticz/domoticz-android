@@ -120,7 +120,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 successHandling(mUtilitiesInfos.toString(), false);
 
                 Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
-                adapter = new UtilityAdapter(mContext, mUtilitiesInfos, listener);
+                adapter = new UtilityAdapter(mContext, mDomoticz, mUtilitiesInfos, listener);
 
                 createListView();
             }
@@ -361,7 +361,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                     if (tempUtil != null) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                    mContext);
+                                    mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override

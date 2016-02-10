@@ -92,6 +92,8 @@ public class SharedPrefUtil {
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
+    private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
+
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -102,6 +104,10 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+    }
+
+    public boolean checkForUpdatesEnabled() {
+        return prefs.getBoolean(PREF_CHECK_UPDATES, false);
     }
 
     public boolean isMultiServerEnabled() {
@@ -729,11 +735,11 @@ public class SharedPrefUtil {
      * Get's the translated strings from the server and saves them to shared preferences
      *
      * @param langToDownload Language to get from the server
+     * @param server         ServerUtil
      */
-    public void getLanguageStringsFromServer(final String langToDownload) {
-
+    public void getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
         if (!UsefulBits.isEmpty(langToDownload)) {
-            new Domoticz(mContext).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+            new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
                     Calendar now = Calendar.getInstance();

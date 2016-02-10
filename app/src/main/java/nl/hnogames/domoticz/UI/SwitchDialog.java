@@ -83,7 +83,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                             if (dismissListener != null)
                                 dismissListener.onDismiss(info.get(position).getIdx(), null);
                         } else {
-                            PasswordDialog passwordDialog = new PasswordDialog(mContext);
+                            PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
