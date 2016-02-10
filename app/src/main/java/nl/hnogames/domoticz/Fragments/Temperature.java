@@ -124,7 +124,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
-            adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
+            adapter = new TemperatureAdapter(mContext, mDomoticz, mTemperatureInfos, this);
             SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);

@@ -39,6 +39,7 @@ import java.util.Comparator;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class ListAdapter extends WearableListView.Adapter {
     private final Context mContext;
@@ -87,13 +88,31 @@ public class ListAdapter extends WearableListView.Adapter {
         view.setText(mDeviceInfo.getName());
         status.setText(mDeviceInfo.getData());
 
-        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
+        if (!UsefulBits.isEmpty(mDeviceInfo.getUsage()))
             status.setText(mContext.getString(R.string.usage) + ": " + mDeviceInfo.getUsage());
-        if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
+        if (!UsefulBits.isEmpty(mDeviceInfo.getCounterToday()))
             status.append(" " + mContext.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
-        if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
+        if (!UsefulBits.isEmpty(mDeviceInfo.getCounter()) &&
                 !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
             status.append(" " + mContext.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+
+        if (mDeviceInfo.getType().equals("Wind")) {
+            status.setText(mContext.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr());
+        }
+        if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
+            status.setText(mDeviceInfo.getForecastStr());
+        if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
+            status.append(", " + mContext.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed());
+        if (mDeviceInfo.getDewPoint() > 0)
+            status.append(", " + mContext.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint());
+        if (mDeviceInfo.getTemp() > 0)
+            status.append(", " + mContext.getString(R.string.temp) + ": " + mDeviceInfo.getTemp());
+        if (mDeviceInfo.getBarometer() > 0)
+            status.append(", " + mContext.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
+        if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
+            status.append(", " + mContext.getString(R.string.chill) + ": " + mDeviceInfo.getChill());
+        if (!UsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
+            status.append(", " + mContext.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
 
         String imageType = mDataset.get(position).getTypeImg();
         if (imageType != null && imageType.length() > 0) {

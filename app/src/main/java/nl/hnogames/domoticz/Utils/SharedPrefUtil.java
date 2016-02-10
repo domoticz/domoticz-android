@@ -105,6 +105,7 @@ public class SharedPrefUtil {
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
     }
+
     public boolean checkForUpdatesEnabled() {
         return prefs.getBoolean(PREF_CHECK_UPDATES, false);
     }
@@ -734,11 +735,11 @@ public class SharedPrefUtil {
      * Get's the translated strings from the server and saves them to shared preferences
      *
      * @param langToDownload Language to get from the server
+     * @param server         ServerUtil
      */
-    public void getLanguageStringsFromServer(final String langToDownload) {
-
+    public void getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
         if (!UsefulBits.isEmpty(langToDownload)) {
-            new Domoticz(mContext).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+            new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
                     Calendar now = Calendar.getInstance();

@@ -61,12 +61,13 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public SceneAdapter(Context context,
+                        Domoticz mDomoticz,
                         ArrayList<SceneInfo> data,
                         ScenesClickListener listener) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
         Collections.sort(data, new Comparator<SceneInfo>() {
             @Override
             public int compare(SceneInfo left, SceneInfo right) {

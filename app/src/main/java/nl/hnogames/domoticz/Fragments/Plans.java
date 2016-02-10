@@ -39,7 +39,6 @@ import java.util.Comparator;
 
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
 import nl.hnogames.domoticz.Containers.PlanInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.PlanActivity;
@@ -52,7 +51,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private static final String TAG = Plans.class.getSimpleName();
 
     private Context mContext;
-    private Domoticz mDomoticz;
     private RecyclerView mRecyclerView;
     private PlansAdapter mAdapter;
     private ArrayList<PlanInfo> mPlans;
@@ -76,7 +74,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     public void processPlans() {
-        mDomoticz = new Domoticz(mContext);
         mDomoticz.getPlans(new PlansReceiver() {
 
             @Override
@@ -138,7 +135,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     @Override
     public void onConnectionOk() {
-        mDomoticz = new Domoticz(getActivity());
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);

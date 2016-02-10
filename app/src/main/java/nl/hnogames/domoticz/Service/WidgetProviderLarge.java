@@ -94,7 +94,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
             final String packageName = this.getPackageName();
             views = new RemoteViews(packageName, R.layout.widget_layout);//default
-            final Domoticz domoticz = new Domoticz(getApplicationContext());
+            final Domoticz domoticz = new Domoticz(getApplicationContext(), null);
 
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
             final boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);

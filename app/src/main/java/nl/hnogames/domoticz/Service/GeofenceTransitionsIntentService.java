@@ -124,7 +124,7 @@ public class GeofenceTransitionsIntentService extends IntentService
     }
 
     private void handleSwitch(final int idx, final String password, final boolean checked) {
-        domoticz = new Domoticz(this);
+        domoticz = new Domoticz(this, null);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
                                  public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {

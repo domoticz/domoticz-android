@@ -57,17 +57,18 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public EventsAdapter(Context context,
+                         Domoticz mDomoticz,
                          ArrayList<EventInfo> data,
                          EventsClickListener listener) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        this.domoticz = mDomoticz;
+        this.listener = listener;
 
         Collections.reverse(data);
         this.data = data;
         this.filteredData = data;
-        this.listener = listener;
     }
 
 

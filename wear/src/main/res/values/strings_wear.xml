@@ -6,4 +6,14 @@
     <string name="today">Today</string>
     <string name="total">Total</string>
 
+    <string name="dewPoint">Dew point</string>
+    <string name="temp">Temp</string>
+    <string name="pressure">Pressure</string>
+    <string name="chill">Chill</string>
+    <string name="direction">Direction</string>
+    <string name="humidity">Hum</string>
+    <string name="speed">Speed</string>
+    <string name="forecast">Forecast</string>
+    <string name="rain">Rain</string>
+    <string name="rainrate">Rain Rate</string>
 </resources>

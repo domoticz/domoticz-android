@@ -53,8 +53,8 @@ public class WelcomePage4 extends Fragment {
     }
 
     private void checkConnectionData() {
-        final Domoticz mDomoticz = new Domoticz(getActivity());
         ServerUtil mServerUtil = new ServerUtil(getActivity());
+        final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
 
         if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"

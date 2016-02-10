@@ -52,7 +52,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);
         selectAllValuesByDefault = typedArray.getBoolean(R.styleable.CustomListPreference_selectAllValuesByDefault, false);
         typedArray.recycle();
-        mDomoticz = new Domoticz(context);
+        mDomoticz = new Domoticz(context, null);
         initSwitches();
     }
 

@@ -71,8 +71,8 @@ public class UpdateActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        mDomoticz = new Domoticz(this);
         serverUtil = new ServerUtil(this);
+        mDomoticz = new Domoticz(this, serverUtil);
 
         initViews();
     }

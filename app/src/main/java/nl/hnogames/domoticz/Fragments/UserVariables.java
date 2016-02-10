@@ -62,7 +62,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
             public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
                 UserVariables.this.mUserVariableInfos = mVarInfos;
                 successHandling(mUserVariableInfos.toString(), false);
-                adapter = new UserVariablesAdapter(mContext, mUserVariableInfos);
+                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos);
                 createListView();
             }
 

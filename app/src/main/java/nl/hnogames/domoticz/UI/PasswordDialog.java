@@ -49,9 +49,9 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private FloatingLabelEditText editPassword;
     private CheckBox showPassword;
 
-    public PasswordDialog(Context c) {
+    public PasswordDialog(Context c, Domoticz mDomoticz) {
         this.mContext = c;
-        this.domoticz = new Domoticz(mContext);
+        this.domoticz = mDomoticz;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
                 .positiveText(android.R.string.ok)

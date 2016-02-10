@@ -58,12 +58,13 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public UtilityAdapter(Context context,
+                          Domoticz mDomoticz,
                           ArrayList<UtilitiesInfo> data,
                           UtilityClickListener listener) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
 
         Collections.sort(data, new Comparator<UtilitiesInfo>() {
             @Override

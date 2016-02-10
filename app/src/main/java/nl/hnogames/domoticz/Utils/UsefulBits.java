@@ -184,15 +184,18 @@ public class UsefulBits {
      * @param context       Context
      * @param forceDownload Force downloading the language anyway
      */
-    public static void checkDownloadedLanguage(Context context, boolean forceDownload) {
+    public static void checkDownloadedLanguage(Context context, ServerUtil serverUtil, boolean forceDownload) {
 
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         String downloadedLanguage = mSharedPrefs.getDownloadedLanguage();
         String activeLanguage = UsefulBits.getActiveLanguage(context);
 
+        if (serverUtil == null)
+            serverUtil = new ServerUtil(context);
+
         if (mSharedPrefs.getSavedLanguage() == null || forceDownload) {
             // Language files aren't there or should be downloaded anyway, let's download them
-            mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase());
+            mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             if (mSharedPrefs.isDebugEnabled()) {
                 if (forceDownload)
                     showSimpleToast(context, "Language files downloaded because it was forced");
@@ -208,7 +211,7 @@ public class UsefulBits {
             if (!downloadedLanguage.equalsIgnoreCase(activeLanguage)) {
                 if (mSharedPrefs.isDebugEnabled())
                     showSimpleToast(context, "Downloaded language files not the same as preferred language");
-                mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase());
+                mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             }
         }
     }
@@ -298,8 +301,8 @@ public class UsefulBits {
      * @param forced  Force update the config
      */
     public static void saveServerConfigToActiveServer(final Context context, boolean forced) {
-        final Domoticz domoticz = new Domoticz(context);
         final ServerUtil mServerUtil = new ServerUtil(context);
+        final Domoticz domoticz = new Domoticz(context, mServerUtil);
         final ConfigInfo mConfigInfo = mServerUtil.getActiveServer().getConfigInfo();
         final long currentTime = Calendar.getInstance().getTimeInMillis();
 

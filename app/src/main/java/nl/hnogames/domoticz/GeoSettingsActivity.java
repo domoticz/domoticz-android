@@ -123,7 +123,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
 
-        domoticz = new Domoticz(this);
+        domoticz = new Domoticz(this, null);
         mSharedPrefs = new SharedPrefUtil(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
