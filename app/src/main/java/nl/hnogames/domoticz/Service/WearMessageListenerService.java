@@ -163,7 +163,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, error.getMessage());
+                String errorMessage = domoticz.getErrorMessage(error);
+                Log.e(TAG, errorMessage);
             }
         }, 0, "all");
     }
