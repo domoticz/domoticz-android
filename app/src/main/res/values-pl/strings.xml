@@ -15,7 +15,7 @@
   <string name="button_status_month">Miesiąc</string>
   <string name="button_status_year">Rok</string>
   <string name="button_status_timer">Plan czasowy</string>
-  <string name="button_status_notifications">Notifications</string>
+  <string name="button_status_notifications">Powiadomienia</string>
   <string name="button_color">Kolor</string>
   <string name="button_arm">Uzbrój</string>
   <string name="button_disarm">Rozbrój</string>
@@ -74,4 +74,5 @@
   <string name="this_take_minutes">Może to potrwać kilka minut.</string>
   <string name="continue_question">Kontynuować?</string>
   <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
+  <string name="restart_required_msg">For the language settings to become to effect an application restart is required</string>
 </resources>

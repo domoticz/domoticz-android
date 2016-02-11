@@ -11,11 +11,11 @@
   <string name="button_state_off">Vyp</string>
   <string name="button_status_log">Záznam</string>
   <string name="button_status_day">Deň</string>
-  <string name="button_status_week">Week</string>
+  <string name="button_status_week">týždeň</string>
   <string name="button_status_month">Mesiac</string>
   <string name="button_status_year">Rok</string>
   <string name="button_status_timer">Častovač</string>
-  <string name="button_status_notifications">Notifications</string>
+  <string name="button_status_notifications">Notifikácie</string>
   <string name="button_color">Farba</string>
   <string name="button_arm">Aktivovať</string>
   <string name="button_disarm">Deaktivovať</string>
@@ -50,9 +50,9 @@
   <string name="no_network_available">Chyba: Žiadne pripojenie k sieti</string>
   <string name="oops">Hups!</string>
   <string name="to">"na"</string>
-  <string name="retry">Retry</string>
-  <string name="undo">Undo</string>
-  <string name="something_deleted">%1$s deleted</string>
+  <string name="retry">Skúsiť znovu</string>
+  <string name="undo">Vrátiť späť</string>
+  <string name="something_deleted">%1$s odstránené</string>
   <string name="switch_on">Zapnúť prepínač</string>
   <string name="switch_off">Vypnúť prepínač</string>
   <string name="blind_up">Zdvihnúť roletu</string>
@@ -69,9 +69,10 @@
   <string name="row_icon_description">ikona riadka</string>
   <string name="error_image_description">Chyba obrázok</string>
   <string name="white">Biela</string>
-  <string name="refresh">Refresh</string>
+  <string name="refresh">Obnoviť</string>
   <string name="domoticz_logo">Domoticz logo</string>
-  <string name="this_take_minutes">This could take several minutes.</string>
-  <string name="continue_question">Continue?</string>
-  <string name="cant_remove_default_server">Can\'t remove the default server</string>
+  <string name="this_take_minutes">Môže to trvať niekoľko minút.</string>
+  <string name="continue_question">Pokračovať?</string>
+  <string name="cant_remove_default_server">Nemôžete odstrániť predvolený server</string>
+  <string name="restart_required_msg">Pre použitie zmeny nastavenia jazyka je potrebné reštartovať aplikáciu.</string>
 </resources>

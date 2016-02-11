@@ -74,4 +74,5 @@
   <string name="this_take_minutes">Dit kan enkele minuten duren.</string>
   <string name="continue_question">Doorgaan?</string>
   <string name="cant_remove_default_server">We kunnen de standaard server settings niet verwijderen</string>
+  <string name="restart_required_msg">Om the taalinstellingen op te slaan is opnieuw opstarten vereist</string>
 </resources>

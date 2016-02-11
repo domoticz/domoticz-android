@@ -74,4 +74,5 @@
   <string name="this_take_minutes">Cela peut prendre plusieurs minutes.</string>
   <string name="continue_question">Continuer ?</string>
   <string name="cant_remove_default_server">Impossible de supprimer le serveur par défaut</string>
+  <string name="restart_required_msg">Un redémarrage est nécessaire pour que les paramètres de langue soient pris en compte</string>
 </resources>

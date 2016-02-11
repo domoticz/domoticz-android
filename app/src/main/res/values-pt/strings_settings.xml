@@ -41,8 +41,8 @@
   <string name="notification_settings_push">Coloque o seu id de registo no Domoticz</string>
   <string name="notification_settings_pushed">Seu registo id está salvo em Domoticz</string>
   <string name="notification_settings_push_failed">Não foi possivel gravar registo id em Domoticz, por favor, tente novamente mais tarde.</string>
-  <string name="overwrite_notifications_title">Overwrite Notifications</string>
-  <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
+  <string name="overwrite_notifications_title">Substituir as notificações</string>
+  <string name="overwrite_notifications">Substituir anteriores notificações neste dispositivo</string>
   <string name="enable_notifications_title">Habilitar Notificações</string>
   <string name="enable_notifications">Habilitar notificações neste dispositivo</string>
   <string name="notification_screen_title">Definições de notificação</string>
@@ -84,4 +84,6 @@
   <string name="server_update_not_available">Atualização de servidor não disponível</string>
   <string name="click_to_update_server">Clique aqui para atualizar seu servidor</string>
   <string name="debug_test_text">Teste de depuração</string>
+  <string name="restart_required_title">Reinicialização necessária</string>
+  <string name="restart_now">Reiniciar agora?</string>
 </resources>
