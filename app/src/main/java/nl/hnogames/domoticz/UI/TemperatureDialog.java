@@ -42,24 +42,49 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int minCelsiusTemp = 10;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int maxCelsiusTemp = 30;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int minFahrenheitTemp = 50;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int maxFahrenheitTemp = 90;
+    private int minTemp;
+
     private DialogActionListener dialogActionListener;
     private Context mContext;
     private double currentTemperature = 20;
     private SeekArc temperatureControl;
     private TextView temperatureText;
     private String tempSign = "";
-    private ConfigInfo configInfo;
     private boolean isFahrenheit = false;
 
     public TemperatureDialog(Context mContext, double temp) {
         this.mContext = mContext;
-        configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo();
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
                 .negativeText(android.R.string.cancel)
                 .positiveText(android.R.string.ok)
                 .onAny(this);
+
+        ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo();
+        if (configInfo != null) {
+            tempSign = configInfo.getTempSign();
+            if (!configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
+                isFahrenheit = true;
+        }
+
+        if (isFahrenheit) {
+            minTemp = minFahrenheitTemp;
+            if (temp < minFahrenheitTemp) temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
+            if (temp > maxFahrenheitTemp) temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
+        } else {
+            minTemp = minCelsiusTemp;
+            if (temp < minCelsiusTemp) temp = minCelsiusTemp;           // Celsius min = 10
+            if (temp > maxCelsiusTemp) temp = maxCelsiusTemp;           // Celsius max = 30
+        }
         currentTemperature = temp;
     }
 
@@ -70,101 +95,63 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         temperatureControl = (SeekArc) view.findViewById(R.id.seekTemperature);
         temperatureText = (TextView) view.findViewById(R.id.seekTempProgress);
+        final TextView temperatureSign = (TextView) view.findViewById(R.id.seekTempSign);
+        temperatureSign.setText(tempSign);
+
         Button bntPlus = (Button) view.findViewById(R.id.plus);
         Button btnMin = (Button) view.findViewById(R.id.min);
 
-        if (configInfo != null) {
-            tempSign = configInfo.getTempSign();
-            if (!configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
-                isFahrenheit = true;
-        }
-        final String text = String.valueOf(currentTemperature) + " " + tempSign;
+        final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);
 
-        int progress = (int) (currentTemperature);
-        if (!isFahrenheit)
-            progress = (int) (currentTemperature * 2);
+        if (!isFahrenheit) temperatureControl.setMax((maxCelsiusTemp - minCelsiusTemp) * 2);       // 40 points for 20 degree difference
+        else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);                    // 80 points for 40 degree difference
 
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", progress);
-            animation.setDuration(1000); // 0.5 second
-            animation.setInterpolator(new DecelerateInterpolator());
-            animation.start();
-        } else
-            temperatureControl.setProgress(progress); // no animation on Gingerbread or lower
+        int arcProgress = tempToProgress(currentTemperature);
+        ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
+        animation.setDuration(1000);                            // 1 second
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
-                double temp = ((double) temperatureControl.getProgress() / 2);
-                String text;
-
-                if (isFahrenheit) {
-                    text = String.valueOf(temp * 2) + " " + tempSign;
-                    temperatureText.setText(text);
-                } else {
-                    text = String.valueOf(temp) + " " + tempSign;
-                    temperatureText.setText(text);
+                if (b) {
+                    double temp = progressToTemp(i);
+                    temperatureText.setText(String.valueOf(temp));
+                    currentTemperature = temp;
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekArc seekArc) {
-                double temp = ((double) temperatureControl.getProgress() / 2);
-                String text;
-
-                if (isFahrenheit) {
-                    text = String.valueOf(temp * 2) + " " + tempSign;
-                    temperatureText.setText(text);
-                } else {
-                    text = String.valueOf(temp) + " " + tempSign;
-                    temperatureText.setText(text);
-                }
+                temperatureText.setText(String.valueOf(progressToTemp(seekArc.getProgress())));
             }
 
             @Override
             public void onStopTrackingTouch(SeekArc seekArc) {
-                double temp = ((double) temperatureControl.getProgress() / 2);
-                String text;
-
-                if (isFahrenheit) {
-                    text = String.valueOf(temp * 2) + " " + tempSign;
-                    temperatureText.setText(text);
-                } else {
-                    text = String.valueOf(temp) + " " + tempSign;
-                    temperatureText.setText(text);
-                }
+                temperatureText.setText(String.valueOf(progressToTemp(seekArc.getProgress())));
             }
         });
 
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text;
-                if (isFahrenheit) {
-                    temperatureControl.setProgress(temperatureControl.getProgress() + 2);
-                    text = String.valueOf(temperatureControl.getProgress()) + " " + tempSign;
-                    temperatureText.setText(text);
-                } else {
-                    temperatureControl.setProgress(temperatureControl.getProgress() + 1);
-                    text = String.valueOf((double) temperatureControl.getProgress() / 2) + " " + tempSign;
-                    temperatureText.setText(text);
-                }
+                final int progress = temperatureControl.getProgress() + 1;
+                double temp = progressToTemp(progress);
+                temperatureText.setText(String.valueOf(temp));
+                currentTemperature = temp;
+                temperatureControl.setProgress(progress);
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text;
-                if (isFahrenheit) {
-                    temperatureControl.setProgress(temperatureControl.getProgress() - 2);
-                    text = String.valueOf(temperatureControl.getProgress()) + " " + tempSign;
-                    temperatureText.setText(text);
-                } else {
-                    temperatureControl.setProgress(temperatureControl.getProgress() - 1);
-                    text = String.valueOf((double) temperatureControl.getProgress() / 2) + " " + tempSign;
-                    temperatureText.setText(text);
-                }
+                final int progress = temperatureControl.getProgress() - 1;
+                double temp = progressToTemp(progress);
+                temperatureText.setText(String.valueOf(temp));
+                currentTemperature = temp;
+                temperatureControl.setProgress(progress);
             }
         });
         md.show();
@@ -172,12 +159,16 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     @Override
     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-        if (dialogActionListener != null) {
-            if (isFahrenheit)
-                dialogActionListener.onDialogAction(((double) temperatureControl.getProgress()), which);
-            else
-                dialogActionListener.onDialogAction(((double) temperatureControl.getProgress() / 2), which);
-        }
+        if (dialogActionListener != null)
+            dialogActionListener.onDialogAction(currentTemperature, which);
+    }
+
+    private double progressToTemp(int progress) {
+        return ((double) progress / 2) + minTemp;
+    }
+
+    private int tempToProgress(double temp) {
+        return (int) (temp - minTemp) * 2;
     }
 
     public void onDismissListener(DialogActionListener dialogActionListener) {
