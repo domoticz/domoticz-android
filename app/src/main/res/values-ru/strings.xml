@@ -74,4 +74,5 @@
   <string name="this_take_minutes">Это может занять несколько минут.</string>
   <string name="continue_question">Продолжить?</string>
   <string name="cant_remove_default_server">Не удается удалить сервер по умолчанию</string>
+  <string name="restart_required_msg">For the language settings to become to effect an application restart is required</string>
 </resources>

@@ -41,8 +41,8 @@
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>
   <string name="notification_settings_pushed">Twój identyfikator rejestracji jest teraz zapisany w Domoticz</string>
   <string name="notification_settings_push_failed">Nie można zapisać Twojego identyfikatora rejestracji w Domoticz, prosimy spróbować ponownie później.</string>
-  <string name="overwrite_notifications_title">Overwrite Notifications</string>
-  <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
+  <string name="overwrite_notifications_title">Zastąp powiadomienia</string>
+  <string name="overwrite_notifications">Zastąp poprzednie powiadomienia na tym urządzeniu</string>
   <string name="enable_notifications_title">Włącz powiadomienia</string>
   <string name="enable_notifications">Włącz powiadomienia na urządzeniu</string>
   <string name="notification_screen_title">Ustawienia powiadomień</string>
@@ -84,4 +84,6 @@
   <string name="server_update_not_available">Aktualizacja serwera nie dostępna</string>
   <string name="click_to_update_server">Kliknij tutaj, aby uaktualnić swój serwer</string>
   <string name="debug_test_text">Test debugowania</string>
+  <string name="restart_required_title">Restart required</string>
+  <string name="restart_now">Restart now?</string>
 </resources>
