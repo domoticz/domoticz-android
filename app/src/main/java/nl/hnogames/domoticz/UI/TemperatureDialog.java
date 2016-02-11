@@ -50,6 +50,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     private final int minFahrenheitTemp = 50;
     @SuppressWarnings("FieldCanBeLocal")
     private final int maxFahrenheitTemp = 90;
+    private final int maxTemp;
     private int minTemp;
 
     private DialogActionListener dialogActionListener;
@@ -78,10 +79,12 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         if (isFahrenheit) {
             minTemp = minFahrenheitTemp;
+            maxTemp = maxFahrenheitTemp;
             if (temp < minFahrenheitTemp) temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
             if (temp > maxFahrenheitTemp) temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
         } else {
             minTemp = minCelsiusTemp;
+            maxTemp = maxCelsiusTemp;
             if (temp < minCelsiusTemp) temp = minCelsiusTemp;           // Celsius min = 10
             if (temp > maxCelsiusTemp) temp = maxCelsiusTemp;           // Celsius max = 30
         }
@@ -104,8 +107,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);
 
-        if (!isFahrenheit) temperatureControl.setMax((maxCelsiusTemp - minCelsiusTemp) * 2);       // 40 points for 20 degree difference
-        else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);                    // 80 points for 40 degree difference
+        if (!isFahrenheit) temperatureControl.setMax((maxCelsiusTemp - minCelsiusTemp) * 2);
+        else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);
 
         int arcProgress = tempToProgress(currentTemperature);
         ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
@@ -115,12 +118,10 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
-                if (b) {
-                    double temp = progressToTemp(i);
-                    temperatureText.setText(String.valueOf(temp));
-                    currentTemperature = temp;
-                }
+            public void onProgressChanged(SeekArc seekArc, int progress, boolean byUser) {
+                double temp = progressToTemp(progress);
+                temperatureText.setText(String.valueOf(temp));
+                currentTemperature = temp;
             }
 
             @Override
@@ -137,21 +138,21 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int progress = temperatureControl.getProgress() + 1;
-                double temp = progressToTemp(progress);
-                temperatureText.setText(String.valueOf(temp));
-                currentTemperature = temp;
-                temperatureControl.setProgress(progress);
+                int progress = temperatureControl.getProgress();
+                if (progressToTemp(progress) < maxTemp) {
+                    progress += 1;
+                    temperatureControl.setProgress(progress);
+                }
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int progress = temperatureControl.getProgress() - 1;
-                double temp = progressToTemp(progress);
-                temperatureText.setText(String.valueOf(temp));
-                currentTemperature = temp;
-                temperatureControl.setProgress(progress);
+                int progress = temperatureControl.getProgress();
+                if (progressToTemp(progress) > minTemp) {
+                    progress -= 1;
+                    temperatureControl.setProgress(progress);
+                }
             }
         });
         md.show();
