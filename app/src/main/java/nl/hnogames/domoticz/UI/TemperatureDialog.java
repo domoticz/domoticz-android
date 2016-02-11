@@ -50,15 +50,14 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     private final int minFahrenheitTemp = 50;
     @SuppressWarnings("FieldCanBeLocal")
     private final int maxFahrenheitTemp = 90;
-    @SuppressWarnings({"FieldCanBeLocal", "PointlessArithmeticExpression"})
-    private final int animationDuration = 1 * 1000;             // 1 second
+    private final int maxTemp;
+    private int minTemp;
 
     private DialogActionListener dialogActionListener;
     private Context mContext;
+    private double currentTemperature = 20;
     private SeekArc temperatureControl;
     private TextView temperatureText;
-    private double currentTemperature = 20;
-    private int minTemp;
     private String tempSign = "";
     private boolean isFahrenheit = false;
 
@@ -78,8 +77,18 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 isFahrenheit = true;
         }
 
-        minTemp = getMinTemp();
-        currentTemperature = checkTempForSanity(temp);
+        if (isFahrenheit) {
+            minTemp = minFahrenheitTemp;
+            maxTemp = maxFahrenheitTemp;
+            if (temp < minFahrenheitTemp) temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
+            if (temp > maxFahrenheitTemp) temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
+        } else {
+            minTemp = minCelsiusTemp;
+            maxTemp = maxCelsiusTemp;
+            if (temp < minCelsiusTemp) temp = minCelsiusTemp;           // Celsius min = 10
+            if (temp > maxCelsiusTemp) temp = maxCelsiusTemp;           // Celsius max = 30
+        }
+        currentTemperature = temp;
     }
 
     public void show() {
@@ -98,23 +107,21 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);
 
-        if (!isFahrenheit) temperatureControl.setMax((maxCelsiusTemp - minCelsiusTemp) * 2);       // 40 points for 20 degree difference
-        else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);                    // 80 points for 40 degree difference
+        if (!isFahrenheit) temperatureControl.setMax((maxCelsiusTemp - minCelsiusTemp) * 2);
+        else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);
 
         int arcProgress = tempToProgress(currentTemperature);
         ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
-        animation.setDuration(animationDuration);
+        animation.setDuration(1000);                            // 1 second
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
-                if (b) {
-                    double temp = progressToTemp(i);
-                    temperatureText.setText(String.valueOf(temp));
-                    currentTemperature = temp;
-                }
+            public void onProgressChanged(SeekArc seekArc, int progress, boolean byUser) {
+                double temp = progressToTemp(progress);
+                temperatureText.setText(String.valueOf(temp));
+                currentTemperature = temp;
             }
 
             @Override
@@ -131,21 +138,21 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         bntPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int progress = temperatureControl.getProgress() + 1;
-                progress = checkProgressForSanity(progress);
-                currentTemperature = progressToTemp(progress);
-                temperatureText.setText(progressToTemperatureString(progress));
-                temperatureControl.setProgress(progress);
+                int progress = temperatureControl.getProgress();
+                if (progressToTemp(progress) < maxTemp) {
+                    progress += 1;
+                    temperatureControl.setProgress(progress);
+                }
             }
         });
         btnMin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int progress = temperatureControl.getProgress() - 1;
-                progress = checkProgressForSanity(progress);
-                currentTemperature = progressToTemp(progress);
-                temperatureText.setText(progressToTemperatureString(progress));
-                temperatureControl.setProgress(progress);
+                int progress = temperatureControl.getProgress();
+                if (progressToTemp(progress) > minTemp) {
+                    progress -= 1;
+                    temperatureControl.setProgress(progress);
+                }
             }
         });
         md.show();
@@ -157,45 +164,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             dialogActionListener.onDialogAction(currentTemperature, which);
     }
 
-    private double checkTempForSanity(double temp) {
-        if (isFahrenheit) {
-            if (temp < minFahrenheitTemp) temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
-            if (temp > maxFahrenheitTemp) temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
-        } else {
-            minTemp = minCelsiusTemp;
-            if (temp < minCelsiusTemp) temp = minCelsiusTemp;           // Celsius min = 10
-            if (temp > maxCelsiusTemp) temp = maxCelsiusTemp;           // Celsius max = 30
-        }
-        return temp;
-    }
-
-    private int checkProgressForSanity(int progress) {
-        double temp = progressToTemp(progress);
-
-        if (isFahrenheit) {
-            if (temp < minFahrenheitTemp) temp = minFahrenheitTemp;
-            if (temp > maxFahrenheitTemp) temp = maxFahrenheitTemp;
-        } else {
-            if (temp < minCelsiusTemp) temp = minCelsiusTemp;
-            if (temp > maxCelsiusTemp) temp = maxCelsiusTemp;
-        }
-        return tempToProgress(temp);
-    }
-
-    private int getMinTemp() {
-        if (isFahrenheit)
-            return minFahrenheitTemp;
-        else
-            return minCelsiusTemp;
-    }
-
     private double progressToTemp(int progress) {
         return ((double) progress / 2) + minTemp;
-    }
-
-    private String progressToTemperatureString(int progress) {
-        double temp = progressToTemp(progress);
-        return String.valueOf(temp);
     }
 
     private int tempToProgress(double temp) {
