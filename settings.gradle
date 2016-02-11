@@ -1,2 +1,3 @@
-include ':app', ':wear'
+include ':app', ':wear', ':SeekArc_library'
 include ':libs:MemorizingTrustManager'
+project(':SeekArc_library').projectDir = new File('libs/SeekArc_library')
