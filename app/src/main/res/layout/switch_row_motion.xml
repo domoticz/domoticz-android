@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -26,12 +28,10 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:paddingRight="5dp"
-            android:src="@drawable/clock48" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            tools:src="@drawable/clock48"
+            android:contentDescription="@string/device_image_description" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -49,20 +49,15 @@
                         style="@style/row_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
                         android:layout_marginRight="35dp"
-                        android:text="Switch" />
+                        android:layout_marginEnd="35dp"
+                        tools:text="Switch" />
 
                     <TextView
                         android:id="@+id/switch_battery_level"
                         style="@style/row_body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/switch_name"
-                        android:layout_toLeftOf="@+id/linearLayout4"
-                        android:layout_toStartOf="@+id/linearLayout4"
                         android:gravity="center_vertical"
                         android:text="@string/battery_level" />
 
@@ -71,7 +66,6 @@
                         style="@style/row_body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/switch_battery_level"
                         android:text="@string/signal_level" />
                 </LinearLayout>
 
@@ -89,13 +83,10 @@
                         android:id="@+id/switch_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:enabled="false"/>
 
                 </LinearLayout>
             </RelativeLayout>
-
-        </LinearLayout>
     </LinearLayout>
 
     <include layout="@layout/log_timer_button_row_default"/>
