@@ -1368,17 +1368,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
-        holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
-        holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open state dialog
-                handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
-            }
-        });
-
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.GONE);
+        if(holder.buttonSetStatus != null) {
+            holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
+            holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //open state dialog
+                    handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
