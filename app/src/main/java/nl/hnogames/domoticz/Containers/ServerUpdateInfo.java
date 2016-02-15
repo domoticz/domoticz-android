@@ -25,6 +25,8 @@ package nl.hnogames.domoticz.Containers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import nl.hnogames.domoticz.Utils.UsefulBits;
+
 public class ServerUpdateInfo {
     @SuppressWarnings("FieldCanBeLocal")
     private final String RESPONSE_SYSTEM_NAME = "SystemName";
@@ -80,7 +82,15 @@ public class ServerUpdateInfo {
     }
 
     private String extractUpdateChannel(String string) {
-        return string.substring(string.indexOf(STRING_CHANNEL) + STRING_CHANNEL.length(), string.indexOf(STRING_TYPE));
+        if(UsefulBits.isEmpty(string))
+            return  null;
+
+        if(string.indexOf(STRING_CHANNEL) >=0  && string.indexOf(STRING_TYPE) >= 0)
+            return string.substring(string.indexOf(STRING_CHANNEL) + STRING_CHANNEL.length(), string.indexOf(STRING_TYPE));
+        else if(string.indexOf(STRING_CHANNEL) >=0)
+            return string.substring(string.indexOf(STRING_CHANNEL) + STRING_CHANNEL.length());
+        else
+            return  null;
     }
 
     @Override
