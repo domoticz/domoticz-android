@@ -32,9 +32,9 @@
   <string name="welcome_remote_server_username">Užívateľské meno</string>
   <string name="welcome_remote_server_password">Heslo</string>
   <string name="welcome_remote_server_directory">Adresár</string>
-  <string name="remote">Remote</string>
-  <string name="local">Local</string>
-  <string name="servername">Server Name</string>
+  <string name="remote">vzdialený</string>
+  <string name="local">Miestny</string>
+  <string name="servername">Názov servera</string>
   <string name="welcome_local_server_used_switch_title">Rôzne adresy servera</string>
   <string name="welcome_local_server_used_switch_summary">Použite inú adresu pre lokálne pripojenie</string>
   <string name="welcome_advancedSettings">Rozšírené nastavenia servera</string>

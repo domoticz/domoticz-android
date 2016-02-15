@@ -9,7 +9,7 @@
   <string name="connectedSwitch">Interruptor connectat</string>
   <string name="unable_to_get_switches">No s\'ha pogut obtenir tots els interruptors, torneu-ho a provar</string>
   <string name="delete_short">ELI</string>
-  <string name="delete">Delete</string>
+  <string name="delete">Elimina</string>
   <string name="Location_name">Nom de la ubicació</string>
   <string name="currentLocation">Ubicació actual</string>
   <string name="manual">Manual</string>
@@ -33,8 +33,8 @@
   <string name="geofence_location_entering_text">Esteu entrant a una de les ubicacions</string>
   <string name="geofence_location_leaving_text">Esteu sortint d\'una de les ubicacions</string>
   <string name="geofence_error_recreateLocations">Degut a canvis fets a Geofencing, creeu les ubicacions de nou</string>
-  <string name="noSwitchSelected_title">No switch selected</string>
-  <string name="noSwitchSelected_explanation">For GeoFencing to have effect, a switch should be connected to an GeoFence</string>
-  <string name="noSwitchSelected_connectOneNow">Connect one now?</string>
-  <string name="geofencing_disabled_no_enabled_fences">Geofencing disabled since no geofences are enabled</string>
+  <string name="noSwitchSelected_title">No s\'ha seleccionat cap interruptor</string>
+  <string name="noSwitchSelected_explanation">Cal connectar un interruptor a una GeoFence per que GeoFencing funcioni</string>
+  <string name="noSwitchSelected_connectOneNow">En voleu connectar un ara?</string>
+  <string name="geofencing_disabled_no_enabled_fences">GeoFencing està desactivat perquè no hi ha cap geofence activa</string>
 </resources>

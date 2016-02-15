@@ -11,10 +11,13 @@ import android.widget.LinearLayout;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
 import nl.hnogames.domoticz.Containers.GraphPointInfo;
+import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -26,6 +29,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.Utils.AnimationUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Weather extends DomoticzFragment implements DomoticzFragmentListener, WeatherClickListener {
@@ -37,6 +41,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private String graphDialogTitle;
 
     @Override
     public void refreshFragment() {
@@ -97,7 +102,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     }
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
-        adapter = new WeatherAdapter(mContext, mWeatherInfos, this);
+        adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
@@ -229,6 +234,15 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                 .replace("temperature", "temp")
                 .replace("visibility", "counter");
 
+        JSONObject language = null;
+        Language languageObj = new SharedPrefUtil(mContext).getSavedLanguage();
+        if (languageObj != null) language = languageObj.getJsonObject();
+        if (language != null) {
+            graphDialogTitle = language.optString(weather.getType(), graphType);
+        } else {
+            graphDialogTitle = weather.getType();
+        }
+
         mDomoticz.getGraphData(weather.getIdx(), range, graphType, new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
@@ -238,7 +252,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
                         mGraphList);
                 infoDialog.setRange(range);
                 infoDialog.setSteps(4);
-                infoDialog.setTitle(graphType.toUpperCase());
+                infoDialog.setTitle(graphDialogTitle.toUpperCase());
                 infoDialog.show();
             }
 

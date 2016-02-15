@@ -183,7 +183,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 }
 
                 final switchesClickListener listener = this;
-                adapter = new SwitchesAdapter(mContext, supportedSwitches, listener);
+                adapter = new SwitchesAdapter(mContext, mDomoticz, supportedSwitches, listener);
                 SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
                 animationAdapter.setAbsListView(listView);
                 listView.setAdapter(animationAdapter);
@@ -382,7 +382,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             public void onDismiss(final int selectedColor) {
                 if (getSwitch(idx).isProtected()) {
                     PasswordDialog passwordDialog = new PasswordDialog(
-                            getActivity());
+                            getActivity(), mDomoticz);
                     passwordDialog.show();
                     passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                         @Override
@@ -480,7 +480,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     @Override
     public void onSecurityPanelButtonClick(int idx) {
         SecurityPanelDialog securityDialog = new SecurityPanelDialog(
-                getActivity(),
+                getActivity(), mDomoticz,
                 getSwitch(idx));
         securityDialog.show();
 
@@ -502,7 +502,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     public void onSelection(MaterialDialog dialog, View view, final int which, CharSequence text) {
                         if (getSwitch(idx).isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                    getActivity());
+                                    getActivity(), mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
@@ -578,7 +578,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         final DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity());
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -638,7 +638,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         final DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity());
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -690,7 +690,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         final DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity());
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -743,7 +743,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         final DevicesInfo clickedSwitch = getSwitch(idx);
         if (clickedSwitch.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity());
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override

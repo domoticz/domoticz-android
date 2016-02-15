@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.Interfaces.NotificationReceiver;
@@ -106,11 +107,15 @@ public class Domoticz {
     private String snapshot_file_path = "/Domoticz/SnapShot";
 
 
-    public Domoticz(Context mContext) {
+    public Domoticz(Context mContext, ServerUtil serverUtil) {
         this.mContext = mContext;
 
         mSharedPrefUtil = new SharedPrefUtil(mContext);
-        mServerUtil = new ServerUtil(mContext);
+
+        if (serverUtil == null) {
+            mServerUtil = new ServerUtil(mContext);
+        } else
+            mServerUtil = serverUtil;
 
         mSessionUtil = new SessionUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
@@ -175,7 +180,7 @@ public class Domoticz {
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
 
-        if(validatePorts) {
+        if (validatePorts) {
             stringHashMap.put("Domoticz local port", server.getLocalServerPort());
             stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
         }
@@ -311,6 +316,9 @@ public class Domoticz {
         String url;
 
         switch (jsonGetUrl) {
+            case Json.Url.Request.LANGUAGE:
+                url = Url.System.LANGUAGE_TRANSLATIONS;
+                break;
             case Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
                 url = Url.System.UPDATE_DOMOTICZ_SERVER;
                 break;
@@ -1025,6 +1033,16 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
+        LanguageParser parser = new LanguageParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.LANGUAGE);
+        url += language + ".json";
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
     public void getTemperatures(TemperatureReceiver receiver) {
         TemperaturesParser parser = new TemperaturesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.TEMPERATURE);
@@ -1466,6 +1484,7 @@ public class Domoticz {
                 int ADD_MOBILE_DEVICE = 29;
                 int CLEAN_MOBILE_DEVICE = 30;
                 int NOTIFICATIONS = 31;
+                int LANGUAGE = 32;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1667,6 +1686,7 @@ public class Domoticz {
             String UPDATE_DOMOTICZ_SERVER = "/json.htm?type=command&param=execute_script&scriptname=update_domoticz&direct=true";
             String ADD_MOBILE_DEVICE = "/json.htm?type=command&param=addmobiledevice";
             String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
+            String LANGUAGE_TRANSLATIONS = "/i18n/domoticz-";
         }
     }
 

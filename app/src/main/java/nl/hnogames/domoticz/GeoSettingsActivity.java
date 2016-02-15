@@ -49,7 +49,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -124,17 +123,7 @@ public class GeoSettingsActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
 
-        if (!isGooglePlayServicesAvailable()) {
-            Toast.makeText(
-                    GeoSettingsActivity.this,
-                    R.string.google_play_services_unavailable,
-                    Toast.LENGTH_SHORT).show();
-            // Snackbar not possible since we're ending the activity
-            finish();
-            return;
-        }
-
-        domoticz = new Domoticz(this);
+        domoticz = new Domoticz(this, null);
         mSharedPrefs = new SharedPrefUtil(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -161,7 +150,9 @@ public class GeoSettingsActivity extends AppCompatActivity
         super.onPause();
 
         if (mApiClient.isConnected()) mApiClient.disconnect();
-        if (mSharedPrefs.getEnabledGeofences().size() <= 0 && mSharedPrefs.isGeofenceEnabled()) {
+
+        if ((mSharedPrefs.getEnabledGeofences() == null || mSharedPrefs.getEnabledGeofences().size() <= 0) &&
+                mSharedPrefs.isGeofenceEnabled()) {
             mSharedPrefs.setGeofenceEnabled(false);
             stopGeofenceService();
             Toast.makeText(this, R.string.geofencing_disabled_no_enabled_fences,
@@ -618,25 +609,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Checks if Google Play services is available.
-     *
-     * @return true if it is.
-     */
-    private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
-        int resultCode = api.isGooglePlayServicesAvailable(this);
-        if (ConnectionResult.SUCCESS == resultCode) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Google Play services is available.");
-            }
-            return true;
-        } else {
-            Log.e(TAG, "Google Play services is unavailable.");
-            return false;
-        }
     }
 
     @Override

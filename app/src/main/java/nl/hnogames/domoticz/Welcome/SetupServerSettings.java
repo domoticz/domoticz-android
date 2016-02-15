@@ -1,6 +1,7 @@
 package nl.hnogames.domoticz.Welcome;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,7 +62,29 @@ public class SetupServerSettings extends Fragment {
     private Button saveButton;
     private Switch useSameAddress;
     private ServerInfo newServer = new ServerInfo();
+    private boolean isUpdateRequest = false;
+    private Context mContext;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+
+        if (mServerUtil == null)
+            mServerUtil = new ServerUtil(mContext);
+        mSharedPrefs = new SharedPrefUtil(mContext);
+
+        Bundle extras = getArguments();
+        if(extras != null)
+        {
+            String updateServerName = extras.getString("SERVERNAME");
+            if(!UsefulBits.isEmpty(updateServerName))
+            {
+                newServer = mServerUtil.getServerInfo(updateServerName);
+            }
+        }
+    }
 
     public static SetupServerSettings newInstance(int instance) {
         SetupServerSettings f = new SetupServerSettings();
@@ -80,9 +103,6 @@ public class SetupServerSettings extends Fragment {
         callingInstance = getArguments().getInt(INSTANCE);
         v = inflater.inflate(R.layout.fragment_add_server, container, false);
 
-        mSharedPrefs = new SharedPrefUtil(getActivity());
-        mServerUtil = new ServerUtil(getActivity());
-
         getLayoutReferences();
         setPreferenceValues();
 
@@ -99,7 +119,6 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void getLayoutReferences() {
-
         useSameAddress = (Switch) v.findViewById(R.id.localServer_switch);
         saveButton = (Button) v.findViewById(R.id.save_server);
         server_name_input = (FloatingLabelEditText) v.findViewById(R.id.server_name_input);
@@ -120,7 +139,6 @@ public class SetupServerSettings extends Fragment {
         cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
-        // Hide these settings if being called by settings (instead of welcome wizard)
         startScreen_spinner.setVisibility(View.GONE);
         v.findViewById(R.id.startScreen_title).setVisibility(View.GONE);
         v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
@@ -184,7 +202,7 @@ public class SetupServerSettings extends Fragment {
 
     private void checkConnectionData() {
         buildServerInfo();
-        final Domoticz mDomoticz = new Domoticz(getActivity());
+        final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
         if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
@@ -192,7 +210,7 @@ public class SetupServerSettings extends Fragment {
         } else if (!mDomoticz.isUrlValid(newServer)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
-        } else if (!mServerUtil.checkUniqueServerName(newServer)) {
+        } else if (!isUpdateRequest && !mServerUtil.checkUniqueServerName(newServer)) {
             showErrorPopup("Server name must be unique!");
         } else {
             writePreferenceValues();
@@ -213,6 +231,27 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void setPreferenceValues() {
+        if(newServer != null) {
+            isUpdateRequest = true;
+            server_name_input.setInputWidgetText(newServer.getServerName());
+            server_name_input.getInputWidget().setEnabled(false);//we dont allow updates on the key
+            remote_username_input.setInputWidgetText(newServer.getRemoteServerUsername());
+            remote_password_input.setInputWidgetText(newServer.getRemoteServerPassword());
+            remote_server_input.setInputWidgetText(newServer.getRemoteServerUrl());
+            remote_server_input.requestFocus();
+            remote_port_input.setInputWidgetText(newServer.getRemoteServerPort());
+            remote_directory_input.setInputWidgetText(newServer.getRemoteServerDirectory());
+
+            local_username_input.setInputWidgetText(newServer.getLocalServerUsername());
+            local_password_input.setInputWidgetText(newServer.getLocalServerPassword());
+            local_server_input.setInputWidgetText(newServer.getLocalServerUrl());
+            local_port_input.setInputWidgetText(newServer.getLocalServerPort());
+            local_directory_input.setInputWidgetText(newServer.getLocalServerDirectory());
+
+            localServer_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
+            advancedSettings_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
+        }
+
         setProtocol_spinner();
         setStartScreen_spinner();
 
@@ -362,10 +401,16 @@ public class SetupServerSettings extends Fragment {
 
     private void writePreferenceValues() {
         buildServerInfo();
-        if (mServerUtil.addDomoticzServer(newServer)) {
-            ((ServerSettingsActivity) getActivity()).ServerAdded(true);
+        if (!isUpdateRequest) {
+            if (mServerUtil.addDomoticzServer(newServer)) {
+                ((ServerSettingsActivity) getActivity()).ServerAdded(true);
+            } else {
+                showErrorPopup("Server name must be unique!");
+            }
         } else {
-            showErrorPopup("Server name must be unique!");
+            mServerUtil.putServerInList(newServer);
+            mServerUtil.saveDomoticzServers(false);
+            ((ServerSettingsActivity) getActivity()).ServerAdded(true);
         }
     }
 

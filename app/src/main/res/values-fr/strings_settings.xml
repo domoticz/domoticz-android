@@ -41,8 +41,8 @@
   <string name="notification_settings_push">Envoyer votre id d\'enregistrement à Domoticz</string>
   <string name="notification_settings_pushed">Votre id d\'enregistrement est enregistré dans Domoticz</string>
   <string name="notification_settings_push_failed">Impossible d\'enregistrer votre id d\'enregistrement dans Domoticz, veuillez réessayer plus tard.</string>
-  <string name="overwrite_notifications_title">Overwrite Notifications</string>
-  <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
+  <string name="overwrite_notifications_title">Écraser les Notifications</string>
+  <string name="overwrite_notifications">Écraser les précédentes notifications sur ce dispositif</string>
   <string name="enable_notifications_title">Activer les Notifications</string>
   <string name="enable_notifications">Activer les notifications sur ce dispositif</string>
   <string name="notification_screen_title">Parramètre de notification</string>
@@ -84,4 +84,6 @@
   <string name="server_update_not_available">Mise à jour du serveur non disponible</string>
   <string name="click_to_update_server">Cliquez ici pour mettre à jour votre serveur</string>
   <string name="debug_test_text">Débogage</string>
+  <string name="restart_required_title">Redémarrage requis</string>
+  <string name="restart_now">Redémarrer maintenant ?</string>
 </resources>

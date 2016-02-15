@@ -81,7 +81,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
             @Override
             public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
                 successHandling(mLogInfos.toString(), false);
-                adapter = new LogAdapter(mContext, mLogInfos);
+                adapter = new LogAdapter(mContext, mDomoticz, mLogInfos);
                 createListView();
             }
 

@@ -93,6 +93,8 @@
     <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
     <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>
+    <string name="check_for_update_title">Check for Updates</string>
+    <string name="check_for_update">Would you like us to check for Domoticz system updates?</string>
     <string name="update_server_warning">While your server is updating this app will not function properly.</string>
     <string name="update_server_downloadNotReady1">The update isn\'t (completely) downloaded yet.</string>
     <string name="update_server_downloadNotReady2">Please try again later.</string>
@@ -111,4 +113,6 @@
     <string name="click_to_update_server">Click here to update your server</string>
 
     <string name="debug_test_text">Debugging test</string>
+    <string name="restart_required_title">Restart required</string>
+    <string name="restart_now">Restart now?</string>
 </resources>

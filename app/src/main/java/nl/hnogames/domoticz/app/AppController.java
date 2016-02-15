@@ -175,7 +175,7 @@ public class AppController extends Application implements GcmListener {
         if (UsefulBits.isEmpty(senderid) || UsefulBits.isEmpty(UUID))
             return;
 
-        final Domoticz mDomoticz = new Domoticz(this);
+        final Domoticz mDomoticz = new Domoticz(this, null);
         mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {

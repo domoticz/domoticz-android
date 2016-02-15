@@ -15,7 +15,7 @@
   <string name="button_status_month">Hónap</string>
   <string name="button_status_year">Év</string>
   <string name="button_status_timer">Időzítő</string>
-  <string name="button_status_notifications">Notifications</string>
+  <string name="button_status_notifications">Értesítések</string>
   <string name="button_color">Szín</string>
   <string name="button_arm">Élesít</string>
   <string name="button_disarm">Hatástalanít</string>
@@ -74,4 +74,5 @@
   <string name="this_take_minutes">Ez több percig is eltarthat.</string>
   <string name="continue_question">Folytatja?</string>
   <string name="cant_remove_default_server">Nem lehet eltávolítani az alapértelmezett kiszolgálót</string>
+  <string name="restart_required_msg">A nyelvi beállítások életbe léptetéséhez az alkalmazás újraindítása szükséges</string>
 </resources>

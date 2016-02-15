@@ -149,8 +149,15 @@
             android:key="version"
             android:summary="Version 1.0.2"
             android:title="@string/info_version" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="checkForSystemUpdates"
+            android:summaryOff="@string/check_for_update"
+            android:summaryOn="@string/check_for_update"
+            android:title="@string/check_for_update_title" />
         <Preference
             android:key="version_domoticz"
+            android:dependency="checkForSystemUpdates"
             android:summary="Version 1.0.2"
             android:title="@string/info_domoticz_version" />
         <Preference

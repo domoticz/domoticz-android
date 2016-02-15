@@ -48,45 +48,51 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
+import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
-    public static final String PREF_MULTI_SERVER = "enableMultiServers";
-    public static final String PREF_CUSTOM_WEAR = "enableWearItems";
-    public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
-    public static final String PREF_ALWAYS_ON = "alwayson";
-    public static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
-    public static final String PREF_NOTIFICATION_SOUND = "notification_sound";
-    public static final String PREF_LANGUAGE = "displayLanguage";
-    public static final String PREF_UPDATE_VERSION = "updateversion";
-    public static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
-    public static final String PREF_SERVER_VERSION = "serverversion";
-    public static final String PREF_EXTRA_DATA = "extradata";
-    public static final String PREF_STARTUP_SCREEN = "startup_screen";
-    public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
-    public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
-    public static final String PREF_CONFIG = "domoticz_config";
-    public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
-    public static final String PREF_GEOFENCE_STARTED = "geofence_started";
-    public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
-    public static final String PREF_DEBUGGING = "debugging";
-    public static final int INVALID_IDX = 999999;
+    private static final String PREF_MULTI_SERVER = "enableMultiServers";
+    private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    private static final String PREF_ALWAYS_ON = "alwayson";
+    private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
+    private static final String PREF_NOTIFICATION_SOUND = "notification_sound";
+    private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
+    private static final String PREF_SAVED_LANGUAGE = "savedLanguage";
+    private static final String PREF_SAVED_LANGUAGE_DATE = "savedLanguageDate";
+    private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
+    private static final String PREF_EXTRA_DATA = "extradata";
+    private static final String PREF_STARTUP_SCREEN = "startup_screen";
+    private static final String PREF_TASK_SCHEDULED = "task_scheduled";
+    private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
+    private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    private static final String PREF_GEOFENCE_STARTED = "geofence_started";
+    private static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
+    private static final String PREF_DEBUGGING = "debugging";
+    private static final int INVALID_IDX = 999999;
+    private static final String PREF_SAVED_LANGUAGE_STRING = "savedLanguageString";
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
     private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
+    private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -98,6 +104,10 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+    }
+
+    public boolean checkForUpdatesEnabled() {
+        return prefs.getBoolean(PREF_CHECK_UPDATES, false);
     }
 
     public boolean isMultiServerEnabled() {
@@ -116,7 +126,7 @@ public class SharedPrefUtil {
         editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
-    public boolean getAwaysOn() {
+    public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
     }
 
@@ -171,9 +181,6 @@ public class SharedPrefUtil {
             return prefs.getInt("WIDGETIDXSCENE" + idx, INVALID_IDX);
     }
 
-    /*
-     *      Generic settings
-     */
     public boolean isFirstStart() {
         return prefs.getBoolean(PREF_FIRST_START, true);
     }
@@ -190,15 +197,29 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
     }
 
+    /**
+     * Get's the users preference to vibrate on notifications
+     *
+     * @return true to vibrate
+     */
     public boolean getNotificationVibrate() {
         return prefs.getBoolean(PREF_NOTIFICATION_VIBRATE, true);
     }
 
+    /**
+     * Get's the URL for the notification sound
+     *
+     * @return Notification sound URL
+     */
     public String getNotificationSound() {
         return prefs.getString(PREF_NOTIFICATION_SOUND, null);
     }
 
-
+    /**
+     * Get's a list of suppressed notifications
+     *
+     * @return list of suppressed notifications
+     */
     public List<String> getSuppressedNotifications() {
         if (!prefs.contains(PREF_SUPPRESS_NOTIFICATIONS)) return null;
 
@@ -213,6 +234,11 @@ public class SharedPrefUtil {
         } else return null;
     }
 
+    /**
+     * Get's a list of received notifications
+     *
+     * @return List of received notifications
+     */
     public List<String> getReceivedNotifications() {
         if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) return null;
 
@@ -228,6 +254,11 @@ public class SharedPrefUtil {
         } else return null;
     }
 
+    /**
+     * Adds the notification to the list of received notifications
+     *
+     * @param notification Notification string to add
+     */
     public void addReceivedNotification(String notification) {
         if (UsefulBits.isEmpty(notification))
             return;
@@ -442,27 +473,6 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
 
-    public void setServerUpdateAvailable(boolean haveUpdate) {
-        editor.putBoolean(PREF_UPDATE_SERVER_AVAILABLE, haveUpdate).apply();
-    }
-
-    public String getUpdateVersionAvailable() {
-        return prefs.getString(PREF_UPDATE_VERSION, "");
-    }
-
-    public void setUpdateVersionAvailable(String version) {
-        editor.putString(PREF_UPDATE_VERSION, version).apply();
-    }
-
-    public String getServerVersion() {
-        return prefs.getString(PREF_SERVER_VERSION, "");
-    }
-
-    public void setServerVersion(String version) {
-        editor.putString(PREF_SERVER_VERSION, version).apply();
-    }
-
-
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);
     }
@@ -471,23 +481,6 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
     }
 
-    public void saveConfig(ConfigInfo config) {
-        editor.putString(PREF_CONFIG, config.getJsonObject());
-        editor.commit();
-    }
-
-    public ConfigInfo getConfig() {
-        ConfigInfo config;
-        if (prefs.contains(PREF_CONFIG)) {
-            String jsonConfig = prefs.getString(PREF_CONFIG, null);
-            config = new ConfigInfo(jsonConfig);
-        } else
-            return null;
-
-        return config;
-    }
-
-    // This four methods are used for maintaining locations.
     public void saveLocations(List<LocationInfo> locations) {
         Gson gson = new Gson();
         String jsonLocations = gson.toJson(locations);
@@ -578,10 +571,12 @@ public class SharedPrefUtil {
     public boolean saveSharedPreferencesToFile(File dst) {
         boolean isServerUpdateAvailableValue = false;
 
+        ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo();
+
         // Before saving to file set server update available preference to false
         if (isServerUpdateAvailable()) {
             isServerUpdateAvailableValue = true;
-            setServerUpdateAvailable(false);
+            mServerUpdateInfo.setUpdateAvailable(false);
         }
 
         boolean result = false;
@@ -612,7 +607,7 @@ public class SharedPrefUtil {
             }
         }
         // Write original settings to preferences
-        if (isServerUpdateAvailableValue) setServerUpdateAvailable(true);
+        if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
         return result;
     }
 
@@ -666,8 +661,117 @@ public class SharedPrefUtil {
         return res;
     }
 
-    public String getLanguage() {
-        return prefs.getString(PREF_LANGUAGE, "");
+    /**
+     * Get the user prefered display language
+     *
+     * @return Language string
+     */
+    public String getDisplayLanguage() {
+        return prefs.getString(PREF_DISPLAY_LANGUAGE, "");
+    }
+
+    /**
+     * Get's the date (in milliseconds) when the language files where saved
+     *
+     * @return time in milliseconds
+     */
+    public long getSavedLanguageDate() {
+        return prefs.getLong(PREF_SAVED_LANGUAGE_DATE, 0);
+    }
+
+    /**
+     * Set's the date (in milliseconds) when the language files are saved
+     *
+     * @param timeInMillis time in milliseconds
+     */
+    public void setSavedLanguageDate(long timeInMillis) {
+        editor.putLong(PREF_SAVED_LANGUAGE_DATE, timeInMillis).apply();
+    }
+
+    /**
+     * Save language to shared preferences
+     *
+     * @param language The translated strings to save to shared preferences
+     */
+    public void saveLanguage(Language language) {
+        if (language != null) {
+            Gson gson = new Gson();
+            try {
+                String jsonLocations = gson.toJson(language);
+                editor.putString(PREF_SAVED_LANGUAGE, jsonLocations).apply();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * Get the saved language from shared preferences
+     *
+     * @return Language with tranlated strings
+     */
+    public Language getSavedLanguage() {
+        Language returnValue;
+
+        if (prefs.contains(PREF_SAVED_LANGUAGE)) {
+            String languageStr = prefs.getString(PREF_SAVED_LANGUAGE, null);
+            if (languageStr != null) {
+                Gson gson = new Gson();
+                try {
+                    returnValue = gson.fromJson(languageStr, Language.class);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return null;
+                }
+            } else return null;
+        } else
+            return null;
+
+        return returnValue;
+    }
+
+    /**
+     * Get's the translated strings from the server and saves them to shared preferences
+     *
+     * @param langToDownload Language to get from the server
+     * @param server         ServerUtil
+     */
+    public void getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
+        if (!UsefulBits.isEmpty(langToDownload)) {
+            new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+                @Override
+                public void onReceiveLanguage(Language language) {
+                    Calendar now = Calendar.getInstance();
+                    saveLanguage(language);
+                    // Write to shared preferences so we can use it to check later
+                    setDownloadedLanguage(langToDownload);
+                    setSavedLanguageDate(now.getTimeInMillis());
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Log.e("Shared Pref util", "Unable to get the language from the server: " + langToDownload);
+                    error.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public String getDownloadedLanguage() {
+        return prefs.getString(PREF_SAVED_LANGUAGE_STRING, "");
+    }
+
+    public void setDownloadedLanguage(String language) {
+        editor.putString(PREF_SAVED_LANGUAGE_STRING, language).apply();
+    }
+
+    public boolean getTaskIsScheduled() {
+        return prefs.getBoolean(PREF_TASK_SCHEDULED, false);
+    }
+
+    public void setTaskIsScheduled(boolean isScheduled) {
+        editor.putBoolean(PREF_TASK_SCHEDULED, isScheduled).apply();
     }
 
     public boolean isGeofencingStarted() {
@@ -691,44 +795,44 @@ public class SharedPrefUtil {
     }
 
     public void enableGeoFenceService() {
-
         if (isGeofenceEnabled()) {
+            //only continue when we have the correct permissions!
+            if (PermissionsUtil.canAccessLocation(mContext)) {
+                final List<Geofence> mGeofenceList = getEnabledGeofences();
+                if (mGeofenceList != null && mGeofenceList.size() > 0) {
+                    mApiClient = new GoogleApiClient.Builder(mContext)
+                            .addApi(LocationServices.API)
+                            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                                @Override
+                                public void onConnected(Bundle bundle) {
+                                    PendingIntent mGeofenceRequestIntent =
+                                            getGeofenceTransitionPendingIntent();
 
-            final List<Geofence> mGeofenceList = getEnabledGeofences();
+                                    // First remove all GeoFences
+                                    try {
+                                        LocationServices.GeofencingApi.removeGeofences(mApiClient,
+                                                mGeofenceRequestIntent);
+                                    } catch (Exception ignored) {
+                                    }
 
-            if (mGeofenceList != null && mGeofenceList.size() > 0) {
-                mApiClient = new GoogleApiClient.Builder(mContext)
-                        .addApi(LocationServices.API)
-                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                            @Override
-                            public void onConnected(Bundle bundle) {
-                                PendingIntent mGeofenceRequestIntent =
-                                        getGeofenceTransitionPendingIntent();
-
-                                // First remove all GeoFences
-                                try {
-                                    LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                                            mGeofenceRequestIntent);
-                                } catch (Exception ignored) {
+                                    //noinspection ResourceType
+                                    LocationServices
+                                            .GeofencingApi
+                                            .addGeofences(mApiClient,
+                                                    getGeofencingRequest(mGeofenceList),
+                                                    mGeofenceRequestIntent);
                                 }
 
-                                //noinspection ResourceType
-                                LocationServices
-                                        .GeofencingApi
-                                        .addGeofences(mApiClient,
-                                                getGeofencingRequest(mGeofenceList),
-                                                mGeofenceRequestIntent);
-                            }
-
-                            @Override
-                            public void onConnectionSuspended(int i) {
-                            }
-                        })
-                        .build();
-                mApiClient.connect();
-            } else {
-                // No enabled geofences, disabling
-                setGeofenceEnabled(false);
+                                @Override
+                                public void onConnectionSuspended(int i) {
+                                }
+                            })
+                            .build();
+                    mApiClient.connect();
+                } else {
+                    // No enabled geofences, disabling
+                    setGeofenceEnabled(false);
+                }
             }
         }
     }

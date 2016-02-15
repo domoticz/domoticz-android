@@ -124,7 +124,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
-            adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
+            adapter = new TemperatureAdapter(mContext, mDomoticz, mTemperatureInfos, this);
             SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
             animationAdapter.setAbsListView(listView);
             listView.setAdapter(animationAdapter);
@@ -177,7 +177,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
         TemperatureInfoDialog infoDialog = new TemperatureInfoDialog(
-                getActivity(),
+                mContext,
                 mTemperatureInfo,
                 R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mTemperatureInfo.getIdx()));
@@ -198,9 +198,9 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -243,11 +243,11 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             @Override
             public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
                 GraphDialog infoDialog = new GraphDialog(
-                        getActivity(),
+                        mContext,
                         mGraphList);
                 infoDialog.setRange(range);
                 infoDialog.setSteps(3);
-                infoDialog.setTitle(getActivity().getString(R.string.title_temperature));
+                infoDialog.setTitle(mContext.getString(R.string.title_temperature));
                 infoDialog.show();
             }
 
@@ -255,7 +255,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
             public void onError(Exception error) {
                 // Let's check if were still attached to an activity
                 if (isAdded()) {
-                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -284,14 +284,12 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
-                    getActivity(),
-                    idx,
+                    mContext,
                     t.getSetPoint(),
                     !"auto".equalsIgnoreCase(t.getStatus()));
         } else {
             tempDialog = new TemperatureDialog(
-                    getActivity(),
-                    idx,
+                    mContext,
                     t.getSetPoint());
         }
 

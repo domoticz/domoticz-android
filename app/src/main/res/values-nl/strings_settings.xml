@@ -17,7 +17,7 @@
   <string name="extra_data_title">Extra gegevens op dashboard</string>
   <string name="show_extra_data_on">Extra gegevens op dashboard weergeven</string>
   <string name="show_extra_data_off">Extra gegevens op dashboard verbergen</string>
-  <string name="always_on_title">Scherm Aan</string>
+  <string name="always_on_title">Scherm aan</string>
   <string name="always_on_on">Houd het scherm altijd aan</string>
   <string name="always_on_off">Houd het scherm niet altijd aan</string>
   <string name="enable_wear_select">Android Wear aangepaste lijst</string>
@@ -68,7 +68,7 @@
   <string name="error_couldNotCheckForConfig">"De configuratie van de Domoticz server konden we niet ophalen: %1$s"</string>
   <string name="update_available_enhanced">Server update beschikbaar: %1$s naar versie: %2$s</string>
   <string name="update_server_warning">Deze app werkt niet correct tijdens het updaten van uw server.</string>
-  <string name="update_server_downloadNotReady1">De update is niet (volledig) gedownload.</string>
+  <string name="update_server_downloadNotReady1">De update is niet (volledig) gedownload</string>
   <string name="update_server_downloadNotReady2">Probeer het later nog eens.</string>
   <string name="server_update_available">Er is een server update beschikbaar</string>
   <string name="update_server">Update server</string>
@@ -84,4 +84,6 @@
   <string name="server_update_not_available">De update van de server is niet beschikbaar</string>
   <string name="click_to_update_server">Klik hier als u wilt uw server bijwerken</string>
   <string name="debug_test_text">Debugging test</string>
+  <string name="restart_required_title">Restart required</string>
+  <string name="restart_now">Restart now?</string>
 </resources>

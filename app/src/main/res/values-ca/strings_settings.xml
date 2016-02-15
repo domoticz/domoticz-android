@@ -45,13 +45,13 @@
   <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
   <string name="enable_notifications_title">Enable Notifications</string>
   <string name="enable_notifications">Enable notifications on this device</string>
-  <string name="notification_screen_title">Notification settings</string>
+  <string name="notification_screen_title">Configuració de les notificacions</string>
   <string name="notification_vibrate_title">Vibració</string>
   <string name="notification_vibrate_on">Vibra quan es rebi una notificació</string>
   <string name="notification_vibrate_off">Sense vibració</string>
   <string name="notification_sound_title">So</string>
   <string name="notification_sound_summary">Utilitzar el so de notificació quan arribi una notificació</string>
-  <string name="suppress_notifications_select">Select Notifications to Suppress</string>
+  <string name="suppress_notifications_select">Seleccioneu les notificacions que voleu suprimir</string>
   <string name="suppress_notifications">Suppress specific Notifications on this device</string>
   <string name="suppress_notifications_title">Suppress Notifications</string>
   <string name="info_version">Versió</string>
@@ -63,7 +63,7 @@
   <string name="debug_switch_summary_on">Depuració activada</string>
   <string name="debug_switch_summary_off">Depuració desactivada</string>
   <string name="error_atLeastOneItemInDrawer">Heu de tenir com a mínim un element al calaix</string>
-  <string name="title_activity_update">Update server</string>
+  <string name="title_activity_update">Servidor d\'actualització</string>
   <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
   <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
   <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>
@@ -76,12 +76,14 @@
   <string name="server_version">Versió del servidor</string>
   <string name="server_update">Actualització del servidor</string>
   <string name="please_wait_while_we_check">Please wait while we check if your server is ready to update</string>
-  <string name="server_update_not_ready">Server update not downloaded</string>
+  <string name="server_update_not_ready">L\'actualització del servidor no s\'ha descarregat</string>
   <string name="please_wait_while_server_updated">Please wait while the server is being updated.</string>
-  <string name="server_update_done">Server update done</string>
-  <string name="update_not_started">Update not started</string>
-  <string name="update_not_started_unknown_error">Update not started due to an unknown error</string>
-  <string name="server_update_not_available">Server update not available</string>
+  <string name="server_update_done">Actualització del servidor acabada</string>
+  <string name="update_not_started">L\'actualització no ha començat</string>
+  <string name="update_not_started_unknown_error">L\'actualització no ha començat per un error desconegut</string>
+  <string name="server_update_not_available">Actualització del servidor no disponible</string>
   <string name="click_to_update_server">Feu clic aquí per actualitzar el vostre servidor</string>
-  <string name="debug_test_text">Debugging test</string>
+  <string name="debug_test_text">Prova de depuració</string>
+  <string name="restart_required_title">Cal reiniciar</string>
+  <string name="restart_now">Reiniciar ara?</string>
 </resources>

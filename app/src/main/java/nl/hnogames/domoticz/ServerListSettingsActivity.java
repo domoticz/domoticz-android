@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -72,7 +73,6 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         mServerUtil = new ServerUtil(this);
         ArrayList<ServerInfo> mServerList = mServerUtil.getServerList();
 
-
         adapter = new ServerAdapter(this, mServerList, new ServerClickListener() {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
@@ -103,7 +103,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                showEditServerActivity();
+                showEditServerActivity((String) ((TextView) view.findViewById(R.id.server_name)).getText());
             }
         });
     }
@@ -169,8 +169,11 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_ADD_SERVER);
     }
 
-    public void showEditServerActivity() {
-
+    public void showEditServerActivity(String name) {
+        Intent i = new Intent(ServerListSettingsActivity.this, ServerSettingsActivity.class);
+        i.putExtra("ADDSERVER", false);
+        i.putExtra("SERVERNAME", name);
+        startActivityForResult(i, REQUEST_ADD_SERVER);
     }
 
     private void showSimpleSnackbar(String message) {

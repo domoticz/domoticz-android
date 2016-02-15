@@ -71,6 +71,7 @@ public class Preference extends PreferenceFragment {
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
     private Context mContext;
+    private ServerUtil mServerUtil;
     private Domoticz mDomoticz;
 
     @Override
@@ -82,7 +83,8 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mDomoticz = new Domoticz(mContext);
+        mServerUtil = new ServerUtil(mContext);
+        mDomoticz = new Domoticz(mContext, mServerUtil);
 
         setPreferences();
         setStartUpScreenDefaultValue();
@@ -100,8 +102,8 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference GeoSettings = findPreference("geo_settings");
         android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
-        android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
-        android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
+        @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+        @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
@@ -275,13 +277,15 @@ public class Preference extends PreferenceFragment {
     }
 
     private void showRestartMessage(String language) {
+        mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase(), mServerUtil);
+
         UsefulBits.setLocale(mContext, language);
         new MaterialDialog.Builder(mContext)
-                .title("Restart required")
-                .content("For the language settings to become to effect an application restart is required"
+                .title(R.string.restart_required_title)
+                .content(mContext.getString(R.string.restart_required_msg)
                         + UsefulBits.newLine()
                         + UsefulBits.newLine()
-                        + "Restart now?")
+                        + mContext.getString(R.string.restart_now))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -440,7 +444,7 @@ public class Preference extends PreferenceFragment {
                 version = (serverUtil.getActiveServer().getServerUpdateInfo() != null) ? serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber() : "";
 
             message = String.format(getString(R.string.update_available_enhanced),
-                    mSharedPrefs.getServerVersion(),
+                    serverUtil.getActiveServer().getServerUpdateInfo().getCurrentServerVersion(),
                     version);
             if (serverUtil.getActiveServer().getServerUpdateInfo() != null &&
                     serverUtil.getActiveServer().getServerUpdateInfo().getSystemName() != null &&

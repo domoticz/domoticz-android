@@ -121,7 +121,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private void processSwitch(final Context context, int idx) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         password = mSharedPrefs.getWidgetPassword(widgetID);
-        final Domoticz domoticz = new Domoticz(context);
+        final Domoticz domoticz = new Domoticz(context, null);
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
 
         if (!isScene) {

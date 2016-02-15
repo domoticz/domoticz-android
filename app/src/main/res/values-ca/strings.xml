@@ -11,11 +11,11 @@
   <string name="button_state_off">Apaga</string>
   <string name="button_status_log">Registre</string>
   <string name="button_status_day">Dia</string>
-  <string name="button_status_week">Week</string>
+  <string name="button_status_week">Setmana</string>
   <string name="button_status_month">Mes</string>
   <string name="button_status_year">Any</string>
   <string name="button_status_timer">Temporitzador</string>
-  <string name="button_status_notifications">Notifications</string>
+  <string name="button_status_notifications">Notificacions</string>
   <string name="button_color">Color</string>
   <string name="button_arm">Activa</string>
   <string name="button_disarm">Desactiva</string>
@@ -73,5 +73,6 @@
   <string name="domoticz_logo">Logo de Domoticz</string>
   <string name="this_take_minutes">Això pot durar uns quants minuts.</string>
   <string name="continue_question">Voleu continuar?</string>
-  <string name="cant_remove_default_server">Can\'t remove the default server</string>
+  <string name="cant_remove_default_server">No es pot treure el servidor per defecte</string>
+  <string name="restart_required_msg">Cal reiniciar l\'aplicació per fer efectius els canvis en la configuració d\'idioma</string>
 </resources>

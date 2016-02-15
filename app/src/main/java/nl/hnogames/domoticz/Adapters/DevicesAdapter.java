@@ -48,10 +48,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -79,9 +81,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private int previousDimmerValue;
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
-
+    private ConfigInfo mConfigInfo;
 
     public DevicesAdapter(Context context,
+                          ServerUtil serverUtil,
                           ArrayList<DevicesInfo> data,
                           switchesClickListener listener) {
         super();
@@ -89,7 +92,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         mSharedPrefs = new SharedPrefUtil(context);
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = new Domoticz(context, serverUtil);
 
         Collections.sort(data, new Comparator<DevicesInfo>() {
             @Override
@@ -97,6 +100,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 return left.getName().compareTo(right.getName());
             }
         });
+
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.filteredData = data;
         this.data = data;
         this.listener = listener;
@@ -166,18 +171,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.X10SIREN:
                     case Domoticz.Device.Type.Value.DOORLOCK:
 
-                        if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
-                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
-                                row = setSecurityPanelSwitchRowId(holder);
-                            else
-                                row = setDefaultRowId(holder);
-                        } else if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.EVOHOME)) {
-                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
-                                row = setModalSwitchRowId(holder);
-                            else
-                                row = setDefaultRowId(holder);
-                        } else {
-                            row = setOnOffSwitchRowId(holder);
+                        switch (mDeviceInfo.getSwitchType()) {
+                            case Domoticz.Device.Type.Name.SECURITY:
+                                if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                                    row = setSecurityPanelSwitchRowId(holder);
+                                else
+                                    row = setDefaultRowId(holder);
+                                break;
+                            case Domoticz.Device.Type.Name.EVOHOME:
+                                if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
+                                    row = setModalSwitchRowId(holder);
+                                else
+                                    row = setDefaultRowId(holder);
+                                break;
+                            default:
+                                row = setOnOffSwitchRowId(holder);
+                                break;
                         }
                         break;
 
@@ -513,18 +522,23 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.DUSKSENSOR:
                 case Domoticz.Device.Type.Value.DOORLOCK:
 
-                    if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
-                        if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
-                            setSecurityPanelSwitchRowData(mDeviceInfo, holder);
-                        else
-                            setDefaultRowData(mDeviceInfo, holder);
-                    } else if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.EVOHOME)) {
-                        if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
-                            setModalSwitchRowData(mDeviceInfo, holder, R.array.evohome_states, R.array.evohome_state_names, EVOHOME_STATE_IDS);
-                        else
-                            setDefaultRowData(mDeviceInfo, holder);
-                    } else
-                        setOnOffSwitchRowData(mDeviceInfo, holder);
+                    switch (mDeviceInfo.getSwitchType()) {
+                        case Domoticz.Device.Type.Name.SECURITY:
+                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                                setSecurityPanelSwitchRowData(mDeviceInfo, holder);
+                            else
+                                setDefaultRowData(mDeviceInfo, holder);
+                            break;
+                        case Domoticz.Device.Type.Name.EVOHOME:
+                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
+                                setModalSwitchRowData(mDeviceInfo, holder, R.array.evohome_states, R.array.evohome_state_names, EVOHOME_STATE_IDS);
+                            else
+                                setDefaultRowData(mDeviceInfo, holder);
+                            break;
+                        default:
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
+                            break;
+                    }
 
                     break;
 
@@ -571,15 +585,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
-        if ((mDeviceInfo.getSubType().indexOf("RAEX") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("A-OK") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("RollerTrol") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("RFY") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("ASA") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("T6 DC") >= 0))
-            return true;
-        else
-            return false;
+        return (mDeviceInfo.getSubType().contains("RAEX")) ||
+                (mDeviceInfo.getSubType().contains("A-OK")) ||
+                (mDeviceInfo.getSubType().contains("RollerTrol")) ||
+                (mDeviceInfo.getSubType().contains("RFY")) ||
+                (mDeviceInfo.getSubType().contains("ASA")) ||
+                (mDeviceInfo.getSubType().contains("T6 DC"));
     }
 
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
@@ -587,11 +598,18 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         String text;
 
+        holder.switch_battery_level.setMaxLines(3);
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null) {
             holder.switch_name.setText(mDeviceInfo.getName());
         }
 
+        String tempSign = "";
+        String windSign = "";
+        if (mConfigInfo != null) {
+            tempSign = mConfigInfo.getTempSign();
+            windSign = mConfigInfo.getWindSign();
+        }
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
@@ -606,17 +624,34 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     + ": "
                     + String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
-        }
 
-        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
-            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
-            holder.switch_battery_level.setText(text);
+            if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
+                text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                holder.switch_battery_level.setText(text);
+            }
+            if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
+                holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+            if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
+                    !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
+                holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+            if (mDeviceInfo.getType().equals("Wind")) {
+                holder.switch_battery_level.setText(context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr());
+            }
+            if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
+                holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
+            if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
+            if (mDeviceInfo.getDewPoint() > 0)
+                holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
+            if (mDeviceInfo.getTemp() > 0)
+                holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemp() + " " + tempSign);
+            if (mDeviceInfo.getBarometer() > 0)
+                holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
+            if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.chill) + ": " + mDeviceInfo.getChill() + " " + tempSign);
+            if (!UsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
         }
-        if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
-            holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
-        if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
-            holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -801,7 +836,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (holder.buttonLog != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 
@@ -833,14 +868,18 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        if (holder.switch_battery_level != null)
-            holder.switch_battery_level.setText(UsefulBits.getFormattedDate(context,
-                    mDeviceInfo.getLastUpdateDateTime().getTime()));
-
+        String text = "";
         if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
             String setPointText =
                     context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
-            holder.signal_level.setText(setPointText);
+            holder.switch_battery_level.setText(setPointText);
         }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(
@@ -859,7 +898,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.isProtected = mDeviceInfo.isProtected();
 
         holder.switch_name.setText(mDeviceInfo.getName());
-
         if (Double.isNaN(temperature) || Double.isNaN(setPoint)) {
             if (holder.signal_level != null)
                 holder.signal_level.setVisibility(View.GONE);
@@ -873,7 +911,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         } else {
             if (holder.signal_level != null)
                 holder.signal_level.setVisibility(View.VISIBLE);
-
             if (holder.switch_battery_level != null) {
                 String batteryLevelText = context.getString(R.string.temperature)
                         + ": "
@@ -959,7 +996,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(1f);
 
         if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-            holder.buttonOn.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
         else
             holder.buttonOn.setId(mDeviceInfo.getIdx());
 
@@ -1331,17 +1368,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
-        holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
-        holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open state dialog
-                handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
-            }
-        });
-
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.GONE);
+        if(holder.buttonSetStatus != null) {
+            holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
+            holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //open state dialog
+                    handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),

@@ -37,15 +37,19 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
+import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -60,13 +64,16 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
     private ArrayList<WeatherInfo> data = null;
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
+    private ConfigInfo mConfigInfo;
 
     public WeatherAdapter(Context context,
+                          Domoticz mDomoticz,
+                          ServerUtil serverUtil,
                           ArrayList<WeatherInfo> data,
                           WeatherClickListener listener) {
         super();
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
         Collections.sort(data, new Comparator<WeatherInfo>() {
             @Override
             public int compare(WeatherInfo left, WeatherInfo right) {
@@ -74,6 +81,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.data = data;
         this.filteredData = data;
         this.listener = listener;
@@ -103,7 +111,16 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         int layoutResourceId;
 
-        ConfigInfo mConfigInfo = new SharedPrefUtil(context).getConfig();
+        JSONObject language = null;
+        Language languageObj = new SharedPrefUtil(context).getSavedLanguage();
+        if (languageObj != null) language = languageObj.getJsonObject();
+
+        String tempSign = "";
+        String windSign = "";
+        if (mConfigInfo != null) {
+            tempSign = mConfigInfo.getTempSign();
+            windSign = mConfigInfo.getWindSign();
+        }
 
         WeatherInfo mWeatherInfo = filteredData.get(position);
 
@@ -125,18 +142,17 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
 
         holder.name.setText(mWeatherInfo.getName());
-        holder.hardware.append(mWeatherInfo.getHardwareName());
+
+        if (language != null) {
+            String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
+            holder.hardware.append(hardware);
+        } else holder.hardware.append(mWeatherInfo.getHardwareName());
 
         holder.data.setEllipsize(TextUtils.TruncateAt.END);
         holder.data.setMaxLines(3);
-        String data = mWeatherInfo.getData();
-        String direction = mWeatherInfo.getDirection();
-        String directionStr = mWeatherInfo.getDirectionStr();
-        String type = mWeatherInfo.getType();
         if (mWeatherInfo.getType().equals("Wind")) {
             holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
-        }
-        else {
+        } else {
             holder.data.append(mWeatherInfo.getData());
         }
 
@@ -152,15 +168,15 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
             holder.data.append(", " + mWeatherInfo.getForecastStr());
         if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
-            holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + mConfigInfo.getWindSign());
+            holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + windSign);
         if (mWeatherInfo.getDewPoint() > 0)
-            holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + mConfigInfo.getTempSign());
+            holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + tempSign);
         if (mWeatherInfo.getTemp() > 0)
-            holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + mConfigInfo.getTempSign());
+            holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
         if (mWeatherInfo.getBarometer() > 0)
             holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
         if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
-            holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + mConfigInfo.getTempSign());
+            holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + tempSign);
         if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
             holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
 

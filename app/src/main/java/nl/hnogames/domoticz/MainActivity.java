@@ -58,7 +58,6 @@ import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
-import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -66,7 +65,6 @@ import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
-import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
@@ -99,15 +97,21 @@ public class MainActivity extends AppCompatActivity {
     private boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
+    public ServerUtil geServerUtil() {
+        if (mServerUtil == null)
+            mServerUtil = new ServerUtil(this);
+        return mServerUtil;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSharedPrefs = new SharedPrefUtil(this);
-        domoticz = new Domoticz(this);
-        applyLanguage();
+        boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
+        if (!resolvableError) this.finish();
 
+        mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -121,26 +125,30 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPrefs.setGeofencingStarted(true);
                 mSharedPrefs.enableGeoFenceService();
             }
-
             buildScreen();
         }
     }
 
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            WidgetUtils.RefreshWidgets(this);
+            applyLanguage();
 
             //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
 
             mServerUtil = new ServerUtil(this);
+            domoticz = new Domoticz(this, mServerUtil);
             drawNavigationMenu();
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
-            saveServerConfigToSharedPreferences();
+            setScheduledTasks();
+            checkDownloadedLanguage();
+            saveServerConfigToActiveServer();
+
             appRate();
+            WidgetUtils.RefreshWidgets(this);
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -157,20 +165,29 @@ public class MainActivity extends AppCompatActivity {
         addFragment();
     }
 
-    private void setScreenOn() {
-        if (mSharedPrefs.getAwaysOn())
+    private void setScreenAlwaysOn() {
+        if (mSharedPrefs.getAlwaysOn())
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
             getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void applyLanguage() {
-        if (!UsefulBits.isEmpty(mSharedPrefs.getLanguage())) {
-            UsefulBits.setLocale(this, mSharedPrefs.getLanguage());
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
+            // User has set a language in settings
+            UsefulBits.setLocale(this, mSharedPrefs.getDisplayLanguage());
         }
     }
 
-    /* Called when the second activity's finished */
+    private void checkDownloadedLanguage() {
+        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false);
+    }
+
+    private void saveServerConfigToActiveServer() {
+        UsefulBits.saveServerConfigToActiveServer(this, false);
+    }
+
+    /* Called when the second activity's finishes */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -411,39 +428,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDomoticzServerUpdate() {
-        // Get latest Domoticz version update
-        domoticz.getUpdate(new UpdateVersionReceiver() {
-            @Override
-            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
-                boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
-                if (mServerUtil.getActiveServer() != null) {
-                    // Write update version to shared preferences
-                    mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                    mServerUtil.saveDomoticzServers(true);
-                    if (haveUpdate) {
-                        if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                            // Great! We can remote/auto update Linux systems
-                            getCurrentServerVersion();
-                        } else {
-                            // No remote/auto updating available for other systems (like Windows, Synology)
-                            showSimpleSnackbar(getString(R.string.server_update_available));
+        if (mSharedPrefs.checkForUpdatesEnabled()) {
+            // Get latest Domoticz version update
+            domoticz.getUpdate(new UpdateVersionReceiver() {
+                @Override
+                public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
+                    boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+                    if (mServerUtil.getActiveServer() != null) {
+                        // Write update version to shared preferences
+                        mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                        mServerUtil.saveDomoticzServers(true);
+                        if (haveUpdate) {
+                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                // Great! We can remote/auto update Linux systems
+                                getCurrentServerVersion();
+                            } else {
+                                // No remote/auto updating available for other systems (like Windows, Synology)
+                                showSimpleSnackbar(getString(R.string.server_update_available));
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onError(Exception error) {
-                String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        domoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                @Override
+                public void onError(Exception error) {
+                    String message = String.format(
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
+                    showSimpleSnackbar(message);
 
-                if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                    mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
-                mServerUtil.saveDomoticzServers(true);
-            }
-        });
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    mServerUtil.saveDomoticzServers(true);
+                }
+            });
+        }
     }
 
     private void getCurrentServerVersion() {
@@ -503,24 +522,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void saveServerConfigToSharedPreferences() {
-        // Get Domoticz server configuration
-        domoticz.getConfig(new ConfigReceiver() {
-            @Override
-            public void onReceiveConfig(ConfigInfo settings) {
-                if (settings != null)
-                    mSharedPrefs.saveConfig(settings);
-                // TODO set config per server
-            }
-
-            @Override
-            public void onError(Exception error) {
-                String message = String.format(
-                        getString(R.string.error_couldNotCheckForConfig),
-                        domoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
-            }
-        });
+    /**
+     * Starts the scheduled tasks service via GCM Network manager
+     * Automatically detects if this has been done before
+     */
+    private void setScheduledTasks() {
+        UsefulBits.setScheduledTasks(this);
     }
 
     private void showSimpleSnackbar(String message) {
@@ -701,7 +708,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        setScreenOn();
+        setScreenAlwaysOn();
         refreshFragment();
     }
 
