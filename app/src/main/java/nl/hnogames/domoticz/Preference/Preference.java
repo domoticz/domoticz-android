@@ -161,7 +161,7 @@ public class Preference extends PreferenceFragment {
         displayLanguage.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                showRestartMessage(newValue.toString());
+                showRestartMessage();
                 return true;
             }
         });
@@ -276,10 +276,7 @@ public class Preference extends PreferenceFragment {
         });
     }
 
-    private void showRestartMessage(String language) {
-        mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase(), mServerUtil);
-
-        UsefulBits.setLocale(mContext, language);
+    private void showRestartMessage() {
         new MaterialDialog.Builder(mContext)
                 .title(R.string.restart_required_title)
                 .content(mContext.getString(R.string.restart_required_msg)

@@ -143,7 +143,7 @@ public class UsefulBits {
      * @param context Context
      * @param lang    Language to display
      */
-    public static void setLocale(Context context, String lang) {
+    public static void setDisplayLanguage(Context context, String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -153,12 +153,17 @@ public class UsefulBits {
     }
 
     /**
-     * Get's the display locale of the phone
+     * Get's the display language of the phone
      *
-     * @return the language
+     * @return Returns the phone display language
      */
     public static String getPhoneDisplayLocale() {
-        return Locale.getDefault().getCountry();
+        if (!isEmpty(Locale.getDefault().getLanguage()))
+            return Locale.getDefault().getLanguage();
+        else {
+            Log.d(TAG, "No valid language detected, using en");
+            return "en";
+        }
     }
 
     /**
@@ -173,8 +178,14 @@ public class UsefulBits {
         String userDisplayLanguage = mSharedPrefs.getDisplayLanguage();
         String phoneDisplayLanguage = getPhoneDisplayLocale();
 
-        if (!userDisplayLanguage.equals("")) return userDisplayLanguage;
-        else return phoneDisplayLanguage;
+        if (!isEmpty(userDisplayLanguage)) {
+            Log.d(TAG, "User specified language to use: " + userDisplayLanguage);
+            return userDisplayLanguage;
+        }
+        else {
+            Log.d(TAG, "User didn't specify language to use: using display language");
+            return phoneDisplayLanguage;
+        }
     }
 
     /**
@@ -195,6 +206,7 @@ public class UsefulBits {
 
         if (mSharedPrefs.getSavedLanguage() == null || forceDownload) {
             // Language files aren't there or should be downloaded anyway, let's download them
+            Log.d(TAG, "Downloading language files. Forced: " + forceDownload);
             mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             if (mSharedPrefs.isDebugEnabled()) {
                 if (forceDownload)
@@ -202,15 +214,23 @@ public class UsefulBits {
                 else showSimpleToast(context, "Language files downloaded because there were none");
             }
         } else {
-            if (mSharedPrefs.isDebugEnabled()) {
-                long dateMillis = mSharedPrefs.getSavedLanguageDate();
-                String dateStr = UsefulBits.getFormattedDate(context, dateMillis);
+            long dateMillis = mSharedPrefs.getSavedLanguageDate();
+            String dateStr = UsefulBits.getFormattedDate(context, dateMillis);
+            Log.d(TAG, "Language files are dated: " + dateStr);
+
+            if (mSharedPrefs.isDebugEnabled())
                 showSimpleToast(context, "Language files are dated: " + dateStr);
-            }
+
             // check if downloaded files are the correct ones
             if (!downloadedLanguage.equalsIgnoreCase(activeLanguage)) {
+
                 if (mSharedPrefs.isDebugEnabled())
-                    showSimpleToast(context, "Downloaded language files not the same as preferred language");
+                    showSimpleToast(context, "Downloaded language files did not match the preferred language");
+
+                Log.d(TAG, "Downloaded language files did not match the preferred language:" + newLine()
+                        + "Current downloaded language: " + downloadedLanguage + newLine()
+                        + "Active language: " + activeLanguage + newLine()
+                        + "Downloading the correct language");
                 mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             }
         }

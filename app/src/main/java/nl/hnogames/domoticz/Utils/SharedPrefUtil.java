@@ -93,6 +93,7 @@ public class SharedPrefUtil {
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
+    private final String TAG = "Shared Pref util";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -637,7 +638,7 @@ public class SharedPrefUtil {
                 else if (v instanceof Set)
                     editor.putStringSet(key, ((Set<String>) v));
                 else
-                    Log.v("Settings", "Could not load pref: " + key + " | " + v.getClass());
+                    Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
             }
             editor.commit();
             res = true;
@@ -737,25 +738,35 @@ public class SharedPrefUtil {
      * @param langToDownload Language to get from the server
      * @param server         ServerUtil
      */
-    public void getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
+    public boolean getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
+
+        final boolean[] result = new boolean[1];
+
         if (!UsefulBits.isEmpty(langToDownload)) {
             new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
+                    Log.d(TAG, "Language " + langToDownload + " downloaded from server");
                     Calendar now = Calendar.getInstance();
                     saveLanguage(language);
                     // Write to shared preferences so we can use it to check later
                     setDownloadedLanguage(langToDownload);
                     setSavedLanguageDate(now.getTimeInMillis());
+                    result[0] = true;
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    Log.e("Shared Pref util", "Unable to get the language from the server: " + langToDownload);
+                    Log.e(TAG, "Unable to get the language from the server: " + langToDownload);
                     error.printStackTrace();
+                    result[0] = false;
                 }
             });
+        } else {
+            Log.d(TAG, "Aborting: Language to download not specified");
+            result[0] = false;
         }
+        return result[0];
     }
 
     public String getDownloadedLanguage() {
