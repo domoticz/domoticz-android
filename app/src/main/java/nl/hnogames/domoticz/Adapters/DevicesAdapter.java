@@ -59,11 +59,11 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
-    public static final int ID_SCENE_SWITCH = 2000;
-    private static final int ID_TEXTVIEW = 1000;
-    private static final int ID_SWITCH = 0;
+    public final int ID_SCENE_SWITCH = 2000;
+    private final int ID_TEXTVIEW = 1000;
+    private final int ID_SWITCH = 0;
 
-    private static final int[] EVOHOME_STATE_IDS = {
+    private final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
             Domoticz.Device.ModalSwitch.Action.AWAY,
@@ -585,6 +585,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
+        //noinspection SpellCheckingInspection
         return (mDeviceInfo.getSubType().contains("RAEX")) ||
                 (mDeviceInfo.getSubType().contains("A-OK")) ||
                 (mDeviceInfo.getSubType().contains("RollerTrol")) ||
@@ -635,7 +636,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                 holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
             if (mDeviceInfo.getType().equals("Wind")) {
-                holder.switch_battery_level.setText(context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr());
+                text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
+                holder.switch_battery_level.setText(text);
             }
             if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
                 holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
@@ -868,7 +870,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = "";
+        String text;
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
                     + ": "
