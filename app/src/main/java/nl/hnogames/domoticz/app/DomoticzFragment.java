@@ -85,7 +85,7 @@ public class DomoticzFragment extends Fragment {
         }
         else if (activity instanceof PlanActivity)
         {
-            return ((PlanActivity) getActivity()).geServerUtil();
+            return ((PlanActivity) getActivity()).getServerUtil();
         }
         else return null;
     }
