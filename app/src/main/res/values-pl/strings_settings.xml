@@ -84,6 +84,6 @@
   <string name="server_update_not_available">Aktualizacja serwera nie dostępna</string>
   <string name="click_to_update_server">Kliknij tutaj, aby uaktualnić swój serwer</string>
   <string name="debug_test_text">Test debugowania</string>
-  <string name="restart_required_title">Restart required</string>
-  <string name="restart_now">Restart now?</string>
+  <string name="restart_required_title">Wymagany restart</string>
+  <string name="restart_now">Zrestartować teraz?</string>
 </resources>

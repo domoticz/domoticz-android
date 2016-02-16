@@ -9,6 +9,8 @@
   <string name="msg_please_wait">Even geduld&#8230;</string>
   <string name="button_state_on">Aan</string>
   <string name="button_state_off">Uit</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dag</string>
   <string name="button_status_week">Week</string>
@@ -20,7 +22,7 @@
   <string name="button_arm">Activeer</string>
   <string name="button_disarm">Deactiveer</string>
   <string name="last_update">Laatst gezien</string>
-  <string name="signal_level">Signaalniveau</string>
+  <string name="signal_level">Signaalsterkte</string>
   <string name="battery_level">Batterijniveau</string>
   <string name="data">Data</string>
   <string name="hardware">Hardware</string>
@@ -68,6 +70,7 @@
   <string name="no_data_on_domoticz">Geen gegevens beschikbaar op de Domoticz server</string>
   <string name="row_icon_description">rij icoon</string>
   <string name="error_image_description">Fout afbeelding</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Wit</string>
   <string name="refresh">Vernieuw</string>
   <string name="domoticz_logo">Domoticz logo</string>

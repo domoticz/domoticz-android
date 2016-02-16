@@ -9,6 +9,8 @@
   <string name="msg_please_wait">Proszę czekać...</string>
   <string name="button_state_on">Wł.</string>
   <string name="button_state_off">Wył.</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dzień</string>
   <string name="button_status_week">Tydzień</string>
@@ -68,11 +70,12 @@
   <string name="no_data_on_domoticz">Brak danych na serwerze Domoticz</string>
   <string name="row_icon_description">rząd ikon</string>
   <string name="error_image_description">Błąd obrazu</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Biały</string>
   <string name="refresh">Odśwież</string>
   <string name="domoticz_logo">Domoticz logo</string>
   <string name="this_take_minutes">Może to potrwać kilka minut.</string>
   <string name="continue_question">Kontynuować?</string>
   <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
-  <string name="restart_required_msg">For the language settings to become to effect an application restart is required</string>
+  <string name="restart_required_msg">Dla ustawień języka aby uzyskać efekt wymagane jest ponowne uruchomienie aplikacji</string>
 </resources>
