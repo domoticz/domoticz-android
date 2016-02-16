@@ -61,7 +61,7 @@ public class SetupServerSettings extends Fragment {
     private CheckBox cbShowPassword, cbShowPasswordLocal;
     private Button saveButton;
     private Switch useSameAddress;
-    private ServerInfo newServer = new ServerInfo();
+    private ServerInfo newServer;
     private boolean isUpdateRequest = false;
     private Context mContext;
 
@@ -250,6 +250,10 @@ public class SetupServerSettings extends Fragment {
 
             localServer_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
             advancedSettings_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
+        }
+        else {
+            server_name_input.getInputWidget().setEnabled(true);
+            remote_username_input.setInputWidgetText("");
         }
 
         setProtocol_spinner();
