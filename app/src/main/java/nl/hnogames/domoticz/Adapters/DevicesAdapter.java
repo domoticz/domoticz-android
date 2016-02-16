@@ -690,7 +690,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1002,7 +1002,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
             holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));

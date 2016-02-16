@@ -141,7 +141,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setText(context.getString(R.string.button_state_on));
-                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

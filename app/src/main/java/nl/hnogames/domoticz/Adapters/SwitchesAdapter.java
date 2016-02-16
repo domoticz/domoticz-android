@@ -133,6 +133,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
     private View setSwitchRowId(DevicesInfo mDevicesInfo, ViewHolder holder) {
         View row;
+
         switch (mDevicesInfo.getSwitchTypeVal()) {
             case Domoticz.Device.Type.Value.ON_OFF:
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -163,10 +164,16 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 break;
 
             case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                row = setPushOnOffSwitchRowId(holder, true);
+                break;
             case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
+                row = setPushOnOffSwitchRowId(holder, true);
+                break;
             case Domoticz.Device.Type.Value.DOORBELL:
+                row = setPushOnOffSwitchRowId(holder, true);
+                break;
             case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
-                row = setPushOnOffSwitchRowId(holder);
+                row = setPushOnOffSwitchRowId(holder, true);
                 break;
 
             case Domoticz.Device.Type.Value.DIMMER:
@@ -185,7 +192,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     row = setBlindsRowId(holder);
                 else
                     row = setOnOffSwitchRowId(holder);
-
                 break;
 
             default:
@@ -232,7 +238,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
-        holder.onOffSwitch = (Switch) row.findViewById(R.id.switch_button);
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
@@ -244,12 +250,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
-    private View setPushOnOffSwitchRowId(ViewHolder holder) {
+    /**
+     * Get's the layout items and returns the appropriate row
+     *
+     * @param holder        Holder to use
+     * @param toggleable    Should the switch be enabled
+     * @return              Returns the layout
+     */
+    private View setPushOnOffSwitchRowId(ViewHolder holder, boolean toggleable) {
         layoutResourceId = R.layout.switch_row_pushon;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
         holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonOn.setEnabled(toggleable);
+
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
@@ -347,10 +362,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         switch (mDevicesInfo.getSwitchTypeVal()) {
             case Domoticz.Device.Type.Value.ON_OFF:
             case Domoticz.Device.Type.Value.MEDIAPLAYER:
-            case Domoticz.Device.Type.Value.X10SIREN:
-            case Domoticz.Device.Type.Value.MOTION:
-            case Domoticz.Device.Type.Value.CONTACT:
-            case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.DOORLOCK:
                 if (mDevicesInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
                     if (mDevicesInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
@@ -366,9 +377,15 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                     setOnOffSwitchRowData(mDevicesInfo, holder);
                 break;
 
-            case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+            case Domoticz.Device.Type.Value.X10SIREN:
+            case Domoticz.Device.Type.Value.MOTION:
+            case Domoticz.Device.Type.Value.CONTACT:
+            case Domoticz.Device.Type.Value.DUSKSENSOR:
             case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
             case Domoticz.Device.Type.Value.DOORBELL:
+                setContactSwitchRowData(mDevicesInfo, holder, false);
+                break;
+            case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
                 setPushOnOffSwitchRowData(mDevicesInfo, holder, true);
                 break;
 
@@ -455,12 +472,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     }
 
     private boolean canHandleStopButton(DevicesInfo mDevicesInfo) {
-        if ((mDevicesInfo.getSubType().indexOf("RAEX") >= 0) ||
-                (mDevicesInfo.getSubType().indexOf("A-OK") >= 0) ||
-                (mDevicesInfo.getSubType().indexOf("RollerTrol") >= 0) ||
-                (mDevicesInfo.getSubType().indexOf("RFY") >= 0) ||
-                (mDevicesInfo.getSubType().indexOf("ASA") >= 0) ||
-                (mDevicesInfo.getSubType().indexOf("T6 DC") >= 0))
+        if ((mDevicesInfo.getSubType().contains("RAEX")) ||
+                (mDevicesInfo.getSubType().contains("A-OK")) ||
+                (mDevicesInfo.getSubType().contains("RollerTrol")) ||
+                (mDevicesInfo.getSubType().contains("RFY")) ||
+                (mDevicesInfo.getSubType().contains("ASA")) ||
+                (mDevicesInfo.getSubType().contains("T6 DC")))
             return true;
         else
             return false;
@@ -544,14 +561,121 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
     }
 
+    /**
+     * Set the data for the contact switch
+     *
+     * @param mDevicesInfo  Device info class
+     * @param holder        Holder to use
+     * @param buttonEnabled Should the button be enabled?
+     */
+    private void setContactSwitchRowData(DevicesInfo mDevicesInfo,
+                                         ViewHolder holder,
+                                         boolean buttonEnabled) {
+
+        ArrayList<String> statusOpen = new ArrayList<>();
+        statusOpen.add("open");
+
+        ArrayList<String> statusClosed = new ArrayList<>();
+        statusClosed.add("closed");
+
+        holder.isProtected = mDevicesInfo.isProtected();
+        holder.switch_name.setText(mDevicesInfo.getName());
+
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+        holder.signal_level.setText(text);
+
+        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
+        holder.switch_battery_level.setText(text);
+
+        holder.buttonOn.setId(mDevicesInfo.getIdx());
+        holder.buttonOn.setEnabled(buttonEnabled);
+
+        String status = String.valueOf(mDevicesInfo.getData().toLowerCase());
+        if (statusOpen.contains(status)) {
+            holder.buttonOn.setText(context.getString(R.string.button_state_open));
+            holder.buttonOn.setTextColor(ContextCompat.getColor(context, R.color.black));
+            // holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+        } else if (statusClosed.contains(status)) {
+            holder.buttonOn.setText(context.getString(R.string.button_state_closed));
+            holder.buttonOn.setTextColor(ContextCompat.getColor(context, R.color.black));
+            // holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
+        } else {
+            if (status.startsWith("off")) status = "off";
+            holder.buttonOn.setText(status.toUpperCase());
+            holder.buttonOn.setTextColor(ContextCompat.getColor(context, R.color.black));
+        }
+
+        if (buttonEnabled) {
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String text = (String) ((Button) v).getText();
+                    if (text.equals(context.getString(R.string.button_state_on)))
+                        handleOnButtonClick(v.getId(), true);
+                    else
+                        handleOnButtonClick(v.getId(), false);
+                }
+            });
+        }
+
+        holder.buttonLog.setId(mDevicesInfo.getIdx());
+        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleLogButtonClick(v.getId());
+            }
+        });
+        holder.buttonTimer.setId(mDevicesInfo.getIdx());
+        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTimerButtonClick(v.getId());
+            }
+        });
+
+        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.GONE);
+
+
+        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDevicesInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
+                mDevicesInfo.getType(),
+                mDevicesInfo.getSwitchType(),
+                mDevicesInfo.getStatusBoolean(),
+                mDevicesInfo.getUseCustomImage(),
+                mDevicesInfo.getImage())).into(holder.iconRow);
+
+        if (!mDevicesInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+    }
+
+    /**
+     * Set the data for the push on/of button data
+     *
+     * @param mDevicesInfo  The device info
+     * @param holder        Holder to use
+     * @param action        Action to set the state of the button (e.g. on or off)
+     */
     private void setPushOnOffSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update)
                 + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDevicesInfo.getLastUpdateDateTime().getTime());
+                + UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
@@ -560,7 +684,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonOn.setId(mDevicesInfo.getIdx());
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
             holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
@@ -640,7 +764,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
