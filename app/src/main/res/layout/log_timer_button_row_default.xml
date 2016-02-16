@@ -19,9 +19,10 @@
         android:layout_height="25dp"
         android:layout_weight=".25"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/button_white_status"
         android:text="@string/button_status_log"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/timer_button"
@@ -29,9 +30,10 @@
         android:layout_height="25dp"
         android:layout_weight=".25"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/button_white_status"
         android:text="@string/button_status_timer"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/notifications_button"
@@ -39,8 +41,9 @@
         android:layout_height="25dp"
         android:layout_weight=".25"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/button_white_status"
         android:text="@string/button_status_notifications"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
 </LinearLayout>

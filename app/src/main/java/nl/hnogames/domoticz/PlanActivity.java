@@ -28,8 +28,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Dashboard;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 
 public class PlanActivity extends AppCompatActivity {
+
+    private ServerUtil mServerUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,12 @@ public class PlanActivity extends AppCompatActivity {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(android.R.id.content, dash);
         tx.commit();
+    }
+
+    public ServerUtil geServerUtil() {
+        if (mServerUtil == null)
+            mServerUtil = new ServerUtil(this);
+        return mServerUtil;
     }
 
     @Override

@@ -9,6 +9,8 @@
   <string name="msg_please_wait">Пожалуйста подождите&#8230;</string>
   <string name="button_state_on">ВКЛ</string>
   <string name="button_state_off">Выключен</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Журнал</string>
   <string name="button_status_day">День</string>
   <string name="button_status_week">Week</string>
@@ -68,6 +70,7 @@
   <string name="no_data_on_domoticz">Нет данных на сервере Domoticz</string>
   <string name="row_icon_description">значок строки</string>
   <string name="error_image_description">Изображение ошибки</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Белый</string>
   <string name="refresh">Обновить</string>
   <string name="domoticz_logo">Domoticz лого</string>

@@ -9,6 +9,8 @@
   <string name="msg_please_wait">Vänligen vänta&#8230;</string>
   <string name="button_state_on">På</string>
   <string name="button_state_off">Av</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Logg</string>
   <string name="button_status_day">Dag</string>
   <string name="button_status_week">Vecka</string>
@@ -68,6 +70,7 @@
   <string name="no_data_on_domoticz">Ingen data på Domoticz server</string>
   <string name="row_icon_description">radikon</string>
   <string name="error_image_description">Fel bild</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Vit</string>
   <string name="refresh">Uppdatera</string>
   <string name="domoticz_logo">Domoticz logotyp</string>

@@ -9,6 +9,8 @@
   <string name="msg_please_wait">Čakajte, prosím&#8230;</string>
   <string name="button_state_on">Zap</string>
   <string name="button_state_off">Vyp</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Záznam</string>
   <string name="button_status_day">Deň</string>
   <string name="button_status_week">týždeň</string>
@@ -68,6 +70,7 @@
   <string name="no_data_on_domoticz">Žiadne dáta na serveri Domoticz</string>
   <string name="row_icon_description">ikona riadka</string>
   <string name="error_image_description">Chyba obrázok</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Biela</string>
   <string name="refresh">Obnoviť</string>
   <string name="domoticz_logo">Domoticz logo</string>

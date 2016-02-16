@@ -22,6 +22,7 @@
 
 package nl.hnogames.domoticz.app;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.MainActivity;
+import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
@@ -77,7 +79,15 @@ public class DomoticzFragment extends Fragment {
     }
 
     public ServerUtil getServerUtil() {
-        return ((MainActivity) getActivity()).geServerUtil();
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity){
+            return ((MainActivity) getActivity()).geServerUtil();
+        }
+        else if (activity instanceof PlanActivity)
+        {
+            return ((PlanActivity) getActivity()).geServerUtil();
+        }
+        else return null;
     }
 
     public void sortFragment(String sort) {
