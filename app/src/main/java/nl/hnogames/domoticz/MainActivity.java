@@ -225,13 +225,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addFragmentStack(String fragment) {
-        if (stackFragments == null)
+        int screenIndex = mSharedPrefs.getStartupScreenIndex();
+        if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
             stackFragments = new ArrayList<>();
-
-        if (!stackFragments.contains(fragment)) {
-            if (stackFragments.size() > 1)
-                stackFragments.remove(stackFragments.size() - 1);
             stackFragments.add(fragment);
+        } else {
+            if (stackFragments == null)
+                stackFragments = new ArrayList<>();
+
+            if (!stackFragments.contains(fragment)) {
+                if (stackFragments.size() > 1)
+                    stackFragments.remove(stackFragments.size() - 1);
+                stackFragments.add(fragment);
+            }
         }
     }
 

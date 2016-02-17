@@ -80,14 +80,11 @@ public class DomoticzFragment extends Fragment {
 
     public ServerUtil getServerUtil() {
         Activity activity = getActivity();
-        if (activity instanceof MainActivity){
+        if (activity instanceof MainActivity) {
             return ((MainActivity) getActivity()).geServerUtil();
-        }
-        else if (activity instanceof PlanActivity)
-        {
+        } else if (activity instanceof PlanActivity) {
             return ((PlanActivity) getActivity()).getServerUtil();
-        }
-        else return null;
+        } else return null;
     }
 
     public void sortFragment(String sort) {

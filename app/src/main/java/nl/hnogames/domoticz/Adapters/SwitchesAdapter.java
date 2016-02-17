@@ -253,9 +253,9 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     /**
      * Get's the layout items and returns the appropriate row
      *
-     * @param holder        Holder to use
-     * @param toggleable    Should the switch be enabled
-     * @return              Returns the layout
+     * @param holder     Holder to use
+     * @param toggleable Should the switch be enabled
+     * @return Returns the layout
      */
     private View setPushOnOffSwitchRowId(ViewHolder holder, boolean toggleable) {
         layoutResourceId = R.layout.switch_row_pushon;
@@ -665,9 +665,9 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for the push on/of button data
      *
-     * @param mDevicesInfo  The device info
-     * @param holder        Holder to use
-     * @param action        Action to set the state of the button (e.g. on or off)
+     * @param mDevicesInfo The device info
+     * @param holder       Holder to use
+     * @param action       Action to set the state of the button (e.g. on or off)
      */
     private void setPushOnOffSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mDevicesInfo.isProtected();
