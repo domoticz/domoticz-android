@@ -148,9 +148,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the right layout ID's based on the info of the device
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
-     * @return              Returns the right view
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     * @return Returns the right view
      */
     private View setSwitchRowId(DevicesInfo mDeviceInfo, ViewHolder holder) {
         View row = setDefaultRowId(holder);
@@ -245,8 +245,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's on/off button
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setOnOffButtonRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
@@ -278,8 +278,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for a on/off switch
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setOnOffSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
@@ -310,8 +310,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for the security panel
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setSecurityPanelSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_securitypanel;
@@ -340,8 +340,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for a motion type device
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setMotionSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_motion;
@@ -369,8 +369,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout for default devices
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setDefaultRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.dashboard_row_default;
@@ -390,8 +390,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for push on/push off switch
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setPushOnOffSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_pushon;
@@ -420,8 +420,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for a thermostat device
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setThermostatRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.utilities_row_thermostat;
@@ -442,8 +442,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for a temperature device
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setTemperatureRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.temperature_row_default;
@@ -470,8 +470,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for blinds
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setBlindsRowId(ViewHolder holder) {
 
@@ -496,8 +496,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for the dimmer
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setDimmerRowId(ViewHolder holder, boolean isRGB) {
         if (isRGB) {
@@ -536,8 +536,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the layout ID's for the modal switch
      *
-     * @param holder    Holder to use
-     * @return          Returns a view
+     * @param holder Holder to use
+     * @return Returns a view
      */
     private View setModalSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_modal;
@@ -570,8 +570,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for switches
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder) {
@@ -671,8 +671,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Checks if the device has a stop button
      *
-     * @param mDeviceInfo   Device to check
-     * @return              Returns true if the device has a stop button
+     * @param mDeviceInfo Device to check
+     * @return Returns true if the device has a stop button
      */
     private boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
         //noinspection SpellCheckingInspection
@@ -687,8 +687,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Sets the data for a default device
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
                                    ViewHolder holder) {
@@ -768,8 +768,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for the security panel
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setSecurityPanelSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         holder.isProtected = mDeviceInfo.isProtected();
@@ -820,8 +820,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for the on/off buttons
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setOnOffButtonRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
@@ -894,8 +894,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for the on/off switch
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setOnOffSwitchRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
@@ -967,8 +967,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for the thermostat devices
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setThermostatRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         holder.isProtected = mDeviceInfo.isProtected();
@@ -1015,8 +1015,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for temperature devices
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         final double temperature = mDeviceInfo.getTemperature();
@@ -1089,8 +1089,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for a push on/off device
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setPushOnOffSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mDeviceInfo.isProtected();
@@ -1165,8 +1165,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for blinds
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setBlindsRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder) {
@@ -1255,8 +1255,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for a selector switch
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setSelectorRowData(final DevicesInfo mDeviceInfo,
                                     final ViewHolder holder) {
@@ -1361,8 +1361,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for a dimmer
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setDimmerRowData(final DevicesInfo mDeviceInfo,
                                   final ViewHolder holder,
@@ -1502,8 +1502,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Set the data for temperature devices
      *
-     * @param mDeviceInfo   Device info
-     * @param holder        Holder to use
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
      */
     private void setModalSwitchRowData(DevicesInfo mDeviceInfo,
                                        ViewHolder holder,
@@ -1522,7 +1522,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
-        if(holder.buttonSetStatus != null) {
+        if (holder.buttonSetStatus != null) {
             holder.buttonSetStatus.setId(mDeviceInfo.getIdx());
             holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1544,10 +1544,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Gets the status text
      *
-     * @param statusArrayRes        Status array to use
-     * @param statusNamesArrayRes   Status array of names to use
-     * @param text                  Text to find
-     * @return                      Returns the status text
+     * @param statusArrayRes      Status array to use
+     * @param statusNamesArrayRes Status array of names to use
+     * @param text                Text to find
+     * @return Returns the status text
      */
     private String getStatus(int statusArrayRes, int statusNamesArrayRes, String text) {
         Resources res = context.getResources();
@@ -1583,7 +1583,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the temperature click
      *
-     * @param idx   IDX of the device to change
+     * @param idx IDX of the device to change
      */
     public void handleSetTemperatureClick(int idx) {
         listener.onSetTemperatureClick(idx);
@@ -1592,8 +1592,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the on/off switch click
      *
-     * @param idx       IDX of the device to change
-     * @param action    Action to take
+     * @param idx    IDX of the device to change
+     * @param action Action to take
      */
     private void handleOnOffSwitchClick(int idx, boolean action) {
         listener.onSwitchClick(idx, action);
@@ -1611,8 +1611,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the on button click
      *
-     * @param idx       IDX of the device to change
-     * @param action    Action to take
+     * @param idx    IDX of the device to change
+     * @param action Action to take
      */
     private void handleOnButtonClick(int idx, boolean action) {
         listener.onButtonClick(idx, action);
@@ -1621,8 +1621,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the blicks click
      *
-     * @param idx       IDX of the device to change
-     * @param action    Action to take
+     * @param idx    IDX of the device to change
+     * @param action Action to take
      */
     private void handleBlindsClick(int idx, int action) {
         listener.onBlindClick(idx, action);
@@ -1631,9 +1631,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the dimmer change
      *
-     * @param idx       IDX of the device to change
-     * @param value     Value to change the device to
-     * @param selector  True if it's a selector device
+     * @param idx      IDX of the device to change
+     * @param value    Value to change the device to
+     * @param selector True if it's a selector device
      */
     private void handleDimmerChange(final int idx, final int value, boolean selector) {
         listener.onDimmerChange(idx, value, selector);
@@ -1642,9 +1642,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the state button click
      *
-     * @param idx       IDX of the device to change
-     * @param itemsRes  Resource ID of the items
-     * @param itemIds   State ID's
+     * @param idx      IDX of the device to change
+     * @param itemsRes Resource ID of the items
+     * @param itemIds  State ID's
      */
     private void handleStateButtonClick(final int idx, int itemsRes, int[] itemIds) {
         listener.onStateButtonClick(idx, itemsRes, itemIds);
@@ -1653,8 +1653,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Handles the selector dimmer click
      *
-     * @param idx           IDX of the device to change
-     * @param levelNames    Names om the levels
+     * @param idx        IDX of the device to change
+     * @param levelNames Names om the levels
      */
     private void handleSelectorDimmerClick(int idx, String[] levelNames) {
         listener.onSelectorDimmerClick(idx, levelNames);
@@ -1672,9 +1672,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     /**
      * Calculates the dim percentage
      *
-     * @param maxDimLevel   Max dim level
-     * @param level         Current level
-     * @return              Calculated percentage
+     * @param maxDimLevel Max dim level
+     * @param level       Current level
+     * @return Calculated percentage
      */
     private String calculateDimPercentage(int maxDimLevel, int level) {
         float percentage = ((float) level / (float) maxDimLevel) * 100;
@@ -1685,7 +1685,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
      * Get's the icon of the Evo home state
      *
      * @param stateName The current state to return the icon for
-     * @return          Returns resource ID for the icon
+     * @return Returns resource ID for the icon
      */
     private int getEvohomeStateIconResource(String stateName) {
         if (stateName == null) return 0;
