@@ -4,6 +4,6 @@
   <string name="title_plans">Piani</string>
   <plurals name="devices">
     <item quantity="one">%1d dispositivo</item>
-    <item quantity="other">%1d devices</item>
+    <item quantity="other">%1d dispositivi</item>
   </plurals>
 </resources>
