@@ -57,6 +57,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableMultiServers"
+            android:summaryOff="@string/multi_server_settings"
+            android:summaryOn="@string/multi_server_settings"
+            android:title="@string/multi_server" />
         <Preference
             android:key="server_settings"
             android:title="@string/server_settings" />
@@ -77,13 +83,81 @@
             android:title="@string/import_settings" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_language">
+        <ListPreference
+            android:entries="@array/domoticz_language_entries"
+            android:entryValues="@array/domoticz_language_entryValues"
+            android:key="displayLanguage"
+            android:title="@string/category_language" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_notification">
+        <PreferenceScreen android:title="@string/notification_screen_title">
+            <SwitchPreference
+                android:defaultValue="true"
+                android:key="enableNotifications"
+                android:summaryOff="@string/enable_notifications"
+                android:summaryOn="@string/enable_notifications"
+                android:title="@string/enable_notifications_title" />
+
+            <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
+                android:defaultValue="@array/empty_array"
+                android:dependency="enableNotifications"
+                android:dialogTitle="@string/suppress_notifications_select"
+                android:entries="@array/empty_array"
+                android:entryValues="@array/empty_array"
+                android:key="suppressNotifications"
+                android:summary="@string/suppress_notifications"
+                android:title="@string/suppress_notifications_title"
+                customPreference:selectAllValuesByDefault="false" />
+
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="overwriteNotifications"
+                android:dependency="enableNotifications"
+                android:summaryOff="@string/overwrite_notifications"
+                android:summaryOn="@string/overwrite_notifications"
+                android:title="@string/overwrite_notifications_title" />
+
+            <SwitchPreference
+                android:defaultValue="true"
+                android:dependency="enableNotifications"
+                android:key="notification_vibrate"
+                android:summaryOff="@string/notification_vibrate_off"
+                android:summaryOn="@string/notification_vibrate_on"
+                android:title="@string/notification_vibrate_title" />
+
+            <RingtonePreference
+                android:dependency="enableNotifications"
+                android:key="notification_sound"
+                android:ringtoneType="notification"
+                android:showDefault="true"
+                android:showSilent="true"
+                android:summary="@string/notification_sound_summary"
+                android:title="@string/notification_sound_title" />
+
+            <Preference
+                android:dependency="enableNotifications"
+                android:key="notification_registration_id"
+                android:summary="@string/notification_settings_push"
+                android:title="@string/notification_settings_id" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_info">
         <Preference
             android:key="version"
             android:summary="Version 1.0.2"
             android:title="@string/info_version" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="checkForSystemUpdates"
+            android:summaryOff="@string/check_for_update"
+            android:summaryOn="@string/check_for_update"
+            android:title="@string/check_for_update_title" />
         <Preference
             android:key="version_domoticz"
+            android:dependency="checkForSystemUpdates"
             android:summary="Version 1.0.2"
             android:title="@string/info_domoticz_version" />
         <Preference

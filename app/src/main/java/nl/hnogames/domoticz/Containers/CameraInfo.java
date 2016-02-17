@@ -85,6 +85,7 @@ public class CameraInfo {
     public String getSnapShotURL() {
         return SnapShotURL;
     }
+
     public void setSnapShotURL(String url) {
         SnapShotURL = url;
     }

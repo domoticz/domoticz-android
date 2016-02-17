@@ -22,8 +22,11 @@
 
 package nl.hnogames.domoticz.app;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -47,32 +50,44 @@ import java.util.List;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
+import nl.hnogames.domoticz.MainActivity;
+import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzFragment extends Fragment {
 
+    public ListView listView;
+    public SwipeRefreshLayout mSwipeRefreshLayout;
+    public CoordinatorLayout coordinatorLayout;
+    public Domoticz mDomoticz;
     private DomoticzFragmentListener listener;
     private String fragmentName;
-
-    private Domoticz mDomoticz;
-
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
     private String sort = "";
-
     private SpinnerLoader oSpinner;
 
     public DomoticzFragment() {
     }
 
-    public void refreshFragment() {
-    }
-
     public String getSort() {
         return sort;
+    }
+
+    public ServerUtil getServerUtil() {
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity){
+            return ((MainActivity) getActivity()).geServerUtil();
+        }
+        else if (activity instanceof PlanActivity)
+        {
+            return ((PlanActivity) getActivity()).geServerUtil();
+        }
+        else return null;
     }
 
     public void sortFragment(String sort) {
@@ -80,23 +95,29 @@ public class DomoticzFragment extends Fragment {
         refreshFragment();
     }
 
+    public void initViews(View root) {
+        listView = (ListView) root.findViewById(R.id.listView);
+        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
+        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.default_layout, null);
-        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
+        initViews(root);
         return root;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mDomoticz = new Domoticz(getActivity());
+        mDomoticz = new Domoticz(getActivity(), getServerUtil());
         debug = mDomoticz.isDebugEnabled();
-
-        if (debug) showDebugLayout();
+        if (debug)
+            showDebugLayout();
 
         checkConnection();
     }
@@ -243,7 +264,6 @@ public class DomoticzFragment extends Fragment {
     }
 
     private void hideListView() {
-        ListView listView = (ListView) root.findViewById(R.id.listView);
         if (listView != null) {
             listView.setVisibility(View.GONE);
 
@@ -271,7 +291,7 @@ public class DomoticzFragment extends Fragment {
                     }
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -282,4 +302,8 @@ public class DomoticzFragment extends Fragment {
 
     public void Filter(String text) {
     }
+
+    public void refreshFragment() {
+    }
+
 }

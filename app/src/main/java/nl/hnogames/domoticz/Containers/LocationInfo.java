@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.location.Address;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -30,8 +32,10 @@ public class LocationInfo {
     private LatLng latLng;
     private int id = 0;
     private int switchIdx = 0;
+    private String switchPassword = "";
     private int radius = 400;           //meters
     private boolean enabled = false;
+    private Address address;
 
     public LocationInfo(int id, String name, LatLng latLng, int radius) {
         this.name = name;
@@ -60,11 +64,11 @@ public class LocationInfo {
         return id;
     }
 
-    public int getSwitchidx() {
+    public int getSwitchIdx() {
         return switchIdx;
     }
 
-    public void setSwitchidx(int idx) {
+    public void setSwitchIdx(int idx) {
         switchIdx = idx;
     }
 
@@ -84,6 +88,21 @@ public class LocationInfo {
         this.latLng = latLng;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getSwitchPassword() {
+        return switchPassword;
+    }
+
+    public void setSwitchPassword(String switchPassword) {
+        this.switchPassword = switchPassword;
+    }
 
     /**
      * Creates a Location Services Geofence object from a SimpleGeofence.
@@ -103,9 +122,10 @@ public class LocationInfo {
                     .setCircularRegion(latLng.latitude, latLng.longitude, radius)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .build();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             // Wrong LocationInfo data detected
             return null;
         }
     }
+
 }

@@ -110,6 +110,16 @@
                 app:flw_labelTextSize="@dimen/text_size_medium" />
         </LinearLayout>
 
+        <CheckBox
+            android:id="@+id/showpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:text="@string/show_password"
+            android:textColor="@color/default_text_color_light"
+            android:textSize="@dimen/text_size_small" />
+
         <TextView
             android:id="@+id/advancedSettings_label"
             android:layout_width="wrap_content"
@@ -293,6 +303,16 @@
                     app:flw_labelText="@string/welcome_local_server_password"
                     app:flw_labelTextColor="@color/default_text_color_light"
                     app:flw_labelTextSize="@dimen/text_size_medium" />
+
+                <CheckBox
+                    android:id="@+id/showpasswordlocal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/show_password"
+                    android:textColor="@color/default_text_color_light"
+                    android:textSize="@dimen/text_size_small" />
 
                 <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                     android:id="@+id/local_directory_input"

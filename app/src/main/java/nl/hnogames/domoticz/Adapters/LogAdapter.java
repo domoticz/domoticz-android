@@ -53,11 +53,12 @@ public class LogAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public LogAdapter(Context context,
+                      Domoticz mDomoticz,
                       ArrayList<LogInfo> data) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        this.domoticz = mDomoticz;
 
         Collections.reverse(data);
         this.data = data;

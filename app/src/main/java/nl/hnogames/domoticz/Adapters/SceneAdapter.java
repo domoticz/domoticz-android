@@ -24,16 +24,15 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -46,9 +45,11 @@ import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SceneAdapter extends BaseAdapter implements Filterable {
 
+    @SuppressWarnings("unused")
     private static final String TAG = SceneAdapter.class.getSimpleName();
 
     private final ScenesClickListener listener;
@@ -60,12 +61,13 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public SceneAdapter(Context context,
+                        Domoticz mDomoticz,
                         ArrayList<SceneInfo> data,
                         ScenesClickListener listener) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
         Collections.sort(data, new Comparator<SceneInfo>() {
             @Override
             public int compare(SceneInfo left, SceneInfo right) {
@@ -121,16 +123,25 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             holder.switch_battery_level = (TextView) convertView.findViewById(R.id.switch_battery_level);
 
             holder.switch_name.setText(mSceneInfo.getName());
-            String text = context.getText(R.string.last_update) + ": " + String.valueOf(mSceneInfo.getLastUpdate());
+            String text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mSceneInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.SCENE.toLowerCase(), null, null, false, false, null)).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(
+                    Domoticz.Scene.Type.SCENE.toLowerCase(),
+                    null,
+                    null,
+                    false,
+                    false,
+                    null)).into(holder.iconRow);
 
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setText(context.getString(R.string.button_state_on));
-                holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -148,32 +159,50 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
-            holder.onOffSwitch = (Switch) convertView.findViewById(R.id.switch_button);
+            holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
+            holder.buttonOff = (Button) convertView.findViewById(R.id.off_button);
             holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
             holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
             holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
             holder.switch_battery_level = (TextView) convertView.findViewById(R.id.switch_battery_level);
 
             holder.switch_name.setText(mSceneInfo.getName());
-            String text = context.getText(R.string.last_update) + ": " + String.valueOf(mSceneInfo.getLastUpdate());
+
+            String text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mSceneInfo.getLastUpdateDateTime().getTime());
+
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
 
-            if (holder.onOffSwitch != null) {
-                if (holder.isProtected) {
-                    holder.onOffSwitch.setEnabled(false);
-                }
-                holder.onOffSwitch.setId(mSceneInfo.getIdx());
-                holder.onOffSwitch.setChecked(mSceneInfo.getStatusInBoolean());
-                holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            if (holder.buttonOn != null) {
+                holder.buttonOn.setId(mSceneInfo.getIdx());
+                holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                        handleClick(compoundButton.getId(), checked);
+                    public void onClick(View v) {
+                        handleClick(v.getId(), true);
+                    }
+                });
+            }
+            if (holder.buttonOff != null) {
+                holder.buttonOff.setId(mSceneInfo.getIdx());
+                holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleClick(v.getId(), false);
                     }
                 });
             }
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(Domoticz.Scene.Type.GROUP.toLowerCase(), null, null, mSceneInfo.getStatusInBoolean(), false, null)).into(holder.iconRow);
+            Picasso.with(context).load(domoticz.getDrawableIcon(
+                    Domoticz.Scene.Type.GROUP.toLowerCase(),
+                    null,
+                    null,
+                    mSceneInfo.getStatusInBoolean(),
+                    false,
+                    null)).into(holder.iconRow);
+
             if (!mSceneInfo.getStatusInBoolean())
                 holder.iconRow.setAlpha(0.5f);
             else
@@ -191,9 +220,8 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     }
 
     static class ViewHolder {
-        TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
-        Switch onOffSwitch, dimmerOnOffSwitch;
-        Button buttonOn;
+        TextView switch_name, signal_level, switch_battery_level;
+        Button buttonOn, buttonOff;
         Boolean isProtected;
         ImageView iconRow;
     }
@@ -209,19 +237,19 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             final ArrayList<SceneInfo> list = data;
 
             int count = list.size();
-            final ArrayList<SceneInfo> nlist = new ArrayList<SceneInfo>(count);
+            final ArrayList<SceneInfo> sceneInfos = new ArrayList<>(count);
 
             SceneInfo filterableObject;
 
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    sceneInfos.add(filterableObject);
                 }
             }
 
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = sceneInfos;
+            results.count = sceneInfos.size();
 
             return results;
         }

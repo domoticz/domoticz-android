@@ -10,6 +10,14 @@
   <string name="timer_before_sunrise">Перед восходом солнца</string>
   <string name="timer_after_sunrise">После восхода солнца</string>
   <string name="timer_fixed">Фиксированная дата/время</string>
+  <string name="odd_day_numbers">Нечетные числа</string>
+  <string name="even_day_numbers">Четные числа</string>
+  <string name="odd_week_numbers">Нечетные недели</string>
+  <string name="even_week_numbers">Четные недели</string>
+  <string name="monthly">Ежемесячно</string>
+  <string name="monthly_weekday">Ежемесячно (по будням)</string>
+  <string name="yearly">Ежегодно</string>
+  <string name="yearly_weekday">Ежегодно (по будням)</string>
   <string name="timer_every_days">Ежедневно</string>
   <string name="timer_working_days">Рабочие дни</string>
   <string name="timer_weekend">Выходные</string>

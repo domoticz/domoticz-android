@@ -66,12 +66,13 @@
 
             <Button
                 android:id="@+id/on_button"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/button"
-                android:text="@string/button_state_on" />
+                android:background="@drawable/button_status"
+                android:text="@string/button_state_on"
+                android:textSize="10dp" />
 
         </LinearLayout>
 

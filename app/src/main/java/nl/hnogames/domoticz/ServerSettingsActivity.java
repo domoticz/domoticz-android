@@ -23,11 +23,16 @@
 package nl.hnogames.domoticz;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.Welcome.SetupServerSettings;
 import nl.hnogames.domoticz.Welcome.WelcomePage3;
 
 public class ServerSettingsActivity extends AppCompatActivity {
@@ -37,18 +42,44 @@ public class ServerSettingsActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     private static final int SETTINGS = 2;
 
+    private String updateName = "";
+    private boolean addNew = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) //noinspection SpellCheckingInspection
+            {
+                addNew = extras.getBoolean("ADDSERVER");
+                updateName = extras.getString("SERVERNAME");
+            }
+        }
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, serverSettings)
-                .commit();
+        if (!addNew && UsefulBits.isEmpty(updateName)) {
+            Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
+            getFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, serverSettings)
+                    .commit();
+        } else {
+            SetupServerSettings serverSettings = SetupServerSettings.newInstance(SETTINGS);
+
+            if (!UsefulBits.isEmpty(updateName)) {
+                Bundle data = new Bundle();
+                data.putString("SERVERNAME", updateName);
+                serverSettings.setArguments(data);
+            }
+
+            getFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, serverSettings)
+                    .commit();
+        }
     }
 
     @Override
@@ -56,9 +87,47 @@ public class ServerSettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                if (!addNew)
+                    NavUtils.navigateUpFromSameTask(this);
+                else {
+                    setResult(RESULT_CANCELED);
+                    super.finish();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void ServerCancel() {
+        setResult(RESULT_CANCELED);
+        super.finish();
+    }
+
+    public void ServerAdded(Boolean added) {
+        if (!added) {
+            Toast.makeText(this, R.string.server_must_be_unique, Toast.LENGTH_SHORT).show();
+        } else {
+            setResult(RESULT_OK);
+            super.finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (addNew) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(getString(R.string.dont_save_new_server))
+                    .setMessage(R.string.are_you_sure)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ServerCancel();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        } else
+            super.onBackPressed();
     }
 }

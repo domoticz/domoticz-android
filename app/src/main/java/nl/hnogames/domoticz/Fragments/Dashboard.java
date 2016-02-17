@@ -22,23 +22,20 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Parcelable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DevicesAdapter;
@@ -51,6 +48,8 @@ import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
+import nl.hnogames.domoticz.UI.PasswordDialog;
+import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -59,24 +58,23 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
         switchesClickListener {
 
-    @SuppressWarnings("unused")
+    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
+    public static final String AUTO = "Auto";
     private static final String TAG = Dashboard.class.getSimpleName();
-    private ProgressDialog progressDialog;
-    private Domoticz mDomoticz;
     private Context mContext;
     private DevicesAdapter adapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-
     private int planID = 0;
     private String planName = "";
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
-    private ListView listView;
-
     private Parcelable state = null;
     private boolean busy = false;
-
     private String filter = "";
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public void refreshFragment() {
@@ -91,14 +89,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
-
-    @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -112,28 +104,21 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void onConnectionOk() {
         getActionBar().setTitle(R.string.title_dashboard);
         super.showSpinner(true);
-
-        listView = (ListView) getView().findViewById(R.id.listView);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id.coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-
-        if (planName != null && planName.length() > 0)
-            getActionBar().setTitle(planName + "");
-
-        processDashboard();
+        if (getView() != null) {
+            if (planName != null && planName.length() > 0)
+                getActionBar().setTitle(planName + "");
+            processDashboard();
+        }
     }
 
     private void processDashboard() {
         busy = true;
-        if(extendedStatusSwitches!=null && extendedStatusSwitches.size()>0)
-        {
+        if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
             state = listView.onSaveInstanceState();
         }
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
-        //switch toggled, refresh listview
-        mSwipeRefreshLayout.setRefreshing(true);
-
-        mDomoticz = new Domoticz(mContext);
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -213,20 +198,20 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                             (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
-                            (switchType == null || switchType.equals(null) || switchType.length() <= 0)) {
-                        if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
+                            UsefulBits.isEmpty(switchType)) {
+                        if (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) {
                             supportedSwitches.add(mExtendedStatusInfo);
                         } else {
                             Snackbar.make(coordinatorLayout, getString(R.string.filterOn_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
                                     isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
                             }
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
                                     isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
                             }
-                            if (super.getSort().equals(getContext().getString(R.string.filterOn_static)) &&
+                            if (super.getSort().equals(mContext.getString(R.string.filterOn_static)) &&
                                     !isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
                             }
@@ -235,7 +220,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 }
 
                 final switchesClickListener listener = this;
-                adapter = new DevicesAdapter(mContext, supportedSwitches, listener);
+                adapter = new DevicesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
                 SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
                 animationAdapter.setAbsListView(listView);
                 listView.setAdapter(animationAdapter);
@@ -256,7 +241,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                     }
                 });
 
-                if(state!=null){
+                if (state != null) {
                     listView.onRestoreInstanceState(state);
                 }
             } catch (Exception ex) {
@@ -271,7 +256,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
         DeviceInfoDialog infoDialog = new DeviceInfoDialog(
-                getActivity(),
+                mContext,
                 mSwitch,
                 R.layout.dialog_switch_info);
 
@@ -298,9 +283,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -312,7 +297,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             jsonUrl = Domoticz.Json.Url.Set.SCENEFAVORITE;
         }
 
-        mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -327,19 +312,34 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onSwitchClick(int idx, boolean checked) {
-        if(busy)
+    public void onSwitchClick(int idx, final boolean checked) {
+        if (busy)
             return;
-
         addDebugText("onSwitchClick");
         addDebugText("Set idx " + idx + " to " + checked);
+        final DevicesInfo clickedSwitch = getDevice(idx);
+        if (clickedSwitch.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    mContext, mDomoticz);
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    toggleSwitch(clickedSwitch, checked, password);
+                }
+            });
+        } else {
+            toggleSwitch(clickedSwitch, checked, null);
+        }
+    }
 
-        DevicesInfo clickedSwitch = getDevice(idx);
+    private void toggleSwitch(DevicesInfo clickedSwitch, boolean checked, final String password) {
         if (checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
+        int idx = clickedSwitch.getIdx();
         if (clickedSwitch.getIdx() > 0) {
             int jsonAction;
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -356,10 +356,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 jsonUrl = Domoticz.Json.Url.Set.SCENES;
                 if (checked) jsonAction = Domoticz.Scene.Action.ON;
                 else jsonAction = Domoticz.Scene.Action.OFF;
-                idx = idx - adapter.ID_SCENE_SWITCH;
             }
 
-            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
@@ -368,7 +367,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
                 @Override
                 public void onError(Exception error) {
-                    errorHandling(error);
+                    if (!UsefulBits.isEmpty(password))
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                    else
+                        errorHandling(error);
                 }
             });
         }
@@ -384,7 +386,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (clickedSwitch == null) {
             for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 if (mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                    if (mExtendedStatusInfo.getIdx() == (idx - adapter.ID_SCENE_SWITCH)) {
+                    if (mExtendedStatusInfo.getIdx() == (idx - DevicesAdapter.ID_SCENE_SWITCH)) {
                         clickedSwitch = mExtendedStatusInfo;
                     }
                 }
@@ -394,20 +396,35 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onButtonClick(int idx, boolean checked) {
-        if(busy)
+    public void onButtonClick(int idx, final boolean checked) {
+        if (busy)
             return;
 
         addDebugText("onButtonClick");
         addDebugText("Set idx " + idx + " to " + (checked ? "ON" : "OFF"));
 
-        DevicesInfo clickedSwitch = getDevice(idx);
+        final DevicesInfo clickedSwitch = getDevice(idx);
+        if (clickedSwitch.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    mContext, mDomoticz);
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    toggleButton(clickedSwitch, checked, password);
+                }
+            });
+        } else
+            toggleButton(clickedSwitch, checked, null);
+    }
 
+    private void toggleButton(DevicesInfo clickedSwitch, boolean checked, final String password) {
         if (checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
+        int idx = clickedSwitch.getIdx();
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
 
@@ -418,9 +435,8 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             jsonUrl = Domoticz.Json.Url.Set.SCENES;
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
-            idx = idx - adapter.ID_SCENE_SWITCH;
         }
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -429,7 +445,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                if (!UsefulBits.isEmpty(password))
+                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                else
+                    errorHandling(error);
             }
         });
     }
@@ -441,23 +460,39 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     @Override
     public void onColorButtonClick(final int idx) {
         ColorPickerDialog colorDialog = new ColorPickerDialog(
-                getActivity(), idx);
+                mContext, idx);
         colorDialog.show();
         colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedColor) {
-                setColor(selectedColor, idx);
+            public void onDismiss(final int selectedColor) {
+                if (getDevice(idx).isProtected()) {
+                    PasswordDialog passwordDialog = new PasswordDialog(
+                            mContext, mDomoticz);
+                    passwordDialog.show();
+                    passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                        @Override
+                        public void onDismiss(String password) {
+                            setColor(selectedColor, idx, password);
+                        }
+                    });
+                } else
+                    setColor(selectedColor, idx, null);
             }
 
             @Override
-            public void onChangeColor(int selectedColor) {
-                setColor(selectedColor, idx);
+            public void onChangeColor(final int selectedColor) {
+                if (!getDevice(idx).isProtected()) {
+                    setColor(selectedColor, idx, null);
+                }
             }
         });
     }
 
-    private void setColor(int selectedColor, final int idx) {
+    private void setColor(int selectedColor, final int idx, final String password) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
+        if (hsv == null || hsv.length <= 0)
+            return;
+
         Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
         addDebugText("Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
 
@@ -466,22 +501,25 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (selectedColor == -1) {
             isWhite = true;
         }
-
         mDomoticz.setRGBColorAction(idx,
                 Domoticz.Json.Url.Set.RGBCOLOR,
                 hue,
                 getDevice(idx).getLevel(),
                 isWhite,
+                password,
                 new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
-                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT).show();
                         //processDashboard();
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
+                        if (!UsefulBits.isEmpty(password))
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                        else
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -491,49 +529,141 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
+    public void onNotificationButtonClick(int idx) {
+    }
+
+    @Override
     public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
         final DevicesInfo tempUtil = getDevice(idx);
+        if (tempUtil != null) {
 
-        TemperatureDialog tempDialog = new TemperatureDialog(
-                getActivity(),
-                idx,
-                tempUtil.getSetPoint());
+            TemperatureDialog tempDialog = new TemperatureDialog(
+                    mContext,
+                    tempUtil.getSetPoint());
 
-        tempDialog.onDismissListener(new TemperatureDialog.DismissListener() {
-            @Override
-            public void onDismiss(double newSetPoint) {
-                addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
-                if (tempUtil != null) {
-                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+            tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
+                @Override
+                public void onDialogAction(final double newSetPoint, DialogAction dialogAction) {
+                    addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                    if (dialogAction == DialogAction.POSITIVE) {
+                        if (tempUtil.isProtected()) {
+                            PasswordDialog passwordDialog = new PasswordDialog(
+                                    mContext, mDomoticz);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(final String password) {
+                                    int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+                                    int action = Domoticz.Device.Thermostat.Action.PLUS;
+                                    if (newSetPoint < tempUtil.getSetPoint())
+                                        action = Domoticz.Device.Thermostat.Action.MIN;
+                                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, password,
+                                            new setCommandReceiver() {
+                                                @Override
+                                                public void onReceiveResult(String result) {
+                                                    successHandling(result, false);
+                                                    processDashboard();
+                                                }
 
-                    int action = Domoticz.Device.Thermostat.Action.PLUS;
-                    if (newSetPoint < tempUtil.getSetPoint())
-                        action = Domoticz.Device.Thermostat.Action.MIN;
-                    mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, new setCommandReceiver() {
-                        @Override
-                        public void onReceiveResult(String result) {
-                            successHandling(result, false);
-                            processDashboard();
+                                                @Override
+                                                public void onError(Exception error) {
+                                                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+                        } else {
+                            int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+                            int action = Domoticz.Device.Thermostat.Action.PLUS;
+                            if (newSetPoint < tempUtil.getSetPoint())
+                                action = Domoticz.Device.Thermostat.Action.MIN;
+                            mDomoticz.setAction(idx, jsonUrl, action, newSetPoint, null,
+                                    new setCommandReceiver() {
+                                        @Override
+                                        public void onReceiveResult(String result) {
+                                            successHandling(result, false);
+                                            processDashboard();
+                                        }
+
+                                        @Override
+                                        public void onError(Exception error) {
+                                            errorHandling(error);
+                                        }
+                                    });
                         }
-
-                        @Override
-                        public void onError(Exception error) {
-                            errorHandling(error);
-                        }
-                    });
+                    }
                 }
-            }
-        });
-
-        tempDialog.show();
+            });
+            tempDialog.show();
+        }
     }
 
+    @Override
+    public void onSetTemperatureClick(final int idx) {
+        addDebugText("onSetTemperatureClick");
+        final DevicesInfo tempUtil = getDevice(idx);
+        if (tempUtil != null) {
+            final setCommandReceiver commandReceiver = new setCommandReceiver() {
+                @Override
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                    processDashboard();
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            };
+
+            final boolean evohomeZone = "evohome".equals(tempUtil.getHardwareName());
+
+            TemperatureDialog tempDialog;
+            if (evohomeZone) {
+                tempDialog = new ScheduledTemperatureDialog(
+                        mContext,
+                        tempUtil.getSetPoint(),
+                        !AUTO.equalsIgnoreCase(tempUtil.getStatus()));
+            } else {
+                tempDialog = new TemperatureDialog(
+                        mContext,
+                        tempUtil.getSetPoint());
+            }
+
+            tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
+                @Override
+                public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
+                    if (dialogAction == DialogAction.POSITIVE) {
+                        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+                        String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                                "&mode=" + PERMANENT_OVERRIDE;
+
+                        // add query parameters
+                        mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
+                    } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
+                        addDebugText("Set idx " + idx + " to Auto");
+
+                        String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                                "&mode=" + AUTO;
+
+                        // add query parameters
+                        mDomoticz.setDeviceUsed(idx, tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
+                    } else {
+                        addDebugText("Not updating idx " + idx);
+                    }
+                }
+            });
+
+            tempDialog.show();
+        }
+    }
 
     @Override
     public void onSecurityPanelButtonClick(int idx) {
         SecurityPanelDialog securityDialog = new SecurityPanelDialog(
-                getActivity(),
+                mContext, mDomoticz,
                 getDevice(idx));
         securityDialog.show();
 
@@ -547,34 +677,65 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void onStateButtonClick(final int idx, int itemsRes, final int[] stateIds) {
-        new MaterialDialog.Builder(getActivity())
+        new MaterialDialog.Builder(mContext)
                 .title(R.string.choose_status)
                 .items(itemsRes)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        setState(idx, stateIds[which], null);
+                    public void onSelection(MaterialDialog dialog, View view, final int which, CharSequence text) {
+                        if (getDevice(idx).isProtected()) {
+                            PasswordDialog passwordDialog = new PasswordDialog(
+                                    mContext, mDomoticz);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(String password) {
+                                    setState(idx, stateIds[which], password);
+                                }
+                            });
+                        } else
+                            setState(idx, stateIds[which], null);
                     }
                 })
-                .show();;
+                .show();
     }
 
-    private void setState(final int idx, int state, Calendar until) {
+    @Override
+    public void onSelectorDimmerClick(final int idx, final String[] levelNames) {
+        new MaterialDialog.Builder(mContext)
+                .title(R.string.choose_status)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        for (int i = 0; i < levelNames.length; i++) {
+                            if (levelNames[i].equals(text)) {
+                                onDimmerChange(idx, i * 10, true);
+                            }
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private void setState(final int idx, int state, final String password) {
         mDomoticz.setModalAction(idx,
                 state,
                 1,
-                until,
+                password,
                 new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
-                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                         processDashboard();
-                        ; //refresh
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_state), Snackbar.LENGTH_SHORT).show();
+                        if (!UsefulBits.isEmpty(password))
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                        else
+                            errorHandling(error);
                     }
                 });
     }
@@ -590,28 +751,43 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void onBlindClick(int idx, int jsonAction) {
-        if(busy)
+    public void onBlindClick(final int idx, final int jsonAction) {
+        if (busy)
             return;
 
         addDebugText("onBlindClick");
         addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
-        DevicesInfo clickedSwitch = getDevice(idx);
+        final DevicesInfo clickedSwitch = getDevice(idx);
+        if (clickedSwitch.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    mContext, mDomoticz);
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    setBlindState(clickedSwitch, jsonAction, password);
+                }
+            });
+        } else {
+            setBlindState(clickedSwitch, jsonAction, null);
+        }
+    }
 
+    private void setBlindState(DevicesInfo clickedSwitch, int jsonAction, final String password) {
         if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
@@ -620,18 +796,38 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                if (!UsefulBits.isEmpty(password))
+                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                else
+                    errorHandling(error);
             }
         });
     }
 
+
     @Override
-    public void onDimmerChange(int idx, int value, boolean selector) {
-        if(busy)
+    public void onDimmerChange(int idx, final int value, final boolean selector) {
+        if (busy)
             return;
 
         addDebugText("onDimmerChange for " + idx + " to " + value);
-        DevicesInfo clickedSwitch = getDevice(idx);
+        final DevicesInfo clickedSwitch = getDevice(idx);
+        if (clickedSwitch.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    mContext, mDomoticz);
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    setDimmerState(clickedSwitch, value, selector, password);
+                }
+            });
+        } else {
+            setDimmerState(clickedSwitch, value, selector, null);
+        }
+    }
+
+    private void setDimmerState(DevicesInfo clickedSwitch, int value, final boolean selector, final String password) {
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
@@ -641,15 +837,20 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
 
-            mDomoticz.setAction(idx, jsonUrl, jsonAction, value, new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, value, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
+                    if (selector)
+                        processDashboard();
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    errorHandling(error);
+                    if (!UsefulBits.isEmpty(password))
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                    else
+                        errorHandling(error);
                 }
             });
         }
@@ -662,9 +863,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
 
     @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 }

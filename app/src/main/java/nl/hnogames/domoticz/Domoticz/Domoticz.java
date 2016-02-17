@@ -22,12 +22,10 @@
 
 package nl.hnogames.domoticz.Domoticz;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,25 +33,26 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
+import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
+import nl.hnogames.domoticz.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
@@ -62,7 +61,9 @@ import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
-import nl.hnogames.domoticz.Interfaces.UpdateReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateDomoticzServerReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
+import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
@@ -72,6 +73,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.RequestUtil;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SessionUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -86,7 +88,9 @@ public class Domoticz {
     public static final String HIDDEN_CHARACTER = "$";
 
     public static final String UTILITIES_TYPE_THERMOSTAT = "Thermostat";
+    public static final String UTILITIES_TYPE_HEATING = "Heating";
     public static final String UTILITIES_SUBTYPE_TEXT = "Text";
+    public static final String DOMOTICZ_DEFAULT_SERVER = "DEFAULT";
 
     /*
     *  Log tag
@@ -94,16 +98,25 @@ public class Domoticz {
     private static final String TAG = Domoticz.class.getSimpleName();
     public static boolean debug;
     private final SharedPrefUtil mSharedPrefUtil;
+    private final ServerUtil mServerUtil;
     private final SessionUtil mSessionUtil;
     private final PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private String snapshot_file_path = "/Domoticz/SnapShot";
 
 
-    public Domoticz(Context mContext) {
+    public Domoticz(Context mContext, ServerUtil serverUtil) {
         this.mContext = mContext;
+
         mSharedPrefUtil = new SharedPrefUtil(mContext);
+
+        if (serverUtil == null) {
+            mServerUtil = new ServerUtil(mContext);
+        } else
+            mServerUtil = serverUtil;
+
         mSessionUtil = new SessionUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
             @Override
@@ -122,21 +135,18 @@ public class Domoticz {
     }
 
     public boolean isUserOnLocalWifi() {
-
         boolean userIsLocal = false;
+        if (mServerUtil.getActiveServer().getIsLocalServerAddressDifferent()) {
+            Set<String> localSsid = mServerUtil.getActiveServer().getLocalServerSsid();
 
-        if (mSharedPrefUtil.isLocalServerAddressDifferent()) {
-            Set<String> localSsid = mSharedPrefUtil.getLocalSsid();
-
-            if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null) {
-
+            if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null && localSsid.size() > 0) {
                 String currentSsid = mPhoneConnectionUtil.getCurrentSsid();
-
-                // Remove quotes from current SSID read out
-                currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
-
-                for (String ssid : localSsid) {
-                    if (ssid.equals(currentSsid)) userIsLocal = true;
+                if (!UsefulBits.isEmpty(currentSsid)) {
+                    // Remove quotes from current SSID read out
+                    currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
+                    for (String ssid : localSsid) {
+                        if (ssid.equals(currentSsid)) userIsLocal = true;
+                    }
                 }
             }
         }
@@ -144,13 +154,13 @@ public class Domoticz {
         return userIsLocal;
     }
 
-    public boolean isConnectionDataComplete() {
+    public boolean isConnectionDataComplete(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
-        stringHashMap.put("Domoticz local URL", mSharedPrefUtil.getDomoticzLocalUrl());
-        stringHashMap.put("Domoticz local port", mSharedPrefUtil.getDomoticzLocalPort());
-        stringHashMap.put("Domoticz remote URL", mSharedPrefUtil.getDomoticzRemoteUrl());
-        stringHashMap.put("Domoticz remote port", mSharedPrefUtil.getDomoticzRemotePort());
+        stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
+        stringHashMap.put("Domoticz local port", server.getLocalServerPort());
+        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
+        stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
@@ -165,11 +175,30 @@ public class Domoticz {
         return result;
     }
 
-    public boolean isUrlValid() {
+    public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
+        HashMap<String, String> stringHashMap = new HashMap<>();
+        stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
+        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
+
+        if (validatePorts) {
+            stringHashMap.put("Domoticz local port", server.getLocalServerPort());
+            stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
+        }
+        for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
+
+            if (UsefulBits.isEmpty(entry.getValue())) {
+                return (entry.getKey() + " is empty");
+            }
+
+        }
+        return null;
+    }
+
+    public boolean isUrlValid(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
-        stringHashMap.put("Domoticz local URL", mSharedPrefUtil.getDomoticzLocalUrl());
-        stringHashMap.put("Domoticz remote URL", mSharedPrefUtil.getDomoticzRemoteUrl());
+        stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
+        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
 
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 
@@ -279,12 +308,7 @@ public class Domoticz {
 
     public void debugTextToClipboard(TextView debugText) {
         String message = debugText.getText().toString();
-
-        ClipboardManager clipboard =
-                (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Domoticz debug data", message);
-        clipboard.setPrimaryClip(clip);
-
+        UsefulBits.copyToClipboard(mContext, "Domoticz debug data", message);
         Toast.makeText(mContext, R.string.msg_copiedToClipboard, Toast.LENGTH_SHORT).show();
     }
 
@@ -292,6 +316,15 @@ public class Domoticz {
         String url;
 
         switch (jsonGetUrl) {
+            case Json.Url.Request.LANGUAGE:
+                url = Url.System.LANGUAGE_TRANSLATIONS;
+                break;
+            case Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
+                url = Url.System.UPDATE_DOMOTICZ_SERVER;
+                break;
+            case Json.Url.Request.UPDATE_DOWNLOAD_READY:
+                url = Url.System.DOWNLOAD_READY;
+                break;
             case Json.Url.Request.VERSION:
                 url = Url.Category.VERSION;
                 break;
@@ -387,6 +420,22 @@ public class Domoticz {
                 url = Url.Log.GRAPH;
                 break;
 
+            case Json.Url.Request.ADD_MOBILE_DEVICE:
+                url = Url.System.ADD_MOBILE_DEVICE;
+                break;
+
+            case Json.Url.Request.CLEAN_MOBILE_DEVICE:
+                url = Url.System.CLEAN_MOBILE_DEVICE;
+                break;
+
+            case Json.Url.Request.SET_DEVICE_USED:
+                url = Url.Device.SET_USED;
+                break;
+
+            case Json.Url.Request.NOTIFICATIONS:
+                url = Url.Notification.NOTIFICATION;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -396,23 +445,23 @@ public class Domoticz {
     private String constructGetUrl(int jsonGetUrl) {
         String protocol, url, port, directory, jsonUrl;
         StringBuilder buildUrl = new StringBuilder();
-        SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
 
         if (isUserOnLocalWifi()) {
-            if (mSharedPrefUtil.isDomoticzLocalSecure()) protocol = Url.Protocol.HTTPS;
+            if (mServerUtil.getActiveServer().getLocalServerSecure()) protocol = Url.Protocol.HTTPS;
             else protocol = Url.Protocol.HTTP;
 
-            url = mSharedPrefUtil.getDomoticzLocalUrl();
-            port = mSharedPrefUtil.getDomoticzLocalPort();
-            directory = mSharedPrefUtil.getDomoticzLocalDirectory();
+            url = mServerUtil.getActiveServer().getLocalServerUrl();
+            port = mServerUtil.getActiveServer().getLocalServerPort();
+            directory = mServerUtil.getActiveServer().getLocalServerDirectory();
 
         } else {
-            if (mSharedPrefUtil.isDomoticzRemoteSecure()) protocol = Url.Protocol.HTTPS;
+            if (mServerUtil.getActiveServer().getRemoteServerSecure())
+                protocol = Url.Protocol.HTTPS;
             else protocol = Url.Protocol.HTTP;
 
-            url = mSharedPrefUtil.getDomoticzRemoteUrl();
-            port = mSharedPrefUtil.getDomoticzRemotePort();
-            directory = mSharedPrefUtil.getDomoticzRemoteDirectory();
+            url = mServerUtil.getActiveServer().getRemoteServerUrl();
+            port = mServerUtil.getActiveServer().getRemoteServerPort();
+            directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
 
         }
         jsonUrl = getJsonGetUrl(jsonGetUrl);
@@ -431,23 +480,22 @@ public class Domoticz {
     public String constructSetUrl(int jsonSetUrl, int idx, int action, double value) {
         String protocol, baseUrl, url, port, directory, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
-        SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
+
         if (isUserOnLocalWifi()) {
-            if (mSharedPrefUtil.isDomoticzLocalSecure()) {
+            if (mServerUtil.getActiveServer().getLocalServerSecure()) {
                 protocol = Url.Protocol.HTTPS;
             } else protocol = Url.Protocol.HTTP;
 
-            baseUrl = mSharedPrefUtil.getDomoticzLocalUrl();
-            port = mSharedPrefUtil.getDomoticzLocalPort();
-            directory = mSharedPrefUtil.getDomoticzLocalDirectory();
-
+            baseUrl = mServerUtil.getActiveServer().getLocalServerUrl();
+            port = mServerUtil.getActiveServer().getLocalServerPort();
+            directory = mServerUtil.getActiveServer().getLocalServerDirectory();
         } else {
-            if (mSharedPrefUtil.isDomoticzRemoteSecure()) {
+            if (mServerUtil.getActiveServer().getRemoteServerSecure()) {
                 protocol = Url.Protocol.HTTPS;
             } else protocol = Url.Protocol.HTTP;
-            baseUrl = mSharedPrefUtil.getDomoticzRemoteUrl();
-            port = mSharedPrefUtil.getDomoticzRemotePort();
-            directory = mSharedPrefUtil.getDomoticzRemoteDirectory();
+            baseUrl = mServerUtil.getActiveServer().getRemoteServerUrl();
+            port = mServerUtil.getActiveServer().getRemoteServerPort();
+            directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
         }
 
         switch (action) {
@@ -566,7 +614,6 @@ public class Domoticz {
                         + String.valueOf(idx)
                         + Url.ModalSwitch.STATUS + actionUrl;
                 break;
-
             case Json.Url.Set.TEMP:
                 url = Url.Temp.GET;
                 jsonUrl = url
@@ -619,17 +666,16 @@ public class Domoticz {
         if (credential.equals(Authentication.USERNAME)
                 || credential.equals(Authentication.PASSWORD)) {
 
-            SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(mContext);
             String username, password;
 
             if (isUserOnLocalWifi()) {
                 logger("On local wifi");
-                username = mSharedPrefUtil.getDomoticzLocalUsername();
-                password = mSharedPrefUtil.getDomoticzLocalPassword();
+                username = mServerUtil.getActiveServer().getLocalServerUsername();
+                password = mServerUtil.getActiveServer().getLocalServerPassword();
             } else {
                 logger("Not on local wifi");
-                username = mSharedPrefUtil.getDomoticzRemoteUsername();
-                password = mSharedPrefUtil.getDomoticzRemotePassword();
+                username = mServerUtil.getActiveServer().getRemoteServerUsername();
+                password = mServerUtil.getActiveServer().getRemoteServerPassword();
             }
             HashMap<String, String> credentials = new HashMap<>();
             credentials.put(Authentication.USERNAME, username);
@@ -639,7 +685,49 @@ public class Domoticz {
         } else return "";
     }
 
-    public void getVersion(VersionReceiver receiver) {
+    /**
+     * Register you device on Domoticz
+     *
+     * @param DeviceId UUID of the device
+     * @param SenderId sender id from the Google services
+     * @param receiver to get the callback on
+     */
+    public void AddMobileDevice(String DeviceId, String SenderId, MobileDeviceReceiver receiver) {
+        MobileDeviceParser parser = new MobileDeviceParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.ADD_MOBILE_DEVICE);
+        url += "&uuid=" + DeviceId;
+        url += "&senderid=" + SenderId;
+
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
+
+    /**
+     * Clean previous sender id's on Domoticz
+     *
+     * @param DeviceId UUID of the device
+     * @param receiver to get the callback on
+     */
+    public void CleanMobileDevice(String DeviceId, MobileDeviceReceiver receiver) {
+        MobileDeviceParser parser = new MobileDeviceParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.CLEAN_MOBILE_DEVICE);
+        url += "&uuid=" + DeviceId;
+
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
+    /**
+     * Get's version of the Domoticz server
+     *
+     * @param receiver to get the callback on
+     */
+    public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
         String url = constructGetUrl(Json.Url.Request.VERSION);
         RequestUtil.makeJsonVersionRequest(parser,
@@ -648,13 +736,46 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
-    public void getUpdate(UpdateReceiver receiver) {
-        UpdateParser parser = new UpdateParser(receiver);
+    /**
+     * Get's the version of the update (if available)
+     *
+     * @param receiver to get the callback on
+     */
+    public void getUpdate(UpdateVersionReceiver receiver) {
+        UpdateVersionParser parser = new UpdateVersionParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UPDATE);
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, false, 1);
+    }
+
+    /**
+     * Get's if the update is downloaded and ready
+     *
+     * @param receiver to get the callback on
+     */
+    public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
+        UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.UPDATE_DOWNLOAD_READY);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
+    /**
+     * Gives the Domoticz server the command to install the latest update (if downloaded)
+     *
+     * @param receiver to get the callback on
+     */
+    public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {
+        UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
     }
 
     public void getScenes(ScenesReceiver receiver) {
@@ -740,6 +861,18 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    public void getNotifications(int idx, NotificationReceiver notificationReceiver) {
+        NotificationsParser parser = new NotificationsParser(notificationReceiver);
+        logger("for idx: " + String.valueOf(idx));
+        String url = constructGetUrl(Json.Url.Request.NOTIFICATIONS) + String.valueOf(idx);
+
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
     public void setSecurityPanelAction(int secStatus,
                                        String seccode,
                                        setCommandReceiver receiver) {
@@ -756,27 +889,34 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
                           double value,
+                          String password,
                           setCommandReceiver receiver) {
-
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, idx, jsonAction, value);
-        Log.v(TAG, "Action: " + url);
 
+        if (!UsefulBits.isEmpty(password)) {
+            url += "&passcode=" + password;
+        }
+
+        Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setRGBColorAction(int idx,
                                   int jsonUrl,
                                   long hue,
                                   int brightness,
                                   boolean isWhite,
+                                  String password,
                                   setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
 
@@ -786,6 +926,9 @@ public class Domoticz {
         if (isWhite)
             url = url.replace("&iswhite=false", "&iswhite=true");
 
+        if (!UsefulBits.isEmpty(password)) {
+            url += "&passcode=" + password;
+        }
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -793,14 +936,18 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void setModalAction(int id,
                                int status, // one of Domoticz.Device.ModalSwitch.Action
                                int action, // behaves like this action == 1 ? 1 : 0
-                               Calendar until,
+                               String password,
                                setCommandReceiver receiver) {
         String url = constructSetUrl(Domoticz.Json.Url.Set.MODAL_SWITCHES, id, status, 0);
         url += "&action=" + action;
 
+        if (!UsefulBits.isEmpty(password)) {
+            url += "&passcode=" + password;
+        }
         Log.v(TAG, "Action: " + url);
         setCommandParser parser = new setCommandParser(receiver);
         RequestUtil.makeJsonPutRequest(parser,
@@ -809,6 +956,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    /*
     public void setEventAction(int id,
                                String xmlStatement,
                                int jsonUrl,
@@ -818,6 +966,28 @@ public class Domoticz {
         setCommandParser parser = new setCommandParser(receiver);
         String url = constructSetUrl(jsonUrl, id, jsonAction, value);
         url += Uri.encode(xmlStatement);
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }*/
+
+    public void setDeviceUsed(int id,
+                              String name,
+                              String description,
+                              String extraParams,
+                              setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.SET_DEVICE_USED);
+        url += id;
+        url += "&name=" + name;
+        url += "&description=" + description;
+        if (extraParams != null) {
+            url += extraParams;
+        }
+        url += "&used=true";
+
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -854,9 +1024,19 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
-    public void GetConfig(ConfigReceiver receiver) {
+    public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
         String url = constructGetUrl(Json.Url.Request.CONFIG);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
+        LanguageParser parser = new LanguageParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.LANGUAGE);
+        url += language + ".json";
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -881,16 +1061,6 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
-    public String getDeviceType(DevicesInfo device) {
-        if (device == null)
-            return null;
-
-        if (!UsefulBits.isEmpty(device.getSwitchType()))
-            return mContext.getString(R.string.title_switches);
-        else
-            return device.getType();//Group and Switches are in Type
-    }
-
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
         DevicesParser parser = new DevicesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.DEVICES);
@@ -907,8 +1077,8 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
-    public void getDevice(DevicesReceiver receiver, int idx) {
-        DevicesParser parser = new DevicesParser(receiver, idx);
+    public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
+        DevicesParser parser = new DevicesParser(receiver, idx, scene_or_group);
         String url = constructGetUrl(Json.Url.Request.DEVICES);
 
         RequestUtil.makeJsonGetResultRequest(parser,
@@ -958,8 +1128,8 @@ public class Domoticz {
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
         GraphDataParser parser = new GraphDataParser(receiver);
         String url = constructGetUrl(Json.Url.Request.GRAPH) + String.valueOf(idx);
-        url = url + Url.Log.GRAPH_RANGE + range;
-        url = url + Url.Log.GRAPH_TYPE + type;
+        url += Url.Log.GRAPH_RANGE + range;
+        url += Url.Log.GRAPH_TYPE + type;
 
         Log.i("GRAPH", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
@@ -976,21 +1146,20 @@ public class Domoticz {
             dir.mkdirs();
 
         File file = new File(dir, "snapshot" + name + ".jpg");
-        FileOutputStream fOut = null;
+        FileOutputStream fOut;
         try {
             fOut = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
             fOut.flush();
             fOut.close();
             return file;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
@@ -1039,6 +1208,7 @@ public class Domoticz {
         return standardImage;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
@@ -1201,7 +1371,7 @@ public class Domoticz {
         }
 
         interface Type {
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Value {
                 int DOORBELL = 1;
                 int CONTACT = 2;
@@ -1252,14 +1422,14 @@ public class Domoticz {
         }
 
         interface SubType {
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Value {
                 int RGB = 1;
                 int SECURITYPANEL = 2;
                 int EVOHOME = 3;
             }
 
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Name {
                 String RGB = "RGB";
                 String SECURITYPANEL = "Security Panel";
@@ -1281,7 +1451,7 @@ public class Domoticz {
         }
 
         interface Url {
-            @SuppressWarnings("unused")
+            @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Request {
                 int DASHBOARD = 1;
                 int SCENES = 2;
@@ -1305,11 +1475,19 @@ public class Domoticz {
                 int EVENTXML = 19;
                 int GRAPH = 20;
                 int SETTINGS = 22;
-                int CONFIG = 25;
                 int SETSECURITY = 23;
                 int TEXTLOG = 24;
+                int CONFIG = 25;
+                int SET_DEVICE_USED = 26;
+                int UPDATE_DOWNLOAD_READY = 27;
+                int UPDATE_DOMOTICZ_SERVER = 28;
+                int ADD_MOBILE_DEVICE = 29;
+                int CLEAN_MOBILE_DEVICE = 30;
+                int NOTIFICATIONS = 31;
+                int LANGUAGE = 32;
             }
 
+            @SuppressWarnings("SpellCheckingInspection")
             interface Set {
                 int SCENES = 101;
                 int SWITCHES = 102;
@@ -1344,17 +1522,20 @@ public class Domoticz {
             String DAY = "day";
             String MONTH = "month";
             String YEAR = "year";
+            String WEEK = "week";
         }
     }
 
     public interface Temperature {
+        @SuppressWarnings("unused")
         interface Sign {
-            String CELCIUS = "C";
+            String CELSIUS = "C";
             String FAHRENHEIT = "F";
         }
     }
 
     public interface Event {
+        @SuppressWarnings("unused")
         interface Type {
             String EVENT = "Event";
         }
@@ -1366,6 +1547,7 @@ public class Domoticz {
     }
 
     public interface Security {
+        @SuppressWarnings("SpellCheckingInspection")
         interface Status {
             int ARMHOME = 1;
             int ARMAWAY = 2;
@@ -1422,6 +1604,7 @@ public class Domoticz {
             String LEVEL = "&level=";
         }
 
+        @SuppressWarnings("SpellCheckingInspection")
         interface ModalSwitch {
             String GET = "/json.htm?type=command&param=switchmodal&idx=";
             String STATUS = "&status=";
@@ -1453,6 +1636,7 @@ public class Domoticz {
         @SuppressWarnings("SpellCheckingInspection")
         interface Device {
             String STATUS = "/json.htm?type=devices&rid=";
+            String SET_USED = "/json.htm?type=setused&idx=";
         }
 
         @SuppressWarnings("unused")
@@ -1477,6 +1661,11 @@ public class Domoticz {
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
+        interface Notification {
+            String NOTIFICATION = "/json.htm?type=notifications&idx=";
+        }
+
+        @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
         }
@@ -1493,6 +1682,11 @@ public class Domoticz {
             String SETTINGS = "/json.htm?type=settings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
+            String DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
+            String UPDATE_DOMOTICZ_SERVER = "/json.htm?type=command&param=execute_script&scriptname=update_domoticz&direct=true";
+            String ADD_MOBILE_DEVICE = "/json.htm?type=command&param=addmobiledevice";
+            String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
+            String LANGUAGE_TRANSLATIONS = "/i18n/domoticz-";
         }
     }
 

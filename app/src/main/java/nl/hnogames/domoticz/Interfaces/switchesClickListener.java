@@ -38,9 +38,15 @@ public interface switchesClickListener {
 
     void onTimerButtonClick(int idx);
 
+    void onNotificationButtonClick(int idx);
+
     void onThermostatClick(int idx);
+
+    void onSetTemperatureClick(int idx);
 
     void onSecurityPanelButtonClick(int idx);
 
     void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
+
+    void onSelectorDimmerClick(int idx, String[] levelNames);
 }

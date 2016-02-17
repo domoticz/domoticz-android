@@ -9,11 +9,15 @@
   <string name="msg_please_wait">Kérem várjon...</string>
   <string name="button_state_on">Be</string>
   <string name="button_state_off">Ki</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Napló</string>
   <string name="button_status_day">Nap</string>
+  <string name="button_status_week">Hét</string>
   <string name="button_status_month">Hónap</string>
   <string name="button_status_year">Év</string>
   <string name="button_status_timer">Időzítő</string>
+  <string name="button_status_notifications">Értesítések</string>
   <string name="button_color">Szín</string>
   <string name="button_arm">Élesít</string>
   <string name="button_disarm">Hatástalanít</string>
@@ -48,6 +52,9 @@
   <string name="no_network_available">Hiba: Nincs elérhető hálózati kapcsolat</string>
   <string name="oops">HOPPÁ!</string>
   <string name="to">"eddig"</string>
+  <string name="retry">Újra</string>
+  <string name="undo">Visszavonás</string>
+  <string name="something_deleted">%1$s törölve</string>
   <string name="switch_on">Kapcsoló bekapcsolása</string>
   <string name="switch_off">Kapcsoló kikapcsolása</string>
   <string name="blind_up">Redőny felhúzása</string>
@@ -59,10 +66,16 @@
   <string name="filterOn_all">Minden eszköz</string>
   <string name="Filter">Szűrő</string>
   <string name="filter_devices">Eszközök szűrése</string>
-  <string name="filtered_on">Szűrés bekapcsolva</string>
   <string name="choose_color">Szín választása</string>
   <string name="no_data_on_domoticz">Nincs adat a Domoticz szerveren</string>
   <string name="row_icon_description">sor ikon</string>
   <string name="error_image_description">Hiba kép</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Fehér</string>
+  <string name="refresh">Frissités</string>
+  <string name="domoticz_logo">Domoticz logó</string>
+  <string name="this_take_minutes">Ez több percig is eltarthat.</string>
+  <string name="continue_question">Folytatja?</string>
+  <string name="cant_remove_default_server">Nem lehet eltávolítani az alapértelmezett kiszolgálót</string>
+  <string name="restart_required_msg">A nyelvi beállítások életbe léptetéséhez az alkalmazás újraindítása szükséges</string>
 </resources>

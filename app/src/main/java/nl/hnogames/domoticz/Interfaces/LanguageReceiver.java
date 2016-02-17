@@ -22,10 +22,10 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-public interface UpdateReceiver {
+import nl.hnogames.domoticz.Containers.Language;
 
-    void onReceiveUpdate(String version);
+public interface LanguageReceiver {
+    void onReceiveLanguage(Language language);
 
     void onError(Exception error);
-
 }

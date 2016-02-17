@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +38,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.splunk.mint.Mint;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -45,10 +48,18 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
+import eu.inloop.easygcm.EasyGcm;
+import eu.inloop.easygcm.GcmListener;
+import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
-
-public class AppController extends Application {
+public class AppController extends Application implements GcmListener {
 
     public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
@@ -64,17 +75,23 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //for debugging & receiving crash reports
-        Mint.initAndStartSession(this, "a61b1e35");
+        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey))) {
+            Mint.initAndStartSession(this, getString(R.string.mintapikey));
+        }
+        if (PermissionsUtil.canAccessDeviceState(this)) {
+            StartEasyGCM();
+        }
 
         mInstance = this;
     }
 
+    public void StartEasyGCM() {
+        EasyGcm.init(this);
+    }
+
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            // register MemorizingTrustManager for HTTPS
             Context context = getApplicationContext();
-
             try {
                 Log.d(TAG, "Initializing SSL");
                 SSLContext sc = SSLContext.getInstance("TLS");
@@ -133,5 +150,66 @@ public class AppController extends Application {
             mTracker = analytics.newTracker(getString(R.string.analiticsapikey));
         }
         return mTracker;
+    }
+
+    @Override
+    public void onMessage(String s, Bundle bundle) {
+        if (bundle.containsKey("message")) {
+            String message = bundle.getString("message");
+            try {
+                message = URLDecoder.decode(message, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
+        }
+    }
+
+    public String getGCMRegistrationId() {
+        return EasyGcm.getRegistrationId(this);
+    }
+
+    @Override
+    public void sendRegistrationIdToBackend(final String senderid) {
+        final String UUID = DeviceUtils.getUniqueID(this);
+        if (UsefulBits.isEmpty(senderid) || UsefulBits.isEmpty(UUID))
+            return;
+
+        final Domoticz mDomoticz = new Domoticz(this, null);
+        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
+            @Override
+            public void onSuccess() {
+                //previous id cleaned
+                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i("GCM", "Device registered on Domoticz");
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (error != null)
+                            Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //nothing to clean..
+                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i("GCM", "Device registered on Domoticz");
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (error != null)
+                            Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
+                    }
+                });
+            }
+        });
     }
 }

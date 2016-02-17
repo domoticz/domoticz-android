@@ -37,36 +37,36 @@ import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 public class SwitchLogParser implements JSONParserInterface {
 
     private static final String TAG = SwitchLogParser.class.getSimpleName();
-    private SwitchLogReceiver switcheLogsReceiver;
+    private SwitchLogReceiver switchLogReceiver;
 
-    public SwitchLogParser(SwitchLogReceiver switcheLogsReceiver) {
-        this.switcheLogsReceiver = switcheLogsReceiver;
+    public SwitchLogParser(SwitchLogReceiver switchLogReceiver) {
+        this.switchLogReceiver = switchLogReceiver;
     }
 
     @Override
     public void parseResult(String result) {
         try {
             JSONArray jsonArray = new JSONArray(result);
-            ArrayList<SwitchLogInfo> mSwitcheLogs = new ArrayList<>();
+            ArrayList<SwitchLogInfo> mSwitchLogs = new ArrayList<>();
 
             if (jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject row = jsonArray.getJSONObject(i);
-                    mSwitcheLogs.add(new SwitchLogInfo(row));
+                    mSwitchLogs.add(new SwitchLogInfo(row));
                 }
             }
-            switcheLogsReceiver.onReceiveSwitches(mSwitcheLogs);
+            switchLogReceiver.onReceiveSwitches(mSwitchLogs);
 
         } catch (JSONException e) {
             Log.e(TAG, "ScenesParser JSON exception");
             e.printStackTrace();
-            switcheLogsReceiver.onError(e);
+            switchLogReceiver.onError(e);
         }
     }
 
     @Override
     public void onError(Exception error) {
         Log.e(TAG, "ScenesParser of JSONParserInterface exception");
-        switcheLogsReceiver.onError(error);
+        switchLogReceiver.onError(error);
     }
 }

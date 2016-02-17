@@ -58,12 +58,13 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
 
     public UtilityAdapter(Context context,
+                          Domoticz mDomoticz,
                           ArrayList<UtilitiesInfo> data,
                           UtilityClickListener listener) {
         super();
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = mDomoticz;
 
         Collections.sort(data, new Comparator<UtilitiesInfo>() {
             @Override
@@ -179,6 +180,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
 
         holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
@@ -215,6 +217,17 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
                 }
             }
         });
+        holder.weekButton.setId(mUtilitiesInfo.getIdx());
+        holder.weekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                }
+            }
+        });
+
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
         holder.yearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,6 +292,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         Button dayButton;
         Button monthButton;
         Button yearButton;
+        Button weekButton;
         Button buttonLog;
         Button on_button;
     }

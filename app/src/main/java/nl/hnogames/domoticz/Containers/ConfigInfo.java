@@ -37,6 +37,9 @@ public class ConfigInfo {
     private String TempSign;
     private double WindScale;
     private String WindSign;
+    private long dateOfConfig;
+    private String language;
+    private String DashboardType;
 
     public ConfigInfo(JSONObject row) throws JSONException {
         mapFields(row);
@@ -68,6 +71,10 @@ public class ConfigInfo {
             WindScale = row.getDouble("WindScale");
         if (row.has("FiveMinuteHistoryDays"))
             FiveMinuteHistoryDays = row.getInt("FiveMinuteHistoryDays");
+        if (row.has("language"))
+            language = row.getString("language");
+        if (row.has("DashboardType"))
+            DashboardType = row.getString("DashboardType");
     }
 
     public String getJsonObject() {
@@ -104,5 +111,21 @@ public class ConfigInfo {
 
     public int getFiveMinuteHistoryDays() {
         return FiveMinuteHistoryDays;
+    }
+
+    public long getDateOfConfig() {
+        return dateOfConfig;
+    }
+
+    public void setDateOfConfig(long dateOfConfig) {
+        this.dateOfConfig = dateOfConfig;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getDashboardType() {
+        return DashboardType;
     }
 }

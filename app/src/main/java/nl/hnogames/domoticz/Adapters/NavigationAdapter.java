@@ -38,10 +38,9 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private static final int TYPE_HEADER = 0;  // Declaring Variable to Understand which View is being worked on
     // IF the view under inflation and population is header or Item
     private static final int TYPE_ITEM = 1;
-
+    private static ClickListener mClickListener;
     private String mNavTitles[]; // String Array to store the passed titles Value from MainActivity.java
     private int mIcons[];       // Int Array to store the passed icons resource value from MainActivity.java
-
     private String name;        //String Resource for header View Name
     private int profile;        //int Resource for header view profile picture
     private String email;       //String Resource for header view email
@@ -70,24 +69,12 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     @Override
     public NavigationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item_row, parent, false); //Inflating the layout
-
-            ViewHolder vhItem = new ViewHolder(v, viewType); //Creating ViewHolder and passing the object of type view
-
-            return vhItem; // Returning the created object
-
-            //inflate your layout and pass it to view holder
-
+            return new ViewHolder(v, viewType); // Returning the created object
         } else if (viewType == TYPE_HEADER) {
-
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item_header, parent, false); //Inflating the layout
-
-            ViewHolder vhHeader = new ViewHolder(v, viewType); //Creating ViewHolder and passing the object of type view
-
-            return vhHeader; //returning the object created
-
+            return new ViewHolder(v, viewType);
         }
         return null;
 
@@ -140,7 +127,15 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         return position == 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void onClickListener(ClickListener clickListener) {
+        mClickListener = clickListener;
+    }
+
+    public interface ClickListener {
+        void onClick(View child, int position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         int Holderid;
 
         TextView textView;
@@ -155,16 +150,21 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             if (ViewType == TYPE_ITEM) {
                 textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
                 imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
-                Holderid = 1;                                               // setting holder id as 1 as the object being populated are of type item row
+                Holderid = 1;
+                itemView.setOnClickListener(this);
             } else {
-
-
                 Name = (TextView) itemView.findViewById(R.id.name);         // Creating Text View object from header.xml for name
                 email = (TextView) itemView.findViewById(R.id.email);       // Creating Text View object from header.xml for email
                 profile = (ImageView) itemView.findViewById(R.id.circleView);// Creating Image view object from header.xml for profile pic
                 Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
             }
         }
-    }
 
+        @Override
+        public void onClick(View v) {
+            if (mClickListener != null) {
+                mClickListener.onClick(v, this.getLayoutPosition());
+            }
+        }
+    }
 }

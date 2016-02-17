@@ -30,6 +30,9 @@ Remote-Einstellungen werden verwendet, wenn Sie nicht mit ihrem Home WiFi-Netzwe
   <string name="welcome_remote_server_username">Benutzername</string>
   <string name="welcome_remote_server_password">Passwort</string>
   <string name="welcome_remote_server_directory">\"Verzeichnis\"</string>
+  <string name="remote">Remote</string>
+  <string name="local">Lokal</string>
+  <string name="servername">Servername</string>
   <string name="welcome_local_server_used_switch_title">Andere Server Adresse</string>
   <string name="welcome_local_server_used_switch_summary">Benutze andere Adresse für lokale Verbindung</string>
   <string name="welcome_advancedSettings">Erweiterte Servereinstellungen</string>

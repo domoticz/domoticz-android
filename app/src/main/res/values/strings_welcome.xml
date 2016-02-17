@@ -34,6 +34,10 @@
     <string name="welcome_remote_server_password">Password</string>
     <string name="welcome_remote_server_directory">Directory</string>
 
+    <string name="remote">Remote</string>
+    <string name="local">Local</string>
+    <string name="servername">Server Name</string>
+
     <string name="welcome_local_server_used_switch_title">Different server address</string>
     <string name="welcome_local_server_used_switch_summary">Use different address for local connection</string>
 

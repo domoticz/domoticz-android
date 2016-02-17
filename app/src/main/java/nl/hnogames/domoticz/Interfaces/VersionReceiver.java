@@ -22,6 +22,9 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
+/**
+ * Receiver which returns the version of the Domoticz server
+ */
 public interface VersionReceiver {
 
     void onReceiveVersion(String version);

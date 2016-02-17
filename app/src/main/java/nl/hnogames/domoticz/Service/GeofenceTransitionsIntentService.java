@@ -23,12 +23,9 @@
 package nl.hnogames.domoticz.Service;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -46,8 +43,8 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -89,27 +86,35 @@ public class GeofenceTransitionsIntentService extends IntentService
                 int transitionType = geoFenceEvent.getGeofenceTransition();
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                        LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
-                        Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
+                        LocationInfo locationFound =
+                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        Log.d(TAG, "Triggered entering a geofence location: "
+                                + locationFound.getName());
+                        String text = String.format(
+                                getString(R.string.geofence_location_entering),
+                                locationFound.getName());
+                        NotificationUtil.sendSimpleNotification(text,
+                                getString(R.string.geofence_location_entering_text), this);
 
-                        if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                            sendNotification("Entering " + locationFound.getName(), "Entering one of the locations");
-
-                        if (locationFound.getSwitchidx() > 0) {
-                            handleSwitch(locationFound.getSwitchidx(), true);
+                        if (locationFound.getSwitchIdx() > 0) {
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true);
                         }
                     }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
-                        LocationInfo locationFound = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
-                        Log.d(TAG, "Triggered geofence location: " + locationFound.getName());
+                        LocationInfo locationFound
+                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        Log.d(TAG, "Triggered leaving a geofence location: "
+                                + locationFound.getName());
 
-                        if (mSharedPrefs.isGeofenceNotificationsEnabled())
-                            sendNotification("Leaving " + locationFound.getName(), "Leaving one of the locations");
+                        String text = String.format(
+                                getString(R.string.geofence_location_leaving),
+                                locationFound.getName());
+                        NotificationUtil.sendSimpleNotification(text,
+                                getString(R.string.geofence_location_leaving_text), this);
 
-                        if (locationFound.getSwitchidx() > 0) {
-                            handleSwitch(locationFound.getSwitchidx(), false);
-                        }
+                        if (locationFound.getSwitchIdx() > 0)
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false);
                     }
                 }
             }
@@ -118,8 +123,8 @@ public class GeofenceTransitionsIntentService extends IntentService
         }
     }
 
-    private void handleSwitch(final int idx, final boolean checked) {
-        domoticz = new Domoticz(this);
+    private void handleSwitch(final int idx, final String password, final boolean checked) {
+        domoticz = new Domoticz(this, null);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
                                  public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
@@ -131,7 +136,6 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                      int jsonAction;
                                                      int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-
                                                      if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
                                                              extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
                                                          if (checked)
@@ -145,7 +149,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                                              jsonAction = Domoticz.Device.Switch.Action.OFF;
                                                      }
 
-                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
@@ -153,7 +157,7 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                          @Override
                                                          public void onError(Exception error) {
-                                                             if(error != null)
+                                                             if (error != null)
                                                                  onErrorHandling(error);
                                                          }
                                                      });
@@ -161,7 +165,7 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                                  @Override
                                                  public void onError(Exception error) {
-                                                     if(error != null)
+                                                     if (error != null)
                                                          onErrorHandling(error);
                                                  }
                                              });
@@ -171,16 +175,15 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                                  @Override
                                  public void onError(Exception error) {
-                                     if(error != null)
+                                     if (error != null)
                                          onErrorHandling(error);
                                  }
                              }
         );
     }
 
-    private void onErrorHandling(Exception error)
-    {
-        if(error!=null) {
+    private void onErrorHandling(Exception error) {
+        if (error != null) {
             Toast.makeText(
                     GeofenceTransitionsIntentService.this,
                     "Domoticz: " +
@@ -190,21 +193,6 @@ public class GeofenceTransitionsIntentService extends IntentService
             if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
                 Log.e(TAG, domoticz.getErrorMessage(error));
         }
-    }
-
-    private void sendNotification(String title, String text) {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle(title)
-                        .setContentText(text);
-        int NOTIFICATION_ID = 12345;
-
-        Intent targetIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nManager.notify(NOTIFICATION_ID, builder.build());
     }
 
 
@@ -217,6 +205,6 @@ public class GeofenceTransitionsIntentService extends IntentService
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
     }
 }

@@ -38,29 +38,40 @@ import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private int widgetID = 0;
+    private boolean action = false;
+    private boolean toggle = true;
+    private String password = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         int idx = intent.getIntExtra("IDX", 999999);
+        action = intent.getBooleanExtra("WIDGETACTION", false);
+        toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
+
         if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
-            toggleSwitch(context, idx);
+            processSwitch(context, idx);
         }
     }
 
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {
+        if (mExtendedStatusInfo == null)
+            return false;
+
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+
             switch (mExtendedStatusInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
                     return true;
             }
         } else {
-            boolean switchFound = true;
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case Domoticz.Device.Type.Value.ON_OFF:
                 case Domoticz.Device.Type.Value.MEDIAPLAYER:
@@ -75,7 +86,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private boolean isPushOnSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case Domoticz.Scene.Type.SCENE:
                     return true;
@@ -95,7 +107,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null || mExtendedStatusInfo.getSwitchType().equals(null))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             return false;
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
@@ -105,11 +118,11 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private void toggleSwitch(final Context context, int idx) {
+    private void processSwitch(final Context context, int idx) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
-        final Domoticz domoticz = new Domoticz(context);
+        password = mSharedPrefs.getWidgetPassword(widgetID);
+        final Domoticz domoticz = new Domoticz(context, null);
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
-        int testIDX = mSharedPrefs.getWidgetIDX(widgetID);
 
         if (!isScene) {
             domoticz.getDevice(new DevicesReceiver() {
@@ -118,20 +131,26 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onReceiveDevice(DevicesInfo s) {
-                    if (isOnOffSwitch(s))
-                        onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
-                    if (isPushOffSwitch(s))
-                        onButtonClick(s, false, domoticz, context);
-                    if (isPushOnSwitch(s))
-                        onButtonClick(s, true, domoticz, context);
+                public void onReceiveDevice(final DevicesInfo s) {
+                    if (s != null) {
+                        if (isOnOffSwitch(s)) {
+                            if (toggle)
+                                onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
+                            else
+                                onSwitchClick(s, action, domoticz, context);
+                        }
+                        if (isPushOffSwitch(s))
+                            onButtonClick(s, false, domoticz, context);
+                        if (isPushOnSwitch(s))
+                            onButtonClick(s, true, domoticz, context);
+                    }
                 }
 
                 @Override
                 public void onError(Exception error) {
                     Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
                 }
-            }, idx);
+            }, idx, false);
         } else {
             domoticz.getScene(new ScenesReceiver() {
                 @Override
@@ -143,34 +162,20 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onReceiveScene(SceneInfo scene) {
+                public void onReceiveScene(final SceneInfo scene) {
                     if (scene != null) {
                         if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
-                            onButtonClick(scene, true, domoticz, context);
+                            onButtonClick(scene, true, domoticz, context);//push on scene
                         } else {//switch
-                            onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
+                            if (toggle)
+                                onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
+                            else
+                                onSwitchClick(scene, action, domoticz, context);
                         }
                     }
                 }
             }, idx);
         }
-    }
-
-    public void onBlindClick(final DevicesInfo clickedSwitch, int jsonAction, Domoticz mDomoticz, final Context context) {
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-        int idx = clickedSwitch.getIdx();
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
-            @Override
-            public void onReceiveResult(String result) {
-                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
@@ -186,7 +191,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
         }
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -195,7 +200,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                if (!UsefulBits.isEmpty(password))
+                    Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -214,7 +222,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             else jsonAction = Domoticz.Scene.Action.OFF;
             idx = idx - 4000;
         }
-        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -223,7 +231,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
             @Override
             public void onError(Exception error) {
-                Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                if (!UsefulBits.isEmpty(password))
+                    Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -242,7 +253,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 else jsonAction = Domoticz.Device.Switch.Action.OFF;
             }
 
-            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -251,7 +262,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                    if (!UsefulBits.isEmpty(password))
+                        Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -267,7 +281,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             if (checked) jsonAction = Domoticz.Scene.Action.ON;
             else jsonAction = Domoticz.Scene.Action.OFF;
 
-            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, new setCommandReceiver() {
+            mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -276,7 +290,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+                    if (!UsefulBits.isEmpty(password))
+                        Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
                 }
             });
         }

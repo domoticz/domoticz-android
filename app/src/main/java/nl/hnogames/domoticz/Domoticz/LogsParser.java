@@ -48,18 +48,18 @@ public class LogsParser implements JSONParserInterface {
 
         try {
             JSONArray jsonArray = new JSONArray(result);
-            ArrayList<LogInfo> mlogs = new ArrayList<>();
+            ArrayList<LogInfo> mLogs = new ArrayList<>();
 
             if (jsonArray.length() > 0) {
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject row = jsonArray.getJSONObject(i);
 
-                    mlogs.add(new LogInfo(row));
+                    mLogs.add(new LogInfo(row));
                 }
             }
 
-            logsReceiver.onReceiveLogs(mlogs);
+            logsReceiver.onReceiveLogs(mLogs);
 
         } catch (JSONException e) {
             Log.e(TAG, "logsParser JSON exception");

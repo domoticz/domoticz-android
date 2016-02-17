@@ -23,10 +23,7 @@
 package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,13 +44,14 @@ public class DomoticzActivity extends Activity implements
     public final String SEND_DATA = "/send_data";
     public final String RECEIVE_DATA = "/receive_data";
     public final String SEND_ERROR = "/error";
-    public final String ERROR_NO_SWITCHES = "NO_SWTICHES";
-    public GoogleApiClient mApiClient;
+    public final String ERROR_NO_SWITCHES = "NO_SWITCHES";
     public final String PREF_SWITCH = "SWITCHES";
     public final String SEND_SWITCH = "/send_switch";
+    public GoogleApiClient mApiClient;
+    public boolean receiveOnce = false;
 
     private void initGoogleApiClient() {
-        mApiClient = new GoogleApiClient.Builder( this )
+        mApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
                 .build();
@@ -75,28 +73,32 @@ public class DomoticzActivity extends Activity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.view_main);
-        initGoogleApiClient();                              //request new data
+        receiveOnce = false;
+        initGoogleApiClient();
     }
 
     @Override
-    public void onMessageReceived( final MessageEvent messageEvent ) {
+    public void onMessageReceived(final MessageEvent messageEvent) {
+        receiveOnce = true;
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected " + bundle);
-        sendMessage(RECEIVE_DATA, "");
+
+        if (!receiveOnce)
+            sendMessage(RECEIVE_DATA, "");
     }
 
-    public void sendMessage( final String path, final String text ) {
+    public void sendMessage(final String path, final String text) {
         Log.d(TAG, "Send: " + text);
-        new Thread( new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes( mApiClient ).await();
-                for(Node node : nodes.getNodes()) {
+                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
+                for (Node node : nodes.getNodes()) {
                     MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                            mApiClient, node.getId(), path, text.getBytes() ).await();
+                            mApiClient, node.getId(), path, text.getBytes()).await();
                     if (result.getStatus().isSuccess()) {
                         Log.v(TAG, "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
                     } else {
@@ -109,5 +111,6 @@ public class DomoticzActivity extends Activity implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 }

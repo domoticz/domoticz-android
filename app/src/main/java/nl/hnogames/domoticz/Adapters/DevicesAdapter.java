@@ -25,6 +25,8 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,23 +45,25 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
-    public final int ID_SCENE_SWITCH = 2000;
-    private final int ID_TEXTVIEW = 1000;
-    private final int ID_SWITCH = 0;
+    public static final int ID_SCENE_SWITCH = 2000;
+    private static final int ID_TEXTVIEW = 1000;
+    private static final int ID_SWITCH = 0;
 
-    private final int[] EVOHOME_STATE_IDS = {
+    private static final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
             Domoticz.Device.ModalSwitch.Action.AWAY,
@@ -77,9 +81,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private int previousDimmerValue;
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
-
+    private ConfigInfo mConfigInfo;
 
     public DevicesAdapter(Context context,
+                          ServerUtil serverUtil,
                           ArrayList<DevicesInfo> data,
                           switchesClickListener listener) {
         super();
@@ -87,7 +92,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         mSharedPrefs = new SharedPrefUtil(context);
 
         this.context = context;
-        domoticz = new Domoticz(context);
+        domoticz = new Domoticz(context, serverUtil);
 
         Collections.sort(data, new Comparator<DevicesInfo>() {
             @Override
@@ -95,6 +100,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 return left.getName().compareTo(right.getName());
             }
         });
+
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.filteredData = data;
         this.data = data;
         this.listener = listener;
@@ -128,7 +135,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         convertView = setSwitchRowId(extendedStatusInfo, holder);
         convertView.setTag(holder);
 
-        setSwitchRowData(extendedStatusInfo, holder, convertView);
+        setSwitchRowData(extendedStatusInfo, holder);
 
         return convertView;
     }
@@ -139,13 +146,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
-                    row = setOnOffSwitchRowId(holder);
+                    row = setOnOffButtonRowId(holder);
                     break;
                 case Domoticz.Scene.Type.SCENE:
                     row = setPushOnOffSwitchRowId(holder);
                     break;
                 case Domoticz.UTILITIES_TYPE_THERMOSTAT:
                     row = setThermostatRowId(holder);
+                    break;
+                case Domoticz.UTILITIES_TYPE_HEATING:
+                    row = setTemperatureRowId(holder);
                     break;
                 default:
                     row = setDefaultRowId(holder);
@@ -161,19 +171,23 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.X10SIREN:
                     case Domoticz.Device.Type.Value.DOORLOCK:
 
-                        if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
-                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
-                                row = setSecurityPanelSwitchRowId(holder);
-                            else
-                                row = setDefaultRowId(holder);
-                        } else if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.EVOHOME)) {
-                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
-                                row = setModalSwitchRowId(holder);
-                            else
-                                row = setDefaultRowId(holder);
-                        } else
-                            row = setOnOffSwitchRowId(holder);
-
+                        switch (mDeviceInfo.getSwitchType()) {
+                            case Domoticz.Device.Type.Name.SECURITY:
+                                if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                                    row = setSecurityPanelSwitchRowId(holder);
+                                else
+                                    row = setDefaultRowId(holder);
+                                break;
+                            case Domoticz.Device.Type.Name.EVOHOME:
+                                if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
+                                    row = setModalSwitchRowId(holder);
+                                else
+                                    row = setDefaultRowId(holder);
+                                break;
+                            default:
+                                row = setOnOffSwitchRowId(holder);
+                                break;
+                        }
                         break;
 
                     case Domoticz.Device.Type.Value.MOTION:
@@ -216,6 +230,33 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    private View setOnOffButtonRowId(ViewHolder holder) {
+        if (mSharedPrefs.showExtraData())
+            layoutResourceId = R.layout.scene_row_group;
+        else layoutResourceId = R.layout.scene_row_group_small;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.extraPanel = (LinearLayout) row.findViewById(R.id.extra_panel);
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonOff = (Button) row.findViewById(R.id.off_button);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+
+        if (holder.buttonLog != null)
+            holder.buttonLog.setVisibility(View.GONE);
+        if (holder.buttonTimer != null)
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        return row;
+    }
+
     private View setOnOffSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
             layoutResourceId = R.layout.switch_row_on_off;
@@ -224,7 +265,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
-        holder.extrapanel = (LinearLayout) row.findViewById(R.id.extra_panel);
+        holder.extraPanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.onOffSwitch = (Switch) row.findViewById(R.id.switch_button);
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
@@ -344,6 +385,28 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    private View setTemperatureRowId(ViewHolder holder) {
+        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.temperature_row_default;
+        else layoutResourceId = R.layout.temperature_row_small;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View convertView = inflater.inflate(layoutResourceId, null);
+
+        holder.switch_name = (TextView) convertView.findViewById(R.id.temperature_name);
+        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
+
+        holder.switch_battery_level = (TextView) convertView.findViewById(R.id.temperature_data);
+        holder.signal_level = (TextView) convertView.findViewById(R.id.temperature_data2);
+        holder.buttonSet = (Button) convertView.findViewById(R.id.set_button);
+
+        holder.extraPanel = (LinearLayout) convertView.findViewById(R.id.extra_panel);
+        if (holder.extraPanel != null)
+            holder.extraPanel.setVisibility(View.GONE);
+
+        return convertView;
+    }
+
     private View setBlindsRowId(ViewHolder holder) {
 
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_blinds;
@@ -412,9 +475,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
         holder.buttonSetStatus = (Button) row.findViewById(R.id.set_status_button);
 
+        holder.extraPanel = (LinearLayout) row.findViewById(R.id.extra_panel);
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
 
+        if (holder.extraPanel != null)
+            holder.extraPanel.setVisibility(View.GONE);
         if (holder.buttonLog != null)
             holder.buttonLog.setVisibility(View.GONE);
         if (holder.buttonTimer != null)
@@ -424,19 +490,21 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
-                                  ViewHolder holder,
-                                  View convertView) {
+                                  ViewHolder holder) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
                 case Domoticz.Scene.Type.GROUP:
-                    setOnOffSwitchRowData(mDeviceInfo, holder);
+                    setOnOffButtonRowData(mDeviceInfo, holder);
                     break;
                 case Domoticz.Scene.Type.SCENE:
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
                     break;
                 case Domoticz.UTILITIES_TYPE_THERMOSTAT:
                     setThermostatRowData(mDeviceInfo, holder);
+                    break;
+                case Domoticz.UTILITIES_TYPE_HEATING:
+                    setTemperatureRowData(mDeviceInfo, holder);
                     break;
                 default:
                     setDefaultRowData(mDeviceInfo, holder);
@@ -454,18 +522,23 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.DUSKSENSOR:
                 case Domoticz.Device.Type.Value.DOORLOCK:
 
-                    if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.SECURITY)) {
-                        if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
-                            setSecurityPanelSwitchRowData(mDeviceInfo, holder);
-                        else
-                            setDefaultRowData(mDeviceInfo, holder);
-                    } else if (mDeviceInfo.getSwitchType().equals(Domoticz.Device.Type.Name.EVOHOME)) {
-                        if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
-                            setModalSwitchRowData(mDeviceInfo, holder, R.array.evohome_states, R.array.evohome_state_names, EVOHOME_STATE_IDS);
-                        else
-                            setDefaultRowData(mDeviceInfo, holder);
-                    } else
-                        setOnOffSwitchRowData(mDeviceInfo, holder);
+                    switch (mDeviceInfo.getSwitchType()) {
+                        case Domoticz.Device.Type.Name.SECURITY:
+                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL))
+                                setSecurityPanelSwitchRowData(mDeviceInfo, holder);
+                            else
+                                setDefaultRowData(mDeviceInfo, holder);
+                            break;
+                        case Domoticz.Device.Type.Name.EVOHOME:
+                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME))
+                                setModalSwitchRowData(mDeviceInfo, holder, R.array.evohome_states, R.array.evohome_state_names, EVOHOME_STATE_IDS);
+                            else
+                                setDefaultRowData(mDeviceInfo, holder);
+                            break;
+                        default:
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
+                            break;
+                    }
 
                     break;
 
@@ -512,40 +585,73 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     private boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
-        if ((mDeviceInfo.getSubType().indexOf("RAEX") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("A-OK") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("RollerTrol") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("RFY") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("ASA") >= 0) ||
-                (mDeviceInfo.getSubType().indexOf("T6 DC") >= 0))
-            return true;
-        else
-            return false;
+        return (mDeviceInfo.getSubType().contains("RAEX")) ||
+                (mDeviceInfo.getSubType().contains("A-OK")) ||
+                (mDeviceInfo.getSubType().contains("RollerTrol")) ||
+                (mDeviceInfo.getSubType().contains("RFY")) ||
+                (mDeviceInfo.getSubType().contains("ASA")) ||
+                (mDeviceInfo.getSubType().contains("T6 DC"));
     }
 
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
                                    ViewHolder holder) {
+
+        String text;
+
+        holder.switch_battery_level.setMaxLines(3);
         holder.isProtected = mDeviceInfo.isProtected();
-        if (holder.switch_name != null)
+        if (holder.switch_name != null) {
             holder.switch_name.setText(mDeviceInfo.getName());
+        }
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
-        if (holder.signal_level != null)
+        String tempSign = "";
+        String windSign = "";
+        if (mConfigInfo != null) {
+            tempSign = mConfigInfo.getTempSign();
+            windSign = mConfigInfo.getWindSign();
+        }
+
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status)
+                    + ": "
+                    + String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
 
-        if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
-            holder.switch_battery_level.setText(context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage());
-        if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
-            holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
-        if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
-            holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+            if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
+                text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                holder.switch_battery_level.setText(text);
+            }
+            if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
+                holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+            if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
+                    !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
+                holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+            if (mDeviceInfo.getType().equals("Wind")) {
+                holder.switch_battery_level.setText(context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr());
+            }
+            if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
+                holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
+            if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
+            if (mDeviceInfo.getDewPoint() > 0)
+                holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
+            if (mDeviceInfo.getTemp() > 0)
+                holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemp() + " " + tempSign);
+            if (mDeviceInfo.getBarometer() > 0)
+                holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
+            if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.chill) + ": " + mDeviceInfo.getChill() + " " + tempSign);
+            if (!UsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -567,7 +673,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
@@ -577,23 +683,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        if (holder.isProtected)
-            holder.buttonOn.setEnabled(false);
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDevicesInfo.getIdx());
+            if (mDevicesInfo.getData().startsWith("Arm"))
+                holder.buttonOn.setText(context.getString(R.string.button_disarm));
+            else
+                holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-        holder.buttonOn.setId(mDevicesInfo.getIdx());
-        if (mDevicesInfo.getData().startsWith("Arm"))
-            holder.buttonOn.setText(context.getString(R.string.button_disarm));
-        else
-            holder.buttonOn.setText(context.getString(R.string.button_arm));
-
-        holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
-        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open security panel
-                handleSecurityPanel(v.getId());
-            }
-        });
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //open security panel
+                    handleSecurityPanel(v.getId());
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -609,25 +714,93 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     }
 
-    private void setOnOffSwitchRowData(final DevicesInfo mDeviceInfo,
+    private void setOnOffButtonRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
+        String text;
 
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getData());
+            holder.switch_battery_level.setText(text);
+        }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+                }
+            });
+        }
+
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+        if (holder.buttonLog != null) {
+            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonLog.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            else
+                holder.buttonLog.setId(mDeviceInfo.getIdx());
+
+            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleLogButtonClick(v.getId());
+                }
+            });
+        }
+    }
+
+    private void setOnOffSwitchRowData(final DevicesInfo mDeviceInfo,
+                                       final ViewHolder holder) {
+        String text;
+
+        holder.isProtected = mDeviceInfo.isProtected();
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mDeviceInfo.getName());
+
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
 
         text = context.getString(R.string.status) + ": " +
                 String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
-
-        if (holder.isProtected)
-            holder.onOffSwitch.setEnabled(false);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -663,7 +836,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (holder.buttonLog != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 
@@ -694,11 +867,94 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.buttonOn.setId(mDeviceInfo.getIdx());
 
         holder.switch_name.setText(mDeviceInfo.getName());
-        if (holder.switch_battery_level != null)
-            holder.switch_battery_level.setText(mDeviceInfo.getLastUpdate());
 
-        if (holder.signal_level != null)
-            holder.signal_level.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        String text = "";
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
+            String setPointText =
+                    context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
+            holder.switch_battery_level.setText(setPointText);
+        }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(
+                mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                false,
+                false,
+                null)).into(holder.iconRow);
+    }
+
+    private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
+        final double temperature = mDeviceInfo.getTemperature();
+        final double setPoint = mDeviceInfo.getSetPoint();
+        int modeIconRes = 0;
+        holder.isProtected = mDeviceInfo.isProtected();
+
+        holder.switch_name.setText(mDeviceInfo.getName());
+        if (Double.isNaN(temperature) || Double.isNaN(setPoint)) {
+            if (holder.signal_level != null)
+                holder.signal_level.setVisibility(View.GONE);
+
+            if (holder.switch_battery_level != null) {
+                String batteryText = context.getString(R.string.temperature)
+                        + ": "
+                        + mDeviceInfo.getData();
+                holder.switch_battery_level.setText(batteryText);
+            }
+        } else {
+            if (holder.signal_level != null)
+                holder.signal_level.setVisibility(View.VISIBLE);
+            if (holder.switch_battery_level != null) {
+                String batteryLevelText = context.getString(R.string.temperature)
+                        + ": "
+                        + String.valueOf(temperature)
+                        + " C";
+                holder.switch_battery_level.setText(batteryLevelText);
+            }
+
+            if (holder.signal_level != null) {
+                String signalText = context.getString(R.string.set_point)
+                        + ": "
+                        + String.valueOf(mDeviceInfo.getSetPoint()
+                        + " C");
+                holder.signal_level.setText(signalText);
+            }
+        }
+
+        if (holder.isProtected)
+            holder.buttonSet.setEnabled(false);
+
+        if ("evohome".equals(mDeviceInfo.getHardwareName())) {
+            holder.buttonSet.setText(context.getString(R.string.set_temperature));
+            holder.buttonSet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleSetTemperatureClick(v.getId());
+                }
+            });
+            holder.buttonSet.setId(mDeviceInfo.getIdx());
+            holder.buttonSet.setVisibility(View.VISIBLE);
+
+            modeIconRes = getEvohomeStateIcon(mDeviceInfo.getStatus());
+        } else {
+            holder.buttonSet.setVisibility(View.GONE);
+        }
+
+        if (holder.iconMode != null) {
+            if (0 == modeIconRes) {
+                holder.iconMode.setVisibility(View.GONE);
+            } else {
+                holder.iconMode.setImageResource(modeIconRes);
+                holder.iconMode.setVisibility(View.VISIBLE);
+            }
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
@@ -707,13 +963,18 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         listener.onThermostatClick(idx);
     }
 
+    public void handleSetTemperatureClick(int idx) {
+        listener.onSetTemperatureClick(idx);
+    }
+
     private void setPushOnOffSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+        String text = context.getString(R.string.last_update)
+                + ": "
+                + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
@@ -721,9 +982,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
-
-        if (holder.isProtected)
-            holder.buttonOn.setEnabled(false);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -738,16 +996,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(1f);
 
         if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-            holder.buttonOn.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
         else
             holder.buttonOn.setId(mDeviceInfo.getIdx());
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
-            holder.buttonOn.setBackground(context.getResources().getDrawable(R.drawable.button_off));
+            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
         }
 
         holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -759,7 +1017,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                         handleOnButtonClick(v.getId(), true);
                     else
                         handleOnButtonClick(v.getId(), false);
-                } catch (Exception ex) {
+                } catch (Exception ignore) {
                 }
             }
         });
@@ -781,21 +1039,29 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setBlindsRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder) {
+
+        String text;
+
         holder.isProtected = mDeviceInfo.isProtected();
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
-        if (holder.switch_status != null)
+        if (holder.switch_status != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(
+                    context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.switch_status.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
-        if (holder.switch_battery_level != null)
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
+        }
 
-        if (holder.isProtected) holder.buttonUp.setEnabled(false);
         holder.buttonUp.setId(mDeviceInfo.getIdx());
         holder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -813,7 +1079,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected) holder.buttonStop.setEnabled(false);
         holder.buttonStop.setId(mDeviceInfo.getIdx());
         holder.buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -826,7 +1091,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected) holder.buttonDown.setEnabled(false);
         holder.buttonDown.setId(mDeviceInfo.getIdx());
         holder.buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -859,27 +1123,34 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     private void setSelectorRowData(final DevicesInfo mDevicesInfo,
                                     final ViewHolder holder) {
+        String text;
+
         holder.isProtected = mDevicesInfo.isProtected();
         holder.switch_name.setText(mDevicesInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDevicesInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getStatus());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDevicesInfo.getStatus());
             holder.switch_battery_level.setText(text);
+        }
 
         int loadLevel = mDevicesInfo.getLevel() / 10;
         final String[] levelNames = mDevicesInfo.getLevelNames();
+        String statusText = context.getString(R.string.unknown);
+        if (levelNames.length >= loadLevel)
+            statusText = levelNames[loadLevel];
+
         holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
-        holder.switch_dimmer_level.setText(levelNames[loadLevel]);
-
+        holder.switch_dimmer_level.setText(statusText);
         holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
-        if (holder.isProtected) holder.dimmerOnOffSwitch.setEnabled(false);
-
         holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -901,34 +1172,31 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (holder.isProtected)
-            holder.dimmer.setEnabled(false);
-
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
         holder.dimmer.setMax(levelNames.length - 1);
+
+        holder.dimmer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
+            }
+        });
+
         holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String value = levelNames[progress];
-                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
-                        .findViewById(mDevicesInfo.getIdx() + ID_TEXTVIEW);
-                switch_dimmer_level.setText(value);
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                previousDimmerValue = seekBar.getProgress();
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress() * 10;
-                Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
-                        .findViewById(mDevicesInfo.getIdx() + ID_SWITCH);
-
-                handleDimmerChange(mDevicesInfo.getIdx(), progress, true);
-                mDevicesInfo.setLevel(progress);
+                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
             }
         });
 
@@ -956,21 +1224,26 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private void setDimmerRowData(final DevicesInfo mDeviceInfo,
                                   final ViewHolder holder,
                                   final boolean isRGB) {
+        String text;
 
         holder.isProtected = mDeviceInfo.isProtected();
 
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
-        if (holder.signal_level != null)
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
+        }
 
-        text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
-        if (holder.switch_battery_level != null)
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getStatus());
             holder.switch_battery_level.setText(text);
+        }
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         String percentage = calculateDimPercentage(
@@ -988,10 +1261,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
-        holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
-        if (holder.isProtected)
-            holder.dimmerOnOffSwitch.setEnabled(false);
+        holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1089,24 +1360,24 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.switch_name.setText(mDevicesInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDevicesInfo.getLastUpdate().substring(mDevicesInfo.getLastUpdate().indexOf(" ") + 1));
+                UsefulBits.getFormattedDate(context,
+                        mDevicesInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
                 getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
-        holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
-        holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //open state dialog
-                handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
-            }
-        });
-
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.INVISIBLE);
+        if(holder.buttonSetStatus != null) {
+            holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
+            holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //open state dialog
+                    handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -1163,20 +1434,42 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         listener.onStateButtonClick(idx, itemsRes, itemIds);
     }
 
+    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
+        listener.onSelectorDimmerClick(idx, levelNames);
+    }
+
     private void handleLogButtonClick(int idx) {
         listener.onLogButtonClick(idx);
     }
 
+    public int getEvohomeStateIcon(String stateName) {
+        if (stateName == null) return 0;
+
+        TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
+        String[] states = context.getResources().getStringArray(R.array.evohome_state_names);
+        int i = 0;
+        int iconRes = 0;
+        for (String state : states) {
+            if (stateName.equals(state)) {
+                iconRes = icons.getResourceId(i, 0);
+                break;
+            }
+            i++;
+        }
+
+        icons.recycle();
+        return iconRes;
+    }
 
     static class ViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
-        ImageButton buttonUp, buttonDown, buttonStop, buttonPlus, buttonMinus;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus;
+        ImageButton buttonUp, buttonDown, buttonStop;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Boolean isProtected;
-        ImageView iconRow;
+        ImageView iconRow, iconMode;
         SeekBar dimmer;
-        LinearLayout extrapanel;
+        LinearLayout extraPanel;
     }
 
     private class ItemFilter extends Filter {
@@ -1190,17 +1483,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             final ArrayList<DevicesInfo> list = data;
 
             int count = list.size();
-            final ArrayList<DevicesInfo> nlist = new ArrayList<DevicesInfo>(count);
+            final ArrayList<DevicesInfo> devicesInfos = new ArrayList<>(count);
 
             DevicesInfo filterableObject;
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                    devicesInfos.add(filterableObject);
                 }
             }
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = devicesInfos;
+            results.count = devicesInfos.size();
 
             return results;
         }

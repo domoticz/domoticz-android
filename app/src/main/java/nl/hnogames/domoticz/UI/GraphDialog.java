@@ -56,14 +56,13 @@ public class GraphDialog {
     private Context mContext;
 
     public GraphDialog(Context mContext,
-                       ArrayList<GraphPointInfo> mGraphList,
-                       int layout) {
+                       ArrayList<GraphPointInfo> mGraphList) {
         this.mGraphList = mGraphList;
         this.mContext = mContext;
         mdb = new MaterialDialog.Builder(mContext);
         //noinspection unused
         boolean wrapInScrollView = true;
-        mdb.customView(layout, false)
+        mdb.customView(R.layout.dialog_graph, false)
                 .positiveText(android.R.string.ok);
     }
 

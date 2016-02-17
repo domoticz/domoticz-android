@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/extra_panel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:visibility="gone"
+    tools:visibility="visible"
+    android:animateLayoutChanges="true">
+
+    <Button
+        android:id="@+id/log_button"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight=".25"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/button_white_status"
+        android:text="@string/button_status_log"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/timer_button"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight=".25"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/button_white_status"
+        android:text="@string/button_status_timer"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/notifications_button"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight=".25"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/button_white_status"
+        android:text="@string/button_status_notifications"
+        android:textSize="12sp" />
+
+</LinearLayout>

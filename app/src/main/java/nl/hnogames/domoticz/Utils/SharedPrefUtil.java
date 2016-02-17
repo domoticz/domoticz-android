@@ -22,6 +22,7 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +30,12 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
@@ -47,76 +48,85 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
+import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
-    public static final String PREF_CUSTOM_WEAR = "enableWearItems";
-    public static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
-    public static final String PREF_ALWAYS_ON = "alwayson";
-
-    public static final String PREF_UPDATE_VERSION = "updateversion";
-    public static final String PREF_EXTRA_DATA = "extradata";
-    public static final String PREF_STARTUP_SCREEN = "startup_screen";
-    public static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
-    public static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
-    public static final String PREF_CONFIG = "domoticz_config";
-    public static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
-    public static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
-    public static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
-    public static final String PREF_DEBUGGING = "debugging";
-    public static final int INVALID_IDX = 999999;
+    private static final String PREF_MULTI_SERVER = "enableMultiServers";
+    private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    private static final String PREF_ALWAYS_ON = "alwayson";
+    private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
+    private static final String PREF_NOTIFICATION_SOUND = "notification_sound";
+    private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
+    private static final String PREF_SAVED_LANGUAGE = "savedLanguage";
+    private static final String PREF_SAVED_LANGUAGE_DATE = "savedLanguageDate";
+    private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
+    private static final String PREF_EXTRA_DATA = "extradata";
+    private static final String PREF_STARTUP_SCREEN = "startup_screen";
+    private static final String PREF_TASK_SCHEDULED = "task_scheduled";
+    private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
+    private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    private static final String PREF_GEOFENCE_STARTED = "geofence_started";
+    private static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
+    private static final String PREF_DEBUGGING = "debugging";
+    private static final int INVALID_IDX = 999999;
+    private static final String PREF_SAVED_LANGUAGE_STRING = "savedLanguageString";
     private static final String PREF_FIRST_START = "isFirstStart";
     private static final String PREF_WELCOME_SUCCESS = "welcomeSuccess";
-    private static final String REMOTE_SERVER_USERNAME = "remote_server_username";
-    private static final String REMOTE_SERVER_PASSWORD = "remote_server_password";
-    private static final String REMOTE_SERVER_URL = "remote_server_url";
-    private static final String REMOTE_SERVER_PORT = "remote_server_port";
-    private static final String REMOTE_SERVER_DIRECTORY = "remote_server_directory";
-    private static final String REMOTE_SERVER_SECURE = "remote_server_secure";
-    private static final String REMOTE_SERVER_AUTHENTICATION_METHOD =
-            "remote_server_authentication_method";
-    private static final String IS_LOCAL_SERVER_ADDRESS_DIFFERENT = "local_server_different_address";
-    private static final String LOCAL_SERVER_USERNAME = "local_server_username";
-    private static final String LOCAL_SERVER_PASSWORD = "local_server_password";
-    private static final String LOCAL_SERVER_URL = "local_server_url";
-    private static final String LOCAL_SERVER_PORT = "local_server_port";
-    private static final String LOCAL_SERVER_DIRECTORY = "local_server_directory";
-    private static final String LOCAL_SERVER_SECURE = "local_server_secure";
-    private static final String LOCAL_SERVER_AUTHENTICATION_METHOD =
-            "local_server_authentication_method";
-    private static final String LOCAL_SERVER_SSID = "local_server_ssid";
-
+    private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
+    private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
+    private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
+    private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
+    private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
 
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private GoogleApiClient mApiClient = null;
 
+    @SuppressLint("CommitPrefEdits")
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
     }
 
+    public boolean checkForUpdatesEnabled() {
+        return prefs.getBoolean(PREF_CHECK_UPDATES, false);
+    }
+
+    public boolean isMultiServerEnabled() {
+        return prefs.getBoolean(PREF_MULTI_SERVER, false);
+    }
+
+    public boolean isNotificationsEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_NOTIFICATIONS, true);
+    }
+
+    public boolean OverWriteNotifications() {
+        return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
+    }
+
     public void completeCard(String cardTag) {
         editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
-    public boolean getAwaysOn() {
+    public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
     }
 
@@ -138,9 +148,10 @@ public class SharedPrefUtil {
         return prefs.getInt("COLORPOSITION" + idx, 0);
     }
 
-    public void setWidgetIDX(int widgetID, int idx, boolean isScene) {
+    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password) {
         editor.putInt("WIDGET" + widgetID, idx).apply();
         editor.putBoolean("WIDGETSCENE" + widgetID, isScene).apply();
+        editor.putString("WIDGETPASSWORD" + widgetID, password).apply();
         editor.commit();
     }
 
@@ -148,21 +159,28 @@ public class SharedPrefUtil {
         return prefs.getInt("WIDGET" + widgetID, INVALID_IDX);
     }
 
+    public String getWidgetPassword(int widgetID) {
+        return prefs.getString("WIDGETPASSWORD" + widgetID, null);
+    }
+
     public boolean getWidgetisScene(int widgetID) {
         return prefs.getBoolean("WIDGETSCENE" + widgetID, false);
     }
 
-    public void setWidgetIDforIDX(int widgetID, int idx) {
-        editor.putInt("WIDGETIDX" + idx, widgetID).apply();
+    private void setWidgetIDforIDX(int widgetID, int idx, boolean isScene) {
+        if (!isScene)
+            editor.putInt("WIDGETIDX" + idx, widgetID).apply();
+        else
+            editor.putInt("WIDGETIDXSCENE" + idx, widgetID).apply();
     }
 
-    public int getWidgetIDforIDX(int idx) {
-        return prefs.getInt("WIDGETIDX" + idx, INVALID_IDX);
+    private int getWidgetIDforIDX(int idx, boolean isScene) {
+        if (!isScene)
+            return prefs.getInt("WIDGETIDX" + idx, INVALID_IDX);
+        else
+            return prefs.getInt("WIDGETIDXSCENE" + idx, INVALID_IDX);
     }
 
-    /*
-     *      Generic settings
-     */
     public boolean isFirstStart() {
         return prefs.getBoolean(PREF_FIRST_START, true);
     }
@@ -177,6 +195,87 @@ public class SharedPrefUtil {
 
     public void setWelcomeWizardSuccess(boolean success) {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
+    }
+
+    /**
+     * Get's the users preference to vibrate on notifications
+     *
+     * @return true to vibrate
+     */
+    public boolean getNotificationVibrate() {
+        return prefs.getBoolean(PREF_NOTIFICATION_VIBRATE, true);
+    }
+
+    /**
+     * Get's the URL for the notification sound
+     *
+     * @return Notification sound URL
+     */
+    public String getNotificationSound() {
+        return prefs.getString(PREF_NOTIFICATION_SOUND, null);
+    }
+
+    /**
+     * Get's a list of suppressed notifications
+     *
+     * @return list of suppressed notifications
+     */
+    public List<String> getSuppressedNotifications() {
+        if (!prefs.contains(PREF_SUPPRESS_NOTIFICATIONS)) return null;
+
+        Set<String> notifications = prefs.getStringSet(PREF_SUPPRESS_NOTIFICATIONS, null);
+        if (notifications != null) {
+            List<String> notificationsValues = new ArrayList<>();
+
+            for (String s : notifications) {
+                notificationsValues.add(s);
+            }
+            return notificationsValues;
+        } else return null;
+    }
+
+    /**
+     * Get's a list of received notifications
+     *
+     * @return List of received notifications
+     */
+    public List<String> getReceivedNotifications() {
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) return null;
+
+        Set<String> notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS, null);
+        if (notifications != null) {
+            List<String> notificationsValues = new ArrayList<>();
+
+            for (String s : notifications) {
+                notificationsValues.add(s);
+            }
+            java.util.Collections.sort(notificationsValues);
+            return notificationsValues;
+        } else return null;
+    }
+
+    /**
+     * Adds the notification to the list of received notifications
+     *
+     * @param notification Notification string to add
+     */
+    public void addReceivedNotification(String notification) {
+        if (UsefulBits.isEmpty(notification))
+            return;
+        Set<String> notifications;
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) {
+            notifications = new HashSet<>();
+            notifications.add(notification);
+            editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+        } else {
+            notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS, null);
+            if (notifications == null)
+                notifications = new HashSet<>();
+            if (!notifications.contains(notification)) {
+                notifications.add(notification);
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+            }
+        }
     }
 
     public void removeWizard() {
@@ -370,134 +469,8 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
     }
 
-    /*
-     *      Remote server settings
-     */
-    public String getDomoticzRemoteUsername() {
-        return prefs.getString(REMOTE_SERVER_USERNAME, "");
-    }
-
-    public void setDomoticzRemoteUsername(String username) {
-        editor.putString(REMOTE_SERVER_USERNAME, username).apply();
-    }
-
-    public String getDomoticzRemotePassword() {
-        return prefs.getString(REMOTE_SERVER_PASSWORD, "");
-    }
-
-    public void setDomoticzRemotePassword(String password) {
-        editor.putString(REMOTE_SERVER_PASSWORD, password).apply();
-    }
-
-    public String getUpdateAvailable() {
-        return prefs.getString(PREF_UPDATE_VERSION, "");
-    }
-
-    public void setUpdateAvailable(String version) {
-        editor.putString(PREF_UPDATE_VERSION, version).apply();
-    }
-
-    public String getDomoticzRemoteUrl() {
-        return prefs.getString(REMOTE_SERVER_URL, "");
-    }
-
-    public void setDomoticzRemoteUrl(String url) {
-        editor.putString(REMOTE_SERVER_URL, url).apply();
-    }
-
-    public String getDomoticzRemotePort() {
-        return prefs.getString(REMOTE_SERVER_PORT, "");
-    }
-
-    public void setDomoticzRemotePort(String port) {
-        editor.putString(REMOTE_SERVER_PORT, port).apply();
-    }
-
-    public String getDomoticzRemoteDirectory() {
-        return prefs.getString(REMOTE_SERVER_DIRECTORY, "");
-    }
-
-    public void setDomoticzRemoteDirectory(String directory) {
-        editor.putString(REMOTE_SERVER_DIRECTORY, directory).apply();
-    }
-
-    public boolean isDomoticzRemoteSecure() {
-        return prefs.getBoolean(REMOTE_SERVER_SECURE, true);
-    }
-
-    public void setDomoticzRemoteSecure(boolean secure) {
-        editor.putBoolean(REMOTE_SERVER_SECURE, secure).apply();
-    }
-
-    public String getDomoticzRemoteAuthenticationMethod() {
-        boolean remoteServerAuthenticationMethodIsLoginForm =
-                prefs.getBoolean(REMOTE_SERVER_AUTHENTICATION_METHOD, true);
-        String method;
-
-        if (remoteServerAuthenticationMethodIsLoginForm)
-            method = Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM;
-        else method = Domoticz.Authentication.Method.AUTH_METHOD_BASIC_AUTHENTICATION;
-
-        return method;
-    }
-
-    /*
-     *      Local server settings
-     */
-    public boolean isLocalServerAddressDifferent() {
-        return prefs.getBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, false);
-    }
-
-    public void setLocalServerUsesSameAddress(boolean b) {
-        editor.putBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, b).apply();
-    }
-
-    public String getDomoticzLocalUsername() {
-        return prefs.getString(LOCAL_SERVER_USERNAME, "");
-    }
-
-    public void setDomoticzLocalUsername(String username) {
-        editor.putString(LOCAL_SERVER_USERNAME, username).apply();
-    }
-
-    public String getDomoticzLocalPassword() {
-        return prefs.getString(LOCAL_SERVER_PASSWORD, "");
-    }
-
-    public void setDomoticzLocalPassword(String password) {
-        editor.putString(LOCAL_SERVER_PASSWORD, password).apply();
-    }
-
-    public String getDomoticzLocalUrl() {
-        return prefs.getString(LOCAL_SERVER_URL, "");
-    }
-
-    public void setDomoticzLocalUrl(String url) {
-        editor.putString(LOCAL_SERVER_URL, url).apply();
-    }
-
-    public String getDomoticzLocalPort() {
-        return prefs.getString(LOCAL_SERVER_PORT, "");
-    }
-
-    public void setDomoticzLocalPort(String port) {
-        editor.putString(LOCAL_SERVER_PORT, port).apply();
-    }
-
-    public String getDomoticzLocalDirectory() {
-        return prefs.getString(LOCAL_SERVER_DIRECTORY, "");
-    }
-
-    public void setDomoticzLocalDirectory(String directory) {
-        editor.putString(LOCAL_SERVER_DIRECTORY, directory).apply();
-    }
-
-    public boolean isDomoticzLocalSecure() {
-        return prefs.getBoolean(LOCAL_SERVER_SECURE, true);
-    }
-
-    public void setDomoticzLocalSecure(boolean secure) {
-        editor.putBoolean(LOCAL_SERVER_SECURE, secure).apply();
+    public boolean isServerUpdateAvailable() {
+        return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
 
     public boolean isGeofenceEnabled() {
@@ -508,78 +481,6 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
     }
 
-    public boolean isGeofenceNotificationsEnabled() {
-        return prefs.getBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, false);
-    }
-
-    public void setGeofenceNotificationsEnabled(boolean enabled) {
-        editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
-    }
-
-    @SuppressWarnings("unused")
-    public String getDomoticzLocalAuthenticationMethod() {
-        boolean localServerAuthenticationMethodIsLoginForm =
-                prefs.getBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, true);
-        String method;
-
-        if (localServerAuthenticationMethodIsLoginForm)
-            method = Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM;
-        else method = Domoticz.Authentication.Method.AUTH_METHOD_BASIC_AUTHENTICATION;
-
-        return method;
-    }
-
-    public void setDomoticzLocalAuthenticationMethod(String method) {
-        boolean methodIsLoginForm;
-        methodIsLoginForm =
-                method.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
-        editor.putBoolean(LOCAL_SERVER_AUTHENTICATION_METHOD, methodIsLoginForm).apply();
-    }
-
-    public Set<String> getLocalSsid() {
-        return prefs.getStringSet(LOCAL_SERVER_SSID, null);
-    }
-
-    public void setLocalSsid(List<String> ssids) {
-        if (ssids != null) {
-            Set<String> set = new HashSet<>();
-            for (String ssid : ssids) {
-                set.add(ssid);
-            }
-            editor.putStringSet(LOCAL_SERVER_SSID, set).apply();
-        }
-    }
-
-    /**
-     * Method for setting local server addresses the same as the remote server addresses
-     */
-    public void setLocalSameAddressAsRemote() {
-        setDomoticzLocalUsername(getDomoticzRemoteUsername());
-        setDomoticzLocalPassword(getDomoticzRemotePassword());
-        setDomoticzLocalUrl(getDomoticzRemoteUrl());
-        setDomoticzLocalPort(getDomoticzRemotePort());
-        setDomoticzLocalDirectory(getDomoticzRemoteDirectory());
-        setDomoticzLocalSecure(isDomoticzRemoteSecure());
-        setDomoticzLocalAuthenticationMethod(getDomoticzRemoteAuthenticationMethod());
-    }
-
-    public void saveConfig(ConfigInfo config) {
-        editor.putString(PREF_CONFIG, config.getJsonObject());
-        editor.commit();
-    }
-
-    public ConfigInfo getConfig() {
-        ConfigInfo config = null;
-        if (prefs.contains(PREF_CONFIG)) {
-            String jsonConfig = prefs.getString(PREF_CONFIG, null);
-            config = new ConfigInfo(jsonConfig);
-        } else
-            return null;
-
-        return config;
-    }
-
-    // This four methods are used for maintaining locations.
     public void saveLocations(List<LocationInfo> locations) {
         Gson gson = new Gson();
         String jsonLocations = gson.toJson(locations);
@@ -588,9 +489,9 @@ public class SharedPrefUtil {
     }
 
     public ArrayList<LocationInfo> getLocations() {
-        List<LocationInfo> returnValue = new ArrayList<LocationInfo>();
+        List<LocationInfo> returnValue = new ArrayList<>();
         List<LocationInfo> locations;
-        boolean incorrectDetected=false;
+        boolean incorrectDetected = false;
 
         if (prefs.contains(PREF_GEOFENCE_LOCATIONS)) {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
@@ -599,17 +500,18 @@ public class SharedPrefUtil {
                     LocationInfo[].class);
             locations = Arrays.asList(locationItem);
 
-            for (LocationInfo l : locations){
-                if(l.toGeofence() != null){
+            for (LocationInfo l : locations) {
+                if (l.toGeofence() != null) {
                     returnValue.add(l);
-                }
-                else {
-                    incorrectDetected=true;
+                } else {
+                    incorrectDetected = true;
                 }
             }
-            if(incorrectDetected) {
+            if (incorrectDetected) {
                 saveLocations(returnValue);
-                Toast.makeText(mContext, "Due to changes on Geofencing, please recreate your locations", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,
+                        R.string.geofence_error_recreateLocations,
+                        Toast.LENGTH_LONG).show();
             }
         } else
             return null;
@@ -667,32 +569,46 @@ public class SharedPrefUtil {
     }
 
     public boolean saveSharedPreferencesToFile(File dst) {
-        if (dst.exists())
-            dst.delete();
+        boolean isServerUpdateAvailableValue = false;
 
-        boolean res = false;
-        ObjectOutputStream output = null;
+        ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo();
 
-        //noinspection TryWithIdenticalCatches
-        try {
-            output = new ObjectOutputStream(new FileOutputStream(dst));
-            output.writeObject(this.prefs.getAll());
-            res = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        // Before saving to file set server update available preference to false
+        if (isServerUpdateAvailable()) {
+            isServerUpdateAvailableValue = true;
+            mServerUpdateInfo.setUpdateAvailable(false);
+        }
+
+        boolean result = false;
+
+        if (dst.exists()) result = dst.delete();
+
+        if (result) {
+            ObjectOutputStream output = null;
+
+            //noinspection TryWithIdenticalCatches
             try {
-                if (output != null) {
-                    output.flush();
-                    output.close();
+                output = new ObjectOutputStream(new FileOutputStream(dst));
+                output.writeObject(this.prefs.getAll());
+                result = true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (output != null) {
+                        output.flush();
+                        output.close();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
         }
-        return res;
+        // Write original settings to preferences
+        if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
+        return result;
     }
 
     @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})
@@ -726,7 +642,7 @@ public class SharedPrefUtil {
             editor.commit();
             res = true;
 
-            setGeoFenceService();
+            if (isGeofenceEnabled()) enableGeoFenceService();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -745,49 +661,206 @@ public class SharedPrefUtil {
         return res;
     }
 
-    public void setGeoFenceService() {
+    /**
+     * Get the user prefered display language
+     *
+     * @return Language string
+     */
+    public String getDisplayLanguage() {
+        return prefs.getString(PREF_DISPLAY_LANGUAGE, "");
+    }
+
+    /**
+     * Get's the date (in milliseconds) when the language files where saved
+     *
+     * @return time in milliseconds
+     */
+    public long getSavedLanguageDate() {
+        return prefs.getLong(PREF_SAVED_LANGUAGE_DATE, 0);
+    }
+
+    /**
+     * Set's the date (in milliseconds) when the language files are saved
+     *
+     * @param timeInMillis time in milliseconds
+     */
+    public void setSavedLanguageDate(long timeInMillis) {
+        editor.putLong(PREF_SAVED_LANGUAGE_DATE, timeInMillis).apply();
+    }
+
+    /**
+     * Save language to shared preferences
+     *
+     * @param language The translated strings to save to shared preferences
+     */
+    public void saveLanguage(Language language) {
+        if (language != null) {
+            Gson gson = new Gson();
+            try {
+                String jsonLocations = gson.toJson(language);
+                editor.putString(PREF_SAVED_LANGUAGE, jsonLocations).apply();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * Get the saved language from shared preferences
+     *
+     * @return Language with tranlated strings
+     */
+    public Language getSavedLanguage() {
+        Language returnValue;
+
+        if (prefs.contains(PREF_SAVED_LANGUAGE)) {
+            String languageStr = prefs.getString(PREF_SAVED_LANGUAGE, null);
+            if (languageStr != null) {
+                Gson gson = new Gson();
+                try {
+                    returnValue = gson.fromJson(languageStr, Language.class);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return null;
+                }
+            } else return null;
+        } else
+            return null;
+
+        return returnValue;
+    }
+
+    /**
+     * Get's the translated strings from the server and saves them to shared preferences
+     *
+     * @param langToDownload Language to get from the server
+     * @param server         ServerUtil
+     */
+    public void getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
+        if (!UsefulBits.isEmpty(langToDownload)) {
+            new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+                @Override
+                public void onReceiveLanguage(Language language) {
+                    Calendar now = Calendar.getInstance();
+                    saveLanguage(language);
+                    // Write to shared preferences so we can use it to check later
+                    setDownloadedLanguage(langToDownload);
+                    setSavedLanguageDate(now.getTimeInMillis());
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Log.e("Shared Pref util", "Unable to get the language from the server: " + langToDownload);
+                    error.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public String getDownloadedLanguage() {
+        return prefs.getString(PREF_SAVED_LANGUAGE_STRING, "");
+    }
+
+    public void setDownloadedLanguage(String language) {
+        editor.putString(PREF_SAVED_LANGUAGE_STRING, language).apply();
+    }
+
+    public boolean getTaskIsScheduled() {
+        return prefs.getBoolean(PREF_TASK_SCHEDULED, false);
+    }
+
+    public void setTaskIsScheduled(boolean isScheduled) {
+        editor.putBoolean(PREF_TASK_SCHEDULED, isScheduled).apply();
+    }
+
+    public boolean isGeofencingStarted() {
+        return prefs.getBoolean(PREF_GEOFENCE_STARTED, false);
+    }
+
+    public void setGeofencingStarted(boolean started) {
+        editor.putBoolean(PREF_GEOFENCE_STARTED, started).apply();
+    }
+
+    public List<Geofence> getEnabledGeofences() {
+        final List<Geofence> mGeofenceList = new ArrayList<>();
+        final ArrayList<LocationInfo> locations = getLocations();
+
+        if (locations != null) {
+            for (LocationInfo locationInfo : locations)
+                if (locationInfo.getEnabled())
+                    mGeofenceList.add(locationInfo.toGeofence());
+            return mGeofenceList;
+        } else return null;
+    }
+
+    public void enableGeoFenceService() {
         if (isGeofenceEnabled()) {
-            final List<Geofence> mGeofenceList = new ArrayList<>();
-            final ArrayList<LocationInfo> locations = getLocations();
-            if (locations != null)
-                for (LocationInfo locationInfo : locations)
-                    if (locationInfo.getEnabled())
-                        mGeofenceList.add(locationInfo.toGeofence());
+            //only continue when we have the correct permissions!
+            if (PermissionsUtil.canAccessLocation(mContext)) {
+                final List<Geofence> mGeofenceList = getEnabledGeofences();
+                if (mGeofenceList != null && mGeofenceList.size() > 0) {
+                    mApiClient = new GoogleApiClient.Builder(mContext)
+                            .addApi(LocationServices.API)
+                            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                                @Override
+                                public void onConnected(Bundle bundle) {
+                                    PendingIntent mGeofenceRequestIntent =
+                                            getGeofenceTransitionPendingIntent();
 
-            if (locations != null && mGeofenceList.size() > 0) {
-                mApiClient = new GoogleApiClient.Builder(mContext)
-                        .addApi(LocationServices.API)
-                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                            @Override
-                            public void onConnected(Bundle bundle) {
-                                PendingIntent mGeofenceRequestIntent =
-                                        getGeofenceTransitionPendingIntent();
-                                //noinspection ResourceType
-                                LocationServices
-                                        .GeofencingApi
-                                        .addGeofences(mApiClient,
-                                                mGeofenceList,
+                                    // First remove all GeoFences
+                                    try {
+                                        LocationServices.GeofencingApi.removeGeofences(mApiClient,
                                                 mGeofenceRequestIntent);
-                            }
+                                    } catch (Exception ignored) {
+                                    }
 
-                            @Override
-                            public void onConnectionSuspended(int i) {
-                            }
-                        })
-                        .build();
-                mApiClient.connect();
+                                    //noinspection ResourceType
+                                    LocationServices
+                                            .GeofencingApi
+                                            .addGeofences(mApiClient,
+                                                    getGeofencingRequest(mGeofenceList),
+                                                    mGeofenceRequestIntent);
+                                }
+
+                                @Override
+                                public void onConnectionSuspended(int i) {
+                                }
+                            })
+                            .build();
+                    mApiClient.connect();
+                } else {
+                    // No enabled geofences, disabling
+                    setGeofenceEnabled(false);
+                }
             }
         }
+    }
+
+    public void stopGeofenceService() {
+        if (mApiClient != null) {
+            // If mApiClient is null enableGeofenceService was not called
+            // thus there is nothing to stop
+            PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+            LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
+        }
+    }
+
+    private GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
     }
 
     /**
      * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
      * transition occurs.
+     *
+     * @return Intent which will be called
      */
     public PendingIntent getGeofenceTransitionPendingIntent() {
         Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-
 }

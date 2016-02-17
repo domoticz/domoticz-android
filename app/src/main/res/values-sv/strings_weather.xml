@@ -4,12 +4,12 @@
   <string name="title_weather">Väder</string>
   <string name="dewPoint">Daggpunkt</string>
   <string name="temp">Temp</string>
-  <string name="pressure">Tryck</string>
-  <string name="chill">Kyla</string>
+  <string name="pressure">Lufttryck</string>
+  <string name="chill">Kyleffekt</string>
   <string name="direction">Riktning</string>
   <string name="humidity">Fuktighet</string>
   <string name="speed">Hastighet</string>
   <string name="forecast">Prognos</string>
   <string name="rain">Regn</string>
-  <string name="rainrate">Mängd regn</string>
+  <string name="rainrate">Regn intensiteten</string>
 </resources>

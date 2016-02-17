@@ -9,11 +9,15 @@
   <string name="msg_please_wait">Proszę czekać...</string>
   <string name="button_state_on">Wł.</string>
   <string name="button_state_off">Wył.</string>
+  <string name="button_state_closed">Closed</string>
+  <string name="button_state_open">Open</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dzień</string>
+  <string name="button_status_week">Tydzień</string>
   <string name="button_status_month">Miesiąc</string>
   <string name="button_status_year">Rok</string>
   <string name="button_status_timer">Plan czasowy</string>
+  <string name="button_status_notifications">Powiadomienia</string>
   <string name="button_color">Kolor</string>
   <string name="button_arm">Uzbrój</string>
   <string name="button_disarm">Rozbrój</string>
@@ -48,6 +52,9 @@
   <string name="no_network_available">Błąd: Brak dostępnego połączenia sieciowego</string>
   <string name="oops">UPS!</string>
   <string name="to">"do"</string>
+  <string name="retry">Ponów</string>
+  <string name="undo">Cofnij</string>
+  <string name="something_deleted">%1$s usuniętych</string>
   <string name="switch_on">Przełącznik przełączony na wł.</string>
   <string name="switch_off">Przełącznik przełączony na wył.</string>
   <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
@@ -59,10 +66,16 @@
   <string name="filterOn_all">Wszystkie urządzenia</string>
   <string name="Filter">Filtr</string>
   <string name="filter_devices">Filtr urządzeń</string>
-  <string name="filtered_on">Filter on</string>
   <string name="choose_color">Wybierz kolor</string>
   <string name="no_data_on_domoticz">Brak danych na serwerze Domoticz</string>
   <string name="row_icon_description">rząd ikon</string>
   <string name="error_image_description">Błąd obrazu</string>
+  <string name="device_image_description">Device image</string>
   <string name="white">Biały</string>
+  <string name="refresh">Odśwież</string>
+  <string name="domoticz_logo">Domoticz logo</string>
+  <string name="this_take_minutes">Może to potrwać kilka minut.</string>
+  <string name="continue_question">Kontynuować?</string>
+  <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
+  <string name="restart_required_msg">Dla ustawień języka aby uzyskać efekt wymagane jest ponowne uruchomienie aplikacji</string>
 </resources>

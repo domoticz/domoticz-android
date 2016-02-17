@@ -8,6 +8,10 @@
   <string name="wizard_favorites_description">Pode adicionar dispositivos ao painel de entrada guardando como favoritos. Longo clique no item para guarda-lo como favorito!</string>
   <string name="wizard_startup">Ecrã Inicial</string>
   <string name="wizard_startup_description">Pode definir o ecrã inicial nas definições!</string>
+  <string name="wizard_notifications">Configurar notificações</string>
+  <string name="wizard_notifications_description">Agora, pode receber notificações no seu dispositivo Android! Alterar o comportamento das notificações nas definições</string>
+  <string name="wizard_multiserver">Usando vários servidores</string>
+  <string name="wizard_multiserver_description">Você pode configurar vários servidores de Domoticz nas configurações.</string>
   <string name="wizard_geo">Localização</string>
   <string name="wizard_geo_description">Pode definir o ecrã inicial nas definições!</string>
   <string name="wizard_wear">Android Wear</string>

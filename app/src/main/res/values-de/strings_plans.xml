@@ -4,6 +4,6 @@
   <string name="title_plans">Pläne</string>
   <plurals name="devices">
     <item quantity="one">%1d Gerät</item>
-    <item quantity="other">%1d Gerät</item>
+    <item quantity="other">%1d Geräte</item>
   </plurals>
 </resources>

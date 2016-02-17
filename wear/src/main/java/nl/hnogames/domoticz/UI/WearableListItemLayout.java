@@ -35,13 +35,12 @@ import nl.hnogames.domoticz.R;
 public class WearableListItemLayout extends LinearLayout
         implements WearableListView.OnCenterProximityListener {
 
-    private ImageView mCircle;
-    private TextView mName;
-    private TextView mStatus;
-
     private final float mFadedTextAlpha;
     private final int mFadedCircleColor;
     private final int mChosenCircleColor;
+    private ImageView mCircle;
+    private TextView mName;
+    private TextView mStatus;
 
     public WearableListItemLayout(Context context) {
         this(context, null);

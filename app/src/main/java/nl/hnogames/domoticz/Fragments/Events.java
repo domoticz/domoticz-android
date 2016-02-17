@@ -22,12 +22,9 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -35,7 +32,6 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
@@ -44,13 +40,8 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Events extends DomoticzFragment implements DomoticzFragmentListener {
 
-    private Domoticz mDomoticz;
     private EventsAdapter adapter;
-    private ProgressDialog progressDialog;
     private Context mContext;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
-    private ListView listView;
     private String filter = "";
 
     @Override
@@ -69,7 +60,7 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -82,23 +73,18 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
     @Override
     public void onConnectionOk() {
         super.showSpinner(true);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-
-        mDomoticz = new Domoticz(mContext);
         processUserVariables();
     }
 
     private void processUserVariables() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getEvents(new EventReceiver() {
             @Override
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
                 successHandling(mEventInfos.toString(), false);
 
-                adapter = new EventsAdapter(mContext, mEventInfos, new EventsClickListener() {
+                adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
                     public void onEventClick(final int id, boolean action) {
                         Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
@@ -136,9 +122,11 @@ public class Events extends DomoticzFragment implements DomoticzFragmentListener
 
     @Override
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error);
+            }
         }
     }
 }
