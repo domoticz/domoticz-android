@@ -68,6 +68,7 @@ public class SharedPrefUtil {
 
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
@@ -470,6 +471,10 @@ public class SharedPrefUtil {
 
     public boolean showCustomWear() {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
+    }
+
+    public boolean isNFCEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_NFC, false);
     }
 
     public boolean isServerUpdateAvailable() {
