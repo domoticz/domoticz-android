@@ -90,31 +90,34 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
 
-        currentServerVersionValue.setText(serverUtil.getActiveServer()
-                .getServerUpdateInfo()
-                .getCurrentServerVersion());
-
-        if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()) {
-            updateSummary.setText(R.string.server_update_available);
-            updateServerVersionValue.setText(serverUtil.getActiveServer()
+        if(serverUtil.getActiveServer() != null &&
+                serverUtil.getActiveServer().getServerUpdateInfo() != null) {
+            currentServerVersionValue.setText(serverUtil.getActiveServer()
                     .getServerUpdateInfo()
-                    .getUpdateRevisionNumber());
-        } else if (mDomoticz.isDebugEnabled()) {
-            String message = "Debugging: " + getString(R.string.server_update_available);
-            updateSummary.setText(message);
-        } else
-            updateSummary.setText(R.string.server_update_not_available);
+                    .getCurrentServerVersion());
 
-        buttonUpdateServer = (Button) findViewById(R.id.buttonUpdateServer);
-        buttonUpdateServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showServerUpdateWarningDialog();
-            }
-        });
-        if (!serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
-                && !mDomoticz.isDebugEnabled())
-            buttonUpdateServer.setEnabled(false);
+            if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()) {
+                updateSummary.setText(R.string.server_update_available);
+                updateServerVersionValue.setText(serverUtil.getActiveServer()
+                        .getServerUpdateInfo()
+                        .getUpdateRevisionNumber());
+            } else if (mDomoticz.isDebugEnabled()) {
+                String message = "Debugging: " + getString(R.string.server_update_available);
+                updateSummary.setText(message);
+            } else
+                updateSummary.setText(R.string.server_update_not_available);
+
+            buttonUpdateServer = (Button) findViewById(R.id.buttonUpdateServer);
+            buttonUpdateServer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showServerUpdateWarningDialog();
+                }
+            });
+            if (!serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
+                    && !mDomoticz.isDebugEnabled())
+                buttonUpdateServer.setEnabled(false);
+        }
     }
 
     private void refreshData() {
