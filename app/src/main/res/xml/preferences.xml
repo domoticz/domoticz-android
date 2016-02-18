@@ -74,7 +74,23 @@
             android:title="@string/geofencing_configure" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_export">
+
+    <PreferenceCategory android:title="@string/category_nfc">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableNFC"
+            android:summaryOff="@string/nfc_enable_settings"
+            android:summaryOn="@string/nfc_enable_settings"
+            android:title="@string/enable_nfc" />
+
+        <Preference
+            android:key="nfc_settings"
+            android:dependency="enableNFC"
+            android:title="@string/nfc_settings" />
+    </PreferenceCategory>
+
+
+       <PreferenceCategory android:title="@string/category_export">
         <Preference
             android:key="export_settings"
             android:title="@string/export_settings" />

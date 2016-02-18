@@ -56,6 +56,7 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
@@ -79,6 +80,7 @@ public class SharedPrefUtil {
     private static final String PREF_STARTUP_SCREEN = "startup_screen";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
     private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
@@ -480,6 +482,30 @@ public class SharedPrefUtil {
 
     public void setGeofenceEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
+    }
+
+    public void saveNFCList(List<NFCInfo> list) {
+        Gson gson = new Gson();
+        editor.putString(PREF_NFC_TAGS, gson.toJson(list));
+        editor.commit();
+    }
+
+    public ArrayList<NFCInfo> getNFCList() {
+        ArrayList<NFCInfo> oReturnValue = new ArrayList<>();
+        List<NFCInfo> nfcs;
+        if (prefs.contains(PREF_NFC_TAGS)) {
+            String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
+            Gson gson = new Gson();
+            NFCInfo[] item = gson.fromJson(jsonNFCs,
+                    NFCInfo[].class);
+            nfcs = Arrays.asList(item);
+            for (NFCInfo n : nfcs) {
+                oReturnValue.add(n);
+            }
+        } else
+            return null;
+
+        return oReturnValue;
     }
 
     public void saveLocations(List<LocationInfo> locations) {

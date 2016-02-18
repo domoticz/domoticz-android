@@ -12,6 +12,7 @@
   <string name="category_notification">Notificações</string>
   <string name="category_debug">Depuração</string>
   <string name="category_export">Configurações de importação/exportação</string>
+  <string name="category_nfc">NFC Connections</string>
   <string name="startup_screen">Ecrã Inicial</string>
   <string name="enable_items">Habilitar/Desabilitar itens</string>
   <string name="extra_data_title">Dados extras no painel de entrada</string>
@@ -31,11 +32,14 @@
   <string name="settings_exported">Configurações exportadas, por favor reinicie Domoticz</string>
   <string name="settings_export_failed">Falha ao exportar configurações</string>
   <string name="server_settings">Configurações de conexão do servidor</string>
+  <string name="nfc_settings">Setup NFC Connections</string>
   <string name="title_activity_server_settings">Definições do servidor</string>
   <string name="multi_server">Multi-servidor</string>
+  <string name="enable_nfc">Enable NFC</string>
   <string name="export_settings">Exportar Definições</string>
   <string name="import_settings">Importar Definições</string>
   <string name="multi_server_settings">Habilitar o suporte a múltiplos servidores</string>
+  <string name="nfc_enable_settings">Enable NFC Connections</string>
   <string name="server">Servidor</string>
   <string name="notification_settings_id">ID de mensagens do Google Cloud</string>
   <string name="notification_settings_push">Coloque o seu id de registo no Domoticz</string>
@@ -67,6 +71,8 @@
   <string name="error_couldNotCheckForUpdates">"Poderá não verificar se há atualizações: %1$s"</string>
   <string name="error_couldNotCheckForConfig">"Poderá não conseguir a configuração do servidor Domoticz: %1$s"</string>
   <string name="update_available_enhanced">Atualização de servidor disponível: %1$s para versão: %2$s</string>
+  <string name="check_for_update_title">Check for Updates</string>
+  <string name="check_for_update">Would you like us to check for Domoticz system updates?</string>
   <string name="update_server_warning">Enquanto o servidor está atualizando este aplicativo não funcionará corretamente.</string>
   <string name="update_server_downloadNotReady1">Download de atualização não está (totalmente) feito.</string>
   <string name="update_server_downloadNotReady2">Volte a tentar mais tarde.</string>
