@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     private void applyLanguage() {
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
             // User has set a language in settings
-            UsefulBits.setLocale(this, mSharedPrefs.getDisplayLanguage());
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         }
     }
 
