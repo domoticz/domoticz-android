@@ -84,7 +84,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
     private NfcAdapter mNfcAdapter;
     private ArrayList<NFCInfo> nfcList;
     private NFCAdapter adapter;
-
+    private boolean busyWithTag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,8 +141,9 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+        if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED) && !busyWithTag) {
             boolean newTagFound = true;
+            busyWithTag = true;
             final String tagID = UsefulBits.ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             if (nfcList != null && nfcList.size() > 0) {
                 for (NFCInfo n : nfcList) {
@@ -165,11 +166,12 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                                 newNFC.setId(tagID);
                                 newNFC.setName(String.valueOf(input));
                                 updateNFC(newNFC);
+                                busyWithTag = false;
                             }
                         }).show();
-
             } else {
                 showSimpleSnackbar(getString(R.string.nfc_exists));
+                busyWithTag = false;
             }
         }
     }
@@ -234,8 +236,6 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                 nfcInfo.setSwitchPassword(selectedSwitchPassword);
 
                 updateNFC(nfcInfo);
-                adapter.data = nfcList;
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -259,6 +259,8 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
             nfcList.add(nfcInfo);
 
         mSharedPrefs.saveNFCList(nfcList);
+        adapter.data = nfcList;
+        adapter.notifyDataSetChanged();
     }
 
     private boolean showNoDeviceAttachedDialog(final NFCInfo nfcInfo) {
@@ -353,6 +355,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
     private void removeNFCFromListView(NFCInfo nfcInfo) {
         nfcList.remove(nfcInfo);
         mSharedPrefs.saveNFCList(nfcList);
+
         adapter.data = nfcList;
         adapter.notifyDataSetChanged();
     }

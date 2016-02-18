@@ -84,13 +84,13 @@
             android:title="@string/enable_nfc" />
 
         <Preference
-            android:key="nfc_settings"
             android:dependency="enableNFC"
+            android:key="nfc_settings"
             android:title="@string/nfc_settings" />
     </PreferenceCategory>
 
 
-       <PreferenceCategory android:title="@string/category_export">
+    <PreferenceCategory android:title="@string/category_export">
         <Preference
             android:key="export_settings"
             android:title="@string/export_settings" />
@@ -129,8 +129,8 @@
 
             <SwitchPreference
                 android:defaultValue="false"
-                android:key="overwriteNotifications"
                 android:dependency="enableNotifications"
+                android:key="overwriteNotifications"
                 android:summaryOff="@string/overwrite_notifications"
                 android:summaryOn="@string/overwrite_notifications"
                 android:title="@string/overwrite_notifications_title" />
@@ -172,8 +172,8 @@
             android:summaryOn="@string/check_for_update"
             android:title="@string/check_for_update_title" />
         <Preference
-            android:key="version_domoticz"
             android:dependency="checkForSystemUpdates"
+            android:key="version_domoticz"
             android:summary="Version 1.0.2"
             android:title="@string/info_domoticz_version" />
         <Preference
