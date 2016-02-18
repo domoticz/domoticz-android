@@ -157,7 +157,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                                              jsonAction = Domoticz.Device.Switch.Action.OFF;
                                                              break;
                                                      }
-                                                     
+
                                                      domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
                                                          public void onReceiveResult(String result) {

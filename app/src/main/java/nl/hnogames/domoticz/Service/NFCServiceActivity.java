@@ -65,8 +65,7 @@ public class NFCServiceActivity extends Activity {
                 }
             }
 
-            if (foundNFC != null) {
-                //toggle switch??
+            if (foundNFC != null && foundNFC.isEnabled()) {
                 handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
             }
         }
