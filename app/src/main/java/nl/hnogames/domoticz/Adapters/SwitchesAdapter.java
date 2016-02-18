@@ -579,7 +579,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
     private void setContactSwitchRowData(DevicesInfo mDevicesInfo,
                                          ViewHolder holder,
                                          boolean buttonEnabled) {
-        if(mDevicesInfo == null || holder == null)
+        if (mDevicesInfo == null || holder == null)
             return;
 
         ArrayList<String> statusOpen = new ArrayList<>();
@@ -589,22 +589,22 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         statusClosed.add("closed");
 
         holder.isProtected = mDevicesInfo.isProtected();
-        if(holder.switch_name != null) {
+        if (holder.switch_name != null) {
             holder.switch_name.setText(mDevicesInfo.getName());
         }
 
         String text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
-        if(holder.signal_level != null) {
+        if (holder.signal_level != null) {
             holder.signal_level.setText(text);
         }
-        if(holder.switch_battery_level != null) {
+        if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
             holder.switch_battery_level.setText(text);
         }
 
-        if(holder.buttonOn != null) {
+        if (holder.buttonOn != null) {
             holder.buttonOn.setId(mDevicesInfo.getIdx());
             holder.buttonOn.setEnabled(buttonEnabled);
 
@@ -636,7 +636,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         }
 
-        if(holder.buttonLog != null) {
+        if (holder.buttonLog != null) {
             holder.buttonLog.setId(mDevicesInfo.getIdx());
             holder.buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -646,7 +646,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        if(holder.buttonTimer != null) {
+        if (holder.buttonTimer != null) {
             holder.buttonTimer.setId(mDevicesInfo.getIdx());
             holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -655,11 +655,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 }
             });
 
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.GONE);
+            if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
+                holder.buttonTimer.setVisibility(View.GONE);
         }
 
-        if(holder.buttonNotifications != null) {
+        if (holder.buttonNotifications != null) {
             holder.buttonNotifications.setId(mDevicesInfo.getIdx());
             holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
                 @Override

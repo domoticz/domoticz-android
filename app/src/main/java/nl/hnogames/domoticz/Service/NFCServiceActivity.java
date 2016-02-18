@@ -51,7 +51,7 @@ public class NFCServiceActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if(mSharedPrefs.isNFCEnabled()) {
+        if (mSharedPrefs.isNFCEnabled()) {
             ArrayList<NFCInfo> nfcList = mSharedPrefs.getNFCList();
             if (getIntent().getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
                 NFCInfo foundNFC = null;

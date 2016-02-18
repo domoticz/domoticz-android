@@ -203,8 +203,7 @@ public class UsefulBits {
         if (!isEmpty(userDisplayLanguage)) {
             Log.d(TAG, "User specified language to use: " + userDisplayLanguage);
             return userDisplayLanguage;
-        }
-        else {
+        } else {
             Log.d(TAG, "User didn't specify language to use: using display language");
             return phoneDisplayLanguage;
         }
