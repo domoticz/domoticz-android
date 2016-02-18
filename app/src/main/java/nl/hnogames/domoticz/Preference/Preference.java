@@ -73,7 +73,6 @@ public class Preference extends PreferenceFragment {
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
     private Context mContext;
-    private ServerUtil mServerUtil;
     private Domoticz mDomoticz;
 
     @Override
@@ -85,7 +84,7 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mServerUtil = new ServerUtil(mContext);
+        ServerUtil mServerUtil = new ServerUtil(mContext);
         mDomoticz = new Domoticz(mContext, mServerUtil);
 
         setPreferences();
@@ -503,7 +502,8 @@ public class Preference extends PreferenceFragment {
             }
 
         } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage());
+            if(ex != null && !UsefulBits.isEmpty(ex.getMessage()))
+                Log.e(TAG, ex.getMessage());
         }
     }
 
