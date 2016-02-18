@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/material_grey_300_"
     android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/row_space"
     android:paddingRight="@dimen/row_space">
 
@@ -53,11 +53,11 @@
                 style="@style/row_body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C"/>
+                tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C" />
 
         </LinearLayout>
     </LinearLayout>
 
-<include layout="@layout/log_graph_buttons_row_default"/>
+    <include layout="@layout/log_graph_buttons_row_default" />
 
 </LinearLayout>
