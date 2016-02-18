@@ -43,17 +43,15 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class NFCServiceActivity extends Activity {
 
-    private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
-    private ArrayList<NFCInfo> nfcList;
     private String TAG = NFCSettingsActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSharedPrefs = new SharedPrefUtil(this);
-        nfcList = mSharedPrefs.getNFCList();
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        ArrayList<NFCInfo> nfcList = mSharedPrefs.getNFCList();
 
         if (getIntent().getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             NFCInfo foundNFC = null;
@@ -70,7 +68,6 @@ public class NFCServiceActivity extends Activity {
             if (foundNFC != null) {
                 //toggle switch??
                 handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
-                finish();
             }
         }
     }
@@ -101,16 +98,27 @@ public class NFCServiceActivity extends Activity {
                                                              jsonAction = Domoticz.Device.Switch.Action.OFF;
                                                      }
 
+                                                     switch (extendedStatusInfo.getSwitchTypeVal()) {
+                                                         case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             break;
+                                                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             break;
+                                                     }
+
                                                      domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
+                                                             finish();
                                                          }
 
                                                          @Override
                                                          public void onError(Exception error) {
                                                              if (error != null)
                                                                  onErrorHandling(error);
+                                                             finish();
                                                          }
                                                      });
                                                  }
@@ -119,6 +127,7 @@ public class NFCServiceActivity extends Activity {
                                                  public void onError(Exception error) {
                                                      if (error != null)
                                                          onErrorHandling(error);
+                                                     finish();
                                                  }
                                              });
                                          }
@@ -129,6 +138,7 @@ public class NFCServiceActivity extends Activity {
                                  public void onError(Exception error) {
                                      if (error != null)
                                          onErrorHandling(error);
+                                     finish();
                                  }
                              }
         );
