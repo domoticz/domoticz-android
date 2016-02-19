@@ -90,7 +90,7 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
 
-        if(serverUtil.getActiveServer() != null &&
+        if (serverUtil.getActiveServer() != null &&
                 serverUtil.getActiveServer().getServerUpdateInfo() != null) {
             currentServerVersionValue.setText(serverUtil.getActiveServer()
                     .getServerUpdateInfo()

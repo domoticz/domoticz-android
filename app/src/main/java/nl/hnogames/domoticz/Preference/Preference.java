@@ -502,7 +502,7 @@ public class Preference extends PreferenceFragment {
             }
 
         } catch (Exception ex) {
-            if(ex != null && !UsefulBits.isEmpty(ex.getMessage()))
+            if (ex != null && !UsefulBits.isEmpty(ex.getMessage()))
                 Log.e(TAG, ex.getMessage());
         }
     }

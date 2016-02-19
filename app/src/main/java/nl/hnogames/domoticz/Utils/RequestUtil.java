@@ -75,8 +75,7 @@ public class RequestUtil {
                             if (parser != null)
                                 parser.parseResult(jsonString);
                         } catch (JSONException e) {
-                            if (parser != null)
-                                parser.onError(e);
+                            jsonErrorHandling(response, e, parser);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -223,8 +222,7 @@ public class RequestUtil {
                             if (parser != null)
                                 parser.parseResult(jsonString);
                         } catch (JSONException e) {
-                            if (parser != null)
-                                parser.onError(e);
+                            jsonErrorHandling(response, e, parser);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -301,11 +299,14 @@ public class RequestUtil {
 
                                 try {
                                     jsonString = response.getString(Domoticz.Json.Field.STATUS);
-                                    if (parser != null)
-                                        parser.parseResult(jsonString);
+                                    if (jsonString.equals(Domoticz.Json.Field.ERROR)) {
+                                        jsonErrorHandling(response, null, parser);
+                                    } else {
+                                        if (parser != null)
+                                            parser.parseResult(jsonString);
+                                    }
                                 } catch (JSONException e) {
-                                    if (parser != null)
-                                        parser.onError(e);
+
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -366,6 +367,7 @@ public class RequestUtil {
 
         ImageLoader.ImageCache imageCache = new BitmapLruCache();
         return new ImageLoader(Volley.newRequestQueue(context), imageCache) {
+            @SuppressWarnings("deprecation")
             @Override
             protected com.android.volley.Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
                                                                           ImageView.ScaleType scaleType, final String cacheKey) {
@@ -408,26 +410,6 @@ public class RequestUtil {
         };
     }
 
-
-    /**
-     * Method to create a basic HTTP base64 encrypted authentication header
-     *
-     * @param username Username
-     * @param password Password
-     * @return Base64 encrypted header map
-     */
-    public static Map<String, String> createBasicAuthHeader(String username, String password) {
-
-        Map<String, String> headerMap = new HashMap<>();
-
-        String credentials = username + ":" + password;
-        String base64EncodedCredentials =
-                Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-        headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
-
-        return headerMap;
-    }
-
     /**
      * Method to create a basic HTTP base64 encrypted authentication header
      *
@@ -457,5 +439,38 @@ public class RequestUtil {
     private static void errorHandling(VolleyError volleyError) {
         Log.e(TAG, "RequestUtil volley error");
         if (volleyError.getMessage() != null) Log.e(TAG, volleyError.getMessage());
+    }
+
+
+    /**
+     * Handle json errors (functional errors)
+     *
+     * @param response Json result of the call
+     * @param e        Exception that occurred during parsing
+     * @param parser   Parser interface
+     */
+    private static void jsonErrorHandling(JSONObject response, Exception e, JSONParserInterface parser) {
+        if (parser == null || response == null)
+            return;
+
+        String message = "";
+        if (response.has(Domoticz.Json.Field.MESSAGE)) {
+            try {
+                message = response.getString(Domoticz.Json.Field.MESSAGE);
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        Exception exNew;
+        if (e != null && !UsefulBits.isEmpty(e.getMessage())) {
+            exNew = new Exception("Failed: " + message + " - " + e.getMessage());
+        } else {
+            exNew = new Exception("Failed: " + message);
+        }
+
+        Log.e(TAG, exNew.getMessage());
+        if (parser != null)
+            parser.onError(exNew);
     }
 }

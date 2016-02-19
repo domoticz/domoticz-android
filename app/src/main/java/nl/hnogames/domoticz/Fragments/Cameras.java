@@ -109,9 +109,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                             } else {
                                 processImage(savePic, cameraTitle.getText().toString());
                             }
-                        }
-                        catch (Exception ex)
-                        {
+                        } catch (Exception ex) {
                             errorHandling(ex);
                         }
                     }
