@@ -407,6 +407,10 @@ public class UsefulBits {
     }
 
     public static void showSimpleToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        //sometimes this method is called from a service, but then we don't have an activity to show the Toast.
+        //for now, we suppress that exception & toast
+        try {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }catch (Exception ex){}
     }
 }
