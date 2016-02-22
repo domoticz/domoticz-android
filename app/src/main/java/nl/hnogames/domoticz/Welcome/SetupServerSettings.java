@@ -344,7 +344,7 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void setStartScreen_spinner() {
-        if(mSharedPrefs == null)
+        if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(mContext);
 
         String[] startScreens = getResources().getStringArray(R.array.drawer_actions);

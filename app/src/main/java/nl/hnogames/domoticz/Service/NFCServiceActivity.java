@@ -51,22 +51,22 @@ public class NFCServiceActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        ArrayList<NFCInfo> nfcList = mSharedPrefs.getNFCList();
+        if (mSharedPrefs.isNFCEnabled()) {
+            ArrayList<NFCInfo> nfcList = mSharedPrefs.getNFCList();
+            if (getIntent().getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+                NFCInfo foundNFC = null;
+                final String tagID = UsefulBits.ByteArrayToHexString(getIntent().getByteArrayExtra(NfcAdapter.EXTRA_ID));
+                Log.i(TAG, "NFC ID Found: " + tagID);
 
-        if (getIntent().getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-            NFCInfo foundNFC = null;
-            final String tagID = UsefulBits.ByteArrayToHexString(getIntent().getByteArrayExtra(NfcAdapter.EXTRA_ID));
-            Log.i(TAG, "NFC ID Found: " + tagID);
-
-            if (nfcList != null && nfcList.size() > 0) {
-                for (NFCInfo n : nfcList) {
-                    if (n.getId().equals(tagID))
-                        foundNFC = n;
+                if (nfcList != null && nfcList.size() > 0) {
+                    for (NFCInfo n : nfcList) {
+                        if (n.getId().equals(tagID))
+                            foundNFC = n;
+                    }
                 }
-            }
-
-            if (foundNFC != null && foundNFC.isEnabled()) {
-                handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
+                if (foundNFC != null && foundNFC.isEnabled()) {
+                    handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
+                }
             }
         }
     }

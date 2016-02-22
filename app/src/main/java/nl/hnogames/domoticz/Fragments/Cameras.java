@@ -96,17 +96,21 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
-                        TextView cameraTitle = (TextView) v.findViewById(R.id.name);
-                        Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
+                        try {
+                            ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
+                            TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                            Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!PermissionsUtil.canAccessStorage(context)) {
-                                requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
-                            } else
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (!PermissionsUtil.canAccessStorage(context)) {
+                                    requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                                } else
+                                    processImage(savePic, cameraTitle.getText().toString());
+                            } else {
                                 processImage(savePic, cameraTitle.getText().toString());
-                        } else {
-                            processImage(savePic, cameraTitle.getText().toString());
+                            }
+                        } catch (Exception ex) {
+                            errorHandling(ex);
                         }
                     }
                 });

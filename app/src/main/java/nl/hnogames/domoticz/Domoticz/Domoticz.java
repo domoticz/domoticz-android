@@ -1448,6 +1448,8 @@ public class Domoticz {
             String RESULT = "result";
             String STATUS = "status";
             String VERSION = "version";
+            String MESSAGE = "message";
+            String ERROR = "ERROR";
         }
 
         interface Url {

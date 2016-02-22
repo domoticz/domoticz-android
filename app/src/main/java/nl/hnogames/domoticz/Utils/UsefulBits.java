@@ -203,8 +203,7 @@ public class UsefulBits {
         if (!isEmpty(userDisplayLanguage)) {
             Log.d(TAG, "User specified language to use: " + userDisplayLanguage);
             return userDisplayLanguage;
-        }
-        else {
+        } else {
             Log.d(TAG, "User didn't specify language to use: using display language");
             return phoneDisplayLanguage;
         }
@@ -408,6 +407,10 @@ public class UsefulBits {
     }
 
     public static void showSimpleToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        //sometimes this method is called from a service, but then we don't have an activity to show the Toast.
+        //for now, we suppress that exception & toast
+        try {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }catch (Exception ex){}
     }
 }
