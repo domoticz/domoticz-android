@@ -36,20 +36,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/rowIcon"
-            tools:text="Switch name"
             android:layout_toLeftOf="@+id/linearLayout6"
-            android:layout_toStartOf="@+id/linearLayout6" />
+            android:layout_toRightOf="@id/rowIcon"
+            android:layout_toStartOf="@+id/linearLayout6"
+            tools:text="Switch name" />
 
         <LinearLayout
+            android:id="@+id/linearLayout6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:id="@+id/linearLayout6">
+            android:orientation="horizontal">
 
 
             <Button

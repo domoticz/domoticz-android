@@ -39,26 +39,25 @@ public class PlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle == null)
-            this.finish();
+        if (bundle != null) {
+            //noinspection SpellCheckingInspection
+            String selectedPlan = bundle.getString("PLANNAME");
+            //noinspection SpellCheckingInspection
+            int selectedPlanID = bundle.getInt("PLANID");
+            this.setTitle(selectedPlan);
 
-        //noinspection SpellCheckingInspection
-        String selectedPlan = bundle.getString("PLANNAME");
-        //noinspection SpellCheckingInspection
-        int selectedPlanID = bundle.getInt("PLANID");
-        this.setTitle(selectedPlan);
+            Dashboard dash = new Dashboard();
+            dash.selectedPlan(selectedPlanID, selectedPlan);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Dashboard dash = new Dashboard();
-        dash.selectedPlan(selectedPlanID, selectedPlan);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(android.R.id.content, dash);
-        tx.commit();
+            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+            tx.replace(android.R.id.content, dash);
+            tx.commit();
+        } else this.finish();
     }
 
-    public ServerUtil geServerUtil() {
+    public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;

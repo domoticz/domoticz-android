@@ -149,6 +149,15 @@ public class GeofenceTransitionsIntentService extends IntentService
                                                              jsonAction = Domoticz.Device.Switch.Action.OFF;
                                                      }
 
+                                                     switch (extendedStatusInfo.getSwitchTypeVal()) {
+                                                         case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             break;
+                                                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             break;
+                                                     }
+
                                                      domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
                                                          public void onReceiveResult(String result) {
