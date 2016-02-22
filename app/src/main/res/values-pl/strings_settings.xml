@@ -12,7 +12,7 @@
   <string name="category_notification">Powiadomienia</string>
   <string name="category_debug">Debugowanie</string>
   <string name="category_export">Eksport/Import ustawień</string>
-  <string name="category_nfc">NFC Connections</string>
+  <string name="category_nfc">Połączenia NFC</string>
   <string name="startup_screen">Ekran startowy</string>
   <string name="enable_items">Włącz/Wyłącz pozycje</string>
   <string name="extra_data_title">Dodatkowe dane na pulpicie</string>
@@ -32,14 +32,14 @@
   <string name="settings_exported">Ustawienia wyeksportowane, proszę zrestartować Domoticz</string>
   <string name="settings_export_failed">Nie udało się wyeksportować ustawień</string>
   <string name="server_settings">Ustawienia połączenia serwera</string>
-  <string name="nfc_settings">Setup NFC Connections</string>
+  <string name="nfc_settings">Ustawienia połączeń NFC</string>
   <string name="title_activity_server_settings">Ustawienia serwera</string>
   <string name="multi_server">Wielo-serwerowość</string>
-  <string name="enable_nfc">Enable NFC</string>
+  <string name="enable_nfc">Włącz NFC</string>
   <string name="export_settings">Eksport ustawień</string>
   <string name="import_settings">Import ustawień</string>
   <string name="multi_server_settings">Włącz obsługę wielu serwerów</string>
-  <string name="nfc_enable_settings">Enable NFC Connections</string>
+  <string name="nfc_enable_settings">Włącz połączenia NFC</string>
   <string name="server">Serwer</string>
   <string name="notification_settings_id">ID Google Cloud Messaging</string>
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>
@@ -71,8 +71,8 @@
   <string name="error_couldNotCheckForUpdates">"Nie można sprawdzić aktualizacji: %1$s"</string>
   <string name="error_couldNotCheckForConfig">"Nie można pobrać konfiguracji serwera Domoticz: %1$s"</string>
   <string name="update_available_enhanced">Aktualizacja serwera dostępna: %1$s do wersji: %2$s</string>
-  <string name="check_for_update_title">Check for Updates</string>
-  <string name="check_for_update">Would you like us to check for Domoticz system updates?</string>
+  <string name="check_for_update_title">Sprawdź aktualizacje</string>
+  <string name="check_for_update">Czy chcesz sprawdzić aktualizacje systemu Domoticz?</string>
   <string name="update_server_warning">Podczas gdy Twój serwer jest aktualizowany aplikacja może nie działać prawidłowo.</string>
   <string name="update_server_downloadNotReady1">Aktualizacja nie jest jeszcze (całkowicie) pobrana.</string>
   <string name="update_server_downloadNotReady2">Proszę spróbować ponownie później.</string>
