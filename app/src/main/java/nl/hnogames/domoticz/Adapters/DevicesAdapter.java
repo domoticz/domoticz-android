@@ -45,6 +45,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
@@ -91,6 +93,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         this.context = context;
         domoticz = new Domoticz(context, serverUtil);
+
+        // When not sorted the devices are almost like dashboard on server
+        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
+            // Sort alphabetically
+            Collections.sort(data, new Comparator<DevicesInfo>() {
+                @Override
+                public int compare(DevicesInfo left, DevicesInfo right) {
+                    return left.getName().compareTo(right.getName());
+                }
+            });
+        }
 
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.filteredData = data;

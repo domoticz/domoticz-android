@@ -97,6 +97,7 @@ public class SharedPrefUtil {
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private final String TAG = "Shared Pref util";
+    private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -126,12 +127,16 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
-    public void completeCard(String cardTag) {
-        editor.putBoolean("CARD" + cardTag, true).apply();
+    public boolean isDashboardSortedLikeServer() {
+        return prefs.getBoolean(PREF_SORT_LIKESERVER, true);
     }
 
     public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
+
+    public void completeCard(String cardTag) {
+        editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
     public boolean isCardCompleted(String cardTag) {
