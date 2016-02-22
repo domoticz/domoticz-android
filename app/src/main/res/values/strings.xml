@@ -71,6 +71,7 @@
     <string name="blind_down">Turning blind down</string>
     <string name="blind_stop">Stop blind</string>
 
+    <string name="filter_on">Filter on</string>
     <string name="filterOn_on">Status on</string>
     <string name="filterOn_off">Status off</string>
     <string name="filterOn_static">Static devices</string>
