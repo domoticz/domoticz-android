@@ -1617,7 +1617,7 @@ public class Domoticz {
         @SuppressWarnings("SpellCheckingInspection")
         interface Category {
             String ALLDEVICES = "/json.htm?type=devices";
-            String DEVICES = "/json.htm?type=devices&filter=all&used=true&order=Name";
+            String DEVICES = "/json.htm?type=devices&filter=all&used=true";
             String VERSION = "/json.htm?type=command&param=getversion";
             String DASHBOARD = ALLDEVICES + "&filter=all";
             String SCENES = "/json.htm?type=scenes";

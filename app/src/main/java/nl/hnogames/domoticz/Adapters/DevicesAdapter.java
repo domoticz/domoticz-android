@@ -94,12 +94,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         this.context = context;
         domoticz = new Domoticz(context, serverUtil);
 
-        Collections.sort(data, new Comparator<DevicesInfo>() {
-            @Override
-            public int compare(DevicesInfo left, DevicesInfo right) {
-                return left.getName().compareTo(right.getName());
-            }
-        });
+        // When not sorted the devices are almost like dashboard on server
+        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
+            // Sort alphabetically
+            Collections.sort(data, new Comparator<DevicesInfo>() {
+                @Override
+                public int compare(DevicesInfo left, DevicesInfo right) {
+                    return left.getName().compareTo(right.getName());
+                }
+            });
+        }
 
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.filteredData = data;
