@@ -125,12 +125,12 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 if (super.getSort().equals(null) || super.getSort().length() <= 0 || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                     supportedScenes.add(s);
                 } else {
-                    Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && isOnOffScene(s))
+                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
                         supportedScenes.add(s);
-                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !isOnOffScene(s))
+                    if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !mDomoticz.isOnOffScene(s))
                         supportedScenes.add(s);
                 }
             }
@@ -165,15 +165,6 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         super.showSpinner(false);
         this.Filter(filter);
 
-    }
-
-    private boolean isOnOffScene(SceneInfo testSwitch) {
-        switch (testSwitch.getType()) {
-            case Domoticz.Scene.Type.GROUP:
-                return true;
-        }
-
-        return false;
     }
 
     private SceneInfo getScene(int idx) {

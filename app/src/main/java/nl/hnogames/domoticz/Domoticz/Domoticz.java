@@ -42,6 +42,8 @@ import java.util.Map;
 import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
@@ -210,6 +212,40 @@ public class Domoticz {
 
         }
         return result;
+    }
+
+    public boolean isOnOffSwitch(DevicesInfo testSwitch) {
+        if (testSwitch.getSwitchTypeVal() <= 0 && testSwitch.getSwitchType() == null)
+            return false;
+
+        switch (testSwitch.getSwitchTypeVal()) {
+            case Domoticz.Device.Type.Value.ON_OFF:
+            case Domoticz.Device.Type.Value.MEDIAPLAYER:
+            case Domoticz.Device.Type.Value.X10SIREN:
+            case Domoticz.Device.Type.Value.DOORLOCK:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+            case Domoticz.Device.Type.Value.BLINDINVERTED:
+            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+            case Domoticz.Device.Type.Value.BLINDVENETIAN:
+            case Domoticz.Device.Type.Value.BLINDS:
+            case Domoticz.Device.Type.Value.DIMMER:
+                return true;
+        }
+        switch (testSwitch.getType()) {
+            case Domoticz.Scene.Type.GROUP:
+                return true;
+        }
+
+        return false;
+    }
+
+    public boolean isOnOffScene(SceneInfo testSwitch) {
+        switch (testSwitch.getType()) {
+            case Domoticz.Scene.Type.GROUP:
+                return true;
+        }
+
+        return false;
     }
 
     public String getErrorMessage(Exception error) {
