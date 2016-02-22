@@ -75,12 +75,10 @@ public class AppController extends Application implements GcmListener {
     public void onCreate() {
         super.onCreate();
 
-        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey))) {
+        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey)))
             Mint.initAndStartSession(this, getString(R.string.mintapikey));
-        }
-        if (PermissionsUtil.canAccessDeviceState(this)) {
+        if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
-        }
 
         mInstance = this;
     }
