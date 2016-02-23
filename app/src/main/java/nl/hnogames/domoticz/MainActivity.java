@@ -200,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
+                    mServerUtil =  new ServerUtil(this);
+
                     drawNavigationMenu();
                     refreshFragment();
                     updateDrawerItems();
