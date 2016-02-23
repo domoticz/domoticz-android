@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
             appRate();
             WidgetUtils.RefreshWidgets(this);
+
+            AppController.getInstance().resendRegistrationIdToBackend();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -200,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
-                    mServerUtil =  new ServerUtil(this);
+                    mServerUtil = new ServerUtil(this);
 
                     drawNavigationMenu();
                     refreshFragment();
