@@ -397,29 +397,36 @@ public class SharedPrefUtil {
         if (!prefs.contains(PREF_NAVIGATION_ITEMS))
             setNavigationDefaults();
 
-        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+        try {
+            Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+            String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        if (selections == null) //default
-            return allNames;
-        else {
-            String[] selectionValues = new String[selections.size()];
-            int i = 0;
-            for (String v : allNames) {
-                for (String s : selections) {
-                    if (s.equals(v)) {
-                        selectionValues[i] = v;
-                        i++;
+            if (selections == null) //default
+                return allNames;
+            else {
+                int i = 0;
+                String[] selectionValues = new String[selections.size()];
+                for (String v : allNames) {
+                    for (String s : selections) {
+                        if (s.equals(v)) {
+                            selectionValues[i] = v;
+                            i++;
+                        }
                     }
                 }
+
+                if (i < selections.size()) {
+                    setNavigationDefaults();
+                    return getNavigationActions();
+                } else
+                    return selectionValues;
             }
+        } catch (Exception ex) {
+            if (!UsefulBits.isEmpty(ex.getMessage()))
+                Log.e(TAG, ex.getMessage());
 
-            if (i < selections.size()) {
-                setNavigationDefaults();
-                return getNavigationActions();
-            } else
-                return selectionValues;
-
+            setNavigationDefaults();
+            return getNavigationActions();
         }
     }
 

@@ -411,6 +411,7 @@ public class UsefulBits {
         //for now, we suppress that exception & toast
         try {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 }
