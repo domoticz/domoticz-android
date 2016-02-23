@@ -212,9 +212,7 @@ public class ServerInfo {
             }
             LOCAL_SERVER_SSID = set;
         }
-    }
-
-    public void setLocalServerSsid(Set<String> set) {
+    }      public void setLocalServerSsid(Set<String> set) {
         LOCAL_SERVER_SSID = set;
     }
 
