@@ -42,6 +42,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.nhaarman.listviewanimations.util.Swappable;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class DevicesAdapter extends BaseAdapter implements Filterable {
+public class DevicesAdapter extends BaseAdapter implements Filterable, Swappable {
 
     public static final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
@@ -123,7 +124,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return getItem(i).hashCode();
     }
 
     @Override
@@ -138,6 +139,19 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         setSwitchRowData(extendedStatusInfo, holder);
 
         return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds(){
+        return true;
+    }
+
+    @Override
+    public void swapItems(int i, int i2) {
+        DevicesInfo temp = data.get(i);
+        data.set(i, data.get(i2));
+        data.set(i2, temp);
+        notifyDataSetChanged();
     }
 
     /**

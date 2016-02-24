@@ -94,6 +94,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
     compile 'eu.inloop:easygcm:1.6.1@aar'
     compile project(path: ':SeekArc_library')
 }
