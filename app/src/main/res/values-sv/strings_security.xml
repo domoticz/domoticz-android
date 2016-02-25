@@ -6,7 +6,7 @@
   <string name="security_disarm">Avaktivera</string>
   <string name="security_arm_home">Aktivera hem</string>
   <string name="security_arm_away">Aktivera borta</string>
-  <string name="security_wrong_code">Fel kod angavs!</string>
+  <string name="security_wrong_code">Fel kod inmatad!</string>
   <string name="security_generic_error">Kunde inte ändra säkerhetsstatus</string>
   <string name="show_password">Visa lösenord</string>
 </resources>

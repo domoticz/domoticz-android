@@ -31,8 +31,14 @@ See more information and toggle switches right from your home screen!
 # Android Wear
 -----
 Toggle switches with your Android Wear device!
-All Android Wear devices are supported.
+All Android Wear devices are supported.  
 ![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
+
+
+# NFC
+-----
+Connect NFC tags to switches!  
+![nfc](https://cloud.githubusercontent.com/assets/14561640/13137854/eba8b976-d623-11e5-824d-33d3a8be5cd9.png)
 
 
 # Floorplan

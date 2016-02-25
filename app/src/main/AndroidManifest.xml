@@ -27,6 +27,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
 
     <application
         android:name=".app.AppController"
@@ -35,14 +40,31 @@
         android:label="@string/app_name_domoticz"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label, android:theme, android:name">
+
+        <activity android:name=".Service.NFCServiceActivity">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_list" />
+        </activity>
+
         <service android:name=".Service.GeofenceTransitionsIntentService" />
+
         <service android:name=".Service.WearMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
 
-        <service android:name=".Service.TaskService"
+        <service
+            android:name=".Service.TaskService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
@@ -168,6 +190,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.GeoSettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".NFCSettingsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/category_nfc"
+            android:parentActivityName=".SettingsActivity">
+
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
 
         <activity

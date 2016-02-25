@@ -1,7 +1,6 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:seekarc="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -43,18 +42,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                tools:text="20,5"
+                android:layout_marginRight="5dp"
                 android:textSize="40sp"
-                android:layout_marginRight="5dp" />
+                tools:text="20,5" />
 
             <TextView
                 android:id="@+id/seekTempSign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                tools:text="C"
+                android:layout_marginLeft="5dp"
                 android:textSize="40sp"
-                android:layout_marginLeft="5dp" />
+                tools:text="C" />
         </LinearLayout>
 
 
@@ -74,7 +73,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="-"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/plus"
@@ -85,7 +84,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="+"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
     </FrameLayout>

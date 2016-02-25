@@ -5,7 +5,7 @@
   <string name="choose_switch">Välj enhet</string>
   <string name="failed_to_get_switches">Det gick inte att hämta enheter</string>
   <string name="failed_toggle_switch">Det gick inte att växla enheten</string>
-  <string name="switch_toggled">"Switch enhet"</string>
+  <string name="switch_toggled">"Brytare aktiverad"</string>
   <string name="text_loading">Laddar...</string>
   <string name="text_go">Kör</string>
 </resources>

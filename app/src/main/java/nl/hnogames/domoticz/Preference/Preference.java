@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,6 +49,7 @@ import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
+import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
@@ -71,7 +73,6 @@ public class Preference extends PreferenceFragment {
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
     private Context mContext;
-    private ServerUtil mServerUtil;
     private Domoticz mDomoticz;
 
     @Override
@@ -83,7 +84,7 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mServerUtil = new ServerUtil(mContext);
+        ServerUtil mServerUtil = new ServerUtil(mContext);
         mDomoticz = new Domoticz(mContext, mServerUtil);
 
         setPreferences();
@@ -101,6 +102,8 @@ public class Preference extends PreferenceFragment {
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
         android.preference.Preference GeoSettings = findPreference("geo_settings");
         android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
+        android.preference.Preference NFCPreference = findPreference("nfc_settings");
+        android.preference.SwitchPreference EnableNFCPreference = (android.preference.SwitchPreference) findPreference("enableNFC");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
         @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
@@ -161,7 +164,7 @@ public class Preference extends PreferenceFragment {
         displayLanguage.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                showRestartMessage(newValue.toString());
+                showRestartMessage();
                 return true;
             }
         });
@@ -190,6 +193,36 @@ public class Preference extends PreferenceFragment {
                     return false;
                 } else {
                     Intent intent = new Intent(mContext, GeoSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        EnableNFCPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                if (NfcAdapter.getDefaultAdapter(mContext) == null) {
+                    Toast.makeText(mContext, getString(R.string.nfc_not_supported), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        NFCPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_nfc) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, NFCSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -276,10 +309,7 @@ public class Preference extends PreferenceFragment {
         });
     }
 
-    private void showRestartMessage(String language) {
-        mSharedPrefs.getLanguageStringsFromServer(language.toLowerCase(), mServerUtil);
-
-        UsefulBits.setLocale(mContext, language);
+    private void showRestartMessage() {
         new MaterialDialog.Builder(mContext)
                 .title(R.string.restart_required_title)
                 .content(mContext.getString(R.string.restart_required_msg)
@@ -472,7 +502,8 @@ public class Preference extends PreferenceFragment {
             }
 
         } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage());
+            if (ex != null && !UsefulBits.isEmpty(ex.getMessage()))
+                Log.e(TAG, ex.getMessage());
         }
     }
 

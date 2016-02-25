@@ -21,6 +21,6 @@
   <string name="timer_every_days">Varje dag</string>
   <string name="timer_working_days">Arbetsdagar</string>
   <string name="timer_weekend">Helg</string>
-  <string name="timer_other">Annat</string>
+  <string name="timer_other">Annan</string>
   <string name="timers">Timers</string>
 </resources>

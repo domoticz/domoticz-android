@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/material_grey_300_"
     android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/row_space"
     android:paddingRight="@dimen/row_space">
 
@@ -27,72 +26,72 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:paddingRight="5dp"
+            android:contentDescription="@string/device_image_description"
             android:paddingEnd="5dp"
+            android:paddingRight="5dp"
             android:paddingStart="5dp"
-            tools:src="@drawable/clock48"
-            android:contentDescription="@string/device_image_description" />
+            tools:src="@drawable/clock48" />
 
-            <RelativeLayout
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/linearLayout4"
+                android:layout_toStartOf="@+id/linearLayout4"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/switch_name"
+                    style="@style/row_name"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/linearLayout4"
-                    android:layout_toStartOf="@+id/linearLayout4"
-                    android:orientation="vertical">
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginRight="35dp"
+                    tools:text="Switch" />
 
-                    <TextView
-                        android:id="@+id/switch_name"
-                        style="@style/row_name"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="35dp"
-                        android:layout_marginEnd="35dp"
-                        tools:text="Switch" />
-
-                    <TextView
-                        android:id="@+id/switch_battery_level"
-                        style="@style/row_body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="@string/battery_level" />
-
-                    <TextView
-                        android:id="@+id/switch_signal_level"
-                        style="@style/row_body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/signal_level" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
+                <TextView
+                    android:id="@+id/switch_battery_level"
+                    style="@style/row_body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/battery_level" />
+
+                <TextView
+                    android:id="@+id/switch_signal_level"
+                    style="@style/row_body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signal_level" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/on_button"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:background="@drawable/button_status"
+                    android:text="@string/button_state_on"
+                    android:textSize="10dp" />
 
-                    <Button
-                        android:id="@+id/on_button"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/button_status"
-                        android:text="@string/button_state_on"
-                        android:textSize="10dp" />
-
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
-    <include layout="@layout/log_timer_button_row_default"/>
+    <include layout="@layout/log_timer_button_row_default" />
 
 </LinearLayout>
