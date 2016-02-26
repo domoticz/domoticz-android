@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -37,16 +38,14 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
-import nl.hnogames.domoticz.Containers.GraphPointInfo;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
@@ -239,26 +238,14 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     @Override
     public void onLogClick(final TemperatureInfo temp, final String range) {
-        mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {
-            @Override
-            public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
-                GraphDialog infoDialog = new GraphDialog(
-                        mContext,
-                        mGraphList);
-                infoDialog.setRange(range);
-                infoDialog.setSteps(3);
-                infoDialog.setTitle(mContext.getString(R.string.title_temperature));
-                infoDialog.show();
-            }
+        Intent intent = new Intent(mContext, GraphActivity.class);
+        intent.putExtra("IDX", temp.getIdx());
+        intent.putExtra("RANGE", range);
+        intent.putExtra("TYPE", "temp");
+        intent.putExtra("STEPS", 3);
+        startActivity(intent);
 
-            @Override
-            public void onError(Exception error) {
-                // Let's check if were still attached to an activity
-                if (isAdded()) {
-                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

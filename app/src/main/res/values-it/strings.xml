@@ -16,7 +16,7 @@
   <string name="button_status_week">Settimana</string>
   <string name="button_status_month">Mese</string>
   <string name="button_status_year">Anno</string>
-  <string name="button_status_timer">Tempo</string>
+  <string name="button_status_timer">Ritardo</string>
   <string name="button_status_notifications">Notifiche</string>
   <string name="button_color">Colore</string>
   <string name="button_arm">Arma</string>
