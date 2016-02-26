@@ -20,14 +20,18 @@
  *
  */
 
-package nl.hnogames.domoticz.UI;
+package nl.hnogames.domoticz.Fragments;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,51 +48,91 @@ import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ComboLineColumnChartView;
 import nl.hnogames.domoticz.Containers.GraphPointInfo;
+import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.GraphActivity;
+import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class GraphDialog {
+public class Graph extends Fragment implements DomoticzFragmentListener {
 
-    private final MaterialDialog.Builder mdb;
-    private ArrayList<GraphPointInfo> mGraphList;
-    private String axisYLabel = "Temp";
+    @SuppressWarnings("unused")
+    private static final String TAG = Graph.class.getSimpleName();
+
+    private Context context;
+    private Domoticz mDomoticz;
+
+    private int idx = 0;
     private String range = "day";
+    private String type = "temp";
     private int steps = 1;
-    private Context mContext;
+    private String axisYLabel = "Temp";
 
-    public GraphDialog(Context mContext,
-                       ArrayList<GraphPointInfo> mGraphList) {
-        this.mGraphList = mGraphList;
-        this.mContext = mContext;
-        mdb = new MaterialDialog.Builder(mContext);
-        //noinspection unused
-        boolean wrapInScrollView = true;
-        mdb.customView(R.layout.dialog_graph, false)
-                .positiveText(android.R.string.ok);
-    }
+    private ArrayList<GraphPointInfo> mGraphList;
+    private ComboLineColumnChartView chart;
+    private View root;
 
-    public void show() {
-        mdb.title(axisYLabel);
-        MaterialDialog md = mdb.build();
-        View view = md.getCustomView();
 
-        ComboLineColumnChartView chart = (ComboLineColumnChartView) view.findViewById(R.id.chart);
-        ComboLineColumnChartData columnData = generateData(view);
-        chart.setComboLineColumnChartData(columnData);
-        setViewPort(chart);
-        md.show();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle data = getActivity().getIntent().getExtras();
+        if (data != null) {
+            idx = data.getInt("IDX");
+            range = data.getString("RANGE");
+            type = data.getString("TYPE");
+            String title = data.getString("TITLE");
+            if (!UsefulBits.isEmpty(title)) {
+                setTitle(title);
+            }
+            steps = data.getInt("STEPS", 1);
+        }
     }
 
     public void setTitle(String title) {
         axisYLabel = title;
-        mdb.title(title);
+        getActionBar().setTitle(title);
     }
 
-    public void setRange(String range) {
-        this.range = range;
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        root = inflater.inflate(R.layout.dialog_graph, null);
+        chart = (ComboLineColumnChartView) root.findViewById(R.id.chart);
+
+        getGraphs();
+        return root;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    public void getGraphs() {
+        if (mDomoticz == null)
+            mDomoticz = new Domoticz(context, null);
+
+        mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
+            @Override
+            public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
+                mGraphList = grphPoints;
+                ComboLineColumnChartData columnData = generateData(root);
+                chart.setComboLineColumnChartData(columnData);
+                setViewPort(chart);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                // Let's check if were still attached to an activity
+                if (isAdded()) {
+                    ((GraphActivity) getActivity()).noGraphFound();
+                }
+            }
+        });
     }
 
     //The viewport adds a margin to the top and bottom
@@ -100,6 +144,24 @@ public class GraphDialog {
         chart.setMaximumViewport(v);
         chart.setCurrentViewport(v);
         chart.setViewportCalculationEnabled(false);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    public ActionBar getActionBar() {
+        return ((AppCompatActivity) context).getSupportActionBar();
+    }
+
+    @Override
+    public void onConnectionOk() {
+        if (getView() != null) {
+            getGraphs();
+        }
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -231,7 +293,7 @@ public class GraphDialog {
         //    setCubic=true;
         if (addTemperature) {
             lines.add(new Line(values)
-                    .setColor(ContextCompat.getColor(mContext, R.color.md_material_blue_600))
+                    .setColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -239,7 +301,7 @@ public class GraphDialog {
 
             if (addSetpoint) {
                 lines.add(new Line(valuesse)
-                        .setColor(ContextCompat.getColor(mContext, R.color.material_pink_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_pink_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -249,7 +311,7 @@ public class GraphDialog {
 
         if (addHumidity) {
             lines.add(new Line(valueshu)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_orange_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_orange_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -258,7 +320,7 @@ public class GraphDialog {
 
         if (addBarometer) {
             lines.add(new Line(valuesba)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_green_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_green_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -267,7 +329,7 @@ public class GraphDialog {
 
         if (addCounter) {
             lines.add(new Line(valuesc)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_indigo_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_indigo_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -276,7 +338,7 @@ public class GraphDialog {
 
         if (addPercentage) {
             lines.add(new Line(valuesv)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_yellow_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_yellow_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -285,7 +347,7 @@ public class GraphDialog {
 
         if (addDirection) {
             lines.add(new Line(valuesdi)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_deep_teal_500))
+                    .setColor(ContextCompat.getColor(context, R.color.material_deep_teal_500))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -294,7 +356,7 @@ public class GraphDialog {
 
         if (addSunPower) {
             lines.add(new Line(valuesuv)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_deep_purple_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -303,7 +365,7 @@ public class GraphDialog {
 
         if (addSpeed) {
             lines.add(new Line(valuessp)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_amber_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_amber_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -312,7 +374,7 @@ public class GraphDialog {
 
         if (addUsage) {
             lines.add(new Line(valuesu)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_orange_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_orange_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
@@ -321,7 +383,7 @@ public class GraphDialog {
 
         if (addRain) {
             lines.add(new Line(valuesmm)
-                    .setColor(ContextCompat.getColor(mContext, R.color.material_light_green_600))
+                    .setColor(ContextCompat.getColor(context, R.color.material_light_green_600))
                     .setCubic(setCubic)
                     .setHasLabels(false)
                     .setHasLines(true)
