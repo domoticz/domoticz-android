@@ -46,6 +46,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -405,15 +406,16 @@ public class SharedPrefUtil {
                 return allNames;
             else {
                 int i = 0;
-                String[] selectionValues = new String[selections.size()];
+                ArrayList<String> selectionArrayList = new ArrayList<>();
+                String[] selectionValues = null;
                 for (String v : allNames) {
                     for (String s : selections) {
                         if (s.equals(v)) {
-                            selectionValues[i] = v;
-                            i++;
+                            selectionArrayList.add(v);
                         }
                     }
                 }
+                selectionValues = selectionArrayList.toArray(selectionValues);
 
                 if (i < selections.size()) {
                     setNavigationDefaults();
