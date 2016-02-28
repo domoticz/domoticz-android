@@ -405,16 +405,15 @@ public class SharedPrefUtil {
                 return allNames;
             else {
                 int i = 0;
-                ArrayList<String> selectionArrayList = new ArrayList<>();
-                String[] selectionValues = null;
+                String[] selectionValues = new String[selections.size()];
                 for (String v : allNames) {
                     for (String s : selections) {
                         if (s.equals(v)) {
-                            selectionArrayList.add(v);
+                            selectionValues[i] = v;
+                            i++;
                         }
                     }
                 }
-                selectionValues = selectionArrayList.toArray(selectionValues);
 
                 if (i < selections.size()) {
                     setNavigationDefaults();

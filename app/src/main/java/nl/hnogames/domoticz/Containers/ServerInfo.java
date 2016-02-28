@@ -204,6 +204,10 @@ public class ServerInfo {
         return LOCAL_SERVER_SSID;
     }
 
+    public void setLocalServerSsid(Set<String> set) {
+        LOCAL_SERVER_SSID = set;
+    }
+
     public void setLocalServerSsid(List<String> ssids) {
         if (ssids != null) {
             Set<String> set = new HashSet<>();
@@ -212,10 +216,6 @@ public class ServerInfo {
             }
             LOCAL_SERVER_SSID = set;
         }
-    }
-
-    public void setLocalServerSsid(Set<String> set) {
-        LOCAL_SERVER_SSID = set;
     }
 
     public String getServerName() {
