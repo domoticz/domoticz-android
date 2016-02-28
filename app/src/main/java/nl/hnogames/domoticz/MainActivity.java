@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDownloadedLanguage() {
-        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false);
+        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
     }
 
     private void saveServerConfigToActiveServer() {
