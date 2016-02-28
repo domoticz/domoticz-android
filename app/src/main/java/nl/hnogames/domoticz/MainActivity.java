@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
             appRate();
             WidgetUtils.RefreshWidgets(this);
+
+            AppController.getInstance().resendRegistrationIdToBackend();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -175,12 +177,12 @@ public class MainActivity extends AppCompatActivity {
     private void applyLanguage() {
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
             // User has set a language in settings
-            UsefulBits.setLocale(this, mSharedPrefs.getDisplayLanguage());
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         }
     }
 
     private void checkDownloadedLanguage() {
-        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false);
+        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
     }
 
     private void saveServerConfigToActiveServer() {
@@ -200,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case iSettingsResultCode:
+                    mServerUtil = new ServerUtil(this);
+
                     drawNavigationMenu();
                     refreshFragment();
                     updateDrawerItems();
@@ -225,13 +229,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addFragmentStack(String fragment) {
-        if (stackFragments == null)
+        int screenIndex = mSharedPrefs.getStartupScreenIndex();
+        if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
             stackFragments = new ArrayList<>();
-
-        if (!stackFragments.contains(fragment)) {
-            if (stackFragments.size() > 1)
-                stackFragments.remove(stackFragments.size() - 1);
             stackFragments.add(fragment);
+        } else {
+            if (stackFragments == null)
+                stackFragments = new ArrayList<>();
+
+            if (!stackFragments.contains(fragment)) {
+                if (stackFragments.size() > 1)
+                    stackFragments.remove(stackFragments.size() - 1);
+                stackFragments.add(fragment);
+            }
         }
     }
 
@@ -673,8 +683,15 @@ public class MainActivity extends AppCompatActivity {
     public void showServerDialog() {
         String[] serverNames = new String[mServerUtil.getServerList().size()];
         int count = 0;
+        int selectionId = -1;
+
         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
             serverNames[count] = s.getServerName();
+
+            if (mServerUtil.getActiveServer() != null &&
+                    mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
+                selectionId = count;
+
             count++;
         }
 
@@ -682,7 +699,7 @@ public class MainActivity extends AppCompatActivity {
         new MaterialDialog.Builder(this)
                 .title(R.string.choose_server)
                 .items(serverNames)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         ServerInfo setNew = null;

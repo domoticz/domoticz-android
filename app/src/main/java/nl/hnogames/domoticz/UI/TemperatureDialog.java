@@ -80,8 +80,10 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         if (isFahrenheit) {
             minTemp = minFahrenheitTemp;
             maxTemp = maxFahrenheitTemp;
-            if (temp < minFahrenheitTemp) temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
-            if (temp > maxFahrenheitTemp) temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
+            if (temp < minFahrenheitTemp)
+                temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
+            if (temp > maxFahrenheitTemp)
+                temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
         } else {
             minTemp = minCelsiusTemp;
             maxTemp = maxCelsiusTemp;

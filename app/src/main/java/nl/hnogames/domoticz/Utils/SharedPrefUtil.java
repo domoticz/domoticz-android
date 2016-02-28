@@ -56,6 +56,7 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
@@ -67,6 +68,7 @@ public class SharedPrefUtil {
 
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
@@ -79,6 +81,7 @@ public class SharedPrefUtil {
     private static final String PREF_STARTUP_SCREEN = "startup_screen";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
     private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
@@ -93,6 +96,8 @@ public class SharedPrefUtil {
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
+    private final String TAG = "Shared Pref util";
+    private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -122,12 +127,16 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
-    public void completeCard(String cardTag) {
-        editor.putBoolean("CARD" + cardTag, true).apply();
+    public boolean isDashboardSortedLikeServer() {
+        return prefs.getBoolean(PREF_SORT_LIKESERVER, true);
     }
 
     public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
+
+    public void completeCard(String cardTag) {
+        editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
     public boolean isCardCompleted(String cardTag) {
@@ -388,30 +397,37 @@ public class SharedPrefUtil {
         if (!prefs.contains(PREF_NAVIGATION_ITEMS))
             setNavigationDefaults();
 
-        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+        try {
+            Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+            String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        if (selections == null) //default
-            return allNames;
-        else {
-            String[] selectionValues = new String[selections.size()];
-            int i = 0;
-            for (String v : allNames) {
-                for (String s : selections) {
-                    if (s.equals(v)) {
-                        selectionValues[i] = v;
-                        i++;
+            if (selections == null) //default
+                return allNames;
+            else {
+                int i = 0;
+                String[] selectionValues = new String[selections.size()];
+                for (String v : allNames) {
+                    for (String s : selections) {
+                        if (s.equals(v)) {
+                            selectionValues[i] = v;
+                            i++;
+                        }
                     }
                 }
+
+                if (i < selections.size()) {
+                    setNavigationDefaults();
+                    return getNavigationActions();
+                } else
+                    return selectionValues;
             }
-
-            if (i < selections.size()) {
-                setNavigationDefaults();
-                return getNavigationActions();
-            } else
-                return selectionValues;
-
+        } catch (Exception ex) {
+            if (!UsefulBits.isEmpty(ex.getMessage()))
+                Log.e(TAG, ex.getMessage());
+            setNavigationDefaults();//try to correct the issue
         }
+
+        return null; //failed, can't show the menu (can be a translation issue if this happens!!)
     }
 
     public void setNavigationDefaults() {
@@ -469,6 +485,10 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
     }
 
+    public boolean isNFCEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_NFC, false);
+    }
+
     public boolean isServerUpdateAvailable() {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
@@ -479,6 +499,30 @@ public class SharedPrefUtil {
 
     public void setGeofenceEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
+    }
+
+    public void saveNFCList(List<NFCInfo> list) {
+        Gson gson = new Gson();
+        editor.putString(PREF_NFC_TAGS, gson.toJson(list));
+        editor.commit();
+    }
+
+    public ArrayList<NFCInfo> getNFCList() {
+        ArrayList<NFCInfo> oReturnValue = new ArrayList<>();
+        List<NFCInfo> nfcs;
+        if (prefs.contains(PREF_NFC_TAGS)) {
+            String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
+            Gson gson = new Gson();
+            NFCInfo[] item = gson.fromJson(jsonNFCs,
+                    NFCInfo[].class);
+            nfcs = Arrays.asList(item);
+            for (NFCInfo n : nfcs) {
+                oReturnValue.add(n);
+            }
+        } else
+            return null;
+
+        return oReturnValue;
     }
 
     public void saveLocations(List<LocationInfo> locations) {
@@ -637,7 +681,7 @@ public class SharedPrefUtil {
                 else if (v instanceof Set)
                     editor.putStringSet(key, ((Set<String>) v));
                 else
-                    Log.v("Settings", "Could not load pref: " + key + " | " + v.getClass());
+                    Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
             }
             editor.commit();
             res = true;
@@ -737,25 +781,35 @@ public class SharedPrefUtil {
      * @param langToDownload Language to get from the server
      * @param server         ServerUtil
      */
-    public void getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
+    public boolean getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
+
+        final boolean[] result = new boolean[1];
+
         if (!UsefulBits.isEmpty(langToDownload)) {
             new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
+                    Log.d(TAG, "Language " + langToDownload + " downloaded from server");
                     Calendar now = Calendar.getInstance();
                     saveLanguage(language);
                     // Write to shared preferences so we can use it to check later
                     setDownloadedLanguage(langToDownload);
                     setSavedLanguageDate(now.getTimeInMillis());
+                    result[0] = true;
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    Log.e("Shared Pref util", "Unable to get the language from the server: " + langToDownload);
+                    Log.e(TAG, "Unable to get the language from the server: " + langToDownload);
                     error.printStackTrace();
+                    result[0] = false;
                 }
             });
+        } else {
+            Log.d(TAG, "Aborting: Language to download not specified");
+            result[0] = false;
         }
+        return result[0];
     }
 
     public String getDownloadedLanguage() {

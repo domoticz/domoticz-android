@@ -60,10 +60,10 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 public class DevicesAdapter extends BaseAdapter implements Filterable {
 
     public static final int ID_SCENE_SWITCH = 2000;
-    private static final int ID_TEXTVIEW = 1000;
-    private static final int ID_SWITCH = 0;
+    private final int ID_TEXTVIEW = 1000;
+    private final int ID_SWITCH = 0;
 
-    private static final int[] EVOHOME_STATE_IDS = {
+    private final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
             Domoticz.Device.ModalSwitch.Action.AWAY,
@@ -94,12 +94,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         this.context = context;
         domoticz = new Domoticz(context, serverUtil);
 
-        Collections.sort(data, new Comparator<DevicesInfo>() {
-            @Override
-            public int compare(DevicesInfo left, DevicesInfo right) {
-                return left.getName().compareTo(right.getName());
-            }
-        });
+        // When not sorted the devices are almost like dashboard on server
+        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
+            // Sort alphabetically
+            Collections.sort(data, new Comparator<DevicesInfo>() {
+                @Override
+                public int compare(DevicesInfo left, DevicesInfo right) {
+                    return left.getName().compareTo(right.getName());
+                }
+            });
+        }
 
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.filteredData = data;
@@ -122,10 +126,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return 0;
     }
 
-    public Filter getFilter() {
-        return mFilter;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -140,6 +140,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    /**
+     * Get's the filter
+     *
+     * @return Returns the filter
+     */
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    /**
+     * Sets the right layout ID's based on the info of the device
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     * @return Returns the right view
+     */
     private View setSwitchRowId(DevicesInfo mDeviceInfo, ViewHolder holder) {
         View row = setDefaultRowId(holder);
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
@@ -230,6 +246,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's on/off button
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setOnOffButtonRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
             layoutResourceId = R.layout.scene_row_group;
@@ -257,6 +279,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for a on/off switch
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setOnOffSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
             layoutResourceId = R.layout.switch_row_on_off;
@@ -283,6 +311,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for the security panel
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setSecurityPanelSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_securitypanel;
         else layoutResourceId = R.layout.switch_row_securitypanel_small;
@@ -307,6 +341,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for a motion type device
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setMotionSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_motion;
         else layoutResourceId = R.layout.switch_row_motion_small;
@@ -330,6 +370,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout for default devices
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setDefaultRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.dashboard_row_default;
         else layoutResourceId = R.layout.dashboard_row_default_small;
@@ -345,6 +391,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for push on/push off switch
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setPushOnOffSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_pushon;
         else layoutResourceId = R.layout.switch_row_pushon_small;
@@ -369,6 +421,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for a thermostat device
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setThermostatRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.utilities_row_thermostat;
         else layoutResourceId = R.layout.utilities_row_thermostat_small;
@@ -385,6 +443,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    /**
+     * Sets the layout ID's for a temperature device
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setTemperatureRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.temperature_row_default;
         else layoutResourceId = R.layout.temperature_row_small;
@@ -407,6 +471,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
+    /**
+     * Sets the layout ID's for blinds
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setBlindsRowId(ViewHolder holder) {
 
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_blinds;
@@ -427,6 +497,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for the dimmer
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setDimmerRowId(ViewHolder holder, boolean isRGB) {
         if (isRGB) {
             if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_rgb_dimmer;
@@ -461,6 +537,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for the modal switch
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
     private View setModalSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_modal;
         else layoutResourceId = R.layout.switch_row_modal_small;
@@ -489,6 +571,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Set the data for switches
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
@@ -584,7 +672,14 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    /**
+     * Checks if the device has a stop button
+     *
+     * @param mDeviceInfo Device to check
+     * @return Returns true if the device has a stop button
+     */
     private boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
+        //noinspection SpellCheckingInspection
         return (mDeviceInfo.getSubType().contains("RAEX")) ||
                 (mDeviceInfo.getSubType().contains("A-OK")) ||
                 (mDeviceInfo.getSubType().contains("RollerTrol")) ||
@@ -593,6 +688,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 (mDeviceInfo.getSubType().contains("T6 DC"));
     }
 
+    /**
+     * Sets the data for a default device
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
                                    ViewHolder holder) {
 
@@ -635,7 +736,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                 holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
             if (mDeviceInfo.getType().equals("Wind")) {
-                holder.switch_battery_level.setText(context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr());
+                text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
+                holder.switch_battery_level.setText(text);
             }
             if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
                 holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
@@ -667,25 +769,30 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(1f);
     }
 
-
-    private void setSecurityPanelSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder) {
-        holder.isProtected = mDevicesInfo.isProtected();
-        holder.switch_name.setText(mDevicesInfo.getName());
+    /**
+     * Set the data for the security panel
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setSecurityPanelSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
+        holder.isProtected = mDeviceInfo.isProtected();
+        holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-                UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDevicesInfo.getData());
+                String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
         if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDevicesInfo.getIdx());
-            if (mDevicesInfo.getData().startsWith("Arm"))
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            if (mDeviceInfo.getData().startsWith("Arm"))
                 holder.buttonOn.setText(context.getString(R.string.button_disarm));
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
@@ -700,20 +807,26 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
-                mDevicesInfo.getType(),
-                mDevicesInfo.getSwitchType(),
-                mDevicesInfo.getStatusBoolean(),
-                mDevicesInfo.getUseCustomImage(),
-                mDevicesInfo.getImage())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
-        if (!mDevicesInfo.getStatusBoolean())
+        if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
 
     }
 
+    /**
+     * Set the data for the on/off buttons
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setOnOffButtonRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
         String text;
@@ -729,7 +842,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
-
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
                     String.valueOf(mDeviceInfo.getData());
@@ -744,7 +856,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonOn.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            else
+                holder.buttonOn.setId(mDeviceInfo.getIdx());
+
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -753,7 +869,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
         if (holder.buttonOff != null) {
-            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonOff.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            else
+                holder.buttonOff.setId(mDeviceInfo.getIdx());
             holder.buttonOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -782,6 +901,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    /**
+     * Set the data for the on/off switch
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setOnOffSwitchRowData(final DevicesInfo mDeviceInfo,
                                        final ViewHolder holder) {
         String text;
@@ -849,6 +974,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    /**
+     * Set the data for the thermostat devices
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setThermostatRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
@@ -868,7 +999,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        String text = "";
+        String text;
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
                     + ": "
@@ -891,6 +1022,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 null)).into(holder.iconRow);
     }
 
+    /**
+     * Set the data for temperature devices
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setTemperatureRowData(DevicesInfo mDeviceInfo, ViewHolder holder) {
         final double temperature = mDeviceInfo.getTemperature();
         final double setPoint = mDeviceInfo.getSetPoint();
@@ -942,7 +1079,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.buttonSet.setId(mDeviceInfo.getIdx());
             holder.buttonSet.setVisibility(View.VISIBLE);
 
-            modeIconRes = getEvohomeStateIcon(mDeviceInfo.getStatus());
+            modeIconRes = getEvohomeStateIconResource(mDeviceInfo.getStatus());
         } else {
             holder.buttonSet.setVisibility(View.GONE);
         }
@@ -959,14 +1096,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
-    public void handleThermostatClick(int idx) {
-        listener.onThermostatClick(idx);
-    }
-
-    public void handleSetTemperatureClick(int idx) {
-        listener.onSetTemperatureClick(idx);
-    }
-
+    /**
+     * Set the data for a push on/off device
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setPushOnOffSwitchRowData(DevicesInfo mDeviceInfo, ViewHolder holder, boolean action) {
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
@@ -1037,6 +1172,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    /**
+     * Set the data for blinds
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setBlindsRowData(DevicesInfo mDeviceInfo,
                                   ViewHolder holder) {
 
@@ -1121,42 +1262,49 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.iconRow.setAlpha(1f);
     }
 
-    private void setSelectorRowData(final DevicesInfo mDevicesInfo,
+    /**
+     * Set the data for a selector switch
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setSelectorRowData(final DevicesInfo mDeviceInfo,
                                     final ViewHolder holder) {
         String text;
 
-        holder.isProtected = mDevicesInfo.isProtected();
-        holder.switch_name.setText(mDevicesInfo.getName());
+        holder.isProtected = mDeviceInfo.isProtected();
+        holder.switch_name.setText(mDeviceInfo.getName());
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(context,
-                    mDevicesInfo.getLastUpdateDateTime().getTime());
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                    String.valueOf(mDevicesInfo.getStatus());
+                    String.valueOf(mDeviceInfo.getStatus());
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = mDevicesInfo.getLevel() / 10;
-        final String[] levelNames = mDevicesInfo.getLevelNames();
+        int loadLevel = mDeviceInfo.getLevel() / 10;
+        final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
-        if (levelNames.length >= loadLevel)
+
+        if (levelNames.length > loadLevel)
             statusText = levelNames[loadLevel];
 
-        holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
+        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(statusText);
-        holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
-        holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
+        holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+        holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 handleOnOffSwitchClick(compoundButton.getId(), checked);
-                mDevicesInfo.setStatusBoolean(checked);
+                mDeviceInfo.setStatusBoolean(checked);
                 if (checked) {
                     holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                     holder.dimmer.setVisibility(View.VISIBLE);
@@ -1179,7 +1327,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         holder.dimmer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
+                handleSelectorDimmerClick(mDeviceInfo.getIdx(), levelNames);
             }
         });
 
@@ -1196,11 +1344,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
+                handleSelectorDimmerClick(mDeviceInfo.getIdx(), levelNames);
             }
         });
 
-        if (!mDevicesInfo.getStatusBoolean()) {
+        if (!mDeviceInfo.getStatusBoolean()) {
             holder.switch_dimmer_level.setVisibility(View.GONE);
             holder.dimmer.setVisibility(View.GONE);
         } else {
@@ -1208,19 +1356,25 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.dimmer.setVisibility(View.VISIBLE);
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
-                mDevicesInfo.getType(),
-                mDevicesInfo.getSwitchType(),
-                mDevicesInfo.getStatusBoolean(),
-                mDevicesInfo.getUseCustomImage(),
-                mDevicesInfo.getImage())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
-        if (!mDevicesInfo.getStatusBoolean())
+        if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
     }
 
+    /**
+     * Set the data for a dimmer
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
     private void setDimmerRowData(final DevicesInfo mDeviceInfo,
                                   final ViewHolder holder,
                                   final boolean isRGB) {
@@ -1356,20 +1510,31 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    private void setModalSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder, final int stateArrayRes, final int stateNamesArrayRes, final int[] stateIds) {
-        holder.switch_name.setText(mDevicesInfo.getName());
+    /**
+     * Set the data for temperature devices
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setModalSwitchRowData(DevicesInfo mDeviceInfo,
+                                       ViewHolder holder,
+                                       final int stateArrayRes,
+                                       final int stateNamesArrayRes,
+                                       final int[] stateIds) {
+
+        holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
                 UsefulBits.getFormattedDate(context,
-                        mDevicesInfo.getLastUpdateDateTime().getTime());
+                        mDeviceInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-                getStatus(stateArrayRes, stateNamesArrayRes, mDevicesInfo.getStatus());
+                getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
-        if(holder.buttonSetStatus != null) {
-            holder.buttonSetStatus.setId(mDevicesInfo.getIdx());
+        if (holder.buttonSetStatus != null) {
+            holder.buttonSetStatus.setId(mDeviceInfo.getIdx());
             holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1379,14 +1544,22 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
-                mDevicesInfo.getType(),
-                mDevicesInfo.getSwitchType(),
-                mDevicesInfo.getStatusBoolean(),
-                mDevicesInfo.getUseCustomImage(),
-                mDevicesInfo.getImage())).into(holder.iconRow);
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
     }
 
+    /**
+     * Gets the status text
+     *
+     * @param statusArrayRes      Status array to use
+     * @param statusNamesArrayRes Status array of names to use
+     * @param text                Text to find
+     * @return Returns the status text
+     */
     private String getStatus(int statusArrayRes, int statusNamesArrayRes, String text) {
         Resources res = context.getResources();
         String[] states = res.getStringArray(statusArrayRes);
@@ -1394,55 +1567,138 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         int length = states.length;
         for (int i = 0; i < length; i++) {
-            if (states[i].equals(text)) {
+            if (states[i].equals(text))
                 return stateNames[i];
-            }
         }
         return text;
     }
 
+    /**
+     * Handles the color button
+     *
+     * @param idx IDX of the device to change
+     */
     private void handleColorButtonClick(int idx) {
         listener.onColorButtonClick(idx);
     }
 
+    /**
+     * Interface which handles the clicks of the thermostat set button
+     *
+     * @param idx IDX of the device to change
+     */
+    public void handleThermostatClick(int idx) {
+        listener.onThermostatClick(idx);
+    }
+
+    /**
+     * Handles the temperature click
+     *
+     * @param idx IDX of the device to change
+     */
+    public void handleSetTemperatureClick(int idx) {
+        listener.onSetTemperatureClick(idx);
+    }
+
+    /**
+     * Handles the on/off switch click
+     *
+     * @param idx    IDX of the device to change
+     * @param action Action to take
+     */
+    private void handleOnOffSwitchClick(int idx, boolean action) {
+        listener.onSwitchClick(idx, action);
+    }
+
+    /**
+     * Handles the security panel
+     *
+     * @param idx IDX of the device to change
+     */
+    private void handleSecurityPanel(int idx) {
+        listener.onSecurityPanelButtonClick(idx);
+    }
+
+    /**
+     * Handles the on button click
+     *
+     * @param idx    IDX of the device to change
+     * @param action Action to take
+     */
+    private void handleOnButtonClick(int idx, boolean action) {
+        listener.onButtonClick(idx, action);
+    }
+
+    /**
+     * Handles the blicks click
+     *
+     * @param idx    IDX of the device to change
+     * @param action Action to take
+     */
+    private void handleBlindsClick(int idx, int action) {
+        listener.onBlindClick(idx, action);
+    }
+
+    /**
+     * Handles the dimmer change
+     *
+     * @param idx      IDX of the device to change
+     * @param value    Value to change the device to
+     * @param selector True if it's a selector device
+     */
+    private void handleDimmerChange(final int idx, final int value, boolean selector) {
+        listener.onDimmerChange(idx, value, selector);
+    }
+
+    /**
+     * Handles the state button click
+     *
+     * @param idx      IDX of the device to change
+     * @param itemsRes Resource ID of the items
+     * @param itemIds  State ID's
+     */
+    private void handleStateButtonClick(final int idx, int itemsRes, int[] itemIds) {
+        listener.onStateButtonClick(idx, itemsRes, itemIds);
+    }
+
+    /**
+     * Handles the selector dimmer click
+     *
+     * @param idx        IDX of the device to change
+     * @param levelNames Names om the levels
+     */
+    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
+        listener.onSelectorDimmerClick(idx, levelNames);
+    }
+
+    /**
+     * Handles the log button click
+     *
+     * @param idx IDX of the device to change
+     */
+    private void handleLogButtonClick(int idx) {
+        listener.onLogButtonClick(idx);
+    }
+
+    /**
+     * Calculates the dim percentage
+     *
+     * @param maxDimLevel Max dim level
+     * @param level       Current level
+     * @return Calculated percentage
+     */
     private String calculateDimPercentage(int maxDimLevel, int level) {
         float percentage = ((float) level / (float) maxDimLevel) * 100;
         return String.format("%.0f", percentage) + "%";
     }
 
-    private void handleOnOffSwitchClick(int idx, boolean action) {
-        listener.onSwitchClick(idx, action);
-    }
-
-    private void handleSecurityPanel(int idx) {
-        listener.onSecurityPanelButtonClick(idx);
-    }
-
-    private void handleOnButtonClick(int idx, boolean action) {
-        listener.onButtonClick(idx, action);
-    }
-
-    private void handleBlindsClick(int idx, int action) {
-        listener.onBlindClick(idx, action);
-    }
-
-    private void handleDimmerChange(final int idx, final int value, boolean selector) {
-        listener.onDimmerChange(idx, value, selector);
-    }
-
-    private void handleStateButtonClick(final int idx, int itemsRes, int[] itemIds) {
-        listener.onStateButtonClick(idx, itemsRes, itemIds);
-    }
-
-    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
-        listener.onSelectorDimmerClick(idx, levelNames);
-    }
-
-    private void handleLogButtonClick(int idx) {
-        listener.onLogButtonClick(idx);
-    }
-
-    public int getEvohomeStateIcon(String stateName) {
+    /**
+     * Get's the icon of the Evo home state
+     *
+     * @param stateName The current state to return the icon for
+     * @return Returns resource ID for the icon
+     */
+    private int getEvohomeStateIconResource(String stateName) {
         if (stateName == null) return 0;
 
         TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
@@ -1461,6 +1717,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         return iconRes;
     }
 
+    /**
+     * View holder for caching resource ID's
+     */
     static class ViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
@@ -1472,6 +1731,9 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         LinearLayout extraPanel;
     }
 
+    /**
+     * Item filter
+     */
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

@@ -155,31 +155,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             createListView(extendedStatusSwitches);
     }
 
-    private boolean isOnOffSwitch(DevicesInfo testSwitch) {
-        if (testSwitch.getSwitchTypeVal() <= 0 && testSwitch.getSwitchType() == null)
-            return false;
-
-        switch (testSwitch.getSwitchTypeVal()) {
-            case Domoticz.Device.Type.Value.ON_OFF:
-            case Domoticz.Device.Type.Value.MEDIAPLAYER:
-            case Domoticz.Device.Type.Value.X10SIREN:
-            case Domoticz.Device.Type.Value.DOORLOCK:
-            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
-            case Domoticz.Device.Type.Value.BLINDINVERTED:
-            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-            case Domoticz.Device.Type.Value.BLINDVENETIAN:
-            case Domoticz.Device.Type.Value.BLINDS:
-            case Domoticz.Device.Type.Value.DIMMER:
-                return true;
-        }
-        switch (testSwitch.getType()) {
-            case Domoticz.Scene.Type.GROUP:
-                return true;
-        }
-
-        return false;
-    }
-
     // add dynamic list view
     private void createListView(ArrayList<DevicesInfo> switches) {
         if (switches == null)
@@ -204,15 +179,15 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         } else {
                             Snackbar.make(coordinatorLayout, getString(R.string.filterOn_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
                             if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
-                                    isOnOffSwitch(mExtendedStatusInfo)) {
+                                    mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
                             }
                             if ((super.getSort().equals(mContext.getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
-                                    isOnOffSwitch(mExtendedStatusInfo)) {
+                                    mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
                             }
                             if (super.getSort().equals(mContext.getString(R.string.filterOn_static)) &&
-                                    !isOnOffSwitch(mExtendedStatusInfo)) {
+                                    !mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
                                 supportedSwitches.add(mExtendedStatusInfo);
                             }
                         }

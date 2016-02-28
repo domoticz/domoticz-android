@@ -61,10 +61,19 @@ public class SetupServerSettings extends Fragment {
     private CheckBox cbShowPassword, cbShowPasswordLocal;
     private Button saveButton;
     private Switch useSameAddress;
-    private ServerInfo newServer = new ServerInfo();
+    private ServerInfo newServer;
     private boolean isUpdateRequest = false;
     private Context mContext;
 
+    public static SetupServerSettings newInstance(int instance) {
+        SetupServerSettings f = new SetupServerSettings();
+
+        Bundle bdl = new Bundle(1);
+        bdl.putInt(INSTANCE, instance);
+        f.setArguments(bdl);
+
+        return f;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -76,24 +85,12 @@ public class SetupServerSettings extends Fragment {
         mSharedPrefs = new SharedPrefUtil(mContext);
 
         Bundle extras = getArguments();
-        if(extras != null)
-        {
+        if (extras != null) {
             String updateServerName = extras.getString("SERVERNAME");
-            if(!UsefulBits.isEmpty(updateServerName))
-            {
+            if (!UsefulBits.isEmpty(updateServerName)) {
                 newServer = mServerUtil.getServerInfo(updateServerName);
             }
         }
-    }
-
-    public static SetupServerSettings newInstance(int instance) {
-        SetupServerSettings f = new SetupServerSettings();
-
-        Bundle bdl = new Bundle(1);
-        bdl.putInt(INSTANCE, instance);
-        f.setArguments(bdl);
-
-        return f;
     }
 
     @Override
@@ -231,7 +228,7 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void setPreferenceValues() {
-        if(newServer != null) {
+        if (newServer != null) {
             isUpdateRequest = true;
             server_name_input.setInputWidgetText(newServer.getServerName());
             server_name_input.getInputWidget().setEnabled(false);//we dont allow updates on the key
@@ -250,6 +247,9 @@ public class SetupServerSettings extends Fragment {
 
             localServer_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
             advancedSettings_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
+        } else {
+            server_name_input.getInputWidget().setEnabled(true);
+            remote_username_input.setInputWidgetText("");
         }
 
         setProtocol_spinner();
@@ -344,9 +344,13 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void setStartScreen_spinner() {
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(mContext);
+
         String[] startScreens = getResources().getStringArray(R.array.drawer_actions);
         ArrayAdapter<String> startScreenAdapter
                 = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, startScreens);
+
         startScreen_spinner.setAdapter(startScreenAdapter);
         startScreen_spinner.setSelection(mSharedPrefs.getStartupScreenIndex());
         startScreen_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

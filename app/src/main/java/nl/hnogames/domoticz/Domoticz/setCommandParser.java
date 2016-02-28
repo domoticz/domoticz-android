@@ -38,10 +38,7 @@ public class setCommandParser implements JSONParserInterface {
 
     @Override
     public void parseResult(String result) {
-        if (result.equals("ERROR"))
-            onError(null);
-        else
-            setCommandReceiver.onReceiveResult(result);
+        setCommandReceiver.onReceiveResult(result);
     }
 
     @Override

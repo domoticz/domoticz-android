@@ -101,5 +101,5 @@
     </LinearLayout>
 
 
-    <include layout="@layout/log_timer_button_row_default"/>
+    <include layout="@layout/log_timer_button_row_default" />
 </LinearLayout>

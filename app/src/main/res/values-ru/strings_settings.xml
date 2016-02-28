@@ -12,6 +12,7 @@
   <string name="category_notification">Уведомления</string>
   <string name="category_debug">Отладка</string>
   <string name="category_export">Экспорт/импорт параметров</string>
+  <string name="category_nfc">NFC Connections</string>
   <string name="startup_screen">Экран запуска</string>
   <string name="enable_items">Включить/отключить элементы</string>
   <string name="extra_data_title">Дополнительные данные на панели мониторинга</string>
@@ -31,11 +32,14 @@
   <string name="settings_exported">Settings exported, please restart Domoticz</string>
   <string name="settings_export_failed">Failed to export Settings</string>
   <string name="server_settings">Настройки подключения к серверу</string>
+  <string name="nfc_settings">Setup NFC Connections</string>
   <string name="title_activity_server_settings">Параметры сервера</string>
   <string name="multi_server">Multi-сервер</string>
+  <string name="enable_nfc">Enable NFC</string>
   <string name="export_settings">Экспортировать настройки</string>
   <string name="import_settings">Импортировать настройки</string>
   <string name="multi_server_settings">Включить поддержку нескольких серверов</string>
+  <string name="nfc_enable_settings">Enable NFC Connections</string>
   <string name="server">Сервер</string>
   <string name="notification_settings_id">ID сообщений Google Cloud</string>
   <string name="notification_settings_push">Использовать Ваш регистрационный идентификатор для Domoticz</string>
@@ -67,6 +71,8 @@
   <string name="error_couldNotCheckForUpdates">"Невозможно проверить наличие обновлений: %1$s"</string>
   <string name="error_couldNotCheckForConfig">"Не удалось получить конфигурацию сервера Domoticz: %1$s"</string>
   <string name="update_available_enhanced">Доступно обновление сервера: %1$s до версии: %2$s</string>
+  <string name="check_for_update_title">Check for Updates</string>
+  <string name="check_for_update">Would you like us to check for Domoticz system updates?</string>
   <string name="update_server_warning">Во время обновления сервера приложение не будет работать оптимально.</string>
   <string name="update_server_downloadNotReady1">Обновление не загружено (полностью).</string>
   <string name="update_server_downloadNotReady2">Повторите попытку позднее.</string>
