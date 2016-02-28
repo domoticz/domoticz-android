@@ -26,7 +26,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -75,12 +74,10 @@ public class AppController extends Application implements GcmListener {
     public void onCreate() {
         super.onCreate();
 
-        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey))) {
+        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey)))
             Mint.initAndStartSession(this, getString(R.string.mintapikey));
-        }
-        if (PermissionsUtil.canAccessDeviceState(this)) {
+        if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
-        }
 
         mInstance = this;
     }
@@ -89,6 +86,7 @@ public class AppController extends Application implements GcmListener {
         EasyGcm.init(this);
     }
 
+    @SuppressWarnings("TryWithIdenticalCatches")
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             Context context = getApplicationContext();
@@ -111,10 +109,17 @@ public class AppController extends Application implements GcmListener {
         return mRequestQueue;
     }
 
+    /*
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
         getRequestQueue().add(req);
     }
+    public void cancelPendingRequests(Object tag) {
+        if (mRequestQueue != null) {
+            mRequestQueue.cancelAll(tag);
+        }
+    }
+    */
 
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
@@ -125,12 +130,6 @@ public class AppController extends Application implements GcmListener {
 
         req.setRetryPolicy(retryPolicy);
         getRequestQueue().add(req);
-    }
-
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
     }
 
     @Override
@@ -165,50 +164,54 @@ public class AppController extends Application implements GcmListener {
         }
     }
 
+    public void resendRegistrationIdToBackend() {
+        final String UUID = DeviceUtils.getUniqueID(this);
+        String sender_id = getGCMRegistrationId();
+        if (UsefulBits.isEmpty(sender_id) || UsefulBits.isEmpty(UUID))
+            return;
+
+        registerMobileForGCM(UUID, sender_id);
+    }
+
     public String getGCMRegistrationId() {
         return EasyGcm.getRegistrationId(this);
     }
 
     @Override
-    public void sendRegistrationIdToBackend(final String senderid) {
+    public void sendRegistrationIdToBackend(final String sender_id) {
         final String UUID = DeviceUtils.getUniqueID(this);
-        if (UsefulBits.isEmpty(senderid) || UsefulBits.isEmpty(UUID))
+        if (UsefulBits.isEmpty(sender_id) || UsefulBits.isEmpty(UUID))
             return;
 
         final Domoticz mDomoticz = new Domoticz(this, null);
         mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {
-                //previous id cleaned
-                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
-                    @Override
-                    public void onSuccess() {
-                        Log.i("GCM", "Device registered on Domoticz");
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        if (error != null)
-                            Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
-                    }
-                });
+                // Previous id cleaned
+                registerMobileForGCM(UUID, sender_id);
             }
 
             @Override
             public void onError(Exception error) {
-                //nothing to clean..
-                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
-                    @Override
-                    public void onSuccess() {
-                        Log.i("GCM", "Device registered on Domoticz");
-                    }
+                // Nothing to clean
+                registerMobileForGCM(UUID, sender_id);
+            }
+        });
+    }
 
-                    @Override
-                    public void onError(Exception error) {
-                        if (error != null)
-                            Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
-                    }
-                });
+    private void registerMobileForGCM(String UUID, String senderid) {
+
+        final Domoticz mDomoticz = new Domoticz(this, null);
+        mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+            @Override
+            public void onSuccess() {
+                Log.i("GCM", "Device registered on Domoticz");
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (error != null)
+                    Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
             }
         });
     }

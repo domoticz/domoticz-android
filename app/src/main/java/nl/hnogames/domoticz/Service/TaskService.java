@@ -54,7 +54,7 @@ public class TaskService extends GcmTaskService {
             //noinspection ConstantConditions
             UsefulBits.saveServerConfigToActiveServer(this, forceUpdate);
             //noinspection ConstantConditions
-            UsefulBits.checkDownloadedLanguage(this, null, forceUpdate);
+            UsefulBits.checkDownloadedLanguage(this, null, forceUpdate, true);
         }
 
         return GcmNetworkManager.RESULT_SUCCESS;
