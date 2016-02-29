@@ -97,7 +97,10 @@ public class SetupServerSettings extends Fragment {
                              Bundle savedInstanceState) {
 
         callingInstance = getArguments().getInt(INSTANCE);
-        v = inflater.inflate(R.layout.fragment_add_server, container, false);
+        if (mSharedPrefs.darkThemeEnabled())
+            v = inflater.inflate(R.layout.fragment_add_server_dark, container, false);
+        else
+            v = inflater.inflate(R.layout.fragment_add_server, container, false);
 
         getLayoutReferences();
         setPreferenceValues();

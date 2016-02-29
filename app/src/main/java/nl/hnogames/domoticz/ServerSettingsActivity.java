@@ -31,6 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.SetupServerSettings;
 import nl.hnogames.domoticz.Welcome.WelcomePage3;
@@ -48,6 +49,10 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {

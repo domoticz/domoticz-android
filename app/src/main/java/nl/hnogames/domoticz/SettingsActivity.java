@@ -28,15 +28,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Preference.Preference;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new Preference()).commit();
     }

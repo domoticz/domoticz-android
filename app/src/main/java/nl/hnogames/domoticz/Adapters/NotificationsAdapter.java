@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.NotificationInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class NotificationsAdapter extends BaseAdapter {
@@ -41,10 +42,13 @@ public class NotificationsAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NotificationInfo> data = null;
 
+    private SharedPrefUtil mSharedPrefs;
+
     public NotificationsAdapter(Context context,
                                 ArrayList<NotificationInfo> data) {
         super();
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         this.data = data;
     }
 
@@ -77,6 +81,11 @@ public class NotificationsAdapter extends BaseAdapter {
                 layoutResourceId = R.layout.timer_row;
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
+
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+                    (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+                }
 
                 holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
                 holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);

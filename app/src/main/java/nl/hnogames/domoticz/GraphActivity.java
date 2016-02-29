@@ -27,12 +27,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Graph;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class GraphActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();

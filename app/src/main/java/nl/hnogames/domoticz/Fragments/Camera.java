@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,11 +43,13 @@ import java.io.File;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class Camera extends Fragment {
 
     private ImageView root;
     private String url = "";
+    private SharedPrefUtil mSharedPrefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,10 @@ public class Camera extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         RelativeLayout group = (RelativeLayout) inflater.inflate(R.layout.camera_default, null);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            group.findViewById(R.id.row_global_wrapper).setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
+
         root = (ImageView) group.findViewById(R.id.image);
         FloatingActionButton fabButton = (FloatingActionButton) group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +77,12 @@ public class Camera extends Fragment {
         if (this.url.length() > 0)
             setImage(this.url);
         return group;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mSharedPrefs = new SharedPrefUtil(context);
     }
 
     @Override

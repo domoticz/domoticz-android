@@ -43,6 +43,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -52,6 +53,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private SharedPrefUtil mSharedPrefs;
     private PlansAdapter mAdapter;
     private ArrayList<PlanInfo> mPlans;
 
@@ -74,6 +76,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     public void processPlans() {
+
         mDomoticz.getPlans(new PlansReceiver() {
 
             @Override
@@ -116,6 +119,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mSharedPrefs = new SharedPrefUtil(mContext);
         getActionBar().setTitle(R.string.title_plans);
     }
 
@@ -139,6 +143,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            mRecyclerView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
 
         processPlans();
     }

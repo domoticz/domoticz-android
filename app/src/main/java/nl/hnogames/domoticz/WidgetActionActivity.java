@@ -40,7 +40,11 @@ public class WidgetActionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
 
@@ -48,8 +52,6 @@ public class WidgetActionActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
             this.finish();
         }
-
-        mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this, null);
 
         this.setTitle(getString(R.string.pick_device_title));

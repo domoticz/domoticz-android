@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzFragment extends Fragment {
@@ -63,6 +64,7 @@ public class DomoticzFragment extends Fragment {
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
+    public SharedPrefUtil mSharedPrefs;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -72,6 +74,12 @@ public class DomoticzFragment extends Fragment {
     private SpinnerLoader oSpinner;
 
     public DomoticzFragment() {
+    }
+
+    public void setTheme() {
+        if (mSharedPrefs.darkThemeEnabled()) {
+            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
     }
 
     public String getSort() {
@@ -111,8 +119,12 @@ public class DomoticzFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mSharedPrefs = new SharedPrefUtil(getActivity());
         mDomoticz = new Domoticz(getActivity(), getServerUtil());
         debug = mDomoticz.isDebugEnabled();
+        setTheme();
+
         if (debug)
             showDebugLayout();
 

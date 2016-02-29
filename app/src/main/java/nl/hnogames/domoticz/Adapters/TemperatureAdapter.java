@@ -45,15 +45,16 @@ import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
 public class TemperatureAdapter extends BaseAdapter implements Filterable {
 
     @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
-
     private final TemperatureClickListener listener;
     public ArrayList<TemperatureInfo> filteredData = null;
+    private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private Context context;
     private ArrayList<TemperatureInfo> data = null;
@@ -66,6 +67,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
         Collections.sort(data, new Comparator<TemperatureInfo>() {
             @Override
@@ -111,13 +113,25 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         layoutResourceId = R.layout.temperature_row_default;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
-
-        holder.isProtected = mTemperatureInfo.isProtected();
-        holder.setButton = (Button) convertView.findViewById(R.id.set_button);
         holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
+        holder.setButton = (Button) convertView.findViewById(R.id.set_button);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+            holder.dayButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+            holder.monthButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+            holder.yearButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+            holder.weekButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+
+            if (holder.setButton != null)
+                holder.setButton.setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+        }
+
+        holder.isProtected = mTemperatureInfo.isProtected();
         holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
         holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
         holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);

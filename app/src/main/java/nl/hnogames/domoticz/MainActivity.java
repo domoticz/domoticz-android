@@ -22,6 +22,7 @@
 
 package nl.hnogames.domoticz;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -105,20 +106,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
         if (!resolvableError) this.finish();
 
-        mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-
             // Only start Geofences when not started
             // Geofences are already started on device boot up by the BootUpReceiver
             if (!mSharedPrefs.isGeofencingStarted()) {
@@ -203,11 +206,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
+                    if (mSharedPrefs.darkThemeEnabled())
+                        setTheme(R.style.AppThemeDark);
 
-                    drawNavigationMenu();
-                    refreshFragment();
-                    updateDrawerItems();
-                    invalidateOptionsMenu();
+                    this.recreate();
                     break;
             }
         }

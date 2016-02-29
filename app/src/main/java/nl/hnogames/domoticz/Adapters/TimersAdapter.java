@@ -34,10 +34,13 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class TimersAdapter extends BaseAdapter {
 
     private static final String TAG = TimersAdapter.class.getSimpleName();
+
+    private SharedPrefUtil mSharedPrefs;
 
     private Context context;
     private ArrayList<SwitchTimerInfo> data = null;
@@ -47,6 +50,7 @@ public class TimersAdapter extends BaseAdapter {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         this.data = data;
     }
 
@@ -80,6 +84,10 @@ public class TimersAdapter extends BaseAdapter {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
 
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+                    (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+                }
                 holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
                 holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);
                 holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);

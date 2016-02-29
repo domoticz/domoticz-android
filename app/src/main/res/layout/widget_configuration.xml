@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bordershadow"
+    
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical">

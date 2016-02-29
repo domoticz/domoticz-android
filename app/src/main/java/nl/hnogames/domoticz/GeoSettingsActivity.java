@@ -116,6 +116,10 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_settings);
 
@@ -124,8 +128,10 @@ public class GeoSettingsActivity extends AppCompatActivity
         this.setTitle(R.string.geofence);
 
         domoticz = new Domoticz(this, null);
-        mSharedPrefs = new SharedPrefUtil(this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
 
         createListView();
         initSwitches();
@@ -235,6 +241,9 @@ public class GeoSettingsActivity extends AppCompatActivity
         });
 
         ListView listView = (ListView) findViewById(R.id.listView);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);

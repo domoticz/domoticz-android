@@ -74,10 +74,13 @@ public class WelcomePage3 extends Fragment {
         } catch (Exception e) {
             callingInstance = WELCOME_WIZARD;
         }
-
-        v = inflater.inflate(R.layout.fragment_welcome3, container, false);
-
         mSharedPrefs = new SharedPrefUtil(getActivity());
+
+        if (mSharedPrefs.darkThemeEnabled())
+            v = inflater.inflate(R.layout.fragment_welcome3_dark, container, false);
+        else
+            v = inflater.inflate(R.layout.fragment_welcome3, container, false);
+
         mServerUtil = new ServerUtil(getActivity());
 
         getLayoutReferences();

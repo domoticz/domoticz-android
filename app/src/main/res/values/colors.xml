@@ -6,6 +6,9 @@
     <color name="primary_dark">#22272B</color>
     <color name="accent">#22272B</color>
 
+    <color name="background_dark">#303030</color>
+    <color name="button_dark">#50BDBDBD</color>
+
     <color name="welcome1_background">@color/black</color>
     <color name="welcome2_background">@color/default_background_color_light</color>
     <color name="welcome3_background">@color/default_background_color_light</color>

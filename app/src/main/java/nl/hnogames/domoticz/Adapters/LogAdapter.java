@@ -41,6 +41,7 @@ import java.util.Collections;
 import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class LogAdapter extends BaseAdapter implements Filterable {
 
@@ -50,6 +51,7 @@ public class LogAdapter extends BaseAdapter implements Filterable {
     ArrayList<LogInfo> filteredData = null;
     ArrayList<LogInfo> data = null;
     Domoticz domoticz;
+    private SharedPrefUtil mSharedPrefs;
     private ItemFilter mFilter = new ItemFilter();
 
     public LogAdapter(Context context,
@@ -57,6 +59,7 @@ public class LogAdapter extends BaseAdapter implements Filterable {
                       ArrayList<LogInfo> data) {
         super();
 
+        mSharedPrefs = new SharedPrefUtil(context);
         this.context = context;
         this.domoticz = mDomoticz;
 
@@ -107,6 +110,11 @@ public class LogAdapter extends BaseAdapter implements Filterable {
                 layoutResourceId = R.layout.logs_row_default;
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
+
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+                    (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+                }
 
                 holder.name = (TextView) convertView.findViewById(R.id.logs_name);
                 holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);

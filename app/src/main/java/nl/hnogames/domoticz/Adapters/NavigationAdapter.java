@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
 
@@ -45,6 +46,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     private int profile;        //int Resource for header view profile picture
     private String email;       //String Resource for header view email
     private Context mContext;
+    private SharedPrefUtil mSharedPrefs;
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
     // ViewHolder are used to to store the inflated views in order to recycle them
@@ -57,6 +59,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         email = Email;
         profile = Profile;                     //here we assign those passed values to the values we declared here
         mContext = context;
+        mSharedPrefs = new SharedPrefUtil(context);
     }
 
     public boolean updateData(String Titles[], int Icons[]) {
@@ -71,6 +74,9 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public NavigationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item_row, parent, false); //Inflating the layout
+            if (mSharedPrefs.darkThemeEnabled()) {
+                (v.findViewById(R.id.row_global_wrapper)).setBackgroundColor(mContext.getResources().getColor(R.color.background_dark));
+            }
             return new ViewHolder(v, viewType); // Returning the created object
         } else if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_item_header, parent, false); //Inflating the layout

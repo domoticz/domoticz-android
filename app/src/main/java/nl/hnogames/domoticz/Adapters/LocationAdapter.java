@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class LocationAdapter extends BaseAdapter {
 
@@ -47,6 +48,7 @@ public class LocationAdapter extends BaseAdapter {
     public ArrayList<LocationInfo> data = null;
     private Context context;
 
+    private SharedPrefUtil mSharedPrefs;
     private LocationClickListener listener;
 
     public LocationAdapter(Context context,
@@ -54,6 +56,7 @@ public class LocationAdapter extends BaseAdapter {
                            LocationClickListener l) {
         super();
 
+        mSharedPrefs = new SharedPrefUtil(context);
         this.context = context;
         this.data = data;
         this.listener = l;
@@ -89,6 +92,14 @@ public class LocationAdapter extends BaseAdapter {
         layoutResourceId = R.layout.geo_row_location;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+
+            if ((convertView.findViewById(R.id.remove_button)) != null)
+                (convertView.findViewById(R.id.remove_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+        }
 
         holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
         holder.name = (TextView) convertView.findViewById(R.id.location_name);

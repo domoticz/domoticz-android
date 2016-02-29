@@ -27,11 +27,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Camera;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (new SharedPrefUtil(this).darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();

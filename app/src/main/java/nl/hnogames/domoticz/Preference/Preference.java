@@ -110,6 +110,7 @@ public class Preference extends PreferenceFragment {
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
+        android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
 
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
         if (notifications == null || notifications.size() <= 0) {
@@ -136,6 +137,13 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        ThemePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                return true;
+            }
+        });
+
         MultiServerPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -146,6 +154,7 @@ public class Preference extends PreferenceFragment {
                 return true;
             }
         });
+
 
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
