@@ -84,6 +84,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private View root;
     private Integer[] selectedFilters;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+        mDomoticz = new Domoticz(context, null);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +102,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             idx = data.getInt("IDX");
             range = data.getString("RANGE");
             type = data.getString("TYPE");
-            axisYLabel =data.getString("TITLE");
+            axisYLabel = data.getString("TITLE");
             steps = data.getInt("STEPS", 1);
         }
     }
@@ -117,7 +125,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     public void getGraphs() {
         if (mDomoticz == null)
-            mDomoticz = new Domoticz(context, null);
+            mDomoticz = new Domoticz(getActivity().getApplicationContext(), null);
 
         mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
             @Override
@@ -149,12 +157,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         chart.setMaximumViewport(v);
         chart.setCurrentViewport(v);
         chart.setViewportCalculationEnabled(false);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
     }
 
     public ActionBar getActionBar() {
