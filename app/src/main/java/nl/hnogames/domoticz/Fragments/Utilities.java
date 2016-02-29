@@ -23,9 +23,9 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -39,18 +39,16 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
-import nl.hnogames.domoticz.Containers.GraphPointInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.UI.GraphDialog;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
@@ -316,32 +314,15 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 .replace("Energy", "counter")
                 .replace("YouLess counter", "counter");
 
-        mDomoticz.getGraphData(utility.getIdx(), range, graphType, new GraphDataReceiver() {
-            @Override
-            public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
-                Log.i("GRAPH", mGraphList.toString());
-                GraphDialog infoDialog = new GraphDialog(
-                        mContext,
-                        mGraphList);
-                infoDialog.setRange(range);
+        Intent intent = new Intent(mContext, GraphActivity.class);
+        intent.putExtra("IDX", utility.getIdx());
+        intent.putExtra("RANGE", range);
+        intent.putExtra("TYPE", graphType);
+        intent.putExtra("TITLE", utility.getSubType().toUpperCase());
+        intent.putExtra("STEPS", 3);
+        startActivity(intent);
 
-                if (range.equals("day"))
-                    infoDialog.setSteps(3);
-
-                infoDialog.setTitle(utility.getSubType().toUpperCase());
-                infoDialog.show();
-            }
-
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-                Snackbar.make(coordinatorLayout,
-                        mContext.getString(R.string.error_log)
-                                + ": " + utility.getName()
-                                + " " + utility.getSubType(),
-                        Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        // Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

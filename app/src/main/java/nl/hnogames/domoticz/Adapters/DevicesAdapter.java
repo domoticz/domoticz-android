@@ -94,12 +94,16 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         this.context = context;
         domoticz = new Domoticz(context, serverUtil);
 
-        Collections.sort(data, new Comparator<DevicesInfo>() {
-            @Override
-            public int compare(DevicesInfo left, DevicesInfo right) {
-                return left.getName().compareTo(right.getName());
-            }
-        });
+        // When not sorted the devices are almost like dashboard on server
+        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
+            // Sort alphabetically
+            Collections.sort(data, new Comparator<DevicesInfo>() {
+                @Override
+                public int compare(DevicesInfo left, DevicesInfo right) {
+                    return left.getName().compareTo(right.getName());
+                }
+            });
+        }
 
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
         this.filteredData = data;
@@ -838,7 +842,6 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
-
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
                     String.valueOf(mDeviceInfo.getData());
@@ -853,7 +856,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonOn.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            else
+                holder.buttonOn.setId(mDeviceInfo.getIdx());
+
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -862,7 +869,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
         if (holder.buttonOff != null) {
-            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+                holder.buttonOff.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+            else
+                holder.buttonOff.setId(mDeviceInfo.getIdx());
             holder.buttonOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1282,7 +1292,8 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         int loadLevel = mDeviceInfo.getLevel() / 10;
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
-        if (levelNames.length >= loadLevel)
+
+        if (levelNames.length > loadLevel)
             statusText = levelNames[loadLevel];
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);

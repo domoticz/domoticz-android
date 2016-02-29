@@ -71,12 +71,14 @@
     <string name="blind_down">Turning blind down</string>
     <string name="blind_stop">Stop blind</string>
 
+    <string name="filter_on">Filter on</string>
     <string name="filterOn_on">Status on</string>
     <string name="filterOn_off">Status off</string>
     <string name="filterOn_static">Static devices</string>
     <string name="filterOn_all">All devices</string>
-    <string name="Filter">Filter</string>
+    <string name="filter">Filter</string>
     <string name="filter_devices">Filter devices</string>
+    <string name="filter_graph_empty">Please specify a filter</string>
 
     <string name="choose_color">Choose color</string>
 

@@ -24,6 +24,12 @@
             android:key="enable_menu_items"
             android:title="@string/enable_items" />
         <SwitchPreference
+            android:key="sort_dashboardLikeServer"
+            android:defaultValue="true"
+            android:title="@string/sort_dashboardLikeServer_title"
+            android:summaryOff="@string/sort_dashboardLikeServer_off"
+            android:summaryOn="@string/sort_dashboardLikeServer_on" />
+        <SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
             android:summaryOff="@string/show_extra_data_off"

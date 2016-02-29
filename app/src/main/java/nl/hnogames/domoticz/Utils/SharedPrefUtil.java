@@ -97,6 +97,7 @@ public class SharedPrefUtil {
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private final String TAG = "Shared Pref util";
+    private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -126,12 +127,16 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
-    public void completeCard(String cardTag) {
-        editor.putBoolean("CARD" + cardTag, true).apply();
+    public boolean isDashboardSortedLikeServer() {
+        return prefs.getBoolean(PREF_SORT_LIKESERVER, true);
     }
 
     public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
+
+    public void completeCard(String cardTag) {
+        editor.putBoolean("CARD" + cardTag, true).apply();
     }
 
     public boolean isCardCompleted(String cardTag) {
@@ -392,30 +397,37 @@ public class SharedPrefUtil {
         if (!prefs.contains(PREF_NAVIGATION_ITEMS))
             setNavigationDefaults();
 
-        Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
-        String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
+        try {
+            Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
+            String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
-        if (selections == null) //default
-            return allNames;
-        else {
-            String[] selectionValues = new String[selections.size()];
-            int i = 0;
-            for (String v : allNames) {
-                for (String s : selections) {
-                    if (s.equals(v)) {
-                        selectionValues[i] = v;
-                        i++;
+            if (selections == null) //default
+                return allNames;
+            else {
+                int i = 0;
+                String[] selectionValues = new String[selections.size()];
+                for (String v : allNames) {
+                    for (String s : selections) {
+                        if (s.equals(v)) {
+                            selectionValues[i] = v;
+                            i++;
+                        }
                     }
                 }
+
+                if (i < selections.size()) {
+                    setNavigationDefaults();
+                    return getNavigationActions();
+                } else
+                    return selectionValues;
             }
-
-            if (i < selections.size()) {
-                setNavigationDefaults();
-                return getNavigationActions();
-            } else
-                return selectionValues;
-
+        } catch (Exception ex) {
+            if (!UsefulBits.isEmpty(ex.getMessage()))
+                Log.e(TAG, ex.getMessage());
+            setNavigationDefaults();//try to correct the issue
         }
+
+        return null; //failed, can't show the menu (can be a translation issue if this happens!!)
     }
 
     public void setNavigationDefaults() {
