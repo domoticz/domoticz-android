@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Graph;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class GraphActivity extends AppCompatActivity {
 
@@ -40,6 +41,11 @@ public class GraphActivity extends AppCompatActivity {
 
         this.setTitle(getString(R.string.wizard_graph));
 
+        String title = bundle.getString("TITLE");
+        if (!UsefulBits.isEmpty(title)) {
+            setTitle(title);
+        }
+
         Graph graph = new Graph();
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,6 +53,10 @@ public class GraphActivity extends AppCompatActivity {
                 graph).commit();
     }
 
+    public void setTitle(String title) {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(title);
+    }
 
     public void noGraphFound() {
         this.finish();

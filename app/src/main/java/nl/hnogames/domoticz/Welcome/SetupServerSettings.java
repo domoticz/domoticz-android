@@ -79,7 +79,6 @@ public class SetupServerSettings extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
@@ -102,7 +101,6 @@ public class SetupServerSettings extends Fragment {
 
         getLayoutReferences();
         setPreferenceValues();
-
         return v;
     }
 
@@ -345,14 +343,15 @@ public class SetupServerSettings extends Fragment {
 
     private void setStartScreen_spinner() {
         if (mSharedPrefs == null)
-            mSharedPrefs = new SharedPrefUtil(mContext);
+            mSharedPrefs = new SharedPrefUtil(getActivity().getApplicationContext());
 
         String[] startScreens = getResources().getStringArray(R.array.drawer_actions);
         ArrayAdapter<String> startScreenAdapter
                 = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, startScreens);
 
         startScreen_spinner.setAdapter(startScreenAdapter);
-        startScreen_spinner.setSelection(mSharedPrefs.getStartupScreenIndex());
+        if (mSharedPrefs != null)
+            startScreen_spinner.setSelection(mSharedPrefs.getStartupScreenIndex());
         startScreen_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView,
