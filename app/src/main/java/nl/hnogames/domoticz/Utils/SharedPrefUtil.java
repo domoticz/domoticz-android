@@ -424,10 +424,10 @@ public class SharedPrefUtil {
         } catch (Exception ex) {
             if (!UsefulBits.isEmpty(ex.getMessage()))
                 Log.e(TAG, ex.getMessage());
-
-            setNavigationDefaults();
-            return getNavigationActions();
+            setNavigationDefaults();//try to correct the issue
         }
+
+        return null; //failed, can't show the menu (can be a translation issue if this happens!!)
     }
 
     public void setNavigationDefaults() {

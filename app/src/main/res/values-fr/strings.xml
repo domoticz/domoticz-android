@@ -61,12 +61,14 @@
   <string name="blind_up">Ouvrir les stores</string>
   <string name="blind_down">Fermer les stores</string>
   <string name="blind_stop">Arrêter les stores</string>
+  <string name="filter_on">Filtre activé</string>
   <string name="filterOn_on">Statut On</string>
   <string name="filterOn_off">Statut Off</string>
   <string name="filterOn_static">Static Switches</string>
   <string name="filterOn_all">Tous les dispositifs</string>
-  <string name="Filter">Filtrer</string>
+  <string name="filter">Filtrer</string>
   <string name="filter_devices">Filtrer les dispositifs</string>
+  <string name="filter_graph_empty">Veuillez spécifier un filtre</string>
   <string name="choose_color">Sélectionnez la couleur</string>
   <string name="no_data_on_domoticz">Aucune donnée sur le serveur Domoticz</string>
   <string name="row_icon_description">icône de la ligne</string>
