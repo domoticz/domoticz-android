@@ -94,17 +94,9 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             idx = data.getInt("IDX");
             range = data.getString("RANGE");
             type = data.getString("TYPE");
-            String title = data.getString("TITLE");
-            if (!UsefulBits.isEmpty(title)) {
-                setTitle(title);
-            }
+            axisYLabel =data.getString("TITLE");
             steps = data.getInt("STEPS", 1);
         }
-    }
-
-    public void setTitle(String title) {
-        axisYLabel = title;
-        getActionBar().setTitle(title);
     }
 
     @Override
