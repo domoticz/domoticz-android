@@ -216,7 +216,7 @@ public class UsefulBits {
      * @param context       Context
      * @param forceDownload Force downloading the language anyway
      */
-    public static void checkDownloadedLanguage(Context context, ServerUtil serverUtil, boolean forceDownload) {
+    public static void checkDownloadedLanguage(Context context, ServerUtil serverUtil, boolean forceDownload, boolean fromService) {
 
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         String downloadedLanguage = mSharedPrefs.getDownloadedLanguage();
@@ -230,22 +230,23 @@ public class UsefulBits {
             Log.d(TAG, "Downloading language files. Forced: " + forceDownload);
             mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             if (mSharedPrefs.isDebugEnabled()) {
-                if (forceDownload)
+                if (forceDownload && !fromService) {
                     showSimpleToast(context, "Language files downloaded because it was forced");
-                else showSimpleToast(context, "Language files downloaded because there were none");
+                } else if (!fromService)
+                    showSimpleToast(context, "Language files downloaded because there were none");
             }
         } else {
             long dateMillis = mSharedPrefs.getSavedLanguageDate();
             String dateStr = UsefulBits.getFormattedDate(context, dateMillis);
             Log.d(TAG, "Language files are dated: " + dateStr);
 
-            if (mSharedPrefs.isDebugEnabled())
+            if (mSharedPrefs.isDebugEnabled() && !fromService)
                 showSimpleToast(context, "Language files are dated: " + dateStr);
 
             // check if downloaded files are the correct ones
             if (!downloadedLanguage.equalsIgnoreCase(activeLanguage)) {
 
-                if (mSharedPrefs.isDebugEnabled())
+                if (mSharedPrefs.isDebugEnabled() && !fromService)
                     showSimpleToast(context, "Downloaded language files did not match the preferred language");
 
                 Log.d(TAG, "Downloaded language files did not match the preferred language:" + newLine()
@@ -411,6 +412,7 @@ public class UsefulBits {
         //for now, we suppress that exception & toast
         try {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 }

@@ -168,14 +168,14 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                         if (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
                             supportedSwitches.add(mDevicesInfo);
                         } else {
-                            Snackbar.make(coordinatorLayout, "Filter on :" + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
+                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mDevicesInfo.getStatusBoolean()) && mDomoticz.isOnOffSwitch(mDevicesInfo)) {
                                 supportedSwitches.add(mDevicesInfo);
                             }
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mDevicesInfo.getStatusBoolean()) && isOnOffSwitch(mDevicesInfo)) {
+                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mDevicesInfo.getStatusBoolean()) && mDomoticz.isOnOffSwitch(mDevicesInfo)) {
                                 supportedSwitches.add(mDevicesInfo);
                             }
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !isOnOffSwitch(mDevicesInfo)) {
+                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !mDomoticz.isOnOffSwitch(mDevicesInfo)) {
                                 supportedSwitches.add(mDevicesInfo);
                             }
                         }
@@ -242,28 +242,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         }
         super.showSpinner(false);
 
-    }
-
-    private boolean isOnOffSwitch(DevicesInfo testSwitch) {
-        switch (testSwitch.getSwitchTypeVal()) {
-            case Domoticz.Device.Type.Value.ON_OFF:
-            case Domoticz.Device.Type.Value.MEDIAPLAYER:
-            case Domoticz.Device.Type.Value.X10SIREN:
-            case Domoticz.Device.Type.Value.DOORLOCK:
-            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
-            case Domoticz.Device.Type.Value.BLINDINVERTED:
-            case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-            case Domoticz.Device.Type.Value.BLINDVENETIAN:
-            case Domoticz.Device.Type.Value.BLINDS:
-            case Domoticz.Device.Type.Value.DIMMER:
-                return true;
-        }
-        switch (testSwitch.getType()) {
-            case Domoticz.Scene.Type.GROUP:
-                return true;
-        }
-
-        return false;
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
