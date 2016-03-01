@@ -24,9 +24,12 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -43,6 +46,7 @@ import java.util.Random;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.GeoUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
@@ -68,13 +72,15 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private int radiusDefaultValue = 120;
     private Button editModeButton;
     private LinearLayout layout_latLong;
+    private Button getLocation;
     private String title;
+    private SharedPrefUtil mSharedPrefs;
 
     public LocationDialog(final Context mContext, int layout) {
         this.mContext = mContext;
 
         mGeoUtil = new GeoUtil(mContext);
-
+        mSharedPrefs = new SharedPrefUtil(mContext);
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
@@ -167,8 +173,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-
-        Button getLocation = (Button) view.findViewById(R.id.get_address);
 
         initViews(view);
 
@@ -287,12 +291,31 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         editAddress = (FloatingLabelEditText) view.findViewById(R.id.address);
         editName = (FloatingLabelEditText) view.findViewById(R.id.name);
+        layout_latLong = (LinearLayout) view.findViewById(R.id.layout_latLong);
 
         editModeButton = (Button) view.findViewById(R.id.edit_mode_button);
-        layout_latLong = (LinearLayout) view.findViewById(R.id.layout_latLong);
+        getLocation = (Button) view.findViewById(R.id.get_address);
 
         editLatitude = (FloatingLabelEditText) view.findViewById(R.id.latitude);
         editLongitude = (FloatingLabelEditText) view.findViewById(R.id.longitude);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            getLocation.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+            editModeButton.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+
+            int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
+            int[] colors = new int[]{Color.WHITE, Color.WHITE};
+            radiusText.setLabelTextColor(new ColorStateList(states, colors));
+            radiusText.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editName.setLabelTextColor(new ColorStateList(states, colors));
+            editName.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editAddress.setLabelTextColor(new ColorStateList(states, colors));
+            editAddress.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editLongitude.setLabelTextColor(new ColorStateList(states, colors));
+            editLongitude.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editLatitude.setLabelTextColor(new ColorStateList(states, colors));
+            editLatitude.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+        }
     }
 
     @Override

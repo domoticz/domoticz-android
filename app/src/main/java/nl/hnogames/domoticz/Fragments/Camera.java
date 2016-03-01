@@ -22,13 +22,13 @@
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +64,6 @@ public class Camera extends Fragment {
         if (mSharedPrefs.darkThemeEnabled()) {
             group.findViewById(R.id.row_global_wrapper).setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
-
         root = (ImageView) group.findViewById(R.id.image);
         FloatingActionButton fabButton = (FloatingActionButton) group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {

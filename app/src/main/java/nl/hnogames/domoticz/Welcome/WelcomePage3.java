@@ -1,9 +1,9 @@
 package nl.hnogames.domoticz.Welcome;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;

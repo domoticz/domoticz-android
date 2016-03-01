@@ -22,9 +22,9 @@
 
 package nl.hnogames.domoticz;
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -69,7 +69,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
         if (!addNew && UsefulBits.isEmpty(updateName)) {
             Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(android.R.id.content, serverSettings)
                     .commit();
         } else {
@@ -81,7 +81,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
                 serverSettings.setArguments(data);
             }
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(android.R.id.content, serverSettings)
                     .commit();
         }

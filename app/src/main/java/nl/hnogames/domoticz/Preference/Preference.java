@@ -144,8 +144,7 @@ public class Preference extends PreferenceFragment {
                 if (BuildConfig.LITE_VERSION) {
                     Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
-                }
-                else {
+                } else {
                     ((SettingsActivity) getActivity()).reloadSettings();
                     return true;
                 }

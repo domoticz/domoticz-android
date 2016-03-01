@@ -54,7 +54,7 @@ public class GraphActivity extends AppCompatActivity {
         Graph graph = new Graph();
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 graph).commit();
     }
 

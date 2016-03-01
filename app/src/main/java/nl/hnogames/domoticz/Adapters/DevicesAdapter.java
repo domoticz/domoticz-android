@@ -245,9 +245,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-
+            if ((row.findViewById(R.id.row_wrapper)) != null)
+                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            if ((row.findViewById(R.id.row_global_wrapper)) != null)
+                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
             if ((row.findViewById(R.id.day_button)) != null)
                 (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             if ((row.findViewById(R.id.year_button)) != null)
