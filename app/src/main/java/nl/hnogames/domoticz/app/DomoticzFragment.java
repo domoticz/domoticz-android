@@ -77,8 +77,12 @@ public class DomoticzFragment extends Fragment {
     }
 
     public void setTheme() {
+        if(mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(getActivity());
+
         if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if(listView != null)
+                listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
     }
 
@@ -113,6 +117,8 @@ public class DomoticzFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.default_layout, null);
         initViews(root);
+
+        setTheme();
         return root;
     }
 
@@ -123,7 +129,6 @@ public class DomoticzFragment extends Fragment {
         mSharedPrefs = new SharedPrefUtil(getActivity());
         mDomoticz = new Domoticz(getActivity(), getServerUtil());
         debug = mDomoticz.isDebugEnabled();
-        setTheme();
 
         if (debug)
             showDebugLayout();
