@@ -200,8 +200,13 @@ public class SetupServerSettings extends Fragment {
 
     private void checkConnectionData() {
         buildServerInfo();
+
+        if(mServerUtil == null)
+            mServerUtil = new ServerUtil(getActivity());
+
         final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
+
         if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
