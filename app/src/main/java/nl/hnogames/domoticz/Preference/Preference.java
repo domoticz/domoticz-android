@@ -141,8 +141,14 @@ public class Preference extends PreferenceFragment {
         ThemePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                ((SettingsActivity) getActivity()).reloadSettings();
-                return true;
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                else {
+                    ((SettingsActivity) getActivity()).reloadSettings();
+                    return true;
+                }
             }
         });
 
