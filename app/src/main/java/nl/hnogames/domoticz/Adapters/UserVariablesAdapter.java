@@ -105,7 +105,7 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
 
         if (mSharedPrefs.darkThemeEnabled()) {
             (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context,R.color.background_dark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
         }
         holder.name = (TextView) convertView.findViewById(R.id.logs_name);
         holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);

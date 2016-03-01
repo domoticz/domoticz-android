@@ -58,8 +58,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.plan_row, parent, false);
 
-        if(mSharedPrefs.darkThemeEnabled())
-        {
+        if (mSharedPrefs.darkThemeEnabled()) {
             view.findViewById(R.id.row_global_wrapper).setBackground(ContextCompat.getDrawable(mContext, R.drawable.bordershadowdark));
         }
 

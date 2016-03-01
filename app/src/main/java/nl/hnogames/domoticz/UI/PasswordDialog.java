@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -84,8 +83,8 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         if (mSharedPrefs.darkThemeEnabled()) {
             showPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
             editPassword.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
-            int[][] states = new int[][] { new int[] { android.R.attr.state_activated }, new int[] { -android.R.attr.state_activated } };
-            int[] colors = new int[] { Color.WHITE, Color.WHITE };
+            int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
+            int[] colors = new int[]{Color.WHITE, Color.WHITE};
             editPassword.setLabelTextColor(new ColorStateList(states, colors));
         }
 

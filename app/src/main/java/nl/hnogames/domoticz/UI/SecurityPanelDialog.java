@@ -89,7 +89,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         md = mdb.build();
         View view = md.getCustomView();
 
-        if(view != null) {
+        if (view != null) {
             editPinCode = (FloatingLabelEditText) view.findViewById(R.id.securitypin);
             editPinCode.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
 
@@ -104,8 +104,8 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                 btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
                 editPinCode.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
 
-                int[][] states = new int[][] { new int[] { android.R.attr.state_activated }, new int[] { -android.R.attr.state_activated } };
-                int[] colors = new int[] { Color.WHITE, Color.WHITE };
+                int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
+                int[] colors = new int[]{Color.WHITE, Color.WHITE};
                 editPinCode.setLabelTextColor(new ColorStateList(states, colors));
             }
         }

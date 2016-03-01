@@ -68,8 +68,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.camera_row, parent, false);
 
-        if(mSharedPrefs.darkThemeEnabled())
-        {
+        if (mSharedPrefs.darkThemeEnabled()) {
             view.findViewById(R.id.row_global_wrapper).setBackground(ContextCompat.getDrawable(mContext, R.drawable.bordershadowdark));
         }
 

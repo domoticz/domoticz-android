@@ -22,7 +22,6 @@
 
 package nl.hnogames.domoticz;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -212,6 +211,9 @@ public class MainActivity extends AppCompatActivity {
                     this.recreate();
                     break;
             }
+        } else if (resultCode == 789) {
+            //reload settings
+            startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
         }
     }
 

@@ -97,7 +97,7 @@ public class NFCAdapter extends BaseAdapter {
 
         if (mSharedPrefs.darkThemeEnabled()) {
             (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context,R.color.background_dark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
 
             if ((convertView.findViewById(R.id.remove_button)) != null)
                 (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));

@@ -53,6 +53,7 @@ import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
+import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
@@ -140,6 +141,7 @@ public class Preference extends PreferenceFragment {
         ThemePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                ((SettingsActivity) getActivity()).reloadSettings();
                 return true;
             }
         });

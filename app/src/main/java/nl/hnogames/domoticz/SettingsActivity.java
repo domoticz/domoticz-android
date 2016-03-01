@@ -61,6 +61,14 @@ public class SettingsActivity extends AppCompatActivity {
         finishWithResult(true);
     }
 
+    public void reloadSettings() {
+        Bundle conData = new Bundle();
+        Intent intent = new Intent();
+        intent.putExtras(conData);
+        setResult(789, intent);
+        super.finish();
+    }
+
     private void finishWithResult(boolean success) {
         Bundle conData = new Bundle();
         conData.putBoolean("RESULT", success);
