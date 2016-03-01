@@ -14,10 +14,14 @@
   <string name="category_notification">Notificaties</string>
   <string name="category_debug">Foutopsporing</string>
   <string name="category_export">Instellingen exporteren/importeren</string>
+  <string name="category_theme">Thema</string>
   <string name="category_nfc">NFC verbindingen</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Beginscherm</string>
   <string name="enable_items">Items in-/ uitschakelen</string>
+  <string name="sort_dashboardLikeServer_title">Dashboard sorteren</string>
+  <string name="sort_dashboardLikeServer_on">Dashboard sorteren zoals op de server geconfigureerd</string>
+  <string name="sort_dashboardLikeServer_off">Dashboard alfabetisch sorteren</string>
   <string name="extra_data_title">Extra gegevens op dashboard</string>
   <string name="show_extra_data_on">Extra gegevens op dashboard weergeven</string>
   <string name="show_extra_data_off">Extra gegevens op dashboard verbergen</string>
@@ -32,6 +36,10 @@
   <string name="wear_custom_off">Aangepaste Android Wear functies uitzetten</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Geofencing configureren</string>
+  <!--        Theming settings -->
+  <string name="config_theme">Stel thema in</string>
+  <string name="set_dark_theme">Verander de thema naar Donker</string>
+  <string name="set_light_theme">Verander de thema naar Licht</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Instellingen geïmporteerd, herstart Domoticz a.u.b.</string>
   <string name="settings_import_failed">Kan de instellingen niet importeren, probeer opnieuw</string>

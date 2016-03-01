@@ -102,7 +102,10 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             holder.textView.setText(mNavTitles[position - 1]); // Setting the Text with the array of our Titles
             holder.imageView.setImageResource(mIcons[position - 1]);// Settimg the image with array of our icons+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                holder.imageView.setColorFilter(mContext.getColor(R.color.material_indigo_600));
+                if(mSharedPrefs.darkThemeEnabled())
+                    holder.imageView.setColorFilter(mContext.getColor(R.color.white));
+                else
+                    holder.imageView.setColorFilter(mContext.getColor(R.color.material_indigo_600));
             }
         } else {
             holder.profile.setImageResource(profile);           // Similarly we set the resources for header view

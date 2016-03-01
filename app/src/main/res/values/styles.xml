@@ -9,8 +9,8 @@
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimary">@color/secondary</item>
+        <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
     </style>

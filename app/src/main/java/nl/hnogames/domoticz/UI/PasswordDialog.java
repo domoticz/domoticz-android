@@ -24,6 +24,10 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.v4.app.SharedElementCallback;
+import android.support.v4.content.ContextCompat;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -36,6 +40,7 @@ import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class PasswordDialog implements DialogInterface.OnDismissListener {
 
@@ -46,12 +51,14 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private Context mContext;
     private Domoticz domoticz;
     private MaterialDialog md;
+    private SharedPrefUtil mSharedPrefs;
     private FloatingLabelEditText editPassword;
     private CheckBox showPassword;
 
     public PasswordDialog(Context c, Domoticz mDomoticz) {
         this.mContext = c;
         this.domoticz = mDomoticz;
+        mSharedPrefs = new SharedPrefUtil(c);
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
                 .positiveText(android.R.string.ok)
@@ -70,8 +77,18 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         mdb.title(mContext.getString(R.string.welcome_remote_server_password));
         md = mdb.build();
         View view = md.getCustomView();
+
         editPassword = (FloatingLabelEditText) view.findViewById(R.id.password);
         showPassword = (CheckBox) view.findViewById(R.id.showpassword);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            showPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editPassword.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            int[][] states = new int[][] { new int[] { android.R.attr.state_activated }, new int[] { -android.R.attr.state_activated } };
+            int[] colors = new int[] { Color.WHITE, Color.WHITE };
+            editPassword.setLabelTextColor(new ColorStateList(states, colors));
+        }
+
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

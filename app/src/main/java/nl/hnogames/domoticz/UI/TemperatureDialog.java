@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.UI;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -108,8 +109,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         Button btnMin = (Button) view.findViewById(R.id.min);
 
         if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
-            bntPlus.setBackground(mContext.getResources().getDrawable(R.drawable.button_status_dark));
-            btnMin.setBackground(mContext.getResources().getDrawable(R.drawable.button_status_dark));
+            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
         }
 
         final String text = String.valueOf(currentTemperature);

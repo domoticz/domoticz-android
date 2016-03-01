@@ -208,30 +208,31 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         }
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (row.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+            (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
             (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
 
             if ((row.findViewById(R.id.day_button)) != null)
-                (row.findViewById(R.id.day_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             if ((row.findViewById(R.id.year_button)) != null)
-                (row.findViewById(R.id.year_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             if ((row.findViewById(R.id.month_button)) != null)
-                (row.findViewById(R.id.month_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             if ((row.findViewById(R.id.week_button)) != null)
-                (row.findViewById(R.id.week_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+
             if ((row.findViewById(R.id.log_button)) != null)
-                (row.findViewById(R.id.log_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             if ((row.findViewById(R.id.timer_button)) != null)
-                (row.findViewById(R.id.timer_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             if ((row.findViewById(R.id.notifications_button)) != null)
-                (row.findViewById(R.id.notifications_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
 
             if ((row.findViewById(R.id.on_button)) != null)
-                (row.findViewById(R.id.on_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                (row.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             if ((row.findViewById(R.id.off_button)) != null)
-                (row.findViewById(R.id.off_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                (row.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             if ((row.findViewById(R.id.color_button)) != null)
-                (row.findViewById(R.id.color_button)).setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+                (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
         return row;
     }
@@ -814,7 +815,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+            if (mSharedPrefs.darkThemeEnabled())
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            else
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

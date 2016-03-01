@@ -120,13 +120,13 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
                 (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
 
                 if ((convertView.findViewById(R.id.on_button)) != null)
-                    (convertView.findViewById(R.id.on_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                    (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
                 if ((convertView.findViewById(R.id.off_button)) != null)
-                    (convertView.findViewById(R.id.off_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                    (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             }
 
             holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
@@ -173,13 +173,13 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
                 (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
 
                 if ((convertView.findViewById(R.id.on_button)) != null)
-                    (convertView.findViewById(R.id.on_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                    (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
                 if ((convertView.findViewById(R.id.off_button)) != null)
-                    (convertView.findViewById(R.id.off_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                    (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             }
 
             holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);

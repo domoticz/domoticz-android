@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
         if(mSharedPrefs.darkThemeEnabled())
         {
-            view.findViewById(R.id.row_global_wrapper).setBackground(mContext.getResources().getDrawable(R.drawable.bordershadowdark));
+            view.findViewById(R.id.row_global_wrapper).setBackground(ContextCompat.getDrawable(mContext, R.drawable.bordershadowdark));
         }
 
         return new DataObjectHolder(view);

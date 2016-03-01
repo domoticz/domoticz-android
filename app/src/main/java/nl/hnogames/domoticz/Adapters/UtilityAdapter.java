@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,15 +122,15 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         convertView.setTag(holder);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context,R.color.background_dark));
 
             if ((convertView.findViewById(R.id.on_button)) != null)
-                (convertView.findViewById(R.id.on_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             if ((convertView.findViewById(R.id.off_button)) != null)
-                (convertView.findViewById(R.id.off_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             if ((convertView.findViewById(R.id.set_button)) != null)
-                (convertView.findViewById(R.id.set_button)).setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                (convertView.findViewById(R.id.set_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
         return convertView;
     }
@@ -164,7 +165,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
                 !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.buttonLog.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+            holder.buttonLog.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
 
         holder.buttonLog.setId(mUtilitiesInfo.getIdx());
@@ -201,10 +202,10 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
-            holder.monthButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
-            holder.yearButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
-            holder.weekButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
 
         holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
@@ -294,7 +295,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             }
         });
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.on_button.setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+            holder.on_button.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
         holder.name.setText(mUtilitiesInfo.getName());
         holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());

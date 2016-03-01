@@ -61,14 +61,14 @@
   <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
   <string name="blind_down">Przełaczenie na zasłanianie rolety</string>
   <string name="blind_stop">Zatrzymaj roletę</string>
-  <string name="filter_on">Filter on</string>
+  <string name="filter_on">Ustawiono filtr</string>
   <string name="filterOn_on">Status wł.</string>
   <string name="filterOn_off">Status wył.</string>
   <string name="filterOn_static">Statyczne urządzenia</string>
   <string name="filterOn_all">Wszystkie urządzenia</string>
-  <string name="filter">Filter</string>
+  <string name="filter">Filtr</string>
   <string name="filter_devices">Filtr urządzeń</string>
-  <string name="filter_graph_empty">Please specify a filter</string>
+  <string name="filter_graph_empty">Proszę określić filtr</string>
   <string name="choose_color">Wybierz kolor</string>
   <string name="no_data_on_domoticz">Brak danych na serwerze Domoticz</string>
   <string name="row_icon_description">rząd ikon</string>

@@ -76,7 +76,7 @@
   <string name="device_image_description">Image du dispositif</string>
   <string name="white">Blanc</string>
   <string name="refresh">Actualiser</string>
-  <string name="domoticz_logo">Domoticz logo</string>
+  <string name="domoticz_logo">Logo Domoticz</string>
   <string name="this_take_minutes">Cela peut prendre plusieurs minutes.</string>
   <string name="continue_question">Continuer ?</string>
   <string name="cant_remove_default_server">Impossible de supprimer le serveur par défaut</string>

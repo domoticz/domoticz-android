@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,15 +121,15 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.setButton = (Button) convertView.findViewById(R.id.set_button);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
-            holder.dayButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
-            holder.monthButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
-            holder.yearButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
-            holder.weekButton.setBackground(context.getResources().getDrawable(R.drawable.button_dark_status));
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context,R.color.background_dark));
+            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
 
             if (holder.setButton != null)
-                holder.setButton.setBackground(context.getResources().getDrawable(R.drawable.button_status_dark));
+                holder.setButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
 
         holder.isProtected = mTemperatureInfo.isProtected();

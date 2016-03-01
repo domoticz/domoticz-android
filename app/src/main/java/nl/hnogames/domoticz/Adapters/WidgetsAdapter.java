@@ -101,7 +101,7 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
         convertView.setTag(holder);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            //(convertView.findViewById(R.id.row_wrapper)).setBackground(context.getResources().getDrawable(R.drawable.bordershadowdark));
+            //(convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
             (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
         }
 
