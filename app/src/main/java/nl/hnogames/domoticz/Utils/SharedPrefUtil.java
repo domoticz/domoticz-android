@@ -77,6 +77,7 @@ public class SharedPrefUtil {
     private static final String PREF_SAVED_LANGUAGE = "savedLanguage";
     private static final String PREF_SAVED_LANGUAGE_DATE = "savedLanguageDate";
     private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
+    private static final String PREF_UPDATE_SERVER_SHOWN = "updateservershown";
     private static final String PREF_EXTRA_DATA = "extradata";
     private static final String PREF_STARTUP_SCREEN = "startup_screen";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
@@ -496,6 +497,15 @@ public class SharedPrefUtil {
 
     public boolean isServerUpdateAvailable() {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
+    }
+
+    public String getLastUpdateShown() {
+        return prefs.getString(PREF_UPDATE_SERVER_SHOWN, "");
+    }
+
+    public void setLastUpdateShown(String revisionNb) {
+        editor.putString(PREF_UPDATE_SERVER_SHOWN, revisionNb);
+        editor.commit();
     }
 
     public boolean isGeofenceEnabled() {
