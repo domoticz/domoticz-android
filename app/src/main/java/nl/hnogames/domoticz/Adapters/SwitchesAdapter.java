@@ -51,13 +51,13 @@ import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
-
     private final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
@@ -66,9 +66,9 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             Domoticz.Device.ModalSwitch.Action.CUSTOM,
             Domoticz.Device.ModalSwitch.Action.HEATING_OFF
     };
-
     public ArrayList<DevicesInfo> filteredData = null;
     Domoticz domoticz;
+    private SharedPrefUtil mSharedPrefs;
     private Context context;
     private ArrayList<DevicesInfo> data = null;
     private switchesClickListener listener;
@@ -83,6 +83,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         super();
         this.context = context;
         domoticz = mDomoticz;
+        mSharedPrefs = new SharedPrefUtil(context);
 
         Collections.sort(data, new Comparator<DevicesInfo>() {
             @Override
@@ -204,6 +205,34 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 throw new NullPointerException(
                         "Switch type not supported in the adapter for: \n"
                                 + mDevicesInfo.toString());
+        }
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+
+            if ((row.findViewById(R.id.day_button)) != null)
+                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.year_button)) != null)
+                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.month_button)) != null)
+                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.week_button)) != null)
+                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+
+            if ((row.findViewById(R.id.log_button)) != null)
+                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.timer_button)) != null)
+                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.notifications_button)) != null)
+                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+
+            if ((row.findViewById(R.id.on_button)) != null)
+                (row.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((row.findViewById(R.id.off_button)) != null)
+                (row.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((row.findViewById(R.id.color_button)) != null)
+                (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
         return row;
     }
@@ -786,7 +815,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+            if (mSharedPrefs.darkThemeEnabled())
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            else
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

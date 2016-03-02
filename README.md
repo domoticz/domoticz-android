@@ -55,6 +55,15 @@ Some screenshots
 ![1](https://cloud.githubusercontent.com/assets/14561640/11994849/3e27abd0-aa46-11e5-9d28-47185ffb53f6.png)
 
 
+# Dark Theme
+-----
+The app is light and dark themed..  
+
+![3](https://cloud.githubusercontent.com/assets/14561640/13396920/84d41d1c-def7-11e5-83fa-99e9af008719.png)
+
+
+
+
 # Credits
 -----
 **freepik / elegantthemes** for icon  

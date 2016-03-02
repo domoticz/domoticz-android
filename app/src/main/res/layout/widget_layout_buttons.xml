@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:layout_margin="5sp"
     android:background="@drawable/appwidget_bg_clickable"
+    android:id="@+id/row_global_wrapper"
     android:orientation="horizontal">
 
     <ImageView

@@ -43,6 +43,7 @@ import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.ServerClickListener;
 import nl.hnogames.domoticz.Utils.ServerUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
 public class ServerListSettingsActivity extends AppCompatActivity {
@@ -57,6 +58,10 @@ public class ServerListSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_settings);
 
@@ -65,6 +70,9 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         this.setTitle(R.string.server_settings);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
 
         createListView();
     }
@@ -97,6 +105,9 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         });
 
         ListView listView = (ListView) findViewById(R.id.listView);
+        if ((new SharedPrefUtil(this)).darkThemeEnabled()) {
+            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);

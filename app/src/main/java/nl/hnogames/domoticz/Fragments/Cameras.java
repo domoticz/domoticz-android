@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -61,6 +62,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private CamerasAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private boolean refreshTimer = false;
+    private SharedPrefUtil mSharedPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -141,6 +143,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         getActionBar().setTitle(R.string.title_cameras);
     }
 
@@ -166,6 +169,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
+            if (mSharedPrefs.darkThemeEnabled()) {
+                mRecyclerView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            }
+
             getCameras();
         }
     }

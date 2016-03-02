@@ -61,14 +61,14 @@
   <string name="blind_up">Rullar upp rullgardinen</string>
   <string name="blind_down">Rullar ner rullgardinen</string>
   <string name="blind_stop">Stoppa rullgardinen</string>
-  <string name="filter_on">Filter on</string>
+  <string name="filter_on">Filter på</string>
   <string name="filterOn_on">Status på</string>
   <string name="filterOn_off">Status av</string>
   <string name="filterOn_static">Statiska enheter</string>
   <string name="filterOn_all">Alla enheter</string>
   <string name="filter">Filter</string>
   <string name="filter_devices">Filtrera enheter</string>
-  <string name="filter_graph_empty">Please specify a filter</string>
+  <string name="filter_graph_empty">Ange ett filter</string>
   <string name="choose_color">Välj färg</string>
   <string name="no_data_on_domoticz">Ingen data på Domoticz-server</string>
   <string name="row_icon_description">rad-ikon</string>
