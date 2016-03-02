@@ -200,6 +200,9 @@ public class MainActivity extends AppCompatActivity {
                     if (!res.getBoolean("RESULT", false))
                         this.finish();
                     else {
+                        if (mSharedPrefs.darkThemeEnabled())
+                            setTheme(R.style.AppThemeDark);
+
                         buildScreen();
                     }
                     break;
