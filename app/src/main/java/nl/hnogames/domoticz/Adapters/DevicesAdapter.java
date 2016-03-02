@@ -201,7 +201,14 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                     row = setDefaultRowId(holder);
                                 break;
                             default:
-                                row = setOnOffSwitchRowId(holder);
+                                if(mSharedPrefs.showSwitchesAsButtons())
+                                    row = setOnOffButtonRowId(holder);
+                                else {
+                                    if (mSharedPrefs.showSwitchesAsButtons())
+                                        row = setOnOffButtonRowId(holder);
+                                    else
+                                        row = setOnOffSwitchRowId(holder);
+                                }
                                 break;
                         }
                         break;
@@ -227,18 +234,29 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                     case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                     case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     case Domoticz.Device.Type.Value.SELECTOR:
-                        if (mDeviceInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
-                            row = setDimmerRowId(holder, true);
-                        else
-                            row = setDimmerRowId(holder, false);
+                        if (mDeviceInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB)) {
+                            if (mSharedPrefs.showSwitchesAsButtons())
+                                row = setDimmerOnOffButtonRowId(holder, true);
+                            else
+                                row = setDimmerRowId(holder, true);
+                        }else {
+                            if (mSharedPrefs.showSwitchesAsButtons())
+                                row = setDimmerOnOffButtonRowId(holder, false);
+                            else
+                                row = setDimmerRowId(holder, false);
+                        }
                         break;
 
                     case Domoticz.Device.Type.Value.BLINDS:
                     case Domoticz.Device.Type.Value.BLINDINVERTED:
                         if (canHandleStopButton(mDeviceInfo))
                             row = setBlindsRowId(holder);
-                        else
-                            row = setOnOffSwitchRowId(holder);
+                        else {
+                            if (mSharedPrefs.showSwitchesAsButtons())
+                                row = setOnOffButtonRowId(holder);
+                            else
+                                row = setOnOffSwitchRowId(holder);
+                        }
                         break;
                 }
             }
@@ -567,6 +585,47 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     }
 
     /**
+     * Sets the layout ID's for the dimmer with the individual buttons for on/off
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
+    private View setDimmerOnOffButtonRowId(ViewHolder holder, boolean isRGB) {
+        if (isRGB) {
+            if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_rgb_dimmer_button;
+            else layoutResourceId = R.layout.switch_row_rgb_dimmer_button_small;
+        } else {
+            if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_dimmer_button;
+            else layoutResourceId = R.layout.switch_row_dimmer_button_small;
+        }
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonOff = (Button) row.findViewById(R.id.off_button);
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+        holder.switch_dimmer_level = (TextView) row.findViewById(R.id.switch_dimmer_level);
+        holder.dimmer = (SeekBar) row.findViewById(R.id.switch_dimmer);
+
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+
+        if (isRGB)
+            holder.buttonColor = (Button) row.findViewById(R.id.color_button);
+
+        if (holder.buttonLog != null)
+            holder.buttonLog.setVisibility(View.GONE);
+        if (holder.buttonTimer != null)
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        return row;
+    }
+
+    /**
      * Sets the layout ID's for the modal switch
      *
      * @param holder Holder to use
@@ -653,7 +712,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                                 setDefaultRowData(mDeviceInfo, holder);
                             break;
                         default:
-                            setOnOffSwitchRowData(mDeviceInfo, holder);
+                            if (mSharedPrefs.showSwitchesAsButtons())
+                                setOnOffButtonRowData(mDeviceInfo, holder);
+                            else
+                                setOnOffSwitchRowData(mDeviceInfo, holder);
+
                             break;
                     }
 
@@ -676,10 +739,17 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.DIMMER:
                 case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                 case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (mDeviceInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
-                        setDimmerRowData(mDeviceInfo, holder, true);
-                    else
-                        setDimmerRowData(mDeviceInfo, holder, false);
+                    if (mDeviceInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB)) {
+                        if(mSharedPrefs.showSwitchesAsButtons())
+                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
+                        else
+                            setDimmerRowData(mDeviceInfo, holder, true);
+                    }else {
+                        if(mSharedPrefs.showSwitchesAsButtons())
+                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, false);
+                        else
+                            setDimmerRowData(mDeviceInfo, holder, false);
+                    }
                     break;
 
                 case Domoticz.Device.Type.Value.SELECTOR:
@@ -690,8 +760,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 case Domoticz.Device.Type.Value.BLINDINVERTED:
                     if (canHandleStopButton(mDeviceInfo))
                         setBlindsRowData(mDeviceInfo, holder);
-                    else
-                        setOnOffSwitchRowData(mDeviceInfo, holder);
+                    else{
+                        if (mSharedPrefs.showSwitchesAsButtons())
+                            setOnOffButtonRowData(mDeviceInfo, holder);
+                        else
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
+                    }
                     break;
 
                 default:
@@ -1331,27 +1405,57 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(statusText);
-        holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
-        holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
-        holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                handleOnOffSwitchClick(compoundButton.getId(), checked);
-                mDeviceInfo.setStatusBoolean(checked);
-                if (checked) {
+
+        if(holder.dimmerOnOffSwitch != null) {
+            holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+            holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    handleOnOffSwitchClick(compoundButton.getId(), checked);
+                    mDeviceInfo.setStatusBoolean(checked);
+                    if (checked) {
+                        holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                        holder.dimmer.setVisibility(View.VISIBLE);
+                        holder.dimmer.setProgress(0);
+                    } else {
+                        holder.switch_dimmer_level.setVisibility(View.GONE);
+                        holder.dimmer.setVisibility(View.GONE);
+                    }
+                    if (!checked)
+                        holder.iconRow.setAlpha(0.5f);
+                    else
+                        holder.iconRow.setAlpha(1f);
+                }
+            });
+        }
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+
                     holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                     holder.dimmer.setVisibility(View.VISIBLE);
                     holder.dimmer.setProgress(0);
-                } else {
+                    holder.iconRow.setAlpha(1f);
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+
                     holder.switch_dimmer_level.setVisibility(View.GONE);
                     holder.dimmer.setVisibility(View.GONE);
-                }
-                if (!checked)
                     holder.iconRow.setAlpha(0.5f);
-                else
-                    holder.iconRow.setAlpha(1f);
-            }
-        });
+                }
+            });
+        }
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
@@ -1542,6 +1646,147 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             });
         }
     }
+
+
+
+    /**
+     * Set the data for a dimmer
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setDimmerOnOffButtonRowData(final DevicesInfo mDeviceInfo,
+                                  final ViewHolder holder,
+                                  final boolean isRGB) {
+        String text;
+
+        holder.isProtected = mDeviceInfo.isProtected();
+
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mDeviceInfo.getName());
+
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getStatus());
+            holder.switch_battery_level.setText(text);
+        }
+
+        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+        String percentage = calculateDimPercentage(
+                mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
+        holder.switch_dimmer_level.setText(percentage);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+                    holder.iconRow.setAlpha(1f);
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                    holder.dimmer.setVisibility(View.VISIBLE);
+                    if (holder.dimmer.getProgress() <= 10) {
+                        holder.dimmer.setProgress(20);//dimmer turned on with default progress value
+                    }
+                    if (isRGB)
+                        holder.buttonColor.setVisibility(View.VISIBLE);
+
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+
+                    holder.iconRow.setAlpha(0.5f);
+                    holder.switch_dimmer_level.setVisibility(View.GONE);
+                    holder.dimmer.setVisibility(View.GONE);
+                    if (isRGB)
+                        holder.buttonColor.setVisibility(View.GONE);
+                }
+            });
+        }
+
+        holder.dimmer.setProgress(mDeviceInfo.getLevel());
+        holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
+        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String percentage = calculateDimPercentage(seekBar.getMax(), progress);
+                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
+                        .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+                switch_dimmer_level.setText(percentage);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                previousDimmerValue = seekBar.getProgress();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress();
+                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                mDeviceInfo.setLevel(progress);
+            }
+        });
+
+        if (!mDeviceInfo.getStatusBoolean()) {
+            holder.switch_dimmer_level.setVisibility(View.GONE);
+            holder.dimmer.setVisibility(View.GONE);
+            if (isRGB)
+                holder.buttonColor.setVisibility(View.GONE);
+        } else {
+            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.dimmer.setVisibility(View.VISIBLE);
+            if (isRGB)
+                holder.buttonColor.setVisibility(View.VISIBLE);
+        }
+
+        if (holder.buttonLog != null) {
+            holder.buttonLog.setId(mDeviceInfo.getIdx());
+            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleLogButtonClick(v.getId());
+                }
+            });
+        }
+
+        if (isRGB && holder.buttonColor != null) {
+            holder.buttonColor.setId(mDeviceInfo.getIdx());
+            holder.buttonColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleColorButtonClick(v.getId());
+                }
+            });
+        }
+    }
+
 
     /**
      * Set the data for temperature devices
