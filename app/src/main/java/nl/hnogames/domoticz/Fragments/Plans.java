@@ -143,9 +143,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            mRecyclerView.setBackgroundColor(getResources().getColor(R.color.background_dark));
-        }
 
         processPlans();
     }

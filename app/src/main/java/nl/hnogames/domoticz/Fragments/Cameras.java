@@ -169,9 +169,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            if (mSharedPrefs.darkThemeEnabled()) {
-                mRecyclerView.setBackgroundColor(getResources().getColor(R.color.background_dark));
-            }
 
             getCameras();
         }

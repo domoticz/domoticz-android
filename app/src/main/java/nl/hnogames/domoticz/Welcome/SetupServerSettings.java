@@ -201,7 +201,7 @@ public class SetupServerSettings extends Fragment {
     private void checkConnectionData() {
         buildServerInfo();
 
-        if(mServerUtil == null)
+        if (mServerUtil == null)
             mServerUtil = new ServerUtil(getActivity());
 
         final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
