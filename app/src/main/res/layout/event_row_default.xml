@@ -3,23 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_grey_300_"
-    android:paddingLeft="@dimen/row_space"
-    android:paddingRight="@dimen/row_space">
+    style="@style/background_listview"
+     android:id="@+id/row_global_wrapper">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bordershadow"
-        android:foreground="?android:attr/selectableItemBackground"
         android:longClickable="true"
         android:minHeight="80dp"
         android:orientation="horizontal"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
-
+        style="@style/listview_row"
+     android:id="@+id/row_wrapper" >
+		
         <ImageView
             android:id="@+id/rowIcon"
             android:layout_width="40dp"

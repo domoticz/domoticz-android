@@ -15,6 +15,7 @@
     <string name="category_notification">Notifications</string>
     <string name="category_debug">Debugging</string>
     <string name="category_export">Export/Import Settings</string>
+    <string name="category_theme">Theme</string>
     <string name="category_nfc">NFC Connections</string>
 
 
@@ -40,6 +41,11 @@
 
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Configure Geofencing</string>
+
+    <!--        Theming settings -->
+    <string name="config_theme">Set Theme</string>
+    <string name="set_dark_theme">Switch app theme to Dark</string>
+    <string name="set_light_theme">Switch app theme to Light</string>
 
     <!--        Import/Export settings  -->
     <string name="settings_imported">Settings imported, please restart Domoticz</string>

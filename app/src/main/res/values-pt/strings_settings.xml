@@ -14,10 +14,14 @@
   <string name="category_notification">Notificações</string>
   <string name="category_debug">Depuração</string>
   <string name="category_export">Configurações de importação/exportação</string>
+  <string name="category_theme">Theme</string>
   <string name="category_nfc">Conexões de NFC</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ecrã Inicial</string>
   <string name="enable_items">Habilitar/Desabilitar itens</string>
+  <string name="sort_dashboardLikeServer_title">Dashboard sorting</string>
+  <string name="sort_dashboardLikeServer_on">Sort dashboard like server</string>
+  <string name="sort_dashboardLikeServer_off">Sort dashboard alphabetically</string>
   <string name="extra_data_title">Dados extras no painel de entrada</string>
   <string name="show_extra_data_on">Mostrar dados adicionais no painel de entrada</string>
   <string name="show_extra_data_off">Ocultar dados extras no painel de entrada</string>
@@ -32,6 +36,10 @@
   <string name="wear_custom_off">Desativar itens personalizados no Android Wear</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Configurar localização</string>
+  <!--        Theming settings -->
+  <string name="config_theme">Set Theme</string>
+  <string name="set_dark_theme">Switch app theme to Dark</string>
+  <string name="set_light_theme">Switch app theme to Light</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Configurações importadas, por favor reinicie Domoticz</string>
   <string name="settings_import_failed">Falha ao importar configurações</string>

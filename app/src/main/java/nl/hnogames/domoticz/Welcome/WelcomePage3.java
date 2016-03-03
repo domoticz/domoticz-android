@@ -1,9 +1,9 @@
 package nl.hnogames.domoticz.Welcome;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -74,10 +74,13 @@ public class WelcomePage3 extends Fragment {
         } catch (Exception e) {
             callingInstance = WELCOME_WIZARD;
         }
-
-        v = inflater.inflate(R.layout.fragment_welcome3, container, false);
-
         mSharedPrefs = new SharedPrefUtil(getActivity());
+
+        if (mSharedPrefs.darkThemeEnabled())
+            v = inflater.inflate(R.layout.fragment_welcome3_dark, container, false);
+        else
+            v = inflater.inflate(R.layout.fragment_welcome3, container, false);
+
         mServerUtil = new ServerUtil(getActivity());
 
         getLayoutReferences();

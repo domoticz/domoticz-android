@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,8 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
     private ConfigInfo mConfigInfo;
 
+    private SharedPrefUtil mSharedPrefs;
+
     public WeatherAdapter(Context context,
                           Domoticz mDomoticz,
                           ServerUtil serverUtil,
@@ -74,6 +77,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         super();
         this.context = context;
         domoticz = mDomoticz;
+        mSharedPrefs = new SharedPrefUtil(context);
         Collections.sort(data, new Comparator<WeatherInfo>() {
             @Override
             public int compare(WeatherInfo left, WeatherInfo right) {
@@ -131,15 +135,25 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
+        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
+        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
+        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
+
         holder.isProtected = mWeatherInfo.isProtected();
         holder.name = (TextView) convertView.findViewById(R.id.weather_name);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
         holder.data = (TextView) convertView.findViewById(R.id.weather_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.weather_hardware);
-        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
-        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
-        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
-        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
 
         holder.name.setText(mWeatherInfo.getName());
 

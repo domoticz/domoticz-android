@@ -98,6 +98,7 @@ public class SharedPrefUtil {
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private final String TAG = "Shared Pref util";
     private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
+    private final String PREF_DARK_THEME = "darkTheme";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -109,6 +110,10 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+    }
+
+    public boolean darkThemeEnabled() {
+        return prefs.getBoolean(PREF_DARK_THEME, false);
     }
 
     public boolean checkForUpdatesEnabled() {

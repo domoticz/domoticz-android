@@ -113,6 +113,15 @@
             android:title="@string/category_language" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_theme">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="darkTheme"
+            android:summaryOff="@string/set_dark_theme"
+            android:summaryOn="@string/set_light_theme"
+            android:title="@string/config_theme" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_notification">
         <PreferenceScreen android:title="@string/notification_screen_title">
             <SwitchPreference

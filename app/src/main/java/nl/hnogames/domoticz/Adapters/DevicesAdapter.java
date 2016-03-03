@@ -243,6 +243,35 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
                 }
             }
         }
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            if ((row.findViewById(R.id.row_wrapper)) != null)
+                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            if ((row.findViewById(R.id.row_global_wrapper)) != null)
+                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+            if ((row.findViewById(R.id.day_button)) != null)
+                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.year_button)) != null)
+                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.month_button)) != null)
+                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.week_button)) != null)
+                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.log_button)) != null)
+                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.timer_button)) != null)
+                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.notifications_button)) != null)
+                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+
+            if ((row.findViewById(R.id.on_button)) != null)
+                (row.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((row.findViewById(R.id.off_button)) != null)
+                (row.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((row.findViewById(R.id.color_button)) != null)
+                (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
+
         return row;
     }
 
@@ -797,7 +826,11 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+            if (mSharedPrefs.darkThemeEnabled())
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            else
+                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -857,7 +890,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (holder.buttonOn != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.buttonOn.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonOn.setId(mDeviceInfo.getIdx());
 
@@ -870,7 +903,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
         }
         if (holder.buttonOff != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.buttonOff.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.buttonOff.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonOff.setId(mDeviceInfo.getIdx());
             holder.buttonOff.setOnClickListener(new View.OnClickListener() {
@@ -888,7 +921,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (holder.buttonLog != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 
@@ -941,7 +974,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (holder.onOffSwitch != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.onOffSwitch.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.onOffSwitch.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
 
@@ -1137,10 +1170,10 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
+            //holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
-            holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
+            //holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
         }
 
         holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -1159,7 +1192,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
 
         if (holder.buttonLog != null) {
             if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + this.ID_SCENE_SWITCH);
+                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 

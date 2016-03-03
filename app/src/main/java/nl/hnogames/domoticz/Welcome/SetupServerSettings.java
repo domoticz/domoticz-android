@@ -1,11 +1,11 @@
 package nl.hnogames.domoticz.Welcome;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -97,7 +97,10 @@ public class SetupServerSettings extends Fragment {
                              Bundle savedInstanceState) {
 
         callingInstance = getArguments().getInt(INSTANCE);
-        v = inflater.inflate(R.layout.fragment_add_server, container, false);
+        if (mSharedPrefs.darkThemeEnabled())
+            v = inflater.inflate(R.layout.fragment_add_server_dark, container, false);
+        else
+            v = inflater.inflate(R.layout.fragment_add_server, container, false);
 
         getLayoutReferences();
         setPreferenceValues();
@@ -197,8 +200,13 @@ public class SetupServerSettings extends Fragment {
 
     private void checkConnectionData() {
         buildServerInfo();
+
+        if(mServerUtil == null)
+            mServerUtil = new ServerUtil(getActivity());
+
         final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
+
         if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));

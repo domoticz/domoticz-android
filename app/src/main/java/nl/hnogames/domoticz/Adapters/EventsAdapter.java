@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 // Example used: http://www.ezzylearning.com/tutorial/customizing-android-listview-items-with-custom-arrayadapter
 // And: http://www.survivingwithandroid.com/2013/02/android-listview-adapter-checkbox-item_7.html
@@ -54,6 +56,7 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
     private ArrayList<EventInfo> filteredData = null;
     private ArrayList<EventInfo> data = null;
     private Domoticz domoticz;
+    private SharedPrefUtil mSharedPrefs;
     private ItemFilter mFilter = new ItemFilter();
 
     public EventsAdapter(Context context,
@@ -65,7 +68,7 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
         this.context = context;
         this.domoticz = mDomoticz;
         this.listener = listener;
-
+        mSharedPrefs = new SharedPrefUtil(context);
         Collections.reverse(data);
         this.data = data;
         this.filteredData = data;
@@ -105,6 +108,11 @@ public class EventsAdapter extends BaseAdapter implements Filterable {
         layoutResourceId = R.layout.event_row_default;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+        }
 
         holder.name = (TextView) convertView.findViewById(R.id.logs_name);
         holder.message = (TextView) convertView.findViewById(R.id.logs_message);
