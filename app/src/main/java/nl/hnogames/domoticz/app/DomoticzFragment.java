@@ -77,12 +77,24 @@ public class DomoticzFragment extends Fragment {
     }
 
     public void setTheme() {
-        if(mSharedPrefs == null)
+        if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            if(listView != null)
+            if (listView != null)
                 listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.debugLayout)) != null)
+                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.coordinatorLayout)) != null)
+                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            oSpinner.setPointcolor(getResources().getColor(R.color.secondary));
+            if (root.findViewById(R.id.errorImage) != null)
+                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+
+            mSwipeRefreshLayout.setColorSchemeResources(
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -156,9 +168,11 @@ public class DomoticzFragment extends Fragment {
 
     public void showSpinner(boolean show) {
         if (show) {
+            listView.setVisibility(View.GONE);
             oSpinner.setVisibility(View.VISIBLE);
         } else {
             oSpinner.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 
