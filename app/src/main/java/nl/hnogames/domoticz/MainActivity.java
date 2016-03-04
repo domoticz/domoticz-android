@@ -451,17 +451,22 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+
                     if (mServerUtil.getActiveServer() != null) {
-                        // Write update version to shared preferences
-                        mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                        mServerUtil.saveDomoticzServers(true);
-                        if (haveUpdate) {
-                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                                // Great! We can remote/auto update Linux systems
-                                getCurrentServerVersion();
-                            } else {
-                                // No remote/auto updating available for other systems (like Windows, Synology)
-                                showSimpleSnackbar(getString(R.string.server_update_available));
+                        //only show an update revision snackbar once per revisionnumber!
+                        if(!mSharedPrefs.getLastUpdateShown().equals(serverUpdateInfo.getUpdateRevisionNumber())) {
+                            // Write update version to shared preferences
+                            mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                            mServerUtil.saveDomoticzServers(true);
+                            if (haveUpdate) {
+                                if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                    // Great! We can remote/auto update Linux systems
+                                    getCurrentServerVersion();
+                                } else {
+                                    // No remote/auto updating available for other systems (like Windows, Synology)
+                                    showSimpleSnackbar(getString(R.string.server_update_available));
+                                }
+                                mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
                             }
                         }
                     }

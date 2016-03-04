@@ -37,6 +37,12 @@
             android:title="@string/extra_data_title" />
         <SwitchPreference
             android:defaultValue="false"
+            android:key="switchButtons"
+            android:summaryOff="@string/switch_buttons_off"
+            android:summaryOn="@string/switch_buttons_on"
+            android:title="@string/switch_buttons_title" />
+        <SwitchPreference
+            android:defaultValue="false"
             android:key="alwayson"
             android:summaryOff="@string/always_on_off"
             android:summaryOn="@string/always_on_on"

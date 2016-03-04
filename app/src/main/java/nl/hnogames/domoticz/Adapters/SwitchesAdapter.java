@@ -155,7 +155,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                             row = setDefaultRowId(holder);
                         break;
                     default:
-                        row = setOnOffSwitchRowId(holder);
+                        if (mSharedPrefs.showSwitchesAsButtons())
+                            row = setOnOffButtonRowId(holder);
+                        else
+                            row = setOnOffSwitchRowId(holder);
                         break;
                 }
                 break;
@@ -187,10 +190,17 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
             case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
             case Domoticz.Device.Type.Value.SELECTOR:
-                if (mDevicesInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
-                    row = setDimmerRowId(holder, true);
-                else
-                    row = setDimmerRowId(holder, false);
+                if (mDevicesInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB)) {
+                    if (mSharedPrefs.showSwitchesAsButtons())
+                        row = setDimmerOnOffButtonRowId(holder, true);
+                    else
+                        row = setDimmerRowId(holder, true);
+                }else {
+                    if (mSharedPrefs.showSwitchesAsButtons())
+                        row = setDimmerOnOffButtonRowId(holder, false);
+                    else
+                        row = setDimmerRowId(holder, false);
+                }
                 break;
 
             case Domoticz.Device.Type.Value.BLINDS:
@@ -198,7 +208,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 if (canHandleStopButton(mDevicesInfo))
                     row = setBlindsRowId(holder);
                 else
-                    row = setOnOffSwitchRowId(holder);
+                {
+                    if (mSharedPrefs.showSwitchesAsButtons())
+                        row = setOnOffButtonRowId(holder);
+                    else
+                        row = setOnOffSwitchRowId(holder);
+                }
                 break;
 
             default:
@@ -237,6 +252,32 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's on/off button
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
+    private View setOnOffButtonRowId(ViewHolder holder) {
+        layoutResourceId = R.layout.switch_row_on_off_button;
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonOff = (Button) row.findViewById(R.id.off_button);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+
+        return row;
+    }
+
     private View setDefaultRowId(ViewHolder holder) {
         layoutResourceId = R.layout.dashboard_row_default;
 
@@ -261,6 +302,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
         holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
@@ -371,6 +413,41 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         return row;
     }
 
+    /**
+     * Sets the layout ID's for the dimmer with the individual buttons for on/off
+     *
+     * @param holder Holder to use
+     * @return Returns a view
+     */
+    private View setDimmerOnOffButtonRowId(ViewHolder holder, boolean isRGB) {
+        if (isRGB) {
+            layoutResourceId = R.layout.switch_row_rgb_dimmer_button;
+        } else {
+            layoutResourceId = R.layout.switch_row_dimmer_button;
+        }
+
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, null);
+
+        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
+        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
+        holder.buttonOn = (Button) row.findViewById(R.id.on_button);
+        holder.buttonOff = (Button) row.findViewById(R.id.off_button);
+        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
+        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+        holder.switch_dimmer_level = (TextView) row.findViewById(R.id.switch_dimmer_level);
+        holder.dimmer = (SeekBar) row.findViewById(R.id.switch_dimmer);
+
+        holder.buttonLog = (Button) row.findViewById(R.id.log_button);
+        holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
+        holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+
+        if (isRGB)
+            holder.buttonColor = (Button) row.findViewById(R.id.color_button);
+
+        return row;
+    }
+
     private View setModalSwitchRowId(ViewHolder holder) {
         layoutResourceId = R.layout.switch_row_modal;
 
@@ -412,7 +489,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                             setDefaultRowData(mDevicesInfo, holder);
                         break;
                     default:
-                        setOnOffSwitchRowData(mDevicesInfo, holder);
+                        if (mSharedPrefs.showSwitchesAsButtons())
+                            setOnOffButtonRowData(mDevicesInfo, holder);
+                        else
+                            setOnOffSwitchRowData(mDevicesInfo, holder);
                         break;
                 }
                 break;
@@ -440,10 +520,17 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.DIMMER:
             case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
             case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                if (mDevicesInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB))
-                    setDimmerRowData(mDevicesInfo, holder, true);
-                else
-                    setDimmerRowData(mDevicesInfo, holder, false);
+                if (mDevicesInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB)) {
+                    if(mSharedPrefs.showSwitchesAsButtons())
+                        setDimmerOnOffButtonRowData(mDevicesInfo, holder, true);
+                    else
+                        setDimmerRowData(mDevicesInfo, holder, true);
+                }else {
+                    if(mSharedPrefs.showSwitchesAsButtons())
+                        setDimmerOnOffButtonRowData(mDevicesInfo, holder, false);
+                    else
+                        setDimmerRowData(mDevicesInfo, holder, false);
+                }
                 break;
 
             case Domoticz.Device.Type.Value.SELECTOR:
@@ -455,13 +542,106 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 if (canHandleStopButton(mDevicesInfo))
                     setBlindsRowData(mDevicesInfo, holder);
                 else
-                    setOnOffSwitchRowData(mDevicesInfo, holder);
+                {
+                    if (mSharedPrefs.showSwitchesAsButtons())
+                        setOnOffButtonRowData(mDevicesInfo, holder);
+                    else
+                        setOnOffSwitchRowData(mDevicesInfo, holder);
+                }
                 break;
 
             default:
                 throw new NullPointerException(
                         "No supported switch type defined in the adapter (setSwitchRowData)");
         }
+    }
+
+    /**
+     * Set the data for the on/off buttons
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setOnOffButtonRowData(final DevicesInfo mDeviceInfo,
+                                       final ViewHolder holder) {
+        String text;
+
+        holder.isProtected = mDeviceInfo.isProtected();
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mDeviceInfo.getName());
+
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getData());
+            holder.switch_battery_level.setText(text);
+        }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+           holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+                }
+            });
+        }
+
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+        holder.buttonLog.setId(mDeviceInfo.getIdx());
+        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleLogButtonClick(v.getId());
+            }
+        });
+
+        holder.buttonTimer.setId(mDeviceInfo.getIdx());
+        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTimerButtonClick(v.getId());
+            }
+        });
+        if (mDeviceInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        holder.buttonNotifications.setId(mDeviceInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+        if (!mDeviceInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
     }
 
     private void setDefaultRowData(DevicesInfo mDeviceInfo,
@@ -975,7 +1155,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
 
-
         holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1050,25 +1229,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 holder.buttonColor.setVisibility(View.VISIBLE);
         }
 
-        holder.buttonLog.setId(mDevicesInfo.getIdx());
-        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleLogButtonClick(v.getId());
-            }
-        });
-
-        holder.buttonTimer.setId(mDevicesInfo.getIdx());
-        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleTimerButtonClick(v.getId());
-            }
-        });
-
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.GONE);
-
         if (isRGB) {
             holder.buttonColor.setId(mDevicesInfo.getIdx());
             holder.buttonColor.setOnClickListener(new View.OnClickListener() {
@@ -1080,106 +1240,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         }
 
 
-        holder.buttonNotifications.setId(mDevicesInfo.getIdx());
-        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleNotificationButtonClick(v.getId());
-            }
-        });
-        if (!mDevicesInfo.hasNotifications())
-            holder.buttonNotifications.setVisibility(View.GONE);
-
-
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
-                mDevicesInfo.getType(),
-                mDevicesInfo.getSwitchType(),
-                mDevicesInfo.getStatusBoolean(),
-                mDevicesInfo.getUseCustomImage(),
-                mDevicesInfo.getImage())).into(holder.iconRow);
-
-        if (!mDevicesInfo.getStatusBoolean())
-            holder.iconRow.setAlpha(0.5f);
-        else
-            holder.iconRow.setAlpha(1f);
-    }
-
-    private void setSelectorRowData(final DevicesInfo mDevicesInfo,
-                                    final ViewHolder holder) {
-        holder.isProtected = mDevicesInfo.isProtected();
-        holder.switch_name.setText(mDevicesInfo.getName());
-
-        String text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDevicesInfo.getLastUpdateDateTime().getTime());
-        holder.signal_level.setText(text);
-
-        text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getStatus());
-        holder.switch_battery_level.setText(text);
-
-        int loadLevel = mDevicesInfo.getLevel() / 10;
-        final String[] levelNames = mDevicesInfo.getLevelNames();
-        String statusText = context.getString(R.string.unknown);
-        if (levelNames.length >= loadLevel)
-            statusText = levelNames[loadLevel];
-
-        holder.switch_dimmer_level.setId(mDevicesInfo.getIdx() + ID_TEXTVIEW);
-        holder.switch_dimmer_level.setText(statusText);
-        holder.dimmerOnOffSwitch.setId(mDevicesInfo.getIdx() + ID_SWITCH);
-        holder.dimmerOnOffSwitch.setChecked(mDevicesInfo.getStatusBoolean());
-        holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                handleOnOffSwitchClick(compoundButton.getId(), checked);
-                mDevicesInfo.setStatusBoolean(checked);
-                if (checked) {
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                    holder.dimmer.setVisibility(View.VISIBLE);
-                    holder.dimmer.setProgress(0);
-                } else {
-                    holder.switch_dimmer_level.setVisibility(View.GONE);
-                    holder.dimmer.setVisibility(View.GONE);
-                }
-                if (!checked)
-                    holder.iconRow.setAlpha(0.5f);
-                else
-                    holder.iconRow.setAlpha(1f);
-            }
-        });
-
-        holder.dimmer.incrementProgressBy(1);
-        holder.dimmer.setProgress(loadLevel);
-        holder.dimmer.setMax(levelNames.length - 1);
-        holder.dimmer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
-            }
-        });
-        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                handleSelectorDimmerClick(mDevicesInfo.getIdx(), levelNames);
-            }
-        });
-
-        if (!mDevicesInfo.getStatusBoolean()) {
-            holder.switch_dimmer_level.setVisibility(View.GONE);
-            holder.dimmer.setVisibility(View.GONE);
-        } else {
-            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-            holder.dimmer.setVisibility(View.VISIBLE);
-        }
-
         holder.buttonLog.setId(mDevicesInfo.getIdx());
         holder.buttonLog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1196,9 +1256,6 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             }
         });
 
-        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
-            holder.buttonTimer.setVisibility(View.GONE);
-
 
         holder.buttonNotifications.setId(mDevicesInfo.getIdx());
         holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
@@ -1207,9 +1264,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 handleNotificationButtonClick(v.getId());
             }
         });
+
         if (!mDevicesInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
 
+        if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.GONE);
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -1223,6 +1283,336 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         else
             holder.iconRow.setAlpha(1f);
     }
+
+
+    /**
+     * Set the data for a dimmer
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setDimmerOnOffButtonRowData(final DevicesInfo mDeviceInfo,
+                                             final ViewHolder holder,
+                                             final boolean isRGB) {
+        String text;
+
+        holder.isProtected = mDeviceInfo.isProtected();
+
+        if (holder.switch_name != null)
+            holder.switch_name.setText(mDeviceInfo.getName());
+
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getStatus());
+            holder.switch_battery_level.setText(text);
+        }
+
+        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+        String percentage = calculateDimPercentage(
+                mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
+        holder.switch_dimmer_level.setText(percentage);
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+                    holder.iconRow.setAlpha(1f);
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                    holder.dimmer.setVisibility(View.VISIBLE);
+                    if (holder.dimmer.getProgress() <= 10) {
+                        holder.dimmer.setProgress(20);//dimmer turned on with default progress value
+                    }
+                    if (isRGB)
+                        holder.buttonColor.setVisibility(View.VISIBLE);
+
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+
+                    holder.iconRow.setAlpha(0.5f);
+                    holder.switch_dimmer_level.setVisibility(View.GONE);
+                    holder.dimmer.setVisibility(View.GONE);
+                    if (isRGB)
+                        holder.buttonColor.setVisibility(View.GONE);
+                }
+            });
+        }
+
+        holder.dimmer.setProgress(mDeviceInfo.getLevel());
+        holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
+        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String percentage = calculateDimPercentage(seekBar.getMax(), progress);
+                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
+                        .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+                switch_dimmer_level.setText(percentage);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                previousDimmerValue = seekBar.getProgress();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress();
+                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                mDeviceInfo.setLevel(progress);
+            }
+        });
+
+        if (!mDeviceInfo.getStatusBoolean()) {
+            holder.switch_dimmer_level.setVisibility(View.GONE);
+            holder.dimmer.setVisibility(View.GONE);
+            if (isRGB)
+                holder.buttonColor.setVisibility(View.GONE);
+        } else {
+            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.dimmer.setVisibility(View.VISIBLE);
+            if (isRGB)
+                holder.buttonColor.setVisibility(View.VISIBLE);
+        }
+
+        if (isRGB && holder.buttonColor != null) {
+            holder.buttonColor.setId(mDeviceInfo.getIdx());
+            holder.buttonColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleColorButtonClick(v.getId());
+                }
+            });
+        }
+
+        holder.buttonLog.setId(mDeviceInfo.getIdx());
+        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleLogButtonClick(v.getId());
+            }
+        });
+
+        holder.buttonTimer.setId(mDeviceInfo.getIdx());
+        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTimerButtonClick(v.getId());
+            }
+        });
+
+
+        holder.buttonNotifications.setId(mDeviceInfo.getIdx());
+        holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNotificationButtonClick(v.getId());
+            }
+        });
+
+        if (!mDeviceInfo.hasNotifications())
+            holder.buttonNotifications.setVisibility(View.GONE);
+
+        if (mDeviceInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.GONE);
+    }
+
+
+    /**
+     * Set the data for a selector switch
+     *
+     * @param mDeviceInfo Device info
+     * @param holder      Holder to use
+     */
+    private void setSelectorRowData(final DevicesInfo mDeviceInfo,
+                                    final ViewHolder holder) {
+        String text;
+
+        holder.isProtected = mDeviceInfo.isProtected();
+        holder.switch_name.setText(mDeviceInfo.getName());
+
+        if (holder.signal_level != null) {
+            text = context.getString(R.string.last_update)
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            holder.signal_level.setText(text);
+        }
+
+        if (holder.switch_battery_level != null) {
+            text = context.getString(R.string.status) + ": " +
+                    String.valueOf(mDeviceInfo.getStatus());
+            holder.switch_battery_level.setText(text);
+        }
+
+        int loadLevel = mDeviceInfo.getLevel() / 10;
+        final String[] levelNames = mDeviceInfo.getLevelNames();
+        String statusText = context.getString(R.string.unknown);
+
+        if (levelNames.length > loadLevel)
+            statusText = levelNames[loadLevel];
+
+        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+        holder.switch_dimmer_level.setText(statusText);
+
+        if(holder.dimmerOnOffSwitch != null) {
+            holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+            holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    handleOnOffSwitchClick(compoundButton.getId(), checked);
+                    mDeviceInfo.setStatusBoolean(checked);
+                    if (checked) {
+                        holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                        holder.dimmer.setVisibility(View.VISIBLE);
+                        holder.dimmer.setProgress(0);
+                    } else {
+                        holder.switch_dimmer_level.setVisibility(View.GONE);
+                        holder.dimmer.setVisibility(View.GONE);
+                    }
+                    if (!checked)
+                        holder.iconRow.setAlpha(0.5f);
+                    else
+                        holder.iconRow.setAlpha(1f);
+                }
+            });
+        }
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), true);
+
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                    holder.dimmer.setVisibility(View.VISIBLE);
+                    holder.dimmer.setProgress(0);
+                    holder.iconRow.setAlpha(1f);
+                }
+            });
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleOnOffSwitchClick(v.getId(), false);
+
+                    holder.switch_dimmer_level.setVisibility(View.GONE);
+                    holder.dimmer.setVisibility(View.GONE);
+                    holder.iconRow.setAlpha(0.5f);
+                }
+            });
+        }
+
+        holder.dimmer.incrementProgressBy(1);
+        holder.dimmer.setProgress(loadLevel);
+        holder.dimmer.setMax(levelNames.length - 1);
+
+        holder.dimmer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleSelectorDimmerClick(mDeviceInfo.getIdx(), levelNames);
+            }
+        });
+
+        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                handleSelectorDimmerClick(mDeviceInfo.getIdx(), levelNames);
+            }
+        });
+
+        if (!mDeviceInfo.getStatusBoolean()) {
+            holder.switch_dimmer_level.setVisibility(View.GONE);
+            holder.dimmer.setVisibility(View.GONE);
+        } else {
+            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.dimmer.setVisibility(View.VISIBLE);
+        }
+
+        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
+
+        holder.buttonLog.setId(mDeviceInfo.getIdx());
+        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleLogButtonClick(v.getId());
+            }
+        });
+
+        holder.buttonTimer.setId(mDeviceInfo.getIdx());
+        holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTimerButtonClick(v.getId());
+            }
+        });
+
+        if (mDeviceInfo.getTimers().toLowerCase().equals("false"))
+            holder.buttonTimer.setVisibility(View.GONE);
+
+        if(holder.buttonNotifications != null) {
+            holder.buttonNotifications.setId(mDeviceInfo.getIdx());
+            holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleNotificationButtonClick(v.getId());
+                }
+            });
+            if (!mDeviceInfo.hasNotifications())
+                holder.buttonNotifications.setVisibility(View.GONE);
+        }
+
+        if (!mDeviceInfo.getStatusBoolean())
+            holder.iconRow.setAlpha(0.5f);
+        else
+            holder.iconRow.setAlpha(1f);
+    }
+
 
     private void setModalSwitchRowData(DevicesInfo mDevicesInfo, ViewHolder holder, final int stateArrayRes, final int stateNamesArrayRes, final int[] stateIds) {
         holder.switch_name.setText(mDevicesInfo.getName());
@@ -1351,7 +1741,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageButton buttonUp, buttonDown, buttonStop;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetState, buttonNotifications;
+        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetState, buttonNotifications, buttonOff;
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;

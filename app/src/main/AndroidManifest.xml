@@ -224,10 +224,10 @@
                 android:value="nl.hnogames.domoticz.ServerListSettingsActivity" />
         </activity>
 
-        <activity
-            android:name=".Welcome.WelcomeViewActivity"
+        <activity android:name=".Welcome.WelcomeViewActivity"
+            android:theme="@style/Theme.Intro"
             android:configChanges="orientation|screenSize"
-            android:label="@string/welcome_title_activity_welcome" />
+            android:label="@string/welcome_title_activity_welcome"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

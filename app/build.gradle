@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 89
-        versionName '0.1.243'
+        versionCode 90
+        versionName '0.1.244'
         multiDexEnabled true
     }
 
@@ -70,6 +70,7 @@ dependencies {
     }
 
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
+
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
@@ -96,7 +97,9 @@ dependencies {
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
     compile 'eu.inloop:easygcm:1.6.1@aar'
+
     compile project(path: ':SeekArc_library')
+    compile project(path: ':materialIntro_library')
 }
 
 
