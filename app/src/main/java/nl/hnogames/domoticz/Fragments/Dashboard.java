@@ -34,7 +34,6 @@ import android.widget.AdapterView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
-import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -199,9 +198,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 adapter = new DevicesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
                 SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
                 animationAdapter.setAbsListView(listView);
-                listView.setAdapter(adapter);
-                listView.enableDragAndDrop();
-                listView.setDraggableManager(new TouchViewDraggableManager(R.id.rowIcon));
+                listView.setAdapter(animationAdapter);
 
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override

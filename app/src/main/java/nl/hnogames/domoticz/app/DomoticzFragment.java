@@ -42,7 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fenjuly.mylibrary.SpinnerLoader;
-import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 
 import org.json.JSONException;
 
@@ -61,7 +60,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzFragment extends Fragment {
 
-    public DynamicListView listView;
+    public ListView listView;
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
@@ -118,7 +117,7 @@ public class DomoticzFragment extends Fragment {
     }
 
     public void initViews(View root) {
-        listView = (DynamicListView) root.findViewById(R.id.listView);
+        listView = (ListView) root.findViewById(R.id.listView);
         oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
         coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
