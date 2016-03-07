@@ -395,8 +395,12 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
      * @return Returns a view
      */
     private View setMotionSwitchRowId(ViewHolder holder) {
-        if (mSharedPrefs.showExtraData()) layoutResourceId = R.layout.switch_row_motion;
-        else layoutResourceId = R.layout.switch_row_motion_small;
+        if (mSharedPrefs.showExtraData())
+            layoutResourceId = R.layout.switch_row_motion;
+        else
+        {
+            return setDefaultRowId(holder);
+        }
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
@@ -415,6 +419,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
             holder.buttonLog.setVisibility(View.GONE);
         if (holder.buttonTimer != null)
             holder.buttonTimer.setVisibility(View.GONE);
+
         return row;
     }
 
