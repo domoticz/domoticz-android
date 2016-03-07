@@ -195,7 +195,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                         row = setDimmerOnOffButtonRowId(holder, true);
                     else
                         row = setDimmerRowId(holder, true);
-                }else {
+                } else {
                     if (mSharedPrefs.showSwitchesAsButtons())
                         row = setDimmerOnOffButtonRowId(holder, false);
                     else
@@ -207,8 +207,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.BLINDINVERTED:
                 if (canHandleStopButton(mDevicesInfo))
                     row = setBlindsRowId(holder);
-                else
-                {
+                else {
                     if (mSharedPrefs.showSwitchesAsButtons())
                         row = setOnOffButtonRowId(holder);
                     else
@@ -521,12 +520,12 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
             case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                 if (mDevicesInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB)) {
-                    if(mSharedPrefs.showSwitchesAsButtons())
+                    if (mSharedPrefs.showSwitchesAsButtons())
                         setDimmerOnOffButtonRowData(mDevicesInfo, holder, true);
                     else
                         setDimmerRowData(mDevicesInfo, holder, true);
-                }else {
-                    if(mSharedPrefs.showSwitchesAsButtons())
+                } else {
+                    if (mSharedPrefs.showSwitchesAsButtons())
                         setDimmerOnOffButtonRowData(mDevicesInfo, holder, false);
                     else
                         setDimmerRowData(mDevicesInfo, holder, false);
@@ -541,8 +540,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             case Domoticz.Device.Type.Value.BLINDINVERTED:
                 if (canHandleStopButton(mDevicesInfo))
                     setBlindsRowData(mDevicesInfo, holder);
-                else
-                {
+                else {
                     if (mSharedPrefs.showSwitchesAsButtons())
                         setOnOffButtonRowData(mDevicesInfo, holder);
                     else
@@ -601,7 +599,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             });
         }
         if (holder.buttonOff != null) {
-           holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setId(mDeviceInfo.getIdx());
             holder.buttonOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -783,11 +781,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
      *
      * @param mDevicesInfo  Device info class
      * @param holder        Holder to use
-     * @param buttonEnabled Should the button be enabled?
+     * @param noButtonShown Should the button be shown?
      */
     private void setContactSwitchRowData(DevicesInfo mDevicesInfo,
                                          ViewHolder holder,
-                                         boolean buttonEnabled) {
+                                         boolean noButtonShown) {
         if (mDevicesInfo == null || holder == null)
             return;
 
@@ -814,24 +812,19 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         }
 
         if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDevicesInfo.getIdx());
-            holder.buttonOn.setEnabled(buttonEnabled);
-
-            String status = String.valueOf(mDevicesInfo.getData().toLowerCase());
-            if (statusOpen.contains(status)) {
-                holder.buttonOn.setText(context.getString(R.string.button_state_open));
-                holder.buttonOn.setTextColor(ContextCompat.getColor(context, R.color.black));
-                // holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
-            } else if (statusClosed.contains(status)) {
-                holder.buttonOn.setText(context.getString(R.string.button_state_closed));
-                holder.buttonOn.setTextColor(ContextCompat.getColor(context, R.color.black));
-                // holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
+            if (!noButtonShown) {
+                holder.buttonOn.setVisibility(View.GONE);
             } else {
-                if (status.startsWith("off")) status = "off";
-                holder.buttonOn.setText(status.toUpperCase());
-                holder.buttonOn.setTextColor(ContextCompat.getColor(context, R.color.black));
-            }
-            if (buttonEnabled) {
+                holder.buttonOn.setId(mDevicesInfo.getIdx());
+                String status = String.valueOf(mDevicesInfo.getData().toLowerCase());
+                if (statusOpen.contains(status)) {
+                    holder.buttonOn.setText(context.getString(R.string.button_state_open));
+                } else if (statusClosed.contains(status)) {
+                    holder.buttonOn.setText(context.getString(R.string.button_state_closed));
+                } else {
+                    if (status.startsWith("off")) status = "off";
+                    holder.buttonOn.setText(status.toUpperCase());
+                }
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1482,7 +1475,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(statusText);
 
-        if(holder.dimmerOnOffSwitch != null) {
+        if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1595,7 +1588,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (mDeviceInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.GONE);
 
-        if(holder.buttonNotifications != null) {
+        if (holder.buttonNotifications != null) {
             holder.buttonNotifications.setId(mDeviceInfo.getIdx());
             holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
                 @Override
