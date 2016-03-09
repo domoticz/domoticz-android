@@ -57,6 +57,7 @@ import java.util.Set;
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Containers.NFCInfo;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
@@ -83,8 +84,10 @@ public class SharedPrefUtil {
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
     private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
+    private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    private static final String PREF_QRCODE_ENABLED = "enableQRCode";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
     private static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
     private static final String PREF_DEBUGGING = "debugging";
@@ -521,6 +524,10 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
     }
 
+    public boolean isQRCodeEnabled() {
+        return prefs.getBoolean(PREF_QRCODE_ENABLED, false);
+    }
+
     public void saveNFCList(List<NFCInfo> list) {
         Gson gson = new Gson();
         editor.putString(PREF_NFC_TAGS, gson.toJson(list));
@@ -537,6 +544,30 @@ public class SharedPrefUtil {
                     NFCInfo[].class);
             nfcs = Arrays.asList(item);
             for (NFCInfo n : nfcs) {
+                oReturnValue.add(n);
+            }
+        } else
+            return null;
+
+        return oReturnValue;
+    }
+
+    public void saveQRCodeList(List<QRCodeInfo> list) {
+        Gson gson = new Gson();
+        editor.putString(PREF_QR_CODES, gson.toJson(list));
+        editor.commit();
+    }
+
+    public ArrayList<QRCodeInfo> getQRCodeList() {
+        ArrayList<QRCodeInfo> oReturnValue = new ArrayList<>();
+        List<QRCodeInfo> qrs;
+        if (prefs.contains(PREF_QR_CODES)) {
+            String jsonNFCs = prefs.getString(PREF_QR_CODES, null);
+            Gson gson = new Gson();
+            QRCodeInfo[] item = gson.fromJson(jsonNFCs,
+                    QRCodeInfo[].class);
+            qrs = Arrays.asList(item);
+            for (QRCodeInfo n : qrs) {
                 oReturnValue.add(n);
             }
         } else

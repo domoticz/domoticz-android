@@ -102,6 +102,20 @@
     </PreferenceCategory>
 
 
+    <PreferenceCategory android:title="@string/category_QRCode">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableQRCode"
+            android:summaryOff="@string/qrcode_enable_settings"
+            android:summaryOn="@string/qrcode_enable_settings"
+            android:title="@string/enable_qrcode" />
+        <Preference
+            android:dependency="enableQRCode"
+            android:key="qrcode_settings"
+            android:title="@string/qrcode_settings" />
+    </PreferenceCategory>
+
+
     <PreferenceCategory android:title="@string/category_export">
         <Preference
             android:key="export_settings"

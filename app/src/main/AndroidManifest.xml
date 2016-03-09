@@ -11,6 +11,8 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
+    <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
+
     <permission
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -28,6 +30,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -206,12 +209,24 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/category_nfc"
             android:parentActivityName=".SettingsActivity">
-
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
 
+        <activity
+            android:name=".QRCodeSettingsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/category_QRCode"
+            android:parentActivityName=".SettingsActivity">
+        </activity>
+
+        <activity
+            android:name=".QRCodeCaptureActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/category_QRCode"
+            android:parentActivityName=".QRCodeSettingsActivity">
         </activity>
 
         <activity

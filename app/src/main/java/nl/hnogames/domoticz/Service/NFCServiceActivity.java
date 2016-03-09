@@ -21,9 +21,9 @@
 
 package nl.hnogames.domoticz.Service;
 
-import android.app.Activity;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,7 +41,8 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class NFCServiceActivity extends Activity {
+
+public class NFCServiceActivity extends AppCompatActivity {
 
     private Domoticz domoticz;
     private String TAG = NFCSettingsActivity.class.getSimpleName();
@@ -142,7 +143,6 @@ public class NFCServiceActivity extends Activity {
                              }
         );
     }
-
 
     private void onErrorHandling(Exception error) {
         if (error != null) {

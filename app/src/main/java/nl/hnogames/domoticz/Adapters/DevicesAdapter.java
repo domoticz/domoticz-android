@@ -397,8 +397,7 @@ public class DevicesAdapter extends BaseAdapter implements Filterable {
     private View setMotionSwitchRowId(ViewHolder holder) {
         if (mSharedPrefs.showExtraData())
             layoutResourceId = R.layout.switch_row_motion;
-        else
-        {
+        else {
             return setDefaultRowId(holder);
         }
 

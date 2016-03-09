@@ -6,5 +6,6 @@
     <string name="action_filter">Filter</string>
     <string name="action_camera_play">Play</string>
     <string name="action_camera_pause">Pause</string>
+    <string name="action_qrcode_scan">Scan QR Code</string>
 
 </resources>

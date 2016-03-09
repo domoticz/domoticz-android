@@ -50,6 +50,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.NFCSettingsActivity;
+import nl.hnogames.domoticz.QRCodeSettingsActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
@@ -104,7 +105,9 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference GeoSettings = findPreference("geo_settings");
         android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
         android.preference.Preference NFCPreference = findPreference("nfc_settings");
+        android.preference.Preference QRCodePreference = findPreference("qrcode_settings");
         android.preference.SwitchPreference EnableNFCPreference = (android.preference.SwitchPreference) findPreference("enableNFC");
+        android.preference.SwitchPreference EnableQRCodePreference = (android.preference.SwitchPreference) findPreference("enableQRCode");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
         @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
@@ -231,6 +234,18 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        EnableQRCodePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_QRCode) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
         NFCPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -239,6 +254,20 @@ public class Preference extends PreferenceFragment {
                     return false;
                 } else {
                     Intent intent = new Intent(mContext, NFCSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        QRCodePreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_QRCode) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, QRCodeSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
