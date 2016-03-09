@@ -40,6 +40,11 @@ All Android Wear devices are supported.
 Connect NFC tags to switches!  
 ![nfc](https://cloud.githubusercontent.com/assets/14561640/13137854/eba8b976-d623-11e5-824d-33d3a8be5cd9.png)
 
+# QR Codes
+-----
+Toggle switches by scanning QR Codes!  
+![qr code](https://cloud.githubusercontent.com/assets/14561640/13635799/684ebf04-e5fe-11e5-9932-988ba91cf564.png)
+
 
 # Floorplan
 -----
