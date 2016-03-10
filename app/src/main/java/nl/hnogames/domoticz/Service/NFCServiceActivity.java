@@ -49,12 +49,15 @@ public class NFCServiceActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
 
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.isNFCEnabled()) {
             ArrayList<NFCInfo> nfcList = mSharedPrefs.getNFCList();
-            if (getIntent().getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+            //if (getIntent().getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)) {
                 NFCInfo foundNFC = null;
                 final String tagID = UsefulBits.ByteArrayToHexString(getIntent().getByteArrayExtra(NfcAdapter.EXTRA_ID));
                 Log.i(TAG, "NFC ID Found: " + tagID);
@@ -68,7 +71,14 @@ public class NFCServiceActivity extends AppCompatActivity {
                 if (foundNFC != null && foundNFC.isEnabled()) {
                     handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
                 }
-            }
+            else
+                {
+                    finish();
+                }
+            //}
+        }
+        else{
+            finish();
         }
     }
 
