@@ -16,6 +16,7 @@
   <string name="category_export">Exporta/importa la configuració</string>
   <string name="category_theme">Theme</string>
   <string name="category_nfc">NFC Connections</string>
+  <string name="category_QRCode">QR Code</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Pantalla d\'inici</string>
   <string name="enable_items">Activa/desactiva elements</string>
@@ -28,6 +29,9 @@
   <string name="always_on_title">Wake Lock</string>
   <string name="always_on_on">Lock the screen always On</string>
   <string name="always_on_off">Don\'t lock the screen to always On</string>
+  <string name="switch_buttons_title">Switches</string>
+  <string name="switch_buttons_on">Show switches with on/off switch</string>
+  <string name="switch_buttons_off">Show switches with on/off buttons</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Elements personalitzats per Android Wear</string>
   <string name="custom_wear_select">Seleccioneu interruptors per Wear</string>
@@ -56,6 +60,9 @@
   <string name="multi_server_settings">Enable multiple server support</string>
   <string name="nfc_enable_settings">Enable NFC Connections</string>
   <string name="server">Servidor</string>
+  <string name="qrcode_settings">Setup QR Codes</string>
+  <string name="enable_qrcode">Enable QR Codes</string>
+  <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de Google Cloud Messaging</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>

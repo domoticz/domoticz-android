@@ -25,6 +25,10 @@
   <string name="wizard_widgets_description">Stel widgets in op uw home-scherm!</string>
   <string name="wizard_menuitem">Wizard uitschakelen</string>
   <string name="wizard_menuitem_description">U kunt nu deze Wizard uit het menu verwijderen!</string>
+  <string name="wizard_nfc">NFC</string>
+  <string name="wizard_nfc_description">U bent in staat om een schakelaar via NFC aan of uit te zetten!</string>
+  <string name="wizard_qrcode">QR-Code</string>
+  <string name="wizard_qrcode_description">U bent in staat om een schakelaar via het scannen van een QR-Code aan of uit te zetten!</string>
   <string name="wizard_button_nice">Mooi</string>
   <string name="wizard_button_switches">Schakelaars</string>
   <string name="wizard_button_settings">Instellingen</string>

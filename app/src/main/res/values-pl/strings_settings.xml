@@ -14,20 +14,24 @@
   <string name="category_notification">Powiadomienia</string>
   <string name="category_debug">Debugowanie</string>
   <string name="category_export">Eksport/Import ustawień</string>
-  <string name="category_theme">Theme</string>
+  <string name="category_theme">Motyw</string>
   <string name="category_nfc">Połączenia NFC</string>
+  <string name="category_QRCode">QR Code</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ekran startowy</string>
   <string name="enable_items">Włącz/Wyłącz pozycje</string>
-  <string name="sort_dashboardLikeServer_title">Dashboard sorting</string>
-  <string name="sort_dashboardLikeServer_on">Sort dashboard like server</string>
-  <string name="sort_dashboardLikeServer_off">Sort dashboard alphabetically</string>
+  <string name="sort_dashboardLikeServer_title">Sortowanie pulpitu</string>
+  <string name="sort_dashboardLikeServer_on">Sortuj pulpit jak na serwerze</string>
+  <string name="sort_dashboardLikeServer_off">Sortuj pulpit alfabetycznie</string>
   <string name="extra_data_title">Dodatkowe dane na pulpicie</string>
   <string name="show_extra_data_on">Pokaż dodatkowe dane na pulpicie</string>
   <string name="show_extra_data_off">Ukryj dodatkowe dane na pulpicie</string>
   <string name="always_on_title">Blokada budzenia</string>
   <string name="always_on_on">Zablokuj ekran aby był zawsze włączony</string>
   <string name="always_on_off">Nie blokuj ekranu aby był zawsze włączony</string>
+  <string name="switch_buttons_title">Switches</string>
+  <string name="switch_buttons_on">Show switches with on/off switch</string>
+  <string name="switch_buttons_off">Show switches with on/off buttons</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Android Wear własne pozycje</string>
   <string name="custom_wear_select">Wybierz przełączniki Wear</string>
@@ -37,9 +41,9 @@
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Konfiguruj Geofencing</string>
   <!--        Theming settings -->
-  <string name="config_theme">Set Theme</string>
-  <string name="set_dark_theme">Switch app theme to Dark</string>
-  <string name="set_light_theme">Switch app theme to Light</string>
+  <string name="config_theme">Ustaw motyw</string>
+  <string name="set_dark_theme">Przełącz motyw aplikacji na ciemny</string>
+  <string name="set_light_theme">Przełącz motyw aplikacji na jasny</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Ustawienia zaimportowane, proszę zrestartuj Domoticz</string>
   <string name="settings_import_failed">Nie udało się zaimportować ustawień</string>
@@ -56,6 +60,9 @@
   <string name="multi_server_settings">Włącz obsługę wielu serwerów</string>
   <string name="nfc_enable_settings">Włącz połączenia NFC</string>
   <string name="server">Serwer</string>
+  <string name="qrcode_settings">Setup QR Codes</string>
+  <string name="enable_qrcode">Enable QR Codes</string>
+  <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID Google Cloud Messaging</string>
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>

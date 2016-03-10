@@ -43,6 +43,10 @@ public class PermissionsUtil {
     public static final String[] INITIAL_DEVICE_PERMS = {
             Manifest.permission.READ_PHONE_STATE
     };
+    //these permissions are needed for scanning qrcodes
+    public static final String[] INITIAL_CAMERA_PERMS = {
+            Manifest.permission.CAMERA
+    };
 
     //This range is from 0 to 255!!
     public static final int INITIAL_LOCATION_REQUEST = 111;
@@ -60,6 +64,10 @@ public class PermissionsUtil {
 
     public static boolean canAccessStorage(Context context) {
         return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context));
+    }
+
+    public static boolean canAccessCamera(Context context) {
+        return (hasPermission(Manifest.permission.CAMERA, context));
     }
 
     public static boolean canAccessDeviceState(Context context) {
