@@ -8,6 +8,6 @@
     <string name="nfc_exists">NFC tag already registered. </string>
     <string name="nfc_saved">Saved a New NFC Tag. </string>
     <string name="nfc">NFC</string>
-    <string name="noSwitchSelected_explanation_nfc">For NFC to have effect, a switch should be linked to an NFC Tag</string>
 
+    <string name="noSwitchSelected_explanation_nfc">For NFC to have effect, a switch should be linked to an NFC Tag</string>
 </resources>
