@@ -16,6 +16,7 @@
   <string name="category_export">Configurações de importação/exportação</string>
   <string name="category_theme">Theme</string>
   <string name="category_nfc">Conexões de NFC</string>
+  <string name="category_QRCode">QR Code</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ecrã Inicial</string>
   <string name="enable_items">Habilitar/Desabilitar itens</string>
@@ -28,6 +29,9 @@
   <string name="always_on_title">Bloqueio de Ecrã</string>
   <string name="always_on_on">Suspensão de ecrã desativada</string>
   <string name="always_on_off">Suspensão de ecrã ativada</string>
+  <string name="switch_buttons_title">Switches</string>
+  <string name="switch_buttons_on">Show switches with on/off switch</string>
+  <string name="switch_buttons_off">Show switches with on/off buttons</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Itens personalizados no android Wear</string>
   <string name="custom_wear_select">Selecionar Interruptores</string>
@@ -56,6 +60,9 @@
   <string name="multi_server_settings">Habilitar o suporte a múltiplos servidores</string>
   <string name="nfc_enable_settings">Habilitar conexões NFC</string>
   <string name="server">Servidor</string>
+  <string name="qrcode_settings">Setup QR Codes</string>
+  <string name="enable_qrcode">Enable QR Codes</string>
+  <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de mensagens do Google Cloud</string>
   <string name="notification_settings_push">Coloque o seu id de registo no Domoticz</string>
