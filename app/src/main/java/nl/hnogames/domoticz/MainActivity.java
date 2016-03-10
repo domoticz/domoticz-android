@@ -531,6 +531,12 @@ public class MainActivity extends AppCompatActivity {
                 if (PermissionsUtil.canAccessDeviceState(this))
                     AppController.getInstance().StartEasyGCM();
                 break;
+            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
+                if (PermissionsUtil.canAccessStorage(this)) {
+                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                }
+                break;
         }
     }
 
@@ -752,8 +758,17 @@ public class MainActivity extends AppCompatActivity {
                     invalidateOptionsMenu();//set pause button
                     return true;
                 case R.id.action_scan_qrcode:
-                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
-                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (PermissionsUtil.canAccessCamera(this)) {
+                            Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                            startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                        } else {
+                            requestPermissions(PermissionsUtil.INITIAL_CAMERA_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                        }
+                    } else {
+                        Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                        startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                    }
                     return true;
                 case R.id.action_camera_pause:
                     stopCameraTimer();
