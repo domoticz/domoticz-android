@@ -85,6 +85,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                         } else {
                             // Switch is protected
                             PasswordDialog passwordDialog = new PasswordDialog(mContext);
+                            passwordDialog.setTitle("Switch is protected");
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
