@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             if (mSharedPrefs.darkThemeEnabled()) {
                 ((LinearLayout) findViewById(R.id.tabletLayoutWrapper)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             }
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
         addDrawerItems();
