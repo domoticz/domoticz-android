@@ -40,23 +40,22 @@ import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class PasswordDialog implements DialogInterface.OnDismissListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = PasswordDialog.class.getSimpleName();
 
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
-    private Domoticz domoticz;
-    private MaterialDialog md;
     private SharedPrefUtil mSharedPrefs;
     private FloatingLabelEditText editPassword;
-    private CheckBox showPassword;
+    private String title;
 
-    public PasswordDialog(Context c, Domoticz mDomoticz) {
+    public PasswordDialog(Context c) {
         this.mContext = c;
-        this.domoticz = mDomoticz;
         mSharedPrefs = new SharedPrefUtil(c);
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
@@ -72,13 +71,21 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         mdb.dismissListener(this);
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void show() {
-        mdb.title(mContext.getString(R.string.welcome_remote_server_password));
-        md = mdb.build();
+        if (UsefulBits.isEmpty(title))
+            mdb.title(mContext.getString(R.string.welcome_remote_server_password));
+        else
+            mdb.title(title);
+
+        MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
         editPassword = (FloatingLabelEditText) view.findViewById(R.id.password);
-        showPassword = (CheckBox) view.findViewById(R.id.showpassword);
+        CheckBox showPassword = (CheckBox) view.findViewById(R.id.showpassword);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             showPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));

@@ -66,7 +66,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-        mdb.title("Connect Switch");
+        mdb.title(R.string.connectSwitch);
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
@@ -83,7 +83,8 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                             if (dismissListener != null)
                                 dismissListener.onDismiss(info.get(position).getIdx(), null);
                         } else {
-                            PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
+                            // Switch is protected
+                            PasswordDialog passwordDialog = new PasswordDialog(mContext);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
