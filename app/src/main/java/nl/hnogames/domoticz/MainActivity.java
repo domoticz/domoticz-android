@@ -44,6 +44,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
         TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
         if (usingTabletLayout == null)
             onPhone = true;
+        else {
+            if (mSharedPrefs.darkThemeEnabled()) {
+                ((LinearLayout) findViewById(R.id.tabletLayoutWrapper)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            }
+        }
 
         addDrawerItems();
         addFragment();
