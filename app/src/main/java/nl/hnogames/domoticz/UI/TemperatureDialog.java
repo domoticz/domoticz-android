@@ -120,10 +120,13 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);
 
         int arcProgress = tempToProgress(currentTemperature);
+        temperatureControl.setProgress(arcProgress);
+        /*
         ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
         animation.setDuration(1000);                            // 1 second
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
+        */
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
