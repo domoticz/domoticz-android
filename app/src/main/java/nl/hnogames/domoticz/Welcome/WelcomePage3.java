@@ -75,8 +75,6 @@ public class WelcomePage3 extends Fragment {
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
     private PhoneConnectionUtil mPhoneConnectionUtil;
-    private Switch advancedSettings_switch;
-    private CheckBox cbShowPassword, cbShowPasswordLocal;
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -135,8 +133,8 @@ public class WelcomePage3 extends Fragment {
         local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
-        cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
-        cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
+        CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
+        CheckBox cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
 
@@ -150,7 +148,6 @@ public class WelcomePage3 extends Fragment {
         final LinearLayout localServerSettingsLayout = (LinearLayout)
                 v.findViewById(R.id.local_server_settings);
         localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
-        localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
 
         localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -159,11 +156,12 @@ public class WelcomePage3 extends Fragment {
                 else localServerSettingsLayout.setVisibility(View.GONE);
             }
         });
+        localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
 
         final LinearLayout advancedSettings_layout = (LinearLayout)
                 v.findViewById(R.id.advancedSettings_layout);
 
-        advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
+        Switch advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
         advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
 
         if (mSharedPrefs.isAdvancedSettingsEnabled())
