@@ -64,7 +64,7 @@
   <string name="filter_on">Filtro attivo</string>
   <string name="filterOn_on">Stato on</string>
   <string name="filterOn_off">Stato off</string>
-  <string name="filterOn_static">Dispositivo statico</string>
+  <string name="filterOn_static">Dispositivi statici</string>
   <string name="filterOn_all">Tutti i dispositivi</string>
   <string name="filter">Filtro</string>
   <string name="filter_devices">Filtro dispositivi</string>

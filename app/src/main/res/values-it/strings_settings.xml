@@ -29,9 +29,9 @@
   <string name="always_on_title">Wake Lock</string>
   <string name="always_on_on">Blocca lo schemo sempre attivo</string>
   <string name="always_on_off">Non bloccare lo schemo sempre attivo</string>
-  <string name="switch_buttons_title">Switches</string>
-  <string name="switch_buttons_on">Show switches with on/off switch</string>
-  <string name="switch_buttons_off">Show switches with on/off buttons</string>
+  <string name="switch_buttons_title">Interruttori</string>
+  <string name="switch_buttons_on">Visualizza interruttori on/off</string>
+  <string name="switch_buttons_off">Visualizza pulsanti on/off</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Dispositivi personalizzati Android Wear</string>
   <string name="custom_wear_select">Seleziona gli interruttori Wear</string>
@@ -60,9 +60,9 @@
   <string name="multi_server_settings">Attivare il supporto di server multipli</string>
   <string name="nfc_enable_settings">Attivare le connessioni NFC</string>
   <string name="server">Server</string>
-  <string name="qrcode_settings">Setup QR Codes</string>
-  <string name="enable_qrcode">Enable QR Codes</string>
-  <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
+  <string name="qrcode_settings">Impostazioni QR Code</string>
+  <string name="enable_qrcode">Abilita QR Code</string>
+  <string name="qrcode_enable_settings">Abilita le funzionalità QR Code</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID di messaggistica Google Cloud</string>
   <string name="notification_settings_push">Invia il tuo ID di registrazione a Domoticz</string>

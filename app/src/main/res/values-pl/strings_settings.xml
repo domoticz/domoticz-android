@@ -16,7 +16,7 @@
   <string name="category_export">Eksport/Import ustawień</string>
   <string name="category_theme">Motyw</string>
   <string name="category_nfc">Połączenia NFC</string>
-  <string name="category_QRCode">QR Code</string>
+  <string name="category_QRCode">Kod QR</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ekran startowy</string>
   <string name="enable_items">Włącz/Wyłącz pozycje</string>
@@ -29,9 +29,9 @@
   <string name="always_on_title">Blokada budzenia</string>
   <string name="always_on_on">Zablokuj ekran aby był zawsze włączony</string>
   <string name="always_on_off">Nie blokuj ekranu aby był zawsze włączony</string>
-  <string name="switch_buttons_title">Switches</string>
-  <string name="switch_buttons_on">Show switches with on/off switch</string>
-  <string name="switch_buttons_off">Show switches with on/off buttons</string>
+  <string name="switch_buttons_title">Przełączniki</string>
+  <string name="switch_buttons_on">Pokaż przełączniki z przełączaniem włącz/wyłącz</string>
+  <string name="switch_buttons_off">Pokaż przełączniki z przyciskami włącz/wyłącz</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Android Wear własne pozycje</string>
   <string name="custom_wear_select">Wybierz przełączniki Wear</string>
@@ -60,9 +60,9 @@
   <string name="multi_server_settings">Włącz obsługę wielu serwerów</string>
   <string name="nfc_enable_settings">Włącz połączenia NFC</string>
   <string name="server">Serwer</string>
-  <string name="qrcode_settings">Setup QR Codes</string>
-  <string name="enable_qrcode">Enable QR Codes</string>
-  <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
+  <string name="qrcode_settings">Ustawienia kodów QR</string>
+  <string name="enable_qrcode">Włącz kody QR</string>
+  <string name="qrcode_enable_settings">Włącz funkcjonalność kodów QR</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID Google Cloud Messaging</string>
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>

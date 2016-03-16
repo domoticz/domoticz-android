@@ -26,9 +26,9 @@
   <string name="wizard_menuitem">Desativar o assistente</string>
   <string name="wizard_menuitem_description">Agora, pode remover este assistente no menu de navegação!</string>
   <string name="wizard_nfc">NFC</string>
-  <string name="wizard_nfc_description">You are able to toggle switches via NFC!</string>
-  <string name="wizard_qrcode">QR Code</string>
-  <string name="wizard_qrcode_description">Toggle switches by scanning a QR Code (or barcode)!</string>
+  <string name="wizard_nfc_description">Poderá alterar estado do interruptor vis NFC!</string>
+  <string name="wizard_qrcode">Código QR</string>
+  <string name="wizard_qrcode_description">Alterar interruptor escaneando um código QR (ou código de barras)!</string>
   <string name="wizard_button_nice">Porreiro</string>
   <string name="wizard_button_switches">Interruptores</string>
   <string name="wizard_button_settings">Definições</string>
