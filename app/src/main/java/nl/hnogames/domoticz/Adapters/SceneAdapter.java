@@ -154,7 +154,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setText(context.getString(R.string.button_state_on));
-                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -198,7 +197,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
 
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
-
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +215,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
                     }
                 });
             }
-
             Picasso.with(context).load(domoticz.getDrawableIcon(
                     Domoticz.Scene.Type.GROUP.toLowerCase(),
                     null,
