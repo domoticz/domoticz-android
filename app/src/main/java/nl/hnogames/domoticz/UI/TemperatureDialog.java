@@ -22,12 +22,10 @@
 
 package nl.hnogames.domoticz.UI;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -120,10 +118,13 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);
 
         int arcProgress = tempToProgress(currentTemperature);
+        temperatureControl.setProgress(arcProgress);
+        /*
         ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
         animation.setDuration(1000);                            // 1 second
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
+        */
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
