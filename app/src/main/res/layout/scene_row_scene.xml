@@ -4,22 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/background_listview"
-     android:id="@+id/row_global_wrapper">
+    android:id="@+id/row_global_wrapper"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
-        android:longClickable="true"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
         style="@style/listview_row"
-     android:id="@+id/row_wrapper"	
-	android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-		android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-		android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-		android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:weightSum="1">
+        android:id="@+id/row_wrapper"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -82,7 +81,8 @@
                 android:background="@drawable/button_status"
                 android:text="@string/button_state_on"
                 android:textSize="10dp" />
-
         </RelativeLayout>
     </LinearLayout>
+
+    <include layout="@layout/log_timer_button_row_default" />
 </LinearLayout>

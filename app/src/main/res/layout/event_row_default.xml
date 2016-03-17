@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/background_listview"
-     android:id="@+id/row_global_wrapper">
+    android:id="@+id/row_global_wrapper">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,8 +13,8 @@
         android:minHeight="80dp"
         android:orientation="horizontal"
         style="@style/listview_row"
-     android:id="@+id/row_wrapper" >
-		
+        android:id="@+id/row_wrapper">
+
         <ImageView
             android:id="@+id/rowIcon"
             android:layout_width="40dp"

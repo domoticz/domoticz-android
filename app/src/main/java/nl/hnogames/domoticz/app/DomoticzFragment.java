@@ -181,7 +181,8 @@ public class DomoticzFragment extends Fragment {
      */
     public void checkConnection() {
         List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0));                           // Get only the last fragment
+        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+
         PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] entries) {

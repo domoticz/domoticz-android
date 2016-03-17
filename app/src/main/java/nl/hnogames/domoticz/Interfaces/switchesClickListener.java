@@ -34,6 +34,8 @@ public interface switchesClickListener {
 
     void onLogButtonClick(int idx);
 
+    void onLikeButtonClick(int idx, boolean checked);
+
     void onColorButtonClick(int idx);
 
     void onTimerButtonClick(int idx);

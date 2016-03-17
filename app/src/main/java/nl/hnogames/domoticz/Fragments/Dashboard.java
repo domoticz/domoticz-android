@@ -433,6 +433,11 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     }
 
     @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getSwitch(idx), checked);
+    }
+
+    @Override
     public void onColorButtonClick(final int idx) {
         ColorPickerDialog colorDialog = new ColorPickerDialog(
                 mContext, idx);

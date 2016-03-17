@@ -27,4 +27,7 @@ public interface ScenesClickListener {
 
     void onSceneClick(int idx, boolean action);
 
+    void onLikeButtonClick(int idx, boolean checked);
+
+    void onLogButtonClick(int idx);
 }

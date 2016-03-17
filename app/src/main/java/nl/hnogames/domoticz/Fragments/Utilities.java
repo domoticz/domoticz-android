@@ -410,6 +410,11 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
         });
     }
 
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getUtility(idx), checked);
+    }
+
     private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {
         if (switchLogs.size() <= 0) {
             Toast.makeText(mContext, "No logs found.", Toast.LENGTH_LONG).show();

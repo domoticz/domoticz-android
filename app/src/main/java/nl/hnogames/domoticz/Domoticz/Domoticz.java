@@ -420,6 +420,10 @@ public class Domoticz {
                 url = Url.Category.TEXTLOG;
                 break;
 
+            case Json.Url.Request.SCENELOG:
+                url = Url.Category.SCENELOG;
+                break;
+
             case Json.Url.Request.SWITCHTIMER:
                 url = Url.Category.SWITCHTIMER;
                 break;
@@ -879,6 +883,17 @@ public class Domoticz {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
         String url = constructGetUrl(Json.Url.Request.TEXTLOG) + String.valueOf(idx);
+
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
+        SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
+        logger("for idx: " + String.valueOf(idx));
+        String url = constructGetUrl(Json.Url.Request.SCENELOG) + String.valueOf(idx);
 
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -1523,6 +1538,7 @@ public class Domoticz {
                 int CLEAN_MOBILE_DEVICE = 30;
                 int NOTIFICATIONS = 31;
                 int LANGUAGE = 32;
+                int SCENELOG = 33;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1630,6 +1646,7 @@ public class Domoticz {
             String TEMPERATURE = ALLDEVICES + "&filter=temp&used=true";
             String SWITCHLOG = "/json.htm?type=lightlog&idx=";
             String TEXTLOG = "/json.htm?type=textlog&idx=";
+            String SCENELOG = "/json.htm?type=scenelog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
         }
 

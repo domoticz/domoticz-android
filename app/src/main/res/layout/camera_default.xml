@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/background_listview"
-     android:id="@+id/row_global_wrapper"
+    android:id="@+id/row_global_wrapper"
     android:orientation="vertical">
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"

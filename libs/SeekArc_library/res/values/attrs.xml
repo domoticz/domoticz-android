@@ -38,7 +38,7 @@
         <attr name="roundEdges" format="boolean" />
         <attr name="touchInside" format="boolean" />
         <attr name="clockwise" format="boolean" />
-        <attr name="enabled" format="boolean" />
+        <attr name="isenabled" format="boolean" />
         <attr name="markerEmpty" format="reference" />
         <attr name="markerFill" format="reference" />
         <attr name="markerTextEmptyColor" format="color" />
