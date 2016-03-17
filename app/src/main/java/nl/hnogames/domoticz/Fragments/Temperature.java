@@ -38,6 +38,7 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
@@ -56,6 +57,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     public static final String AUTO = "Auto";
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
+
     @SuppressWarnings("unused")
     private static final String TAG = Temperature.class.getSimpleName();
     private Context mContext;
@@ -63,6 +65,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private ArrayList<TemperatureInfo> mTempInfos;
 
     @Override
     public void refreshFragment() {
@@ -110,6 +113,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         mDomoticz.getTemperatures(new TemperatureReceiver() {
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
+                mTempInfos = mTemperatureInfos;
                 successHandling(mTemperatureInfos.toString(), false);
                 createListView(mTemperatureInfos);
             }
@@ -306,5 +310,20 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         });
 
         tempDialog.show();
+    }
+
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getTemperature(idx), checked);
+    }
+
+    private TemperatureInfo getTemperature(int idx) {
+        TemperatureInfo clickedTemp = null;
+        for (TemperatureInfo mTempInfo : mTempInfos) {
+            if (mTempInfo.getIdx() == idx) {
+                clickedTemp = mTempInfo;
+            }
+        }
+        return clickedTemp;
     }
 }

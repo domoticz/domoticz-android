@@ -36,6 +36,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -119,6 +121,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
         holder.setButton = (Button) convertView.findViewById(R.id.set_button);
+        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
@@ -208,6 +211,22 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mTemperatureInfo.getIdx());
+            holder.likeButton.setLiked(mTemperatureInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
+
         holder.name.setText(mTemperatureInfo.getName());
         if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
             holder.data.setText(R.string.wind);
@@ -270,6 +289,12 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         Button weekButton;
         Button yearButton;
         Boolean isProtected;
+
+        LikeButton likeButton;
+    }
+
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

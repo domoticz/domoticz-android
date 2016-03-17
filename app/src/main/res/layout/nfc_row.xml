@@ -4,23 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/background_listview"
-     android:id="@+id/row_global_wrapper"
-    android:descendantFocusability="blocksDescendants"
-    >
+    android:id="@+id/row_global_wrapper"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
+
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
         style="@style/listview_row"
-     android:id="@+id/row_wrapper"	
-	android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-		android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-		android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-		android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:id="@+id/row_wrapper"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
         <CheckBox
             android:id="@+id/enableNFC"

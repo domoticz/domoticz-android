@@ -41,6 +41,8 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -273,6 +275,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         return row;
     }
@@ -305,6 +308,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         return row;
     }
@@ -319,9 +323,11 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
         holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         return row;
     }
@@ -344,6 +350,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
@@ -362,6 +369,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
@@ -376,6 +384,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         layoutResourceId = R.layout.switch_row_blinds;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
+
         holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
         holder.switch_status = (TextView) row.findViewById(R.id.switch_status);
         holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_signal_level);
@@ -383,6 +392,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
         holder.buttonStop = (ImageButton) row.findViewById(R.id.switch_button_stop);
         holder.buttonDown = (ImageButton) row.findViewById(R.id.switch_button_down);
+
         return row;
     }
 
@@ -406,6 +416,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         if (isRGB)
             holder.buttonColor = (Button) row.findViewById(R.id.color_button);
@@ -440,6 +451,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         if (isRGB)
             holder.buttonColor = (Button) row.findViewById(R.id.color_button);
@@ -463,6 +475,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         holder.buttonLog = (Button) row.findViewById(R.id.log_button);
         holder.buttonTimer = (Button) row.findViewById(R.id.timer_button);
         holder.buttonNotifications = (Button) row.findViewById(R.id.notifications_button);
+        holder.likeButton = (LikeButton) row.findViewById(R.id.fav_button);
 
         return row;
     }
@@ -638,6 +651,23 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
                 handleNotificationButtonClick(v.getId());
             }
         });
+
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDeviceInfo.getIdx());
+            holder.likeButton.setLiked(mDeviceInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
+
         if (!mDeviceInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
     }
@@ -756,6 +786,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
         if (!mDevicesInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDevicesInfo.getIdx());
+            holder.likeButton.setLiked(mDevicesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         if (!mDevicesInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -872,6 +917,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             if (!mDevicesInfo.hasNotifications())
                 holder.buttonNotifications.setVisibility(View.GONE);
         }
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDevicesInfo.getIdx());
+            holder.likeButton.setLiked(mDevicesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -953,6 +1013,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
         if (!mDevicesInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDevicesInfo.getIdx());
+            holder.likeButton.setLiked(mDevicesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -1035,6 +1110,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         });
         if (!mDevicesInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDevicesInfo.getIdx());
+            holder.likeButton.setLiked(mDevicesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
@@ -1260,6 +1350,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         if (!mDevicesInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDevicesInfo.getIdx());
+            holder.likeButton.setLiked(mDevicesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         if (mDevicesInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.GONE);
@@ -1432,6 +1537,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
 
         if (!mDeviceInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDeviceInfo.getIdx());
+            holder.likeButton.setLiked(mDeviceInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         if (mDeviceInfo.getTimers().toLowerCase().equals("false"))
             holder.buttonTimer.setVisibility(View.GONE);
@@ -1599,6 +1719,21 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
             if (!mDeviceInfo.hasNotifications())
                 holder.buttonNotifications.setVisibility(View.GONE);
         }
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDeviceInfo.getIdx());
+            holder.likeButton.setLiked(mDeviceInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -1658,6 +1793,22 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         if (!mDevicesInfo.hasNotifications())
             holder.buttonNotifications.setVisibility(View.GONE);
 
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mDevicesInfo.getIdx());
+            holder.likeButton.setLiked(mDevicesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
+
         Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
                 mDevicesInfo.getSwitchType(),
@@ -1704,6 +1855,10 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         listener.onNotificationButtonClick(idx);
     }
 
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
     private void handleBlindsClick(int idx, int action) {
         listener.onBlindClick(idx, action);
     }
@@ -1738,6 +1893,7 @@ public class SwitchesAdapter extends BaseAdapter implements Filterable {
         Boolean isProtected;
         ImageView iconRow;
         SeekBar dimmer;
+        LikeButton likeButton;
     }
 
     private class ItemFilter extends Filter {

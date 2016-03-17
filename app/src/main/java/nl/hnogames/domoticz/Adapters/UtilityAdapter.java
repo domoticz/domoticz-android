@@ -36,6 +36,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -149,6 +151,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
         holder.buttonLog = (Button) convertView.findViewById(R.id.log_button);
+        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
 
         holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
@@ -166,6 +169,22 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
         if (mSharedPrefs.darkThemeEnabled()) {
             holder.buttonLog.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
+
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mUtilitiesInfo.getIdx());
+            holder.likeButton.setLiked(mUtilitiesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
         }
 
         holder.buttonLog.setId(mUtilitiesInfo.getIdx());
@@ -200,6 +219,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
+        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
@@ -265,6 +285,22 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mUtilitiesInfo.getIdx());
+            holder.likeButton.setLiked(mUtilitiesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
+
         Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
         return convertView;
     }
@@ -323,6 +359,12 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         Button weekButton;
         Button buttonLog;
         Button on_button;
+
+        LikeButton likeButton;
+    }
+
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

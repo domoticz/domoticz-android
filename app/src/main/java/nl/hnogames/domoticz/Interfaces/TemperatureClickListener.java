@@ -28,4 +28,6 @@ public interface TemperatureClickListener {
     void onLogClick(TemperatureInfo temp, String range);
 
     void onSetClick(TemperatureInfo t);
+
+    void onLikeButtonClick(int idx, boolean checked);
 }
