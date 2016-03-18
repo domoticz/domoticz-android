@@ -84,6 +84,7 @@ import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -324,6 +325,8 @@ public class MainActivity extends AppCompatActivity {
             ((DomoticzFragment) f).refreshFragment();
         } else if (f instanceof DomoticzCardFragment)
             ((DomoticzCardFragment) f).refreshFragment();
+        else if (f instanceof DomoticzDashboardFragment)
+            ((DomoticzDashboardFragment) f).refreshFragment();
     }
 
     public void removeFragmentStack(String fragment) {
@@ -688,6 +691,29 @@ public class MainActivity extends AppCompatActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else
+            if ((f instanceof Dashboard)) {
+                getMenuInflater().inflate(R.menu.menu_main_sort, menu);
+
+                MenuItem searchMenuItem = menu.findItem(R.id.search);
+                searchViewAction = (SearchView) MenuItemCompat
+                        .getActionView(searchMenuItem);
+                searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        Fragment n = getVisibleFragment();
+                        if (n instanceof DomoticzDashboardFragment ) {
+                            ((DomoticzDashboardFragment) n).Filter(newText);
+                        }
+                        return false;
+                    }
+                });
+            }
+            else
                 getMenuInflater().inflate(R.menu.menu_simple, menu);
         } else {
             if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
@@ -797,6 +823,9 @@ public class MainActivity extends AppCompatActivity {
                             Fragment f = getVisibleFragment();
                             if (f instanceof DomoticzFragment) {
                                 ((DomoticzFragment) f).sortFragment(selectedSort);
+                            }
+                            else  if (f instanceof DomoticzDashboardFragment) {
+                                ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
                             }
                         }
                     });

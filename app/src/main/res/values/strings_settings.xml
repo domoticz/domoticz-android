@@ -36,6 +36,11 @@
     <string name="switch_buttons_on">Show switches with on/off switch</string>
     <string name="switch_buttons_off">Show switches with on/off buttons</string>
 
+    <string name="dashboard_list_title">Dashboard Grid</string>
+    <string name="show_dashboard_list_on">Show dashboard as list</string>
+    <string name="show_dashboard_list_off">Show dashboard as grid</string>
+
+
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>
     <string name="custom_wear_select">Select Wear switches</string>
