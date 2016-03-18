@@ -104,6 +104,7 @@ public class SharedPrefUtil {
     private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
     private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
+    private final String PREF_DASHBOARD_LIST = "dashboardAsList";
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -119,6 +120,10 @@ public class SharedPrefUtil {
 
     public boolean darkThemeEnabled() {
         return prefs.getBoolean(PREF_DARK_THEME, false);
+    }
+
+    public boolean showDashboardAsList() {
+        return prefs.getBoolean(PREF_DASHBOARD_LIST, true);
     }
 
     public boolean showSwitchesAsButtons() {
