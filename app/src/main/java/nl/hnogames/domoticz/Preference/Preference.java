@@ -222,7 +222,7 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
                 if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, getString(R.string.category_nfc) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
 
