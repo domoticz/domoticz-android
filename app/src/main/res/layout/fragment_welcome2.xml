@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:background="@drawable/button_status"
             android:text="@string/import_settings"
             android:textColor="@color/default_text_color_light"
             android:textSize="@dimen/text_size_welcomePage2_settingsInfo" />
@@ -46,6 +47,7 @@
         android:layout_alignParentBottom="true"
         android:text="@string/welcome_info_swipe"
         android:textColor="@color/default_text_color_light"
+        android:visibility="gone"
         android:textSize="@dimen/text_size_welcomePage2_swipeInfo" />
 
 </RelativeLayout>

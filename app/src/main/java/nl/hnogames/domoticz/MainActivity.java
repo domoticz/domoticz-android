@@ -44,6 +44,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,15 +60,21 @@ import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
+import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Interfaces.StatusReceiver;
+import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
+import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
@@ -80,6 +88,7 @@ import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
 
@@ -105,20 +114,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
         if (!resolvableError) this.finish();
 
-        mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-
             // Only start Geofences when not started
             // Geofences are already started on device boot up by the BootUpReceiver
             if (!mSharedPrefs.isGeofencingStarted()) {
@@ -162,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
         TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
         if (usingTabletLayout == null)
             onPhone = true;
+        else {
+            if (mSharedPrefs.darkThemeEnabled()) {
+                ((LinearLayout) findViewById(R.id.tabletLayoutWrapper)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            }
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         addDrawerItems();
         addFragment();
@@ -198,19 +215,107 @@ public class MainActivity extends AppCompatActivity {
                     if (!res.getBoolean("RESULT", false))
                         this.finish();
                     else {
+                        if (mSharedPrefs.darkThemeEnabled())
+                            setTheme(R.style.AppThemeDark);
+
                         buildScreen();
                     }
                     break;
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
+                    if (mSharedPrefs.darkThemeEnabled())
+                        setTheme(R.style.AppThemeDark);
 
-                    drawNavigationMenu();
-                    refreshFragment();
-                    updateDrawerItems();
-                    invalidateOptionsMenu();
+                    this.recreate();
+                    break;
+                case iQRResultCode:
+                    String QR_ID = data.getStringExtra("QRCODE");
+                    if (mSharedPrefs.isQRCodeEnabled()) {
+                        ArrayList<QRCodeInfo> qrList = mSharedPrefs.getQRCodeList();
+                        QRCodeInfo foundQRCode = null;
+                        Log.i(TAG, "QR Code ID Found: " + QR_ID);
+                        if (qrList != null && qrList.size() > 0) {
+                            for (QRCodeInfo n : qrList) {
+                                if (n.getId().equals(QR_ID))
+                                    foundQRCode = n;
+                            }
+                        }
+                        if (foundQRCode != null && foundQRCode.isEnabled()) {
+                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword());
+                        } else {
+                            if (foundQRCode == null)
+                                Toast.makeText(MainActivity.this, getString(R.string.qrcode_new_found), Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(MainActivity.this, getString(R.string.qr_code_disabled), Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     break;
             }
+        } else if (resultCode == 789) {
+            //reload settings
+            startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
         }
+    }
+
+    private void handleSwitch(final int idx, final String password) {
+        domoticz = new Domoticz(this, null);
+        domoticz.getSwitches(new SwitchesReceiver() {
+                                 @Override
+                                 public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+                                     for (SwitchInfo s : switches) {
+                                         if (s.getIdx() == idx) {
+                                             domoticz.getStatus(idx, new StatusReceiver() {
+                                                 @Override
+                                                 public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
+                                                     int jsonAction;
+                                                     int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                         if (!extendedStatusInfo.getStatusBoolean())
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         else
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                     } else {
+                                                         if (!extendedStatusInfo.getStatusBoolean())
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         else
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                     }
+
+                                                     switch (extendedStatusInfo.getSwitchTypeVal()) {
+                                                         case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             break;
+                                                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             break;
+                                                     }
+
+                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
+                                                         @Override
+                                                         public void onReceiveResult(String result) {
+                                                             Log.d(TAG, result);
+                                                         }
+
+                                                         @Override
+                                                         public void onError(Exception error) {
+                                                         }
+                                                     });
+                                                 }
+
+                                                 @Override
+                                                 public void onError(Exception error) {
+                                                 }
+                                             });
+                                         }
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onError(Exception error) {
+                                 }
+                             }
+        );
     }
 
     public void refreshFragment() {
@@ -434,6 +539,12 @@ public class MainActivity extends AppCompatActivity {
                 if (PermissionsUtil.canAccessDeviceState(this))
                     AppController.getInstance().StartEasyGCM();
                 break;
+            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
+                if (PermissionsUtil.canAccessStorage(this)) {
+                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                }
+                break;
         }
     }
 
@@ -444,17 +555,22 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
+
                     if (mServerUtil.getActiveServer() != null) {
-                        // Write update version to shared preferences
-                        mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                        mServerUtil.saveDomoticzServers(true);
-                        if (haveUpdate) {
-                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                                // Great! We can remote/auto update Linux systems
-                                getCurrentServerVersion();
-                            } else {
-                                // No remote/auto updating available for other systems (like Windows, Synology)
-                                showSimpleSnackbar(getString(R.string.server_update_available));
+                        //only show an update revision snackbar once per revisionnumber!
+                        if (!mSharedPrefs.getLastUpdateShown().equals(serverUpdateInfo.getUpdateRevisionNumber())) {
+                            // Write update version to shared preferences
+                            mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                            mServerUtil.saveDomoticzServers(true);
+                            if (haveUpdate) {
+                                if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                    // Great! We can remote/auto update Linux systems
+                                    getCurrentServerVersion();
+                                } else {
+                                    // No remote/auto updating available for other systems (like Windows, Synology)
+                                    showSimpleSnackbar(getString(R.string.server_update_available));
+                                }
+                                mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
                             }
                         }
                     }
@@ -608,6 +724,14 @@ public class MainActivity extends AppCompatActivity {
                 searchMenuItem.setVisible(false);
         }
 
+        if (mSharedPrefs.isQRCodeEnabled()) {
+            MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
+            if (searchMenuItem != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+                searchMenuItem.setVisible(true);
+            } else if (searchMenuItem != null)
+                searchMenuItem.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -640,6 +764,19 @@ public class MainActivity extends AppCompatActivity {
                         }, 0, 5000);//schedule in 5 seconds
                     }
                     invalidateOptionsMenu();//set pause button
+                    return true;
+                case R.id.action_scan_qrcode:
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (PermissionsUtil.canAccessCamera(this)) {
+                            Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                            startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                        } else {
+                            requestPermissions(PermissionsUtil.INITIAL_CAMERA_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                        }
+                    } else {
+                        Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                        startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                    }
                     return true;
                 case R.id.action_camera_pause:
                     stopCameraTimer();

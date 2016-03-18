@@ -39,6 +39,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private ArrayList<WeatherInfo> mWeatherInfoList;
 
     @Override
     public void refreshFragment() {
@@ -80,6 +81,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
+                mWeatherInfoList = mWeatherInfos;
                 if (getView() != null) {
                     successHandling(mWeatherInfos.toString(), false);
                     createListView(mWeatherInfos);
@@ -247,5 +249,20 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         intent.putExtra("TITLE", graphDialogTitle.toUpperCase());
         intent.putExtra("STEPS", 4);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getWeather(idx), checked);
+    }
+
+    private WeatherInfo getWeather(int idx) {
+        WeatherInfo clickedWeather = null;
+        for (WeatherInfo mWeatherInfo : mWeatherInfoList) {
+            if (mWeatherInfo.getIdx() == idx) {
+                clickedWeather = mWeatherInfo;
+            }
+        }
+        return clickedWeather;
     }
 }

@@ -298,7 +298,6 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         }
     }
 
-
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
         if (busy)
             return;
@@ -322,7 +321,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 mSwitch.setFavoriteBoolean(isFavorite);
-                getSwitchesData();
+                //getSwitchesData();
             }
 
             @Override
@@ -347,6 +346,11 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getSwitch(idx), checked);
     }
 
     @Override

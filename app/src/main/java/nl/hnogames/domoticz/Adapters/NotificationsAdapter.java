@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.NotificationInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class NotificationsAdapter extends BaseAdapter {
@@ -41,10 +42,13 @@ public class NotificationsAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NotificationInfo> data = null;
 
+    private SharedPrefUtil mSharedPrefs;
+
     public NotificationsAdapter(Context context,
                                 ArrayList<NotificationInfo> data) {
         super();
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         this.data = data;
     }
 

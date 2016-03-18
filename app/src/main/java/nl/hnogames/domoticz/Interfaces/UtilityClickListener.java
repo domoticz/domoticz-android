@@ -32,4 +32,6 @@ public interface UtilityClickListener {
     void onThermostatClick(int idx);
 
     void onLogButtonClick(int idx);
+
+    void onLikeButtonClick(int idx, boolean checked);
 }

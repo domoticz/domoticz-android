@@ -301,7 +301,7 @@ public class SeekArc extends View {
 					mTouchInside);
 			mClockwise = a.getBoolean(R.styleable.SeekArc_clockwise,
 					mClockwise);
-			mEnabled = a.getBoolean(R.styleable.SeekArc_enabled, mEnabled);
+			mEnabled = a.getBoolean(R.styleable.SeekArc_isenabled, mEnabled);
 			arcColor = a.getColor(R.styleable.SeekArc_arcColor, arcColor);
 			progressColor = a.getColor(R.styleable.SeekArc_progressColor,
 					progressColor);

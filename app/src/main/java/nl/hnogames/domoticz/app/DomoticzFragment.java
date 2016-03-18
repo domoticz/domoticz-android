@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzFragment extends Fragment {
@@ -63,6 +64,7 @@ public class DomoticzFragment extends Fragment {
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
+    public SharedPrefUtil mSharedPrefs;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -72,6 +74,28 @@ public class DomoticzFragment extends Fragment {
     private SpinnerLoader oSpinner;
 
     public DomoticzFragment() {
+    }
+
+    public void setTheme() {
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(getActivity());
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            if (listView != null)
+                listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.debugLayout)) != null)
+                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.coordinatorLayout)) != null)
+                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            oSpinner.setPointcolor(getResources().getColor(R.color.secondary));
+            if (root.findViewById(R.id.errorImage) != null)
+                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+
+            mSwipeRefreshLayout.setColorSchemeResources(
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
+        }
     }
 
     public String getSort() {
@@ -105,14 +129,19 @@ public class DomoticzFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.default_layout, null);
         initViews(root);
+
+        setTheme();
         return root;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mSharedPrefs = new SharedPrefUtil(getActivity());
         mDomoticz = new Domoticz(getActivity(), getServerUtil());
         debug = mDomoticz.isDebugEnabled();
+
         if (debug)
             showDebugLayout();
 
@@ -139,9 +168,11 @@ public class DomoticzFragment extends Fragment {
 
     public void showSpinner(boolean show) {
         if (show) {
+            listView.setVisibility(View.GONE);
             oSpinner.setVisibility(View.VISIBLE);
         } else {
             oSpinner.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -150,7 +181,8 @@ public class DomoticzFragment extends Fragment {
      */
     public void checkConnection() {
         List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0));                           // Get only the last fragment
+        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+
         PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] entries) {

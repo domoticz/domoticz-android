@@ -15,7 +15,9 @@
     <string name="category_notification">Notifications</string>
     <string name="category_debug">Debugging</string>
     <string name="category_export">Export/Import Settings</string>
+    <string name="category_theme">Theme</string>
     <string name="category_nfc">NFC Connections</string>
+    <string name="category_QRCode">QR Code</string>
 
 
     <!--        Generic settings       -->
@@ -30,6 +32,9 @@
     <string name="always_on_title">Wake Lock</string>
     <string name="always_on_on">Lock the screen always On</string>
     <string name="always_on_off">Don\'t lock the screen to always On</string>
+    <string name="switch_buttons_title">Switches</string>
+    <string name="switch_buttons_on">Show switches with on/off switch</string>
+    <string name="switch_buttons_off">Show switches with on/off buttons</string>
 
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>
@@ -40,6 +45,11 @@
 
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Configure Geofencing</string>
+
+    <!--        Theming settings -->
+    <string name="config_theme">Set Theme</string>
+    <string name="set_dark_theme">Switch app theme to Dark</string>
+    <string name="set_light_theme">Switch app theme to Light</string>
 
     <!--        Import/Export settings  -->
     <string name="settings_imported">Settings imported, please restart Domoticz</string>
@@ -58,6 +68,10 @@
     <string name="multi_server_settings">Enable multiple server support</string>
     <string name="nfc_enable_settings">Enable NFC Connections</string>
     <string name="server">Server</string>
+    <string name="qrcode_settings">Setup QR Codes</string>
+    <string name="enable_qrcode">Enable QR Codes</string>
+    <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
+
 
     <!--        GCM settings      -->
     <string name="notification_settings_id">Google Cloud Messaging ID</string>

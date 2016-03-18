@@ -37,6 +37,12 @@
             android:title="@string/extra_data_title" />
         <SwitchPreference
             android:defaultValue="false"
+            android:key="switchButtons"
+            android:summaryOff="@string/switch_buttons_off"
+            android:summaryOn="@string/switch_buttons_on"
+            android:title="@string/switch_buttons_title" />
+        <SwitchPreference
+            android:defaultValue="false"
             android:key="alwayson"
             android:summaryOff="@string/always_on_off"
             android:summaryOn="@string/always_on_on"
@@ -96,6 +102,20 @@
     </PreferenceCategory>
 
 
+    <PreferenceCategory android:title="@string/category_QRCode">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableQRCode"
+            android:summaryOff="@string/qrcode_enable_settings"
+            android:summaryOn="@string/qrcode_enable_settings"
+            android:title="@string/enable_qrcode" />
+        <Preference
+            android:dependency="enableQRCode"
+            android:key="qrcode_settings"
+            android:title="@string/qrcode_settings" />
+    </PreferenceCategory>
+
+
     <PreferenceCategory android:title="@string/category_export">
         <Preference
             android:key="export_settings"
@@ -111,6 +131,15 @@
             android:entryValues="@array/domoticz_language_entryValues"
             android:key="displayLanguage"
             android:title="@string/category_language" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_theme">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="darkTheme"
+            android:summaryOff="@string/set_dark_theme"
+            android:summaryOn="@string/set_light_theme"
+            android:title="@string/config_theme" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_notification">

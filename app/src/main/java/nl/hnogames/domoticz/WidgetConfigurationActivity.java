@@ -40,6 +40,9 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
@@ -49,9 +52,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             this.finish();
         }
 
-        mSharedPrefs = new SharedPrefUtil(this);
         domoticz = new Domoticz(this, null);
-
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);

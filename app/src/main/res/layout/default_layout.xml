@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_grey_300_"
+    style="@style/background_recyclerview"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -20,8 +20,7 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:alpha="0.5"
-            android:visibility="gone"
+            android:alpha="0.7"
             app:point_color="@color/material_orange_600" />
 
     </LinearLayout>
@@ -96,7 +95,6 @@
                 android:text="@string/no_network_available"
                 android:textColor="@color/light_gray"
                 android:textSize="@dimen/text_size_small" />
-
         </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout

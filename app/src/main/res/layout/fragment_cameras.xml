@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/material_grey_300_"
+                style="@style/background_recyclerview"
                 android:paddingBottom="@dimen/row_space"
                 android:paddingTop="@dimen/row_space"
                 android:scrollbars="vertical" />

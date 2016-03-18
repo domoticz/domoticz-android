@@ -40,6 +40,11 @@ All Android Wear devices are supported.
 Connect NFC tags to switches!  
 ![nfc](https://cloud.githubusercontent.com/assets/14561640/13137854/eba8b976-d623-11e5-824d-33d3a8be5cd9.png)
 
+# QR Codes
+-----
+Toggle switches by scanning QR Codes!  
+![qr code](https://cloud.githubusercontent.com/assets/14561640/13635799/684ebf04-e5fe-11e5-9932-988ba91cf564.png)
+
 
 # Floorplan
 -----
@@ -53,6 +58,15 @@ Some screenshots
 
 ![2](https://cloud.githubusercontent.com/assets/14561640/11994848/3e03224c-aa46-11e5-85c2-6833b6891baf.png)
 ![1](https://cloud.githubusercontent.com/assets/14561640/11994849/3e27abd0-aa46-11e5-9d28-47185ffb53f6.png)
+
+
+# Dark Theme
+-----
+The app is light and dark themed..  
+
+![3](https://cloud.githubusercontent.com/assets/14561640/13396920/84d41d1c-def7-11e5-83fa-99e9af008719.png)
+
+
 
 
 # Credits

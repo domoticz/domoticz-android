@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class UtilityAdapter extends BaseAdapter implements Filterable {
 
@@ -57,6 +61,8 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
 
+    private SharedPrefUtil mSharedPrefs;
+
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
                           ArrayList<UtilitiesInfo> data,
@@ -64,6 +70,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
 
         Collections.sort(data, new Comparator<UtilitiesInfo>() {
@@ -116,6 +123,17 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         }
         convertView.setTag(holder);
 
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+
+            if ((convertView.findViewById(R.id.on_button)) != null)
+                (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((convertView.findViewById(R.id.off_button)) != null)
+                (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((convertView.findViewById(R.id.set_button)) != null)
+                (convertView.findViewById(R.id.set_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+        }
         return convertView;
     }
 
@@ -133,6 +151,7 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
 
         holder.buttonLog = (Button) convertView.findViewById(R.id.log_button);
+        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
 
         holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
@@ -148,6 +167,25 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
                 !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
+        if (mSharedPrefs.darkThemeEnabled()) {
+            holder.buttonLog.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
+
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mUtilitiesInfo.getIdx());
+            holder.likeButton.setLiked(mUtilitiesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
 
         holder.buttonLog.setId(mUtilitiesInfo.getIdx());
         holder.buttonLog.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +219,14 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
         holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
         holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
+        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
 
         holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
@@ -239,6 +285,22 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mUtilitiesInfo.getIdx());
+            holder.likeButton.setLiked(mUtilitiesInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
+
         Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
         return convertView;
     }
@@ -268,7 +330,9 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
                 handleThermostatClick(v.getId());
             }
         });
-
+        if (mSharedPrefs.darkThemeEnabled()) {
+            holder.on_button.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+        }
         holder.name.setText(mUtilitiesInfo.getName());
         holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());
         holder.setPoint.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
@@ -295,6 +359,12 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         Button weekButton;
         Button buttonLog;
         Button on_button;
+
+        LikeButton likeButton;
+    }
+
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

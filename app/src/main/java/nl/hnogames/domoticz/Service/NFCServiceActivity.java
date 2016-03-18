@@ -21,9 +21,9 @@
 
 package nl.hnogames.domoticz.Service;
 
-import android.app.Activity;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,33 +41,41 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class NFCServiceActivity extends Activity {
+
+public class NFCServiceActivity extends AppCompatActivity {
 
     private Domoticz domoticz;
     private String TAG = NFCSettingsActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
 
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.isNFCEnabled()) {
             ArrayList<NFCInfo> nfcList = mSharedPrefs.getNFCList();
-            if (getIntent().getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-                NFCInfo foundNFC = null;
-                final String tagID = UsefulBits.ByteArrayToHexString(getIntent().getByteArrayExtra(NfcAdapter.EXTRA_ID));
-                Log.i(TAG, "NFC ID Found: " + tagID);
+            //if (getIntent().getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED)) {
+            NFCInfo foundNFC = null;
+            final String tagID = UsefulBits.ByteArrayToHexString(getIntent().getByteArrayExtra(NfcAdapter.EXTRA_ID));
+            Log.i(TAG, "NFC ID Found: " + tagID);
 
-                if (nfcList != null && nfcList.size() > 0) {
-                    for (NFCInfo n : nfcList) {
-                        if (n.getId().equals(tagID))
-                            foundNFC = n;
-                    }
-                }
-                if (foundNFC != null && foundNFC.isEnabled()) {
-                    handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
+            if (nfcList != null && nfcList.size() > 0) {
+                for (NFCInfo n : nfcList) {
+                    if (n.getId().equals(tagID))
+                        foundNFC = n;
                 }
             }
+            if (foundNFC != null && foundNFC.isEnabled()) {
+                handleSwitch(foundNFC.getSwitchIdx(), foundNFC.getSwitchPassword());
+            } else {
+                finish();
+            }
+            //}
+        } else {
+            finish();
         }
     }
 
@@ -142,7 +150,6 @@ public class NFCServiceActivity extends Activity {
                              }
         );
     }
-
 
     private void onErrorHandling(Exception error) {
         if (error != null) {

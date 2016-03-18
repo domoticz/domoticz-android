@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -66,6 +69,8 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
     private ConfigInfo mConfigInfo;
 
+    private SharedPrefUtil mSharedPrefs;
+
     public WeatherAdapter(Context context,
                           Domoticz mDomoticz,
                           ServerUtil serverUtil,
@@ -74,6 +79,7 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         super();
         this.context = context;
         domoticz = mDomoticz;
+        mSharedPrefs = new SharedPrefUtil(context);
         Collections.sort(data, new Comparator<WeatherInfo>() {
             @Override
             public int compare(WeatherInfo left, WeatherInfo right) {
@@ -131,16 +137,26 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
+        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
+        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
+        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
+        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
+        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
+
         holder.isProtected = mWeatherInfo.isProtected();
         holder.name = (TextView) convertView.findViewById(R.id.weather_name);
         holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
         holder.data = (TextView) convertView.findViewById(R.id.weather_data);
         holder.hardware = (TextView) convertView.findViewById(R.id.weather_hardware);
-        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
-        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
-        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
-        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
-
         holder.name.setText(mWeatherInfo.getName());
 
         if (language != null) {
@@ -224,6 +240,22 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+        if (holder.likeButton != null) {
+            holder.likeButton.setId(mWeatherInfo.getIdx());
+            holder.likeButton.setLiked(mWeatherInfo.getFavoriteBoolean());
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    handleLikeButtonClick(likeButton.getId(), false);
+                }
+            });
+        }
+
         convertView.setTag(holder);
         Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
         return convertView;
@@ -239,6 +271,11 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         Button monthButton;
         Button yearButton;
         Button weekButton;
+        LikeButton likeButton;
+    }
+
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

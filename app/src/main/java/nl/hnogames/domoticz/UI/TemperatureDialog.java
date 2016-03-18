@@ -22,11 +22,10 @@
 
 package nl.hnogames.domoticz.UI;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,6 +37,7 @@ import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.ServerUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
@@ -106,6 +106,11 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         Button bntPlus = (Button) view.findViewById(R.id.plus);
         Button btnMin = (Button) view.findViewById(R.id.min);
 
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+        }
+
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);
 
@@ -113,10 +118,13 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);
 
         int arcProgress = tempToProgress(currentTemperature);
+        temperatureControl.setProgress(arcProgress);
+        /*
         ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
         animation.setDuration(1000);                            // 1 second
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
+        */
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override

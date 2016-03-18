@@ -7,6 +7,8 @@
     android:orientation="horizontal"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    style="@style/background_listview"
+    android:id="@+id/row_global_wrapper"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 

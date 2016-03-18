@@ -26,4 +26,6 @@ import nl.hnogames.domoticz.Containers.WeatherInfo;
 
 public interface WeatherClickListener {
     void onLogClick(WeatherInfo weather, String range);
+
+    void onLikeButtonClick(int idx, boolean checked);
 }

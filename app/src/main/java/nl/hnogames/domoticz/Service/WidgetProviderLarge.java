@@ -93,7 +93,12 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             final SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getApplicationContext());
 
             final String packageName = this.getPackageName();
-            views = new RemoteViews(packageName, R.layout.widget_layout);//default
+
+            if (mSharedPrefs.darkThemeEnabled())
+                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+            else
+                views = new RemoteViews(packageName, R.layout.widget_layout);//default
+
             final Domoticz domoticz = new Domoticz(getApplicationContext(), null);
 
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
@@ -108,11 +113,17 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                     public void onReceiveDevice(DevicesInfo s) {
                         if (s != null) {
                             int withButtons = withButtons(s);
-                            if (withButtons == 1)
-                                views = new RemoteViews(packageName, R.layout.widget_layout);//default
-                            if (withButtons == 2)
-                                views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
-
+                            if (mSharedPrefs.darkThemeEnabled()) {
+                                if (withButtons == 1)
+                                    views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                if (withButtons == 2)
+                                    views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
+                            } else {
+                                if (withButtons == 1)
+                                    views = new RemoteViews(packageName, R.layout.widget_layout);
+                                if (withButtons == 2)
+                                    views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                            }
                             String text = s.getData();
                             views.setTextViewText(R.id.title, s.getName());
                             if (s.getUsage() != null && s.getUsage().length() > 0)

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import java.util.Collections;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class UserVariablesAdapter extends BaseAdapter implements Filterable {
 
@@ -51,12 +53,15 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
 
+    private SharedPrefUtil mSharedPrefs;
+
     public UserVariablesAdapter(Context context,
                                 Domoticz mDomoticz,
                                 ArrayList<UserVariableInfo> data) {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
 
         Collections.reverse(data);
@@ -98,6 +103,10 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+        }
         holder.name = (TextView) convertView.findViewById(R.id.logs_name);
         holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);
         holder.message = (TextView) convertView.findViewById(R.id.logs_message);

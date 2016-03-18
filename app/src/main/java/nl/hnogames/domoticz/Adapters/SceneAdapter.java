@@ -35,6 +35,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SceneAdapter extends BaseAdapter implements Filterable {
@@ -58,6 +61,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SceneInfo> data = null;
     private Domoticz domoticz;
 
+    private SharedPrefUtil mSharedPrefs;
     private ItemFilter mFilter = new ItemFilter();
 
     public SceneAdapter(Context context,
@@ -67,6 +71,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
         Collections.sort(data, new Comparator<SceneInfo>() {
             @Override
@@ -116,11 +121,37 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
+            if (mSharedPrefs.darkThemeEnabled()) {
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+
+                if ((convertView.findViewById(R.id.on_button)) != null)
+                    (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.off_button)) != null)
+                    (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.log_button)) != null)
+                    (convertView.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.notifications_button)) != null)
+                    (convertView.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.timer_button)) != null)
+                    (convertView.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            }
+
             holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
             holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
             holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
             holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
             holder.switch_battery_level = (TextView) convertView.findViewById(R.id.switch_battery_level);
+
+            holder.buttonLog = (Button) convertView.findViewById(R.id.log_button);
+            holder.buttonTimer = (Button) convertView.findViewById(R.id.timer_button);
+            holder.buttonNotifications = (Button) convertView.findViewById(R.id.notifications_button);
+            holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
+
+            if (holder.buttonTimer != null)
+                holder.buttonTimer.setVisibility(View.GONE);
+            if (holder.buttonNotifications != null)
+                holder.buttonNotifications.setVisibility(View.GONE);
 
             holder.switch_name.setText(mSceneInfo.getName());
             String text = context.getString(R.string.last_update)
@@ -141,7 +172,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setText(context.getString(R.string.button_state_on));
-                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -153,19 +183,71 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
                 }
             }
 
+            if (holder.likeButton != null) {
+                holder.likeButton.setId(mSceneInfo.getIdx());
+                holder.likeButton.setLiked(mSceneInfo.getFavoriteBoolean());
+                holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                    @Override
+                    public void liked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), true);
+                    }
+
+                    @Override
+                    public void unLiked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), false);
+                    }
+                });
+            }
+            if (holder.buttonLog != null) {
+                holder.buttonLog.setId(mSceneInfo.getIdx());
+                holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleLogButtonClick(v.getId());
+                    }
+                });
+            }
+
         } else if (mSceneInfo.getType().equalsIgnoreCase(Domoticz.Scene.Type.GROUP)) {
             holder.isProtected = mSceneInfo.isProtected();
             layoutResourceId = R.layout.scene_row_group;
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
+            if (mSharedPrefs.darkThemeEnabled()) {
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+
+                if ((convertView.findViewById(R.id.on_button)) != null)
+                    (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.off_button)) != null)
+                    (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+
+                if ((convertView.findViewById(R.id.log_button)) != null)
+                    (convertView.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.notifications_button)) != null)
+                    (convertView.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                if ((convertView.findViewById(R.id.timer_button)) != null)
+                    (convertView.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            }
+
             holder.buttonOn = (Button) convertView.findViewById(R.id.on_button);
             holder.buttonOff = (Button) convertView.findViewById(R.id.off_button);
             holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
             holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
+
+            holder.buttonLog = (Button) convertView.findViewById(R.id.log_button);
+            holder.buttonTimer = (Button) convertView.findViewById(R.id.timer_button);
+            holder.buttonNotifications = (Button) convertView.findViewById(R.id.notifications_button);
+            holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
+
+            if (holder.buttonTimer != null)
+                holder.buttonTimer.setVisibility(View.GONE);
+            if (holder.buttonNotifications != null)
+                holder.buttonNotifications.setVisibility(View.GONE);
+
             holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
             holder.switch_battery_level = (TextView) convertView.findViewById(R.id.switch_battery_level);
-
             holder.switch_name.setText(mSceneInfo.getName());
 
             String text = context.getString(R.string.last_update)
@@ -175,7 +257,6 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
 
             holder.signal_level.setText(text);
             holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
-
             if (holder.buttonOn != null) {
                 holder.buttonOn.setId(mSceneInfo.getIdx());
                 holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +266,7 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
                     }
                 });
             }
+
             if (holder.buttonOff != null) {
                 holder.buttonOff.setId(mSceneInfo.getIdx());
                 holder.buttonOff.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +290,31 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
             else
                 holder.iconRow.setAlpha(1f);
 
+
+            if (holder.likeButton != null) {
+                holder.likeButton.setId(mSceneInfo.getIdx());
+                holder.likeButton.setLiked(mSceneInfo.getFavoriteBoolean());
+                holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                    @Override
+                    public void liked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), true);
+                    }
+
+                    @Override
+                    public void unLiked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), false);
+                    }
+                });
+            }
+            if (holder.buttonLog != null) {
+                holder.buttonLog.setId(mSceneInfo.getIdx());
+                holder.buttonLog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleLogButtonClick(v.getId());
+                    }
+                });
+            }
         } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
                 + mSceneInfo.toString());
         convertView.setTag(holder);
@@ -219,11 +326,21 @@ public class SceneAdapter extends BaseAdapter implements Filterable {
         listener.onSceneClick(idx, action);
     }
 
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
+    private void handleLogButtonClick(int idx) {
+        listener.onLogButtonClick(idx);
+    }
+
     static class ViewHolder {
         TextView switch_name, signal_level, switch_battery_level;
-        Button buttonOn, buttonOff;
         Boolean isProtected;
         ImageView iconRow;
+        LikeButton likeButton;
+
+        Button buttonOn, buttonLog, buttonTimer, buttonNotifications, buttonOff;
     }
 
     private class ItemFilter extends Filter {

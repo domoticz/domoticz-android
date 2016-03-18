@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/material_grey_300_"
+    style="@style/background_listview"
+    android:id="@+id/row_global_wrapper"
     android:orientation="vertical">
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
