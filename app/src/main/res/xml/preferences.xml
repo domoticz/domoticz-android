@@ -44,8 +44,8 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="dashboardAsList"
-            android:summaryOff="@string/show_dashboard_list_off"
-            android:summaryOn="@string/show_dashboard_list_on"
+            android:summaryOn="@string/show_dashboard_list_off"
+            android:summaryOff="@string/show_dashboard_list_on"
             android:title="@string/dashboard_list_title" />
         <SwitchPreference
             android:defaultValue="false"

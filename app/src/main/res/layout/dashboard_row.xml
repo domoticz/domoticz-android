@@ -83,7 +83,7 @@
 
                     <LinearLayout
                         android:layout_below="@+id/textwrapper"
-                        android:id="@+id/linearLayout4"
+                        android:id="@+id/linearLayout4ttt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingBottom="10dp"
@@ -159,7 +159,7 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
                         android:paddingBottom="10dp"
-                        android:layout_below="@+id/textwrapper"
+                        android:layout_below="@+id/linearLayout4ttt"
                         android:orientation="vertical">
 
                         <TextView

@@ -691,8 +691,11 @@ public class MainActivity extends AppCompatActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else
-            if ((f instanceof Dashboard)) {
-                getMenuInflater().inflate(R.menu.menu_main_sort, menu);
+            if ((f instanceof DomoticzDashboardFragment)) {
+                if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
+                    getMenuInflater().inflate(R.menu.menu_main_sort, menu);
+                else
+                    getMenuInflater().inflate(R.menu.menu_main, menu);
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
                 searchViewAction = (SearchView) MenuItemCompat
