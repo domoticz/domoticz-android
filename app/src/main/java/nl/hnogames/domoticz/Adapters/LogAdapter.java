@@ -22,16 +22,16 @@
 
 package nl.hnogames.domoticz.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -39,19 +39,22 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Containers.LogInfo;
+import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class LogAdapter extends BaseAdapter implements Filterable {
-
+@SuppressWarnings("unused")
+public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder> {
     private static final String TAG = LogAdapter.class.getSimpleName();
 
-    Context context;
-    ArrayList<LogInfo> filteredData = null;
-    ArrayList<LogInfo> data = null;
-    Domoticz domoticz;
+    private Context context;
+    private ArrayList<LogInfo> filteredData = null;
+    private ArrayList<LogInfo> data = null;
+    private Domoticz domoticz;
     private SharedPrefUtil mSharedPrefs;
     private ItemFilter mFilter = new ItemFilter();
 
@@ -60,29 +63,12 @@ public class LogAdapter extends BaseAdapter implements Filterable {
                       ArrayList<LogInfo> data) {
         super();
 
-        mSharedPrefs = new SharedPrefUtil(context);
         this.context = context;
         this.domoticz = mDomoticz;
-
+        mSharedPrefs = new SharedPrefUtil(context);
         Collections.reverse(data);
         this.data = data;
         this.filteredData = data;
-    }
-
-
-    @Override
-    public int getCount() {
-        return filteredData.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return filteredData.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
     }
 
     public Filter getFilter() {
@@ -90,67 +76,80 @@ public class LogAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        int layoutResourceId;
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.logs_row_default, parent, false);
 
-        if (filteredData != null) {
-            LogInfo mLogInfo = filteredData.get(position);
-
-            if (mLogInfo != null) {
-                holder = new ViewHolder();
-                String dateTime = "";
-                String message = "";
-
-                if (mLogInfo.getMessage().indexOf("  ") >= 0) {
-                    dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
-                    message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
-                } else
-                    message = mLogInfo.getMessage();
-
-                layoutResourceId = R.layout.logs_row_default;
-                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                convertView = inflater.inflate(layoutResourceId, parent, false);
-
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-                    (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-                }
-
-                holder.name = (TextView) convertView.findViewById(R.id.logs_name);
-                holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);
-                holder.message = (TextView) convertView.findViewById(R.id.logs_message);
-                holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
-                if (message.indexOf(":") > 0) {
-                    holder.name.setText(message.substring(0, message.indexOf(":")).trim());
-                    holder.message.setText(message.substring(message.indexOf(":") + 1).trim());
-                } else {
-                    if (message.startsWith("(")) {
-                        holder.name.setText(message.substring(0, message.indexOf(")")).replace("(", "").trim());
-                        holder.message.setText(message.substring(message.indexOf(")") + 1).trim());
-                    } else
-                        holder.name.setText(message);
-                }
-
-                holder.datetime.setText(dateTime);
-
-                Picasso.with(context).load(R.drawable.text).into(holder.iconRow);
-
-                convertView.setTag(holder);
-            }
-
-            return convertView;
+        if (mSharedPrefs.darkThemeEnabled()) {
+            ((android.support.v7.widget.CardView) view.findViewById(R.id.row_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
         }
-        return null;
 
+        return new DataObjectHolder(view);
     }
 
-    static class ViewHolder {
+    @Override
+    public void onBindViewHolder(final DataObjectHolder holder, int position) {
+
+        if (filteredData != null && filteredData.size() > 0) {
+            final LogInfo mLogInfo = filteredData.get(position);
+            String dateTime = "";
+            String message = "";
+
+            if (mLogInfo.getMessage().indexOf("  ") >= 0) {
+                dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
+                message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
+            } else
+                message = mLogInfo.getMessage();
+            if (message.indexOf(":") > 0) {
+                holder.name.setText(message.substring(0, message.indexOf(":")).trim());
+                holder.message.setText(message.substring(message.indexOf(":") + 1).trim());
+            } else {
+                if (message.startsWith("(")) {
+                    holder.name.setText(message.substring(0, message.indexOf(")")).replace("(", "").trim());
+                    holder.message.setText(message.substring(message.indexOf(")") + 1).trim());
+                } else
+                    holder.name.setText(message);
+            }
+
+            holder.datetime.setText(dateTime);
+
+            Picasso.with(context).load(R.drawable.text).into(holder.iconRow);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    public interface onClickListener {
+        void onItemClick(int position, View v);
+    }
+
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;
         ImageView iconRow;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+
+            name = (TextView) itemView.findViewById(R.id.logs_name);
+            datetime = (TextView) itemView.findViewById(R.id.logs_datetime);
+            message = (TextView) itemView.findViewById(R.id.logs_message);
+            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+        }
     }
 
     private class ItemFilter extends Filter {
@@ -188,5 +187,4 @@ public class LogAdapter extends BaseAdapter implements Filterable {
             notifyDataSetChanged();
         }
     }
-
 }

@@ -154,7 +154,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
             name = (TextView) itemView.findViewById(R.id.logs_name);
             message = (TextView) itemView.findViewById(R.id.logs_message);
             iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);

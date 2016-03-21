@@ -34,9 +34,10 @@ import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
+public class Logs extends DomoticzDashboardFragment implements DomoticzFragmentListener {
 
     private LogAdapter adapter;
     private Context mContext;
@@ -94,10 +95,7 @@ public class Logs extends DomoticzFragment implements DomoticzFragmentListener {
 
     private void createListView() {
         if (getView() != null) {
-            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
-
+            gridView.setAdapter(adapter);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
