@@ -301,7 +301,10 @@ public class UpdateActivity extends AppCompatActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
 
                 if (!UsefulBits.isEmpty(serverVersion)) {
-                    serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion(serverVersion);
+                    if (serverUtil != null &&
+                            serverUtil.getActiveServer() != null &&
+                            serverUtil.getActiveServer().getServerUpdateInfo() != null)
+                        serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion(serverVersion);
                     currentServerVersionValue.setText(serverVersion);
                 } else currentServerVersionValue.setText(R.string.not_available);
             }
@@ -314,7 +317,12 @@ public class UpdateActivity extends AppCompatActivity {
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
                 showSimpleSnackbar(message);
-                serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+
+                if (serverUtil != null &&
+                        serverUtil.getActiveServer() != null &&
+                        serverUtil.getActiveServer().getServerUpdateInfo() != null)
+                    serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+
                 currentServerVersionValue.setText(R.string.not_available);
             }
         });
