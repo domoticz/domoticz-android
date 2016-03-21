@@ -12,9 +12,10 @@ import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class UserVariables extends DomoticzFragment implements DomoticzFragmentListener {
+public class UserVariables extends DomoticzDashboardFragment implements DomoticzFragmentListener {
 
     private ArrayList<UserVariableInfo> mUserVariableInfos;
     private UserVariablesAdapter adapter;
@@ -75,11 +76,7 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
 
     private void createListView() {
         if (getView() != null) {
-            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
-
-
+            gridView.setAdapter(adapter);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -89,7 +86,6 @@ public class UserVariables extends DomoticzFragment implements DomoticzFragmentL
             });
             super.showSpinner(false);
             this.Filter(filter);
-
         }
     }
 
