@@ -47,6 +47,7 @@ import java.util.Set;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
@@ -240,7 +241,8 @@ public class WelcomePage3 extends Fragment {
                     if (mPhoneConnectionUtil != null)
                         mPhoneConnectionUtil.stopReceiver();
 
-                    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
+                    if(getActivity() instanceof WelcomeViewActivity)
+                        ((WelcomeViewActivity) getActivity()).finishWithResult(false);
                 }
                 break;
         }
