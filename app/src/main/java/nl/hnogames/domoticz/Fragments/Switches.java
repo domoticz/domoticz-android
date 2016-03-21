@@ -165,17 +165,17 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
                             appSupportedSwitchesValues.contains(switchTypeVal) &&
                             appSupportedSwitchesNames.contains(switchType)) {
-                        if (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(getContext().getString(R.string.filterOn_all))) {
+                        if (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) {
                             supportedSwitches.add(mDevicesInfo);
                         } else {
                             Snackbar.make(coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT).show();
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && mDevicesInfo.getStatusBoolean()) && mDomoticz.isOnOffSwitch(mDevicesInfo)) {
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mDevicesInfo.getStatusBoolean()) && mDomoticz.isOnOffSwitch(mDevicesInfo)) {
                                 supportedSwitches.add(mDevicesInfo);
                             }
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !mDevicesInfo.getStatusBoolean()) && mDomoticz.isOnOffSwitch(mDevicesInfo)) {
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_off)) && !mDevicesInfo.getStatusBoolean()) && mDomoticz.isOnOffSwitch(mDevicesInfo)) {
                                 supportedSwitches.add(mDevicesInfo);
                             }
-                            if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !mDomoticz.isOnOffSwitch(mDevicesInfo)) {
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_static))) && !mDomoticz.isOnOffSwitch(mDevicesInfo)) {
                                 supportedSwitches.add(mDevicesInfo);
                             }
                         }
@@ -306,9 +306,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mSwitch.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -326,7 +326,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_favorite), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_favorite), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -343,7 +343,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -406,15 +406,15 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
-                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Exception error) {
                         if (!UsefulBits.isEmpty(password))
-                            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
                         else
-                            Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_color), Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -430,7 +430,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_timer), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_timer), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -446,7 +446,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_timer), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_timer), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -526,14 +526,14 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
-                        Snackbar.make(coordinatorLayout, getContext().getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.state_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT).show();
                         getSwitchesData();
                     }
 
                     @Override
                     public void onError(Exception error) {
                         if (!UsefulBits.isEmpty(password))
-                            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
                         else
                             errorHandling(error);
                     }
@@ -575,9 +575,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     private void toggleSwitch(DevicesInfo clickedSwitch, boolean checked, final String password) {
         if (checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int idx = clickedSwitch.getIdx();
         if (clickedSwitch.getIdx() > 0) {
@@ -602,7 +602,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public void onError(Exception error) {
                     if (!UsefulBits.isEmpty(password))
-                        Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
                     else
                         errorHandling(error);
                 }
@@ -634,9 +634,9 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     private void toggleButton(DevicesInfo clickedSwitch, boolean checked, final String password) {
         if (checked)
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int idx = clickedSwitch.getIdx();
         int jsonAction;
@@ -655,7 +655,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onError(Exception error) {
                 if (!UsefulBits.isEmpty(password))
-                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
                 else
                     errorHandling(error);
             }
@@ -687,16 +687,16 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
 
     private void setBlindState(DevicesInfo clickedSwitch, int jsonAction, final String password) {
         if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
-            Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        Snackbar.make(coordinatorLayout, getActivity().getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -709,7 +709,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
             @Override
             public void onError(Exception error) {
                 if (!UsefulBits.isEmpty(password))
-                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
                 else
                     errorHandling(error);
             }
@@ -759,7 +759,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 @Override
                 public void onError(Exception error) {
                     if (!UsefulBits.isEmpty(password))
-                        Snackbar.make(coordinatorLayout, getActivity().getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, mContext.getString(R.string.security_wrong_code), Snackbar.LENGTH_SHORT).show();
                     else
                         errorHandling(error);
                 }
