@@ -95,7 +95,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (adapter != null) {
                 adapter.getFilter().filter(text);
                 adapter.notifyDataSetChanged();
-            }super.Filter(text);
+            }
+            super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -86,9 +86,9 @@ public class TimersAdapter extends BaseAdapter {
                 convertView = inflater.inflate(layoutResourceId, parent, false);
 
                 if (mSharedPrefs.darkThemeEnabled()) {
-                    if((convertView.findViewById(R.id.row_wrapper))!=null)
+                    if ((convertView.findViewById(R.id.row_wrapper)) != null)
                         (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-                    if((convertView.findViewById(R.id.row_global_wrapper))!=null)
+                    if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
                         (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
                 }
 

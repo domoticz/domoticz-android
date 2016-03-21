@@ -690,8 +690,7 @@ public class MainActivity extends AppCompatActivity {
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else
-            if ((f instanceof DomoticzDashboardFragment)) {
+            } else if ((f instanceof DomoticzDashboardFragment)) {
                 if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
                 else
@@ -709,14 +708,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         Fragment n = getVisibleFragment();
-                        if (n instanceof DomoticzDashboardFragment ) {
+                        if (n instanceof DomoticzDashboardFragment) {
                             ((DomoticzDashboardFragment) n).Filter(newText);
                         }
                         return false;
                     }
                 });
-            }
-            else
+            } else
                 getMenuInflater().inflate(R.menu.menu_simple, menu);
         } else {
             if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
@@ -826,8 +824,7 @@ public class MainActivity extends AppCompatActivity {
                             Fragment f = getVisibleFragment();
                             if (f instanceof DomoticzFragment) {
                                 ((DomoticzFragment) f).sortFragment(selectedSort);
-                            }
-                            else  if (f instanceof DomoticzDashboardFragment) {
+                            } else if (f instanceof DomoticzDashboardFragment) {
                                 ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
                             }
                         }

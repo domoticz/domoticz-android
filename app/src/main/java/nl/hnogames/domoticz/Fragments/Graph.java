@@ -104,14 +104,12 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             type = data.getString("TYPE");
             axisYLabel = data.getString("TITLE");
             steps = data.getInt("STEPS", 1);
-        }
-        else{
+        } else {
             finish();
         }
     }
 
-    public void finish()
-    {
+    public void finish() {
         this.finish();
     }
 
@@ -140,7 +138,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
                 mGraphList = grphPoints;
                 ComboLineColumnChartData columnData = generateData(root);
-                if(columnData == null)
+                if (columnData == null)
                     finish();
                 else {
                     chart.setComboLineColumnChartData(columnData);
@@ -519,8 +517,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             data.setAxisYLeft(axisY);
 
             return data;
-        }catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }
@@ -569,7 +566,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
                                     ComboLineColumnChartData columnData = generateData(root);
 
-                                    if(columnData == null)
+                                    if (columnData == null)
                                         finish();
                                     else {
                                         chart.setComboLineColumnChartData(columnData);

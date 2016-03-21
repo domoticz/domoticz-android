@@ -7,25 +7,22 @@
     android:id="@+id/card_global_wrapper"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:padding="10dp"
+    android:paddingLeft="20dp"
     card_view:cardCornerRadius="0dp"
     card_view:cardUseCompatPadding="true">
 
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:id="@+id/row_global_wrapper">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="50dp"
+        android:padding="10dp"
         android:orientation="horizontal"
         android:id="@+id/row_wrapper">
 

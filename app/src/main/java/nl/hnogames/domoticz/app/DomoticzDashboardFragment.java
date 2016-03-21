@@ -91,7 +91,7 @@ public class DomoticzDashboardFragment extends Fragment {
                 (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if ((root.findViewById(R.id.coordinatorLayout)) != null)
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if(oSpinner!=null)
+            if (oSpinner != null)
                 oSpinner.setPointcolor(getResources().getColor(R.color.secondary));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
@@ -122,24 +122,21 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     public void initViews(View root) {
-        try{
+        try {
             gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
-            if(mSharedPrefs==null)
+            if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(getContext());
 
-            if(mSharedPrefs.showDashboardAsList())
-            {
+            if (mSharedPrefs.showDashboardAsList()) {
                 gridView.setHasFixedSize(true);
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                 gridView.setLayoutManager(mLayoutManager);
-            }
-            else{
+            } else {
                 gridView.setHasFixedSize(false);
                 StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                 gridView.setLayoutManager(mLayoutManager);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
 
         oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
@@ -192,14 +189,14 @@ public class DomoticzDashboardFragment extends Fragment {
 
     public void showSpinner(boolean show) {
         if (show) {
-            if(gridView != null)
+            if (gridView != null)
                 gridView.setVisibility(View.GONE);
-            if(oSpinner != null)
+            if (oSpinner != null)
                 oSpinner.setVisibility(View.VISIBLE);
         } else {
-            if(oSpinner != null)
+            if (oSpinner != null)
                 oSpinner.setVisibility(View.GONE);
-            if(gridView != null)
+            if (gridView != null)
                 gridView.setVisibility(View.VISIBLE);
         }
     }
@@ -321,11 +318,9 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     private void hideListView() {
-        if(gridView != null)
-        {
+        if (gridView != null) {
             gridView.setVisibility(View.GONE);
-        }
-        else throw new RuntimeException(
+        } else throw new RuntimeException(
                 "Layout should have a ListView defined with the ID of listView");
     }
 
