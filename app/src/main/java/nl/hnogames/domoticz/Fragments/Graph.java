@@ -105,6 +105,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             axisYLabel = data.getString("TITLE");
             steps = data.getInt("STEPS", 1);
         }
+        else{
+            finish();
+        }
+    }
+
+    public void finish()
+    {
+        this.finish();
     }
 
     @Override
@@ -132,10 +140,13 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
                 mGraphList = grphPoints;
                 ComboLineColumnChartData columnData = generateData(root);
-                chart.setComboLineColumnChartData(columnData);
-                setViewPort(chart);
-
-                getActivity().invalidateOptionsMenu();
+                if(columnData == null)
+                    finish();
+                else {
+                    chart.setComboLineColumnChartData(columnData);
+                    setViewPort(chart);
+                    getActivity().invalidateOptionsMenu();
+                }
             }
 
             @Override
@@ -172,341 +183,346 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     @SuppressWarnings("SpellCheckingInspection")
     private ComboLineColumnChartData generateData(View view) {
-        List<Line> lines = new ArrayList<>();
+        try {
+            List<Line> lines = new ArrayList<>();
 
-        List<PointValue> values = new ArrayList<>();
-        List<PointValue> valuesse = new ArrayList<>();
-        List<PointValue> valueshu = new ArrayList<>();
-        List<PointValue> valuesba = new ArrayList<>();
-        List<PointValue> valuesc = new ArrayList<>();
-        List<PointValue> valuesv = new ArrayList<>();
+            List<PointValue> values = new ArrayList<>();
+            List<PointValue> valuesse = new ArrayList<>();
+            List<PointValue> valueshu = new ArrayList<>();
+            List<PointValue> valuesba = new ArrayList<>();
+            List<PointValue> valuesc = new ArrayList<>();
+            List<PointValue> valuesv = new ArrayList<>();
 
-        List<PointValue> valuessp = new ArrayList<>();
-        List<PointValue> valuesdi = new ArrayList<>();
-        List<PointValue> valuesuv = new ArrayList<>();
-        List<PointValue> valuesu = new ArrayList<>();
-        List<PointValue> valuesmm = new ArrayList<>();
+            List<PointValue> valuessp = new ArrayList<>();
+            List<PointValue> valuesdi = new ArrayList<>();
+            List<PointValue> valuesuv = new ArrayList<>();
+            List<PointValue> valuesu = new ArrayList<>();
+            List<PointValue> valuesmm = new ArrayList<>();
 
-        List<AxisValue> axisValueX = new ArrayList<>();
+            List<AxisValue> axisValueX = new ArrayList<>();
 
-        int counter = 0;
-        boolean addHumidity = false;
-        boolean addBarometer = false;
-        boolean addTemperature = false;
-        boolean addSetpoint = false;
-        boolean addCounter = false;
-        boolean addPercentage = false;
-        boolean addSunPower = false;
-        boolean addDirection = false;
-        boolean addSpeed = false;
-        boolean addRain = false;
-        boolean addUsage = false;
-        boolean onlyDate = false;
-        Calendar mydate = Calendar.getInstance();
+            int counter = 0;
+            boolean addHumidity = false;
+            boolean addBarometer = false;
+            boolean addTemperature = false;
+            boolean addSetpoint = false;
+            boolean addCounter = false;
+            boolean addPercentage = false;
+            boolean addSunPower = false;
+            boolean addDirection = false;
+            boolean addSpeed = false;
+            boolean addRain = false;
+            boolean addUsage = false;
+            boolean onlyDate = false;
+            Calendar mydate = Calendar.getInstance();
 
-        int stepcounter = 0;
-        for (GraphPointInfo g : this.mGraphList) {
-            stepcounter++;
-            if (stepcounter == this.steps) {
-                stepcounter = 0;
-
-                try {
-
-                    if (!Float.isNaN(g.getTemperature())) {
-                        addTemperature = true;
-                        values.add(new PointValue(counter, g.getTemperature()));
-                    }
-
-                    if (!Float.isNaN(g.getSetPoint())) {
-                        addSetpoint = true;
-                        valuesse.add(new PointValue(counter, g.getSetPoint()));
-                    }
-
-                    if (g.getBarometer() != null && g.getBarometer().length() > 0) {
-                        addBarometer = true;
-                        try {
-                            valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
-                        } catch (Exception ex) {
-                            valuesba.add(new PointValue(counter, Float.parseFloat(g.getBarometer())));
-                        }
-                    }
-
-                    if (g.getHumidity() != null && g.getHumidity().length() > 0) {
-                        addHumidity = true;
-                        try {
-                            valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
-                        } catch (Exception ex) {
-                            valuesba.add(new PointValue(counter, Float.parseFloat(g.getHumidity())));
-                        }
-                    }
-
-                    if (g.getPercentage() != null && g.getPercentage().length() > 0) {
-                        addPercentage = true;
-                        valuesv.add(new PointValue(counter, Float.parseFloat(g.getPercentage())));
-                    }
-
-                    if (g.getCounter() != null && g.getCounter().length() > 0) {
-                        addCounter = true;
-                        valuesc.add(new PointValue(counter, Float.parseFloat(g.getCounter())));
-                    }
-
-                    if (g.getSpeed() != null && g.getSpeed().length() > 0) {
-                        addSpeed = true;
-                        valuessp.add(new PointValue(counter, Float.parseFloat(g.getSpeed())));
-                    }
-
-                    if (g.getDirection() != null && g.getDirection().length() > 0) {
-                        addDirection = true;
-                        valuesdi.add(new PointValue(counter, Float.parseFloat(g.getDirection())));
-                    }
-
-                    if (g.getSunPower() != null && g.getSunPower().length() > 0) {
-                        addSunPower = true;
-                        valuesuv.add(new PointValue(counter, Float.parseFloat(g.getSunPower())));
-                    }
-
-                    if (g.getUsage() != null && g.getUsage().length() > 0) {
-                        addUsage = true;
-                        valuesu.add(new PointValue(counter, Float.parseFloat(g.getUsage())));
-                    }
-
-                    if (g.getRain() != null && g.getRain().length() > 0) {
-                        addRain = true;
-                        valuesmm.add(new PointValue(counter, Float.parseFloat(g.getRain())));
-                    }
+            int stepcounter = 0;
+            for (GraphPointInfo g : this.mGraphList) {
+                stepcounter++;
+                if (stepcounter == this.steps) {
+                    stepcounter = 0;
 
                     try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        mydate.setTime(sdf.parse(g.getDateTime()));
+
+                        if (!Float.isNaN(g.getTemperature())) {
+                            addTemperature = true;
+                            values.add(new PointValue(counter, g.getTemperature()));
+                        }
+
+                        if (!Float.isNaN(g.getSetPoint())) {
+                            addSetpoint = true;
+                            valuesse.add(new PointValue(counter, g.getSetPoint()));
+                        }
+
+                        if (g.getBarometer() != null && g.getBarometer().length() > 0) {
+                            addBarometer = true;
+                            try {
+                                valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                            } catch (Exception ex) {
+                                valuesba.add(new PointValue(counter, Float.parseFloat(g.getBarometer())));
+                            }
+                        }
+
+                        if (g.getHumidity() != null && g.getHumidity().length() > 0) {
+                            addHumidity = true;
+                            try {
+                                valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                            } catch (Exception ex) {
+                                valuesba.add(new PointValue(counter, Float.parseFloat(g.getHumidity())));
+                            }
+                        }
+
+                        if (g.getPercentage() != null && g.getPercentage().length() > 0) {
+                            addPercentage = true;
+                            valuesv.add(new PointValue(counter, Float.parseFloat(g.getPercentage())));
+                        }
+
+                        if (g.getCounter() != null && g.getCounter().length() > 0) {
+                            addCounter = true;
+                            valuesc.add(new PointValue(counter, Float.parseFloat(g.getCounter())));
+                        }
+
+                        if (g.getSpeed() != null && g.getSpeed().length() > 0) {
+                            addSpeed = true;
+                            valuessp.add(new PointValue(counter, Float.parseFloat(g.getSpeed())));
+                        }
+
+                        if (g.getDirection() != null && g.getDirection().length() > 0) {
+                            addDirection = true;
+                            valuesdi.add(new PointValue(counter, Float.parseFloat(g.getDirection())));
+                        }
+
+                        if (g.getSunPower() != null && g.getSunPower().length() > 0) {
+                            addSunPower = true;
+                            valuesuv.add(new PointValue(counter, Float.parseFloat(g.getSunPower())));
+                        }
+
+                        if (g.getUsage() != null && g.getUsage().length() > 0) {
+                            addUsage = true;
+                            valuesu.add(new PointValue(counter, Float.parseFloat(g.getUsage())));
+                        }
+
+                        if (g.getRain() != null && g.getRain().length() > 0) {
+                            addRain = true;
+                            valuesmm.add(new PointValue(counter, Float.parseFloat(g.getRain())));
+                        }
+
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            mydate.setTime(sdf.parse(g.getDateTime()));
+                        } catch (ParseException e) {
+                            onlyDate = true;
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            mydate.setTime(sdf.parse(g.getDateTime()));
+                        }
+
+                        String label;
+                        if (!onlyDate) {
+                            label = String.valueOf(mydate.get(Calendar.HOUR_OF_DAY))
+                                    + ":"
+                                    + String.valueOf(
+                                    mydate.get(Calendar.MINUTE));
+                        } else {
+                            label = (mydate.get(Calendar.MONTH) + 1) + "/"
+                                    + mydate.get(Calendar.DAY_OF_MONTH);
+                        }
+
+                        axisValueX.add(new AxisValue(counter, label
+                                .toCharArray()));
+                        counter++;
                     } catch (ParseException e) {
-                        onlyDate = true;
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        mydate.setTime(sdf.parse(g.getDateTime()));
+                        e.printStackTrace();
                     }
-
-                    String label;
-                    if (!onlyDate) {
-                        label = String.valueOf(mydate.get(Calendar.HOUR_OF_DAY))
-                                + ":"
-                                + String.valueOf(
-                                mydate.get(Calendar.MINUTE));
-                    } else {
-                        label = (mydate.get(Calendar.MONTH) + 1) + "/"
-                                + mydate.get(Calendar.DAY_OF_MONTH);
-                    }
-
-                    axisValueX.add(new AxisValue(counter, label
-                            .toCharArray()));
-                    counter++;
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
             }
-        }
 
-        boolean setCubic = false;
+            boolean setCubic = false;
 
-        //setCubic seems bugged in HelloCharts library
-        //if(range.equals(Domoticz.Graph.Range.MONTH) || range.equals(Domoticz.Graph.Range.YEAR))
-        //    setCubic=true;
-        if ((addTemperature && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
-            lines.add(new Line(values)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_blue_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
+            //setCubic seems bugged in HelloCharts library
+            //if(range.equals(Domoticz.Graph.Range.MONTH) || range.equals(Domoticz.Graph.Range.YEAR))
+            //    setCubic=true;
+            if ((addTemperature && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
+                lines.add(new Line(values)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_blue_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
 
-            if ((addSetpoint && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()))) {
-                lines.add(new Line(valuesse)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_pink_600))
+                if ((addSetpoint && !enableFilters) ||
+                        (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()))) {
+                    lines.add(new Line(valuesse)
+                            .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_pink_600))
+                            .setCubic(setCubic)
+                            .setHasLabels(false)
+                            .setHasLines(true)
+                            .setHasPoints(false));
+                }
+            }
+
+            if ((addHumidity && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
+
+                lines.add(new Line(valueshu)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_orange_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
                         .setHasPoints(false));
             }
-        }
 
-        if ((addHumidity && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
+            if ((addBarometer && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
 
-            lines.add(new Line(valueshu)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_orange_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesba)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_green_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addBarometer && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
+            if ((addCounter && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
 
-            lines.add(new Line(valuesba)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_green_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesc)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_indigo_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addCounter && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
+            if ((addPercentage && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
 
-            lines.add(new Line(valuesc)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_indigo_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesv)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_yellow_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addPercentage && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
+            if ((addDirection && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
 
-            lines.add(new Line(valuesv)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_yellow_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesdi)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_green_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addDirection && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
+            if ((addSunPower && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
 
-            lines.add(new Line(valuesdi)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_green_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesuv)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_deep_purple_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addSunPower && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
+            if ((addSpeed && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
 
-            lines.add(new Line(valuesuv)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_deep_purple_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuessp)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_amber_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addSpeed && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
+            if ((addUsage && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
 
-            lines.add(new Line(valuessp)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_amber_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesu)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_orange_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addUsage && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
+            if ((addRain && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
 
-            lines.add(new Line(valuesu)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_orange_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
+                lines.add(new Line(valuesmm)
+                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_light_green_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
 
-        if ((addRain && !enableFilters) ||
-                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
+            if (lines.size() > 1) {
+                if (addTemperature) {
+                    (view.findViewById(R.id.legend_temperature))
+                            .setVisibility(View.VISIBLE);
+                    if (addSetpoint) {
+                        (view.findViewById(R.id.legend_set_point))
+                                .setVisibility(View.VISIBLE);
+                    }
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_temperature)).getText());
+                }
 
-            lines.add(new Line(valuesmm)
-                    .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_light_green_600))
-                    .setCubic(setCubic)
-                    .setHasLabels(false)
-                    .setHasLines(true)
-                    .setHasPoints(false));
-        }
-
-        if (lines.size() > 1) {
-            if (addTemperature) {
-                (view.findViewById(R.id.legend_temperature))
-                        .setVisibility(View.VISIBLE);
-                if (addSetpoint) {
-                    (view.findViewById(R.id.legend_set_point))
+                if (addHumidity) {
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_humidity)).getText());
+                    (view.findViewById(R.id.legend_humidity))
                             .setVisibility(View.VISIBLE);
                 }
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_temperature)).getText());
+
+                if (addBarometer) {
+                    (view.findViewById(R.id.legend_barometer))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_barometer)).getText());
+                }
+
+                if (addCounter) {
+                    (view.findViewById(R.id.legend_counter))
+                            .setVisibility(View.VISIBLE);
+                    ((TextView) view.findViewById(R.id.legend_counter))
+                            .setText(axisYLabel);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_counter)).getText());
+                }
+
+                if (addPercentage) {
+                    (view.findViewById(R.id.legend_percentage))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage)).getText());
+                }
+
+                if (addDirection) {
+                    (view.findViewById(R.id.legend_direction))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_direction)).getText());
+                }
+
+                if (addSunPower) {
+                    (view.findViewById(R.id.legend_sunpower))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_sunpower)).getText());
+                }
+
+                if (addSpeed) {
+                    (view.findViewById(R.id.legend_speed))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_speed)).getText());
+                }
+
+                if (addUsage) {
+                    (view.findViewById(R.id.legend_usage))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_usage)).getText());
+                }
+
+                if (addRain) {
+                    (view.findViewById(R.id.legend_rain))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_rain)).getText());
+                }
             }
 
-            if (addHumidity) {
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_humidity)).getText());
-                (view.findViewById(R.id.legend_humidity))
-                        .setVisibility(View.VISIBLE);
-            }
+            LineChartData lineChartData = new LineChartData(lines);
+            ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
+            Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
+            Axis axisY = new Axis().setHasLines(true);
+            axisX.setMaxLabelChars(5);
+            axisX.setName("Date");
+            axisY.setName(axisYLabel);
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
 
-            if (addBarometer) {
-                (view.findViewById(R.id.legend_barometer))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_barometer)).getText());
-            }
-
-            if (addCounter) {
-                (view.findViewById(R.id.legend_counter))
-                        .setVisibility(View.VISIBLE);
-                ((TextView) view.findViewById(R.id.legend_counter))
-                        .setText(axisYLabel);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_counter)).getText());
-            }
-
-            if (addPercentage) {
-                (view.findViewById(R.id.legend_percentage))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage)).getText());
-            }
-
-            if (addDirection) {
-                (view.findViewById(R.id.legend_direction))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_direction)).getText());
-            }
-
-            if (addSunPower) {
-                (view.findViewById(R.id.legend_sunpower))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_sunpower)).getText());
-            }
-
-            if (addSpeed) {
-                (view.findViewById(R.id.legend_speed))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_speed)).getText());
-            }
-
-            if (addUsage) {
-                (view.findViewById(R.id.legend_usage))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_usage)).getText());
-            }
-
-            if (addRain) {
-                (view.findViewById(R.id.legend_rain))
-                        .setVisibility(View.VISIBLE);
-                addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_rain)).getText());
-            }
+            return data;
+        }catch(Exception ex)
+        {
+            return null;
         }
-
-        LineChartData lineChartData = new LineChartData(lines);
-        ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
-        Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
-        Axis axisY = new Axis().setHasLines(true);
-        axisX.setMaxLabelChars(5);
-        axisX.setName("Date");
-        axisY.setName(axisYLabel);
-        data.setAxisXBottom(axisX);
-        data.setAxisYLeft(axisY);
-
-        return data;
     }
 
     private void addLabelFilters(String label) {
@@ -552,8 +568,13 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                         filterLabels.add((String) c);
 
                                     ComboLineColumnChartData columnData = generateData(root);
-                                    chart.setComboLineColumnChartData(columnData);
-                                    setViewPort(chart);
+
+                                    if(columnData == null)
+                                        finish();
+                                    else {
+                                        chart.setComboLineColumnChartData(columnData);
+                                        setViewPort(chart);
+                                    }
                                 } else {
                                     enableFilters = false;
                                     Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
