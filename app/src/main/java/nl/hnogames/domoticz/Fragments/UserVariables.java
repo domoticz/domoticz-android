@@ -3,8 +3,6 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
@@ -13,7 +11,6 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class UserVariables extends DomoticzDashboardFragment implements DomoticzFragmentListener {
 

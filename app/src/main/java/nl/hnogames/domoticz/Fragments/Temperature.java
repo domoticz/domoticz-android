@@ -38,7 +38,6 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;

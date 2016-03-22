@@ -25,8 +25,6 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.LogAdapter;
@@ -35,7 +33,6 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Logs extends DomoticzDashboardFragment implements DomoticzFragmentListener {
 

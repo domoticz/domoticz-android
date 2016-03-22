@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -39,12 +38,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Containers.LogInfo;
-import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 

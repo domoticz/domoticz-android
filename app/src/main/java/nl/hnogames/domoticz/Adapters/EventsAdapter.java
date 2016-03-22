@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;

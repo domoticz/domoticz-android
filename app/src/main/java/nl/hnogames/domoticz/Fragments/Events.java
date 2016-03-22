@@ -26,8 +26,6 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
@@ -37,7 +35,6 @@ import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 
 public class Events extends DomoticzDashboardFragment implements DomoticzFragmentListener {
 
