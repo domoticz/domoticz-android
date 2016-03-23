@@ -85,6 +85,7 @@ import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -689,7 +690,7 @@ public class MainActivity extends AppCompatActivity {
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else if ((f instanceof DomoticzDashboardFragment)) {
+            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
                 if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
                 else
