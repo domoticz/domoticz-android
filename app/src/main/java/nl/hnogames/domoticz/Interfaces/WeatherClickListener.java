@@ -22,10 +22,16 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
+import android.view.View;
+
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 
 public interface WeatherClickListener {
     void onLogClick(WeatherInfo weather, String range);
 
     void onLikeButtonClick(int idx, boolean checked);
+
+    void onItemClicked(View v, int position);
+
+    boolean onItemLongClicked(int position);
 }

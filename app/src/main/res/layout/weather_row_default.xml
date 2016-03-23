@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/background_listview"
+    android:id="@+id/card_global_wrapper"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:paddingLeft="20dp"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardUseCompatPadding="true">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/row_global_wrapper"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
@@ -11,14 +23,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:minHeight="50dp"
         android:orientation="horizontal"
-        style="@style/listview_row"
-        android:id="@+id/row_wrapper"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:padding="10dp"
+        android:id="@+id/row_wrapper">
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -57,7 +65,6 @@
 
         </LinearLayout>
     </LinearLayout>
-
-    <include layout="@layout/log_graph_buttons_row_default" />
-
-</LinearLayout>
+        <include layout="@layout/log_graph_buttons_row_default" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

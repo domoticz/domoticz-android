@@ -22,18 +22,18 @@
 
 package nl.hnogames.domoticz.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.like.LikeButton;
@@ -47,20 +47,22 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
+import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class WeatherAdapter extends BaseAdapter implements Filterable {
+@SuppressWarnings("unused")
+public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> {
 
     @SuppressWarnings("unused")
     private static final String TAG = WeatherAdapter.class.getSimpleName();
-
     private final WeatherClickListener listener;
     public ArrayList<WeatherInfo> filteredData = null;
     private Context context;
@@ -68,7 +70,6 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
     private ConfigInfo mConfigInfo;
-
     private SharedPrefUtil mSharedPrefs;
 
     public WeatherAdapter(Context context,
@@ -93,175 +94,175 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         this.listener = listener;
     }
 
-    @Override
-    public int getCount() {
-        return filteredData.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return filteredData.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
     public Filter getFilter() {
         return mFilter;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        int layoutResourceId;
-
-        JSONObject language = null;
-        Language languageObj = new SharedPrefUtil(context).getSavedLanguage();
-        if (languageObj != null) language = languageObj.getJsonObject();
-
-        String tempSign = "";
-        String windSign = "";
-        if (mConfigInfo != null) {
-            tempSign = mConfigInfo.getTempSign();
-            windSign = mConfigInfo.getWindSign();
-        }
-
-        WeatherInfo mWeatherInfo = filteredData.get(position);
-
-        //if (convertView == null) {
-        holder = new ViewHolder();
-
-        layoutResourceId = R.layout.weather_row_default;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
-
-        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
-        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
-        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
-        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
-        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.weather_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.row_wrapper)) != null)
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            if ((view.findViewById(R.id.row_global_wrapper)) != null)
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
         }
 
-        holder.isProtected = mWeatherInfo.isProtected();
-        holder.name = (TextView) convertView.findViewById(R.id.weather_name);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-        holder.data = (TextView) convertView.findViewById(R.id.weather_data);
-        holder.hardware = (TextView) convertView.findViewById(R.id.weather_hardware);
-        holder.name.setText(mWeatherInfo.getName());
-
-        if (language != null) {
-            String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
-            holder.hardware.append(hardware);
-        } else holder.hardware.append(mWeatherInfo.getHardwareName());
-
-        holder.data.setEllipsize(TextUtils.TruncateAt.END);
-        holder.data.setMaxLines(3);
-        if (mWeatherInfo.getType().equals("Wind")) {
-            holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
-        } else {
-            holder.data.append(mWeatherInfo.getData());
-        }
-
-        String text;
-
-        if (!UsefulBits.isEmpty(mWeatherInfo.getRain())) {
-            text = context.getString(R.string.rain) + ": " + mWeatherInfo.getRain();
-            holder.data.setText(text);
-        }
-        if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
-            holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
-
-        if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
-            holder.data.append(", " + mWeatherInfo.getForecastStr());
-        if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
-            holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + windSign);
-        if (mWeatherInfo.getDewPoint() > 0)
-            holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + tempSign);
-        if (mWeatherInfo.getTemp() > 0)
-            holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
-        if (mWeatherInfo.getBarometer() > 0)
-            holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
-        if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
-            holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + tempSign);
-        if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
-            holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
-
-        holder.dayButton.setId(mWeatherInfo.getIdx());
-        holder.dayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
-                }
-            }
-        });
-
-        holder.monthButton.setId(mWeatherInfo.getIdx());
-        holder.monthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
-                }
-            }
-        });
-
-        holder.yearButton.setId(mWeatherInfo.getIdx());
-        holder.yearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
-                }
-            }
-        });
-
-        holder.weekButton.setId(mWeatherInfo.getIdx());
-        holder.weekButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
-                }
-            }
-        });
-
-        if (holder.likeButton != null) {
-            holder.likeButton.setId(mWeatherInfo.getIdx());
-            holder.likeButton.setLiked(mWeatherInfo.getFavoriteBoolean());
-            holder.likeButton.setOnLikeListener(new OnLikeListener() {
-                @Override
-                public void liked(LikeButton likeButton) {
-                    handleLikeButtonClick(likeButton.getId(), true);
-                }
-
-                @Override
-                public void unLiked(LikeButton likeButton) {
-                    handleLikeButtonClick(likeButton.getId(), false);
-                }
-            });
-        }
-
-        convertView.setTag(holder);
-        Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
-        return convertView;
+        return new DataObjectHolder(view);
     }
 
-    static class ViewHolder {
+    @Override
+    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
+
+        if (filteredData != null && filteredData.size() > 0) {
+            final WeatherInfo mWeatherInfo = filteredData.get(position);
+
+            JSONObject language = null;
+            Language languageObj = new SharedPrefUtil(context).getSavedLanguage();
+            if (languageObj != null) language = languageObj.getJsonObject();
+
+            String tempSign = "";
+            String windSign = "";
+            if (mConfigInfo != null) {
+                tempSign = mConfigInfo.getTempSign();
+                windSign = mConfigInfo.getWindSign();
+            }
+
+            if (mSharedPrefs.darkThemeEnabled()) {
+                holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            }
+
+            holder.isProtected = mWeatherInfo.isProtected();
+            holder.name.setText(mWeatherInfo.getName());
+
+            if (language != null) {
+                String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
+                holder.hardware.append(hardware);
+            } else holder.hardware.append(mWeatherInfo.getHardwareName());
+
+            holder.data.setEllipsize(TextUtils.TruncateAt.END);
+            holder.data.setMaxLines(3);
+            if (mWeatherInfo.getType().equals("Wind")) {
+                holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
+            } else {
+                holder.data.append(mWeatherInfo.getData());
+            }
+
+            String text;
+
+            if (!UsefulBits.isEmpty(mWeatherInfo.getRain())) {
+                text = context.getString(R.string.rain) + ": " + mWeatherInfo.getRain();
+                holder.data.setText(text);
+            }
+            if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
+                holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
+
+            if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
+                holder.data.append(", " + mWeatherInfo.getForecastStr());
+            if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
+                holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + windSign);
+            if (mWeatherInfo.getDewPoint() > 0)
+                holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + tempSign);
+            if (mWeatherInfo.getTemp() > 0)
+                holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
+            if (mWeatherInfo.getBarometer() > 0)
+                holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
+            if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
+                holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + tempSign);
+            if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
+                holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
+
+            holder.dayButton.setId(mWeatherInfo.getIdx());
+            holder.dayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                    }
+                }
+            });
+
+            holder.monthButton.setId(mWeatherInfo.getIdx());
+            holder.monthButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                    }
+                }
+            });
+
+            holder.yearButton.setId(mWeatherInfo.getIdx());
+            holder.yearButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                    }
+                }
+            });
+
+            holder.weekButton.setId(mWeatherInfo.getIdx());
+            holder.weekButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                    }
+                }
+            });
+
+            if (holder.likeButton != null) {
+                holder.likeButton.setId(mWeatherInfo.getIdx());
+                holder.likeButton.setLiked(mWeatherInfo.getFavoriteBoolean());
+                holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                    @Override
+                    public void liked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), true);
+                    }
+
+                    @Override
+                    public void unLiked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), false);
+                    }
+                });
+            }
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onItemLongClicked(position);
+                    return true;
+                }
+            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClicked(v, position);
+                }
+            });
+
+            Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView data;
         TextView hardware;
@@ -272,6 +273,20 @@ public class WeatherAdapter extends BaseAdapter implements Filterable {
         Button yearButton;
         Button weekButton;
         LikeButton likeButton;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+
+            dayButton = (Button) itemView.findViewById(R.id.day_button);
+            monthButton = (Button) itemView.findViewById(R.id.month_button);
+            yearButton = (Button) itemView.findViewById(R.id.year_button);
+            weekButton = (Button) itemView.findViewById(R.id.week_button);
+            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+            name = (TextView) itemView.findViewById(R.id.weather_name);
+            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
+            data = (TextView) itemView.findViewById(R.id.weather_data);
+            hardware = (TextView) itemView.findViewById(R.id.weather_hardware);
+        }
     }
 
     private void handleLikeButtonClick(int idx, boolean checked) {

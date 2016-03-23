@@ -60,7 +60,7 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class DomoticzDashboardFragment extends Fragment {
+public class DomoticzRecyclerFragment extends Fragment {
 
     public RecyclerView gridView;
 
@@ -76,7 +76,7 @@ public class DomoticzDashboardFragment extends Fragment {
     private String sort = "";
     private SpinnerLoader oSpinner;
 
-    public DomoticzDashboardFragment() {
+    public DomoticzRecyclerFragment() {
     }
 
     public void setTheme() {
@@ -126,15 +126,10 @@ public class DomoticzDashboardFragment extends Fragment {
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(getContext());
 
-            if (mSharedPrefs.showDashboardAsList()) {
-                gridView.setHasFixedSize(true);
-                GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
-                gridView.setLayoutManager(mLayoutManager);
-            } else {
-                gridView.setHasFixedSize(false);
-                StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                gridView.setLayoutManager(mLayoutManager);
-            }
+            gridView.setHasFixedSize(true);
+            GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+            gridView.setLayoutManager(mLayoutManager);
+
         } catch (Exception ex) {
         }
 
