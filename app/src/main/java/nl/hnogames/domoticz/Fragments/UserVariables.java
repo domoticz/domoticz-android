@@ -10,9 +10,9 @@ import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class UserVariables extends DomoticzDashboardFragment implements DomoticzFragmentListener {
+public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
     private ArrayList<UserVariableInfo> mUserVariableInfos;
     private UserVariablesAdapter adapter;

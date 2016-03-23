@@ -34,9 +34,9 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Events extends DomoticzDashboardFragment implements DomoticzFragmentListener {
+public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
     private EventsAdapter adapter;
     private Context mContext;

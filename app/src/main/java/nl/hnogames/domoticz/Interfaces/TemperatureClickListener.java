@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
+import android.view.View;
+
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 
 public interface TemperatureClickListener {
@@ -30,4 +32,8 @@ public interface TemperatureClickListener {
     void onSetClick(TemperatureInfo t);
 
     void onLikeButtonClick(int idx, boolean checked);
+
+    void onItemClicked(View v, int position);
+
+    boolean onItemLongClicked(int position);
 }

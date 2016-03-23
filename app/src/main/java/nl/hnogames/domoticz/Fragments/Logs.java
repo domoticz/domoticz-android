@@ -32,9 +32,9 @@ import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Logs extends DomoticzDashboardFragment implements DomoticzFragmentListener {
+public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
     private LogAdapter adapter;
     private Context mContext;

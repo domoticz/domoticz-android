@@ -244,7 +244,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     @Override
     public boolean onItemLongClicked(int position) {
         showInfoDialog(adapter.filteredData.get(position));
-        return false;
+        return true;
     }
 
     private WeatherInfo getWeather(int idx) {
