@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.Adapters.DashboardAdapter;
-import nl.hnogames.domoticz.Adapters.DevicesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
@@ -364,7 +363,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         if (clickedSwitch == null) {
             for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 if (mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                    if (mExtendedStatusInfo.getIdx() == (idx - DevicesAdapter.ID_SCENE_SWITCH)) {
+                    if (mExtendedStatusInfo.getIdx() == (idx - DashboardAdapter.ID_SCENE_SWITCH)) {
                         clickedSwitch = mExtendedStatusInfo;
                     }
                 }
@@ -699,6 +698,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onItemClicked(View v, int position) {
+
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        return false;
     }
 
     private void setState(final int idx, int state, final String password) {

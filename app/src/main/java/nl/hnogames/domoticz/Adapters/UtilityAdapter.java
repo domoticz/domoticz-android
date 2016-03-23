@@ -378,9 +378,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (holder.on_button != null) {
             holder.on_button.setVisibility(View.GONE);
         }
-        if (holder.buttonLog != null) {
-            holder.buttonLog.setVisibility(View.GONE);
-        }
 
         switch (button) {
             case Buttons.DEFAULT:

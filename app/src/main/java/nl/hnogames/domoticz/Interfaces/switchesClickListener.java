@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
+import android.view.View;
+
 public interface switchesClickListener {
 
     void onSwitchClick(int idx, boolean action);
@@ -51,4 +53,8 @@ public interface switchesClickListener {
     void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
 
     void onSelectorDimmerClick(int idx, String[] levelNames);
+
+    void onItemClicked(View v, int position);
+
+    boolean onItemLongClicked(int position);
 }

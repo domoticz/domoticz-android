@@ -11,10 +11,6 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
-    <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="barcode" />
-
     <permission
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -242,6 +238,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
 
         <activity
             android:name=".UpdateActivity"

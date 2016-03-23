@@ -1803,7 +1803,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             buttonUp = (ImageButton) itemView.findViewById(R.id.switch_button_up);
             buttonStop = (ImageButton) itemView.findViewById(R.id.switch_button_stop);
             buttonDown = (ImageButton) itemView.findViewById(R.id.switch_button_down);
-            buttonSetStatus = (Button) itemView.findViewById(R.id.set_status_button);
+            //buttonSetStatus = (Button) itemView.findViewById(R.id.set_status_button);
             buttonSet = (Button) itemView.findViewById(R.id.set_button);
 
             if (buttonLog != null)

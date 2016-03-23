@@ -65,8 +65,9 @@ import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Switches extends DomoticzFragment implements DomoticzFragmentListener,
+public class Switches extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         switchesClickListener {
 
     @SuppressWarnings("unused")
@@ -121,7 +122,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
     private void getSwitchesData() {
         busy = true;
         if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
-            state = listView.onSaveInstanceState();
+            state = gridView.getLayoutManager().onSaveInstanceState();
         }
         //switch toggled, refresh listview
         if (mSwipeRefreshLayout != null)
@@ -183,45 +184,8 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 }
 
                 final switchesClickListener listener = this;
-                adapter = new SwitchesAdapter(mContext, mDomoticz, supportedSwitches, listener);
-                SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-                animationAdapter.setAbsListView(listView);
-                listView.setAdapter(animationAdapter);
-
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                                   int index, long id) {
-                        showInfoDialog(adapter.filteredData.get(index));
-                        return true;
-                    }
-                });
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
-                        if (extra_panel != null) {
-                            if (extra_panel.getVisibility() == View.VISIBLE) {
-                                extra_panel.startAnimation(animHide);
-                                extra_panel.setVisibility(View.GONE);
-                            } else {
-                                extra_panel.setVisibility(View.VISIBLE);
-                                extra_panel.startAnimation(animShow);
-                            }
-
-                            if (extra_panel != lExtraPanel) {
-                                if (lExtraPanel != null) {
-                                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
-                                        lExtraPanel.startAnimation(animHide);
-                                        lExtraPanel.setVisibility(View.GONE);
-                                    }
-                                }
-                            }
-
-                            lExtraPanel = extra_panel;
-                        }
-                    }
-                });
+                adapter = new SwitchesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
+                gridView.setAdapter(adapter);
 
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -232,7 +196,7 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                 });
 
                 if (state != null) {
-                    listView.onRestoreInstanceState(state);
+                    gridView.getLayoutManager().onRestoreInstanceState(state);
                 }
                 this.Filter(filter);
                 busy = false;
@@ -516,6 +480,37 @@ public class Switches extends DomoticzFragment implements DomoticzFragmentListen
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onItemClicked(View v, int position) {
+        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        if (extra_panel != null) {
+            if (extra_panel.getVisibility() == View.VISIBLE) {
+                extra_panel.startAnimation(animHide);
+                extra_panel.setVisibility(View.GONE);
+            } else {
+                extra_panel.setVisibility(View.VISIBLE);
+                extra_panel.startAnimation(animShow);
+            }
+
+            if (extra_panel != lExtraPanel) {
+                if (lExtraPanel != null) {
+                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                        lExtraPanel.startAnimation(animHide);
+                        lExtraPanel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            lExtraPanel = extra_panel;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
     }
 
     private void setState(final int idx, int state, final String password) {
