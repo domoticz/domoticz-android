@@ -1378,7 +1378,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
                 TextView switch_dimmer_level = (TextView) seekBar.getRootView()
                         .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-                switch_dimmer_level.setText(percentage);
+                if(switch_dimmer_level != null)
+                    switch_dimmer_level.setText(percentage);
             }
 
             @Override
