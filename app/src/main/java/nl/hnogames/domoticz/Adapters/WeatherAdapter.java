@@ -33,7 +33,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.like.LikeButton;
@@ -47,11 +46,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.ServerUtil;

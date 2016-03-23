@@ -6,10 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.Animation;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import org.json.JSONObject;
 
@@ -28,8 +25,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.Utils.AnimationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmentListener, WeatherClickListener {
@@ -105,7 +100,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
         adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
         gridView.setAdapter(adapter);
-        
+
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

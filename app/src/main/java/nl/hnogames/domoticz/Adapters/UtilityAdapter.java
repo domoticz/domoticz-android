@@ -22,17 +22,15 @@
 
 package nl.hnogames.domoticz.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +48,8 @@ import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class UtilityAdapter extends BaseAdapter implements Filterable {
+@SuppressWarnings("unused")
+public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> {
 
     private static final String TAG = UtilityAdapter.class.getSimpleName();
 
@@ -60,8 +59,8 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
     private ArrayList<UtilitiesInfo> data = null;
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
-
     private SharedPrefUtil mSharedPrefs;
+
 
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
@@ -84,77 +83,70 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         this.listener = listener;
     }
 
-    @Override
-    public int getCount() {
-        return filteredData.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return filteredData.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
     public Filter getFilter() {
         return mFilter;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        int layoutResourceId;
-
-        UtilitiesInfo mUtilitiesInfo = filteredData.get(position);
-        final double setPoint = mUtilitiesInfo.getSetPoint();
-
-        //if (convertView == null) {
-        holder = new ViewHolder();
-        if (Domoticz.UTILITIES_TYPE_THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) {
-            convertView = CreateThermostatRow(parent, holder, mUtilitiesInfo, setPoint);
-        } else {
-            if (Domoticz.UTILITIES_SUBTYPE_TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
-                convertView = CreateTextRow(parent, holder, mUtilitiesInfo);
-            } else
-                convertView = CreateDefaultRow(parent, holder, mUtilitiesInfo);
-        }
-        convertView.setTag(holder);
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.utilities_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-
-            if ((convertView.findViewById(R.id.on_button)) != null)
-                (convertView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-            if ((convertView.findViewById(R.id.off_button)) != null)
-                (convertView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-            if ((convertView.findViewById(R.id.set_button)) != null)
-                (convertView.findViewById(R.id.set_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.row_wrapper)) != null)
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            if ((view.findViewById(R.id.row_global_wrapper)) != null)
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+            if ((view.findViewById(R.id.on_button)) != null)
+                (view.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((view.findViewById(R.id.off_button)) != null)
+                (view.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            if ((view.findViewById(R.id.set_button)) != null)
+                (view.findViewById(R.id.set_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
-        return convertView;
+
+        return new DataObjectHolder(view);
     }
 
+    @Override
+    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
+        if (filteredData != null && filteredData.size() > 0) {
+            final UtilitiesInfo mUtilitiesInfo = filteredData.get(position);
+            final double setPoint = mUtilitiesInfo.getSetPoint();
 
-    @NonNull
-    private View CreateTextRow(ViewGroup parent, ViewHolder holder, UtilitiesInfo mUtilitiesInfo) {
-        int layoutResourceId;
-        View convertView;
-        layoutResourceId = R.layout.utilities_row_text;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
+            if (Domoticz.UTILITIES_TYPE_THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) {
+                setButtons(holder, Buttons.THERMOSTAT);
+                CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
+            } else {
+                if (Domoticz.UTILITIES_SUBTYPE_TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
+                    CreateTextRow(holder, mUtilitiesInfo);
+                    setButtons(holder, Buttons.TEXT);
+                } else {
+                    CreateDefaultRow(holder, mUtilitiesInfo);
+                    setButtons(holder, Buttons.DEFAULT);
+                }
+            }
 
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onItemLongClicked(position);
+                    return true;
+                }
+            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClicked(v, position);
+                }
+            });
+        }
+    }
+
+    private void CreateTextRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
         holder.isProtected = mUtilitiesInfo.isProtected();
-        holder.name = (TextView) convertView.findViewById(R.id.utilities_name);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
-        holder.buttonLog = (Button) convertView.findViewById(R.id.log_button);
-        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
-
-        holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
-        holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.append(": " + mUtilitiesInfo.getData());
@@ -196,30 +188,14 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         });
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
-        return convertView;
     }
 
     private void handleLogButtonClick(int idx) {
         listener.onLogButtonClick(idx);
     }
 
-    @NonNull
-    private View CreateDefaultRow(ViewGroup parent, ViewHolder holder, UtilitiesInfo mUtilitiesInfo) {
-        int layoutResourceId;
-        View convertView;
-        layoutResourceId = R.layout.utilities_row_default;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
-
+    private void CreateDefaultRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
         holder.isProtected = mUtilitiesInfo.isProtected();
-        holder.name = (TextView) convertView.findViewById(R.id.utilities_name);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
-        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
-        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
-        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
-        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
-        holder.likeButton = (LikeButton) convertView.findViewById(R.id.fav_button);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
@@ -227,9 +203,6 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
             holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
-
-        holder.data = (TextView) convertView.findViewById(R.id.utilities_data);
-        holder.hardware = (TextView) convertView.findViewById(R.id.utilities_hardware);
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.append(": " + mUtilitiesInfo.getData());
@@ -302,25 +275,20 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         }
 
         Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
-        return convertView;
     }
 
-    @NonNull
-    private View CreateThermostatRow(ViewGroup parent, ViewHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
+    private void CreateThermostatRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
         int layoutResourceId;
-        View convertView;
-        layoutResourceId = R.layout.utilities_row_thermostat;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
-
-        holder.name = (TextView) convertView.findViewById(R.id.thermostat_name);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-        holder.lastSeen = (TextView) convertView.findViewById(R.id.thermostat_lastSeen);
-        holder.setPoint = (TextView) convertView.findViewById(R.id.thermostat_set_point);
         holder.isProtected = mUtilitiesInfo.isProtected();
-        holder.on_button = (Button) convertView.findViewById(R.id.on_button);
         if (holder.isProtected)
             holder.on_button.setEnabled(false);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+        }
 
         holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
@@ -333,23 +301,117 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         if (mSharedPrefs.darkThemeEnabled()) {
             holder.on_button.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
+
+        holder.dayButton.setId(mUtilitiesInfo.getIdx());
+        holder.dayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                }
+            }
+        });
+        holder.monthButton.setId(mUtilitiesInfo.getIdx());
+        holder.monthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                }
+            }
+        });
+        holder.weekButton.setId(mUtilitiesInfo.getIdx());
+        holder.weekButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                }
+            }
+        });
+
+        holder.yearButton.setId(mUtilitiesInfo.getIdx());
+        holder.yearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (UtilitiesInfo t : filteredData) {
+                    if (t.getIdx() == v.getId())
+                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                }
+            }
+        });
         holder.name.setText(mUtilitiesInfo.getName());
-        holder.lastSeen.setText(mUtilitiesInfo.getLastUpdate());
-        holder.setPoint.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        holder.data.setText(mUtilitiesInfo.getLastUpdate());
+        holder.hardware.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
         Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
-        return convertView;
     }
 
     public void handleThermostatClick(int idx) {
         listener.onThermostatClick(idx);
     }
 
-    static class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    public void setButtons(DataObjectHolder holder, int button) {
+
+        if (holder.buttonLog != null) {
+            holder.buttonLog.setVisibility(View.GONE);
+        }
+        if (holder.dayButton != null) {
+            holder.dayButton.setVisibility(View.GONE);
+        }
+        if (holder.monthButton != null) {
+            holder.monthButton.setVisibility(View.GONE);
+        }
+        if (holder.yearButton != null) {
+            holder.yearButton.setVisibility(View.GONE);
+        }
+        if (holder.weekButton != null) {
+            holder.weekButton.setVisibility(View.GONE);
+        }
+        if (holder.on_button != null) {
+            holder.on_button.setVisibility(View.GONE);
+        }
+        if (holder.buttonLog != null) {
+            holder.buttonLog.setVisibility(View.GONE);
+        }
+
+        switch (button) {
+            case Buttons.DEFAULT:
+                holder.dayButton.setVisibility(View.VISIBLE);
+                holder.monthButton.setVisibility(View.VISIBLE);
+                holder.weekButton.setVisibility(View.VISIBLE);
+                holder.yearButton.setVisibility(View.VISIBLE);
+                break;
+            case Buttons.TEXT:
+                holder.buttonLog.setVisibility(View.VISIBLE);
+                break;
+            case Buttons.THERMOSTAT:
+                holder.on_button.setVisibility(View.VISIBLE);
+                holder.dayButton.setVisibility(View.VISIBLE);
+                holder.monthButton.setVisibility(View.VISIBLE);
+                holder.weekButton.setVisibility(View.VISIBLE);
+                holder.yearButton.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    interface Buttons {
+        int DEFAULT = 0;
+        int TEXT = 1;
+        int THERMOSTAT = 2;
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView data;
         TextView hardware;
-        TextView lastSeen;
-        TextView setPoint;
         ImageView iconRow;
         Boolean isProtected;
 
@@ -361,6 +423,23 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
         Button on_button;
 
         LikeButton likeButton;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+
+            dayButton = (Button) itemView.findViewById(R.id.day_button);
+            monthButton = (Button) itemView.findViewById(R.id.month_button);
+            yearButton = (Button) itemView.findViewById(R.id.year_button);
+            weekButton = (Button) itemView.findViewById(R.id.week_button);
+            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+
+            on_button = (Button) itemView.findViewById(R.id.on_button);
+            name = (TextView) itemView.findViewById(R.id.utilities_name);
+            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
+            buttonLog = (Button) itemView.findViewById(R.id.log_button);
+            data = (TextView) itemView.findViewById(R.id.utilities_data);
+            hardware = (TextView) itemView.findViewById(R.id.utilities_hardware);
+        }
     }
 
     private void handleLikeButtonClick(int idx, boolean checked) {
@@ -402,5 +481,4 @@ public class UtilityAdapter extends BaseAdapter implements Filterable {
             notifyDataSetChanged();
         }
     }
-
 }

@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
+import android.view.View;
+
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 
 public interface UtilityClickListener {
@@ -34,4 +36,8 @@ public interface UtilityClickListener {
     void onLogButtonClick(int idx);
 
     void onLikeButtonClick(int idx, boolean checked);
+
+    void onItemClicked(View v, int position);
+
+    boolean onItemLongClicked(int position);
 }

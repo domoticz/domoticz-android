@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/background_listview"
-    android:id="@+id/row_global_wrapper"
-    android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical">
+    android:id="@+id/card_global_wrapper"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:paddingLeft="20dp"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/row_global_wrapper"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
 
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:orientation="horizontal"
-        style="@style/listview_row"
-        android:id="@+id/row_wrapper"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:id="@+id/row_wrapper">
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -29,56 +36,63 @@
             android:paddingRight="5dp"
             android:src="@drawable/clock48" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/utilities_name"
+                style="@style/row_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                tools:text="Utility name" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/linearLayout4"
-                    android:layout_toStartOf="@+id/linearLayout4"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/utilities_hardware"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/utilities_name"
+                android:text="@string/hardware" />
 
-                    <TextView
-                        android:id="@+id/utilities_name"
-                        style="@style/row_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        tools:text="Utility name" />
+            <TextView
+                android:id="@+id/utilities_data"
+                style="@style/row_body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/utilities_hardware"
+                android:text="@string/data" />
 
-                    <TextView
-                        android:id="@+id/utilities_hardware"
-                        style="@style/row_body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/utilities_name"
-                        android:text="@string/hardware" />
-
-                    <TextView
-                        android:id="@+id/utilities_data"
-                        style="@style/row_body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/utilities_hardware"
-                        android:text="@string/data" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/on_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_status"
+                android:text="@string/button_state_on"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <include layout="@layout/log_graph_buttons_row_default" />
+    <include layout="@layout/log_all_buttons" />
 
 </LinearLayout>
+    </android.support.v7.widget.CardView>
