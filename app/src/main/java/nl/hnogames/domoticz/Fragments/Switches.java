@@ -31,16 +31,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.NotificationInfo;
@@ -64,7 +63,6 @@ import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Switches extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
@@ -185,7 +183,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
                 final switchesClickListener listener = this;
                 adapter = new SwitchesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
-                gridView.setAdapter(adapter);
+                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
 
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -36,6 +37,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.DashboardAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -196,19 +198,17 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 final switchesClickListener listener = this;
-                adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, new DashboardAdapter.OnClickListener() {
-                    @Override
-                    public void onItemClicked(int position) {
-                    }
+                if (this.planID <= 0)
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, mSharedPrefs.showDashboardAsList());
+                else {
+                    gridView.setHasFixedSize(true);
+                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    gridView.setLayoutManager(mLayoutManager);
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, true);
+                }
 
-                    @Override
-                    public boolean onItemLongClicked(int position) {
-                        showInfoDialog(adapter.filteredData.get(position));
-                        return false;
-                    }
-                }, mSharedPrefs.showDashboardAsList());
-                gridView.setAdapter(adapter);
-
+                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
                 if (state != null) {
                     gridView.getLayoutManager().onRestoreInstanceState(state);
                 }
@@ -707,7 +707,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     @Override
     public boolean onItemLongClicked(int position) {
-        return false;
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
     }
 
     private void setState(final int idx, int state, final String password) {

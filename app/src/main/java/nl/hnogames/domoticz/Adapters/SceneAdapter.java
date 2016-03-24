@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.like.LikeButton;
@@ -306,7 +307,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         Boolean isProtected;
         ImageView iconRow;
         LikeButton likeButton;
-
+        LinearLayout extraPanel;
         Button buttonOn, buttonLog, buttonTimer, buttonNotifications, buttonOff;
 
         public DataObjectHolder(View itemView) {
@@ -332,6 +333,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
             buttonLog = (Button) itemView.findViewById(R.id.log_button);
             buttonOff = (Button) itemView.findViewById(R.id.off_button);
+
+            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            if (extraPanel != null)
+                extraPanel.setVisibility(View.GONE);
         }
     }
 
@@ -348,6 +353,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         if (holder.buttonOn != null) {
             holder.buttonOn.setVisibility(View.GONE);
         }
+
         switch (button) {
             case Buttons.SCENE:
                 holder.buttonOn.setVisibility(View.VISIBLE);

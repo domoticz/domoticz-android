@@ -7,6 +7,7 @@
     android:id="@+id/card_global_wrapper"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    android:background="@color/material_grey_300_"
     android:orientation="vertical"
     android:padding="10dp"
     android:paddingLeft="20dp"
@@ -18,6 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/row_global_wrapper"
         android:descendantFocusability="blocksDescendants"
+        android:background="@color/material_grey_300_"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,6 +27,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:orientation="horizontal"
+            android:background="@color/white"
             android:padding="10dp"
             android:id="@+id/row_wrapper">
 

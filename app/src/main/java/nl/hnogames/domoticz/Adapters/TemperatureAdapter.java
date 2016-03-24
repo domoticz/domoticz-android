@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.like.LikeButton;
@@ -286,6 +287,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         Button yearButton;
         Boolean isProtected;
         LikeButton likeButton;
+        LinearLayout extraPanel;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -302,6 +304,10 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             weekButton = (Button) itemView.findViewById(R.id.week_button);
             setButton = (Button) itemView.findViewById(R.id.set_button);
             likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+
+            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            if (extraPanel != null)
+                extraPanel.setVisibility(View.GONE);
         }
     }
 
