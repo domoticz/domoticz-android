@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.like.LikeButton;
@@ -149,8 +150,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.isProtected = mUtilitiesInfo.isProtected();
 
         holder.name.setText(mUtilitiesInfo.getName());
-        holder.data.append(": " + mUtilitiesInfo.getData());
-        holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
+        holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
+        holder.hardware.setText(context.getString(R.string.hardware) +": " + mUtilitiesInfo.getHardwareName());
 
         if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
             holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
@@ -205,8 +206,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         }
 
         holder.name.setText(mUtilitiesInfo.getName());
-        holder.data.append(": " + mUtilitiesInfo.getData());
-        holder.hardware.append(": " + mUtilitiesInfo.getHardwareName());
+        holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
+        holder.hardware.setText(context.getString(R.string.hardware) +": " + mUtilitiesInfo.getHardwareName());
 
         if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
             holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
@@ -420,6 +421,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         Button on_button;
 
         LikeButton likeButton;
+        LinearLayout extraPanel;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -436,6 +438,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             buttonLog = (Button) itemView.findViewById(R.id.log_button);
             data = (TextView) itemView.findViewById(R.id.utilities_data);
             hardware = (TextView) itemView.findViewById(R.id.utilities_hardware);
+
+            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            if (extraPanel != null)
+                extraPanel.setVisibility(View.GONE);
         }
     }
 

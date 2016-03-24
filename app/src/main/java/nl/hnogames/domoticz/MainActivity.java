@@ -84,7 +84,6 @@ import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -321,8 +320,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshFragment() {
         Fragment f = getVisibleFragment();
-        if (f instanceof DomoticzFragment) {
-            ((DomoticzFragment) f).refreshFragment();
+        if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).refreshFragment();
         } else if (f instanceof DomoticzCardFragment)
             ((DomoticzCardFragment) f).refreshFragment();
         else if (f instanceof DomoticzDashboardFragment)
@@ -684,7 +683,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = getVisibleFragment();
-        if (!(f instanceof DomoticzFragment)) {
+
             if ((f instanceof Cameras)) {
                 if (cameraRefreshTimer != null)
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
@@ -716,31 +715,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             } else
                 getMenuInflater().inflate(R.menu.menu_simple, menu);
-        } else {
-            if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
-                getMenuInflater().inflate(R.menu.menu_main_sort, menu);
-            else
-                getMenuInflater().inflate(R.menu.menu_main, menu);
-
-            MenuItem searchMenuItem = menu.findItem(R.id.search);
-            searchViewAction = (SearchView) MenuItemCompat
-                    .getActionView(searchMenuItem);
-            searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    Fragment n = getVisibleFragment();
-                    if (n instanceof DomoticzFragment) {
-                        ((DomoticzFragment) n).Filter(newText);
-                    }
-                    return false;
-                }
-            });
-        }
 
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item
@@ -822,8 +796,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = getVisibleFragment();
-                            if (f instanceof DomoticzFragment) {
-                                ((DomoticzFragment) f).sortFragment(selectedSort);
+                            if (f instanceof DomoticzRecyclerFragment) {
+                                ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
                             } else if (f instanceof DomoticzDashboardFragment) {
                                 ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
                             }

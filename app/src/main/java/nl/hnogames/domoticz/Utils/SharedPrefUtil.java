@@ -127,7 +127,8 @@ public class SharedPrefUtil {
     }
 
     public boolean showSwitchesAsButtons() {
-        return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
+        return true;
+        //return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
     public boolean checkForUpdatesEnabled() {

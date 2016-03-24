@@ -84,13 +84,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private ConfigInfo mConfigInfo;
     private int lastPosition = -1;
     private ItemFilter mFilter = new ItemFilter();
-    private DashboardAdapter.OnClickListener clickListener;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
                             switchesClickListener listener,
-                            DashboardAdapter.OnClickListener clickListener,
                             boolean showAsList) {
         super();
         this.showAsList = showAsList;
@@ -114,7 +112,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.data = data;
         this.listener = listener;
         this.filteredData = data;
-        this.clickListener = clickListener;
     }
 
     /**
@@ -162,9 +159,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 (row.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             if ((row.findViewById(R.id.color_button)) != null)
                 (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-
         }
-
         return new DataObjectHolder(row);
     }
 
@@ -177,13 +172,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickListener.onItemClicked(position);
+                    listener.onItemClicked(v, position);
                 }
             });
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    clickListener.onItemLongClicked(position);
+                    listener.onItemLongClicked(position);
                     return true;
                 }
             });
@@ -1682,6 +1677,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.onOffSwitch != null) {
             holder.onOffSwitch.setVisibility(View.GONE);
         }
+        if(!mSharedPrefs.showExtraData())
+        {
+            holder.signal_level.setVisibility(View.GONE);
+            holder.switch_battery_level.setVisibility(View.GONE);
+        }
 
         switch (button) {
             case Buttons.SWITCH:
@@ -1740,6 +1740,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.buttonOff.setVisibility(View.VISIBLE);
                 holder.dimmer.setVisibility(View.VISIBLE);
                 break;
+            default:
+                if(!mSharedPrefs.showExtraData())
+                    holder.signal_level.setVisibility(View.GONE);
+                holder.switch_battery_level.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -1766,9 +1771,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     public interface OnClickListener {
-        public void onItemClicked(int position);
-
-        public boolean onItemLongClicked(int position);
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -1810,12 +1812,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 buttonLog.setVisibility(View.GONE);
             if (buttonTimer != null)
                 buttonTimer.setVisibility(View.GONE);
-
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
     }
+
 
     /**
      * Item filter

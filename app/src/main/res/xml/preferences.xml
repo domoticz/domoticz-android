@@ -35,12 +35,12 @@
             android:summaryOff="@string/show_extra_data_off"
             android:summaryOn="@string/show_extra_data_on"
             android:title="@string/extra_data_title" />
-        <SwitchPreference
+      <!--  <SwitchPreference
             android:defaultValue="false"
             android:key="switchButtons"
             android:summaryOff="@string/switch_buttons_off"
             android:summaryOn="@string/switch_buttons_on"
-            android:title="@string/switch_buttons_title" />
+            android:title="@string/switch_buttons_title" /> -->
         <SwitchPreference
             android:defaultValue="true"
             android:key="dashboardAsList"

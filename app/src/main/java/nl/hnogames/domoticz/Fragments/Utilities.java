@@ -36,6 +36,7 @@ import com.afollestad.materialdialogs.DialogAction;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
@@ -129,7 +130,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private void createListView() {
 
         if (getView() != null) {
-            gridView.setAdapter(adapter);
+            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+            gridView.setAdapter(alphaSlideIn);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

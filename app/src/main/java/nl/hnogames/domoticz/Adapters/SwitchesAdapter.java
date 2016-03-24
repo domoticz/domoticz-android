@@ -1800,7 +1800,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
             buttonOn = (Button) itemView.findViewById(R.id.on_button);
             buttonOff = (Button) itemView.findViewById(R.id.off_button);
             onOffSwitch = (Switch) itemView.findViewById(R.id.switch_button);

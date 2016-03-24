@@ -12,17 +12,20 @@
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:background="@color/material_grey_300_"
     card_view:cardCornerRadius="0dp"
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/material_grey_300_"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/white"
             android:id="@+id/row_wrapper">
 
             <LinearLayout
@@ -53,18 +56,12 @@
                         <TextView
                             android:id="@+id/switch_name"
                             style="@style/row_dash_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Switch"
                             android:paddingLeft="10dp"
                             android:layout_gravity="left"
                             android:gravity="left"
-                            android:singleLine="true"
-                            android:ellipsize="marquee"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:marqueeRepeatLimit="marquee_forever"
-                            android:clickable="true"
                             />
 
                         <TextView
@@ -206,7 +203,6 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-
         <include layout="@layout/log_timer_button_row_default" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

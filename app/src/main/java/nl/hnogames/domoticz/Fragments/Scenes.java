@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
@@ -148,7 +149,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             }
 
             adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
-            gridView.setAdapter(adapter);
+            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+            gridView.setAdapter(alphaSlideIn);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

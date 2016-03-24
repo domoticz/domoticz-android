@@ -111,6 +111,7 @@ dependencies {
     compile 'eu.inloop:easygcm:1.6.1@aar'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
     compile 'com.github.jd-alexander:LikeButton:0.1.8'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.1'
 
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')

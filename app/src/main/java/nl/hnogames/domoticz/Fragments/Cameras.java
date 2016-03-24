@@ -42,6 +42,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
 import nl.hnogames.domoticz.Containers.CameraInfo;
@@ -116,7 +117,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                         }
                     }
                 });
-                mRecyclerView.setAdapter(mAdapter);
+                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
+                mRecyclerView.setAdapter(alphaSlideIn);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 

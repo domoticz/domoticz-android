@@ -11,6 +11,7 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:background="@color/material_grey_300_"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     card_view:cardCornerRadius="0dp"
     android:descendantFocusability="blocksDescendants"
@@ -20,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/row_global_wrapper"
+        android:background="@color/material_grey_300_"
         android:orientation="vertical">
 
         <LinearLayout
@@ -27,6 +29,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
+            android:background="@color/white"
             android:id="@+id/row_wrapper">
 
             <ImageView
