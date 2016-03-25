@@ -369,6 +369,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         return (mDeviceInfo.getSubType().contains("RAEX")) ||
                 (mDeviceInfo.getSubType().contains("A-OK")) ||
                 (mDeviceInfo.getSubType().contains("RollerTrol")) ||
+                (mDeviceInfo.getSubType().contains("Harrison")) ||
                 (mDeviceInfo.getSubType().contains("RFY")) ||
                 (mDeviceInfo.getSubType().contains("ASA")) ||
                 (mDeviceInfo.getSubType().contains("T6 DC"));
@@ -975,12 +976,10 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
-                        else if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
+                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
                         else
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
                     }
                 }
             }
@@ -1004,12 +1003,10 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
-                        else if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
+                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
                         else
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
                     }
                 }
             }

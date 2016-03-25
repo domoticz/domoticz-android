@@ -275,11 +275,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, false);
                     break;
 
-                case Domoticz.Device.Type.Value.BLINDVENETIAN:
-                    setButtons(holder, Buttons.BLINDS);
-                    setBlindsRowData(mDeviceInfo, holder);
-                    break;
-
                 case Domoticz.Device.Type.Value.DIMMER:
                 case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
                 case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
@@ -328,6 +323,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                     break;
 
+                case Domoticz.Device.Type.Value.BLINDVENETIAN:
+                    setButtons(holder, Buttons.BLINDS);
+                    setBlindsRowData(mDeviceInfo, holder);
+                    break;
+
                 default:
                     throw new NullPointerException(
                             "No supported switch type defined in the adapter (setSwitchRowData)");
@@ -346,6 +346,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         return (mDeviceInfo.getSubType().contains("RAEX")) ||
                 (mDeviceInfo.getSubType().contains("A-OK")) ||
                 (mDeviceInfo.getSubType().contains("RollerTrol")) ||
+                (mDeviceInfo.getSubType().contains("Harrison")) ||
                 (mDeviceInfo.getSubType().contains("RFY")) ||
                 (mDeviceInfo.getSubType().contains("ASA")) ||
                 (mDeviceInfo.getSubType().contains("T6 DC"));
@@ -952,12 +953,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
-                        else if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
+                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
                         else
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
                     }
                 }
             }
@@ -981,12 +980,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDVENETIAN)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
-                        else if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.UP);
+                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
                         else
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.DOWN);
+                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
                     }
                 }
             }
