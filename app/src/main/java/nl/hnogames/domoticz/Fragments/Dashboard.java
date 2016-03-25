@@ -777,7 +777,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -786,7 +785,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 successHandling(result, false);
                 processDashboard();
             }
-
             @Override
             public void onError(Exception error) {
                 if (!UsefulBits.isEmpty(password))
@@ -796,7 +794,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             }
         });
     }
-
 
     @Override
     public void onDimmerChange(int idx, final int value, final boolean selector) {
