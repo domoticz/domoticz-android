@@ -151,7 +151,7 @@
 
 
                     <LinearLayout
-                        android:id="@+id/linearLayout4"
+                        android:id="@+id/linearLayout7864"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
