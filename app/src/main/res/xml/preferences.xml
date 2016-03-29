@@ -84,6 +84,9 @@
         <Preference
             android:key="server_settings"
             android:title="@string/server_settings" />
+        <Preference
+            android:key="server_force_fetch_config"
+            android:title="@string/server_force_fetch_config" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_geofencing">
