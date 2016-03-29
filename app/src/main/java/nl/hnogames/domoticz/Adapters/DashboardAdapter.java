@@ -1682,60 +1682,94 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         switch (button) {
             case Buttons.SWITCH:
-                holder.onOffSwitch.setVisibility(View.VISIBLE);
+                if (holder.onOffSwitch != null)
+                    holder.onOffSwitch.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BUTTONS:
-                holder.buttonOn.setVisibility(View.VISIBLE);
-                holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.buttonOn != null)
+                    holder.buttonOn.setVisibility(View.VISIBLE);
+
+                if (holder.buttonOff != null)
+                    holder.buttonOff.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SET:
-                holder.buttonSet.setVisibility(View.VISIBLE);
+
+                if (holder.buttonSet != null)
+                    holder.buttonSet.setVisibility(View.VISIBLE);
                 break;
             case Buttons.MODAL:
-                holder.buttonSetStatus.setVisibility(View.VISIBLE);
+
+                if (holder.buttonSetStatus != null)
+                    holder.buttonSetStatus.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BUTTON_ON:
-                holder.buttonOn.setVisibility(View.VISIBLE);
+
+                if (holder.buttonOn != null)
+                    holder.buttonOn.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BUTTON_OFF:
-                holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.buttonOff != null)
+                    holder.buttonOff.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BLINDS:
-                holder.buttonDown.setVisibility(View.VISIBLE);
-                holder.buttonUp.setVisibility(View.VISIBLE);
-                holder.buttonStop.setVisibility(View.VISIBLE);
+                if (holder.buttonDown != null)
+                    holder.buttonDown.setVisibility(View.VISIBLE);
+                if (holder.buttonUp != null)
+                    holder.buttonUp.setVisibility(View.VISIBLE);
+                if (holder.buttonStop != null)
+                    holder.buttonStop.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BLINDS_NOSTOP:
-                holder.buttonDown.setVisibility(View.VISIBLE);
-                holder.buttonUp.setVisibility(View.VISIBLE);
+                if (holder.buttonDown != null)
+                    holder.buttonDown.setVisibility(View.VISIBLE);
+                if (holder.buttonUp != null)
+                    holder.buttonUp.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER_RGB:
-                holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
-                holder.dimmer.setVisibility(View.VISIBLE);
-                holder.buttonColor.setVisibility(View.VISIBLE);
+                if (holder.buttonDown != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.buttonDown != null)
+                    holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
+                if (holder.buttonDown != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.buttonDown != null)
+                    holder.buttonColor.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER:
-                holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
-                holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.dimmerOnOffSwitch != null)
+                    holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER_BUTTONS:
-                holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                holder.buttonOn.setVisibility(View.VISIBLE);
-                holder.buttonOff.setVisibility(View.VISIBLE);
-                holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.buttonOn != null)
+                    holder.buttonOn.setVisibility(View.VISIBLE);
+                if (holder.buttonOff != null)
+                    holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SELECTOR:
-                holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
-                holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.dimmerOnOffSwitch != null)
+                    holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SELECTOR_BUTTONS:
-                holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                holder.buttonOn.setVisibility(View.VISIBLE);
-                holder.buttonOff.setVisibility(View.VISIBLE);
-                holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.buttonOn != null)
+                    holder.buttonOn.setVisibility(View.VISIBLE);
+                if (holder.buttonOff != null)
+                    holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             default:
                 if(!mSharedPrefs.showExtraData())

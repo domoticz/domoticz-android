@@ -141,8 +141,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
             if (language != null) {
                 String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
-                holder.hardware.append(hardware);
-            } else holder.hardware.append(mWeatherInfo.getHardwareName());
+                holder.hardware.setText(hardware);
+            } else holder.hardware.setText(mWeatherInfo.getHardwareName());
 
             holder.data.setEllipsize(TextUtils.TruncateAt.END);
             holder.data.setMaxLines(3);
@@ -151,7 +151,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             } else {
                 holder.data.append(mWeatherInfo.getData());
             }
-
             String text;
 
             if (!UsefulBits.isEmpty(mWeatherInfo.getRain())) {
