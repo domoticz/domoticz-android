@@ -75,10 +75,11 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':libs:MemorizingTrustManager')
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
+
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
         transitive = true
     }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.0@aar') {
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.7@aar') {
         transitive = true
     }
 
