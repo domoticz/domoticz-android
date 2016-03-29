@@ -131,7 +131,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     public void getGraphs() {
         if (mDomoticz == null)
-            mDomoticz = new Domoticz(getActivity().getApplicationContext(), null);
+            mDomoticz = new Domoticz(context, null);
 
         mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
             @Override
@@ -169,7 +169,12 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     public ActionBar getActionBar() {
-        return ((AppCompatActivity) getActivity().getApplicationContext()).getSupportActionBar();
+        try {
+            return ((AppCompatActivity) getActivity().getApplicationContext()).getSupportActionBar();
+        }catch(Exception ex)
+        {
+            return null;
+        }
     }
 
     @Override
@@ -322,7 +327,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             if ((addTemperature && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
                 lines.add(new Line(values)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_blue_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_blue_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -331,7 +336,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 if ((addSetpoint && !enableFilters) ||
                         (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()))) {
                     lines.add(new Line(valuesse)
-                            .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_pink_600))
+                            .setColor(ContextCompat.getColor(context, R.color.material_pink_600))
                             .setCubic(setCubic)
                             .setHasLabels(false)
                             .setHasLines(true)
@@ -343,7 +348,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
 
                 lines.add(new Line(valueshu)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_orange_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_orange_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -354,7 +359,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
 
                 lines.add(new Line(valuesba)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_green_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_green_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -365,7 +370,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
 
                 lines.add(new Line(valuesc)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_indigo_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_indigo_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -376,7 +381,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
 
                 lines.add(new Line(valuesv)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_yellow_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_yellow_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -387,7 +392,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
 
                 lines.add(new Line(valuesdi)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_green_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_green_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -398,7 +403,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
 
                 lines.add(new Line(valuesuv)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_deep_purple_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -409,7 +414,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
 
                 lines.add(new Line(valuessp)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_amber_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_amber_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -420,7 +425,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
 
                 lines.add(new Line(valuesu)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_orange_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_orange_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
@@ -431,7 +436,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
 
                 lines.add(new Line(valuesmm)
-                        .setColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_light_green_600))
+                        .setColor(ContextCompat.getColor(context, R.color.material_light_green_600))
                         .setCubic(setCubic)
                         .setHasLabels(false)
                         .setHasLines(true)
