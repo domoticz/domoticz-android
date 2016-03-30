@@ -101,9 +101,12 @@ public class SharedPrefUtil {
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private final String TAG = "Shared Pref util";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
 
     private Context mContext;
@@ -672,7 +675,7 @@ public class SharedPrefUtil {
     public boolean saveSharedPreferencesToFile(File dst) {
         boolean isServerUpdateAvailableValue = false;
 
-        ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo();
+        ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
 
         // Before saving to file set server update available preference to false
         if (isServerUpdateAvailable()) {

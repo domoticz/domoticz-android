@@ -559,10 +559,10 @@ public class MainActivity extends AppCompatActivity {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
                     if (mServerUtil.getActiveServer() != null) {
-                        //only show an update revision snackbar once per revisionnumber!
+                        //only show an update revision snackbar once per revision number!
                         if (!mSharedPrefs.getLastUpdateShown().equals(serverUpdateInfo.getUpdateRevisionNumber())) {
                             // Write update version to shared preferences
-                            mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                            mServerUtil.getActiveServer().setServerUpdateInfo(MainActivity.this, serverUpdateInfo);
                             mServerUtil.saveDomoticzServers(true);
                             if (haveUpdate) {
                                 if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
@@ -585,8 +585,8 @@ public class MainActivity extends AppCompatActivity {
                             domoticz.getErrorMessage(error));
                     showSimpleSnackbar(message);
 
-                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
                     mServerUtil.saveDomoticzServers(true);
                 }
             });
@@ -601,9 +601,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
                     if (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) {
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
                         mServerUtil.getActiveServer()
-                                .getServerUpdateInfo()
+                                .getServerUpdateInfo(MainActivity.this)
                                 .setCurrentServerVersion(serverVersion);
                     }
 
@@ -611,10 +611,10 @@ public class MainActivity extends AppCompatActivity {
                             = serverVersion.split("\\.");
                     // Update version is only revision number
                     String updateVersion = (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) ?
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
                             version[0] + "."
                                     + mServerUtil.getActiveServer()
-                                    .getServerUpdateInfo()
+                                    .getServerUpdateInfo(MainActivity.this)
                                     .getUpdateRevisionNumber() :
                             version[0];
 

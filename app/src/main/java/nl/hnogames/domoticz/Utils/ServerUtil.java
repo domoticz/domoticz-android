@@ -124,7 +124,7 @@ public class ServerUtil {
                     if (jsonServer.has(serverUpdateInfoJSON_SERVER_UPDATE_INFO)) {
                         JSONObject serverUpdateInfoJson = jsonServer.getJSONObject(serverUpdateInfoJSON_SERVER_UPDATE_INFO);
                         JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
-                        oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                        oPrefServer.setServerUpdateInfo(mContext, new ServerUpdateInfo(jsonUpdate));
                     }
 
                     if (jsonServer.has(JSON_CONFIG_INFO)) {
@@ -185,7 +185,7 @@ public class ServerUtil {
                         if (jsonServer.has(serverUpdateInfoJSON_SERVER_UPDATE_INFO)) {
                             JSONObject serverUpdateInfoJson = jsonServer.getJSONObject(serverUpdateInfoJSON_SERVER_UPDATE_INFO);
                             JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
-                            oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                            oPrefServer.setServerUpdateInfo(mContext, new ServerUpdateInfo(jsonUpdate));
                         }
 
                         if (jsonServer.has(JSON_CONFIG_INFO)) {

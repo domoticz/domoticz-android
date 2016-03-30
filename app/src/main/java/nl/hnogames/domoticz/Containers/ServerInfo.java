@@ -17,6 +17,8 @@ public class ServerInfo {
     private final String SERIALIZE_CONFIG_FILE_EXTENSION = ".ser";
     @SuppressWarnings("FieldCanBeLocal")
     private final String SERIALIZE_CONFIG_FILE_PREFIX = "configInfo_";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String SERIALIZE_UPDATE_FILE_PREFIX = "serverUpdateInfo_";
 
     @Expose
     private String SERVER_UNIQUE_ID;
@@ -57,7 +59,7 @@ public class ServerInfo {
     @Expose
     private Set<String> LOCAL_SERVER_SSID;
 
-    /* Not saved yet because Gson can't serialize these classes!!!  */
+    /* Saved in a separate file because GSON can't serialize this */
     private ServerUpdateInfo serverUpdateInfo;
     private ConfigInfo configInfo;
 
@@ -70,7 +72,7 @@ public class ServerInfo {
         if (SERVER_UNIQUE_ID != null)
             return SERVER_UNIQUE_ID;
         else {
-            SERVER_UNIQUE_ID = createUniqueServerId();
+            setServerUniqueId(createUniqueServerId());
             return SERVER_UNIQUE_ID;
         }
     }
@@ -90,10 +92,9 @@ public class ServerInfo {
      * @return MD5 checksum
      */
     public String createUniqueServerId() {
-        String md5 = UsefulBits.getMd5String(
+        return UsefulBits.getMd5String(
                 LOCAL_SERVER_URL + LOCAL_SERVER_PORT + LOCAL_SERVER_USERNAME +
                 REMOTE_SERVER_URL + REMOTE_SERVER_PORT + REMOTE_SERVER_USERNAME);
-        return md5;
     }
 
     public String getRemoteServerUsername() {
@@ -152,13 +153,16 @@ public class ServerInfo {
         return method;
     }
 
+    @SuppressWarnings("unused")
     public void setRemoteServerAuthenticationMethod(String remoteServerAuthenticationMethod) {
+        //noinspection RedundantIfStatement
         if (remoteServerAuthenticationMethod.equals(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM))
             REMOTE_SERVER_AUTHENTICATION_METHOD = true;
         else
             REMOTE_SERVER_AUTHENTICATION_METHOD = false;
     }
 
+    @SuppressWarnings("unused")
     public boolean getRemoteServerAuthentication() {
         return REMOTE_SERVER_AUTHENTICATION_METHOD;
     }
@@ -223,6 +227,7 @@ public class ServerInfo {
         LOCAL_SERVER_SECURE = localServerSecure;
     }
 
+    @SuppressWarnings("unused")
     public String getLocalServerAuthenticationMethod() {
         String method;
 
@@ -237,6 +242,7 @@ public class ServerInfo {
         LOCAL_SERVER_AUTHENTICATION_METHOD = localServerAuthenticationMethod.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
     }
 
+    @SuppressWarnings("unused")
     public boolean getLocalServerAuthentication() {
         return LOCAL_SERVER_AUTHENTICATION_METHOD;
     }
@@ -271,12 +277,48 @@ public class ServerInfo {
         SERVER_NAME = serverName;
     }
 
-    public ServerUpdateInfo getServerUpdateInfo() {
+    /**
+     * Reads this server update info from a file
+     *
+     * @param context Context to use
+     * @return Server update info of this server from a file
+     */
+    private ServerUpdateInfo readServerUpdateInfoFromFile(Context context) {
+        String uniqueServerId = getServerUniqueId();
+        Object serializedServerInfoObject = SerializableManager.readSerializedObject(
+                context,
+                SERIALIZE_UPDATE_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
+        if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ServerUpdateInfo) {
+            return (ServerUpdateInfo) serializedServerInfoObject;
+        } else return null;
+    }
+
+    /**
+     * Get's this server update info.
+     * If it's not in this class it will read it from a file
+     *
+     * @param context Context to use
+     * @return Server update info of this server
+     */
+    public ServerUpdateInfo getServerUpdateInfo(Context context) {
+        if (serverUpdateInfo == null) serverUpdateInfo = readServerUpdateInfoFromFile(context);
         return serverUpdateInfo;
     }
 
-    public void setServerUpdateInfo(ServerUpdateInfo serverUpdateInfo) {
+    /**
+     * Set's this server update information and writes it to a file
+     *
+     * @param context Context to use
+     * @param serverUpdateInfo Server update info to write
+     */
+    public void setServerUpdateInfo(Context context, ServerUpdateInfo serverUpdateInfo) {
         this.serverUpdateInfo = serverUpdateInfo;
+        String uniqueServerId = getServerUniqueId();
+        SerializableManager.saveSerializable(
+                context,
+                serverUpdateInfo,
+                SERIALIZE_UPDATE_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
+
     }
 
     /**
