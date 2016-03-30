@@ -86,7 +86,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             }
         });
 
-        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.data = data;
         this.filteredData = data;
         this.listener = listener;

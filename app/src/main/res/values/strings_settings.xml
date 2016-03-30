@@ -64,6 +64,7 @@
 
     <!--        Preference screens      -->
     <string name="server_settings">Server connection settings</string>
+    <string name="server_force_fetch_config">Fetch server configuration</string>
     <string name="nfc_settings">Setup NFC Connections</string>
     <string name="title_activity_server_settings">Server settings</string>
     <string name="multi_server">Multi Server</string>

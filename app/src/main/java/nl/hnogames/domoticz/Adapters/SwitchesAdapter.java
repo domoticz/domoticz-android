@@ -104,7 +104,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             });
         }
 
-        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.data = data;
         this.listener = listener;
         this.filteredData = data;

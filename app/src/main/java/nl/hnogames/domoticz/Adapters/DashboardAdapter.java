@@ -108,7 +108,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        mConfigInfo = serverUtil.getActiveServer().getConfigInfo();
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.data = data;
         this.listener = listener;
         this.filteredData = data;

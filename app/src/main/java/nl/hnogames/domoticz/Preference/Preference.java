@@ -100,6 +100,7 @@ public class Preference extends PreferenceFragment {
 
         final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         android.preference.Preference ServerSettings = findPreference("server_settings");
+        android.preference.Preference fetchServerConfig = findPreference("server_force_fetch_config");
         android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
         android.preference.Preference GeoSettings = findPreference("geo_settings");
@@ -165,7 +166,6 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-
         ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -176,6 +176,14 @@ public class Preference extends PreferenceFragment {
                     Intent intent = new Intent(mContext, ServerListSettingsActivity.class);
                     startActivity(intent);
                 }
+                return true;
+            }
+        });
+
+        fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                UsefulBits.saveServerConfigToActiveServer(mContext, true);
                 return true;
             }
         });
