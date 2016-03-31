@@ -4,6 +4,7 @@
   <string name="nfc_not_supported">NFC is not supported on this device</string>
   <string name="nfc_register">Registrar una etiqueta NFC</string>
   <string name="nfc_tag_found">S\'ha trobat una nova etiqueta NFC</string>
+  <string name="nfc_tag_edit">Edit NFC Tag</string>
   <string name="nfc_tag_name">Give this NFC a proper name. </string>
   <string name="nfc_exists">L\'etiqueta NFC ja està registrada.</string>
   <string name="nfc_saved">S\'ha guardat una nova etiqueta NFC.</string>

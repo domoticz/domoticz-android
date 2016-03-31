@@ -4,6 +4,7 @@
   <string name="qrcode_not_supported">QR-kod stöds inte den här enheten</string>
   <string name="qrcode_register">Registrera en QR-kod </string>
   <string name="qrcode_found">Ny QR-kod hittade</string>
+  <string name="qrcode_edit">Edit QR Code</string>
   <string name="qrcode_name">Ge denna QR-koden ett korrekt namn. </string>
   <string name="qrcode_exists">QR-koden redan registrerad. </string>
   <string name="qrcode_saved">Sparade en ny QR-kod. </string>

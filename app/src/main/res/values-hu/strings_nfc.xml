@@ -4,6 +4,7 @@
   <string name="nfc_not_supported">Az NFC nem támogatott ezen az eszközön</string>
   <string name="nfc_register">NFC-címke regisztrálása</string>
   <string name="nfc_tag_found">Új NFC-címke található</string>
+  <string name="nfc_tag_edit">Edit NFC Tag</string>
   <string name="nfc_tag_name">Nevezd el az NFC-címkét. </string>
   <string name="nfc_exists">Az NFC-címke már regisztrált. </string>
   <string name="nfc_saved">Új NFC-címke rögzítve. </string>
