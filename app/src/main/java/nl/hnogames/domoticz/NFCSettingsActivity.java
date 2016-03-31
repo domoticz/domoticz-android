@@ -240,10 +240,10 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                 domoticz);
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 nfcInfo.setSwitchIdx(selectedSwitchIDX);
                 nfcInfo.setSwitchPassword(selectedSwitchPassword);
-
+                nfcInfo.setSwitchName(selectedSwitchName);
                 updateNFC(nfcInfo);
             }
         });

@@ -148,10 +148,10 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                 domoticz);
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 qrcodeInfo.setSwitchIdx(selectedSwitchIDX);
                 qrcodeInfo.setSwitchPassword(selectedSwitchPassword);
-
+                qrcodeInfo.setSwitchName(selectedSwitchName);
                 updateQRCode(qrcodeInfo);
             }
         });

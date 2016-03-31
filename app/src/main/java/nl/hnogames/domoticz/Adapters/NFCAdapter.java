@@ -41,6 +41,7 @@ import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class NFCAdapter extends BaseAdapter {
 
@@ -111,9 +112,12 @@ public class NFCAdapter extends BaseAdapter {
 
         holder.nfc_name.setText(mNFCInfo.getName());
         holder.nfc_tag_id.setText(mNFCInfo.getId());
-        if (mNFCInfo.getSwitchIdx() > 0) {
+
+        if(!UsefulBits.isEmpty(mNFCInfo.getSwitchName())) {
+            holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mNFCInfo.getSwitchName());
+        }else if (mNFCInfo.getSwitchIdx() > 0) {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mNFCInfo.getSwitchIdx());
-        } else {
+        }else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available));
         }

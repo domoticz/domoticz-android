@@ -194,9 +194,10 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 selectedLocation.setSwitchIdx(selectedSwitchIDX);
                 selectedLocation.setSwitchPassword(selectedSwitchPassword);
+                selectedLocation.setSwitchName(selectedSwitchName);
                 mSharedPrefs.updateLocation(selectedLocation);
                 adapter.data = mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();
