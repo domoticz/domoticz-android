@@ -119,6 +119,8 @@ public class GeoSettingsActivity extends AppCompatActivity
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_settings);
@@ -194,9 +196,10 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 selectedLocation.setSwitchIdx(selectedSwitchIDX);
                 selectedLocation.setSwitchPassword(selectedSwitchPassword);
+                selectedLocation.setSwitchName(selectedSwitchName);
                 mSharedPrefs.updateLocation(selectedLocation);
                 adapter.data = mSharedPrefs.getLocations();
                 adapter.notifyDataSetChanged();

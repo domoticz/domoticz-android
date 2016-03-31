@@ -53,6 +53,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.NFCAdapter;
 import nl.hnogames.domoticz.Containers.NFCInfo;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
@@ -91,6 +92,8 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_settings);
@@ -167,11 +170,13 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                         .input(R.string.category_nfc, 0, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
-                                NFCInfo newNFC = new NFCInfo();
-                                newNFC.setId(tagID);
-                                newNFC.setName(String.valueOf(input));
-                                updateNFC(newNFC);
+                                if(!UsefulBits.isEmpty(String.valueOf(input))) {
+                                    showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
+                                    NFCInfo newNFC = new NFCInfo();
+                                    newNFC.setId(tagID);
+                                    newNFC.setName(String.valueOf(input));
+                                    updateNFC(newNFC);
+                                }
                                 busyWithTag = false;
                             }
                         }).show();
@@ -193,17 +198,34 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-
+                showEditDialog(nfcList.get(item));
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 getSwitchesAndShowSwitchesDialog(nfcList.get(position));
-
                 return true;
             }
         });
+    }
+    private void showEditDialog(final NFCInfo mNFCInfo) {
+        busyWithTag = true;
+        new MaterialDialog.Builder(this)
+                .title(R.string.nfc_tag_edit)
+                .content(R.string.nfc_tag_name)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .negativeText(R.string.cancel)
+                .input(this.getString(R.string.category_nfc), mNFCInfo.getName(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        if(!UsefulBits.isEmpty(String.valueOf(input))) {
+                            mNFCInfo.setName(String.valueOf(input));
+                            updateNFC(mNFCInfo);
+                        }
+                        busyWithTag = false;
+                    }
+                }).show();
     }
 
     private void getSwitchesAndShowSwitchesDialog(final NFCInfo nfcInfo) {
@@ -240,10 +262,10 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                 domoticz);
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 nfcInfo.setSwitchIdx(selectedSwitchIDX);
                 nfcInfo.setSwitchPassword(selectedSwitchPassword);
-
+                nfcInfo.setSwitchName(selectedSwitchName);
                 updateNFC(nfcInfo);
             }
         });
