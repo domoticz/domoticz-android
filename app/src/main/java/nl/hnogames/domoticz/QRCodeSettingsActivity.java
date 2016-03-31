@@ -72,6 +72,8 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_settings);

@@ -92,6 +92,8 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_settings);
