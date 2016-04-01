@@ -4,7 +4,7 @@
   <string name="nfc_not_supported">Denna enhet saknar stöd för NFC</string>
   <string name="nfc_register">Registrera en NFC-tagg</string>
   <string name="nfc_tag_found">Ny NFC-tagg hittad</string>
-  <string name="nfc_tag_edit">Edit NFC Tag</string>
+  <string name="nfc_tag_edit">Redigera NFC-tagg</string>
   <string name="nfc_tag_name">Ge denna NFC-tagg ett namn. </string>
   <string name="nfc_exists">NFC-taggen är redan registrerad. </string>
   <string name="nfc_saved">Sparade en ny NFC-tagg. </string>
