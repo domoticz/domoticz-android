@@ -76,7 +76,7 @@ public class NotificationUtil {
             }
 
             prefUtil.addReceivedNotification(text);
+        } catch (Exception ex) {
         }
-        catch(Exception ex){}
     }
 }

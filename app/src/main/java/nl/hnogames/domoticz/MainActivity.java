@@ -178,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
             if (mSharedPrefs.darkThemeEnabled()) {
                 int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
                 LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
-                if (color != 0 && tabletLayoutWrapper != null) tabletLayoutWrapper.setBackgroundColor(color);
+                if (color != 0 && tabletLayoutWrapper != null)
+                    tabletLayoutWrapper.setBackgroundColor(color);
             }
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -690,37 +691,37 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = getVisibleFragment();
 
-            if ((f instanceof Cameras)) {
-                if (cameraRefreshTimer != null)
-                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
-                else
-                    getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
-                if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
-                    getMenuInflater().inflate(R.menu.menu_main_sort, menu);
-                else
-                    getMenuInflater().inflate(R.menu.menu_main, menu);
+        if ((f instanceof Cameras)) {
+            if (cameraRefreshTimer != null)
+                getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
+            else
+                getMenuInflater().inflate(R.menu.menu_camera, menu);
+        } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
+            if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
+                getMenuInflater().inflate(R.menu.menu_main_sort, menu);
+            else
+                getMenuInflater().inflate(R.menu.menu_main, menu);
 
-                MenuItem searchMenuItem = menu.findItem(R.id.search);
-                searchViewAction = (SearchView) MenuItemCompat
-                        .getActionView(searchMenuItem);
-                searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
+            MenuItem searchMenuItem = menu.findItem(R.id.search);
+            searchViewAction = (SearchView) MenuItemCompat
+                    .getActionView(searchMenuItem);
+            searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        Fragment n = getVisibleFragment();
-                        if (n instanceof DomoticzDashboardFragment) {
-                            ((DomoticzDashboardFragment) n).Filter(newText);
-                        }
-                        return false;
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Fragment n = getVisibleFragment();
+                    if (n instanceof DomoticzDashboardFragment) {
+                        ((DomoticzDashboardFragment) n).Filter(newText);
                     }
-                });
-            } else
-                getMenuInflater().inflate(R.menu.menu_simple, menu);
+                    return false;
+                }
+            });
+        } else
+            getMenuInflater().inflate(R.menu.menu_simple, menu);
 
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item

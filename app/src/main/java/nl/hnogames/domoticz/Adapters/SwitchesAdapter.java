@@ -84,9 +84,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private ItemFilter mFilter = new ItemFilter();
 
     public SwitchesAdapter(Context context,
-                         ServerUtil serverUtil,
-                         ArrayList<DevicesInfo> data,
-                         switchesClickListener listener) {
+                           ServerUtil serverUtil,
+                           ArrayList<DevicesInfo> data,
+                           switchesClickListener listener) {
         super();
         mSharedPrefs = new SharedPrefUtil(context);
 
@@ -636,6 +636,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
 
+            holder.onOffSwitch.setOnCheckedChangeListener (null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1052,7 +1053,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = mDeviceInfo.getLevel() / 10;
+        int loadLevel = (mDeviceInfo.getLevel()-1) / 10;
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
 
@@ -1064,6 +1065,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1111,6 +1113,16 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.iconRow.setAlpha(0.5f);
                 }
             });
+        }
+
+        if (mDeviceInfo.isLevelOffHidden()) {
+            if (holder.buttonOff != null)
+                holder.buttonOff.setVisibility(View.GONE);
+            if (holder.buttonOn != null)
+                holder.buttonOn.setVisibility(View.GONE);
+            holder.dimmer.setVisibility(View.VISIBLE);
+            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.iconRow.setAlpha(1f);
         }
 
         holder.dimmer.incrementProgressBy(1);
@@ -1211,6 +1223,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1393,7 +1406,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
                 TextView switch_dimmer_level = (TextView) seekBar.getRootView()
                         .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-                if(switch_dimmer_level != null)
+                if (switch_dimmer_level != null)
                     switch_dimmer_level.setText(percentage);
             }
 
@@ -1793,7 +1806,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             default:
-                if(!mSharedPrefs.showExtraData())
+                if (!mSharedPrefs.showExtraData())
                     holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
                 break;

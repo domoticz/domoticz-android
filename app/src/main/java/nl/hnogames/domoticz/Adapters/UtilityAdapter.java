@@ -151,7 +151,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
-        holder.hardware.setText(context.getString(R.string.hardware) +": " + mUtilitiesInfo.getHardwareName());
+        holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
 
         if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
             holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
@@ -207,7 +207,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
-        holder.hardware.setText(context.getString(R.string.hardware) +": " + mUtilitiesInfo.getHardwareName());
+        holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
 
         if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
             holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());

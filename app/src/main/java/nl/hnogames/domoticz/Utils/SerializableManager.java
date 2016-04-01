@@ -37,9 +37,9 @@ public class SerializableManager {
     /**
      * Saves a serializable object.
      *
-     * @param context The application context.
+     * @param context      The application context.
      * @param objectToSave The object to save.
-     * @param fileName The name of the file.
+     * @param fileName     The name of the file.
      */
     public static void saveSerializable(Context context, Object objectToSave, String fileName) {
         try {
@@ -58,9 +58,8 @@ public class SerializableManager {
     /**
      * Loads a serializable object.
      *
-     * @param context The application context.
+     * @param context  The application context.
      * @param fileName The filename.
-     *
      * @return the serializable object.
      */
     public static Object readSerializedObject(Context context, String fileName) {
@@ -82,7 +81,7 @@ public class SerializableManager {
     /**
      * Removes a specified file.
      *
-     * @param context The application context.
+     * @param context  The application context.
      * @param filename The name of the file.
      */
     public static void removeSerializable(Context context, String filename) {

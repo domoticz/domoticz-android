@@ -153,7 +153,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
                 if (holder.buttonOn != null) {
                     holder.buttonOn.setId(mSceneInfo.getIdx());
-                  //  holder.buttonOn.setText(context.getString(R.string.button_state_on));
+                    //  holder.buttonOn.setText(context.getString(R.string.button_state_on));
                     holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

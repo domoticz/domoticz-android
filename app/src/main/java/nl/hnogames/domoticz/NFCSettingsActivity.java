@@ -170,7 +170,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                         .input(R.string.category_nfc, 0, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                if(!UsefulBits.isEmpty(String.valueOf(input))) {
+                                if (!UsefulBits.isEmpty(String.valueOf(input))) {
                                     showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
                                     NFCInfo newNFC = new NFCInfo();
                                     newNFC.setId(tagID);
@@ -209,6 +209,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
             }
         });
     }
+
     private void showEditDialog(final NFCInfo mNFCInfo) {
         busyWithTag = true;
         new MaterialDialog.Builder(this)
@@ -219,7 +220,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                 .input(this.getString(R.string.category_nfc), mNFCInfo.getName(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        if(!UsefulBits.isEmpty(String.valueOf(input))) {
+                        if (!UsefulBits.isEmpty(String.valueOf(input))) {
                             mNFCInfo.setName(String.valueOf(input));
                             updateNFC(mNFCInfo);
                         }

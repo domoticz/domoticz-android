@@ -94,7 +94,7 @@ public class ServerInfo {
     public String createUniqueServerId() {
         return UsefulBits.getMd5String(
                 LOCAL_SERVER_URL + LOCAL_SERVER_PORT + LOCAL_SERVER_USERNAME +
-                REMOTE_SERVER_URL + REMOTE_SERVER_PORT + REMOTE_SERVER_USERNAME);
+                        REMOTE_SERVER_URL + REMOTE_SERVER_PORT + REMOTE_SERVER_USERNAME);
     }
 
     public String getRemoteServerUsername() {
@@ -308,7 +308,7 @@ public class ServerInfo {
     /**
      * Set's this server update information and writes it to a file
      *
-     * @param context Context to use
+     * @param context          Context to use
      * @param serverUpdateInfo Server update info to write
      */
     public void setServerUpdateInfo(Context context, ServerUpdateInfo serverUpdateInfo) {
@@ -352,7 +352,7 @@ public class ServerInfo {
     /**
      * Set's this server configuration information and writes it to a file
      *
-     * @param context Context to use
+     * @param context    Context to use
      * @param configInfo Configuration info to write
      */
     public void setConfigInfo(Context context, ConfigInfo configInfo) {

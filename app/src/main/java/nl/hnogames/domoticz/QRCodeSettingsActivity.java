@@ -129,7 +129,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                 .input(this.getString(R.string.category_QRCode), mQRCodeInfo.getName(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        if(!UsefulBits.isEmpty(String.valueOf(input))) {
+                        if (!UsefulBits.isEmpty(String.valueOf(input))) {
                             mQRCodeInfo.setName(String.valueOf(input));
                             updateQRCode(mQRCodeInfo);
                         }
@@ -359,7 +359,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                         .input(R.string.category_QRCode, 0, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                if(!UsefulBits.isEmpty(String.valueOf(input))) {
+                                if (!UsefulBits.isEmpty(String.valueOf(input))) {
                                     showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
                                     QRCodeInfo qrCodeInfo = new QRCodeInfo();
                                     qrCodeInfo.setId(QR_Code_ID);

@@ -171,8 +171,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     public ActionBar getActionBar() {
         try {
             return ((AppCompatActivity) getActivity().getApplicationContext()).getSupportActionBar();
-        }catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }

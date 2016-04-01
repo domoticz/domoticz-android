@@ -613,6 +613,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
 
+            holder.onOffSwitch.setOnCheckedChangeListener (null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1029,7 +1030,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = mDeviceInfo.getLevel() / 10;
+        int loadLevel = (mDeviceInfo.getLevel()-1) / 10;
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
 
@@ -1041,6 +1042,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1068,7 +1071,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onClick(View v) {
                     handleOnOffSwitchClick(v.getId(), true);
-
                     holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                     holder.dimmer.setVisibility(View.VISIBLE);
                     holder.dimmer.setProgress(0);
@@ -1076,13 +1078,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
             });
         }
+
         if (holder.buttonOff != null) {
             holder.buttonOff.setId(mDeviceInfo.getIdx());
             holder.buttonOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     handleOnOffSwitchClick(v.getId(), false);
-
                     holder.switch_dimmer_level.setVisibility(View.GONE);
                     holder.dimmer.setVisibility(View.GONE);
                     holder.iconRow.setAlpha(0.5f);
@@ -1090,10 +1092,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
+        if (mDeviceInfo.isLevelOffHidden()) {
+            if (holder.buttonOff != null)
+                holder.buttonOff.setVisibility(View.GONE);
+            if (holder.buttonOn != null)
+                holder.buttonOn.setVisibility(View.GONE);
+            holder.dimmer.setVisibility(View.VISIBLE);
+            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.iconRow.setAlpha(1f);
+        }
+
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
         holder.dimmer.setMax(levelNames.length - 1);
-
         holder.dimmer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1188,6 +1199,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1370,7 +1382,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
                 TextView switch_dimmer_level = (TextView) seekBar.getRootView()
                         .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-                if(switch_dimmer_level != null)
+                if (switch_dimmer_level != null)
                     switch_dimmer_level.setText(percentage);
             }
 
@@ -1674,8 +1686,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.onOffSwitch != null) {
             holder.onOffSwitch.setVisibility(View.GONE);
         }
-        if(!mSharedPrefs.showExtraData())
-        {
+        if (!mSharedPrefs.showExtraData()) {
             holder.signal_level.setVisibility(View.GONE);
             holder.switch_battery_level.setVisibility(View.GONE);
         }
@@ -1772,7 +1783,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             default:
-                if(!mSharedPrefs.showExtraData())
+                if (!mSharedPrefs.showExtraData())
                     holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
                 break;
