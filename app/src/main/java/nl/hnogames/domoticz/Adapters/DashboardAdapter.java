@@ -613,6 +613,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
 
+            holder.onOffSwitch.setOnCheckedChangeListener (null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1041,6 +1042,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1196,6 +1199,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
