@@ -29,14 +29,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
-
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
@@ -51,9 +49,9 @@ import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Scenes extends DomoticzFragment implements DomoticzFragmentListener,
+public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         ScenesClickListener {
 
     @SuppressWarnings("unused")
@@ -108,7 +106,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
-        state = listView.onSaveInstanceState();
+        state = gridView.getLayoutManager().onSaveInstanceState();
         WidgetUtils.RefreshWidgets(mContext);
 
         mDomoticz.getScenes(new ScenesReceiver() {
@@ -151,45 +149,8 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
             }
 
             adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
-            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
-
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                               int index, long id) {
-                    showInfoDialog(adapter.filteredData.get(index));
-                    return true;
-                }
-            });
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
-                    if (extra_panel != null) {
-                        if (extra_panel.getVisibility() == View.VISIBLE) {
-                            extra_panel.startAnimation(animHide);
-                            extra_panel.setVisibility(View.GONE);
-                        } else {
-                            extra_panel.setVisibility(View.VISIBLE);
-                            extra_panel.startAnimation(animShow);
-                        }
-
-                        if (extra_panel != lExtraPanel) {
-                            if (lExtraPanel != null) {
-                                if (lExtraPanel.getVisibility() == View.VISIBLE) {
-                                    lExtraPanel.startAnimation(animHide);
-                                    lExtraPanel.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-
-                        lExtraPanel = extra_panel;
-                    }
-                }
-            });
-
+            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+            gridView.setAdapter(alphaSlideIn);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -200,7 +161,7 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
 
             if (state != null) {
                 // Restore previous state (including selected item index and scroll position)
-                listView.onRestoreInstanceState(state);
+                gridView.getLayoutManager().onRestoreInstanceState(state);
             }
         }
         super.showSpinner(false);
@@ -305,6 +266,37 @@ public class Scenes extends DomoticzFragment implements DomoticzFragmentListener
                 Snackbar.make(coordinatorLayout, getContext().getString(R.string.error_logs), Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onItemClicked(View v, int position) {
+        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        if (extra_panel != null) {
+            if (extra_panel.getVisibility() == View.VISIBLE) {
+                extra_panel.startAnimation(animHide);
+                extra_panel.setVisibility(View.GONE);
+            } else {
+                extra_panel.setVisibility(View.VISIBLE);
+                extra_panel.startAnimation(animShow);
+            }
+
+            if (extra_panel != lExtraPanel) {
+                if (lExtraPanel != null) {
+                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                        lExtraPanel.startAnimation(animHide);
+                        lExtraPanel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            lExtraPanel = extra_panel;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
     }
 
     private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {

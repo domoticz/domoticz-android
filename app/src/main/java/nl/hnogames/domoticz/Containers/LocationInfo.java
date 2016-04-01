@@ -36,6 +36,7 @@ public class LocationInfo {
     private int radius = 400;           //meters
     private boolean enabled = false;
     private Address address;
+    private String switchName;
 
     public LocationInfo(int id, String name, LatLng latLng, int radius) {
         this.name = name;
@@ -128,4 +129,12 @@ public class LocationInfo {
         }
     }
 
+
+    public String getSwitchName() {
+        return switchName;
+    }
+
+    public void setSwitchName(String switchName) {
+        this.switchName = switchName;
+    }
 }

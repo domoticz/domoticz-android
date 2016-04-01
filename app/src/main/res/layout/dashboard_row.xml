@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/card_global_wrapper"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:background="@color/material_grey_300_"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardUseCompatPadding="true">
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_grey_300_"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:id="@+id/row_wrapper">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/textwrapper"
+                        android:layout_width="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/rowIcon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:paddingTop="10dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/clock48" />
+
+                        <TextView
+                            android:id="@+id/switch_name"
+                            style="@style/row_dash_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Switch"
+                            android:paddingBottom="7dp"
+                            android:layout_gravity="center_horizontal"
+                            />
+
+                        <TextView
+                            android:id="@+id/switch_battery_level"
+                            style="@style/row_dash_body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="@string/battery_level"
+                            android:layout_gravity="left"
+                            android:gravity="left" />
+
+                        <TextView
+                            android:id="@+id/switch_signal_level"
+                            style="@style/row_dash_body2"
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/signal_level"
+                            android:layout_gravity="left"
+                            android:gravity="left" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_below="@+id/textwrapper"
+                        android:id="@+id/linearLayout4ttt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <Switch
+                            android:id="@+id/switch_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true" />
+
+                        <Button
+                            android:id="@+id/on_button"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/button_status"
+                            android:text="@string/button_state_on"
+                            android:textSize="10dp" />
+
+                        <Button
+                            android:id="@+id/off_button"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_status"
+                            android:text="@string/button_state_off"
+                            android:textSize="10dp" />
+
+                        <Button
+                            android:id="@+id/set_button"
+                            android:layout_width="56dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="right"
+                            android:background="@drawable/button_status"
+                            android:text="@string/set_temperature"
+                            android:textSize="10dp" />
+
+                        <ImageButton
+                            android:id="@+id/switch_button_up"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_up"
+                            android:textSize="10dp" />
+
+                        <ImageButton
+                            android:id="@+id/switch_button_stop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_stop"
+                            android:textSize="10dp" />
+
+                        <ImageButton
+                            android:id="@+id/switch_button_down"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_down"
+                            android:textSize="10dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout444"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="10dp"
+                        android:layout_below="@+id/linearLayout4ttt"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/switch_dimmer_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="6dp"
+                            android:text="55%" />
+
+                        <SeekBar
+                            android:id="@+id/switch_dimmer"
+                            android:layout_width="129dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:minWidth="150dp" />
+
+                        <Switch
+                            android:id="@+id/switch_dimmer_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right" />
+
+                        <Button
+                            android:id="@+id/color_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="right"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/button_status"
+                            android:textSize="10dp"
+                            android:text="@string/button_color" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <include layout="@layout/log_timer_button_row_default" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -38,16 +38,19 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.zxing.qrcode.encoder.QRCode;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.QRCodeAdapter;
+import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -69,6 +72,8 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_settings);
@@ -101,7 +106,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-
+                showEditDialog(qrcodeList.get(item));
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -112,6 +117,25 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                 return true;
             }
         });
+    }
+
+    private void showEditDialog(final QRCodeInfo mQRCodeInfo) {
+        busyWithQRCode = true;
+        new MaterialDialog.Builder(this)
+                .title(R.string.qrcode_edit)
+                .content(R.string.qrcode_name)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .negativeText(R.string.cancel)
+                .input(this.getString(R.string.category_QRCode), mQRCodeInfo.getName(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        if (!UsefulBits.isEmpty(String.valueOf(input))) {
+                            mQRCodeInfo.setName(String.valueOf(input));
+                            updateQRCode(mQRCodeInfo);
+                        }
+                        busyWithQRCode = false;
+                    }
+                }).show();
     }
 
     private void getSwitchesAndShowSwitchesDialog(final QRCodeInfo qrInfo) {
@@ -148,10 +172,10 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                 domoticz);
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 qrcodeInfo.setSwitchIdx(selectedSwitchIDX);
                 qrcodeInfo.setSwitchPassword(selectedSwitchPassword);
-
+                qrcodeInfo.setSwitchName(selectedSwitchName);
                 updateQRCode(qrcodeInfo);
             }
         });
@@ -335,11 +359,13 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                         .input(R.string.category_QRCode, 0, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
-                                QRCodeInfo qrCodeInfo = new QRCodeInfo();
-                                qrCodeInfo.setId(QR_Code_ID);
-                                qrCodeInfo.setName(String.valueOf(input));
-                                updateQRCode(qrCodeInfo);
+                                if (!UsefulBits.isEmpty(String.valueOf(input))) {
+                                    showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
+                                    QRCodeInfo qrCodeInfo = new QRCodeInfo();
+                                    qrCodeInfo.setId(QR_Code_ID);
+                                    qrCodeInfo.setName(String.valueOf(input));
+                                    updateQRCode(qrCodeInfo);
+                                }
                                 busyWithQRCode = false;
                             }
                         }).show();

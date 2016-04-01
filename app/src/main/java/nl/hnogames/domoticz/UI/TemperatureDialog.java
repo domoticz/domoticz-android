@@ -28,6 +28,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,6 +39,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
@@ -58,7 +60,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     private double currentTemperature = 20;
     private SeekArc temperatureControl;
     private TextView temperatureText;
-    private String tempSign = "";
+    private String tempSign = UsefulBits.getDegreeSymbol() + "C";
     private boolean isFahrenheit = false;
 
     public TemperatureDialog(Context mContext, double temp) {
@@ -70,12 +72,15 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 .positiveText(android.R.string.ok)
                 .onAny(this);
 
-        ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo();
+        ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
-            tempSign = configInfo.getTempSign();
-            if (!configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS))
+            tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
+            if (!configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS)) {
                 isFahrenheit = true;
-        }
+            }
+        } else
+            Toast.makeText(mContext,
+                    "Unable to get the server configuration info!", Toast.LENGTH_LONG).show();
 
         if (isFahrenheit) {
             minTemp = minFahrenheitTemp;

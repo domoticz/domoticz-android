@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     //noinspection GroovyAssignabilityCheck
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 95
-        versionName '0.1.249'
+        versionCode 97
+        versionName '0.1.251'
         multiDexEnabled true
     }
 
@@ -74,10 +75,11 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':libs:MemorizingTrustManager')
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
+
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
         transitive = true
     }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.0@aar') {
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.7@aar') {
         transitive = true
     }
 
@@ -99,7 +101,7 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
-    compile 'com.splunk.mint:mint:4.4.0'
+    compile 'com.splunk.mint:mint:5.0.0'
     compile 'com.larswerkman:lobsterpicker:1.0.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.dexafree:materiallist:3.1.2'
@@ -110,6 +112,8 @@ dependencies {
     compile 'eu.inloop:easygcm:1.6.1@aar'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
     compile 'com.github.jd-alexander:LikeButton:0.1.8'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.1'
+
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')
 }

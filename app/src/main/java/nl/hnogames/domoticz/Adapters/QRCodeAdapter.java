@@ -41,6 +41,7 @@ import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class QRCodeAdapter extends BaseAdapter {
 
@@ -112,7 +113,10 @@ public class QRCodeAdapter extends BaseAdapter {
         holder.nfc_name.setText(mQRCodeInfo.getName());
         holder.nfc_tag_id.setText(mQRCodeInfo.getId());
         holder.nfc_tag_id.setVisibility(View.GONE);
-        if (mQRCodeInfo.getSwitchIdx() > 0) {
+
+        if (!UsefulBits.isEmpty(mQRCodeInfo.getSwitchName())) {
+            holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchName());
+        } else if (mQRCodeInfo.getSwitchIdx() > 0) {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)

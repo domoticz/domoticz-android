@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
 import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -105,7 +106,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                         startActivity(intent);
                     }
                 });
-                mRecyclerView.setAdapter(mAdapter);
+                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
+                mRecyclerView.setAdapter(alphaSlideIn);
             }
 
             @Override

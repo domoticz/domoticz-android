@@ -27,18 +27,18 @@ import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.Adapters.DevicesAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.Adapters.DashboardAdapter;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
@@ -53,16 +53,16 @@ import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 
-public class Dashboard extends DomoticzFragment implements DomoticzFragmentListener,
+public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
         switchesClickListener {
 
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String AUTO = "Auto";
     private static final String TAG = Dashboard.class.getSimpleName();
     private Context mContext;
-    private DevicesAdapter adapter;
+    private DashboardAdapter adapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
     private int planID = 0;
     private String planName = "";
@@ -92,8 +92,10 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     public void Filter(String text) {
         filter = text;
         try {
-            if (adapter != null)
+            if (adapter != null) {
                 adapter.getFilter().filter(text);
+                adapter.notifyDataSetChanged();
+            }
             super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -114,8 +116,9 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
     private void processDashboard() {
         busy = true;
         if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
-            state = listView.onSaveInstanceState();
+            state = gridView.getLayoutManager().onSaveInstanceState();
         }
+
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
@@ -195,18 +198,20 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 }
 
                 final switchesClickListener listener = this;
-                adapter = new DevicesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
-                SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-                animationAdapter.setAbsListView(listView);
-                listView.setAdapter(animationAdapter);
+                if (this.planID <= 0)
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, mSharedPrefs.showDashboardAsList());
+                else {
+                    gridView.setHasFixedSize(true);
+                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    gridView.setLayoutManager(mLayoutManager);
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, true);
+                }
 
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long id) {
-                        showInfoDialog(adapter.filteredData.get(index));
-                        return true;
-                    }
-                });
+                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+                if (state != null) {
+                    gridView.getLayoutManager().onRestoreInstanceState(state);
+                }
 
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -215,10 +220,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                         processDashboard();
                     }
                 });
-
-                if (state != null) {
-                    listView.onRestoreInstanceState(state);
-                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -226,6 +227,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             this.Filter(filter);
             busy = false;
             super.showSpinner(false);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -361,7 +363,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (clickedSwitch == null) {
             for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
                 if (mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mExtendedStatusInfo.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                    if (mExtendedStatusInfo.getIdx() == (idx - DevicesAdapter.ID_SCENE_SWITCH)) {
+                    if (mExtendedStatusInfo.getIdx() == (idx - DashboardAdapter.ID_SCENE_SWITCH)) {
                         clickedSwitch = mExtendedStatusInfo;
                     }
                 }
@@ -698,6 +700,17 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
                 .show();
     }
 
+    @Override
+    public void onItemClicked(View v, int position) {
+
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
+    }
+
     private void setState(final int idx, int state, final String password) {
         mDomoticz.setModalAction(idx,
                 state,
@@ -764,7 +777,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -783,7 +795,6 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             }
         });
     }
-
 
     @Override
     public void onDimmerChange(int idx, final int value, final boolean selector) {
@@ -811,13 +822,13 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    !selector ? (value - 1) : ((value) / 10));
+                    !selector ? (value - 1) : ((value) / 10) + 1);
             Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
 
-            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, value, password, new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, !selector ? (value) : (value) + 10, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
@@ -835,6 +846,7 @@ public class Dashboard extends DomoticzFragment implements DomoticzFragmentListe
             });
         }
     }
+
 
     @Override
     public void onPause() {

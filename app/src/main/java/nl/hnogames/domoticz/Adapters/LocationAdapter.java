@@ -41,6 +41,7 @@ import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class LocationAdapter extends BaseAdapter {
 
@@ -128,16 +129,14 @@ public class LocationAdapter extends BaseAdapter {
         }
 
         holder.name.setText(mLocationInfo.getName());
-        String text = context.getString(R.string.radius) + ": " + mLocationInfo.getRadius();
-        holder.radius.setText(text);
-
-        if (mLocationInfo.getSwitchIdx() > 0) {
-            text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx();
-            holder.connectedSwitch.setText(text);
+        holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRadius());
+        if (!UsefulBits.isEmpty(mLocationInfo.getSwitchName())) {
+            holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchName());
+        } else if (mLocationInfo.getSwitchIdx() > 0) {
+            holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx());
         } else {
-            text = context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available);
-            holder.connectedSwitch.setText(text);
+            holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
+                    + ": " + context.getString(R.string.not_available));
         }
 
         holder.remove.setId(mLocationInfo.getID());

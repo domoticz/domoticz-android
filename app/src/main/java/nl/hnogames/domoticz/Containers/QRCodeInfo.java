@@ -29,6 +29,7 @@ public class QRCodeInfo {
     private String name;
     private int switchIdx;
     private String switchPassword = "";
+    private String switchName;
 
     public String getId() {
         return id;
@@ -68,5 +69,14 @@ public class QRCodeInfo {
 
     public void setSwitchPassword(String switchPassword) {
         this.switchPassword = switchPassword;
+    }
+
+
+    public String getSwitchName() {
+        return switchName;
+    }
+
+    public void setSwitchName(String switchName) {
+        this.switchName = switchName;
     }
 }

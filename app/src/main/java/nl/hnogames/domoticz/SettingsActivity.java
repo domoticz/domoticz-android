@@ -29,6 +29,7 @@ import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Preference.Preference;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -37,6 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null)

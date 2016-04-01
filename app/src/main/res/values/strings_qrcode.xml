@@ -4,9 +4,10 @@
     <string name="qrcode_not_supported">QR Code is not supported on this device</string>
     <string name="qrcode_register">Register a QR Code </string>
     <string name="qrcode_found">New QR Code found</string>
+    <string name="qrcode_edit">Edit QR Code</string>
     <string name="qrcode_name">Give this QR Code a proper name. </string>
     <string name="qrcode_exists">QR Code  already registered. </string>
-    <string name="qrcode_saved">Saved a New QR Code . </string>
+    <string name="qrcode_saved">Saved a New QR Code. </string>
     <string name="qrcode">QR Code</string>
 
     <string name="qrcode_new_found">New QR Code detecetd, please setup via settings.</string>

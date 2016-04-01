@@ -42,6 +42,12 @@
             android:summaryOn="@string/switch_buttons_on"
             android:title="@string/switch_buttons_title" />
         <SwitchPreference
+            android:defaultValue="true"
+            android:key="dashboardAsList"
+            android:summaryOn="@string/show_dashboard_list_off"
+            android:summaryOff="@string/show_dashboard_list_on"
+            android:title="@string/dashboard_list_title" />
+        <SwitchPreference
             android:defaultValue="false"
             android:key="alwayson"
             android:summaryOff="@string/always_on_off"
@@ -78,6 +84,9 @@
         <Preference
             android:key="server_settings"
             android:title="@string/server_settings" />
+        <Preference
+            android:key="server_force_fetch_config"
+            android:title="@string/server_force_fetch_config" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_geofencing">

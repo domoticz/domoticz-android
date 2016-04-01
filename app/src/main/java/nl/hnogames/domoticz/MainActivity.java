@@ -31,6 +31,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -44,7 +45,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +84,8 @@ import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -175,9 +176,13 @@ public class MainActivity extends AppCompatActivity {
             onPhone = true;
         else {
             if (mSharedPrefs.darkThemeEnabled()) {
-                ((LinearLayout) findViewById(R.id.tabletLayoutWrapper)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+                int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
+                if (color != 0 && tabletLayoutWrapper != null)
+                    tabletLayoutWrapper.setBackgroundColor(color);
             }
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
         addDrawerItems();
@@ -320,10 +325,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshFragment() {
         Fragment f = getVisibleFragment();
-        if (f instanceof DomoticzFragment) {
-            ((DomoticzFragment) f).refreshFragment();
+        if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).refreshFragment();
         } else if (f instanceof DomoticzCardFragment)
             ((DomoticzCardFragment) f).refreshFragment();
+        else if (f instanceof DomoticzDashboardFragment)
+            ((DomoticzDashboardFragment) f).refreshFragment();
     }
 
     public void removeFragmentStack(String fragment) {
@@ -379,6 +386,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     private void updateDrawerItems() {
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         fragments = mSharedPrefs.getNavigationFragments();
@@ -400,7 +408,8 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
+        if (mRecyclerView != null)
+            mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
         mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);
         mAdapter.onClickListener(new NavigationAdapter.ClickListener() {
@@ -432,9 +441,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView.setAdapter(mAdapter);
+        if (mRecyclerView != null)
+            mRecyclerView.setAdapter(mAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (mRecyclerView != null)
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
         setupDrawer();
     }
@@ -474,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
             };
 
             mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
-            mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+            mDrawer.addDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
         }
     }
 
@@ -556,22 +567,20 @@ public class MainActivity extends AppCompatActivity {
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
-                    if (mServerUtil.getActiveServer() != null) {
-                        //only show an update revision snackbar once per revisionnumber!
+                    if (mServerUtil.getActiveServer() != null && haveUpdate) {
+                        // Only show an update revision snackbar once per revision number!
                         if (!mSharedPrefs.getLastUpdateShown().equals(serverUpdateInfo.getUpdateRevisionNumber())) {
                             // Write update version to shared preferences
-                            mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                            mServerUtil.getActiveServer().setServerUpdateInfo(MainActivity.this, serverUpdateInfo);
                             mServerUtil.saveDomoticzServers(true);
-                            if (haveUpdate) {
-                                if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                                    // Great! We can remote/auto update Linux systems
-                                    getCurrentServerVersion();
-                                } else {
-                                    // No remote/auto updating available for other systems (like Windows, Synology)
-                                    showSimpleSnackbar(getString(R.string.server_update_available));
-                                }
-                                mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
+                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                // Great! We can remote/auto update Linux systems
+                                getCurrentServerVersion();
+                            } else {
+                                // No remote/auto updating available for other systems (like Windows, Synology)
+                                showSimpleSnackbar(getString(R.string.server_update_available));
                             }
+                            mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
                         }
                     }
                 }
@@ -583,8 +592,8 @@ public class MainActivity extends AppCompatActivity {
                             domoticz.getErrorMessage(error));
                     showSimpleSnackbar(message);
 
-                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
                     mServerUtil.saveDomoticzServers(true);
                 }
             });
@@ -599,9 +608,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
                     if (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) {
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
                         mServerUtil.getActiveServer()
-                                .getServerUpdateInfo()
+                                .getServerUpdateInfo(MainActivity.this)
                                 .setCurrentServerVersion(serverVersion);
                     }
 
@@ -609,10 +618,10 @@ public class MainActivity extends AppCompatActivity {
                             = serverVersion.split("\\.");
                     // Update version is only revision number
                     String updateVersion = (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) ?
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
                             version[0] + "."
                                     + mServerUtil.getActiveServer()
-                                    .getServerUpdateInfo()
+                                    .getServerUpdateInfo(MainActivity.this)
                                     .getUpdateRevisionNumber() :
                             version[0];
 
@@ -681,15 +690,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = getVisibleFragment();
-        if (!(f instanceof DomoticzFragment)) {
-            if ((f instanceof Cameras)) {
-                if (cameraRefreshTimer != null)
-                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
-                else
-                    getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else
-                getMenuInflater().inflate(R.menu.menu_simple, menu);
-        } else {
+
+        if ((f instanceof Cameras)) {
+            if (cameraRefreshTimer != null)
+                getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
+            else
+                getMenuInflater().inflate(R.menu.menu_camera, menu);
+        } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
             if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                 getMenuInflater().inflate(R.menu.menu_main_sort, menu);
             else
@@ -707,13 +714,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Fragment n = getVisibleFragment();
-                    if (n instanceof DomoticzFragment) {
-                        ((DomoticzFragment) n).Filter(newText);
+                    if (n instanceof DomoticzDashboardFragment) {
+                        ((DomoticzDashboardFragment) n).Filter(newText);
                     }
                     return false;
                 }
             });
-        }
+        } else
+            getMenuInflater().inflate(R.menu.menu_simple, menu);
 
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item
@@ -795,8 +803,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = getVisibleFragment();
-                            if (f instanceof DomoticzFragment) {
-                                ((DomoticzFragment) f).sortFragment(selectedSort);
+                            if (f instanceof DomoticzRecyclerFragment) {
+                                ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
+                            } else if (f instanceof DomoticzDashboardFragment) {
+                                ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
                             }
                         }
                     });
