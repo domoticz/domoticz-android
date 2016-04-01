@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -87,15 +88,15 @@ public class DomoticzDashboardFragment extends Fragment {
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if (gridView != null)
-                gridView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+                gridView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if ((root.findViewById(R.id.debugLayout)) != null)
-                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+                (root.findViewById(R.id.debugLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if ((root.findViewById(R.id.coordinatorLayout)) != null)
-                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if (oSpinner != null)
-                oSpinner.setPointcolor(getResources().getColor(R.color.secondary));
+                oSpinner.setPointcolor(ContextCompat.getColor(getContext(), R.color.secondary));
             if (root.findViewById(R.id.errorImage) != null)
-                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
 
             mSwipeRefreshLayout.setColorSchemeResources(
                     R.color.secondary,
@@ -138,7 +139,7 @@ public class DomoticzDashboardFragment extends Fragment {
                 gridView.setLayoutManager(mLayoutManager);
             }
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
 
         oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
