@@ -31,6 +31,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -175,9 +176,12 @@ public class MainActivity extends AppCompatActivity {
             onPhone = true;
         else {
             if (mSharedPrefs.darkThemeEnabled()) {
-                ((LinearLayout) findViewById(R.id.tabletLayoutWrapper)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+                int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
+                if (color != 0 && tabletLayoutWrapper != null) tabletLayoutWrapper.setBackgroundColor(color);
             }
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
         addDrawerItems();
@@ -381,6 +385,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     private void updateDrawerItems() {
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         fragments = mSharedPrefs.getNavigationFragments();
@@ -402,7 +407,8 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
+        if (mRecyclerView != null)
+            mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
         mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);
         mAdapter.onClickListener(new NavigationAdapter.ClickListener() {
@@ -434,9 +440,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView.setAdapter(mAdapter);
+        if (mRecyclerView != null)
+            mRecyclerView.setAdapter(mAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (mRecyclerView != null)
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
         setupDrawer();
     }
@@ -476,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
             };
 
             mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
-            mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+            mDrawer.addDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
         }
     }
 
@@ -558,22 +566,20 @@ public class MainActivity extends AppCompatActivity {
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
-                    if (mServerUtil.getActiveServer() != null) {
-                        //only show an update revision snackbar once per revisionnumber!
+                    if (mServerUtil.getActiveServer() != null && haveUpdate) {
+                        // Only show an update revision snackbar once per revision number!
                         if (!mSharedPrefs.getLastUpdateShown().equals(serverUpdateInfo.getUpdateRevisionNumber())) {
                             // Write update version to shared preferences
-                            mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                            mServerUtil.getActiveServer().setServerUpdateInfo(MainActivity.this, serverUpdateInfo);
                             mServerUtil.saveDomoticzServers(true);
-                            if (haveUpdate) {
-                                if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                                    // Great! We can remote/auto update Linux systems
-                                    getCurrentServerVersion();
-                                } else {
-                                    // No remote/auto updating available for other systems (like Windows, Synology)
-                                    showSimpleSnackbar(getString(R.string.server_update_available));
-                                }
-                                mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
+                            if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                // Great! We can remote/auto update Linux systems
+                                getCurrentServerVersion();
+                            } else {
+                                // No remote/auto updating available for other systems (like Windows, Synology)
+                                showSimpleSnackbar(getString(R.string.server_update_available));
                             }
+                            mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
                         }
                     }
                 }
@@ -585,8 +591,8 @@ public class MainActivity extends AppCompatActivity {
                             domoticz.getErrorMessage(error));
                     showSimpleSnackbar(message);
 
-                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
                     mServerUtil.saveDomoticzServers(true);
                 }
             });
@@ -601,9 +607,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
                     if (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) {
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
                         mServerUtil.getActiveServer()
-                                .getServerUpdateInfo()
+                                .getServerUpdateInfo(MainActivity.this)
                                 .setCurrentServerVersion(serverVersion);
                     }
 
@@ -611,10 +617,10 @@ public class MainActivity extends AppCompatActivity {
                             = serverVersion.split("\\.");
                     // Update version is only revision number
                     String updateVersion = (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) ?
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
                             version[0] + "."
                                     + mServerUtil.getActiveServer()
-                                    .getServerUpdateInfo()
+                                    .getServerUpdateInfo(MainActivity.this)
                                     .getUpdateRevisionNumber() :
                             version[0];
 

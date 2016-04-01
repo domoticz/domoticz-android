@@ -326,12 +326,12 @@ public class Preference extends PreferenceFragment {
 
     private void pushGCMRegistrationIds() {
         final String UUID = DeviceUtils.getUniqueID(mContext);
-        final String senderid = AppController.getInstance().getGCMRegistrationId();
+        final String senderId = AppController.getInstance().getGCMRegistrationId();
         mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {
                 //previous id cleaned
-                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
@@ -347,7 +347,7 @@ public class Preference extends PreferenceFragment {
             @Override
             public void onError(Exception error) {
                 //nothing to clean..
-                mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+                mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
                         Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
@@ -520,7 +520,7 @@ public class Preference extends PreferenceFragment {
         try {
 
             if (serverUtil.getActiveServer() != null) {
-                if ((serverUtil.getActiveServer().getServerUpdateInfo() != null && serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable() && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo().getCurrentServerVersion())) ||
+                if ((serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null && serverUtil.getActiveServer().getServerUpdateInfo(mContext).isUpdateAvailable() && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion())) ||
                         mSharedPrefs.isDebugEnabled()) {
 
                     // Update is available or debugging is enabled
@@ -528,14 +528,14 @@ public class Preference extends PreferenceFragment {
                     if (mSharedPrefs.isDebugEnabled())
                         version = mContext.getString(R.string.debug_test_text);
                     else
-                        version = (serverUtil.getActiveServer().getServerUpdateInfo() != null) ? serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber() : "";
+                        version = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null) ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
 
                     message = String.format(getString(R.string.update_available_enhanced),
-                            serverUtil.getActiveServer().getServerUpdateInfo().getCurrentServerVersion(),
+                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion(),
                             version);
-                    if (serverUtil.getActiveServer().getServerUpdateInfo() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo().getSystemName() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo().getSystemName().equalsIgnoreCase("linux")) {
+                    if (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
+                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName() != null &&
+                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName().equalsIgnoreCase("linux")) {
                         // Only offer remote/auto update on Linux systems
                         message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
                         domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
@@ -548,15 +548,14 @@ public class Preference extends PreferenceFragment {
                         });
                     }
                 } else {
-                    message = (serverUtil.getActiveServer().getServerUpdateInfo() != null &&
-                            !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber())) ? serverUtil.getActiveServer().getServerUpdateInfo().getUpdateRevisionNumber() : "";
+                    message = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
+                            !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber())) ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
                 }
                 domoticzVersion.setSummary(message);
             }
 
         } catch (Exception ex) {
-            if (ex != null && !UsefulBits.isEmpty(ex.getMessage()))
-                Log.e(TAG, ex.getMessage());
+            Log.e(TAG, mDomoticz.getErrorMessage(ex));
         }
     }
 

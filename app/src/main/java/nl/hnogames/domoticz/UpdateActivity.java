@@ -98,15 +98,15 @@ public class UpdateActivity extends AppCompatActivity {
         });
 
         if (serverUtil.getActiveServer() != null &&
-                serverUtil.getActiveServer().getServerUpdateInfo() != null) {
+                serverUtil.getActiveServer().getServerUpdateInfo(this) != null) {
             currentServerVersionValue.setText(serverUtil.getActiveServer()
-                    .getServerUpdateInfo()
+                    .getServerUpdateInfo(this)
                     .getCurrentServerVersion());
 
-            if (serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()) {
+            if (serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()) {
                 updateSummary.setText(R.string.server_update_available);
                 updateServerVersionValue.setText(serverUtil.getActiveServer()
-                        .getServerUpdateInfo()
+                        .getServerUpdateInfo(this)
                         .getUpdateRevisionNumber());
             } else if (mDomoticz.isDebugEnabled()) {
                 String message = "Debugging: " + getString(R.string.server_update_available);
@@ -121,7 +121,7 @@ public class UpdateActivity extends AppCompatActivity {
                     showServerUpdateWarningDialog();
                 }
             });
-            if (!serverUtil.getActiveServer().getServerUpdateInfo().isUpdateAvailable()
+            if (!serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()
                     && !mDomoticz.isDebugEnabled())
                 buttonUpdateServer.setEnabled(false);
         }
@@ -150,6 +150,7 @@ public class UpdateActivity extends AppCompatActivity {
                 .show();
     }
 
+    @SuppressWarnings("unused")
     private void checkForUpdatePrerequisites() {
         MaterialDialog.Builder mdb = new MaterialDialog.Builder(this);
         mdb.title(R.string.msg_please_wait)
@@ -218,7 +219,7 @@ public class UpdateActivity extends AppCompatActivity {
 
         mCountDownTimer.start();
         if (!mDomoticz.isDebugEnabled() || serverUtil.getActiveServer()
-                .getServerUpdateInfo()
+                .getServerUpdateInfo(this)
                 .isUpdateAvailable()) {
             mDomoticz.updateDomoticzServer(null);
             // No feedback is provided when updating
@@ -246,12 +247,14 @@ public class UpdateActivity extends AppCompatActivity {
         showSimpleDialog(title, message);
     }
 
+    @SuppressWarnings("unused")
     private void showMessageUpdateFailed() {
         String message = "Update failed. Please login to your server and/or review the logs there";
         String title = "Update failed";
         showSimpleDialog(title, message);
     }
 
+    @SuppressWarnings("unused")
     private void showMessageUpdateNotStarted() {
         String message = getString(R.string.update_not_started_unknown_error);
         String title = getString(R.string.update_not_started);
@@ -268,7 +271,7 @@ public class UpdateActivity extends AppCompatActivity {
                 // Write update version to shared preferences
                 boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
-                serverUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
+                serverUtil.getActiveServer().setServerUpdateInfo(UpdateActivity.this, serverUpdateInfo);
                 serverUtil.saveDomoticzServers(false);
                 if (!mDomoticz.isDebugEnabled()) buttonUpdateServer.setEnabled(haveUpdate);
 
@@ -286,7 +289,7 @@ public class UpdateActivity extends AppCompatActivity {
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
                 showSimpleSnackbar(message);
-                serverUtil.getActiveServer().getServerUpdateInfo().setUpdateRevisionNumber("");
+                serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setUpdateRevisionNumber("");
                 updateServerVersionValue.setText(R.string.not_available);
 
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -306,8 +309,8 @@ public class UpdateActivity extends AppCompatActivity {
                 if (!UsefulBits.isEmpty(serverVersion)) {
                     if (serverUtil != null &&
                             serverUtil.getActiveServer() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo() != null)
-                        serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion(serverVersion);
+                            serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion);
                     currentServerVersionValue.setText(serverVersion);
                 } else currentServerVersionValue.setText(R.string.not_available);
             }
@@ -323,8 +326,8 @@ public class UpdateActivity extends AppCompatActivity {
 
                 if (serverUtil != null &&
                         serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo() != null)
-                    serverUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
 
                 currentServerVersionValue.setText(R.string.not_available);
             }
@@ -334,7 +337,9 @@ public class UpdateActivity extends AppCompatActivity {
     private void showSimpleSnackbar(String message) {
         CoordinatorLayout fragmentCoordinatorLayout =
                 (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        Snackbar.make(fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+        if (fragmentCoordinatorLayout != null) {
+            Snackbar.make(fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void showSimpleDialog(String title, String message) {
