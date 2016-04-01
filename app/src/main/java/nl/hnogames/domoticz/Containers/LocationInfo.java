@@ -133,6 +133,7 @@ public class LocationInfo {
     public String getSwitchName() {
         return switchName;
     }
+
     public void setSwitchName(String switchName) {
         this.switchName = switchName;
     }

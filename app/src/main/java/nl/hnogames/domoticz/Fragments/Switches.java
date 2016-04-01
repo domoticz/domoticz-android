@@ -735,13 +735,13 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    !selector ? (value - 1) : ((value) / 10));
+                    !selector ? (value - 1) : ((value) / 10) + 1);
             Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
 
             int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
             int jsonAction = Domoticz.Device.Dimmer.Action.DIM_LEVEL;
 
-            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, value, password, new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, !selector ? (value) : (value) + 10, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);

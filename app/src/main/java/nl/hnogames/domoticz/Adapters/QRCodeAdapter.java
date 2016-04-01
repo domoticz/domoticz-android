@@ -114,9 +114,9 @@ public class QRCodeAdapter extends BaseAdapter {
         holder.nfc_tag_id.setText(mQRCodeInfo.getId());
         holder.nfc_tag_id.setVisibility(View.GONE);
 
-        if(!UsefulBits.isEmpty(mQRCodeInfo.getSwitchName())) {
+        if (!UsefulBits.isEmpty(mQRCodeInfo.getSwitchName())) {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchName());
-        }else if (mQRCodeInfo.getSwitchIdx() > 0) {
+        } else if (mQRCodeInfo.getSwitchIdx() > 0) {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)

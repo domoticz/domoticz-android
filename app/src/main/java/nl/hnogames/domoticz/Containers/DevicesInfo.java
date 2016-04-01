@@ -83,6 +83,7 @@ public class DevicesInfo implements Comparable {
     private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
+    private boolean isLevelOffHidden;
 
     public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -166,6 +167,11 @@ public class DevicesInfo implements Comparable {
             isProtected = row.getBoolean("Protected");
         } catch (Exception e) {
             isProtected = false;
+        }
+        try {
+            isLevelOffHidden = row.getBoolean("LevelOffHidden");
+        } catch (Exception e) {
+            isLevelOffHidden = false;
         }
         try {
             if (row.has("SignalLevel"))
@@ -289,7 +295,12 @@ public class DevicesInfo implements Comparable {
     }
 
     public String[] getLevelNames() {
-        return Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
+        String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
+        String[] newNames = new String[names.length - 1];
+        for (int i = 1; i < names.length; i++) {
+            newNames[i - 1] = names[i];
+        }
+        return newNames;
     }
 
     public boolean getStatusBoolean() {
@@ -426,6 +437,10 @@ public class DevicesInfo implements Comparable {
 
     public boolean isProtected() {
         return isProtected;
+    }
+
+    public boolean isLevelOffHidden() {
+        return isLevelOffHidden;
     }
 
     public void setIsProtected(boolean isProtected) {
