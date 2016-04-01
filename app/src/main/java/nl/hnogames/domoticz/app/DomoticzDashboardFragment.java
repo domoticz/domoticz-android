@@ -128,7 +128,7 @@ public class DomoticzDashboardFragment extends Fragment {
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(getContext());
 
-            if (mSharedPrefs.showDashboardAsList()) {
+            if (!mSharedPrefs.showDashboardAsList()) {
                 gridView.setHasFixedSize(true);
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                 gridView.setLayoutManager(mLayoutManager);
