@@ -199,7 +199,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
                 final switchesClickListener listener = this;
                 if (this.planID <= 0)
-                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, mSharedPrefs.showDashboardAsList());
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, !mSharedPrefs.showDashboardAsList());
                 else {
                     gridView.setHasFixedSize(true);
                     GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
