@@ -61,6 +61,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String AUTO = "Auto";
     private static final String TAG = Dashboard.class.getSimpleName();
+
     private Context mContext;
     private DashboardAdapter adapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
@@ -310,7 +311,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
     }
 
-    private void toggleSwitch(DevicesInfo clickedSwitch, boolean checked, final String password) {
+    private void toggleSwitch(final DevicesInfo clickedSwitch, final boolean checked, final String password) {
         if (checked)
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
@@ -339,7 +340,10 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
-                    processDashboard();
+                    //processDashboard();
+                    // Change the clicked switch status
+                    clickedSwitch.setStatusBoolean(checked);
+                    changeAdapterData(clickedSwitch);
                 }
 
                 @Override
@@ -395,7 +399,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             toggleButton(clickedSwitch, checked, null);
     }
 
-    private void toggleButton(DevicesInfo clickedSwitch, boolean checked, final String password) {
+    private void toggleButton(final DevicesInfo clickedSwitch, final boolean checked, final String password) {
         if (checked)
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
         else
@@ -417,7 +421,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                processDashboard();
+                clickedSwitch.setStatusBoolean(checked);
+                changeAdapterData(clickedSwitch);
+                //processDashboard();
             }
 
             @Override
@@ -766,24 +772,35 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
     }
 
-    private void setBlindState(DevicesInfo clickedSwitch, int jsonAction, final String password) {
-        if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
+    private void setBlindState(final DevicesInfo clickedSwitch, final int jsonAction, final String password) {
+        if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED)) {
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED))
+            clickedSwitch.setStatus(Domoticz.Device.Blind.State.OPEN);
+        }
+        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != Domoticz.Device.Type.Value.BLINDINVERTED)) {
+            clickedSwitch.setStatus(Domoticz.Device.Blind.State.CLOSED);
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
+        }
+        else if ((jsonAction == Domoticz.Device.Blind.Action.UP || jsonAction == Domoticz.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)) {
+            clickedSwitch.setStatus(Domoticz.Device.Blind.State.CLOSED);
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED))
+        }
+        else if ((jsonAction == Domoticz.Device.Blind.Action.DOWN || jsonAction == Domoticz.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)) {
+            clickedSwitch.setStatus(Domoticz.Device.Blind.State.OPEN);
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
-        else
+        }
+        else {
+            clickedSwitch.setStatus(Domoticz.Device.Blind.State.STOPPED);
             Snackbar.make(coordinatorLayout, mContext.getString(R.string.blind_stop) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT).show();
+        }
 
         int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
         mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 successHandling(result, false);
-                processDashboard();
+                //processDashboard();
+                changeAdapterData(clickedSwitch);
             }
 
             @Override
@@ -794,6 +811,26 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     errorHandling(error);
             }
         });
+    }
+
+    private void changeAdapterData(DevicesInfo clickedSwitch) {
+        // Only when not showing the extra data on dashboard
+        // When extra data is on, more info has to be changed other than the status
+        if (!mSharedPrefs.showExtraData()) {
+
+            // Let's find out where the clicked switch is in the list
+            int index = extendedStatusSwitches.indexOf(clickedSwitch);
+
+            // Add it back into the array list
+            extendedStatusSwitches.set(index, clickedSwitch);
+
+            // Clear the data in the adapter and add all switches back in
+            adapter.data.clear();
+            adapter.data.addAll(extendedStatusSwitches);
+
+            // Notify the adapter the data has changed
+            adapter.notifyDataSetChanged();
+        } else processDashboard();
     }
 
     @Override
