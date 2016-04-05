@@ -683,8 +683,8 @@ public class SharedPrefUtil {
         }
 
         boolean result = false;
-
-        if (dst.exists()) result = dst.delete();
+        if (dst.exists())
+            result = dst.delete();
 
         if (result) {
             ObjectOutputStream output = null;

@@ -414,7 +414,7 @@ public class Preference extends PreferenceFragment {
         final String sPath = SettingsFile.getPath().
                 substring(0, SettingsFile.getPath().lastIndexOf("/"));
         //noinspection unused
-        boolean mkdirsResultIsOk = new File(sPath).mkdirs();
+        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
         android.preference.Preference exportButton = findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(

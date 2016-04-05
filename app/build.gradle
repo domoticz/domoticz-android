@@ -104,7 +104,9 @@ dependencies {
     compile 'com.splunk.mint:mint:5.0.0'
     compile 'com.larswerkman:lobsterpicker:1.0.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
-    compile 'com.github.dexafree:materiallist:3.1.2'
+
+    compile 'com.github.dexafree:MaterialList:v3.2.2'
+
     compile 'com.github.hotchemi:android-rate:0.5.6'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
