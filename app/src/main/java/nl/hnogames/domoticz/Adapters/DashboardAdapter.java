@@ -56,7 +56,6 @@ import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-@SuppressWarnings("unused")
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> {
     public static final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
@@ -78,11 +77,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public ArrayList<DevicesInfo> filteredData = null;
 
     private switchesClickListener listener;
-    private int layoutResourceId;
     private int previousDimmerValue;
     private SharedPrefUtil mSharedPrefs;
     private ConfigInfo mConfigInfo;
-    private int lastPosition = -1;
     private ItemFilter mFilter = new ItemFilter();
 
     public DashboardAdapter(Context context,
@@ -124,8 +121,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = null;
+        View row;
         if (showAsList)
             row = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dashboard_row_list, parent, false);
@@ -1553,7 +1555,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     /**
-     * Handles the blicks click
+     * Handles the blind click
      *
      * @param idx    IDX of the device to change
      * @param action Action to take
@@ -1807,11 +1809,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         int SELECTOR_BUTTONS = 13;
     }
 
-    @Override
-    public int getItemCount() {
-        return filteredData.size();
-    }
-
     public interface OnClickListener {
     }
 
@@ -1858,7 +1855,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 extraPanel.setVisibility(View.GONE);
         }
     }
-
 
     /**
      * Item filter

@@ -146,7 +146,7 @@ public class Preference extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
                 if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, getString(R.string.category_theme) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
                     ((SettingsActivity) getActivity()).reloadSettings();
@@ -183,7 +183,7 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.saveServerConfigToActiveServer(mContext, true);
+                UsefulBits.saveServerConfigToActiveServer(mContext, true, true);
                 return true;
             }
         });
@@ -520,7 +520,9 @@ public class Preference extends PreferenceFragment {
         try {
 
             if (serverUtil.getActiveServer() != null) {
-                if ((serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null && serverUtil.getActiveServer().getServerUpdateInfo(mContext).isUpdateAvailable() && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion())) ||
+                if ((serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null
+                        && serverUtil.getActiveServer().getServerUpdateInfo(mContext).isUpdateAvailable()
+                        && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion())) ||
                         mSharedPrefs.isDebugEnabled()) {
 
                     // Update is available or debugging is enabled
@@ -528,7 +530,8 @@ public class Preference extends PreferenceFragment {
                     if (mSharedPrefs.isDebugEnabled())
                         version = mContext.getString(R.string.debug_test_text);
                     else
-                        version = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null) ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
+                        version = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null)
+                                ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
 
                     message = String.format(getString(R.string.update_available_enhanced),
                             serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion(),
@@ -549,7 +552,8 @@ public class Preference extends PreferenceFragment {
                     }
                 } else {
                     message = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
-                            !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber())) ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
+                            !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber()))
+                            ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
                 }
                 domoticzVersion.setSummary(message);
             }

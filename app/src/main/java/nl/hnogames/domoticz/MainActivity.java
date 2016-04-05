@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveServerConfigToActiveServer() {
-        UsefulBits.saveServerConfigToActiveServer(this, false);
+        UsefulBits.saveServerConfigToActiveServer(this, false, false);
     }
 
     /* Called when the second activity's finishes */

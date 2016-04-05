@@ -1394,6 +1394,14 @@ public class Domoticz {
         }
 
         interface Blind {
+            interface State {
+                String CLOSED = "Closed";
+                String OPEN = "Open";
+                String STOPPED = "Stopped";
+                String ON = "On";
+                String OFF = "Off";
+            }
+
             interface Action {
                 int UP = 30;
                 int STOP = 31;
