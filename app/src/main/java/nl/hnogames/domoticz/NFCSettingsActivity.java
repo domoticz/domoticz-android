@@ -107,7 +107,6 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         this.setTitle(R.string.category_nfc);
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
         if (mNfcAdapter != null) {
             showSimpleSnackbar(getString(R.string.nfc_register));
         } else {
@@ -137,8 +136,15 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
             // enabling foreground dispatch for getting intent from NFC event:
             if (mNfcAdapter == null) {
                 mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-                mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, new IntentFilter[]{filter}, this.techList);
+
+                if (mNfcAdapter != null) {
+                    showSimpleSnackbar(getString(R.string.nfc_register));
+                } else {
+                    showSimpleSnackbar(getString(R.string.nfc_not_supported));
+                }
             }
+            if (mNfcAdapter != null)
+                mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, new IntentFilter[]{filter}, this.techList);
         }catch(Exception ex){}
     }
 
