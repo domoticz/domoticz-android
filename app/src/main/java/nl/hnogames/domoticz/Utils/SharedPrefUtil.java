@@ -682,7 +682,7 @@ public class SharedPrefUtil {
             mServerUpdateInfo.setUpdateAvailable(false);
         }
 
-        boolean result = false;
+        boolean result = true;
         if (dst.exists())
             result = dst.delete();
 
