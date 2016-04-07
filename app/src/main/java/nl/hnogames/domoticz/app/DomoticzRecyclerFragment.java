@@ -108,7 +108,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     public ServerUtil getServerUtil() {
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
-            return ((MainActivity) getActivity()).geServerUtil();
+            return ((MainActivity) getActivity()).getServerUtil();
         } else if (activity instanceof PlanActivity) {
             return ((PlanActivity) getActivity()).getServerUtil();
         } else return null;

@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
-    public ServerUtil geServerUtil() {
+    public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;

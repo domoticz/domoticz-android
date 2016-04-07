@@ -84,7 +84,7 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     public ServerUtil getServerUtil() {
-        return ((MainActivity) getActivity()).geServerUtil();
+        return ((MainActivity) getActivity()).getServerUtil();
     }
 
     @Override

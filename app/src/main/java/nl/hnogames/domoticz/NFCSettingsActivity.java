@@ -107,7 +107,6 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         this.setTitle(R.string.category_nfc);
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
         if (mNfcAdapter != null) {
             showSimpleSnackbar(getString(R.string.nfc_register));
         } else {
@@ -124,19 +123,29 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
     protected void onResume() {
         super.onResume();
 
-        // creating pending intent:
-        PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        try {
+            // creating pending intent:
+            PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        // creating intent receiver for NFC events:
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
-        filter.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        filter.addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
+            // creating intent receiver for NFC events:
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
+            filter.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
+            filter.addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
 
-        // enabling foreground dispatch for getting intent from NFC event:
-        if (mNfcAdapter == null)
-            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, new IntentFilter[]{filter}, this.techList);
+            // enabling foreground dispatch for getting intent from NFC event:
+            if (mNfcAdapter == null) {
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+                if (mNfcAdapter != null) {
+                    showSimpleSnackbar(getString(R.string.nfc_register));
+                } else {
+                    showSimpleSnackbar(getString(R.string.nfc_not_supported));
+                }
+            }
+            if (mNfcAdapter != null)
+                mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, new IntentFilter[]{filter}, this.techList);
+        }catch(Exception ex){}
     }
 
     @Override
