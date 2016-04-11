@@ -348,7 +348,7 @@ public class UsefulBits {
      * @param context Context
      * @param forced  Force update the config
      */
-    public static void saveServerConfigToActiveServer(final Context context, boolean forced) {
+    public static void saveServerConfigToActiveServer(final Context context, boolean forced, final boolean showSuccessMessage) {
         final ServerUtil mServerUtil = new ServerUtil(context);
         final Domoticz domoticz = new Domoticz(context, mServerUtil);
         final ConfigInfo mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(context);
@@ -378,6 +378,8 @@ public class UsefulBits {
                     configInfo.setDateOfConfig(currentTime);
                     mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
                     mServerUtil.saveDomoticzServers(true);
+                    if (showSuccessMessage)
+                        showSimpleToast(context, context.getString(R.string.fetched_server_config_success));
                 }
             }
 

@@ -27,7 +27,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,14 +46,12 @@ import com.dexafree.materialList.view.MaterialListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Wizard extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
+public class Wizard extends Fragment {
 
     private final String WELCOME = "WELCOME_CARD";
     private final String FAVORITE = "FAVORITE_CARD";
@@ -79,9 +79,8 @@ public class Wizard extends DomoticzRecyclerFragment implements DomoticzFragment
                              Bundle savedInstanceState) {
 
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
-
-        getActionBar().setTitle(R.string.title_wizard);
         createCards();
         return root;
     }
@@ -514,15 +513,5 @@ public class Wizard extends DomoticzRecyclerFragment implements DomoticzFragment
 
         }
         return cards;
-    }
-
-    @Override
-    public void checkConnection() {
-        // Overriding this method to prevent unnecessary work in the parent fragment
-    }
-
-    @Override
-    public void onConnectionOk() {
-        // Will not be called since the checkConnection() method is overridden
     }
 }

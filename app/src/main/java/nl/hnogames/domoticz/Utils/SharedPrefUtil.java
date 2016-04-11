@@ -682,9 +682,9 @@ public class SharedPrefUtil {
             mServerUpdateInfo.setUpdateAvailable(false);
         }
 
-        boolean result = false;
-
-        if (dst.exists()) result = dst.delete();
+        boolean result = true;
+        if (dst.exists())
+            result = dst.delete();
 
         if (result) {
             ObjectOutputStream output = null;

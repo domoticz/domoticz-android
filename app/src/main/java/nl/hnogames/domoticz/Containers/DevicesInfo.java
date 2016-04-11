@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -30,6 +32,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
+
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 
 public class DevicesInfo implements Comparable {
 
@@ -307,17 +311,13 @@ public class DevicesInfo implements Comparable {
         try {
             boolean statusBoolean = true;
 
-            if (status.equalsIgnoreCase("On") || status.equalsIgnoreCase("Off")) {
-                if (status.equalsIgnoreCase("On")) statusBoolean = true;
-                else if (status.equalsIgnoreCase("Off")) statusBoolean = false;
-            } else {
-                if (status.equalsIgnoreCase("Open")) statusBoolean = true;
-                else if (status.equalsIgnoreCase("Closed")) statusBoolean = false;
-            }
+            if (status.equalsIgnoreCase(Domoticz.Device.Blind.State.OFF) || status.equalsIgnoreCase(Domoticz.Device.Blind.State.CLOSED))
+                statusBoolean = false;
 
             this.statusBoolean = statusBoolean;
             return statusBoolean;
         } catch (Exception ex) {
+            this.statusBoolean = false;
             return false;
         }
     }
@@ -325,9 +325,9 @@ public class DevicesInfo implements Comparable {
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
         if (status)
-            setStatus("On");
+            setStatus(Domoticz.Device.Blind.State.ON);
         else
-            setStatus("Off");
+            setStatus(Domoticz.Device.Blind.State.OFF);
     }
 
     @Override
@@ -476,7 +476,7 @@ public class DevicesInfo implements Comparable {
     }
 
     @Override
-    public int compareTo(Object another) {
+    public int compareTo(@NonNull Object another) {
         return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 

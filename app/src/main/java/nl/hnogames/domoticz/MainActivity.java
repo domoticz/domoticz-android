@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
-    public ServerUtil geServerUtil() {
+    public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveServerConfigToActiveServer() {
-        UsefulBits.saveServerConfigToActiveServer(this, false);
+        UsefulBits.saveServerConfigToActiveServer(this, false, false);
     }
 
     /* Called when the second activity's finishes */
