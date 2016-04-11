@@ -22,15 +22,16 @@
 
 package nl.hnogames.domoticz;
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.SetupServerSettings;
 import nl.hnogames.domoticz.Welcome.WelcomePage3;
@@ -48,6 +49,12 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
@@ -64,7 +71,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
         if (!addNew && UsefulBits.isEmpty(updateName)) {
             Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(android.R.id.content, serverSettings)
                     .commit();
         } else {
@@ -76,7 +83,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
                 serverSettings.setArguments(data);
             }
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(android.R.id.content, serverSettings)
                     .commit();
         }

@@ -29,14 +29,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -49,13 +48,14 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Temperature extends DomoticzFragment implements DomoticzFragmentListener, TemperatureClickListener {
+public class Temperature extends DomoticzRecyclerFragment implements DomoticzFragmentListener, TemperatureClickListener {
 
     public static final String AUTO = "Auto";
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
+
     @SuppressWarnings("unused")
     private static final String TAG = Temperature.class.getSimpleName();
     private Context mContext;
@@ -63,6 +63,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private ArrayList<TemperatureInfo> mTempInfos;
 
     @Override
     public void refreshFragment() {
@@ -110,6 +111,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         mDomoticz.getTemperatures(new TemperatureReceiver() {
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
+                mTempInfos = mTemperatureInfos;
                 successHandling(mTemperatureInfos.toString(), false);
                 createListView(mTemperatureInfos);
             }
@@ -124,45 +126,9 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
             adapter = new TemperatureAdapter(mContext, mDomoticz, mTemperatureInfos, this);
-            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                               int index, long id) {
-                    showInfoDialog(adapter.filteredData.get(index));
-                    return true;
-                }
-            });
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
-                    if (extra_panel != null) {
-                        if (extra_panel.getVisibility() == View.VISIBLE) {
-                            extra_panel.startAnimation(animHide);
-                            extra_panel.setVisibility(View.GONE);
-                        } else {
-                            extra_panel.setVisibility(View.VISIBLE);
-                            extra_panel.startAnimation(animShow);
-                        }
-
-                        if (extra_panel != lExtraPanel) {
-                            if (lExtraPanel != null) {
-                                if (lExtraPanel.getVisibility() == View.VISIBLE) {
-                                    lExtraPanel.startAnimation(animHide);
-                                    lExtraPanel.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-
-                        lExtraPanel = extra_panel;
-                    }
-                }
-            });
+            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+            gridView.setAdapter(alphaSlideIn);
             mSwipeRefreshLayout.setRefreshing(false);
-
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -306,5 +272,51 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         });
 
         tempDialog.show();
+    }
+
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getTemperature(idx), checked);
+    }
+
+    @Override
+    public void onItemClicked(View v, int position) {
+        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        if (extra_panel != null) {
+            if (extra_panel.getVisibility() == View.VISIBLE) {
+                extra_panel.startAnimation(animHide);
+                extra_panel.setVisibility(View.GONE);
+            } else {
+                extra_panel.setVisibility(View.VISIBLE);
+                extra_panel.startAnimation(animShow);
+            }
+
+            if (extra_panel != lExtraPanel) {
+                if (lExtraPanel != null) {
+                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                        lExtraPanel.startAnimation(animHide);
+                        lExtraPanel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            lExtraPanel = extra_panel;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
+    }
+
+    private TemperatureInfo getTemperature(int idx) {
+        TemperatureInfo clickedTemp = null;
+        for (TemperatureInfo mTempInfo : mTempInfos) {
+            if (mTempInfo.getIdx() == idx) {
+                clickedTemp = mTempInfo;
+            }
+        }
+        return clickedTemp;
     }
 }

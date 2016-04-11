@@ -28,6 +28,7 @@ public class NFCInfo {
     private String id;
     private String name;
     private int switchIdx;
+    private String switchName;
     private String switchPassword = "";
 
     public String getId() {
@@ -66,7 +67,16 @@ public class NFCInfo {
         return switchPassword;
     }
 
+    public String getSwitchName() {
+        return switchName;
+    }
+
+    public void setSwitchName(String switchName) {
+        this.switchName = switchName;
+    }
+
     public void setSwitchPassword(String switchPassword) {
         this.switchPassword = switchPassword;
     }
+
 }

@@ -29,6 +29,8 @@ import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Utils.ServerUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class PlanActivity extends AppCompatActivity {
 
@@ -36,6 +38,12 @@ public class PlanActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();

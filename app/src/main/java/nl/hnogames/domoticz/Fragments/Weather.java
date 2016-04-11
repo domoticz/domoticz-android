@@ -6,15 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.Animation;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
@@ -28,9 +26,9 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.Utils.AnimationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Weather extends DomoticzFragment implements DomoticzFragmentListener, WeatherClickListener {
+public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmentListener, WeatherClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Weather.class.getSimpleName();
@@ -39,6 +37,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private ArrayList<WeatherInfo> mWeatherInfoList;
 
     @Override
     public void refreshFragment() {
@@ -80,6 +79,7 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
             @Override
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
+                mWeatherInfoList = mWeatherInfos;
                 if (getView() != null) {
                     successHandling(mWeatherInfos.toString(), false);
                     createListView(mWeatherInfos);
@@ -100,44 +100,8 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
         adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
-        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-        animationAdapter.setAbsListView(listView);
-        listView.setAdapter(animationAdapter);
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                           int index, long id) {
-                showInfoDialog(adapter.filteredData.get(index));
-                return true;
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
-                if (extra_panel != null) {
-                    if (extra_panel.getVisibility() == View.VISIBLE) {
-                        extra_panel.startAnimation(animHide);
-                        extra_panel.setVisibility(View.GONE);
-                    } else {
-                        extra_panel.setVisibility(View.VISIBLE);
-                        extra_panel.startAnimation(animShow);
-                    }
-
-                    if (extra_panel != lExtraPanel) {
-                        if (lExtraPanel != null) {
-                            if (lExtraPanel.getVisibility() == View.VISIBLE) {
-                                lExtraPanel.startAnimation(animHide);
-                                lExtraPanel.setVisibility(View.GONE);
-                            }
-                        }
-                    }
-
-                    lExtraPanel = extra_panel;
-                }
-            }
-        });
+        SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+        gridView.setAdapter(alphaSlideIn);
 
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -247,5 +211,51 @@ public class Weather extends DomoticzFragment implements DomoticzFragmentListene
         intent.putExtra("TITLE", graphDialogTitle.toUpperCase());
         intent.putExtra("STEPS", 4);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getWeather(idx), checked);
+    }
+
+    @Override
+    public void onItemClicked(View v, int position) {
+        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        if (extra_panel != null) {
+            if (extra_panel.getVisibility() == View.VISIBLE) {
+                extra_panel.startAnimation(animHide);
+                extra_panel.setVisibility(View.GONE);
+            } else {
+                extra_panel.setVisibility(View.VISIBLE);
+                extra_panel.startAnimation(animShow);
+            }
+
+            if (extra_panel != lExtraPanel) {
+                if (lExtraPanel != null) {
+                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                        lExtraPanel.startAnimation(animHide);
+                        lExtraPanel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            lExtraPanel = extra_panel;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
+    }
+
+    private WeatherInfo getWeather(int idx) {
+        WeatherInfo clickedWeather = null;
+        for (WeatherInfo mWeatherInfo : mWeatherInfoList) {
+            if (mWeatherInfo.getIdx() == idx) {
+                clickedWeather = mWeatherInfo;
+            }
+        }
+        return clickedWeather;
     }
 }

@@ -27,7 +27,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,14 +46,12 @@ import com.dexafree.materialList.view.MaterialListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.app.DomoticzFragment;
 
-public class Wizard extends DomoticzFragment implements DomoticzFragmentListener {
+public class Wizard extends Fragment {
 
     private final String WELCOME = "WELCOME_CARD";
     private final String FAVORITE = "FAVORITE_CARD";
@@ -63,6 +63,8 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
     private final String STARTUP = "STARTUP_CARD";
     private final String NOTIFICATIONS = "NOTIFICATIONS_CARD";
     private final String MULTISERVER = "MULTISERVER_CARD";
+    private final String NFC = "NFC_CARD";
+    private final String QRCODE = "QRCODE_CARD";
     private final String FINISH = "FINISH";
 
     private final String TAG = Wizard.class.getSimpleName();
@@ -77,11 +79,9 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                              Bundle savedInstanceState) {
 
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
-
-        getActionBar().setTitle(R.string.title_wizard);
         createCards();
-
         return root;
     }
 
@@ -121,6 +121,8 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
         if (!mSharedPrefs.isCardCompleted(WIDGETS)) cardsToGenerate.add(WIDGETS);
         if (!mSharedPrefs.isCardCompleted(NOTIFICATIONS)) cardsToGenerate.add(NOTIFICATIONS);
         if (!mSharedPrefs.isCardCompleted(MULTISERVER)) cardsToGenerate.add(MULTISERVER);
+        if (!mSharedPrefs.isCardCompleted(QRCODE)) cardsToGenerate.add(QRCODE);
+        if (!mSharedPrefs.isCardCompleted(NFC)) cardsToGenerate.add(NFC);
 
         if (cardsToGenerate.size() <= 0) cardsToGenerate.add(FINISH);
         List<Card> cards = generateCards(cardsToGenerate);
@@ -219,6 +221,64 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_geo))
                         .setDescription(context.getString(R.string.wizard_geo_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
+            }
+            if (card.equalsIgnoreCase(NFC)) {
+                cards.add(new Card.Builder(context)
+                        .setTag(NFC)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_nfc))
+                        .setDescription(context.getString(R.string.wizard_nfc_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
+            }
+            if (card.equalsIgnoreCase(QRCODE)) {
+                cards.add(new Card.Builder(context)
+                        .setTag(QRCODE)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_qrcode))
+                        .setDescription(context.getString(R.string.wizard_qrcode_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
@@ -453,15 +513,5 @@ public class Wizard extends DomoticzFragment implements DomoticzFragmentListener
 
         }
         return cards;
-    }
-
-    @Override
-    public void checkConnection() {
-        // Overriding this method to prevent unnecessary work in the parent fragment
-    }
-
-    @Override
-    public void onConnectionOk() {
-        // Will not be called since the checkConnection() method is overridden
     }
 }

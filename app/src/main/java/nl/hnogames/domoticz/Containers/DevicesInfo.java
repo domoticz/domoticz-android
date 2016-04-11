@@ -22,6 +22,8 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -30,6 +32,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
+
+import nl.hnogames.domoticz.Domoticz.Domoticz;
 
 public class DevicesInfo implements Comparable {
 
@@ -83,6 +87,7 @@ public class DevicesInfo implements Comparable {
     private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
+    private boolean isLevelOffHidden;
 
     public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -166,6 +171,11 @@ public class DevicesInfo implements Comparable {
             isProtected = row.getBoolean("Protected");
         } catch (Exception e) {
             isProtected = false;
+        }
+        try {
+            isLevelOffHidden = row.getBoolean("LevelOffHidden");
+        } catch (Exception e) {
+            isLevelOffHidden = false;
         }
         try {
             if (row.has("SignalLevel"))
@@ -289,24 +299,25 @@ public class DevicesInfo implements Comparable {
     }
 
     public String[] getLevelNames() {
-        return Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
+        String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
+        String[] newNames = new String[names.length - 1];
+        for (int i = 1; i < names.length; i++) {
+            newNames[i - 1] = names[i];
+        }
+        return newNames;
     }
 
     public boolean getStatusBoolean() {
         try {
             boolean statusBoolean = true;
 
-            if (status.equalsIgnoreCase("On") || status.equalsIgnoreCase("Off")) {
-                if (status.equalsIgnoreCase("On")) statusBoolean = true;
-                else if (status.equalsIgnoreCase("Off")) statusBoolean = false;
-            } else {
-                if (status.equalsIgnoreCase("Open")) statusBoolean = true;
-                else if (status.equalsIgnoreCase("Closed")) statusBoolean = false;
-            }
+            if (status.equalsIgnoreCase(Domoticz.Device.Blind.State.OFF) || status.equalsIgnoreCase(Domoticz.Device.Blind.State.CLOSED))
+                statusBoolean = false;
 
             this.statusBoolean = statusBoolean;
             return statusBoolean;
         } catch (Exception ex) {
+            this.statusBoolean = false;
             return false;
         }
     }
@@ -314,9 +325,9 @@ public class DevicesInfo implements Comparable {
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
         if (status)
-            setStatus("On");
+            setStatus(Domoticz.Device.Blind.State.ON);
         else
-            setStatus("Off");
+            setStatus(Domoticz.Device.Blind.State.OFF);
     }
 
     @Override
@@ -428,6 +439,10 @@ public class DevicesInfo implements Comparable {
         return isProtected;
     }
 
+    public boolean isLevelOffHidden() {
+        return isLevelOffHidden;
+    }
+
     public void setIsProtected(boolean isProtected) {
         this.isProtected = isProtected;
     }
@@ -461,7 +476,7 @@ public class DevicesInfo implements Comparable {
     }
 
     @Override
-    public int compareTo(Object another) {
+    public int compareTo(@NonNull Object another) {
         return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 

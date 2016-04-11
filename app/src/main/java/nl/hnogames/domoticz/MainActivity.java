@@ -31,6 +31,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -44,6 +45,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,15 +60,21 @@ import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.Adapters.NavigationAdapter;
+import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Interfaces.StatusReceiver;
+import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
+import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
@@ -76,10 +84,12 @@ import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
 
@@ -97,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
-    public ServerUtil geServerUtil() {
+    public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;
@@ -105,20 +115,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
         if (!resolvableError) this.finish();
 
-        mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-
             // Only start Geofences when not started
             // Geofences are already started on device boot up by the BootUpReceiver
             if (!mSharedPrefs.isGeofencingStarted()) {
@@ -162,6 +174,16 @@ public class MainActivity extends AppCompatActivity {
         TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
         if (usingTabletLayout == null)
             onPhone = true;
+        else {
+            if (mSharedPrefs.darkThemeEnabled()) {
+                int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
+                if (color != 0 && tabletLayoutWrapper != null)
+                    tabletLayoutWrapper.setBackgroundColor(color);
+            }
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         addDrawerItems();
         addFragment();
@@ -186,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveServerConfigToActiveServer() {
-        UsefulBits.saveServerConfigToActiveServer(this, false);
+        UsefulBits.saveServerConfigToActiveServer(this, false, false);
     }
 
     /* Called when the second activity's finishes */
@@ -198,27 +220,117 @@ public class MainActivity extends AppCompatActivity {
                     if (!res.getBoolean("RESULT", false))
                         this.finish();
                     else {
+                        if (mSharedPrefs.darkThemeEnabled())
+                            setTheme(R.style.AppThemeDark);
+
                         buildScreen();
                     }
                     break;
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
+                    if (mSharedPrefs.darkThemeEnabled())
+                        setTheme(R.style.AppThemeDark);
 
-                    drawNavigationMenu();
-                    refreshFragment();
-                    updateDrawerItems();
-                    invalidateOptionsMenu();
+                    this.recreate();
+                    break;
+                case iQRResultCode:
+                    String QR_ID = data.getStringExtra("QRCODE");
+                    if (mSharedPrefs.isQRCodeEnabled()) {
+                        ArrayList<QRCodeInfo> qrList = mSharedPrefs.getQRCodeList();
+                        QRCodeInfo foundQRCode = null;
+                        Log.i(TAG, "QR Code ID Found: " + QR_ID);
+                        if (qrList != null && qrList.size() > 0) {
+                            for (QRCodeInfo n : qrList) {
+                                if (n.getId().equals(QR_ID))
+                                    foundQRCode = n;
+                            }
+                        }
+                        if (foundQRCode != null && foundQRCode.isEnabled()) {
+                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword());
+                        } else {
+                            if (foundQRCode == null)
+                                Toast.makeText(MainActivity.this, getString(R.string.qrcode_new_found), Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(MainActivity.this, getString(R.string.qr_code_disabled), Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     break;
             }
+        } else if (resultCode == 789) {
+            //reload settings
+            startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
         }
+    }
+
+    private void handleSwitch(final int idx, final String password) {
+        domoticz = new Domoticz(this, null);
+        domoticz.getSwitches(new SwitchesReceiver() {
+                                 @Override
+                                 public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+                                     for (SwitchInfo s : switches) {
+                                         if (s.getIdx() == idx) {
+                                             domoticz.getStatus(idx, new StatusReceiver() {
+                                                 @Override
+                                                 public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
+                                                     int jsonAction;
+                                                     int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                         if (!extendedStatusInfo.getStatusBoolean())
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         else
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                     } else {
+                                                         if (!extendedStatusInfo.getStatusBoolean())
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         else
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                     }
+
+                                                     switch (extendedStatusInfo.getSwitchTypeVal()) {
+                                                         case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             break;
+                                                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             break;
+                                                     }
+
+                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
+                                                         @Override
+                                                         public void onReceiveResult(String result) {
+                                                             Log.d(TAG, result);
+                                                         }
+
+                                                         @Override
+                                                         public void onError(Exception error) {
+                                                         }
+                                                     });
+                                                 }
+
+                                                 @Override
+                                                 public void onError(Exception error) {
+                                                 }
+                                             });
+                                         }
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onError(Exception error) {
+                                 }
+                             }
+        );
     }
 
     public void refreshFragment() {
         Fragment f = getVisibleFragment();
-        if (f instanceof DomoticzFragment) {
-            ((DomoticzFragment) f).refreshFragment();
+        if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).refreshFragment();
         } else if (f instanceof DomoticzCardFragment)
             ((DomoticzCardFragment) f).refreshFragment();
+        else if (f instanceof DomoticzDashboardFragment)
+            ((DomoticzDashboardFragment) f).refreshFragment();
     }
 
     public void removeFragmentStack(String fragment) {
@@ -274,6 +386,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
     private void updateDrawerItems() {
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         fragments = mSharedPrefs.getNavigationFragments();
@@ -295,7 +408,8 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
+        if (mRecyclerView != null)
+            mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
         mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);
         mAdapter.onClickListener(new NavigationAdapter.ClickListener() {
@@ -327,9 +441,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mRecyclerView.setAdapter(mAdapter);
+        if (mRecyclerView != null)
+            mRecyclerView.setAdapter(mAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (mRecyclerView != null)
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
         setupDrawer();
     }
@@ -369,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
             };
 
             mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
-            mDrawer.setDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+            mDrawer.addDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
         }
     }
 
@@ -434,6 +550,12 @@ public class MainActivity extends AppCompatActivity {
                 if (PermissionsUtil.canAccessDeviceState(this))
                     AppController.getInstance().StartEasyGCM();
                 break;
+            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
+                if (PermissionsUtil.canAccessStorage(this)) {
+                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                }
+                break;
         }
     }
 
@@ -444,11 +566,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
-                    if (mServerUtil.getActiveServer() != null) {
-                        // Write update version to shared preferences
-                        mServerUtil.getActiveServer().setServerUpdateInfo(serverUpdateInfo);
-                        mServerUtil.saveDomoticzServers(true);
-                        if (haveUpdate) {
+
+                    if (mServerUtil.getActiveServer() != null && haveUpdate) {
+                        // Only show an update revision snackbar once per revision number!
+                        if (!mSharedPrefs.getLastUpdateShown().equals(serverUpdateInfo.getUpdateRevisionNumber())) {
+                            // Write update version to shared preferences
+                            mServerUtil.getActiveServer().setServerUpdateInfo(MainActivity.this, serverUpdateInfo);
+                            mServerUtil.saveDomoticzServers(true);
                             if (serverUpdateInfo.getSystemName().equalsIgnoreCase("linux")) {
                                 // Great! We can remote/auto update Linux systems
                                 getCurrentServerVersion();
@@ -456,6 +580,7 @@ public class MainActivity extends AppCompatActivity {
                                 // No remote/auto updating available for other systems (like Windows, Synology)
                                 showSimpleSnackbar(getString(R.string.server_update_available));
                             }
+                            mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
                         }
                     }
                 }
@@ -467,8 +592,8 @@ public class MainActivity extends AppCompatActivity {
                             domoticz.getErrorMessage(error));
                     showSimpleSnackbar(message);
 
-                    if (mServerUtil.getActiveServer().getServerUpdateInfo() != null)
-                        mServerUtil.getActiveServer().getServerUpdateInfo().setCurrentServerVersion("");
+                    if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
+                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
                     mServerUtil.saveDomoticzServers(true);
                 }
             });
@@ -483,9 +608,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
                     if (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) {
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
                         mServerUtil.getActiveServer()
-                                .getServerUpdateInfo()
+                                .getServerUpdateInfo(MainActivity.this)
                                 .setCurrentServerVersion(serverVersion);
                     }
 
@@ -493,10 +618,10 @@ public class MainActivity extends AppCompatActivity {
                             = serverVersion.split("\\.");
                     // Update version is only revision number
                     String updateVersion = (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo() != null) ?
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
                             version[0] + "."
                                     + mServerUtil.getActiveServer()
-                                    .getServerUpdateInfo()
+                                    .getServerUpdateInfo(MainActivity.this)
                                     .getUpdateRevisionNumber() :
                             version[0];
 
@@ -565,15 +690,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = getVisibleFragment();
-        if (!(f instanceof DomoticzFragment)) {
-            if ((f instanceof Cameras)) {
-                if (cameraRefreshTimer != null)
-                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
-                else
-                    getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else
-                getMenuInflater().inflate(R.menu.menu_simple, menu);
-        } else {
+
+        if ((f instanceof Cameras)) {
+            if (cameraRefreshTimer != null)
+                getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
+            else
+                getMenuInflater().inflate(R.menu.menu_camera, menu);
+        } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
             if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                 getMenuInflater().inflate(R.menu.menu_main_sort, menu);
             else
@@ -591,18 +714,27 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Fragment n = getVisibleFragment();
-                    if (n instanceof DomoticzFragment) {
-                        ((DomoticzFragment) n).Filter(newText);
+                    if (n instanceof DomoticzDashboardFragment) {
+                        ((DomoticzDashboardFragment) n).Filter(newText);
                     }
                     return false;
                 }
             });
-        }
+        } else
+            getMenuInflater().inflate(R.menu.menu_simple, menu);
 
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item
             MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
             if (searchMenuItem != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
+                searchMenuItem.setVisible(true);
+            } else if (searchMenuItem != null)
+                searchMenuItem.setVisible(false);
+        }
+
+        if (mSharedPrefs.isQRCodeEnabled()) {
+            MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
+            if (searchMenuItem != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
                 searchMenuItem.setVisible(true);
             } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
@@ -641,6 +773,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     invalidateOptionsMenu();//set pause button
                     return true;
+                case R.id.action_scan_qrcode:
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (PermissionsUtil.canAccessCamera(this)) {
+                            Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                            startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                        } else {
+                            requestPermissions(PermissionsUtil.INITIAL_CAMERA_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                        }
+                    } else {
+                        Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                        startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                    }
+                    return true;
                 case R.id.action_camera_pause:
                     stopCameraTimer();
                     invalidateOptionsMenu();//set pause button
@@ -658,8 +803,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = getVisibleFragment();
-                            if (f instanceof DomoticzFragment) {
-                                ((DomoticzFragment) f).sortFragment(selectedSort);
+                            if (f instanceof DomoticzRecyclerFragment) {
+                                ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
+                            } else if (f instanceof DomoticzDashboardFragment) {
+                                ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
                             }
                         }
                     });

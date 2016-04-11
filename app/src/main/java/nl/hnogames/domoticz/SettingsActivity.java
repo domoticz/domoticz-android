@@ -28,15 +28,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Preference.Preference;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new Preference()).commit();
     }
@@ -55,6 +62,14 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finishWithResult(true);
+    }
+
+    public void reloadSettings() {
+        Bundle conData = new Bundle();
+        Intent intent = new Intent();
+        intent.putExtras(conData);
+        setResult(789, intent);
+        super.finish();
     }
 
     private void finishWithResult(boolean success) {

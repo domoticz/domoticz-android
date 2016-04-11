@@ -44,6 +44,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -82,6 +83,14 @@ public class UsefulBits {
         return System.getProperty("line.separator");
     }
 
+    public static char getDegreeSymbol() {
+        return '\u00B0';
+    }
+
+    public static String createUniqueId() {
+        return UUID.randomUUID().toString();
+    }
+
     public static double[] rgb2hsv(int red, int green, int blue) {
         double computedH, computedS, computedV;
         double r, g, b;
@@ -113,7 +122,6 @@ public class UsefulBits {
         return new double[]{computedH, computedS, computedV};
     }
 
-
     public static String getMd5String(String password) {
         StringBuilder hexString = new StringBuilder();
         MessageDigest md;
@@ -137,7 +145,6 @@ public class UsefulBits {
         return hexString.toString();
     }
 
-
     /**
      * Convert Byte array into Hex
      *
@@ -157,7 +164,6 @@ public class UsefulBits {
         }
         return out;
     }
-
 
     /**
      * Set's the display language of the app
@@ -342,10 +348,10 @@ public class UsefulBits {
      * @param context Context
      * @param forced  Force update the config
      */
-    public static void saveServerConfigToActiveServer(final Context context, boolean forced) {
+    public static void saveServerConfigToActiveServer(final Context context, boolean forced, final boolean showSuccessMessage) {
         final ServerUtil mServerUtil = new ServerUtil(context);
         final Domoticz domoticz = new Domoticz(context, mServerUtil);
-        final ConfigInfo mConfigInfo = mServerUtil.getActiveServer().getConfigInfo();
+        final ConfigInfo mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(context);
         final long currentTime = Calendar.getInstance().getTimeInMillis();
 
         if (mConfigInfo != null && !forced) {
@@ -370,8 +376,10 @@ public class UsefulBits {
             public void onReceiveConfig(ConfigInfo configInfo) {
                 if (configInfo != null) {
                     configInfo.setDateOfConfig(currentTime);
-                    mServerUtil.getActiveServer().setConfigInfo(configInfo);
+                    mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
                     mServerUtil.saveDomoticzServers(true);
+                    if (showSuccessMessage)
+                        showSimpleToast(context, context.getString(R.string.fetched_server_config_success));
                 }
             }
 

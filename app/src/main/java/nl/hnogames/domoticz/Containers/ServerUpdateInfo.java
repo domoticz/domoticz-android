@@ -25,9 +25,11 @@ package nl.hnogames.domoticz.Containers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class ServerUpdateInfo {
+public class ServerUpdateInfo implements Serializable {
     @SuppressWarnings("FieldCanBeLocal")
     private final String RESPONSE_SYSTEM_NAME = "SystemName";
     @SuppressWarnings("FieldCanBeLocal")
@@ -44,7 +46,6 @@ public class ServerUpdateInfo {
     private final String STRING_CHANNEL = "channel=";
     @SuppressWarnings("FieldCanBeLocal")
     private final String STRING_TYPE = "&type=";
-    JSONObject jsonObject;
     String revision = "";
     String currentServerVersion = "";
     String systemName = "";
@@ -54,13 +55,13 @@ public class ServerUpdateInfo {
     boolean haveUpdate;
 
     public ServerUpdateInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
 
         if (row.has(RESPONSE_REVISION))
             revision = row.getString(RESPONSE_REVISION);
         else if (row.has(RESPONSE_REVISION_NEW))
             revision = row.getString(RESPONSE_REVISION_NEW);
 
+        //noinspection RedundantIfStatement
         if (row.has(RESPONSE_HAVE_UPDATE) && !row.getBoolean(RESPONSE_HAVE_UPDATE))
             haveUpdate = false;
         else haveUpdate = true;
@@ -85,9 +86,9 @@ public class ServerUpdateInfo {
         if (UsefulBits.isEmpty(string))
             return null;
 
-        if (string.indexOf(STRING_CHANNEL) >= 0 && string.indexOf(STRING_TYPE) >= 0)
+        if (string.contains(STRING_CHANNEL) && string.contains(STRING_TYPE))
             return string.substring(string.indexOf(STRING_CHANNEL) + STRING_CHANNEL.length(), string.indexOf(STRING_TYPE));
-        else if (string.indexOf(STRING_CHANNEL) >= 0)
+        else if (string.contains(STRING_CHANNEL))
             return string.substring(string.indexOf(STRING_CHANNEL) + STRING_CHANNEL.length());
         else
             return null;
@@ -96,13 +97,13 @@ public class ServerUpdateInfo {
     @Override
     public String toString() {
         return "ServerUpdateInfo{" +
-                "haveUpdate=" + haveUpdate +
-                ", revision='" + revision + '\'' +
+                "revision='" + revision + '\'' +
                 ", currentServerVersion='" + currentServerVersion + '\'' +
                 ", systemName='" + systemName + '\'' +
                 ", url='" + url + '\'' +
                 ", statusCode=" + statusCode +
                 ", updateChannel='" + updateChannel + '\'' +
+                ", haveUpdate=" + haveUpdate +
                 '}';
     }
 
@@ -136,10 +137,6 @@ public class ServerUpdateInfo {
 
     public String getUpdateChannel() {
         return updateChannel;
-    }
-
-    public JSONObject getJsonObject() {
-        return jsonObject;
     }
 
     public String getCurrentServerVersion() {

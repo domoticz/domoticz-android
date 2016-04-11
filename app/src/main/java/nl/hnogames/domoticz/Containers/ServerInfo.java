@@ -1,5 +1,7 @@
 package nl.hnogames.domoticz.Containers;
 
+import android.content.Context;
+
 import com.google.gson.annotations.Expose;
 
 import java.util.HashSet;
@@ -7,8 +9,19 @@ import java.util.List;
 import java.util.Set;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Utils.SerializableManager;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class ServerInfo {
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String SERIALIZE_CONFIG_FILE_EXTENSION = ".ser";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String SERIALIZE_CONFIG_FILE_PREFIX = "configInfo_";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String SERIALIZE_UPDATE_FILE_PREFIX = "serverUpdateInfo_";
+
+    @Expose
+    private String SERVER_UNIQUE_ID;
     @Expose
     private String SERVER_NAME = Domoticz.DOMOTICZ_DEFAULT_SERVER;
     @Expose
@@ -46,9 +59,43 @@ public class ServerInfo {
     @Expose
     private Set<String> LOCAL_SERVER_SSID;
 
-    /* Not saved yet because Gson can't serialize these classes!!!  */
+    /* Saved in a separate file because GSON can't serialize this */
     private ServerUpdateInfo serverUpdateInfo;
     private ConfigInfo configInfo;
+
+    /**
+     * Getter for this server unique ID
+     *
+     * @return Server unique ID
+     */
+    public String getServerUniqueId() {
+        if (SERVER_UNIQUE_ID != null)
+            return SERVER_UNIQUE_ID;
+        else {
+            setServerUniqueId(createUniqueServerId());
+            return SERVER_UNIQUE_ID;
+        }
+    }
+
+    /**
+     * Setter for this servers unique ID
+     *
+     * @param SERVER_UNIQUE_ID to set
+     */
+    public void setServerUniqueId(String SERVER_UNIQUE_ID) {
+        this.SERVER_UNIQUE_ID = SERVER_UNIQUE_ID;
+    }
+
+    /**
+     * Creates a MD5 of local and remote server data
+     *
+     * @return MD5 checksum
+     */
+    public String createUniqueServerId() {
+        return UsefulBits.getMd5String(
+                LOCAL_SERVER_URL + LOCAL_SERVER_PORT + LOCAL_SERVER_USERNAME +
+                        REMOTE_SERVER_URL + REMOTE_SERVER_PORT + REMOTE_SERVER_USERNAME);
+    }
 
     public String getRemoteServerUsername() {
         return REMOTE_SERVER_USERNAME;
@@ -106,13 +153,16 @@ public class ServerInfo {
         return method;
     }
 
+    @SuppressWarnings("unused")
     public void setRemoteServerAuthenticationMethod(String remoteServerAuthenticationMethod) {
+        //noinspection RedundantIfStatement
         if (remoteServerAuthenticationMethod.equals(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM))
             REMOTE_SERVER_AUTHENTICATION_METHOD = true;
         else
             REMOTE_SERVER_AUTHENTICATION_METHOD = false;
     }
 
+    @SuppressWarnings("unused")
     public boolean getRemoteServerAuthentication() {
         return REMOTE_SERVER_AUTHENTICATION_METHOD;
     }
@@ -120,7 +170,6 @@ public class ServerInfo {
     public void setRemoteServerAuthentication(boolean remoteServerAuthenticationMethod) {
         REMOTE_SERVER_AUTHENTICATION_METHOD = remoteServerAuthenticationMethod;
     }
-
 
     public boolean getIsLocalServerAddressDifferent() {
         return IS_LOCAL_SERVER_ADDRESS_DIFFERENT;
@@ -178,6 +227,7 @@ public class ServerInfo {
         LOCAL_SERVER_SECURE = localServerSecure;
     }
 
+    @SuppressWarnings("unused")
     public String getLocalServerAuthenticationMethod() {
         String method;
 
@@ -192,6 +242,7 @@ public class ServerInfo {
         LOCAL_SERVER_AUTHENTICATION_METHOD = localServerAuthenticationMethod.equalsIgnoreCase(Domoticz.Authentication.Method.AUTH_METHOD_LOGIN_FORM);
     }
 
+    @SuppressWarnings("unused")
     public boolean getLocalServerAuthentication() {
         return LOCAL_SERVER_AUTHENTICATION_METHOD;
     }
@@ -226,20 +277,91 @@ public class ServerInfo {
         SERVER_NAME = serverName;
     }
 
-    public ServerUpdateInfo getServerUpdateInfo() {
+    /**
+     * Reads this server update info from a file
+     *
+     * @param context Context to use
+     * @return Server update info of this server from a file
+     */
+    private ServerUpdateInfo readServerUpdateInfoFromFile(Context context) {
+        String uniqueServerId = getServerUniqueId();
+        Object serializedServerInfoObject = SerializableManager.readSerializedObject(
+                context,
+                SERIALIZE_UPDATE_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
+        if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ServerUpdateInfo) {
+            return (ServerUpdateInfo) serializedServerInfoObject;
+        } else return null;
+    }
+
+    /**
+     * Get's this server update info.
+     * If it's not in this class it will read it from a file
+     *
+     * @param context Context to use
+     * @return Server update info of this server
+     */
+    public ServerUpdateInfo getServerUpdateInfo(Context context) {
+        if (serverUpdateInfo == null) serverUpdateInfo = readServerUpdateInfoFromFile(context);
         return serverUpdateInfo;
     }
 
-    public void setServerUpdateInfo(ServerUpdateInfo serverUpdateInfo) {
+    /**
+     * Set's this server update information and writes it to a file
+     *
+     * @param context          Context to use
+     * @param serverUpdateInfo Server update info to write
+     */
+    public void setServerUpdateInfo(Context context, ServerUpdateInfo serverUpdateInfo) {
         this.serverUpdateInfo = serverUpdateInfo;
+        String uniqueServerId = getServerUniqueId();
+        SerializableManager.saveSerializable(
+                context,
+                serverUpdateInfo,
+                SERIALIZE_UPDATE_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
+
     }
 
-    public ConfigInfo getConfigInfo() {
+    /**
+     * Reads this server configuration info from a file
+     *
+     * @param context Context to use
+     * @return Configuration info of this server from a file
+     */
+    private ConfigInfo readConfigInfoFromFile(Context context) {
+        String uniqueServerId = getServerUniqueId();
+        Object serializedServerInfoObject = SerializableManager.readSerializedObject(
+                context,
+                SERIALIZE_CONFIG_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
+        if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ConfigInfo) {
+            return (ConfigInfo) serializedServerInfoObject;
+        } else return null;
+    }
+
+    /**
+     * Get's this server configuration info.
+     * If it's not in this class it will read it from a file
+     *
+     * @param context Context to use
+     * @return Configuration info of this server
+     */
+    public ConfigInfo getConfigInfo(Context context) {
+        if (configInfo == null) configInfo = readConfigInfoFromFile(context);
         return configInfo;
     }
 
-    public void setConfigInfo(ConfigInfo configInfo) {
+    /**
+     * Set's this server configuration information and writes it to a file
+     *
+     * @param context    Context to use
+     * @param configInfo Configuration info to write
+     */
+    public void setConfigInfo(Context context, ConfigInfo configInfo) {
         this.configInfo = configInfo;
+        String uniqueServerId = getServerUniqueId();
+        SerializableManager.saveSerializable(
+                context,
+                configInfo,
+                SERIALIZE_CONFIG_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
     }
 
     /**

@@ -22,14 +22,14 @@
 
 package nl.hnogames.domoticz.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,9 +41,10 @@ import java.util.Collections;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class UserVariablesAdapter extends BaseAdapter implements Filterable {
-
+@SuppressWarnings("unused")
+public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdapter.DataObjectHolder> {
     private static final String TAG = UserVariablesAdapter.class.getSimpleName();
     public ArrayList<UserVariableInfo> filteredData = null;
     private Context context;
@@ -51,12 +52,15 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
 
+    private SharedPrefUtil mSharedPrefs;
+
     public UserVariablesAdapter(Context context,
                                 Domoticz mDomoticz,
                                 ArrayList<UserVariableInfo> data) {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
 
         Collections.reverse(data);
@@ -64,60 +68,71 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
         this.filteredData = data;
     }
 
-
-    @Override
-    public int getCount() {
-        return filteredData.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return filteredData.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
     public Filter getFilter() {
         return mFilter;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        int layoutResourceId;
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.logs_row_default, parent, false);
 
-        UserVariableInfo mUserVariableInfo = filteredData.get(position);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.row_wrapper)) != null)
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            if ((view.findViewById(R.id.row_global_wrapper)) != null)
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+        }
 
-        //if (convertView == null) {
-        holder = new ViewHolder();
-
-        layoutResourceId = R.layout.logs_row_default;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
-
-        holder.name = (TextView) convertView.findViewById(R.id.logs_name);
-        holder.datetime = (TextView) convertView.findViewById(R.id.logs_datetime);
-        holder.message = (TextView) convertView.findViewById(R.id.logs_message);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-
-        holder.name.setText(mUserVariableInfo.getName());
-        holder.message.setText("Value: " + mUserVariableInfo.getValue());
-        holder.datetime.setText(mUserVariableInfo.getLastUpdate());
-
-        Picasso.with(context).load(R.drawable.printer).into(holder.iconRow);
-        convertView.setTag(holder);
-
-        return convertView;
+        return new DataObjectHolder(view);
     }
 
-    static class ViewHolder {
+    @Override
+    public void onBindViewHolder(final DataObjectHolder holder, int position) {
+
+        if (filteredData != null && filteredData.size() > 0) {
+            final UserVariableInfo mUserVariableInfo = filteredData.get(position);
+
+            holder.name.setText(mUserVariableInfo.getName());
+            holder.message.setText("Value: " + mUserVariableInfo.getValue());
+            holder.datetime.setText(mUserVariableInfo.getLastUpdate());
+
+            Picasso.with(context).load(R.drawable.printer).into(holder.iconRow);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    public interface onClickListener {
+        void onItemClick(int position, View v);
+    }
+
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;
         ImageView iconRow;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+
+            name = (TextView) itemView.findViewById(R.id.logs_name);
+            datetime = (TextView) itemView.findViewById(R.id.logs_datetime);
+            message = (TextView) itemView.findViewById(R.id.logs_message);
+            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+        }
     }
 
     private class ItemFilter extends Filter {
@@ -155,5 +170,4 @@ public class UserVariablesAdapter extends BaseAdapter implements Filterable {
             notifyDataSetChanged();
         }
     }
-
 }

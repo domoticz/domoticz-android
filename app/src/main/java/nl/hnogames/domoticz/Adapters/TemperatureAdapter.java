@@ -22,19 +22,22 @@
 
 package nl.hnogames.domoticz.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,15 +48,16 @@ import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-
-public class TemperatureAdapter extends BaseAdapter implements Filterable {
+@SuppressWarnings("unused")
+public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder> {
 
     @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
-
     private final TemperatureClickListener listener;
     public ArrayList<TemperatureInfo> filteredData = null;
+    private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private Context context;
     private ArrayList<TemperatureInfo> data = null;
@@ -66,6 +70,7 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
         Collections.sort(data, new Comparator<TemperatureInfo>() {
             @Override
@@ -78,150 +83,171 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         this.listener = listener;
     }
 
-
-    @Override
-    public int getCount() {
-        return filteredData.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return filteredData.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
-
     public Filter getFilter() {
         return mFilter;
     }
 
+    @Override
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.temperature_row_default, parent, false);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.row_wrapper)) != null)
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            if ((view.findViewById(R.id.row_global_wrapper)) != null)
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+        }
+
+        return new DataObjectHolder(view);
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        int layoutResourceId;
+    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
 
-        TemperatureInfo mTemperatureInfo = filteredData.get(position);
+        if (filteredData != null && filteredData.size() > 0) {
+            final TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
-        holder = new ViewHolder();
-        layoutResourceId = R.layout.temperature_row_default;
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
+            if (mSharedPrefs.darkThemeEnabled()) {
+                holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
 
-        holder.isProtected = mTemperatureInfo.isProtected();
-        holder.setButton = (Button) convertView.findViewById(R.id.set_button);
-        holder.dayButton = (Button) convertView.findViewById(R.id.day_button);
-        holder.monthButton = (Button) convertView.findViewById(R.id.month_button);
-        holder.yearButton = (Button) convertView.findViewById(R.id.year_button);
-        holder.weekButton = (Button) convertView.findViewById(R.id.week_button);
-        holder.name = (TextView) convertView.findViewById(R.id.temperature_name);
-        holder.data = (TextView) convertView.findViewById(R.id.temperature_data);
-        holder.data2 = (TextView) convertView.findViewById(R.id.temperature_data2);
-        holder.iconRow = (ImageView) convertView.findViewById(R.id.rowIcon);
-        holder.iconMode = (ImageView) convertView.findViewById(R.id.mode_icon);
-
-        int modeIconRes = 0;
-        boolean tooHot = false;
-        if (mTemperatureInfo.getTemperature() > 30)
-            tooHot = true;
-
-        Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                mTemperatureInfo.getType(),
-                null, tooHot, false, null)).into(holder.iconRow);
-
-        if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
-            holder.setButton.setVisibility(View.VISIBLE);
-            modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
-        } else {
-            holder.setButton.setVisibility(View.GONE);
-        }
-
-        holder.setButton.setText(context.getString(R.string.set_temperature));
-        holder.setButton.setId(mTemperatureInfo.getIdx());
-        holder.setButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (TemperatureInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onSetClick(t);
-                }
+                if (holder.setButton != null)
+                    holder.setButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
             }
-        });
 
-        holder.dayButton.setId(mTemperatureInfo.getIdx());
-        holder.dayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (TemperatureInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
-                }
-            }
-        });
-        holder.monthButton.setId(mTemperatureInfo.getIdx());
-        holder.monthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (TemperatureInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
-                }
-            }
-        });
-        holder.weekButton.setId(mTemperatureInfo.getIdx());
-        holder.weekButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (TemperatureInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
-                }
-            }
-        });
-        holder.yearButton.setId(mTemperatureInfo.getIdx());
-        holder.yearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (TemperatureInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
-                }
-            }
-        });
+            holder.isProtected = mTemperatureInfo.isProtected();
 
-        holder.name.setText(mTemperatureInfo.getName());
-        if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
-            holder.data.setText(R.string.wind);
-            holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
-            holder.data2.setVisibility(View.GONE);
-        } else {
-            double temperature = mTemperatureInfo.getTemperature();
-            double setPoint = mTemperatureInfo.getSetPoint();
-            if (temperature <= 0 || setPoint <= 0) {
-                holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
+            int modeIconRes = 0;
+            boolean tooHot = false;
+            if (mTemperatureInfo.getTemperature() > 30)
+                tooHot = true;
+
+            Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                    mTemperatureInfo.getType(),
+                    null, tooHot, false, null)).into(holder.iconRow);
+
+            if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
+                holder.setButton.setVisibility(View.VISIBLE);
+                modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
+            } else {
+                holder.setButton.setVisibility(View.GONE);
+            }
+
+            holder.setButton.setText(context.getString(R.string.set_temperature));
+            holder.setButton.setId(mTemperatureInfo.getIdx());
+            holder.setButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (TemperatureInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onSetClick(t);
+                    }
+                }
+            });
+
+            holder.dayButton.setId(mTemperatureInfo.getIdx());
+            holder.dayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (TemperatureInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                    }
+                }
+            });
+            holder.monthButton.setId(mTemperatureInfo.getIdx());
+            holder.monthButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (TemperatureInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                    }
+                }
+            });
+            holder.weekButton.setId(mTemperatureInfo.getIdx());
+            holder.weekButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (TemperatureInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                    }
+                }
+            });
+            holder.yearButton.setId(mTemperatureInfo.getIdx());
+            holder.yearButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (TemperatureInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                    }
+                }
+            });
+
+            if (holder.likeButton != null) {
+                holder.likeButton.setId(mTemperatureInfo.getIdx());
+                holder.likeButton.setLiked(mTemperatureInfo.getFavoriteBoolean());
+                holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                    @Override
+                    public void liked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), true);
+                    }
+
+                    @Override
+                    public void unLiked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), false);
+                    }
+                });
+            }
+
+            holder.name.setText(mTemperatureInfo.getName());
+            if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
+                holder.data.setText(R.string.wind);
+                holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
                 holder.data2.setVisibility(View.GONE);
             } else {
-                holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " C");
-                holder.data2.setText(context.getString(R.string.set_point) + ": " + mTemperatureInfo.getSetPoint() + " C");
-                holder.data2.setVisibility(View.VISIBLE);
+                double temperature = mTemperatureInfo.getTemperature();
+                double setPoint = mTemperatureInfo.getSetPoint();
+                if (temperature <= 0 || setPoint <= 0) {
+                    holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
+                    holder.data2.setVisibility(View.GONE);
+                } else {
+                    holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " C");
+                    holder.data2.setText(context.getString(R.string.set_point) + ": " + mTemperatureInfo.getSetPoint() + " C");
+                    holder.data2.setVisibility(View.VISIBLE);
+                }
             }
-        }
 
-        if (holder.iconMode != null) {
-            if (modeIconRes == 0) {
-                holder.iconMode.setVisibility(View.GONE);
-            } else {
-                holder.iconMode.setImageResource(modeIconRes);
-                holder.iconMode.setVisibility(View.VISIBLE);
+            if (holder.iconMode != null) {
+                if (modeIconRes == 0) {
+                    holder.iconMode.setVisibility(View.GONE);
+                } else {
+                    holder.iconMode.setImageResource(modeIconRes);
+                    holder.iconMode.setVisibility(View.VISIBLE);
+                }
             }
-        }
 
-        convertView.setTag(holder);
-        return convertView;
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onItemLongClicked(position);
+                    return true;
+                }
+            });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClicked(v, position);
+                }
+            });
+        }
     }
 
     public int getEvohomeStateIcon(String stateName) {
@@ -243,7 +269,12 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         return iconRes;
     }
 
-    static class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView data;
         TextView data2;
@@ -255,6 +286,33 @@ public class TemperatureAdapter extends BaseAdapter implements Filterable {
         Button weekButton;
         Button yearButton;
         Boolean isProtected;
+        LikeButton likeButton;
+        LinearLayout extraPanel;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+
+            name = (TextView) itemView.findViewById(R.id.temperature_name);
+            data = (TextView) itemView.findViewById(R.id.temperature_data);
+            data2 = (TextView) itemView.findViewById(R.id.temperature_data2);
+            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
+            iconMode = (ImageView) itemView.findViewById(R.id.mode_icon);
+
+            dayButton = (Button) itemView.findViewById(R.id.day_button);
+            monthButton = (Button) itemView.findViewById(R.id.month_button);
+            yearButton = (Button) itemView.findViewById(R.id.year_button);
+            weekButton = (Button) itemView.findViewById(R.id.week_button);
+            setButton = (Button) itemView.findViewById(R.id.set_button);
+            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+
+            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            if (extraPanel != null)
+                extraPanel.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

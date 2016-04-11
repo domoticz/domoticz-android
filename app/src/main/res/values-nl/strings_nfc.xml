@@ -4,6 +4,7 @@
   <string name="nfc_not_supported">NFC wordt niet ondersteund op dit apparaat</string>
   <string name="nfc_register">Registreer een NFC Tag</string>
   <string name="nfc_tag_found">Nieuwe NFC Tag gevonden</string>
+  <string name="nfc_tag_edit">NFC Tag bewerken</string>
   <string name="nfc_tag_name">Geef deze NFC Tag een eigen naam. </string>
   <string name="nfc_exists">NFC tag is al geregistreerd. </string>
   <string name="nfc_saved">Een nieuwe NFC Tag opgeslagen. </string>

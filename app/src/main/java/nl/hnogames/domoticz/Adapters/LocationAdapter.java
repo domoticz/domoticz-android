@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class LocationAdapter extends BaseAdapter {
 
@@ -47,6 +50,7 @@ public class LocationAdapter extends BaseAdapter {
     public ArrayList<LocationInfo> data = null;
     private Context context;
 
+    private SharedPrefUtil mSharedPrefs;
     private LocationClickListener listener;
 
     public LocationAdapter(Context context,
@@ -54,6 +58,7 @@ public class LocationAdapter extends BaseAdapter {
                            LocationClickListener l) {
         super();
 
+        mSharedPrefs = new SharedPrefUtil(context);
         this.context = context;
         this.data = data;
         this.listener = l;
@@ -90,6 +95,14 @@ public class LocationAdapter extends BaseAdapter {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
+        if (mSharedPrefs.darkThemeEnabled()) {
+            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+
+            if ((convertView.findViewById(R.id.remove_button)) != null)
+                (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+        }
+
         holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
         holder.name = (TextView) convertView.findViewById(R.id.location_name);
         holder.radius = (TextView) convertView.findViewById(R.id.location_radius);
@@ -116,16 +129,14 @@ public class LocationAdapter extends BaseAdapter {
         }
 
         holder.name.setText(mLocationInfo.getName());
-        String text = context.getString(R.string.radius) + ": " + mLocationInfo.getRadius();
-        holder.radius.setText(text);
-
-        if (mLocationInfo.getSwitchIdx() > 0) {
-            text = context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx();
-            holder.connectedSwitch.setText(text);
+        holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRadius());
+        if (!UsefulBits.isEmpty(mLocationInfo.getSwitchName())) {
+            holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchName());
+        } else if (mLocationInfo.getSwitchIdx() > 0) {
+            holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx());
         } else {
-            text = context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available);
-            holder.connectedSwitch.setText(text);
+            holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
+                    + ": " + context.getString(R.string.not_available));
         }
 
         holder.remove.setId(mLocationInfo.getID());

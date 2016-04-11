@@ -52,6 +52,8 @@ public class ServerUtil {
     private final String JSON_OBJECT = "jsonObject";
     private final String serverUpdateInfoJSON_SERVER_UPDATE_INFO = "serverUpdateInfo";
 
+    private Context mContext;
+
     private ServerInfo mActiveServer;
     private ArrayList<ServerInfo> mServerList;
 
@@ -66,6 +68,8 @@ public class ServerUtil {
      * @param mContext Application Context
      */
     public ServerUtil(Context mContext) {
+        this.mContext = mContext;
+
         GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         gson = gsonBuilder.create();
 
@@ -120,7 +124,7 @@ public class ServerUtil {
                     if (jsonServer.has(serverUpdateInfoJSON_SERVER_UPDATE_INFO)) {
                         JSONObject serverUpdateInfoJson = jsonServer.getJSONObject(serverUpdateInfoJSON_SERVER_UPDATE_INFO);
                         JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
-                        oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                        oPrefServer.setServerUpdateInfo(mContext, new ServerUpdateInfo(jsonUpdate));
                     }
 
                     if (jsonServer.has(JSON_CONFIG_INFO)) {
@@ -129,7 +133,7 @@ public class ServerUtil {
                         JSONObject jsonUpdate = configInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
                         ConfigInfo loadedConfigInfo = new ConfigInfo(jsonUpdate);
                         loadedConfigInfo.setDateOfConfig(dateOfConfig);
-                        oPrefServer.setConfigInfo(loadedConfigInfo);
+                        oPrefServer.setConfigInfo(mContext, loadedConfigInfo);
                     }
 
                     boolean alreadyContains = false;
@@ -181,7 +185,7 @@ public class ServerUtil {
                         if (jsonServer.has(serverUpdateInfoJSON_SERVER_UPDATE_INFO)) {
                             JSONObject serverUpdateInfoJson = jsonServer.getJSONObject(serverUpdateInfoJSON_SERVER_UPDATE_INFO);
                             JSONObject jsonUpdate = serverUpdateInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
-                            oPrefServer.setServerUpdateInfo(new ServerUpdateInfo(jsonUpdate));
+                            oPrefServer.setServerUpdateInfo(mContext, new ServerUpdateInfo(jsonUpdate));
                         }
 
                         if (jsonServer.has(JSON_CONFIG_INFO)) {
@@ -190,7 +194,7 @@ public class ServerUtil {
                             JSONObject jsonUpdate = configInfoJson.getJSONObject(JSON_OBJECT).getJSONObject(JSON_VALUE_PAIRS);
                             ConfigInfo loadedConfigInfo = new ConfigInfo(jsonUpdate);
                             loadedConfigInfo.setDateOfConfig(dateOfConfig);
-                            oPrefServer.setConfigInfo(loadedConfigInfo);
+                            oPrefServer.setConfigInfo(mContext, loadedConfigInfo);
                         }
 
                         oPrefServer.setLocalServerAuthentication(jsonServer.getBoolean("LOCAL_SERVER_AUTHENTICATION_METHOD"));

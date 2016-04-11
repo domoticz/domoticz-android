@@ -29,15 +29,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
@@ -53,9 +52,9 @@ import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
-public class Utilities extends DomoticzFragment implements DomoticzFragmentListener,
+public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         UtilityClickListener {
 
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
@@ -66,12 +65,10 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
 
-
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processUtilities();
     }
 
@@ -133,45 +130,8 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
     private void createListView() {
 
         if (getView() != null) {
-            SwingBottomInAnimationAdapter animationAdapter =
-                    new SwingBottomInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
-
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                               int index, long id) {
-                    showInfoDialog(adapter.filteredData.get(index));
-                    return true;
-                }
-            });
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
-                    if (extra_panel != null) {
-                        if (extra_panel.getVisibility() == View.VISIBLE) {
-                            extra_panel.startAnimation(animHide);
-                            extra_panel.setVisibility(View.GONE);
-                        } else {
-                            extra_panel.setVisibility(View.VISIBLE);
-                            extra_panel.startAnimation(animShow);
-                        }
-
-                        if (extra_panel != lExtraPanel) {
-                            if (lExtraPanel != null) {
-                                if (lExtraPanel.getVisibility() == View.VISIBLE) {
-                                    lExtraPanel.startAnimation(animHide);
-                                    lExtraPanel.setVisibility(View.GONE);
-                                }
-                            }
-                        }
-
-                        lExtraPanel = extra_panel;
-                    }
-                }
-            });
+            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+            gridView.setAdapter(alphaSlideIn);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -263,16 +223,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
      */
     private void notifyDataSetChanged() {
         addDebugText("notifyDataSetChanged");
-
-        // save index and top position
-        int index = listView.getFirstVisiblePosition();
-        View v = listView.getChildAt(0);
-        int top = (v == null) ? 0 : v.getTop();
-
         adapter.notifyDataSetChanged();
-
-        listView.setAdapter(adapter);
-        listView.setSelectionFromTop(index, top);
     }
 
     @Override
@@ -312,6 +263,7 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
                 .replace("Energy", "counter")
+                .replace("SetPoint", "temp")
                 .replace("YouLess counter", "counter");
 
         Intent intent = new Intent(mContext, GraphActivity.class);
@@ -408,6 +360,42 @@ public class Utilities extends DomoticzFragment implements DomoticzFragmentListe
                         Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getUtility(idx), checked);
+    }
+
+    @Override
+    public void onItemClicked(View v, int position) {
+        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        if (extra_panel != null) {
+            if (extra_panel.getVisibility() == View.VISIBLE) {
+                extra_panel.startAnimation(animHide);
+                extra_panel.setVisibility(View.GONE);
+            } else {
+                extra_panel.setVisibility(View.VISIBLE);
+                extra_panel.startAnimation(animShow);
+            }
+
+            if (extra_panel != lExtraPanel) {
+                if (lExtraPanel != null) {
+                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                        lExtraPanel.startAnimation(animHide);
+                        lExtraPanel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            lExtraPanel = extra_panel;
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
     }
 
     private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {

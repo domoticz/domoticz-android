@@ -25,6 +25,10 @@
   <string name="wizard_widgets_description">Vous pouvez ajouter des widgets sur le bureau de votre téléphone.</string>
   <string name="wizard_menuitem">Désactiver l\'Assistant</string>
   <string name="wizard_menuitem_description">Vous pouvez maintenant supprimer cet Assistant dans le menu de navigation !</string>
+  <string name="wizard_nfc">NFC</string>
+  <string name="wizard_nfc_description">Vous pouvez utiliser NFC avec les interrupteurs</string>
+  <string name="wizard_qrcode">QR Code</string>
+  <string name="wizard_qrcode_description">Changer l\'état d\'un interrupteur en scannant un QR Code.</string>
   <string name="wizard_button_nice">Sympa</string>
   <string name="wizard_button_switches">Interrupteurs</string>
   <string name="wizard_button_settings">Paramètres</string>

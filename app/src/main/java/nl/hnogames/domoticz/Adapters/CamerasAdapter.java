@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,12 +39,14 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.RequestUtil;
 import nl.hnogames.domoticz.Utils.SessionUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
     private static onClickListener onClickListener;
     private final Context mContext;
+    private SharedPrefUtil mSharedPrefs;
     private ArrayList<CameraInfo> mDataset;
     private Domoticz domoticz;
     private boolean refreshTimer;
@@ -51,6 +54,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz, boolean refreshTimer) {
         this.mDataset = data;
         this.mContext = mContext;
+        mSharedPrefs = new SharedPrefUtil(mContext);
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
     }
@@ -63,6 +67,10 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.camera_row, parent, false);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            ((android.support.v7.widget.CardView) view.findViewById(R.id.row_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+        }
 
         return new DataObjectHolder(view);
     }

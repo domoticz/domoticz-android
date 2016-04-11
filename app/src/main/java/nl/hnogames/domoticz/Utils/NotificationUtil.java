@@ -41,39 +41,42 @@ public class NotificationUtil {
         if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
             return;
 
-        int NOTIFICATION_ID = 12345;
-        SharedPrefUtil prefUtil = new SharedPrefUtil(context);
-        if (prefUtil.isNotificationsEnabled() &&
-                prefUtil.getSuppressedNotifications() != null &&
-                !prefUtil.getSuppressedNotifications().contains(text)) {
+        try {
+            int NOTIFICATION_ID = 12345;
+            SharedPrefUtil prefUtil = new SharedPrefUtil(context);
+            if (prefUtil.isNotificationsEnabled() &&
+                    prefUtil.getSuppressedNotifications() != null &&
+                    !prefUtil.getSuppressedNotifications().contains(text)) {
 
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.domoticz_white)
-                            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
-                            .setContentTitle(title)
-                            .setContentText(text)
-                            .setGroupSummary(true)
-                            .setGroup(GROUP_KEY_NOTIFICATIONS)
-                            .setAutoCancel(true);
+                NotificationCompat.Builder builder =
+                        new NotificationCompat.Builder(context)
+                                .setSmallIcon(R.drawable.domoticz_white)
+                                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+                                .setContentTitle(title)
+                                .setContentText(text)
+                                .setGroupSummary(true)
+                                .setGroup(GROUP_KEY_NOTIFICATIONS)
+                                .setAutoCancel(true);
 
-            if (!prefUtil.OverWriteNotifications()) {
-                NOTIFICATION_ID = text.hashCode();
+                if (!prefUtil.OverWriteNotifications()) {
+                    NOTIFICATION_ID = text.hashCode();
+                }
+                if (prefUtil.getNotificationVibrate())
+                    builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+
+                if (!UsefulBits.isEmpty(prefUtil.getNotificationSound()))
+                    builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
+
+                Intent targetIntent = new Intent(context, MainActivity.class);
+                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(contentIntent);
+
+                NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                nManager.notify(NOTIFICATION_ID, builder.build());
             }
-            if (prefUtil.getNotificationVibrate())
-                builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 
-            if (!UsefulBits.isEmpty(prefUtil.getNotificationSound()))
-                builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
-
-            Intent targetIntent = new Intent(context, MainActivity.class);
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            builder.setContentIntent(contentIntent);
-
-            NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nManager.notify(NOTIFICATION_ID, builder.build());
+            prefUtil.addReceivedNotification(text);
+        } catch (Exception ex) {
         }
-
-        prefUtil.addReceivedNotification(text);
     }
 }

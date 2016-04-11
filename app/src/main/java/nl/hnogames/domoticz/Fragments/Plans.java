@@ -37,12 +37,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
 import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -52,6 +54,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private SharedPrefUtil mSharedPrefs;
     private PlansAdapter mAdapter;
     private ArrayList<PlanInfo> mPlans;
 
@@ -74,6 +77,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     public void processPlans() {
+
         mDomoticz.getPlans(new PlansReceiver() {
 
             @Override
@@ -102,7 +106,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                         startActivity(intent);
                     }
                 });
-                mRecyclerView.setAdapter(mAdapter);
+                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
+                mRecyclerView.setAdapter(alphaSlideIn);
             }
 
             @Override
@@ -116,6 +121,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        mSharedPrefs = new SharedPrefUtil(mContext);
         getActionBar().setTitle(R.string.title_plans);
     }
 

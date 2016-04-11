@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DomoticzCardFragment extends Fragment {
@@ -55,6 +56,7 @@ public class DomoticzCardFragment extends Fragment {
     public Domoticz mDomoticz;
     private DomoticzFragmentListener listener;
     private String fragmentName;
+    private SharedPrefUtil mSharedPrefs;
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
@@ -65,8 +67,24 @@ public class DomoticzCardFragment extends Fragment {
     public void refreshFragment() {
     }
 
+
+    public void setTheme() {
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(getActivity());
+        if (mSharedPrefs.darkThemeEnabled()) {
+            if (root.findViewById(R.id.my_recycler_view) != null)
+                (root.findViewById(R.id.my_recycler_view)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.debugLayout)) != null)
+                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.coordinatorLayout)) != null)
+                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if (root.findViewById(R.id.errorImage) != null)
+                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+        }
+    }
+
     public ServerUtil getServerUtil() {
-        return ((MainActivity) getActivity()).geServerUtil();
+        return ((MainActivity) getActivity()).getServerUtil();
     }
 
     @Override
@@ -74,7 +92,7 @@ public class DomoticzCardFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-
+        setTheme();
         return root;
     }
 
@@ -112,9 +130,8 @@ public class DomoticzCardFragment extends Fragment {
      * Checks for a active connection
      */
     public void checkConnection() {
-
         List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0));                           // Get only the last fragment
+        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
 
         PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override

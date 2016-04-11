@@ -25,6 +25,10 @@
   <string name="wizard_widgets_description">Du kan lägga till widgets på din hemskärm!</string>
   <string name="wizard_menuitem">Inaktivera startguiden</string>
   <string name="wizard_menuitem_description">Du kan nu ta bort den här guiden från navigeringsmenyn!</string>
+  <string name="wizard_nfc">NFC</string>
+  <string name="wizard_nfc_description">Du har möjlighet att växla växlar via NFC!</string>
+  <string name="wizard_qrcode">QR-kod</string>
+  <string name="wizard_qrcode_description">Växla strömbrytare genom att skanna en QR-kod (eller streckkod)!</string>
   <string name="wizard_button_nice">Trevligt</string>
   <string name="wizard_button_switches">Brytare</string>
   <string name="wizard_button_settings">Inställningar</string>
