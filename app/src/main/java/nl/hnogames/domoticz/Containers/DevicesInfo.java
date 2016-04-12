@@ -300,7 +300,7 @@ public class DevicesInfo implements Comparable {
     }
 
     public String[] getLevelNames() {
-        if(UsefulBits.isEmpty(LevelNames))
+        if (UsefulBits.isEmpty(LevelNames))
             return null;
 
         String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);

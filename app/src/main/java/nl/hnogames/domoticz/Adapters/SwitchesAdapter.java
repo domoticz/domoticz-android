@@ -631,7 +631,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
 
-            holder.onOffSwitch.setOnCheckedChangeListener (null);
+            holder.onOffSwitch.setOnCheckedChangeListener(null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1048,7 +1048,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = (mDeviceInfo.getLevel()-1) / 10;
+        int loadLevel = (mDeviceInfo.getLevel() - 1) / 10;
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
 
@@ -1060,7 +1060,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
-            holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1122,7 +1122,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
-        if(levelNames != null && levelNames.length > 0)
+        if (levelNames != null && levelNames.length > 0)
             holder.dimmer.setMax(levelNames.length - 1);
 
         holder.dimmer.setOnClickListener(new View.OnClickListener() {
@@ -1219,7 +1219,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
-        holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
