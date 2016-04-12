@@ -1031,7 +1031,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
 
-        if (levelNames.length > loadLevel)
+        if (levelNames != null && levelNames.length > loadLevel)
             statusText = levelNames[loadLevel];
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
@@ -1101,7 +1101,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
-        holder.dimmer.setMax(levelNames.length - 1);
+
+        if(levelNames != null && levelNames.length > 0)
+            holder.dimmer.setMax(levelNames.length - 1);
         holder.dimmer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
