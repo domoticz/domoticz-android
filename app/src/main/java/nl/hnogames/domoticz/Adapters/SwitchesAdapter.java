@@ -341,13 +341,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                         setButtons(holder, Buttons.BLINDS);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.BUTTONS);
-                            setOnOffButtonRowData(mDeviceInfo, holder);
-                        } else {
-                            setButtons(holder, Buttons.BUTTONS);
-                            setOnOffSwitchRowData(mDeviceInfo, holder);
-                        }
+                        setButtons(holder, Buttons.BUTTONS);
+                        setOnOffButtonRowData(mDeviceInfo, holder);
                     }
                     break;
 
