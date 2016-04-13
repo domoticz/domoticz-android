@@ -145,7 +145,8 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
             }
             if (mNfcAdapter != null)
                 mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, new IntentFilter[]{filter}, this.techList);
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 
     @Override

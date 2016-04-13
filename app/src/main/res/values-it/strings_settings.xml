@@ -32,9 +32,9 @@
   <string name="switch_buttons_title">Interruttori</string>
   <string name="switch_buttons_on">Visualizza interruttori on/off</string>
   <string name="switch_buttons_off">Visualizza pulsanti on/off</string>
-  <string name="dashboard_list_title">Dashboard Grid</string>
-  <string name="show_dashboard_list_on">Show dashboard as list</string>
-  <string name="show_dashboard_list_off">Show dashboard as grid</string>
+  <string name="dashboard_list_title">Griglia pagina principale</string>
+  <string name="show_dashboard_list_on">Visualizza la pagina principale cole lista</string>
+  <string name="show_dashboard_list_off">Visualizza la pagina principale come griglia</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Dispositivi personalizzati Android Wear</string>
   <string name="custom_wear_select">Seleziona gli interruttori Wear</string>
@@ -54,7 +54,7 @@
   <string name="settings_export_failed">Impossibile esportare le impostazioni</string>
   <!--        Preference screens      -->
   <string name="server_settings">Impostazioni di connessione del server</string>
-  <string name="server_force_fetch_config">Fetch server configuration</string>
+  <string name="server_force_fetch_config">Recuperare la configurazione del server</string>
   <string name="nfc_settings">Impostazioni connessioni NFC</string>
   <string name="title_activity_server_settings">Impostazioni del server</string>
   <string name="multi_server">Server Multipli</string>

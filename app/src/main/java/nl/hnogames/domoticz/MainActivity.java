@@ -40,6 +40,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,13 +105,22 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
-    private boolean onPhone;
+    public boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;
+    }
+
+    public float getScreenWidth()
+    {
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
+        return dpWidth;
     }
 
     @Override
@@ -499,7 +509,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (mDrawerToggle != null) mDrawerToggle.onConfigurationChanged(newConfig);
+        if (mDrawerToggle != null)
+            mDrawerToggle.onConfigurationChanged(newConfig);
+
+        Fragment f = getVisibleFragment();
+        if ((f instanceof DomoticzDashboardFragment))
+        {
+            ((DomoticzDashboardFragment)f).setGridViewLayout();
+        }else if (f instanceof DomoticzRecyclerFragment)
+        {
+            ((DomoticzRecyclerFragment)f).setGridViewLayout();
+        }
     }
 
     public Fragment getVisibleFragment() {

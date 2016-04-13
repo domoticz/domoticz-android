@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -31,11 +32,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,6 +51,7 @@ import org.json.JSONException;
 
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
@@ -120,21 +124,51 @@ public class DomoticzRecyclerFragment extends Fragment {
     }
 
     public void initViews(View root) {
-        try {
-            gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
-            if (mSharedPrefs == null)
-                mSharedPrefs = new SharedPrefUtil(getContext());
 
-            gridView.setHasFixedSize(true);
-            GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
-            gridView.setLayoutManager(mLayoutManager);
+        gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(getContext());
 
-        } catch (Exception ex) {
-        }
-
+        setGridViewLayout();
         oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
         coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
+    }
+
+    public void setGridViewLayout()
+    {
+        try {
+            boolean isTablet = false;
+            float screenWidth = 0;
+            boolean isPortrait = false;
+
+            if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                isPortrait = true;
+            if(getActivity() instanceof MainActivity) {
+                isTablet = !((MainActivity) getActivity()).onPhone;
+            }
+
+            gridView.setHasFixedSize(true);
+
+            if(isTablet)
+            {
+                if(isPortrait) {
+                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    gridView.setLayoutManager(mLayoutManager);
+                }
+                else{
+                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+                    gridView.setLayoutManager(mLayoutManager);
+                }
+            }
+            else{
+                GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                gridView.setLayoutManager(mLayoutManager);
+            }
+
+            gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+        } catch (Exception ex) {
+        }
     }
 
     @Override

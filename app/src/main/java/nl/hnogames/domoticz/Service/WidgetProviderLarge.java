@@ -191,7 +191,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         if (s != null) {
                             if (s.getStatusInString() != null) {
                                 if (s.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                                    views = new RemoteViews(packageName, R.layout.widget_layout);
+                                    if (mSharedPrefs.darkThemeEnabled())
+                                        views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                    else
+                                        views = new RemoteViews(packageName, R.layout.widget_layout);
+
                                     views.setTextViewText(R.id.title, s.getName());
                                     views.setTextViewText(R.id.desc, s.getStatusInString());
 
@@ -204,10 +208,13 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             true));
                                     views.setViewVisibility(R.id.on_button, View.VISIBLE);
                                 } else {
-                                    views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                                    if (mSharedPrefs.darkThemeEnabled())
+                                        views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
+                                    else
+                                        views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+
                                     views.setTextViewText(R.id.title, s.getName());
                                     views.setTextViewText(R.id.desc, s.getStatusInString());
-
                                     views.setTextViewText(R.id.off_button, "off");
                                     views.setTextViewText(R.id.on_button, "on");
 
