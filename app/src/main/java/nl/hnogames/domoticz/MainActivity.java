@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
+    private Fragment latestFragment = null;
+
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
@@ -281,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshFragment() {
-        Fragment f = getVisibleFragment();
+        Fragment f = latestFragment;
         if (f instanceof DomoticzRecyclerFragment) {
             ((DomoticzRecyclerFragment) f).refreshFragment();
         } else if (f instanceof DomoticzCardFragment)
@@ -341,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Fragment f = getVisibleFragment();
+        Fragment f = latestFragment;
         if ((f instanceof DomoticzDashboardFragment)) {
             ((DomoticzDashboardFragment) f).setGridViewLayout();
         } else if (f instanceof DomoticzRecyclerFragment) {
@@ -351,8 +353,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFragment(String fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        // tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
-        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragment));
+        latestFragment = Fragment.instantiate(MainActivity.this, fragment);
+        tx.replace(R.id.main, latestFragment);
         tx.commitAllowingStateLoss();
         addFragmentStack(fragment);
         saveScreenToAnalytics(fragment);
@@ -361,8 +363,8 @@ public class MainActivity extends AppCompatActivity {
     private void addFragment() {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        //tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
-        tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]));
+        latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+        tx.replace(R.id.main, latestFragment);
         tx.commitAllowingStateLoss();
         addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
         saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
@@ -443,10 +445,11 @@ public class MainActivity extends AppCompatActivity {
 
                             if (drawerItem.getTag() != null) {
                                 try {
+                                    latestFragment = Fragment.instantiate(MainActivity.this,
+                                            String.valueOf(drawerItem.getTag()));
                                     FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                                     tx.replace(R.id.main,
-                                            Fragment.instantiate(MainActivity.this,
-                                                    String.valueOf(drawerItem.getTag())));
+                                            latestFragment);
                                     tx.commitAllowingStateLoss();
                                     addFragmentStack(String.valueOf(drawerItem.getTag()));
                                 } catch (Exception e) {
@@ -603,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Fragment f = getVisibleFragment();
+        Fragment f = latestFragment;
 
         if ((f instanceof Cameras)) {
             if (cameraRefreshTimer != null)
@@ -627,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    Fragment n = getVisibleFragment();
+                    Fragment n = latestFragment;
                     if (n instanceof DomoticzDashboardFragment) {
                         ((DomoticzDashboardFragment) n).Filter(newText);
                     }
@@ -672,7 +675,7 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         //call refresh fragment
-                                        Fragment f = getVisibleFragment();
+                                        Fragment f = latestFragment;
                                         if (f instanceof Cameras) {
                                             ((Cameras) f).refreshFragment();
                                         } else {
@@ -716,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
-                            Fragment f = getVisibleFragment();
+                            Fragment f = latestFragment;
                             if (f instanceof DomoticzRecyclerFragment) {
                                 ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
                             } else if (f instanceof DomoticzDashboardFragment) {
@@ -800,7 +803,7 @@ public class MainActivity extends AppCompatActivity {
     public CoordinatorLayout getFragmentCoordinatorLayout() {
         CoordinatorLayout layout = null;
         try {
-            Fragment f = getVisibleFragment();
+            Fragment f = latestFragment;
             if (f != null) {
                 View v = f.getView();
                 if (v != null)
@@ -811,22 +814,6 @@ public class MainActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
         return layout;
-    }
-
-
-    public Fragment getVisibleFragment() {
-        try {
-            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
-            List<Fragment> fragments = fragmentManager.getFragments();
-            for (Fragment fragment : fragments) {
-                if (fragment != null && fragment.isVisible())
-                    return fragment;
-            }
-
-            return null;
-        } catch (Exception ex) {
-            return null;
-        }
     }
 
     private void stopCameraTimer() {
