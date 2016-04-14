@@ -135,33 +135,29 @@ public class DomoticzRecyclerFragment extends Fragment {
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
     }
 
-    public void setGridViewLayout()
-    {
+    public void setGridViewLayout() {
         try {
             boolean isTablet = false;
             float screenWidth = 0;
             boolean isPortrait = false;
 
-            if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
-            if(getActivity() instanceof MainActivity) {
+            if (getActivity() instanceof MainActivity) {
                 isTablet = !((MainActivity) getActivity()).onPhone;
             }
 
             gridView.setHasFixedSize(true);
 
-            if(isTablet)
-            {
-                if(isPortrait) {
+            if (isTablet) {
+                if (isPortrait) {
                     GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                     gridView.setLayoutManager(mLayoutManager);
-                }
-                else{
+                } else {
                     GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
                     gridView.setLayoutManager(mLayoutManager);
                 }
-            }
-            else{
+            } else {
                 GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                 gridView.setLayoutManager(mLayoutManager);
             }

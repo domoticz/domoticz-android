@@ -48,6 +48,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Temperature extends DomoticzRecyclerFragment implements DomoticzFragmentListener, TemperatureClickListener {
@@ -163,9 +164,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         else
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -211,7 +212,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         intent.putExtra("STEPS", 3);
         startActivity(intent);
 
-        // Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+        // Snackbar.mtake(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

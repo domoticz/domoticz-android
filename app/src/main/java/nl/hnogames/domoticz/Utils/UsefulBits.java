@@ -29,9 +29,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -237,9 +240,9 @@ public class UsefulBits {
             mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             if (mSharedPrefs.isDebugEnabled()) {
                 if (forceDownload && !fromService) {
-                    showSimpleToast(context, "Language files downloaded because it was forced");
+                    showSimpleToast(context, "Language files downloaded because it was forced", Toast.LENGTH_SHORT);
                 } else if (!fromService)
-                    showSimpleToast(context, "Language files downloaded because there were none");
+                    showSimpleToast(context, "Language files downloaded because there were none", Toast.LENGTH_SHORT);
             }
         } else {
             long dateMillis = mSharedPrefs.getSavedLanguageDate();
@@ -247,13 +250,13 @@ public class UsefulBits {
             Log.d(TAG, "Language files are dated: " + dateStr);
 
             if (mSharedPrefs.isDebugEnabled() && !fromService)
-                showSimpleToast(context, "Language files are dated: " + dateStr);
+                showSimpleToast(context, "Language files are dated: " + dateStr, Toast.LENGTH_SHORT);
 
             // check if downloaded files are the correct ones
             if (!downloadedLanguage.equalsIgnoreCase(activeLanguage)) {
 
                 if (mSharedPrefs.isDebugEnabled() && !fromService)
-                    showSimpleToast(context, "Downloaded language files did not match the preferred language");
+                    showSimpleToast(context, "Downloaded language files did not match the preferred language", Toast.LENGTH_SHORT);
 
                 Log.d(TAG, "Downloaded language files did not match the preferred language:" + newLine()
                         + "Current downloaded language: " + downloadedLanguage + newLine()
@@ -321,7 +324,8 @@ public class UsefulBits {
         if (!mSharedPrefUtil.getTaskIsScheduled()) {
             // Only when not already scheduled
 
-            if (mSharedPrefUtil.isDebugEnabled()) showSimpleToast(context, "Scheduling new task");
+            if (mSharedPrefUtil.isDebugEnabled())
+                showSimpleToast(context, "Scheduling new task", Toast.LENGTH_SHORT);
 
             GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(context);
 
@@ -339,7 +343,7 @@ public class UsefulBits {
             mGcmNetworkManager.schedule(task);
             mSharedPrefUtil.setTaskIsScheduled(true);
         } else if (mSharedPrefUtil.isDebugEnabled())
-            showSimpleToast(context, "Tasks already scheduled");
+            showSimpleToast(context, "Tasks already scheduled", Toast.LENGTH_SHORT);
     }
 
     /**
@@ -365,7 +369,7 @@ public class UsefulBits {
                                     + String.valueOf(age)
                                     + " days old (max is: "
                                     + String.valueOf(DAYS_TO_CHECK_FOR_SERVER_CONFIG)
-                                    + " days old)");
+                                    + " days old)", Toast.LENGTH_SHORT);
                 return;
             }
         }
@@ -378,8 +382,8 @@ public class UsefulBits {
                     configInfo.setDateOfConfig(currentTime);
                     mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
                     mServerUtil.saveDomoticzServers(true);
-                    if (showSuccessMessage)
-                        showSimpleToast(context, context.getString(R.string.fetched_server_config_success));
+                    if (showSuccessMessage && context != null)
+                        showSimpleToast(context, context.getString(R.string.fetched_server_config_success), Toast.LENGTH_SHORT);
                 }
             }
 
@@ -388,7 +392,7 @@ public class UsefulBits {
                 String message = String.format(
                         context.getString(R.string.error_couldNotCheckForConfig),
                         domoticz.getErrorMessage(error));
-                showSimpleToast(context, message);
+                showSimpleToast(context, message, Toast.LENGTH_SHORT);
             }
         });
     }
@@ -405,7 +409,7 @@ public class UsefulBits {
                 // Unresolvable error
                 Log.e(TAG, "Google Play services is unavailable.");
                 showSimpleToast(activity,
-                        activity.getString(R.string.google_play_services_unavailable));
+                        activity.getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT);
                 return false;
             }
         }
@@ -415,11 +419,58 @@ public class UsefulBits {
         return true;
     }
 
-    public static void showSimpleToast(Context context, String message) {
-        //sometimes this method is called from a service, but then we don't have an activity to show the Toast.
-        //for now, we suppress that exception & toast
+    public static void showSimpleToast(Context context, String message, int length) {
         try {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, message, length).show();
+        } catch (Exception ex) {
+        }
+    }
+
+    public static void showSimpleSnackbar(Context context, CoordinatorLayout coordinatorLayout, int message_resource_id, int length) {
+        try {
+            if (context != null && coordinatorLayout != null)
+                showSimpleSnackbar(context, coordinatorLayout, context.getString(message_resource_id), length);
+        } catch (Exception ex) {
+        }
+    }
+
+    public static void showSimpleSnackbar(Context context, CoordinatorLayout coordinatorLayout, String message, int length) {
+        try {
+            if (context != null && coordinatorLayout != null && !UsefulBits.isEmpty(message))
+                Snackbar.make(coordinatorLayout, message, length).show();
+        } catch (Exception ex) {
+        }
+    }
+
+    public static void showSnackbar(Context context, CoordinatorLayout coordinatorLayout, String message, int length,
+                                    Snackbar.Callback callback,
+                                    View.OnClickListener onclickListener, String actiontext) {
+        try {
+            if (context != null &&
+                    coordinatorLayout != null &&
+                    !UsefulBits.isEmpty(message)) {
+                if (onclickListener == null || UsefulBits.isEmpty(actiontext)) {
+                    if (callback != null) {
+                        Snackbar.make(coordinatorLayout, message, length)
+                                .setCallback(callback)
+                                .show();
+                    } else {
+                        Snackbar.make(coordinatorLayout, message, length)
+                                .show();
+                    }
+                } else {
+                    if (callback != null) {
+                        Snackbar.make(coordinatorLayout, message, length)
+                                .setAction(actiontext, onclickListener)
+                                .setCallback(callback)
+                                .show();
+                    } else {
+                        Snackbar.make(coordinatorLayout, message, length)
+                                .setAction(actiontext, onclickListener)
+                                .show();
+                    }
+                }
+            }
         } catch (Exception ex) {
         }
     }

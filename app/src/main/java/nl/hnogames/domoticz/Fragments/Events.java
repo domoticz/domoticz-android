@@ -36,6 +36,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
@@ -87,7 +88,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
                     public void onEventClick(final int id, boolean action) {
-                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
+                        UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT);
                     }
                 });
 

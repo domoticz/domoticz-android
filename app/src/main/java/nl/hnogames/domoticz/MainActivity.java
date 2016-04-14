@@ -27,6 +27,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -114,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
         return mServerUtil;
     }
 
-    public float getScreenWidth()
-    {
+    public float getScreenWidth() {
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -513,12 +513,10 @@ public class MainActivity extends AppCompatActivity {
             mDrawerToggle.onConfigurationChanged(newConfig);
 
         Fragment f = getVisibleFragment();
-        if ((f instanceof DomoticzDashboardFragment))
-        {
-            ((DomoticzDashboardFragment)f).setGridViewLayout();
-        }else if (f instanceof DomoticzRecyclerFragment)
-        {
-            ((DomoticzRecyclerFragment)f).setGridViewLayout();
+        if ((f instanceof DomoticzDashboardFragment)) {
+            ((DomoticzDashboardFragment) f).setGridViewLayout();
+        } else if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).setGridViewLayout();
         }
     }
 
@@ -664,16 +662,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSnackBarToUpdateServer(String message) {
-        View layout = getFragmentCoordinatorLayout();
+        CoordinatorLayout layout = getFragmentCoordinatorLayout();
         if (layout != null) {
-            Snackbar.make(layout, message, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.update_server, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(MainActivity.this, UpdateActivity.class));
-                        }
-                    })
-                    .show();
+            UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, UpdateActivity.class));
+                }
+            }, this.getString(R.string.update_server));
         }
     }
 
@@ -686,19 +682,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSimpleSnackbar(String message) {
-        View layout = getFragmentCoordinatorLayout();
-        if (layout != null) Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
-        else Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        CoordinatorLayout layout = getFragmentCoordinatorLayout();
+        if (layout != null)
+            UsefulBits.showSimpleSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
+        else
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public View getFragmentCoordinatorLayout() {
-        View layout = null;
+    public CoordinatorLayout getFragmentCoordinatorLayout() {
+        CoordinatorLayout layout = null;
         try {
             Fragment f = getVisibleFragment();
             if (f != null) {
                 View v = f.getView();
                 if (v != null)
-                    layout = v.findViewById(R.id.coordinatorLayout);
+                    layout = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
             }
         } catch (Exception ex) {
             Log.e(TAG, "Unable to get the coordinator layout of visible fragment");

@@ -92,7 +92,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
 
         createListView();
 
-        showSimpleSnackbar(getString(R.string.qrcode_register));
+        UsefulBits.showSimpleSnackbar(this, coordinatorLayout, R.string.qrcode_register, Snackbar.LENGTH_SHORT);
     }
 
     private void createListView() {
@@ -147,17 +147,13 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout,
-                        R.string.unable_to_get_switches,
-                        Snackbar.LENGTH_SHORT)
-                        .setAction(R.string.retry, new View.OnClickListener() {
+                UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, QRCodeSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
+                        null, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // User clicked retry button
                                 getSwitchesAndShowSwitchesDialog(qrInfo);
                             }
-                        })
-                        .show();
+                        }, QRCodeSettingsActivity.this.getString(R.string.retry));
             }
         });
     }
@@ -224,10 +220,6 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
         return result;
     }
 
-    private void showSimpleSnackbar(String message) {
-        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG).show();
-    }
-
     @Override
     public boolean onEnableClick(QRCodeInfo qrcode, boolean checked) {
         if (qrcode.getSwitchIdx() <= 0 && checked)
@@ -252,32 +244,26 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
         // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
                 getString(R.string.qrcode));
-        Snackbar.make(coordinatorLayout,
-                text,
-                Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        updateQRCode(qrcodeInfo);//undo
-                    }
-                })
-                .setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        super.onDismissed(snackbar, event);
 
-                        switch (event) {
-                            case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
-                            case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
-                            case Snackbar.Callback.DISMISS_EVENT_MANUAL:
-                                // Snackbar was timed out so let's remove the data from
-                                // shared preferences
-                                removeQRCodeFromListView(qrcodeInfo);
-                                break;
-                        }
-                    }
-                })
-                .show();
+        UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+
+                switch (event) {
+                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                    case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                        removeQRCodeFromListView(qrcodeInfo);
+                        break;
+                }
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateQRCode(qrcodeInfo);//undo
+            }
+        }, this.getString(R.string.undo));
     }
 
     @Override
@@ -351,7 +337,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
             }
 
             if (newTagFound) {
-                showSimpleSnackbar(getString(R.string.qrcode_found) + ": " + QR_Code_ID);
+                UsefulBits.showSimpleSnackbar(this, coordinatorLayout, getString(R.string.qrcode_found) + ": " + QR_Code_ID, Snackbar.LENGTH_SHORT);
                 new MaterialDialog.Builder(this)
                         .title(R.string.qrcode_found)
                         .content(R.string.qrcode_name)
@@ -360,7 +346,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 if (!UsefulBits.isEmpty(String.valueOf(input))) {
-                                    showSimpleSnackbar(getString(R.string.nfc_saved) + ": " + input);
+                                    UsefulBits.showSimpleSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, getString(R.string.qrcode_saved) + ": " + input, Snackbar.LENGTH_SHORT);
                                     QRCodeInfo qrCodeInfo = new QRCodeInfo();
                                     qrCodeInfo.setId(QR_Code_ID);
                                     qrCodeInfo.setName(String.valueOf(input));
@@ -370,7 +356,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                             }
                         }).show();
             } else {
-                showSimpleSnackbar(getString(R.string.qrcode_exists));
+                UsefulBits.showSimpleSnackbar(this, coordinatorLayout, R.string.qrcode_exists, Snackbar.LENGTH_SHORT);
                 busyWithQRCode = false;
             }
         }
