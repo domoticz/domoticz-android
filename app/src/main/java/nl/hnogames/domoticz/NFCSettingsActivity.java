@@ -53,7 +53,6 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.NFCAdapter;
 import nl.hnogames.domoticz.Containers.NFCInfo;
-import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;

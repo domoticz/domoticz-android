@@ -29,7 +29,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.Adapters.DashboardAdapter;
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;

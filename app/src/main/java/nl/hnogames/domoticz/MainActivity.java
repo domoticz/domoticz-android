@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -74,24 +73,22 @@ import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private SharedPrefUtil mSharedPrefs;
-
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
-
+    public boolean onPhone;
+    private SharedPrefUtil mSharedPrefs;
     private String TAG = MainActivity.class.getSimpleName();
     private String[] fragments;
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
     private Toolbar toolbar;
-
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
-    public boolean onPhone;
     private Timer cameraRefreshTimer = null;
 
     private Fragment latestFragment = null;
+    private Drawer drawer;
 
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
@@ -169,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
-
 
     /* Called when the second activity's finishes */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -411,8 +407,6 @@ public class MainActivity extends AppCompatActivity {
             AppRate.showRateDialogIfMeetsConditions(this);
         }
     }
-
-    private Drawer drawer;
 
     public void drawNavigationMenu() {
         // Create the AccountHeader

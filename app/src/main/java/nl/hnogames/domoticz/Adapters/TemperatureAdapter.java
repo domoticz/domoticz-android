@@ -274,6 +274,10 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         return filteredData.size();
     }
 
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView data;
@@ -309,10 +313,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
-    }
-
-    private void handleLikeButtonClick(int idx, boolean checked) {
-        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

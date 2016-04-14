@@ -60,8 +60,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public static final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
-    private boolean showAsList = false;
-
     private final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
@@ -70,12 +68,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             Domoticz.Device.ModalSwitch.Action.CUSTOM,
             Domoticz.Device.ModalSwitch.Action.HEATING_OFF
     };
-
-    private Domoticz domoticz;
-    private Context context;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
-
+    private boolean showAsList = false;
+    private Domoticz domoticz;
+    private Context context;
     private switchesClickListener listener;
     private int previousDimmerValue;
     private SharedPrefUtil mSharedPrefs;

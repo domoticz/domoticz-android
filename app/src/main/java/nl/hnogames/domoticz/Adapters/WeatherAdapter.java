@@ -259,6 +259,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         return filteredData.size();
     }
 
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView data;
@@ -289,10 +293,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
-    }
-
-    private void handleLikeButtonClick(int idx, boolean checked) {
-        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

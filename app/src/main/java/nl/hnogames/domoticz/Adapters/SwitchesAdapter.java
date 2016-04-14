@@ -70,11 +70,10 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             Domoticz.Device.ModalSwitch.Action.CUSTOM,
             Domoticz.Device.ModalSwitch.Action.HEATING_OFF
     };
-
-    private Domoticz domoticz;
-    private Context context;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
+    private Domoticz domoticz;
+    private Context context;
     private switchesClickListener listener;
     private int layoutResourceId;
     private int previousDimmerValue;
@@ -1809,6 +1808,19 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         }
     }
 
+    @Override
+    public int getItemCount() {
+        return filteredData.size();
+    }
+
+    private void handleTimerButtonClick(int idx) {
+        listener.onTimerButtonClick(idx);
+    }
+
+    private void handleNotificationButtonClick(int idx) {
+        listener.onNotificationButtonClick(idx);
+    }
+
     interface Buttons {
         int NOTHING = 0;
         int SWITCH = 1;
@@ -1824,11 +1836,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         int DIMMER_BUTTONS = 11;
         int SELECTOR = 12;
         int SELECTOR_BUTTONS = 13;
-    }
-
-    @Override
-    public int getItemCount() {
-        return filteredData.size();
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -1875,14 +1882,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
-    }
-
-    private void handleTimerButtonClick(int idx) {
-        listener.onTimerButtonClick(idx);
-    }
-
-    private void handleNotificationButtonClick(int idx) {
-        listener.onNotificationButtonClick(idx);
     }
 
     /**

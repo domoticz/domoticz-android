@@ -67,16 +67,16 @@ public class NFCInfo {
         return switchPassword;
     }
 
+    public void setSwitchPassword(String switchPassword) {
+        this.switchPassword = switchPassword;
+    }
+
     public String getSwitchName() {
         return switchName;
     }
 
     public void setSwitchName(String switchName) {
         this.switchName = switchName;
-    }
-
-    public void setSwitchPassword(String switchPassword) {
-        this.switchPassword = switchPassword;
     }
 
 }
