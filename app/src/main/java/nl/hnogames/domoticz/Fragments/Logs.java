@@ -52,7 +52,8 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_logs);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_logs);
     }
 
     @Override

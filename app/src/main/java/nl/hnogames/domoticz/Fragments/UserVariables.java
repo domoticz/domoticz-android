@@ -31,7 +31,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_vars);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_vars);
     }
 
     @Override

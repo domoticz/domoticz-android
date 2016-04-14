@@ -1,29 +1,8 @@
-/*
- * Copyright (C) 2015 Domoticz
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *          http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- *
- */
-
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,15 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.DisplayMetrics;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +28,17 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +46,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
-import nl.hnogames.domoticz.Adapters.NavigationAdapter;
 import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
@@ -90,19 +74,17 @@ import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPrefUtil mSharedPrefs;
 
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
 
     private String TAG = MainActivity.class.getSimpleName();
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawer;
     private String[] fragments;
-    private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
-    private NavigationAdapter mAdapter;
     private SearchView searchViewAction;
+    private Toolbar toolbar;
 
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
@@ -115,14 +97,6 @@ public class MainActivity extends AppCompatActivity {
         return mServerUtil;
     }
 
-    public float getScreenWidth() {
-        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-
-        return dpWidth;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
@@ -130,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
             setTheme(R.style.AppThemeDark);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_newmain);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
         if (!resolvableError) this.finish();
@@ -154,25 +131,36 @@ public class MainActivity extends AppCompatActivity {
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
+            TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
 
-            //noinspection ConstantConditions
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
+            if (usingTabletLayout == null)
+                onPhone = true;
+            else {
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                    LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
+                    if (color != 0 && tabletLayoutWrapper != null)
+                        tabletLayoutWrapper.setBackgroundColor(color);
+                }
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            }
 
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
             drawNavigationMenu();
+            addFragment();
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
             setScheduledTasks();
-            checkDownloadedLanguage();
-            saveServerConfigToActiveServer();
-
             appRate();
-            WidgetUtils.RefreshWidgets(this);
 
+            WidgetUtils.RefreshWidgets(this);
+            UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
+            UsefulBits.saveServerConfigToActiveServer(this, false, false);
             AppController.getInstance().resendRegistrationIdToBackend();
+
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -180,46 +168,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void drawNavigationMenu() {
-        TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
-        if (usingTabletLayout == null)
-            onPhone = true;
-        else {
-            if (mSharedPrefs.darkThemeEnabled()) {
-                int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
-                LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
-                if (color != 0 && tabletLayoutWrapper != null)
-                    tabletLayoutWrapper.setBackgroundColor(color);
-            }
-            if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-
-        addDrawerItems();
-        addFragment();
-    }
-
-    private void setScreenAlwaysOn() {
-        if (mSharedPrefs.getAlwaysOn())
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        else
-            getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    private void applyLanguage() {
-        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
-            // User has set a language in settings
-            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
-        }
-    }
-
-    private void checkDownloadedLanguage() {
-        UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-    }
-
-    private void saveServerConfigToActiveServer() {
-        UsefulBits.saveServerConfigToActiveServer(this, false, false);
-    }
 
     /* Called when the second activity's finishes */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -240,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
                     mServerUtil = new ServerUtil(this);
                     if (mSharedPrefs.darkThemeEnabled())
                         setTheme(R.style.AppThemeDark);
-
                     this.recreate();
                     break;
                 case iQRResultCode:
@@ -367,6 +314,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setScreenAlwaysOn() {
+        if (mSharedPrefs.getAlwaysOn())
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PermissionsUtil.INITIAL_DEVICE_REQUEST:
+                if (PermissionsUtil.canAccessDeviceState(this))
+                    AppController.getInstance().StartEasyGCM();
+                break;
+            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
+                if (PermissionsUtil.canAccessStorage(this)) {
+                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Fragment f = getVisibleFragment();
+        if ((f instanceof DomoticzDashboardFragment)) {
+            ((DomoticzDashboardFragment) f).setGridViewLayout();
+        } else if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).setGridViewLayout();
+        }
+    }
+
     public void changeFragment(String fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         // tx.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
@@ -396,142 +378,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressWarnings("unused")
-    private void updateDrawerItems() {
-        String[] drawerActions = mSharedPrefs.getNavigationActions();
-        fragments = mSharedPrefs.getNavigationFragments();
-        int ICONS[] = mSharedPrefs.getNavigationIcons();
-        mAdapter.updateData(drawerActions, ICONS);
-    }
-
-    /**
-     * Adds the items to the drawer and registers a click listener on the items
-     */
-    private void addDrawerItems() {
-        String[] drawerActions = mSharedPrefs.getNavigationActions();
-        fragments = mSharedPrefs.getNavigationFragments();
-        int ICONS[] = mSharedPrefs.getNavigationIcons();
-
-        String NAME = getString(R.string.app_name_domoticz);
-        String WEBSITE = getString(R.string.domoticz_url);
-        int PROFILE = R.drawable.ic_launcher;
-
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        if (mRecyclerView != null)
-            mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
-
-        mAdapter = new NavigationAdapter(drawerActions, ICONS, NAME, WEBSITE, PROFILE, this);
-        mAdapter.onClickListener(new NavigationAdapter.ClickListener() {
-            @Override
-            public void onClick(View child, int position) {
-                if (child != null) {
-                    try {
-                        searchViewAction.setQuery("", false);
-                        searchViewAction.clearFocus();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                        tx.replace(R.id.main,
-                                Fragment.instantiate(MainActivity.this,
-                                        fragments[position - 1]));
-                        tx.commitAllowingStateLoss();
-                        addFragmentStack(fragments[position - 1]);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    invalidateOptionsMenu();
-                    if (onPhone)
-                        mDrawer.closeDrawer(GravityCompat.START);
-                }
-            }
-        });
-
-        if (mRecyclerView != null)
-            mRecyclerView.setAdapter(mAdapter);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        if (mRecyclerView != null)
-            mRecyclerView.setLayoutManager(mLayoutManager);
-
-        setupDrawer();
-    }
-
-    /**
-     * Sets the drawer with listeners for open and closed
-     */
-    private void setupDrawer() {
-        if (onPhone) {
-            mDrawerToggle = new ActionBarDrawerToggle(
-                    this, mDrawer, R.string.drawer_open, R.string.drawer_close) {
-                /**
-                 * Called when a mDrawer has settled in a completely open state.
-                 */
-                public void onDrawerOpened(View drawerView) {
-                    super.onDrawerOpened(drawerView);
-
-                    try {
-                        if (searchViewAction != null)
-                            searchViewAction.clearFocus();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    //getSupportActionBar().setTitle(R.string.drawer_navigation_title);
-                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                }
-
-                /**
-                 * Called when a mDrawer has settled in a completely closed state.
-                 */
-                public void onDrawerClosed(View view) {
-                    super.onDrawerClosed(view);
-                    //getSupportActionBar().setTitle(currentTitle);
-                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                }
-            };
-
-            mDrawerToggle.setDrawerIndicatorEnabled(true); // hamburger menu icon
-            mDrawer.addDrawerListener(mDrawerToggle); // attach hamburger menu icon to drawer
+    private void applyLanguage() {
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
+            // User has set a language in settings
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         }
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        if (mDrawerToggle != null) mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (mDrawerToggle != null)
-            mDrawerToggle.onConfigurationChanged(newConfig);
-
-        Fragment f = getVisibleFragment();
-        if ((f instanceof DomoticzDashboardFragment)) {
-            ((DomoticzDashboardFragment) f).setGridViewLayout();
-        } else if (f instanceof DomoticzRecyclerFragment) {
-            ((DomoticzRecyclerFragment) f).setGridViewLayout();
-        }
-    }
-
-    public Fragment getVisibleFragment() {
-        try {
-            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
-            List<Fragment> fragments = fragmentManager.getFragments();
-            for (Fragment fragment : fragments) {
-                if (fragment != null && fragment.isVisible())
-                    return fragment;
+    private void setupMobileDevice() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!PermissionsUtil.canAccessDeviceState(this)) {
+                requestPermissions(PermissionsUtil.INITIAL_DEVICE_PERMS, PermissionsUtil.INITIAL_DEVICE_REQUEST);
+            } else {
+                AppController.getInstance().StartEasyGCM();
             }
-
-            return null;
-        } catch (Exception ex) {
-            return null;
+        } else {
+            AppController.getInstance().StartEasyGCM();
         }
     }
 
@@ -548,33 +410,98 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupMobileDevice() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!PermissionsUtil.canAccessDeviceState(this)) {
-                requestPermissions(PermissionsUtil.INITIAL_DEVICE_PERMS, PermissionsUtil.INITIAL_DEVICE_REQUEST);
-            } else {
-                AppController.getInstance().StartEasyGCM();
-            }
-        } else {
-            AppController.getInstance().StartEasyGCM();
-        }
+    private Drawer drawer;
+
+    public void drawNavigationMenu() {
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.darkheader)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Domoticz").withEmail("info@domoticz.com").withIcon(R.drawable.ic_launcher)
+                )
+                .build();
+
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(true)
+                .withActionBarDrawerToggle(true)
+                .withAccountHeader(headerResult)
+                .withToolbar(toolbar)
+                .withSelectedItem(-1)
+                .withDrawerItems(getDrawerItems())
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem != null) {
+                            try {
+                                searchViewAction.setQuery("", false);
+                                searchViewAction.clearFocus();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            if (drawerItem.getTag() != null) {
+                                try {
+                                    FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                                    tx.replace(R.id.main,
+                                            Fragment.instantiate(MainActivity.this,
+                                                    String.valueOf(drawerItem.getTag())));
+                                    tx.commitAllowingStateLoss();
+                                    addFragmentStack(String.valueOf(drawerItem.getTag()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                invalidateOptionsMenu();
+                                if (onPhone)
+                                    drawer.closeDrawer();
+                            }
+                        }
+                        return false;
+                    }
+                })
+                .build();
     }
 
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_DEVICE_REQUEST:
-                if (PermissionsUtil.canAccessDeviceState(this))
-                    AppController.getInstance().StartEasyGCM();
-                break;
-            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
-                if (PermissionsUtil.canAccessStorage(this)) {
-                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
-                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
-                }
-                break;
-        }
+    private List<IDrawerItem> getDrawerItems() {
+        List<IDrawerItem> drawerItems = new ArrayList<>();
+        String[] drawerActions = mSharedPrefs.getNavigationActions();
+        fragments = mSharedPrefs.getNavigationFragments();
+        String ICONS[] = mSharedPrefs.getNavigationIcons();
+
+        for (int i = 0; i < drawerActions.length; i++)
+            if (fragments[i].indexOf("Wizard") >= 0 || fragments[i].indexOf("Dashboard") >= 0)
+                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], null, ICONS[i], fragments[i]));
+        drawerItems.add(new DividerDrawerItem());
+        for (int i = 0; i < drawerActions.length; i++)
+            if (fragments[i].indexOf("Wizard") < 0 && fragments[i].indexOf("Dashboard") < 0)
+                drawerItems.add(createSecondaryDrawerItem(drawerActions[i], null, ICONS[i], fragments[i]));
+        drawerItems.add(new DividerDrawerItem());
+
+        return drawerItems;
+    }
+
+    private SecondaryDrawerItem createSecondaryDrawerItem(String title, String badge, String icon, String fragmentID) {
+        SecondaryDrawerItem item = new SecondaryDrawerItem();
+        item.withName(title)
+                .withBadge(badge)
+                .withTag(fragmentID)
+                .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600);
+        if (mSharedPrefs.darkThemeEnabled())
+            item.withIconColorRes(R.color.white);
+        return item;
+    }
+
+    private PrimaryDrawerItem createPrimaryDrawerItem(String title, String badge, String icon, String fragmentID) {
+        PrimaryDrawerItem item = new PrimaryDrawerItem();
+        item.withName(title).withBadge(badge).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+                .withTag(fragmentID);
+        if (mSharedPrefs.darkThemeEnabled())
+            item.withIconColorRes(R.color.white);
+        return item;
     }
 
     private void checkDomoticzServerUpdate() {
@@ -617,6 +544,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
 
     private void getCurrentServerVersion() {
         // Get current Domoticz server version
@@ -671,38 +599,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, this.getString(R.string.update_server));
         }
-    }
-
-    /**
-     * Starts the scheduled tasks service via GCM Network manager
-     * Automatically detects if this has been done before
-     */
-    private void setScheduledTasks() {
-        UsefulBits.setScheduledTasks(this);
-    }
-
-    private void showSimpleSnackbar(String message) {
-        CoordinatorLayout layout = getFragmentCoordinatorLayout();
-        if (layout != null)
-            UsefulBits.showSimpleSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
-        else
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    public CoordinatorLayout getFragmentCoordinatorLayout() {
-        CoordinatorLayout layout = null;
-        try {
-            Fragment f = getVisibleFragment();
-            if (f != null) {
-                View v = f.getView();
-                if (v != null)
-                    layout = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
-            ex.printStackTrace();
-        }
-        return layout;
     }
 
     @Override
@@ -834,16 +730,12 @@ public class MainActivity extends AppCompatActivity {
                     showServerDialog();
                     return true;
             }
-
-            // Activate the navigation drawer toggle
-            if (mDrawerToggle.onOptionsItemSelected(item)) {
-                return true;
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public void showServerDialog() {
         String[] serverNames = new String[mServerUtil.getServerList().size()];
@@ -887,6 +779,64 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+
+    /**
+     * Starts the scheduled tasks service via GCM Network manager
+     * Automatically detects if this has been done before
+     */
+    private void setScheduledTasks() {
+        UsefulBits.setScheduledTasks(this);
+    }
+
+    private void showSimpleSnackbar(String message) {
+        CoordinatorLayout layout = getFragmentCoordinatorLayout();
+        if (layout != null)
+            UsefulBits.showSimpleSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
+        else
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public CoordinatorLayout getFragmentCoordinatorLayout() {
+        CoordinatorLayout layout = null;
+        try {
+            Fragment f = getVisibleFragment();
+            if (f != null) {
+                View v = f.getView();
+                if (v != null)
+                    layout = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
+            ex.printStackTrace();
+        }
+        return layout;
+    }
+
+
+    public Fragment getVisibleFragment() {
+        try {
+            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+            List<Fragment> fragments = fragmentManager.getFragments();
+            for (Fragment fragment : fragments) {
+                if (fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+
+            return null;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private void stopCameraTimer() {
+        if (cameraRefreshTimer != null) {
+            cameraRefreshTimer.cancel();
+            cameraRefreshTimer.purge();
+            cameraRefreshTimer = null;
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -898,14 +848,6 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         stopCameraTimer();
-    }
-
-    private void stopCameraTimer() {
-        if (cameraRefreshTimer != null) {
-            cameraRefreshTimer.cancel();
-            cameraRefreshTimer.purge();
-            cameraRefreshTimer = null;
-        }
     }
 
     @Override

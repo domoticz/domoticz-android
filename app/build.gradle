@@ -104,9 +104,7 @@ dependencies {
     compile 'com.splunk.mint:mint:5.0.0'
     compile 'com.larswerkman:lobsterpicker:1.0.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
-
     compile 'com.github.dexafree:MaterialList:v3.2.2'
-
     compile 'com.github.hotchemi:android-rate:0.5.6'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.fenjuly:SpinnerLoader:fd5b8ab578'
@@ -115,6 +113,10 @@ dependencies {
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
     compile 'com.github.jd-alexander:LikeButton:0.1.8'
     compile 'jp.wasabeef:recyclerview-animators:2.2.1'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
+    compile('com.mikepenz:materialdrawer:5.2.0@aar') {
+        transitive = true
+    }
 
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')

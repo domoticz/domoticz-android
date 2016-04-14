@@ -122,7 +122,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         super.onAttach(context);
         mContext = context;
         mSharedPrefs = new SharedPrefUtil(mContext);
-        getActionBar().setTitle(R.string.title_plans);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_plans);
     }
 
     @Override

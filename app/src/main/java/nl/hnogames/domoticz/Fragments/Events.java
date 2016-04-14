@@ -56,7 +56,8 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_events);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_events);
     }
 
     @Override

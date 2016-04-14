@@ -105,11 +105,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     @Override
     public void onConnectionOk() {
-        getActionBar().setTitle(R.string.title_dashboard);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_dashboard);
         super.showSpinner(true);
         if (getView() != null) {
             if (planName != null && planName.length() > 0)
-                getActionBar().setTitle(planName + "");
+                if (getActionBar() != null)
+                    getActionBar().setTitle(planName + "");
             processDashboard();
         }
     }

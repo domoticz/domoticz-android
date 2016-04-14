@@ -90,7 +90,9 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_switches);
+
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_switches);
         initAnimation();
     }
 
