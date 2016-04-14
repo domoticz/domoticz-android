@@ -400,6 +400,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         }
     }
 
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
     interface Buttons {
         int DEFAULT = 0;
         int TEXT = 1;
@@ -443,10 +447,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
-    }
-
-    private void handleLikeButtonClick(int idx, boolean checked) {
-        listener.onLikeButtonClick(idx, checked);
     }
 
     private class ItemFilter extends Filter {

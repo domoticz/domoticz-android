@@ -143,7 +143,9 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 else {
                     chart.setComboLineColumnChartData(columnData);
                     setViewPort(chart);
-                    getActivity().invalidateOptionsMenu();
+
+                    if (getActivity() != null)
+                        getActivity().invalidateOptionsMenu();
                 }
             }
 

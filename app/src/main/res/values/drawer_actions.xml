@@ -35,17 +35,17 @@
     </string-array>
 
     <array name="drawer_icons" translatable="false">
-        <item>@drawable/ic_wizard</item>
-        <item>@drawable/ic_dashboard</item>
-        <item>@drawable/ic_scenes</item>
-        <item>@drawable/ic_switch</item>
-        <item>@drawable/ic_utilities</item>
-        <item>@drawable/ic_temperature</item>
-        <item>@drawable/ic_weather</item>
-        <item>@drawable/ic_cameras</item>
-        <item>@drawable/ic_plan</item>
-        <item>@drawable/ic_logs</item>
-        <item>@drawable/ic_event</item>
-        <item>@drawable/ic_vars</item>
+        <item>gmd_build</item>
+        <item>gmd_dashboard</item>
+        <item>gmd_view_carousel</item>
+        <item>gmd_lightbulb_outline</item>
+        <item>gmd_dvr</item>
+        <item>gmd_opacity</item>
+        <item>gmd_wb_sunny</item>
+        <item>gmd_camera</item>
+        <item>gmd_location_city</item>
+        <item>gmd_bug_report</item>
+        <item>gmd_event</item>
+        <item>gmd_assignment</item>
     </array>
 </resources>

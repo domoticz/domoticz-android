@@ -458,7 +458,7 @@ public class SharedPrefUtil {
         editor.putStringSet(PREF_NAVIGATION_ITEMS, selections).apply();
     }
 
-    public int[] getNavigationIcons() {
+    public String[] getNavigationIcons() {
         if (!prefs.contains(PREF_NAVIGATION_ITEMS)) setNavigationDefaults();
 
         TypedArray icons = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
@@ -466,14 +466,13 @@ public class SharedPrefUtil {
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);
 
         if (selections != null) {
-
-            int[] selectedICONS = new int[selections.size()];
+            String[] selectedICONS = new String[selections.size()];
             int iconIndex = 0;
             int index = 0;
             for (String v : allNames) {
                 for (String s : selections) {
                     if (s.equals(v)) {
-                        selectedICONS[iconIndex] = icons.getResourceId(index, 0);
+                        selectedICONS[iconIndex] = icons.getString(index);
                         iconIndex++;
                     }
                 }

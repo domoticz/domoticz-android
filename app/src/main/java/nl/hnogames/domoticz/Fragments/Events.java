@@ -29,13 +29,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.Adapters.DashboardAdapter;
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
@@ -55,7 +55,8 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_events);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_events);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
                     public void onEventClick(final int id, boolean action) {
-                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
+                        UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT);
                     }
                 });
 

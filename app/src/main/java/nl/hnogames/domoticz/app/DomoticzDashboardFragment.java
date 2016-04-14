@@ -135,8 +135,7 @@ public class DomoticzDashboardFragment extends Fragment {
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
     }
 
-    public void setGridViewLayout()
-    {
+    public void setGridViewLayout() {
 
         try {
 
@@ -144,49 +143,42 @@ public class DomoticzDashboardFragment extends Fragment {
             float screenWidth = 0;
             boolean isPortrait = false;
 
-            if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
 
-            if(getActivity() instanceof MainActivity) {
+            if (getActivity() instanceof MainActivity) {
                 isTablet = !((MainActivity) getActivity()).onPhone;
             }
 
             gridView.setHasFixedSize(true);
 
             if (!mSharedPrefs.showDashboardAsList()) {
-                if(isTablet)
-                {
-                    if(isPortrait) {
+                if (isTablet) {
+                    if (isPortrait) {
                         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                         gridView.setLayoutManager(mLayoutManager);
-                    }
-                    else{
+                    } else {
                         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
                         gridView.setLayoutManager(mLayoutManager);
                     }
-                }
-                else{
+                } else {
                     GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {
-                if(isTablet)
-                {
-                    if(isPortrait) {
+                if (isTablet) {
+                    if (isPortrait) {
                         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
-                    }
-                    else{
+                    } else {
                         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
                     }
-                }
-                else {
-                    if(isPortrait) {
+                } else {
+                    if (isPortrait) {
                         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
-                    }
-                    else{
+                    } else {
                         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
                     }
@@ -194,7 +186,8 @@ public class DomoticzDashboardFragment extends Fragment {
             }
 
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
     }
 

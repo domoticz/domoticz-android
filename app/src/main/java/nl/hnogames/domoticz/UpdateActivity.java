@@ -338,7 +338,7 @@ public class UpdateActivity extends AppCompatActivity {
         CoordinatorLayout fragmentCoordinatorLayout =
                 (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (fragmentCoordinatorLayout != null) {
-            Snackbar.make(fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
         }
     }
 

@@ -302,6 +302,50 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         return filteredData.size();
     }
 
+    public void setButtons(DataObjectHolder holder, int button) {
+        if (holder.buttonLog != null) {
+            holder.buttonLog.setVisibility(View.GONE);
+        }
+        if (holder.buttonTimer != null) {
+            holder.buttonTimer.setVisibility(View.GONE);
+        }
+        if (holder.buttonOff != null) {
+            holder.buttonOff.setVisibility(View.GONE);
+        }
+        if (holder.buttonOn != null) {
+            holder.buttonOn.setVisibility(View.GONE);
+        }
+
+        switch (button) {
+            case Buttons.SCENE:
+                holder.buttonOn.setVisibility(View.VISIBLE);
+                holder.buttonLog.setVisibility(View.VISIBLE);
+                break;
+            case Buttons.GROUP:
+                holder.buttonOn.setVisibility(View.VISIBLE);
+                holder.buttonOff.setVisibility(View.VISIBLE);
+                holder.buttonLog.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
+    private void handleLogButtonClick(int idx) {
+        listener.onLogButtonClick(idx);
+    }
+
+    public void handleClick(int idx, boolean action) {
+        listener.onSceneClick(idx, action);
+    }
+
+    interface Buttons {
+        int SCENE = 0;
+        int GROUP = 1;
+    }
+
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView switch_name, signal_level, switch_battery_level;
         Boolean isProtected;
@@ -338,50 +382,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
-    }
-
-    public void setButtons(DataObjectHolder holder, int button) {
-        if (holder.buttonLog != null) {
-            holder.buttonLog.setVisibility(View.GONE);
-        }
-        if (holder.buttonTimer != null) {
-            holder.buttonTimer.setVisibility(View.GONE);
-        }
-        if (holder.buttonOff != null) {
-            holder.buttonOff.setVisibility(View.GONE);
-        }
-        if (holder.buttonOn != null) {
-            holder.buttonOn.setVisibility(View.GONE);
-        }
-
-        switch (button) {
-            case Buttons.SCENE:
-                holder.buttonOn.setVisibility(View.VISIBLE);
-                holder.buttonLog.setVisibility(View.VISIBLE);
-                break;
-            case Buttons.GROUP:
-                holder.buttonOn.setVisibility(View.VISIBLE);
-                holder.buttonOff.setVisibility(View.VISIBLE);
-                holder.buttonLog.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
-    interface Buttons {
-        int SCENE = 0;
-        int GROUP = 1;
-    }
-
-    private void handleLikeButtonClick(int idx, boolean checked) {
-        listener.onLikeButtonClick(idx, checked);
-    }
-
-    private void handleLogButtonClick(int idx) {
-        listener.onLogButtonClick(idx);
-    }
-
-    public void handleClick(int idx, boolean action) {
-        listener.onSceneClick(idx, action);
     }
 
     private class ItemFilter extends Filter {
