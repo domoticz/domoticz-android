@@ -45,6 +45,7 @@ import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
+import nl.hnogames.domoticz.Interfaces.AuthReceiver;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
@@ -67,6 +68,7 @@ import nl.hnogames.domoticz.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
+import nl.hnogames.domoticz.Interfaces.UsersReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
@@ -444,6 +446,18 @@ public class Domoticz {
                 url = Url.System.EVENTS;
                 break;
 
+            case Json.Url.Request.USERS:
+                url = Url.System.USERS;
+                break;
+
+            case Json.Url.Request.AUTH:
+                url = Url.System.AUTH;
+                break;
+
+            case Json.Url.Request.LOGOFF:
+                url = Url.System.LOGOFF;
+                break;
+
             case Json.Url.Request.EVENTXML:
                 url = Url.System.EVENTXML;
                 break;
@@ -702,12 +716,10 @@ public class Domoticz {
     }
 
     public String getUserCredentials(String credential) {
-
         if (credential.equals(Authentication.USERNAME)
                 || credential.equals(Authentication.PASSWORD)) {
 
             String username, password;
-
             if (isUserOnLocalWifi()) {
                 logger("On local wifi");
                 username = mServerUtil.getActiveServer().getLocalServerUsername();
@@ -720,9 +732,37 @@ public class Domoticz {
             HashMap<String, String> credentials = new HashMap<>();
             credentials.put(Authentication.USERNAME, username);
             credentials.put(Authentication.PASSWORD, password);
-
             return credentials.get(credential);
         } else return "";
+    }
+
+    /**
+     * Get's the version of the update (if available)
+     *
+     * @param receiver to get the callback on
+     */
+    public void getUserAuthenticationRights(AuthReceiver receiver) {
+        AuthParser parser = new AuthParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.AUTH);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1);
+    }
+
+    public void setUserCredentials(String username, String password) {
+        if (!UsefulBits.isEmpty(username) && !UsefulBits.isEmpty(password)) {
+            if (isUserOnLocalWifi()) {
+                logger("On local wifi");
+                mServerUtil.getActiveServer().setLocalServerUsername(username);
+                mServerUtil.getActiveServer().setLocalServerPassword(password);
+            } else {
+                logger("Not on local wifi");
+                mServerUtil.getActiveServer().setRemoteServerUsername(username);
+                mServerUtil.getActiveServer().setRemoteServerPassword(password);
+            }
+            mServerUtil.saveDomoticzServers(true);
+        }
     }
 
     /**
@@ -1156,6 +1196,23 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    public void getUsers(UsersReceiver receiver) {
+        UsersParser parser = new UsersParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.USERS);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
+    public void LogOff() {
+        String url = constructGetUrl(Json.Url.Request.LOGOFF);
+        RequestUtil.makeJsonGetRequest(new LogOffParser(),
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
     public void getEvents(EventReceiver receiver) {
         EventsParser parser = new EventsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.EVENTS);
@@ -1547,6 +1604,9 @@ public class Domoticz {
                 int NOTIFICATIONS = 31;
                 int LANGUAGE = 32;
                 int SCENELOG = 33;
+                int USERS = 34;
+                int LOGOFF = 35;
+                int AUTH = 36;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1750,6 +1810,9 @@ public class Domoticz {
             String ADD_MOBILE_DEVICE = "/json.htm?type=command&param=addmobiledevice";
             String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
             String LANGUAGE_TRANSLATIONS = "/i18n/domoticz-";
+            String USERS = "/json.htm?type=users";
+            String AUTH = "/json.htm?type=command&param=getauth";
+            String LOGOFF = "/json.htm?type=command&param=dologout";
         }
     }
 

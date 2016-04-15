@@ -2,6 +2,7 @@ package nl.hnogames.domoticz.Utils;
 
 import android.content.Context;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -61,6 +62,9 @@ public class SerializableManager {
      */
     public static Object readSerializedObject(Context context, String fileName) {
         Object objectToReturn = null;
+
+        if (!new File(fileName).exists())
+            return null;
 
         try {
             FileInputStream fis = context.openFileInput(fileName);

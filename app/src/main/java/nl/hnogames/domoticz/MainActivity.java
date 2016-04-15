@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
@@ -38,6 +60,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,21 +68,25 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
+import nl.hnogames.domoticz.Containers.UserInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
@@ -145,21 +172,32 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
 
+            appRate();
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
-            drawNavigationMenu();
+
+            drawNavigationMenu(null);
             addFragment();
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
             setScheduledTasks();
-            appRate();
 
             WidgetUtils.RefreshWidgets(this);
             UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-            UsefulBits.saveServerConfigToActiveServer(this, false, false);
             AppController.getInstance().resendRegistrationIdToBackend();
 
+            UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
+                @Override
+                public void onReceiveConfig(ConfigInfo settings) {
+                    drawNavigationMenu(settings);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    drawNavigationMenu(null);
+                }
+            }, mServerUtil.getActiveServer().getConfigInfo(this));
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -408,15 +446,82 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void drawNavigationMenu() {
+    public void drawNavigationMenu(final ConfigInfo mConfig) {
+        ConfigInfo config = mConfig;
+
+        if (config == null)
+            config = mServerUtil.getActiveServer().getConfigInfo(this);
+
         // Create the AccountHeader
+        final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.darkheader)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Domoticz").withEmail("info@domoticz.com").withIcon(R.drawable.ic_launcher)
+                        new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
+                                .withIcon(R.drawable.ic_launcher)
                 )
+                .withOnlyMainProfileImageVisible(true)
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
+                        if (!current) {
+                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(String password) {
+                                    if (UsefulBits.isEmpty(password)) {
+                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                        drawNavigationMenu(finalConfig);
+                                    } else {
+                                        for (UserInfo user : finalConfig.getUsers()) {
+                                            if (user.getUsername() == profile.getEmail().getText()) {
+                                                String md5Pass = UsefulBits.getMd5String(password);
+                                                if (md5Pass.equals(user.getPassword())) {
+                                                    //if correct set credentials in activeserver and recreate drawer
+                                                    domoticz.setUserCredentials(user.getUsername(), password);
+                                                    domoticz.LogOff();
+                                                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
+                                                        @Override
+                                                        public void onReceiveConfig(ConfigInfo settings) {
+                                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
+                                                            drawNavigationMenu(finalConfig);
+                                                            refreshFragment();
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Exception error) {
+                                                        }
+                                                    }, finalConfig);
+                                                } else {
+                                                    UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                    drawNavigationMenu(finalConfig);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                            drawNavigationMenu(finalConfig);
+                        }
+                        return false;
+                    }
+                })
                 .build();
+
+        if (config != null &&
+                config.getUsers() != null) {
+            for (UserInfo user : config.getUsers()) {
+                headerResult.addProfiles(
+                        new ProfileDrawerItem().withName(user.getRightsValue(this)
+                        ).withEmail(user.getUsername())
+                                .withIcon(R.drawable.users)
+                                .withEnabled(user.isEnabled())
+                );
+            }
+        }
 
         drawer = new DrawerBuilder()
                 .withActivity(this)
@@ -424,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(headerResult)
                 .withToolbar(toolbar)
-                .withSelectedItem(-1)
+                .withSelectedItem(0)
                 .withDrawerItems(getDrawerItems())
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override

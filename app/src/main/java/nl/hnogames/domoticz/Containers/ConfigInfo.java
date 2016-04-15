@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ConfigInfo implements Serializable {
 
@@ -40,6 +41,7 @@ public class ConfigInfo implements Serializable {
     private long dateOfConfig;
     private String language;
     private String DashboardType;
+    private ArrayList<UserInfo> mUsers;
 
     public ConfigInfo(JSONObject row) throws JSONException {
         mapFields(row);
@@ -122,5 +124,13 @@ public class ConfigInfo implements Serializable {
 
     public String getDashboardType() {
         return DashboardType;
+    }
+
+    public ArrayList<UserInfo> getUsers() {
+        return mUsers;
+    }
+
+    public void setUsers(ArrayList<UserInfo> mUsers) {
+        this.mUsers = mUsers;
     }
 }

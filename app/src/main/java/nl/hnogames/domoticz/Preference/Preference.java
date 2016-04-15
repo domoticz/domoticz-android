@@ -183,7 +183,7 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.saveServerConfigToActiveServer(mContext, true, true);
+                UsefulBits.getServerConfigForActiveServer(mContext, true, null, null);
                 return true;
             }
         });
