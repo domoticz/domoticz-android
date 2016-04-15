@@ -39,8 +39,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_domoticz"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppThemeMain"
         tools:replace="android:icon, android:label, android:theme, android:name">
+
         <activity android:name=".Service.NFCServiceActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />

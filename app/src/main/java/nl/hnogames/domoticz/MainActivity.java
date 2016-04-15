@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
+            setTheme(R.style.AppThemeDarkMain);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             domoticz = new Domoticz(this, mServerUtil);
 
             drawNavigationMenu(null);
-            addFragment();
+            //addFragment();
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
@@ -191,11 +191,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
+                    drawer.setSelectionAtPosition(1);
                 }
 
                 @Override
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
+                    drawer.setSelectionAtPosition(1);
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
         } else {
@@ -215,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                         this.finish();
                     else {
                         if (mSharedPrefs.darkThemeEnabled())
-                            setTheme(R.style.AppThemeDark);
+                            setTheme(R.style.AppThemeDarkMain);
 
                         buildScreen();
                     }
@@ -223,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
                     if (mSharedPrefs.darkThemeEnabled())
-                        setTheme(R.style.AppThemeDark);
+                        setTheme(R.style.AppThemeDarkMain);
                     this.recreate();
                     break;
                 case iQRResultCode:
@@ -525,11 +527,11 @@ public class MainActivity extends AppCompatActivity {
 
         drawer = new DrawerBuilder()
                 .withActivity(this)
-                .withTranslucentStatusBar(true)
+                .withTranslucentStatusBar(false)
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(headerResult)
                 .withToolbar(toolbar)
-                .withSelectedItem(0)
+                .withSelectedItem(-1)
                 .withDrawerItems(getDrawerItems())
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -564,6 +566,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
     }
 
     private List<IDrawerItem> getDrawerItems() {
@@ -588,11 +591,13 @@ public class MainActivity extends AppCompatActivity {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
                 .withBadge(badge)
-                .withTag(fragmentID)
                 .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
-                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600);
+                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+                .withTag(fragmentID);
+
         if (mSharedPrefs.darkThemeEnabled())
             item.withIconColorRes(R.color.white);
+
         return item;
     }
 
@@ -601,8 +606,10 @@ public class MainActivity extends AppCompatActivity {
         item.withName(title).withBadge(badge).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
                 .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
                 .withTag(fragmentID);
+
         if (mSharedPrefs.darkThemeEnabled())
             item.withIconColorRes(R.color.white);
+
         return item;
     }
 
