@@ -391,13 +391,14 @@ public class UsefulBits {
                                 domoticz.getUserAuthenticationRights(new AuthReceiver() {
                                     @Override
                                     public void onReceiveAuthentication(AuthInfo auth) {
+                                        ArrayList<UserInfo> mDetailUserInfo = mUserInfo;
                                         //also add current user
                                         UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                                                 UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
                                                 auth.getRights());
 
-                                        mUserInfo.add(currentUser);
-                                        configInfo.setUsers(mUserInfo);
+                                        mDetailUserInfo.add(currentUser);
+                                        configInfo.setUsers(mDetailUserInfo);
                                         mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
                                         mServerUtil.saveDomoticzServers(true);
 

@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
                     profile.withSelectedColorRes(R.color.material_indigo_600);
                 }
 
-                headerResult.addProfiles();
+                headerResult.addProfiles(profile);
             }
         }
 
