@@ -47,11 +47,6 @@ public class ServerUtil {
     private final String SERVER_PREFS = "remote_servers";
     private final String SERVER_PREFS_ACTIVE = "active_server";
 
-    private final String JSON_CONFIG_INFO = "configInfo";
-    private final String JSON_VALUE_PAIRS = "nameValuePairs";
-    private final String JSON_OBJECT = "jsonObject";
-    private final String serverUpdateInfoJSON_SERVER_UPDATE_INFO = "serverUpdateInfo";
-
     private Context mContext;
 
     private ServerInfo mActiveServer;
@@ -91,6 +86,10 @@ public class ServerUtil {
 
         if (!UsefulBits.isEmpty(serverSettings)) {
             mServerList = new ArrayList<>();
+            String JSON_VALUE_PAIRS = "nameValuePairs";
+            String JSON_CONFIG_INFO = "configInfo";
+            String JSON_OBJECT = "jsonObject";
+            String serverUpdateInfoJSON_SERVER_UPDATE_INFO = "serverUpdateInfo";
             try {
                 JSONArray jsonSettingsArray = new JSONArray(serverSettings);
                 for (int i = 0; i < jsonSettingsArray.length(); i++) {
