@@ -374,6 +374,7 @@ public class UsefulBits {
                                     + " days old (max is: "
                                     + String.valueOf(DAYS_TO_CHECK_FOR_SERVER_CONFIG)
                                     + " days old)", Toast.LENGTH_SHORT);
+                receiver.onReceiveConfig(currentConfig);
                 return;
             }
         }

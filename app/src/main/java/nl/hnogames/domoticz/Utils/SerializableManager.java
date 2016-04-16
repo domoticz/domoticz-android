@@ -1,6 +1,7 @@
 package nl.hnogames.domoticz.Utils;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,14 +41,20 @@ public class SerializableManager {
      * @param fileName     The name of the file.
      */
     public static void saveSerializable(Context context, Object objectToSave, String fileName) {
+        File SettingsFile = new File(Environment.getExternalStorageDirectory(),
+                "/Domoticz/DomoticzSettings.txt");
+
+        final String sPath = SettingsFile.getPath().
+                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+
+        //noinspection unused
+        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
+        String combinedFilename = sPath + "/" + fileName;
+
         try {
-            FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            objectOutputStream.writeObject(objectToSave);
-
-            objectOutputStream.close();
-            fileOutputStream.close();
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(combinedFilename));
+            output.writeObject(objectToSave);
+            output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,16 +70,23 @@ public class SerializableManager {
     public static Object readSerializedObject(Context context, String fileName) {
         Object objectToReturn = null;
 
-        if (!new File(fileName).exists())
+        File SettingsFile = new File(Environment.getExternalStorageDirectory(),
+                "/Domoticz/DomoticzSettings.txt");
+
+        final String sPath = SettingsFile.getPath().
+                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+
+        //noinspection unused
+        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
+        String combinedFilename = sPath + "/" + fileName;
+
+        if (!new File(combinedFilename).exists())
             return null;
 
         try {
-            FileInputStream fis = context.openFileInput(fileName);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            objectToReturn = ois.readObject();
-
-            ois.close();
-            fis.close();
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(combinedFilename));
+            objectToReturn = input.readObject();
+            input.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
