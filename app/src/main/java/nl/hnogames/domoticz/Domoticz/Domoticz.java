@@ -251,19 +251,14 @@ public class Domoticz {
     }
 
     public String getErrorMessage(Exception error) {
-
-        String errorMessage;
-
+        String errorMessage = "";
         if (error instanceof VolleyError) {
-
             VolleyUtil mVolleyUtil = new VolleyUtil(mContext);
             VolleyError volleyError = (VolleyError) error;
-
             errorMessage = mVolleyUtil.getVolleyErrorMessage(volleyError);
-        } else {
-            errorMessage = error.getMessage();
         }
-
+        if(UsefulBits.isEmpty(errorMessage))
+            errorMessage = error.getMessage();
         return errorMessage;
     }
 

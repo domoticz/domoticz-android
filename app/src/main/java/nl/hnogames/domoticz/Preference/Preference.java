@@ -559,9 +559,10 @@ public class Preference extends PreferenceFragment {
                 }
                 domoticzVersion.setSummary(message);
             }
-
         } catch (Exception ex) {
-            Log.e(TAG, mDomoticz.getErrorMessage(ex));
+            String ex_message = mDomoticz.getErrorMessage(ex);
+            if(!UsefulBits.isEmpty(ex_message))
+                Log.e(TAG, mDomoticz.getErrorMessage(ex));
         }
     }
 
