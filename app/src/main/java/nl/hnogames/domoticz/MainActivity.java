@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (resultCode == 789) {
             //reload settings
-            startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
+            startActivityForResult(new Intent(this, SettingsActivity.class), iSettingsResultCode);
         }
     }
 
@@ -454,15 +454,18 @@ public class MainActivity extends AppCompatActivity {
         if (config == null)
             config = mServerUtil.getActiveServer().getConfigInfo(this);
 
+        ProfileDrawerItem loggedinAccount = new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
+                .withIcon(R.drawable.ic_launcher);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            loggedinAccount.withSelectedColorRes(R.color.material_indigo_600);
+        }
+
         // Create the AccountHeader
         final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.darkheader)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
-                                .withIcon(R.drawable.ic_launcher)
-                )
+                .addProfiles(loggedinAccount)
                 .withOnlyMainProfileImageVisible(true)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -516,12 +519,17 @@ public class MainActivity extends AppCompatActivity {
         if (config != null &&
                 config.getUsers() != null) {
             for (UserInfo user : config.getUsers()) {
-                headerResult.addProfiles(
-                        new ProfileDrawerItem().withName(user.getRightsValue(this)
-                        ).withEmail(user.getUsername())
-                                .withIcon(R.drawable.users)
-                                .withEnabled(user.isEnabled())
-                );
+
+                ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
+                ).withEmail(user.getUsername())
+                        .withIcon(R.drawable.users)
+                        .withEnabled(user.isEnabled());
+
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    profile.withSelectedColorRes(R.color.material_indigo_600);
+                }
+
+                headerResult.addProfiles();
             }
         }
 
@@ -544,7 +552,10 @@ public class MainActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            if (drawerItem.getTag() != null) {
+                            if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
+                                stopCameraTimer();
+                                startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
+                            } else if (drawerItem.getTag() != null) {
                                 try {
                                     latestFragment = Fragment.instantiate(MainActivity.this,
                                             String.valueOf(drawerItem.getTag()));
@@ -567,6 +578,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
 
+        drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), null, "gmd_settings", "Settings"));
     }
 
     private List<IDrawerItem> getDrawerItems() {
@@ -582,7 +594,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < drawerActions.length; i++)
             if (fragments[i].indexOf("Wizard") < 0 && fragments[i].indexOf("Dashboard") < 0)
                 drawerItems.add(createSecondaryDrawerItem(drawerActions[i], null, ICONS[i], fragments[i]));
-        drawerItems.add(new DividerDrawerItem());
 
         return drawerItems;
     }
@@ -595,8 +606,10 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
                 .withTag(fragmentID);
 
-        if (mSharedPrefs.darkThemeEnabled())
+        if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
+            item.withSelectedColorRes(R.color.material_indigo_600);
+        }
 
         return item;
     }
@@ -607,8 +620,10 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
                 .withTag(fragmentID);
 
-        if (mSharedPrefs.darkThemeEnabled())
+        if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
+            item.withSelectedColorRes(R.color.material_indigo_600);
+        }
 
         return item;
     }
@@ -812,10 +827,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.action_camera_pause:
                     stopCameraTimer();
                     invalidateOptionsMenu();//set pause button
-                    return true;
-                case R.id.action_settings:
-                    stopCameraTimer();
-                    startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
                     return true;
                 case R.id.action_sort:
                     SortDialog infoDialog = new SortDialog(

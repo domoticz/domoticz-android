@@ -4,12 +4,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_switch_server"
         android:orderInCategory="400"
         android:title="@string/action_switch_server"
