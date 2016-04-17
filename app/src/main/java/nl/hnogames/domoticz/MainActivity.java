@@ -180,9 +180,6 @@ public class MainActivity extends AppCompatActivity {
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
 
-            drawNavigationMenu(null);
-            //addFragment();
-
             setupMobileDevice();
             checkDomoticzServerUpdate();
             setScheduledTasks();
@@ -196,16 +193,18 @@ public class MainActivity extends AppCompatActivity {
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
-                    drawer.setSelectionAtPosition(1);
+                    //drawer.setSelectionAtPosition(1);
                 }
 
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
-                    drawer.setSelectionAtPosition(1);
+                    //drawer.setSelectionAtPosition(1);
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
+
+            addFragment();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);

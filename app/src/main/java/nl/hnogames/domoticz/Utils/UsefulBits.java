@@ -50,6 +50,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.AuthInfo;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.UserInfo;
@@ -62,9 +63,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.TaskService;
 
 public class UsefulBits {
-
     public static final String TASK_TAG_PERIODIC = "taskPeriodic";
-
     private static final int RC_PLAY_SERVICES = 123;
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -95,10 +94,12 @@ public class UsefulBits {
         return '\u00B0';
     }
 
+    @DebugLog
     public static String createUniqueId() {
         return UUID.randomUUID().toString();
     }
 
+    @DebugLog
     public static double[] rgb2hsv(int red, int green, int blue) {
         double computedH, computedS, computedV;
         double r, g, b;
@@ -130,6 +131,7 @@ public class UsefulBits {
         return new double[]{computedH, computedS, computedV};
     }
 
+    @DebugLog
     public static String getMd5String(String password) {
         StringBuilder hexString = new StringBuilder();
         MessageDigest md;
@@ -158,6 +160,7 @@ public class UsefulBits {
      *
      * @param in_array byte array to convert
      */
+    @DebugLog
     public static String ByteArrayToHexString(byte[] in_array) {
         int i, j, in;
         String[] hex = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
@@ -179,6 +182,7 @@ public class UsefulBits {
      * @param context Context
      * @param lang    Language to display
      */
+    @DebugLog
     public static void setDisplayLanguage(Context context, String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = context.getResources();
@@ -193,6 +197,7 @@ public class UsefulBits {
      *
      * @return Returns the phone display language
      */
+    @DebugLog
     public static String getPhoneDisplayLocale() {
         if (!isEmpty(Locale.getDefault().getLanguage()))
             return Locale.getDefault().getLanguage();
@@ -208,6 +213,7 @@ public class UsefulBits {
      * @param context Context
      * @return Returns the active language
      */
+    @DebugLog
     public static String getActiveLanguage(Context context) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
 
@@ -230,6 +236,7 @@ public class UsefulBits {
      * @param context       Context
      * @param forceDownload Force downloading the language anyway
      */
+    @DebugLog
     public static void checkDownloadedLanguage(Context context, ServerUtil serverUtil, boolean forceDownload, boolean fromService) {
 
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
@@ -277,6 +284,7 @@ public class UsefulBits {
      *
      * @param activity to restart
      */
+    @DebugLog
     public static void restartApplication(Activity activity) {
         Intent refresh = new Intent(activity, MainActivity.class);
         activity.finish();
@@ -290,6 +298,7 @@ public class UsefulBits {
      * @param label    Label of the to copy text
      * @param text     Text to copy
      */
+    @DebugLog
     public static void copyToClipboard(Context mContext, String label, String text) {
         ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, text);
@@ -323,6 +332,7 @@ public class UsefulBits {
      *
      * @param context Context to use
      */
+    @DebugLog
     public static void setScheduledTasks(Context context) {
         final SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(context);
 
@@ -357,6 +367,7 @@ public class UsefulBits {
      * @param context Context
      * @param forced  Force update the config
      */
+    @DebugLog
     public static void getServerConfigForActiveServer(final Context context, boolean forced, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
         final ServerUtil mServerUtil = new ServerUtil(context);
         final Domoticz domoticz = new Domoticz(context, mServerUtil);
@@ -382,15 +393,18 @@ public class UsefulBits {
         // Get Domoticz server configuration
         domoticz.getConfig(new ConfigReceiver() {
             @Override
+            @DebugLog
             public void onReceiveConfig(final ConfigInfo configInfo) {
                 if (configInfo != null) {
                     configInfo.setDateOfConfig(currentTime);
                     domoticz.getUsers(new UsersReceiver() {
                         @Override
+                        @DebugLog
                         public void onReceiveUsers(final ArrayList<UserInfo> mUserInfo) {
                             if (mUserInfo != null) {
                                 domoticz.getUserAuthenticationRights(new AuthReceiver() {
                                     @Override
+                                    @DebugLog
                                     public void onReceiveAuthentication(AuthInfo auth) {
                                         ArrayList<UserInfo> mDetailUserInfo = mUserInfo;
                                         //also add current user
@@ -408,6 +422,7 @@ public class UsefulBits {
                                     }
 
                                     @Override
+                                    @DebugLog
                                     public void onError(Exception error) {
                                     }
                                 });
@@ -418,6 +433,7 @@ public class UsefulBits {
                         }
 
                         @Override
+                        @DebugLog
                         public void onError(Exception error) {
                             if (currentConfig != null) {
                                 configInfo.setUsers(currentConfig.getUsers());
@@ -431,6 +447,7 @@ public class UsefulBits {
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 showSimpleToast(context, String.format(
                         context.getString(R.string.error_couldNotCheckForConfig),
@@ -439,6 +456,7 @@ public class UsefulBits {
         });
     }
 
+    @DebugLog
     public static boolean checkPlayServicesAvailable(final Activity activity) {
         GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
         int resultCode = availability.isGooglePlayServicesAvailable(activity);
@@ -461,6 +479,7 @@ public class UsefulBits {
         return true;
     }
 
+    @DebugLog
     public static void showSimpleToast(Context context, String message, int length) {
         try {
             Toast.makeText(context, message, length).show();
@@ -468,6 +487,7 @@ public class UsefulBits {
         }
     }
 
+    @DebugLog
     public static void showSimpleSnackbar(Context context, CoordinatorLayout coordinatorLayout, int message_resource_id, int length) {
         try {
             if (context != null && coordinatorLayout != null)
@@ -476,6 +496,7 @@ public class UsefulBits {
         }
     }
 
+    @DebugLog
     public static void showSimpleSnackbar(Context context, CoordinatorLayout coordinatorLayout, String message, int length) {
         try {
             if (context != null && coordinatorLayout != null && !UsefulBits.isEmpty(message))
@@ -484,6 +505,7 @@ public class UsefulBits {
         }
     }
 
+    @DebugLog
     public static void showSnackbar(Context context, CoordinatorLayout coordinatorLayout, String message, int length,
                                     Snackbar.Callback callback,
                                     View.OnClickListener onclickListener, String actiontext) {

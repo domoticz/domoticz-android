@@ -85,7 +85,6 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.VolleyUtil;
 
 
-@DebugLog
 public class Domoticz {
 
     public static final int batteryLevelMax = 100;
@@ -1328,7 +1327,6 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    @DebugLog
     public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
