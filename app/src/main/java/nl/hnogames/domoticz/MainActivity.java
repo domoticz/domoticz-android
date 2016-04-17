@@ -68,6 +68,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
@@ -99,6 +100,7 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
+@DebugLog
 public class MainActivity extends AppCompatActivity {
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment latestFragment = null;
     private Drawer drawer;
 
+    @DebugLog
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
@@ -154,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
@@ -189,12 +193,14 @@ public class MainActivity extends AppCompatActivity {
 
             UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
                 @Override
+                @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
                     drawer.setSelectionAtPosition(1);
                 }
 
                 @Override
+                @DebugLog
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
                     drawer.setSelectionAtPosition(1);
@@ -261,11 +267,13 @@ public class MainActivity extends AppCompatActivity {
         domoticz = new Domoticz(this, null);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
+                                 @DebugLog
                                  public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
                                      for (SwitchInfo s : switches) {
                                          if (s.getIdx() == idx) {
                                              domoticz.getStatus(idx, new StatusReceiver() {
                                                  @Override
+                                                 @DebugLog
                                                  public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
                                                      int jsonAction;
                                                      int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -293,17 +301,20 @@ public class MainActivity extends AppCompatActivity {
 
                                                      domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
+                                                         @DebugLog
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
                                                          }
 
                                                          @Override
+                                                         @DebugLog
                                                          public void onError(Exception error) {
                                                          }
                                                      });
                                                  }
 
                                                  @Override
+                                                 @DebugLog
                                                  public void onError(Exception error) {
                                                  }
                                              });
@@ -312,12 +323,14 @@ public class MainActivity extends AppCompatActivity {
                                  }
 
                                  @Override
+                                 @DebugLog
                                  public void onError(Exception error) {
                                  }
                              }
         );
     }
 
+    @DebugLog
     public void refreshFragment() {
         Fragment f = latestFragment;
         if (f instanceof DomoticzRecyclerFragment) {
@@ -328,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
             ((DomoticzDashboardFragment) f).refreshFragment();
     }
 
+    @DebugLog
     public void removeFragmentStack(String fragment) {
         if (stackFragments != null) {
             if (stackFragments.contains(fragment))
@@ -335,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void addFragmentStack(String fragment) {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
@@ -360,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -377,6 +393,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Fragment f = latestFragment;
@@ -387,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void changeFragment(String fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         latestFragment = Fragment.instantiate(MainActivity.this, fragment);
@@ -448,6 +466,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void drawNavigationMenu(final ConfigInfo mConfig) {
         ConfigInfo config = mConfig;
 
@@ -469,12 +488,14 @@ public class MainActivity extends AppCompatActivity {
                 .withOnlyMainProfileImageVisible(true)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
+                    @DebugLog
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
                             PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
+                                @DebugLog
                                 public void onDismiss(String password) {
                                     if (UsefulBits.isEmpty(password)) {
                                         UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
@@ -489,6 +510,7 @@ public class MainActivity extends AppCompatActivity {
                                                     domoticz.LogOff();
                                                     UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
                                                         @Override
+                                                        @DebugLog
                                                         public void onReceiveConfig(ConfigInfo settings) {
                                                             UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
                                                             drawNavigationMenu(finalConfig);
@@ -496,6 +518,7 @@ public class MainActivity extends AppCompatActivity {
                                                         }
 
                                                         @Override
+                                                        @DebugLog
                                                         public void onError(Exception error) {
                                                         }
                                                     }, finalConfig);
@@ -543,13 +566,12 @@ public class MainActivity extends AppCompatActivity {
                 .withDrawerItems(getDrawerItems())
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
+                    @DebugLog
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
-                            try {
+                            if(searchViewAction!=null){
                                 searchViewAction.setQuery("", false);
                                 searchViewAction.clearFocus();
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
 
                             if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
@@ -633,6 +655,7 @@ public class MainActivity extends AppCompatActivity {
             // Get latest Domoticz version update
             domoticz.getUpdate(new UpdateVersionReceiver() {
                 @Override
+                @DebugLog
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
@@ -655,6 +678,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
+                @DebugLog
                 public void onError(Exception error) {
                     String message = String.format(
                             getString(R.string.error_couldNotCheckForUpdates),
@@ -674,6 +698,7 @@ public class MainActivity extends AppCompatActivity {
         // Get current Domoticz server version
         domoticz.getServerVersion(new VersionReceiver() {
             @Override
+            @DebugLog
             public void onReceiveVersion(String serverVersion) {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
@@ -704,6 +729,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
@@ -718,6 +744,7 @@ public class MainActivity extends AppCompatActivity {
         if (layout != null) {
             UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
                 @Override
+                @DebugLog
                 public void onClick(View v) {
                     startActivity(new Intent(MainActivity.this, UpdateActivity.class));
                 }
@@ -726,6 +753,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
@@ -745,11 +773,13 @@ public class MainActivity extends AppCompatActivity {
                     .getActionView(searchMenuItem);
             searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
+                @DebugLog
                 public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
 
                 @Override
+                @DebugLog
                 public boolean onQueryTextChange(String newText) {
                     Fragment n = latestFragment;
                     if (n instanceof DomoticzDashboardFragment) {
@@ -783,6 +813,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
+    @DebugLog
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
@@ -791,9 +822,11 @@ public class MainActivity extends AppCompatActivity {
                         cameraRefreshTimer = new Timer("camera", true);
                         cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                             @Override
+                            @DebugLog
                             public void run() {
                                 runOnUiThread(new Runnable() {
                                     @Override
+                                    @DebugLog
                                     public void run() {
                                         //call refresh fragment
                                         Fragment f = latestFragment;
@@ -834,6 +867,7 @@ public class MainActivity extends AppCompatActivity {
                             R.layout.dialog_switch_logs);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
+                        @DebugLog
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = latestFragment;
@@ -857,6 +891,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @DebugLog
     public void showServerDialog() {
         String[] serverNames = new String[mServerUtil.getServerList().size()];
         int count = 0;
@@ -878,6 +913,7 @@ public class MainActivity extends AppCompatActivity {
                 .items(serverNames)
                 .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
+                    @DebugLog
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         ServerInfo setNew = null;
                         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
@@ -917,6 +953,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @DebugLog
     public CoordinatorLayout getFragmentCoordinatorLayout() {
         CoordinatorLayout layout = null;
         try {
@@ -942,6 +979,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onResume() {
         super.onResume();
         setScreenAlwaysOn();
@@ -949,12 +987,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onDestroy() {
         super.onDestroy();
         stopCameraTimer();
     }
 
     @Override
+    @DebugLog
     public void onBackPressed() {
         if (stackFragments == null || stackFragments.size() <= 1) {
             MainActivity.super.onBackPressed();

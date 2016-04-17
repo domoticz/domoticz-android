@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SceneInfo;
@@ -84,6 +85,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.VolleyUtil;
 
 
+@DebugLog
 public class Domoticz {
 
     public static final int batteryLevelMax = 100;
@@ -111,6 +113,7 @@ public class Domoticz {
     private String snapshot_file_path = "/Domoticz/SnapShot";
 
 
+    @DebugLog
     public Domoticz(Context mContext, ServerUtil serverUtil) {
         this.mContext = mContext;
 
@@ -124,20 +127,24 @@ public class Domoticz {
         mSessionUtil = new SessionUtil(mContext);
         mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
             @Override
+            @DebugLog
             public void ReceiveSSIDs(CharSequence[] entries) {
             }
         });
         debug = mSharedPrefUtil.isDebugEnabled();
     }
 
+    @DebugLog
     public boolean isDebugEnabled() {
         return mSharedPrefUtil.isDebugEnabled();
     }
 
+    @DebugLog
     public void logger(String text) {
         if (debug) Log.d(TAG, text);
     }
 
+    @DebugLog
     public boolean isUserOnLocalWifi() {
         boolean userIsLocal = false;
         if (mServerUtil.getActiveServer().getIsLocalServerAddressDifferent()) {
@@ -158,6 +165,7 @@ public class Domoticz {
         return userIsLocal;
     }
 
+    @DebugLog
     public boolean isConnectionDataComplete(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
@@ -179,6 +187,7 @@ public class Domoticz {
         return result;
     }
 
+    @DebugLog
     public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
         HashMap<String, String> stringHashMap = new HashMap<>();
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
@@ -198,6 +207,7 @@ public class Domoticz {
         return null;
     }
 
+    @DebugLog
     public boolean isUrlValid(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
@@ -216,6 +226,7 @@ public class Domoticz {
         return result;
     }
 
+    @DebugLog
     public boolean isOnOffSwitch(DevicesInfo testSwitch) {
         if (testSwitch.getSwitchTypeVal() <= 0 && testSwitch.getSwitchType() == null)
             return false;
@@ -241,6 +252,7 @@ public class Domoticz {
         return false;
     }
 
+    @DebugLog
     public boolean isOnOffScene(SceneInfo testSwitch) {
         switch (testSwitch.getType()) {
             case Domoticz.Scene.Type.GROUP:
@@ -250,6 +262,7 @@ public class Domoticz {
         return false;
     }
 
+    @DebugLog
     public String getErrorMessage(Exception error) {
         String errorMessage = "";
         if (error instanceof VolleyError) {
@@ -262,6 +275,7 @@ public class Domoticz {
         return errorMessage;
     }
 
+    @DebugLog
     public List<Integer> getSupportedSwitchesValues() {
         List<Integer> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Value.ON_OFF);
@@ -286,6 +300,7 @@ public class Domoticz {
         return switchesSupported;
     }
 
+    @DebugLog
     public List<String> getSupportedSwitchesNames() {
         List<String> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Name.ON_OFF);
@@ -311,6 +326,8 @@ public class Domoticz {
         return switchesSupported;
     }
 
+    /*
+    @DebugLog
     public List<Integer> getWearSupportedSwitchesValues() {
         List<Integer> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Value.ON_OFF);
@@ -325,6 +342,7 @@ public class Domoticz {
         return switchesSupported;
     }
 
+    @DebugLog
     public List<String> getWearSupportedSwitchesNames() {
         List<String> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Name.ON_OFF);
@@ -338,7 +356,9 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.DOORBELL);
         return switchesSupported;
     }
+    */
 
+    @DebugLog
     public void debugTextToClipboard(TextView debugText) {
         String message = debugText.getText().toString();
         UsefulBits.copyToClipboard(mContext, "Domoticz debug data", message);
@@ -526,6 +546,7 @@ public class Domoticz {
         return fullString;
     }
 
+    @DebugLog
     public String constructSetUrl(int jsonSetUrl, int idx, int action, double value) {
         String protocol, baseUrl, url, port, directory, jsonUrl = null, actionUrl;
         StringBuilder buildUrl = new StringBuilder();
@@ -710,6 +731,7 @@ public class Domoticz {
         return fullString;
     }
 
+    @DebugLog
     public String getUserCredentials(String credential) {
         if (credential.equals(Authentication.USERNAME)
                 || credential.equals(Authentication.PASSWORD)) {
@@ -736,6 +758,7 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void getUserAuthenticationRights(AuthReceiver receiver) {
         AuthParser parser = new AuthParser(receiver);
         String url = constructGetUrl(Json.Url.Request.AUTH);
@@ -745,6 +768,7 @@ public class Domoticz {
                 url, mSessionUtil, false, 1);
     }
 
+    @DebugLog
     public void setUserCredentials(String username, String password) {
         if (!UsefulBits.isEmpty(username) && !UsefulBits.isEmpty(password)) {
             if (isUserOnLocalWifi()) {
@@ -767,6 +791,7 @@ public class Domoticz {
      * @param SenderId sender id from the Google services
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void AddMobileDevice(String DeviceId, String SenderId, MobileDeviceReceiver receiver) {
         MobileDeviceParser parser = new MobileDeviceParser(receiver);
         String url = constructGetUrl(Json.Url.Request.ADD_MOBILE_DEVICE);
@@ -786,6 +811,7 @@ public class Domoticz {
      * @param DeviceId UUID of the device
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void CleanMobileDevice(String DeviceId, MobileDeviceReceiver receiver) {
         MobileDeviceParser parser = new MobileDeviceParser(receiver);
         String url = constructGetUrl(Json.Url.Request.CLEAN_MOBILE_DEVICE);
@@ -802,6 +828,7 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
         String url = constructGetUrl(Json.Url.Request.VERSION);
@@ -816,6 +843,7 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void getUpdate(UpdateVersionReceiver receiver) {
         UpdateVersionParser parser = new UpdateVersionParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UPDATE);
@@ -830,6 +858,7 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
         UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UPDATE_DOWNLOAD_READY);
@@ -844,6 +873,7 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
+    @DebugLog
     public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {
         UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
@@ -853,6 +883,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.SCENES);
@@ -862,6 +893,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getScene(ScenesReceiver receiver, int idx) {
         ScenesParser parser = new ScenesParser(receiver, idx);
         String url = constructGetUrl(Json.Url.Request.SCENES);
@@ -871,6 +903,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getPlans(PlansReceiver receiver) {
         PlanParser parser = new PlanParser(receiver);
         String url = constructGetUrl(Json.Url.Request.PLANS);
@@ -880,6 +913,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getCameras(CameraReceiver receiver) {
         CameraParser parser = new CameraParser(receiver, this);
         String url = constructGetUrl(Json.Url.Request.CAMERAS);
@@ -890,10 +924,12 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public String getSnapshotUrl(CameraInfo camera) {
         return constructGetUrl(Json.Url.Request.CAMERA) + camera.getIdx();
     }
 
+    @DebugLog
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = constructGetUrl(Json.Url.Request.SWITCHES);
@@ -903,6 +939,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
@@ -914,6 +951,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
@@ -925,6 +963,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
@@ -936,6 +975,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
         logger("for idx: " + String.valueOf(idx));
@@ -947,6 +987,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getNotifications(int idx, NotificationReceiver notificationReceiver) {
         NotificationsParser parser = new NotificationsParser(notificationReceiver);
         logger("for idx: " + String.valueOf(idx));
@@ -959,6 +1000,7 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
+    @DebugLog
     public void setSecurityPanelAction(int secStatus,
                                        String seccode,
                                        setCommandReceiver receiver) {
@@ -976,6 +1018,7 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
+    @DebugLog
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
@@ -997,6 +1040,7 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
+    @DebugLog
     public void setRGBColorAction(int idx,
                                   int jsonUrl,
                                   long hue,
@@ -1023,6 +1067,7 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
+    @DebugLog
     public void setModalAction(int id,
                                int status, // one of Domoticz.Device.ModalSwitch.Action
                                int action, // behaves like this action == 1 ? 1 : 0
@@ -1043,7 +1088,8 @@ public class Domoticz {
     }
 
     /*
-    public void setEventAction(int id,
+    @DebugLog
+ public void setEventAction(int id,
                                String xmlStatement,
                                int jsonUrl,
                                int jsonAction,
@@ -1059,6 +1105,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }*/
 
+    @DebugLog
     public void setDeviceUsed(int id,
                               String name,
                               String description,
@@ -1081,6 +1128,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getStatus(int idx, StatusReceiver receiver) {
         StatusInfoParser parser = new StatusInfoParser(receiver);
         String url = constructGetUrl(Json.Get.STATUS) + String.valueOf(idx);
@@ -1092,6 +1140,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getUtilities(UtilitiesReceiver receiver) {
         UtilitiesParser parser = new UtilitiesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.UTILITIES);
@@ -1101,6 +1150,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getSettings(SettingsReceiver receiver) {
         SettingsParser parser = new SettingsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.SETTINGS);
@@ -1110,6 +1160,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
         String url = constructGetUrl(Json.Url.Request.CONFIG);
@@ -1119,6 +1170,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
         LanguageParser parser = new LanguageParser(receiver);
         String url = constructGetUrl(Json.Url.Request.LANGUAGE);
@@ -1129,6 +1181,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getTemperatures(TemperatureReceiver receiver) {
         TemperaturesParser parser = new TemperaturesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.TEMPERATURE);
@@ -1138,6 +1191,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getWeathers(WeatherReceiver receiver) {
         WeatherParser parser = new WeatherParser(receiver);
         String url = constructGetUrl(Json.Url.Request.WEATHER);
@@ -1147,6 +1201,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
         DevicesParser parser = new DevicesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.DEVICES);
@@ -1163,6 +1218,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
         DevicesParser parser = new DevicesParser(receiver, idx, scene_or_group);
         String url = constructGetUrl(Json.Url.Request.DEVICES);
@@ -1173,6 +1229,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.LOG);
@@ -1182,6 +1239,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getUserVariables(UserVariablesReceiver receiver) {
         UserVariablesParser parser = new UserVariablesParser(receiver);
         String url = constructGetUrl(Json.Url.Request.USERVARIABLES);
@@ -1191,6 +1249,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getUsers(UsersReceiver receiver) {
         UsersParser parser = new UsersParser(receiver);
         String url = constructGetUrl(Json.Url.Request.USERS);
@@ -1200,6 +1259,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void LogOff() {
         String url = constructGetUrl(Json.Url.Request.LOGOFF);
         RequestUtil.makeJsonGetRequest(new LogOffParser(),
@@ -1208,6 +1268,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public void getEvents(EventReceiver receiver) {
         EventsParser parser = new EventsParser(receiver);
         String url = constructGetUrl(Json.Url.Request.EVENTS);
@@ -1217,6 +1278,8 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    /*
+    @DebugLog
     public void getEventXml(int id, EventXmlReceiver receiver) {
         EventsXmlParser parser = new EventsXmlParser(receiver);
         String url = constructGetUrl(Json.Url.Request.EVENTXML);
@@ -1226,8 +1289,9 @@ public class Domoticz {
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3);
     }
+    */
 
-
+    @DebugLog
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
         GraphDataParser parser = new GraphDataParser(receiver);
         String url = constructGetUrl(Json.Url.Request.GRAPH) + String.valueOf(idx);
@@ -1241,6 +1305,7 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+    @DebugLog
     public File saveSnapShot(Bitmap bitmap, String name) {
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 this.snapshot_file_path;
@@ -1263,6 +1328,7 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
+    @DebugLog
     public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
@@ -1410,6 +1476,7 @@ public class Domoticz {
         return test;
     }
 
+    @DebugLog
     public interface Authentication {
         String USERNAME = "username";
         String PASSWORD = "password";
@@ -1420,16 +1487,19 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Result {
         String ERROR = "ERR";
         String OK = "OK";
     }
 
+    @DebugLog
     public interface Protocol {
         String SECURE = "HTTPS";
         String INSECURE = "HTTP";
     }
 
+    @DebugLog
     public interface Device {
         interface Switch {
             interface Action {
@@ -1554,6 +1624,7 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Json {
         interface Field {
             String RESULT = "result";
@@ -1622,6 +1693,7 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Scene {
         interface Type {
             String GROUP = "Group";
@@ -1634,6 +1706,7 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Graph {
         interface Range {
             String DAY = "day";
@@ -1643,6 +1716,7 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Temperature {
         @SuppressWarnings("unused")
         interface Sign {
@@ -1651,6 +1725,7 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Event {
         @SuppressWarnings("unused")
         interface Type {
@@ -1663,6 +1738,7 @@ public class Domoticz {
         }
     }
 
+    @DebugLog
     public interface Security {
         @SuppressWarnings("SpellCheckingInspection")
         interface Status {
