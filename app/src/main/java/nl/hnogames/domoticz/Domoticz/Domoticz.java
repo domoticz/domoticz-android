@@ -51,7 +51,6 @@ import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
-import nl.hnogames.domoticz.Interfaces.EventXmlReceiver;
 import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
@@ -269,7 +268,7 @@ public class Domoticz {
             VolleyError volleyError = (VolleyError) error;
             errorMessage = mVolleyUtil.getVolleyErrorMessage(volleyError);
         }
-        if(UsefulBits.isEmpty(errorMessage))
+        if (UsefulBits.isEmpty(errorMessage))
             errorMessage = error.getMessage();
         return errorMessage;
     }

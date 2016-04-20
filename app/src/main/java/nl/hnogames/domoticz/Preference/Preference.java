@@ -561,7 +561,7 @@ public class Preference extends PreferenceFragment {
             }
         } catch (Exception ex) {
             String ex_message = mDomoticz.getErrorMessage(ex);
-            if(!UsefulBits.isEmpty(ex_message))
+            if (!UsefulBits.isEmpty(ex_message))
                 Log.e(TAG, mDomoticz.getErrorMessage(ex));
         }
     }

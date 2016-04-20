@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         if (mSharedPrefs.darkThemeEnabled())
                             setTheme(R.style.AppThemeDarkMain);
-
                         buildScreen();
                     }
                     break;
@@ -568,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
                     @DebugLog
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
-                            if(searchViewAction!=null){
+                            if (searchViewAction != null) {
                                 searchViewAction.setQuery("", false);
                                 searchViewAction.clearFocus();
                             }

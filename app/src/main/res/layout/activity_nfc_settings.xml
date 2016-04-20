@@ -1,8 +1,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/coordinatorLayout"
+    style="@style/background_listview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/background_listview">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
