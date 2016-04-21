@@ -96,7 +96,8 @@ public class ServerUtil {
                     JSONObject jsonServer = jsonSettingsArray.getJSONObject(i);
                     ServerInfo oPrefServer = new ServerInfo();
                     oPrefServer.setServerName(jsonServer.getString("SERVER_NAME"));
-                    oPrefServer.setServerUniqueId(jsonServer.getString("SERVER_UNIQUE_ID"));
+                    if (jsonServer.has("SERVER_UNIQUE_ID"))
+                        oPrefServer.setServerUniqueId(jsonServer.getString("SERVER_UNIQUE_ID"));
                     oPrefServer.setRemoteServerUsername(jsonServer.getString("REMOTE_SERVER_USERNAME"));
                     oPrefServer.setRemoteServerPassword(jsonServer.getString("REMOTE_SERVER_PASSWORD"));
                     oPrefServer.setRemoteServerUrl(jsonServer.getString("REMOTE_SERVER_URL"));
@@ -158,7 +159,8 @@ public class ServerUtil {
                         jsonServer = new JSONObject(activeServerSettings);
                         ServerInfo oPrefServer = new ServerInfo();
                         oPrefServer.setServerName(jsonServer.getString("SERVER_NAME"));
-                        oPrefServer.setServerUniqueId(jsonServer.getString("SERVER_UNIQUE_ID"));
+                        if (jsonServer.has("SERVER_UNIQUE_ID"))
+                            oPrefServer.setServerUniqueId(jsonServer.getString("SERVER_UNIQUE_ID"));
                         oPrefServer.setRemoteServerUsername(jsonServer.getString("REMOTE_SERVER_USERNAME"));
                         oPrefServer.setRemoteServerPassword(jsonServer.getString("REMOTE_SERVER_PASSWORD"));
                         oPrefServer.setRemoteServerUrl(jsonServer.getString("REMOTE_SERVER_URL"));
