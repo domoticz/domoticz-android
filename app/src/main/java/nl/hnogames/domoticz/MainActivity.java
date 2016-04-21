@@ -193,14 +193,14 @@ public class MainActivity extends AppCompatActivity {
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
-                    //drawer.setSelectionAtPosition(1);
+                    drawer.setSelectionAtPosition(1);
                 }
 
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
-                    //drawer.setSelectionAtPosition(1);
+                    drawer.setSelectionAtPosition(1);
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
 
@@ -512,7 +512,6 @@ public class MainActivity extends AppCompatActivity {
                                                         public void onReceiveConfig(ConfigInfo settings) {
                                                             UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
                                                             drawNavigationMenu(finalConfig);
-                                                            refreshFragment();
                                                         }
 
                                                         @Override
@@ -981,7 +980,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         setScreenAlwaysOn();
-        refreshFragment();
     }
 
     @Override
