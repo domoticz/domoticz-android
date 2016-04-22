@@ -38,6 +38,9 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 

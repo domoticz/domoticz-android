@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/card_global_wrapper"
+    android:background="@color/material_grey_300_"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    android:background="@color/material_grey_300_"
     android:padding="10dp"
     android:paddingLeft="20dp"
     card_view:cardCornerRadius="0dp"
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/row_global_wrapper"
         android:background="@color/material_grey_300_"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:minHeight="50dp"
             android:orientation="horizontal"
-            android:background="@color/white"
-            android:padding="10dp"
-            android:id="@+id/row_wrapper">
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/rowIcon"
@@ -122,4 +122,4 @@
 
         <include layout="@layout/log_timer_button_row_default" />
     </LinearLayout>
-    </android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>

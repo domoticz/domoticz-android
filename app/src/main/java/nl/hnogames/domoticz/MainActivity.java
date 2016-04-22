@@ -1,3 +1,25 @@
+/*
+ * Copyright (C) 2015 Domoticz
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
@@ -38,6 +60,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,21 +68,26 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
+import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
+import nl.hnogames.domoticz.Containers.UserInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
@@ -72,6 +100,7 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
+@DebugLog
 public class MainActivity extends AppCompatActivity {
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
@@ -90,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment latestFragment = null;
     private Drawer drawer;
 
+    @DebugLog
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
@@ -100,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
+            setTheme(R.style.AppThemeDarkMain);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
@@ -127,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
@@ -145,20 +176,33 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
 
+            appRate();
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
-            drawNavigationMenu();
-            addFragment();
 
             setupMobileDevice();
             checkDomoticzServerUpdate();
             setScheduledTasks();
-            appRate();
 
             WidgetUtils.RefreshWidgets(this);
             UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-            UsefulBits.saveServerConfigToActiveServer(this, false, false);
             AppController.getInstance().resendRegistrationIdToBackend();
+
+            UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveConfig(ConfigInfo settings) {
+                    drawNavigationMenu(settings);
+                    addFragment();
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    drawNavigationMenu(null);
+                    addFragment();
+                }
+            }, mServerUtil.getActiveServer().getConfigInfo(this));
 
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -177,15 +221,14 @@ public class MainActivity extends AppCompatActivity {
                         this.finish();
                     else {
                         if (mSharedPrefs.darkThemeEnabled())
-                            setTheme(R.style.AppThemeDark);
-
+                            setTheme(R.style.AppThemeDarkMain);
                         buildScreen();
                     }
                     break;
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
                     if (mSharedPrefs.darkThemeEnabled())
-                        setTheme(R.style.AppThemeDark);
+                        setTheme(R.style.AppThemeDarkMain);
                     this.recreate();
                     break;
                 case iQRResultCode:
@@ -213,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (resultCode == 789) {
             //reload settings
-            startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
+            startActivityForResult(new Intent(this, SettingsActivity.class), iSettingsResultCode);
         }
     }
 
@@ -221,11 +264,13 @@ public class MainActivity extends AppCompatActivity {
         domoticz = new Domoticz(this, null);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
+                                 @DebugLog
                                  public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
                                      for (SwitchInfo s : switches) {
                                          if (s.getIdx() == idx) {
                                              domoticz.getStatus(idx, new StatusReceiver() {
                                                  @Override
+                                                 @DebugLog
                                                  public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
                                                      int jsonAction;
                                                      int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
@@ -253,17 +298,20 @@ public class MainActivity extends AppCompatActivity {
 
                                                      domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                                                          @Override
+                                                         @DebugLog
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
                                                          }
 
                                                          @Override
+                                                         @DebugLog
                                                          public void onError(Exception error) {
                                                          }
                                                      });
                                                  }
 
                                                  @Override
+                                                 @DebugLog
                                                  public void onError(Exception error) {
                                                  }
                                              });
@@ -272,12 +320,14 @@ public class MainActivity extends AppCompatActivity {
                                  }
 
                                  @Override
+                                 @DebugLog
                                  public void onError(Exception error) {
                                  }
                              }
         );
     }
 
+    @DebugLog
     public void refreshFragment() {
         Fragment f = latestFragment;
         if (f instanceof DomoticzRecyclerFragment) {
@@ -288,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
             ((DomoticzDashboardFragment) f).refreshFragment();
     }
 
+    @DebugLog
     public void removeFragmentStack(String fragment) {
         if (stackFragments != null) {
             if (stackFragments.contains(fragment))
@@ -295,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void addFragmentStack(String fragment) {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
@@ -320,6 +372,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -337,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Fragment f = latestFragment;
@@ -347,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @DebugLog
     public void changeFragment(String fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         latestFragment = Fragment.instantiate(MainActivity.this, fragment);
@@ -408,19 +463,98 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void drawNavigationMenu() {
+    @DebugLog
+    public void drawNavigationMenu(final ConfigInfo mConfig) {
+        ConfigInfo config = mConfig;
+
+        if (config == null)
+            config = mServerUtil.getActiveServer().getConfigInfo(this);
+
+        ProfileDrawerItem loggedinAccount = new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
+                .withIcon(R.drawable.ic_launcher);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            loggedinAccount.withSelectedColorRes(R.color.material_indigo_600);
+        }
+
         // Create the AccountHeader
+        final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.darkheader)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Domoticz").withEmail("info@domoticz.com").withIcon(R.drawable.ic_launcher)
-                )
+                .addProfiles(loggedinAccount)
+                .withOnlyMainProfileImageVisible(true)
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    @DebugLog
+                    public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
+                        if (!current) {
+                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                @DebugLog
+                                public void onDismiss(String password) {
+                                    if (UsefulBits.isEmpty(password)) {
+                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                        drawNavigationMenu(finalConfig);
+                                    } else {
+                                        for (UserInfo user : finalConfig.getUsers()) {
+                                            if (user.getUsername() == profile.getEmail().getText()) {
+                                                String md5Pass = UsefulBits.getMd5String(password);
+                                                if (md5Pass.equals(user.getPassword())) {
+                                                    //if correct set credentials in activeserver and recreate drawer
+                                                    domoticz.setUserCredentials(user.getUsername(), password);
+                                                    domoticz.LogOff();
+                                                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
+                                                        @Override
+                                                        @DebugLog
+                                                        public void onReceiveConfig(ConfigInfo settings) {
+                                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
+                                                            drawNavigationMenu(finalConfig);
+                                                        }
+
+                                                        @Override
+                                                        @DebugLog
+                                                        public void onError(Exception error) {
+                                                        }
+                                                    }, finalConfig);
+                                                } else {
+                                                    UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                    drawNavigationMenu(finalConfig);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                            drawNavigationMenu(finalConfig);
+                        }
+                        return false;
+                    }
+                })
                 .build();
+
+        if (config != null &&
+                config.getUsers() != null) {
+            for (UserInfo user : config.getUsers()) {
+
+                ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
+                ).withEmail(user.getUsername())
+                        .withIcon(R.drawable.users)
+                        .withEnabled(user.isEnabled());
+
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    profile.withSelectedColorRes(R.color.material_indigo_600);
+                }
+
+                headerResult.addProfiles(profile);
+            }
+        }
 
         drawer = new DrawerBuilder()
                 .withActivity(this)
-                .withTranslucentStatusBar(true)
+                .withTranslucentStatusBar(false)
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(headerResult)
                 .withToolbar(toolbar)
@@ -428,16 +562,18 @@ public class MainActivity extends AppCompatActivity {
                 .withDrawerItems(getDrawerItems())
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
+                    @DebugLog
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
-                            try {
+                            if (searchViewAction != null) {
                                 searchViewAction.setQuery("", false);
                                 searchViewAction.clearFocus();
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
 
-                            if (drawerItem.getTag() != null) {
+                            if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
+                                stopCameraTimer();
+                                startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
+                            } else if (drawerItem.getTag() != null) {
                                 try {
                                     latestFragment = Fragment.instantiate(MainActivity.this,
                                             String.valueOf(drawerItem.getTag()));
@@ -449,6 +585,7 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                                stopCameraTimer();
 
                                 invalidateOptionsMenu();
                                 if (onPhone)
@@ -459,6 +596,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
+        drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), null, "gmd_settings", "Settings"));
     }
 
     private List<IDrawerItem> getDrawerItems() {
@@ -474,7 +613,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < drawerActions.length; i++)
             if (fragments[i].indexOf("Wizard") < 0 && fragments[i].indexOf("Dashboard") < 0)
                 drawerItems.add(createSecondaryDrawerItem(drawerActions[i], null, ICONS[i], fragments[i]));
-        drawerItems.add(new DividerDrawerItem());
 
         return drawerItems;
     }
@@ -483,11 +621,15 @@ public class MainActivity extends AppCompatActivity {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
                 .withBadge(badge)
-                .withTag(fragmentID)
                 .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
-                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600);
-        if (mSharedPrefs.darkThemeEnabled())
+                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+                .withTag(fragmentID);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
+            item.withSelectedColorRes(R.color.material_indigo_600);
+        }
+
         return item;
     }
 
@@ -496,8 +638,12 @@ public class MainActivity extends AppCompatActivity {
         item.withName(title).withBadge(badge).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
                 .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
                 .withTag(fragmentID);
-        if (mSharedPrefs.darkThemeEnabled())
+
+        if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
+            item.withSelectedColorRes(R.color.material_indigo_600);
+        }
+
         return item;
     }
 
@@ -506,6 +652,7 @@ public class MainActivity extends AppCompatActivity {
             // Get latest Domoticz version update
             domoticz.getUpdate(new UpdateVersionReceiver() {
                 @Override
+                @DebugLog
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
@@ -528,6 +675,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
+                @DebugLog
                 public void onError(Exception error) {
                     String message = String.format(
                             getString(R.string.error_couldNotCheckForUpdates),
@@ -547,6 +695,7 @@ public class MainActivity extends AppCompatActivity {
         // Get current Domoticz server version
         domoticz.getServerVersion(new VersionReceiver() {
             @Override
+            @DebugLog
             public void onReceiveVersion(String serverVersion) {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
@@ -577,6 +726,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
@@ -591,6 +741,7 @@ public class MainActivity extends AppCompatActivity {
         if (layout != null) {
             UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
                 @Override
+                @DebugLog
                 public void onClick(View v) {
                     startActivity(new Intent(MainActivity.this, UpdateActivity.class));
                 }
@@ -599,6 +750,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
@@ -618,11 +770,13 @@ public class MainActivity extends AppCompatActivity {
                     .getActionView(searchMenuItem);
             searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
+                @DebugLog
                 public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
 
                 @Override
+                @DebugLog
                 public boolean onQueryTextChange(String newText) {
                     Fragment n = latestFragment;
                     if (n instanceof DomoticzDashboardFragment) {
@@ -637,7 +791,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item
             MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
-            if (searchMenuItem != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
+            if (searchMenuItem != null && mServerUtil != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
                 searchMenuItem.setVisible(true);
             } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
@@ -645,7 +799,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mSharedPrefs.isQRCodeEnabled()) {
             MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
-            if (searchMenuItem != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+            if (searchMenuItem != null  && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
                 searchMenuItem.setVisible(true);
             } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
@@ -656,6 +810,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
+    @DebugLog
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
@@ -664,9 +819,11 @@ public class MainActivity extends AppCompatActivity {
                         cameraRefreshTimer = new Timer("camera", true);
                         cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                             @Override
+                            @DebugLog
                             public void run() {
                                 runOnUiThread(new Runnable() {
                                     @Override
+                                    @DebugLog
                                     public void run() {
                                         //call refresh fragment
                                         Fragment f = latestFragment;
@@ -701,16 +858,13 @@ public class MainActivity extends AppCompatActivity {
                     stopCameraTimer();
                     invalidateOptionsMenu();//set pause button
                     return true;
-                case R.id.action_settings:
-                    stopCameraTimer();
-                    startActivityForResult(new Intent(this, SettingsActivity.class), this.iSettingsResultCode);
-                    return true;
                 case R.id.action_sort:
                     SortDialog infoDialog = new SortDialog(
                             this,
                             R.layout.dialog_switch_logs);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
+                        @DebugLog
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = latestFragment;
@@ -734,6 +888,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @DebugLog
     public void showServerDialog() {
         String[] serverNames = new String[mServerUtil.getServerList().size()];
         int count = 0;
@@ -755,6 +910,7 @@ public class MainActivity extends AppCompatActivity {
                 .items(serverNames)
                 .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
+                    @DebugLog
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         ServerInfo setNew = null;
                         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
@@ -776,7 +932,6 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-
     /**
      * Starts the scheduled tasks service via GCM Network manager
      * Automatically detects if this has been done before
@@ -793,7 +948,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
-
+    @DebugLog
     public CoordinatorLayout getFragmentCoordinatorLayout() {
         CoordinatorLayout layout = null;
         try {
@@ -819,30 +974,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    @DebugLog
     public void onResume() {
         super.onResume();
         setScreenAlwaysOn();
-        refreshFragment();
     }
 
     @Override
+    @DebugLog
     public void onDestroy() {
         super.onDestroy();
         stopCameraTimer();
     }
 
     @Override
+    @DebugLog
     public void onBackPressed() {
-        if (stackFragments == null || stackFragments.size() <= 1) {
-            MainActivity.super.onBackPressed();
+        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        if (drawer != null && drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
         } else {
-            String currentFragment = stackFragments.get(stackFragments.size() - 1);
-            String previousFragment = stackFragments.get(stackFragments.size() - 2);
-            changeFragment(previousFragment);
-            stackFragments.remove(currentFragment);
-        }
+            if (stackFragments == null || stackFragments.size() <= 1) {
+                MainActivity.super.onBackPressed();
+            } else {
+                String currentFragment = stackFragments.get(stackFragments.size() - 1);
+                String previousFragment = stackFragments.get(stackFragments.size() - 2);
+                changeFragment(previousFragment);
+                stackFragments.remove(currentFragment);
+            }
 
-        stopCameraTimer();
-        invalidateOptionsMenu();
+            stopCameraTimer();
+            invalidateOptionsMenu();
+        }
     }
 }

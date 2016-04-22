@@ -490,7 +490,7 @@ public class Wizard extends Fragment {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
-                                        ((MainActivity) getActivity()).drawNavigationMenu();
+                                        ((MainActivity) getActivity()).drawNavigationMenu(null);
                                         ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                     }
@@ -502,7 +502,7 @@ public class Wizard extends Fragment {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
-                                        ((MainActivity) getActivity()).drawNavigationMenu();
+                                        ((MainActivity) getActivity()).drawNavigationMenu(null);
                                         ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                     }

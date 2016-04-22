@@ -220,11 +220,26 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_large" />
 
+
                 <nl.hnogames.domoticz.UI.MultiSelectionSpinner
                     android:id="@+id/local_wifi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/welcome_ssid_spinner_prompt" />
+
+                <Button
+                    android:id="@+id/set_ssid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_status"
+                    android:text="@string/add"
+                    android:textSize="10dp" />
+
 
                 <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                     android:id="@+id/local_server_input"
