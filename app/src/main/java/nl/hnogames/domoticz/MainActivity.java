@@ -193,18 +193,19 @@ public class MainActivity extends AppCompatActivity {
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
-                    drawer.setSelectionAtPosition(1);
+                    //drawer.setSelectionAtPosition(1);
+                    addFragment();
                 }
 
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
-                    drawer.setSelectionAtPosition(1);
+                    //drawer.setSelectionAtPosition(1);
+                    addFragment();
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
 
-            addFragment();
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -932,7 +933,6 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-
     /**
      * Starts the scheduled tasks service via GCM Network manager
      * Automatically detects if this has been done before
@@ -948,7 +948,6 @@ public class MainActivity extends AppCompatActivity {
         else
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
-
 
     @DebugLog
     public CoordinatorLayout getFragmentCoordinatorLayout() {
