@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
-                    //drawer.setSelectionAtPosition(1);
                     addFragment();
                 }
 
@@ -201,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 @DebugLog
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
-                    //drawer.setSelectionAtPosition(1);
                     addFragment();
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
@@ -792,7 +790,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item
             MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
-            if (searchMenuItem != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
+            if (searchMenuItem != null && mServerUtil != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
                 searchMenuItem.setVisible(true);
             } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
@@ -800,7 +798,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mSharedPrefs.isQRCodeEnabled()) {
             MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
-            if (searchMenuItem != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+            if (searchMenuItem != null  && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
                 searchMenuItem.setVisible(true);
             } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
