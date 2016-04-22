@@ -585,6 +585,7 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                                stopCameraTimer();
 
                                 invalidateOptionsMenu();
                                 if (onPhone)
