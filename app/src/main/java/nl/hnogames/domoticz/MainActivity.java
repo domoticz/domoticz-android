@@ -989,16 +989,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     @DebugLog
     public void onBackPressed() {
-        if (stackFragments == null || stackFragments.size() <= 1) {
-            MainActivity.super.onBackPressed();
+        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        if (drawer != null && drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
         } else {
-            String currentFragment = stackFragments.get(stackFragments.size() - 1);
-            String previousFragment = stackFragments.get(stackFragments.size() - 2);
-            changeFragment(previousFragment);
-            stackFragments.remove(currentFragment);
-        }
+            if (stackFragments == null || stackFragments.size() <= 1) {
+                MainActivity.super.onBackPressed();
+            } else {
+                String currentFragment = stackFragments.get(stackFragments.size() - 1);
+                String previousFragment = stackFragments.get(stackFragments.size() - 2);
+                changeFragment(previousFragment);
+                stackFragments.remove(currentFragment);
+            }
 
-        stopCameraTimer();
-        invalidateOptionsMenu();
+            stopCameraTimer();
+            invalidateOptionsMenu();
+        }
     }
 }
