@@ -58,11 +58,15 @@
         </activity>
 
         <service android:name=".Service.GeofenceTransitionsIntentService" />
+
         <service android:name=".Service.WearMessageListenerService">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*"
+                    android:path="/domoticz-wear" />
             </intent-filter>
         </service>
+
         <service
             android:name=".Service.TaskService"
             android:exported="true"
