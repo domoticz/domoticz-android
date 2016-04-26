@@ -799,7 +799,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mSharedPrefs.isQRCodeEnabled()) {
             MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
-            if (searchMenuItem != null  && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+            if (searchMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
                 searchMenuItem.setVisible(true);
             } else if (searchMenuItem != null)
                 searchMenuItem.setVisible(false);
