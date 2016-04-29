@@ -18,7 +18,7 @@
   <string name="welcome_msg_numberOfDevices">%1$d dispositivos encontrados</string>
   <string name="welcome_msg_no_ssid_found">Nenhum wifi SSID encontrado</string>
   <string name="welcome_ssid_spinner_prompt">Selecione do SSID da conexão local</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_ssid_button_prompt">Adicionar SSID\'s para casa</string>
   <string name="welcome_server_settings_title">Definições do servidor</string>
   <string name="welcome_server_startScreen">Ecrã inicial</string>
   <string name="welcome_button_next">seguinte</string>

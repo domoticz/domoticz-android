@@ -4,7 +4,7 @@
   <string name="qrcode_not_supported">Código QR não é suportado neste dispositivo</string>
   <string name="qrcode_register">Registar um código QR </string>
   <string name="qrcode_found">Novo código QR encontrado</string>
-  <string name="qrcode_edit">Edit QR Code</string>
+  <string name="qrcode_edit">Editar o código QR</string>
   <string name="qrcode_name">Dê a este código QR um nome próprio. </string>
   <string name="qrcode_exists">Código QR já registrado. </string>
   <string name="qrcode_saved">Gravado novo código QR. </string>
