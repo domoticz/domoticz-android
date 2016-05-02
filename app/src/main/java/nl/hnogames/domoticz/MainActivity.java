@@ -782,11 +782,15 @@ public class MainActivity extends AppCompatActivity {
                     if (n instanceof DomoticzDashboardFragment) {
                         ((DomoticzDashboardFragment) n).Filter(newText);
                     }
+                    else if (n instanceof DomoticzRecyclerFragment) {
+                        ((DomoticzRecyclerFragment) n).Filter(newText);
+                    }
                     return false;
                 }
             });
-        } else
+        } else {
             getMenuInflater().inflate(R.menu.menu_simple, menu);
+        }
 
         if (mSharedPrefs.isMultiServerEnabled()) {
             //set multi server actionbar item
