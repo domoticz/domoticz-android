@@ -781,8 +781,7 @@ public class MainActivity extends AppCompatActivity {
                     Fragment n = latestFragment;
                     if (n instanceof DomoticzDashboardFragment) {
                         ((DomoticzDashboardFragment) n).Filter(newText);
-                    }
-                    else if (n instanceof DomoticzRecyclerFragment) {
+                    } else if (n instanceof DomoticzRecyclerFragment) {
                         ((DomoticzRecyclerFragment) n).Filter(newText);
                     }
                     return false;

@@ -1277,7 +1277,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     } else if (progress > 0 && !dimmerOnOffSwitch.isChecked()) {
                         dimmerOnOffSwitch.setChecked(true);
                     }
-                }catch(Exception ex){/*else we don't use a switch, but buttons */}
+                } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
                 handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);

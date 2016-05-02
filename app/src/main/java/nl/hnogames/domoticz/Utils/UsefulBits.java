@@ -162,7 +162,7 @@ public class UsefulBits {
      */
     @DebugLog
     public static String ByteArrayToHexString(byte[] in_array) {
-        if(in_array == null)
+        if (in_array == null)
             return null;
 
         int i, j, in;

@@ -71,9 +71,12 @@ public class WeatherInfo {
         if (row.has("Rain")) Rain = row.getString("Rain");
         if (row.has("RainRate")) RainRate = row.getString("RainRate");
 
-        if (Type.equals("Rain")) Data = Data.substring(Data.indexOf(';') + 1, Data.length());
-        if (Type.equals("Wind")) Data = Data.substring(0, Data.indexOf(';'));
-
+        if (Type.equals("Rain") && Data.indexOf(';') >= 0) {
+            Data = Data.substring(Data.indexOf(';') + 1);
+        }
+        if (Type.equals("Wind") && Data.indexOf(';') >= 0) {
+            Data = Data.substring(0, Data.indexOf(';'));
+        }
         if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
         if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
