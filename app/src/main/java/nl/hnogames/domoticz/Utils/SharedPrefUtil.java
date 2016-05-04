@@ -103,6 +103,8 @@ public class SharedPrefUtil {
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
+    private static final String PREF_LAST_VERSION = "lastappversion";
+
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
@@ -517,6 +519,15 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
 
+    public String getPreviousVersionNumber() {
+        return prefs.getString(PREF_LAST_VERSION, "");
+    }
+
+    public void setVersionNumber(String version) {
+        editor.putString(PREF_LAST_VERSION, version);
+        editor.commit();
+    }
+
     public String getLastUpdateShown() {
         return prefs.getString(PREF_UPDATE_SERVER_SHOWN, "");
     }
@@ -525,6 +536,7 @@ public class SharedPrefUtil {
         editor.putString(PREF_UPDATE_SERVER_SHOWN, revisionNb);
         editor.commit();
     }
+
 
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);

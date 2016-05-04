@@ -23,6 +23,8 @@
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -32,7 +34,9 @@ import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -85,6 +89,7 @@ import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Containers.UserInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
+import nl.hnogames.domoticz.Fragments.Changelog;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
@@ -206,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
                     addFragment();
+                    openDialogFragment(new Changelog());
                 }
 
                 @Override
@@ -213,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
                     addFragment();
+                    openDialogFragment(new Changelog());
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
 
@@ -1145,6 +1152,36 @@ public class MainActivity extends AppCompatActivity {
 
                 stopCameraTimer();
                 invalidateOptionsMenu();
+            }
+        }
+    }
+
+    /**
+     * Opens the dialog
+     *
+     * @param dialogStandardFragment
+     */
+    private void openDialogFragment(DialogFragment dialogStandardFragment) {
+        if (mSharedPrefs != null) {
+            PackageInfo pInfo = null;
+            try {
+                pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+                String preVersion = mSharedPrefs.getPreviousVersionNumber();
+                if (!version.equals(preVersion)) {
+                    if (dialogStandardFragment != null) {
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        Fragment prev = fm.findFragmentByTag("changelog_dialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        dialogStandardFragment.show(ft, "changelog_dialog");
+                    }
+                    mSharedPrefs.setVersionNumber(version);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
