@@ -162,6 +162,9 @@ public class UsefulBits {
      */
     @DebugLog
     public static String ByteArrayToHexString(byte[] in_array) {
+        if (in_array == null)
+            return null;
+
         int i, j, in;
         String[] hex = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
         String out = "";

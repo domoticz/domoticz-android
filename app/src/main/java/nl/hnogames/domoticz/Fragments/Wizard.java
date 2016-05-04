@@ -81,6 +81,11 @@ public class Wizard extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            if ((root.findViewById(R.id.wizard_relativeLayout)) != null)
+                (root.findViewById(R.id.wizard_relativeLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
         createCards();
         return root;
     }

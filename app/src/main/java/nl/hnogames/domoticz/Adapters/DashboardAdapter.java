@@ -1244,14 +1244,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
-                Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
-                        .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
+                Switch dimmerOnOffSwitch = null;
+                try {
+                    dimmerOnOffSwitch = (Switch) seekBar.getRootView()
+                            .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
+                    if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
+                        dimmerOnOffSwitch.setChecked(false);
+                        seekBar.setProgress(previousDimmerValue);
+                    } else if (progress > 0 && !dimmerOnOffSwitch.isChecked()) {
+                        dimmerOnOffSwitch.setChecked(true);
+                    }
+                } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
-                    dimmerOnOffSwitch.setChecked(false);
-                    seekBar.setProgress(previousDimmerValue);
-                } else if (progress > 0 && !dimmerOnOffSwitch.isChecked())
-                    dimmerOnOffSwitch.setChecked(true);
                 handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }

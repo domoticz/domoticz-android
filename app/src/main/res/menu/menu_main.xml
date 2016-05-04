@@ -23,4 +23,11 @@
         android:visible="false"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_speech"
+        android:orderInCategory="600"
+        android:title="@string/action_speech"
+        android:visible="true"
+        app:showAsAction="never" />
+
 </menu>
