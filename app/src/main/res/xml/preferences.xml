@@ -110,6 +110,19 @@
             android:title="@string/nfc_settings" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_Speech">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableSpeech"
+            android:summaryOff="@string/speech_enable_settings"
+            android:summaryOn="@string/speech_enable_settings"
+            android:title="@string/enable_speech" />
+
+        <Preference
+            android:dependency="enableSpeech"
+            android:key="speech_settings"
+            android:title="@string/speech_settings" />
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_QRCode">
         <SwitchPreference

@@ -80,6 +80,7 @@ import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Containers.UserInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -823,6 +824,14 @@ public class MainActivity extends AppCompatActivity {
                 searchMenuItem.setVisible(false);
         }
 
+        if (mSharedPrefs.isSpeechEnabled()) {
+            MenuItem speechMenuItem = menu.findItem(R.id.action_speech);
+            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+                speechMenuItem.setVisible(true);
+            } else if (speechMenuItem != null)
+                speechMenuItem.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -953,7 +962,28 @@ public class MainActivity extends AppCompatActivity {
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
+        showSimpleSnackbar(matches.get(0));
+
+        String SPEECH_ID = matches.get(0);
+        if (mSharedPrefs.isSpeechEnabled()) {
+            ArrayList<SpeechInfo> qrList = mSharedPrefs.getSpeechList();
+            SpeechInfo foundSPEECH = null;
+            Log.i(TAG, "Speech ID Found: " + SPEECH_ID);
+            if (qrList != null && qrList.size() > 0) {
+                for (SpeechInfo n : qrList) {
+                    if (n.getId().equals(SPEECH_ID))
+                        foundSPEECH = n;
+                }
+            }
+            if (foundSPEECH != null && foundSPEECH.isEnabled()) {
+                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword());
+            } else {
+                if (foundSPEECH == null)
+                    Toast.makeText(MainActivity.this, getString(R.string.Speech_found), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MainActivity.this, getString(R.string.Speech_disabled), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void startRecognition() {
@@ -983,7 +1013,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopRecognition() {
-        if(speechRecognizer != null) {
+        if (speechRecognizer != null) {
             speechRecognizer.stopListening();
             speechRecognizer.cancel();
             speechRecognizer.destroy();

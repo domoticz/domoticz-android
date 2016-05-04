@@ -219,6 +219,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SpeechSettingsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/category_Speech"
+            android:parentActivityName=".SettingsActivity"></activity>
         <activity
             android:name=".QRCodeSettingsActivity"
             android:configChanges="orientation|screenSize"
