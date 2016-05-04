@@ -27,6 +27,8 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -42,11 +44,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.zagum.speechrecognitionview.RecognitionProgressView;
+import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -64,6 +69,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -118,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment latestFragment = null;
     private Drawer drawer;
+
+    private SpeechRecognizer speechRecognizer;
+    private RecognitionProgressView recognitionProgressView;
+    private RecognitionListenerAdapter recognitionListener;
+    private boolean listeningSpeechRecognition = false;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -384,6 +395,11 @@ public class MainActivity extends AppCompatActivity {
                 if (PermissionsUtil.canAccessStorage(this)) {
                     Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                     startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+                }
+                break;
+            case PermissionsUtil.INITIAL_AUDIO_REQUEST:
+                if (PermissionsUtil.canAccessAudioState(this)) {
+                    startRecognition();
                 }
                 break;
         }
@@ -690,7 +706,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void getCurrentServerVersion() {
         // Get current Domoticz server version
         domoticz.getServerVersion(new VersionReceiver() {
@@ -817,6 +832,39 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
+                case R.id.action_speech:
+                    if (speechRecognizer == null)
+                        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+                    if (recognitionProgressView == null)
+                        recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
+                    if (recognitionListener == null) {
+                        recognitionListener = new RecognitionListenerAdapter() {
+                            @Override
+                            public void onResults(Bundle results) {
+                                showSpeechResults(results);
+                                stopRecognition();
+                            }
+                        };
+                    }
+
+                    int[] colors = {
+                            ContextCompat.getColor(this, R.color.material_amber_600),
+                            ContextCompat.getColor(this, R.color.material_blue_600),
+                            ContextCompat.getColor(this, R.color.material_deep_purple_600),
+                            ContextCompat.getColor(this, R.color.material_green_600),
+                            ContextCompat.getColor(this, R.color.material_orange_600)
+                    };
+                    recognitionProgressView.setColors(colors);
+                    recognitionProgressView.setSpeechRecognizer(speechRecognizer);
+                    recognitionProgressView.setRecognitionListener(recognitionListener);
+                    recognitionProgressView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startRecognition();
+                        }
+                    }, 50);
+
+                    return true;
                 case R.id.action_camera_play:
                     if (cameraRefreshTimer == null) {
                         cameraRefreshTimer = new Timer("camera", true);
@@ -890,6 +938,59 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void playRecognitionAnimation() {
+        ((FrameLayout) findViewById(R.id.main)).setVisibility(View.GONE);
+        recognitionProgressView.setVisibility(View.VISIBLE);
+        recognitionProgressView.play();
+    }
+
+    private void stopRecognitionAnimation() {
+        ((FrameLayout) findViewById(R.id.main)).setVisibility(View.VISIBLE);
+        recognitionProgressView.setVisibility(View.GONE);
+        recognitionProgressView.stop();
+    }
+
+    private void showSpeechResults(Bundle results) {
+        ArrayList<String> matches = results
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
+    }
+
+    private void startRecognition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PermissionsUtil.canAccessAudioState(this)) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+                speechRecognizer.startListening(intent);
+                listeningSpeechRecognition = true;
+                playRecognitionAnimation();
+            } else {
+                requestPermissions(PermissionsUtil.INITIAL_AUDIO_PERMS, PermissionsUtil.INITIAL_AUDIO_REQUEST);
+            }
+        } else {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+            speechRecognizer.startListening(intent);
+
+            listeningSpeechRecognition = true;
+            playRecognitionAnimation();
+        }
+    }
+
+    private void stopRecognition() {
+        if(speechRecognizer != null) {
+            speechRecognizer.stopListening();
+            speechRecognizer.cancel();
+            speechRecognizer.destroy();
+        }
+        stopRecognitionAnimation();
+        listeningSpeechRecognition = false;
+    }
 
     @DebugLog
     public void showServerDialog() {
@@ -899,11 +1000,9 @@ public class MainActivity extends AppCompatActivity {
 
         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
             serverNames[count] = s.getServerName();
-
             if (mServerUtil.getActiveServer() != null &&
                     mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
                 selectionId = count;
-
             count++;
         }
 
@@ -993,21 +1092,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     @DebugLog
     public void onBackPressed() {
-        //handle the back press :D close the drawer first and if the drawer is closed close the activity
-        if (drawer != null && drawer.isDrawerOpen()) {
-            drawer.closeDrawer();
+        if (listeningSpeechRecognition) {
+            stopRecognition();
         } else {
-            if (stackFragments == null || stackFragments.size() <= 1) {
-                MainActivity.super.onBackPressed();
+            //handle the back press :D close the drawer first and if the drawer is closed close the activity
+            if (drawer != null && drawer.isDrawerOpen()) {
+                drawer.closeDrawer();
             } else {
-                String currentFragment = stackFragments.get(stackFragments.size() - 1);
-                String previousFragment = stackFragments.get(stackFragments.size() - 2);
-                changeFragment(previousFragment);
-                stackFragments.remove(currentFragment);
-            }
+                if (stackFragments == null || stackFragments.size() <= 1) {
+                    MainActivity.super.onBackPressed();
+                } else {
+                    String currentFragment = stackFragments.get(stackFragments.size() - 1);
+                    String previousFragment = stackFragments.get(stackFragments.size() - 2);
+                    changeFragment(previousFragment);
+                    stackFragments.remove(currentFragment);
+                }
 
-            stopCameraTimer();
-            invalidateOptionsMenu();
+                stopCameraTimer();
+                invalidateOptionsMenu();
+            }
         }
     }
 }

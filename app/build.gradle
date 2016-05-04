@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 103
-        versionName '0.1.257'
+        versionCode 105
+        versionName '0.1.258'
         multiDexEnabled true
     }
 
@@ -119,6 +119,7 @@ dependencies {
         transitive = true
     }
 
+    compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')
 }

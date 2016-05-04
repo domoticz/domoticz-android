@@ -7,5 +7,6 @@
     <string name="action_camera_play">Play</string>
     <string name="action_camera_pause">Pause</string>
     <string name="action_qrcode_scan">Scan QR Code</string>
+    <string name="action_speech">Speech Recognition</string>
 
 </resources>
