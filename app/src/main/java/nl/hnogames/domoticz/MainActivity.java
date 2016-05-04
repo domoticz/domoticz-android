@@ -505,45 +505,50 @@ public class MainActivity extends AppCompatActivity {
                     @DebugLog
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
-                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
-                            passwordDialog.show();
-                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                @Override
-                                @DebugLog
-                                public void onDismiss(String password) {
-                                    if (UsefulBits.isEmpty(password)) {
-                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                        drawNavigationMenu(finalConfig);
-                                    } else {
-                                        for (UserInfo user : finalConfig.getUsers()) {
-                                            if (user.getUsername() == profile.getEmail().getText()) {
-                                                String md5Pass = UsefulBits.getMd5String(password);
-                                                if (md5Pass.equals(user.getPassword())) {
-                                                    //if correct set credentials in activeserver and recreate drawer
-                                                    domoticz.setUserCredentials(user.getUsername(), password);
-                                                    domoticz.LogOff();
-                                                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onReceiveConfig(ConfigInfo settings) {
-                                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
-                                                            drawNavigationMenu(finalConfig);
-                                                        }
+                            if (BuildConfig.LITE_VERSION) {
+                                Toast.makeText(MainActivity.this, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                                return false;
+                            } else {
+                                PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                                passwordDialog.show();
+                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onDismiss(String password) {
+                                        if (UsefulBits.isEmpty(password)) {
+                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            drawNavigationMenu(finalConfig);
+                                        } else {
+                                            for (UserInfo user : finalConfig.getUsers()) {
+                                                if (user.getUsername() == profile.getEmail().getText()) {
+                                                    String md5Pass = UsefulBits.getMd5String(password);
+                                                    if (md5Pass.equals(user.getPassword())) {
+                                                        //if correct set credentials in activeserver and recreate drawer
+                                                        domoticz.setUserCredentials(user.getUsername(), password);
+                                                        domoticz.LogOff();
+                                                        UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
+                                                            @Override
+                                                            @DebugLog
+                                                            public void onReceiveConfig(ConfigInfo settings) {
+                                                                UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
+                                                                drawNavigationMenu(finalConfig);
+                                                            }
 
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onError(Exception error) {
-                                                        }
-                                                    }, finalConfig);
-                                                } else {
-                                                    UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                                    drawNavigationMenu(finalConfig);
+                                                            @Override
+                                                            @DebugLog
+                                                            public void onError(Exception error) {
+                                                            }
+                                                        }, finalConfig);
+                                                    } else {
+                                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        drawNavigationMenu(finalConfig);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            });
+                                });
+                            }
 
                             drawNavigationMenu(finalConfig);
                         }
