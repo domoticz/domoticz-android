@@ -4,6 +4,13 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/action_speech"
+        android:orderInCategory="99"
+        android:icon="@drawable/ic_microphone"
+        android:title="@string/action_speech"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_camera_pause"
         android:icon="@drawable/ic_pause"
         android:orderInCategory="100"

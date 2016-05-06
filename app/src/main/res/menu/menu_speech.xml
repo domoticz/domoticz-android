@@ -6,7 +6,9 @@
     <item
         android:id="@+id/action_scan_speech"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_microphone"
         android:title="@string/action_speech"
         app:showAsAction="always" />
+
 
 </menu>
