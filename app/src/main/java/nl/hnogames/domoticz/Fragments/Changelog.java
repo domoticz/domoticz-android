@@ -11,18 +11,28 @@ import android.view.LayoutInflater;
 import it.gmariotti.changelibs.library.view.ChangeLogRecyclerView;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class Changelog extends DialogFragment implements DomoticzFragmentListener {
+
+    private SharedPrefUtil mSharedPrefUtil;
+
     public Changelog() {
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (mSharedPrefUtil == null)
+            mSharedPrefUtil = new SharedPrefUtil(getContext());
+
         LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         ChangeLogRecyclerView chgList = (ChangeLogRecyclerView) layoutInflater.inflate(R.layout.changelog_fragment, null);
+        int theme = R.style.MyDialogTheme;
+        if (mSharedPrefUtil.darkThemeEnabled())
+            theme = R.style.MyDarkDialogTheme;
 
-        return new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme)
+        return new AlertDialog.Builder(getActivity(), theme)
                 .setTitle("Changelog")
                 .setView(chgList)
                 .setPositiveButton(R.string.ok,
