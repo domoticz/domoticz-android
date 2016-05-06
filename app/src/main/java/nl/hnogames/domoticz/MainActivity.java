@@ -867,7 +867,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
                     }
-
+                    if(mSharedPrefs.darkThemeEnabled()) {
+                        int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                        if (color != 0 && recognitionProgressView != null)
+                            recognitionProgressView.setBackgroundColor(color);
+                    }
                     int[] colors = {
                             ContextCompat.getColor(this, R.color.material_amber_600),
                             ContextCompat.getColor(this, R.color.material_blue_600),
