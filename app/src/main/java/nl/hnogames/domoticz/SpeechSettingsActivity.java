@@ -347,7 +347,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         //Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
-        processResult(matches.get(0));
+        processResult(matches.get(0).toLowerCase());
     }
 
     private void startRecognition() {

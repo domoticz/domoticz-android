@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if (foundQRCode != null && foundQRCode.isEnabled()) {
-                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword());
+                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1);
                         } else {
                             if (foundQRCode == null)
                                 Toast.makeText(MainActivity.this, getString(R.string.qrcode_new_found), Toast.LENGTH_SHORT).show();
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleSwitch(final int idx, final String password) {
+    private void handleSwitch(final int idx, final String password, final int inputJSONAction) {
         domoticz = new Domoticz(this, null);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
@@ -293,19 +293,34 @@ public class MainActivity extends AppCompatActivity {
                                                  public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
                                                      int jsonAction;
                                                      int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-                                                         if (!extendedStatusInfo.getStatusBoolean())
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
-                                                         else
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
-                                                     } else {
-                                                         if (!extendedStatusInfo.getStatusBoolean())
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
-                                                         else
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
-                                                     }
 
+                                                     if (inputJSONAction < 0) {
+                                                         if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                                 extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                             if (!extendedStatusInfo.getStatusBoolean())
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         } else {
+                                                             if (!extendedStatusInfo.getStatusBoolean())
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         }
+                                                     } else {
+                                                         if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                                 extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                             if (inputJSONAction == 1)
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         } else {
+                                                             if (inputJSONAction == 1)
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         }
+                                                     }
                                                      switch (extendedStatusInfo.getSwitchTypeVal()) {
                                                          case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
                                                              jsonAction = Domoticz.Device.Switch.Action.ON;
@@ -975,29 +990,50 @@ public class MainActivity extends AppCompatActivity {
         recognitionProgressView.stop();
     }
 
+    @DebugLog
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        showSimpleSnackbar(matches.get(0));
 
-        String SPEECH_ID = matches.get(0);
+        int jsonAction = -1;
+        String actionFound = "Toggle";
+        String SPEECH_ID = matches.get(0).toLowerCase().trim();
         if (mSharedPrefs.isSpeechEnabled()) {
             ArrayList<SpeechInfo> qrList = mSharedPrefs.getSpeechList();
             SpeechInfo foundSPEECH = null;
-            Log.i(TAG, "Speech ID Found: " + SPEECH_ID);
             if (qrList != null && qrList.size() > 0) {
                 for (SpeechInfo n : qrList) {
                     if (n.getId().equals(SPEECH_ID))
                         foundSPEECH = n;
                 }
             }
+            if (foundSPEECH == null) {
+                if (SPEECH_ID.endsWith(getString(R.string.button_state_off).toLowerCase())) {
+                    actionFound = getString(R.string.button_state_off);
+                    SPEECH_ID = SPEECH_ID.replace(getString(R.string.button_state_off).toLowerCase(), "").trim();
+                    jsonAction = 0;
+                } else if (SPEECH_ID.endsWith(getString(R.string.button_state_on).toLowerCase())) {
+                    actionFound = getString(R.string.button_state_on);
+                    SPEECH_ID = SPEECH_ID.replace(getString(R.string.button_state_on).toLowerCase(), "").trim();
+                    jsonAction = 1;
+                }
+
+                if (qrList != null && qrList.size() > 0) {
+                    for (SpeechInfo n : qrList) {
+                        if (n.getId().equals(SPEECH_ID))
+                            foundSPEECH = n;
+                    }
+                }
+            }
+
             if (foundSPEECH != null && foundSPEECH.isEnabled()) {
-                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword());
+                showSimpleSnackbar(getString(R.string.Speech) + ": " + SPEECH_ID + " - " + actionFound);
+                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction);
             } else {
                 if (foundSPEECH == null)
-                    Toast.makeText(MainActivity.this, getString(R.string.Speech_found), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.Speech_found) + ": " + SPEECH_ID, Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(MainActivity.this, getString(R.string.Speech_disabled), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.Speech_disabled) + ": " + SPEECH_ID, Toast.LENGTH_SHORT).show();
             }
         }
     }
