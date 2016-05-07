@@ -111,16 +111,17 @@ public class SpeechAdapter extends BaseAdapter {
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
         holder.Speech_name.setText(mSpeechInfo.getName());
-        holder.Speech_tag_id.setText(mSpeechInfo.getId());
-
         if (!UsefulBits.isEmpty(mSpeechInfo.getSwitchName())) {
-            holder.Speech_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mSpeechInfo.getSwitchName());
+            holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch) + ": " + mSpeechInfo.getSwitchName());
         } else if (mSpeechInfo.getSwitchIdx() > 0) {
-            holder.Speech_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mSpeechInfo.getSwitchIdx());
+            holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch) + ": " + mSpeechInfo.getSwitchIdx());
         } else {
-            holder.Speech_switch_idx.setText(context.getString(R.string.connectedSwitch)
+            holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available));
         }
+
+        holder.Speech_switch_idx.setText("Commando's: \r\n" + "'" + mSpeechInfo.getName() + "' " + "\r\n'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_on).toLowerCase() + "'\r\n" +
+                "'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_off).toLowerCase() + "'");
 
         holder.remove.setId(position);
         holder.remove.setOnClickListener(new View.OnClickListener() {
