@@ -1210,13 +1210,14 @@ public class MainActivity extends AppCompatActivity {
                 String preVersion = mSharedPrefs.getPreviousVersionNumber();
                 if (!version.equals(preVersion)) {
                     if (dialogStandardFragment != null) {
-                        FragmentManager fm = getSupportFragmentManager();
+                        /*FragmentManager fm = getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         Fragment prev = fm.findFragmentByTag("changelog_dialog");
                         if (prev != null) {
                             ft.remove(prev);
                         }
-                        dialogStandardFragment.show(ft, "changelog_dialog");
+                        dialogStandardFragment.show(ft, "changelog_dialog");*/
+                        getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
                     }
                     mSharedPrefs.setVersionNumber(version);
                 }
