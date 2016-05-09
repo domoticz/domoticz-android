@@ -13,6 +13,6 @@
   <string name="error_color">Nie można zmienić koloru</string>
   <string name="error_state">Nie można zmienić stanu</string>
   <string name="error_timer">Nie można pokazać planów czasowych</string>
-  <string name="error_notifications">Could not show the notifications</string>
+  <string name="error_notifications">Nie można było pokazać powiadomień</string>
   <string name="set_level_switch">"Ustawiono poziom przełącznika: %1$s na %2$d"</string>
 </resources>

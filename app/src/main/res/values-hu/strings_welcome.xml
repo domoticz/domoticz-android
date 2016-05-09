@@ -3,8 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Üdözlünk</string>
-  <string name="welcome_info_domoticz">A Domoticz egy otthonautomatizálási rendszer, amelynek segítségével különböző kapcsolók, érzékelők és mérők monitorozása és távvezérlése lehetséges. A rendszer képes értesítést/riasztást küldeni bármilyen mobileszközre.</string>
-  <string name="welcome_info_swipe">A folytatáshoz lapozzon jobbra, vagy használja a navigációs gombot a képernyő alján.</string>
+  <string name="welcome_info_domoticz">A Domoticz egy otthonautomatizálási rendszer, amelynek segítségével különböző kapcsolók, érzékelők (pl. hőmérők, esőérzékelők, UV érzékelők) és mérők (mint víz-, villany- és gázfogyasztás) monitorozása és távvezérlése lehetséges. A rendszer képes értesítést/riasztást küldeni bármilyen mobileszközre.</string>
+  <string name="welcome_info_swipe">A folytatáshoz lapozz jobbra, vagy használd a navigációs gombot a képernyő alján</string>
   <string name="welcome_info_settings1">A következő képernyőn megadhatja a Domoticz beállításait.</string>
   <string name="welcome_info_settings2">
         Megadhat a helyi és a távoli kiszolgáló beállítását.
@@ -13,12 +13,12 @@
   <string name="welcome_info_checkingConnection">A kapcsolat beállításainak ellenőrzése</string>
   <string name="welcome_msg_connectionDataIncomplete">A csatlakozási adat hiányos vagy üres</string>
   <string name="welcome_msg_connectionDataInvalid">Az URL nem kell kezdődhet http-vel</string>
-  <string name="welcome_msg_correctOnPreviousPage">Kérjük, javítsa az adatok az előző oldalon</string>
+  <string name="welcome_msg_correctOnPreviousPage">Kérlek, javítsd az adatokat az előző oldalon</string>
   <string name="welcome_msg_serverVersion">Domoticz verzió</string>
-  <string name="welcome_msg_numberOfDevices">%1$d-eszköz észlelve</string>
+  <string name="welcome_msg_numberOfDevices">%1$d eszköz észlelve</string>
   <string name="welcome_msg_no_ssid_found">Nem találtam wifi SSID-t</string>
   <string name="welcome_ssid_spinner_prompt">Otthoni SSID kiválasztása</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_ssid_button_prompt">Helyi wifi SSID hozzáadása</string>
   <string name="welcome_server_settings_title">Szerver beállítások</string>
   <string name="welcome_server_startScreen">Kezdőképernyő</string>
   <string name="welcome_button_next">következő</string>

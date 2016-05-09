@@ -23,6 +23,8 @@
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -32,7 +34,9 @@ import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -80,10 +84,12 @@ import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Containers.SwitchInfo;
 import nl.hnogames.domoticz.Containers.UserInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Cameras;
+import nl.hnogames.domoticz.Fragments.Changelog;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
@@ -205,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onReceiveConfig(ConfigInfo settings) {
                     drawNavigationMenu(settings);
                     addFragment();
+                    openDialogFragment(new Changelog());
                 }
 
                 @Override
@@ -212,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onError(Exception error) {
                     drawNavigationMenu(null);
                     addFragment();
+                    openDialogFragment(new Changelog());
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
 
@@ -255,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if (foundQRCode != null && foundQRCode.isEnabled()) {
-                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword());
+                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1);
                         } else {
                             if (foundQRCode == null)
                                 Toast.makeText(MainActivity.this, getString(R.string.qrcode_new_found), Toast.LENGTH_SHORT).show();
@@ -271,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleSwitch(final int idx, final String password) {
+    private void handleSwitch(final int idx, final String password, final int inputJSONAction) {
         domoticz = new Domoticz(this, null);
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
@@ -285,19 +293,34 @@ public class MainActivity extends AppCompatActivity {
                                                  public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
                                                      int jsonAction;
                                                      int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-                                                         if (!extendedStatusInfo.getStatusBoolean())
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
-                                                         else
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
-                                                     } else {
-                                                         if (!extendedStatusInfo.getStatusBoolean())
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
-                                                         else
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
-                                                     }
 
+                                                     if (inputJSONAction < 0) {
+                                                         if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                                 extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                             if (!extendedStatusInfo.getStatusBoolean())
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         } else {
+                                                             if (!extendedStatusInfo.getStatusBoolean())
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         }
+                                                     } else {
+                                                         if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
+                                                                 extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                             if (inputJSONAction == 1)
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         } else {
+                                                             if (inputJSONAction == 1)
+                                                                 jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             else
+                                                                 jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         }
+                                                     }
                                                      switch (extendedStatusInfo.getSwitchTypeVal()) {
                                                          case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
                                                              jsonAction = Domoticz.Device.Switch.Action.ON;
@@ -504,45 +527,50 @@ public class MainActivity extends AppCompatActivity {
                     @DebugLog
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
-                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
-                            passwordDialog.show();
-                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                @Override
-                                @DebugLog
-                                public void onDismiss(String password) {
-                                    if (UsefulBits.isEmpty(password)) {
-                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                        drawNavigationMenu(finalConfig);
-                                    } else {
-                                        for (UserInfo user : finalConfig.getUsers()) {
-                                            if (user.getUsername() == profile.getEmail().getText()) {
-                                                String md5Pass = UsefulBits.getMd5String(password);
-                                                if (md5Pass.equals(user.getPassword())) {
-                                                    //if correct set credentials in activeserver and recreate drawer
-                                                    domoticz.setUserCredentials(user.getUsername(), password);
-                                                    domoticz.LogOff();
-                                                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onReceiveConfig(ConfigInfo settings) {
-                                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
-                                                            drawNavigationMenu(finalConfig);
-                                                        }
+                            if (BuildConfig.LITE_VERSION) {
+                                Toast.makeText(MainActivity.this, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                                return false;
+                            } else {
+                                PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                                passwordDialog.show();
+                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onDismiss(String password) {
+                                        if (UsefulBits.isEmpty(password)) {
+                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            drawNavigationMenu(finalConfig);
+                                        } else {
+                                            for (UserInfo user : finalConfig.getUsers()) {
+                                                if (user.getUsername() == profile.getEmail().getText()) {
+                                                    String md5Pass = UsefulBits.getMd5String(password);
+                                                    if (md5Pass.equals(user.getPassword())) {
+                                                        //if correct set credentials in activeserver and recreate drawer
+                                                        domoticz.setUserCredentials(user.getUsername(), password);
+                                                        domoticz.LogOff();
+                                                        UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
+                                                            @Override
+                                                            @DebugLog
+                                                            public void onReceiveConfig(ConfigInfo settings) {
+                                                                UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
+                                                                drawNavigationMenu(finalConfig);
+                                                            }
 
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onError(Exception error) {
-                                                        }
-                                                    }, finalConfig);
-                                                } else {
-                                                    UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                                    drawNavigationMenu(finalConfig);
+                                                            @Override
+                                                            @DebugLog
+                                                            public void onError(Exception error) {
+                                                            }
+                                                        }, finalConfig);
+                                                    } else {
+                                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        drawNavigationMenu(finalConfig);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            });
+                                });
+                            }
 
                             drawNavigationMenu(finalConfig);
                         }
@@ -823,6 +851,14 @@ public class MainActivity extends AppCompatActivity {
                 searchMenuItem.setVisible(false);
         }
 
+        if (mSharedPrefs.isSpeechEnabled()) {
+            MenuItem speechMenuItem = menu.findItem(R.id.action_speech);
+            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+                speechMenuItem.setVisible(true);
+            } else if (speechMenuItem != null)
+                speechMenuItem.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -846,7 +882,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
                     }
-
+                    if (mSharedPrefs.darkThemeEnabled()) {
+                        int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                        if (color != 0 && recognitionProgressView != null)
+                            recognitionProgressView.setBackgroundColor(color);
+                    }
                     int[] colors = {
                             ContextCompat.getColor(this, R.color.material_amber_600),
                             ContextCompat.getColor(this, R.color.material_blue_600),
@@ -950,10 +990,52 @@ public class MainActivity extends AppCompatActivity {
         recognitionProgressView.stop();
     }
 
+    @DebugLog
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
+
+        int jsonAction = -1;
+        String actionFound = "Toggle";
+        String SPEECH_ID = matches.get(0).toLowerCase().trim();
+        if (mSharedPrefs.isSpeechEnabled()) {
+            ArrayList<SpeechInfo> qrList = mSharedPrefs.getSpeechList();
+            SpeechInfo foundSPEECH = null;
+            if (qrList != null && qrList.size() > 0) {
+                for (SpeechInfo n : qrList) {
+                    if (n.getId().equals(SPEECH_ID))
+                        foundSPEECH = n;
+                }
+            }
+            if (foundSPEECH == null) {
+                if (SPEECH_ID.endsWith(getString(R.string.button_state_off).toLowerCase())) {
+                    actionFound = getString(R.string.button_state_off);
+                    SPEECH_ID = SPEECH_ID.replace(getString(R.string.button_state_off).toLowerCase(), "").trim();
+                    jsonAction = 0;
+                } else if (SPEECH_ID.endsWith(getString(R.string.button_state_on).toLowerCase())) {
+                    actionFound = getString(R.string.button_state_on);
+                    SPEECH_ID = SPEECH_ID.replace(getString(R.string.button_state_on).toLowerCase(), "").trim();
+                    jsonAction = 1;
+                }
+
+                if (qrList != null && qrList.size() > 0) {
+                    for (SpeechInfo n : qrList) {
+                        if (n.getId().equals(SPEECH_ID))
+                            foundSPEECH = n;
+                    }
+                }
+            }
+
+            if (foundSPEECH != null && foundSPEECH.isEnabled()) {
+                showSimpleSnackbar(getString(R.string.Speech) + ": " + SPEECH_ID + " - " + actionFound);
+                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction);
+            } else {
+                if (foundSPEECH == null)
+                    Toast.makeText(MainActivity.this, getString(R.string.Speech_found) + ": " + SPEECH_ID, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MainActivity.this, getString(R.string.Speech_disabled) + ": " + SPEECH_ID, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void startRecognition() {
@@ -983,7 +1065,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopRecognition() {
-        if(speechRecognizer != null) {
+        if (speechRecognizer != null) {
             speechRecognizer.stopListening();
             speechRecognizer.cancel();
             speechRecognizer.destroy();
@@ -1110,6 +1192,37 @@ public class MainActivity extends AppCompatActivity {
 
                 stopCameraTimer();
                 invalidateOptionsMenu();
+            }
+        }
+    }
+
+    /**
+     * Opens the dialog
+     *
+     * @param dialogStandardFragment
+     */
+    private void openDialogFragment(DialogFragment dialogStandardFragment) {
+        if (mSharedPrefs != null) {
+            PackageInfo pInfo = null;
+            try {
+                pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+                String preVersion = mSharedPrefs.getPreviousVersionNumber();
+                if (!version.equals(preVersion)) {
+                    if (dialogStandardFragment != null) {
+                        /*FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        Fragment prev = fm.findFragmentByTag("changelog_dialog");
+                        if (prev != null) {
+                            ft.remove(prev);
+                        }
+                        dialogStandardFragment.show(ft, "changelog_dialog");*/
+                        getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+                    }
+                    mSharedPrefs.setVersionNumber(version);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }

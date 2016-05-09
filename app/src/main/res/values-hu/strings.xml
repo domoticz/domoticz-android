@@ -23,7 +23,7 @@
   <string name="button_arm">Élesít</string>
   <string name="button_disarm">Hatástalanít</string>
   <string name="last_update">Utolsó érzékelés</string>
-  <string name="signal_level">Térerő</string>
+  <string name="signal_level">Jelerősség</string>
   <string name="battery_level">Akku töltöttségi szint</string>
   <string name="data">Adat</string>
   <string name="hardware">Hardver</string>
@@ -45,7 +45,7 @@
   <string name="favorite">Kedvenc</string>
   <string name="yes">Igen</string>
   <string name="no">Nem</string>
-  <string name="are_you_sure">Biztos benne?</string>
+  <string name="are_you_sure">Biztos vagy benne?</string>
   <string name="add">Hozzáadás</string>
   <string name="cancel">Mégse</string>
   <string name="ok">OK</string>
@@ -68,17 +68,17 @@
   <string name="filterOn_all">Minden eszköz</string>
   <string name="filter">Szűrő</string>
   <string name="filter_devices">Eszközök szűrése</string>
-  <string name="filter_graph_empty">Állítson be szűrőt</string>
+  <string name="filter_graph_empty">Állíts be szűrőt</string>
   <string name="choose_color">Szín választása</string>
   <string name="no_data_on_domoticz">Nincs adat a Domoticz szerveren</string>
   <string name="row_icon_description">sor ikon</string>
   <string name="error_image_description">Hiba kép</string>
   <string name="device_image_description">Készülék kép</string>
   <string name="white">Fehér</string>
-  <string name="refresh">Frissités</string>
+  <string name="refresh">Frissítés</string>
   <string name="domoticz_logo">Domoticz logó</string>
   <string name="this_take_minutes">Ez több percig is eltarthat.</string>
-  <string name="continue_question">Folytatja?</string>
+  <string name="continue_question">Folytatod?</string>
   <string name="cant_remove_default_server">Nem lehet eltávolítani az alapértelmezett kiszolgálót</string>
   <string name="restart_required_msg">A nyelvi beállítások életbe léptetéséhez az alkalmazás újraindítása szükséges</string>
 </resources>

@@ -17,7 +17,7 @@ Zdalne ustawienia są użyte kiedy nie jesteś podłączony do domowej sieci wif
   <string name="welcome_msg_numberOfDevices">%1$d znalezionych urządzeń</string>
   <string name="welcome_msg_no_ssid_found">Nie znaleziono SSID wifi</string>
   <string name="welcome_ssid_spinner_prompt">Wybierz domowe SSID</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_ssid_button_prompt">Dodaj domowe SSID</string>
   <string name="welcome_server_settings_title">Ustawienia serwera</string>
   <string name="welcome_server_startScreen">Ekran startowy</string>
   <string name="welcome_button_next">dalej</string>
