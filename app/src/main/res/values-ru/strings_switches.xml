@@ -13,5 +13,6 @@
   <string name="error_color">Не удалось изменить цвет</string>
   <string name="error_state">Не удалось изменить состояние</string>
   <string name="error_timer">Не удалось показать таймеры</string>
+  <string name="error_notifications">Could not show the notifications</string>
   <string name="set_level_switch">"Установка уровня переключателя: %1$s для %2$d"</string>
 </resources>

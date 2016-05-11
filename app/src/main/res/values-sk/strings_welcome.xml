@@ -22,6 +22,7 @@
   <string name="welcome_msg_numberOfDevices">%1$d nájdené zariadenia</string>
   <string name="welcome_msg_no_ssid_found">Našlo sa žiadne wifi SSID</string>
   <string name="welcome_ssid_spinner_prompt">Vyberte domáce SSID</string>
+  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
   <string name="welcome_server_settings_title">Nastavenia servera</string>
   <string name="welcome_server_startScreen">Úvodná obrazovka</string>
   <string name="welcome_button_next">ďalej</string>

@@ -52,6 +52,7 @@ import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
@@ -76,7 +77,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_utilities);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_utilities);
         initAnimation();
     }
 
@@ -166,13 +168,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         addDebugText("Set idx " + mUtilitiesInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout,
-                    mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_added),
-                    Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         else
-            Snackbar.make(coordinatorLayout,
-                    mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_removed),
-                    Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -273,8 +271,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         intent.putExtra("TITLE", utility.getSubType().toUpperCase());
         intent.putExtra("STEPS", 3);
         startActivity(intent);
-
-        // Snackbar.make(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -355,9 +351,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout,
-                        mContext.getString(R.string.error_logs),
-                        Snackbar.LENGTH_SHORT).show();
+                UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
             }
         });
     }

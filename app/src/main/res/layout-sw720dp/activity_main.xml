@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/tabletLayoutWrapper"
+    style="@style/background_recyclerview"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    style="@style/background_recyclerview"
     tools:context=".MainActivity">
 
     <!-- TextView used to detect if this tablet layout is used -->
@@ -22,10 +22,10 @@
 
     <FrameLayout
         android:id="@+id/main"
+        style="@style/background_recyclerview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="70"
-        style="@style/background_recyclerview"
         tools:context=".MainActivity" />
 
 </LinearLayout>

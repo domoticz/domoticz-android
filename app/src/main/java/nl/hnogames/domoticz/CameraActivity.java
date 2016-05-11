@@ -35,6 +35,9 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         if (new SharedPrefUtil(this).darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();

@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class DevicesInfo implements Comparable {
 
@@ -299,6 +300,9 @@ public class DevicesInfo implements Comparable {
     }
 
     public String[] getLevelNames() {
+        if (UsefulBits.isEmpty(LevelNames))
+            return null;
+
         String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
         String[] newNames = new String[names.length - 1];
         for (int i = 1; i < names.length; i++) {

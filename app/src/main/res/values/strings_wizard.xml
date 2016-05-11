@@ -42,6 +42,9 @@
     <string name="wizard_qrcode">QR Code</string>
     <string name="wizard_qrcode_description">Toggle switches by scanning a QR Code (or barcode)!</string>
 
+    <string name="wizard_speech">Speech Commands</string>
+    <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
+
     <string name="wizard_button_nice">Nice</string>
     <string name="wizard_button_switches">Switches</string>
     <string name="wizard_button_settings">Settings</string>

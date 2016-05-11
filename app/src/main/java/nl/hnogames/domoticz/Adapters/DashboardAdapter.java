@@ -60,8 +60,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public static final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
-    private boolean showAsList = false;
-
     private final int[] EVOHOME_STATE_IDS = {
             Domoticz.Device.ModalSwitch.Action.AUTO,
             Domoticz.Device.ModalSwitch.Action.ECONOMY,
@@ -70,12 +68,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             Domoticz.Device.ModalSwitch.Action.CUSTOM,
             Domoticz.Device.ModalSwitch.Action.HEATING_OFF
     };
-
-    private Domoticz domoticz;
-    private Context context;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
-
+    private boolean showAsList = false;
+    private Domoticz domoticz;
+    private Context context;
     private switchesClickListener listener;
     private int previousDimmerValue;
     private SharedPrefUtil mSharedPrefs;
@@ -315,13 +312,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         setButtons(holder, Buttons.BLINDS);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.BUTTONS);
-                            setOnOffButtonRowData(mDeviceInfo, holder);
-                        } else {
-                            setButtons(holder, Buttons.BUTTONS);
-                            setOnOffSwitchRowData(mDeviceInfo, holder);
-                        }
+                        setButtons(holder, Buttons.BUTTONS);
+                        setOnOffButtonRowData(mDeviceInfo, holder);
                     }
                     break;
 
@@ -615,7 +607,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
 
-            holder.onOffSwitch.setOnCheckedChangeListener (null);
+            holder.onOffSwitch.setOnCheckedChangeListener(null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1032,11 +1024,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = (mDeviceInfo.getLevel()-1) / 10;
+        int loadLevel = (mDeviceInfo.getLevel() - 1) / 10;
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
 
-        if (levelNames.length > loadLevel)
+        if (levelNames != null && levelNames.length > loadLevel)
             statusText = levelNames[loadLevel];
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
@@ -1045,7 +1037,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
-            holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
+            holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1106,7 +1098,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         holder.dimmer.incrementProgressBy(1);
         holder.dimmer.setProgress(loadLevel);
-        holder.dimmer.setMax(levelNames.length - 1);
+
+        if (levelNames != null && levelNames.length > 0)
+            holder.dimmer.setMax(levelNames.length - 1);
         holder.dimmer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1201,7 +1195,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
 
-        holder.dimmerOnOffSwitch.setOnCheckedChangeListener (null);
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1250,14 +1244,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
-                Switch dimmerOnOffSwitch = (Switch) seekBar.getRootView()
-                        .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
+                Switch dimmerOnOffSwitch = null;
+                try {
+                    dimmerOnOffSwitch = (Switch) seekBar.getRootView()
+                            .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
+                    if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
+                        dimmerOnOffSwitch.setChecked(false);
+                        seekBar.setProgress(previousDimmerValue);
+                    } else if (progress > 0 && !dimmerOnOffSwitch.isChecked()) {
+                        dimmerOnOffSwitch.setChecked(true);
+                    }
+                } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
-                    dimmerOnOffSwitch.setChecked(false);
-                    seekBar.setProgress(previousDimmerValue);
-                } else if (progress > 0 && !dimmerOnOffSwitch.isChecked())
-                    dimmerOnOffSwitch.setChecked(true);
                 handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }

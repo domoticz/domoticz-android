@@ -47,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:text="@string/welcome_info_swipe"
         android:textColor="@color/default_text_color_light"
-        android:visibility="gone"
-        android:textSize="@dimen/text_size_welcomePage2_swipeInfo" />
+        android:textSize="@dimen/text_size_welcomePage2_swipeInfo"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ Etä asetukset ovat käytössä kun et ole yhteydessä paikalliseen wifi verkkoo
   <string name="welcome_msg_numberOfDevices">löydetyt laitteet-%1$d</string>
   <string name="welcome_msg_no_ssid_found">Ei löytynyt yhtään wifin SSID:tä</string>
   <string name="welcome_ssid_spinner_prompt">Valitse koti SSID</string>
+  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
   <string name="welcome_server_settings_title">Palvelimen asetukset</string>
   <string name="welcome_server_startScreen">Aloitusnäyttö</string>
   <string name="welcome_button_next">seuraava</string>

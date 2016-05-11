@@ -17,6 +17,7 @@
   <string name="category_theme">Thème</string>
   <string name="category_nfc">Associations NFC</string>
   <string name="category_QRCode">QR Code</string>
+  <string name="category_Speech">Commande vocale.</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Écran d\'accueil</string>
   <string name="enable_items">Activer/Désactiver des éléments</string>
@@ -56,13 +57,16 @@
   <string name="server_settings">Paramètre de connexion au serveur</string>
   <string name="server_force_fetch_config">Récupérer la configuration du serveur</string>
   <string name="nfc_settings">Configurer les associations NFC</string>
+  <string name="speech_settings">Paramétrer la commande vocale</string>
   <string name="title_activity_server_settings">Paramètres du serveur</string>
   <string name="multi_server">Multi serveur</string>
   <string name="enable_nfc">Activer le NFC</string>
+  <string name="enable_speech">Activer les commandes vocales</string>
   <string name="export_settings">Exporter les paramètres</string>
   <string name="import_settings">Importer les paramètres</string>
   <string name="multi_server_settings">Activer le support de serveur multiples</string>
   <string name="nfc_enable_settings">Activer les associations NFC</string>
+  <string name="speech_enable_settings">Activer les commandes vocales</string>
   <string name="server">Serveur</string>
   <string name="qrcode_settings">Configuration des QR Code</string>
   <string name="enable_qrcode">Activer les QR Code</string>

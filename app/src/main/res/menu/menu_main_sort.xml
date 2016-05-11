@@ -9,20 +9,20 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_speech"
+        android:orderInCategory="99"
+        android:icon="@drawable/ic_microphone"
+        android:title="@string/action_speech"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort"
         android:orderInCategory="100"
         android:title="@string/action_filter"
-        app:showAsAction="always" />
-
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="200"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_switch_server"
@@ -37,5 +37,6 @@
         android:title="@string/action_qrcode_scan"
         android:visible="false"
         app:showAsAction="never" />
+
 
 </menu>

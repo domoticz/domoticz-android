@@ -18,6 +18,7 @@
   <string name="welcome_msg_numberOfDevices">%1$d enheder fundet</string>
   <string name="welcome_msg_no_ssid_found">Ingen wifi SSID er fundet</string>
   <string name="welcome_ssid_spinner_prompt">Vælg hjem SSID</string>
+  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
   <string name="welcome_server_settings_title">Serverindstillinger</string>
   <string name="welcome_server_startScreen">Startskærmen</string>
   <string name="welcome_button_next">næste</string>

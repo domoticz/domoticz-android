@@ -14,13 +14,14 @@
   <string name="category_notification">Ilmoitukset</string>
   <string name="category_debug">Virheenkorjaus</string>
   <string name="category_export">Vie-/ tuo asetuksia</string>
-  <string name="category_theme">Theme</string>
-  <string name="category_nfc">NFC Connections</string>
-  <string name="category_QRCode">QR Code</string>
+  <string name="category_theme">Teema</string>
+  <string name="category_nfc">NFC-yhteydet</string>
+  <string name="category_QRCode">QR-koodi</string>
+  <string name="category_Speech">Speech</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Aloitusnäyttö</string>
   <string name="enable_items">Käyttöön/poistaa kohteita</string>
-  <string name="sort_dashboardLikeServer_title">Dashboard sorting</string>
+  <string name="sort_dashboardLikeServer_title">Työoöydän lajittelu</string>
   <string name="sort_dashboardLikeServer_on">Sort dashboard like server</string>
   <string name="sort_dashboardLikeServer_off">Sort dashboard alphabetically</string>
   <string name="extra_data_title">Extra data on dashboard</string>
@@ -29,7 +30,7 @@
   <string name="always_on_title">Wake Lock</string>
   <string name="always_on_on">Lock the screen always On</string>
   <string name="always_on_off">Don\'t lock the screen to always On</string>
-  <string name="switch_buttons_title">Switches</string>
+  <string name="switch_buttons_title">Kytkimet</string>
   <string name="switch_buttons_on">Show switches with on/off switch</string>
   <string name="switch_buttons_off">Show switches with on/off buttons</string>
   <string name="dashboard_list_title">Dashboard Grid</string>
@@ -56,13 +57,16 @@
   <string name="server_settings">Server connection settings</string>
   <string name="server_force_fetch_config">Fetch server configuration</string>
   <string name="nfc_settings">Setup NFC Connections</string>
-  <string name="title_activity_server_settings">Server settings</string>
+  <string name="speech_settings">Setup Speech Commands</string>
+  <string name="title_activity_server_settings">Palvelimen asetukset</string>
   <string name="multi_server">Multi-palvelin</string>
   <string name="enable_nfc">Ota NFC käyttöön</string>
+  <string name="enable_speech">Enable Speech Recognition</string>
   <string name="export_settings">Vienti asetukset</string>
   <string name="import_settings">Tuonti asetukset</string>
   <string name="multi_server_settings">Ota käyttöön usean palvelimen tuki</string>
   <string name="nfc_enable_settings">Ota NFC-yhteydet käyttöön</string>
+  <string name="speech_enable_settings">Enable Speech Recognition</string>
   <string name="server">Palvelin</string>
   <string name="qrcode_settings">Setup QR Codes</string>
   <string name="enable_qrcode">Enable QR Codes</string>

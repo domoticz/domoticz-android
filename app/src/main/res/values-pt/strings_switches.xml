@@ -13,5 +13,6 @@
   <string name="error_color">Não é possível alterar a cor</string>
   <string name="error_state">Não é possivel alterar o estado</string>
   <string name="error_timer">Não é possível mostrar os temporizadores</string>
+  <string name="error_notifications">Pode não mostrar as notificações</string>
   <string name="set_level_switch">"Definição de nivel para interruptor: %1$s to %2$d"</string>
 </resources>

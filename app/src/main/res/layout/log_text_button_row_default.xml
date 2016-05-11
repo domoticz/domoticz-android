@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/extra_panel"
     android:layout_width="wrap_content"
     android:layout_height="25dp"
@@ -15,15 +15,15 @@
     tools:visibility="visible">
 
     <com.like.LikeButton
-        app:icon_type="star"
-        app:icon_size="20dp"
         android:id="@+id/fav_button"
-        android:paddingTop="-17dp"
-        android:paddingBottom="-25dp"
-        android:layout_weight=".20"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/rowIcon"
-        android:layout_height="wrap_content" />
+        android:layout_weight=".20"
+        android:paddingBottom="-25dp"
+        android:paddingTop="-17dp"
+        app:icon_size="20dp"
+        app:icon_type="star" />
 
     <Button
         android:id="@+id/log_button"

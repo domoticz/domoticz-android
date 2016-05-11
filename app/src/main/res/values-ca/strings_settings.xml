@@ -17,6 +17,7 @@
   <string name="category_theme">Tema</string>
   <string name="category_nfc">Connexions NFC</string>
   <string name="category_QRCode">Codi QR</string>
+  <string name="category_Speech">Speech</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Pantalla d\'inici</string>
   <string name="enable_items">Activa/desactiva elements</string>
@@ -56,13 +57,16 @@
   <string name="server_settings">Configuració de connexió al servidor</string>
   <string name="server_force_fetch_config">Fetch server configuration</string>
   <string name="nfc_settings">Configura les connexions NFC</string>
+  <string name="speech_settings">Setup Speech Commands</string>
   <string name="title_activity_server_settings">Configuració del servidor</string>
   <string name="multi_server">Multi Server</string>
   <string name="enable_nfc">Activa NFC</string>
+  <string name="enable_speech">Enable Speech Recognition</string>
   <string name="export_settings">Exporta la configuració</string>
   <string name="import_settings">Importa configuració</string>
   <string name="multi_server_settings">Enable multiple server support</string>
   <string name="nfc_enable_settings">Habilita les connexions NFC</string>
+  <string name="speech_enable_settings">Enable Speech Recognition</string>
   <string name="server">Servidor</string>
   <string name="qrcode_settings">Configura els codis QR</string>
   <string name="enable_qrcode">Enable QR Codes</string>

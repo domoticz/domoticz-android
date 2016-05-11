@@ -18,6 +18,7 @@
   <string name="welcome_msg_numberOfDevices">%1$d apparaten gevonden</string>
   <string name="welcome_msg_no_ssid_found">Geen toegangspunten gevonden</string>
   <string name="welcome_ssid_spinner_prompt">Selecteer uw Wi-Fi toegangspunt</string>
+  <string name="welcome_ssid_button_prompt">Voeg SSID\'s toe</string>
   <string name="welcome_server_settings_title">Server instellingen</string>
   <string name="welcome_server_startScreen">Startscherm</string>
   <string name="welcome_button_next">volgende</string>

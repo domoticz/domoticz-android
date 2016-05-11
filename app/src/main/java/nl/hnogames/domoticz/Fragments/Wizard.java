@@ -66,6 +66,7 @@ public class Wizard extends Fragment {
     private final String NFC = "NFC_CARD";
     private final String QRCODE = "QRCODE_CARD";
     private final String FINISH = "FINISH";
+    private final String SPEECH = "SPEECH";
 
     private final String TAG = Wizard.class.getSimpleName();
     private final int iSettingsResultCode = 995;
@@ -81,6 +82,11 @@ public class Wizard extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            if ((root.findViewById(R.id.wizard_relativeLayout)) != null)
+                (root.findViewById(R.id.wizard_relativeLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
         createCards();
         return root;
     }
@@ -123,6 +129,7 @@ public class Wizard extends Fragment {
         if (!mSharedPrefs.isCardCompleted(MULTISERVER)) cardsToGenerate.add(MULTISERVER);
         if (!mSharedPrefs.isCardCompleted(QRCODE)) cardsToGenerate.add(QRCODE);
         if (!mSharedPrefs.isCardCompleted(NFC)) cardsToGenerate.add(NFC);
+        if (!mSharedPrefs.isCardCompleted(SPEECH)) cardsToGenerate.add(SPEECH);
 
         if (cardsToGenerate.size() <= 0) cardsToGenerate.add(FINISH);
         List<Card> cards = generateCards(cardsToGenerate);
@@ -279,6 +286,35 @@ public class Wizard extends Fragment {
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_qrcode))
                         .setDescription(context.getString(R.string.wizard_qrcode_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
+            }
+            if (card.equalsIgnoreCase(SPEECH)) {
+                cards.add(new Card.Builder(context)
+                        .setTag(SPEECH)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_speech))
+                        .setDescription(context.getString(R.string.wizard_speech_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
@@ -490,7 +526,7 @@ public class Wizard extends Fragment {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
-                                        ((MainActivity) getActivity()).drawNavigationMenu();
+                                        ((MainActivity) getActivity()).drawNavigationMenu(null);
                                         ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                     }
@@ -502,7 +538,7 @@ public class Wizard extends Fragment {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
-                                        ((MainActivity) getActivity()).drawNavigationMenu();
+                                        ((MainActivity) getActivity()).drawNavigationMenu(null);
                                         ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
                                     }

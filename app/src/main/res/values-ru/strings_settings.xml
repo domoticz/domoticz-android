@@ -17,6 +17,7 @@
   <string name="category_theme">Оформление</string>
   <string name="category_nfc">NFC соединения</string>
   <string name="category_QRCode">QR-код</string>
+  <string name="category_Speech">Speech</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Экран запуска</string>
   <string name="enable_items">Включить/отключить элементы</string>
@@ -56,13 +57,16 @@
   <string name="server_settings">Настройки подключения к серверу</string>
   <string name="server_force_fetch_config">Получить конфигурацию сервера</string>
   <string name="nfc_settings">Настройка соединения NFC</string>
+  <string name="speech_settings">Setup Speech Commands</string>
   <string name="title_activity_server_settings">Параметры сервера</string>
   <string name="multi_server">Multi-сервер</string>
   <string name="enable_nfc">Включить NFC</string>
+  <string name="enable_speech">Enable Speech Recognition</string>
   <string name="export_settings">Экспортировать настройки</string>
   <string name="import_settings">Импортировать настройки</string>
   <string name="multi_server_settings">Включить поддержку нескольких серверов</string>
   <string name="nfc_enable_settings">Включение подключений NFC</string>
+  <string name="speech_enable_settings">Enable Speech Recognition</string>
   <string name="server">Сервер</string>
   <string name="qrcode_settings">Настройка кодов QR</string>
   <string name="enable_qrcode">Включить QR коды</string>

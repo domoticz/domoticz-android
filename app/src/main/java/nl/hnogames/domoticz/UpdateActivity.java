@@ -67,6 +67,8 @@ public class UpdateActivity extends AppCompatActivity {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
@@ -338,7 +340,7 @@ public class UpdateActivity extends AppCompatActivity {
         CoordinatorLayout fragmentCoordinatorLayout =
                 (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (fragmentCoordinatorLayout != null) {
-            Snackbar.make(fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
         }
     }
 

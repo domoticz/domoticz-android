@@ -47,11 +47,6 @@ public class ServerUtil {
     private final String SERVER_PREFS = "remote_servers";
     private final String SERVER_PREFS_ACTIVE = "active_server";
 
-    private final String JSON_CONFIG_INFO = "configInfo";
-    private final String JSON_VALUE_PAIRS = "nameValuePairs";
-    private final String JSON_OBJECT = "jsonObject";
-    private final String serverUpdateInfoJSON_SERVER_UPDATE_INFO = "serverUpdateInfo";
-
     private Context mContext;
 
     private ServerInfo mActiveServer;
@@ -91,12 +86,18 @@ public class ServerUtil {
 
         if (!UsefulBits.isEmpty(serverSettings)) {
             mServerList = new ArrayList<>();
+            String JSON_VALUE_PAIRS = "nameValuePairs";
+            String JSON_CONFIG_INFO = "configInfo";
+            String JSON_OBJECT = "jsonObject";
+            String serverUpdateInfoJSON_SERVER_UPDATE_INFO = "serverUpdateInfo";
             try {
                 JSONArray jsonSettingsArray = new JSONArray(serverSettings);
                 for (int i = 0; i < jsonSettingsArray.length(); i++) {
                     JSONObject jsonServer = jsonSettingsArray.getJSONObject(i);
                     ServerInfo oPrefServer = new ServerInfo();
                     oPrefServer.setServerName(jsonServer.getString("SERVER_NAME"));
+                    if (jsonServer.has("SERVER_UNIQUE_ID"))
+                        oPrefServer.setServerUniqueId(jsonServer.getString("SERVER_UNIQUE_ID"));
                     oPrefServer.setRemoteServerUsername(jsonServer.getString("REMOTE_SERVER_USERNAME"));
                     oPrefServer.setRemoteServerPassword(jsonServer.getString("REMOTE_SERVER_PASSWORD"));
                     oPrefServer.setRemoteServerUrl(jsonServer.getString("REMOTE_SERVER_URL"));
@@ -158,6 +159,8 @@ public class ServerUtil {
                         jsonServer = new JSONObject(activeServerSettings);
                         ServerInfo oPrefServer = new ServerInfo();
                         oPrefServer.setServerName(jsonServer.getString("SERVER_NAME"));
+                        if (jsonServer.has("SERVER_UNIQUE_ID"))
+                            oPrefServer.setServerUniqueId(jsonServer.getString("SERVER_UNIQUE_ID"));
                         oPrefServer.setRemoteServerUsername(jsonServer.getString("REMOTE_SERVER_USERNAME"));
                         oPrefServer.setRemoteServerPassword(jsonServer.getString("REMOTE_SERVER_PASSWORD"));
                         oPrefServer.setRemoteServerUrl(jsonServer.getString("REMOTE_SERVER_URL"));

@@ -26,6 +26,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
 import nl.hnogames.domoticz.Utils.AnimationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmentListener, WeatherClickListener {
@@ -50,7 +51,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_weather);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_weather);
         initAnimation();
     }
 
@@ -135,17 +137,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite)
-            Snackbar.make(coordinatorLayout,
-                    mWeatherInfo.getName()
-                            + " "
-                            + mContext.getString(R.string.favorite_added),
-                    Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         else
-            Snackbar.make(coordinatorLayout,
-                    mWeatherInfo.getName()
-                            + " "
-                            + mContext.getString(R.string.favorite_removed),
-                    Snackbar.LENGTH_SHORT).show();
+            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
