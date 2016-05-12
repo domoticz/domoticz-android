@@ -853,7 +853,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mSharedPrefs.isSpeechEnabled()) {
             MenuItem speechMenuItem = menu.findItem(R.id.action_speech);
-            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getSpeechList() != null && mSharedPrefs.getSpeechList().size() > 0) {
                 speechMenuItem.setVisible(true);
             } else if (speechMenuItem != null)
                 speechMenuItem.setVisible(false);
