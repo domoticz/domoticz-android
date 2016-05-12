@@ -29,6 +29,8 @@
   <string name="wizard_nfc_description">Poderá alterar estado do interruptor vis NFC!</string>
   <string name="wizard_qrcode">Código QR</string>
   <string name="wizard_qrcode_description">Alterar interruptor escaneando um código QR (ou código de barras)!</string>
+  <string name="wizard_speech">Speech Commands</string>
+  <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
   <string name="wizard_button_nice">Porreiro</string>
   <string name="wizard_button_switches">Interruptores</string>
   <string name="wizard_button_settings">Definições</string>

@@ -29,6 +29,8 @@
   <string name="wizard_nfc_description">È possibile utilizzare gli interruttori via NFC!</string>
   <string name="wizard_qrcode">QR Code</string>
   <string name="wizard_qrcode_description">Aziona gli interruttori tramite QR Code (o codice a barre)!</string>
+  <string name="wizard_speech">Comandi vocali</string>
+  <string name="wizard_speech_description">Comanda gli interruttori con la tua voce! Configura i comandi vocali tramite le impostazioni e collegali agli interruttori.</string>
   <string name="wizard_button_nice">Bello</string>
   <string name="wizard_button_switches">Interruttori</string>
   <string name="wizard_button_settings">Settaggi</string>
