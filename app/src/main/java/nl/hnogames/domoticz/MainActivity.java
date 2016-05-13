@@ -36,7 +36,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -1210,13 +1209,6 @@ public class MainActivity extends AppCompatActivity {
                 String preVersion = mSharedPrefs.getPreviousVersionNumber();
                 if (!version.equals(preVersion)) {
                     if (dialogStandardFragment != null) {
-                        /*FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        Fragment prev = fm.findFragmentByTag("changelog_dialog");
-                        if (prev != null) {
-                            ft.remove(prev);
-                        }
-                        dialogStandardFragment.show(ft, "changelog_dialog");*/
                         getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
                     }
                     mSharedPrefs.setVersionNumber(version);
