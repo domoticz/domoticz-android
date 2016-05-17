@@ -136,21 +136,24 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
             @Override
             public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
-                mGraphList = grphPoints;
-                ComboLineColumnChartData columnData = generateData(root);
-                if (columnData == null)
-                    finish();
-                else {
-                    chart.setComboLineColumnChartData(columnData);
-                    setViewPort(chart);
+                try {
+                    mGraphList = grphPoints;
+                    ComboLineColumnChartData columnData = generateData(root);
+                    if (columnData == null)
+                        finish();
+                    else {
+                        chart.setComboLineColumnChartData(columnData);
+                        setViewPort(chart);
 
-                    if (getActivity() != null)
-                        getActivity().invalidateOptionsMenu();
+                        if (getActivity() != null)
+                            getActivity().invalidateOptionsMenu();
+                    }
                 }
+                catch (Exception ex){}
             }
 
             @Override
-            public void onError(Exception error) {
+            public void onError(Exception ex) {
                 // Let's check if were still attached to an activity
                 if (isAdded()) {
                     ((GraphActivity) getActivity()).noGraphFound();
