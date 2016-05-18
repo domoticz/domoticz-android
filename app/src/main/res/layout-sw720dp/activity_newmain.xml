@@ -1,19 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tabletLayoutWrapper"
+    android:id="@+id/phoneLayoutWrapper"
     style="@style/background_recyclerview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <!-- TextView used to detect if this tablet layout is used -->
-    <TextView
-        android:id="@+id/tabletLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -27,8 +20,8 @@
     <com.github.zagum.speechrecognitionview.RecognitionProgressView
         android:id="@+id/recognition_view"
         android:layout_width="wrap_content"
-        style="@style/background_recyclerview"
         android:layout_height="wrap_content"
+        style="@style/background_recyclerview"
         android:visibility="gone"
         android:layout_gravity="center"/>
 
@@ -37,4 +30,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    <!-- TextView used to detect if this tablet layout is used -->
+    <TextView
+        android:id="@+id/tabletLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

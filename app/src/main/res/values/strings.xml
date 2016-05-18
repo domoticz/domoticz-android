@@ -10,6 +10,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="msg_please_wait">Please wait…</string>
+    <string name="changelog">Changelog</string>
 
     <string name="button_state_on">On</string>
     <string name="button_state_off">Off</string>

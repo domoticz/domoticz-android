@@ -5,13 +5,39 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
-    //noinspection GroovyAssignabilityCheck
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 106
-        versionName '0.1.259'
-        multiDexEnabled true
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def value = 0
+        def runTasks = gradle.startParameter.taskNames
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks) {
+            value = 1;
+        }
+
+        def versionMajor = 0
+        def versionMinor = 1
+        def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
+        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+        def version_Code = versionProps['VERSION_CODE'].toInteger() + value
+
+        versionProps['VERSION_PATCH'] = versionPatch.toString()
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['VERSION_CODE'] = version_Code.toString()
+
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            versionCode version_Code
+            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
+            minSdkVersion 16
+            targetSdkVersion 23
+            multiDexEnabled true
+        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
 
     //noinspection GroovyAssignabilityCheck
@@ -76,21 +102,21 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':libs:MemorizingTrustManager')
 
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
         transitive = true
     }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.7@aar') {
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.8@aar') {
         transitive = true
     }
 
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:support-v13:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.android.support:cardview-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v13:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
 
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.4'
@@ -121,6 +147,7 @@ dependencies {
 
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
+
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')
 }

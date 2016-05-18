@@ -29,6 +29,8 @@
   <string name="wizard_nfc_description">Vous pouvez utiliser NFC avec les interrupteurs</string>
   <string name="wizard_qrcode">QR Code</string>
   <string name="wizard_qrcode_description">Changer l\'état d\'un interrupteur en scannant un QR Code.</string>
+  <string name="wizard_speech">Commandes vocales</string>
+  <string name="wizard_speech_description">Changer l\'état d\'un interrupteur par commande vocale.</string>
   <string name="wizard_button_nice">Sympa</string>
   <string name="wizard_button_switches">Interrupteurs</string>
   <string name="wizard_button_settings">Paramètres</string>

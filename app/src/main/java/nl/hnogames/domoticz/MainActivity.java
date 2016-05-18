@@ -36,7 +36,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -182,16 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (usingTabletLayout == null)
                 onPhone = true;
-            else {
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
-                    LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
-                    if (color != 0 && tabletLayoutWrapper != null)
-                        tabletLayoutWrapper.setBackgroundColor(color);
-                }
-                if (getSupportActionBar() != null)
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
 
             appRate();
             mServerUtil = new ServerUtil(this);
@@ -853,7 +842,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mSharedPrefs.isSpeechEnabled()) {
             MenuItem speechMenuItem = menu.findItem(R.id.action_speech);
-            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getSpeechList() != null && mSharedPrefs.getSpeechList().size() > 0) {
                 speechMenuItem.setVisible(true);
             } else if (speechMenuItem != null)
                 speechMenuItem.setVisible(false);
@@ -1210,13 +1199,6 @@ public class MainActivity extends AppCompatActivity {
                 String preVersion = mSharedPrefs.getPreviousVersionNumber();
                 if (!version.equals(preVersion)) {
                     if (dialogStandardFragment != null) {
-                        /*FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        Fragment prev = fm.findFragmentByTag("changelog_dialog");
-                        if (prev != null) {
-                            ft.remove(prev);
-                        }
-                        dialogStandardFragment.show(ft, "changelog_dialog");*/
                         getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
                     }
                     mSharedPrefs.setVersionNumber(version);

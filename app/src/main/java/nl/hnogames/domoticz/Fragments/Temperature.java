@@ -35,6 +35,7 @@ import com.afollestad.materialdialogs.DialogAction;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
@@ -67,6 +68,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private ArrayList<TemperatureInfo> mTempInfos;
 
     @Override
+    @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -75,6 +77,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
@@ -84,6 +87,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void Filter(String text) {
         filter = text;
         try {
@@ -96,6 +100,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
         processTemperature();
@@ -112,6 +117,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
         mDomoticz.getTemperatures(new TemperatureReceiver() {
             @Override
+            @DebugLog
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 mTempInfos = mTemperatureInfos;
                 successHandling(mTemperatureInfos.toString(), false);
@@ -119,6 +125,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -133,6 +140,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
+                @DebugLog
                 public void onRefresh() {
                     processTemperature();
                 }
@@ -153,6 +161,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         infoDialog.show();
         infoDialog.onDismissListener(new TemperatureInfoDialog.DismissListener() {
             @Override
+            @DebugLog
             public void onDismiss(boolean isChanged, boolean isFavorite) {
                 if (isChanged)
                     changeFavorite(mTemperatureInfo, isFavorite);
@@ -177,12 +186,14 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
         mDomoticz.setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
+            @DebugLog
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 mTemperatureInfo.setFavoriteBoolean(isFavorite);
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -190,6 +201,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
@@ -200,11 +212,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void onPause() {
         super.onPause();
     }
 
     @Override
+    @DebugLog
     public void onLogClick(final TemperatureInfo temp, final String range) {
         Intent intent = new Intent(mContext, GraphActivity.class);
         intent.putExtra("IDX", temp.getIdx());
@@ -217,18 +231,21 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void onSetClick(final TemperatureInfo t) {
         addDebugText("onSetClick");
         final int idx = t.getIdx();
 
         final setCommandReceiver commandReceiver = new setCommandReceiver() {
             @Override
+            @DebugLog
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 processTemperature();
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -250,6 +267,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
             @Override
+            @DebugLog
             public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
                 if (dialogAction == DialogAction.POSITIVE) {
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
@@ -277,11 +295,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public void onLikeButtonClick(int idx, boolean checked) {
         changeFavorite(getTemperature(idx), checked);
     }
 
     @Override
+    @DebugLog
     public void onItemClicked(View v, int position) {
         LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
         if (extra_panel != null) {
@@ -307,6 +327,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
+    @DebugLog
     public boolean onItemLongClicked(int position) {
         showInfoDialog(adapter.filteredData.get(position));
         return true;
