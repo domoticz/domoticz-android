@@ -181,16 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (usingTabletLayout == null)
                 onPhone = true;
-            else {
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
-                    LinearLayout tabletLayoutWrapper = (LinearLayout) findViewById(R.id.tabletLayoutWrapper);
-                    if (color != 0 && tabletLayoutWrapper != null)
-                        tabletLayoutWrapper.setBackgroundColor(color);
-                }
-                if (getSupportActionBar() != null)
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
 
             appRate();
             mServerUtil = new ServerUtil(this);
