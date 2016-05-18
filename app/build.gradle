@@ -5,13 +5,39 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
-    //noinspection GroovyAssignabilityCheck
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 108
-        versionName '0.1.261'
-        multiDexEnabled true
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def value = 0
+        def runTasks = gradle.startParameter.taskNames
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks) {
+            value = 1;
+        }
+
+        def versionMajor = 0
+        def versionMinor = 1
+        def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
+        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+        def version_Code = versionProps['VERSION_CODE'].toInteger() + value
+
+        versionProps['VERSION_PATCH'] = versionPatch.toString()
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['VERSION_CODE'] = version_Code.toString()
+
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            versionCode version_Code
+            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
+            minSdkVersion 16
+            targetSdkVersion 23
+            multiDexEnabled true
+        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
 
     //noinspection GroovyAssignabilityCheck
