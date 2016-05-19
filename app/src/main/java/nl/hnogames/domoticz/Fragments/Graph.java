@@ -154,8 +154,8 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         if (getActivity() != null)
                             getActivity().invalidateOptionsMenu();
                     }
+                } catch (Exception ex) {
                 }
-                catch (Exception ex){}
             }
 
             @Override

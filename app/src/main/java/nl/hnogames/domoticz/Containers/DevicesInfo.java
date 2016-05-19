@@ -247,6 +247,9 @@ public class DevicesInfo implements Comparable {
         }
     }
 
+    public DevicesInfo() {
+    }
+
     public boolean getFavoriteBoolean() {
         boolean favorite = false;
         if (this.Favorite == 1) favorite = true;

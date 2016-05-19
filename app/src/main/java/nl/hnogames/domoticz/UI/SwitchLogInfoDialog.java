@@ -53,7 +53,8 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {}
+    public void onDismiss(DialogInterface dialog) {
+    }
 
     public void show() {
         mdb.title("Log");

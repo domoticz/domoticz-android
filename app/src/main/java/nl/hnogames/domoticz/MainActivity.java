@@ -48,7 +48,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -134,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     private RecognitionProgressView recognitionProgressView;
     private RecognitionListenerAdapter recognitionListener;
     private boolean listeningSpeechRecognition = false;
+    private boolean fromVoiceWidget = false;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -150,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras != null) {
+                fromVoiceWidget = extras.getBoolean("VOICE", false);
+            }
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -198,17 +205,21 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
-                    drawNavigationMenu(settings);
-                    addFragment();
-                    openDialogFragment(new Changelog());
+                    if(!fromVoiceWidget) {
+                        drawNavigationMenu(settings);
+                        addFragment();
+                        openDialogFragment(new Changelog());
+                    }
                 }
 
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
-                    drawNavigationMenu(null);
-                    addFragment();
-                    openDialogFragment(new Changelog());
+                    if(!fromVoiceWidget) {
+                        drawNavigationMenu(null);
+                        addFragment();
+                        openDialogFragment(new Changelog());
+                    }
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(this));
 
@@ -781,6 +792,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private MenuItem speechMenuItem;
+
     @Override
     @DebugLog
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -841,9 +854,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (mSharedPrefs.isSpeechEnabled()) {
-            MenuItem speechMenuItem = menu.findItem(R.id.action_speech);
+            speechMenuItem = menu.findItem(R.id.action_speech);
             if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getSpeechList() != null && mSharedPrefs.getSpeechList().size() > 0) {
                 speechMenuItem.setVisible(true);
+                if(fromVoiceWidget)
+                    onOptionsItemSelected(speechMenuItem);
             } else if (speechMenuItem != null)
                 speechMenuItem.setVisible(false);
         }
@@ -1165,6 +1180,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (listeningSpeechRecognition) {
             stopRecognition();
+
+            if(fromVoiceWidget)
+                this.finish();
         } else {
             //handle the back press :D close the drawer first and if the drawer is closed close the activity
             if (drawer != null && drawer.isDrawerOpen()) {
