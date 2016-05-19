@@ -395,10 +395,8 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private void checkForLocationPermission(final int actionToStart) {
         if (PermissionsUtil.canAccessLocation(this)) {
-
             // We have permission already!
             Log.v(TAG, "We have permission, let's go!");
-
             switch (actionToStart) {
                 case ACTION_GET_LOCATION:
                     getLocationServices();
@@ -408,11 +406,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                     startGeofenceService();
                     break;
             }
-
         } else {
-
             // No permission, check if the dialog has already been shown to user
-
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this, Manifest.permission.ACCESS_FINE_LOCATION) ||
                     ActivityCompat.shouldShowRequestPermissionRationale(
@@ -420,21 +415,17 @@ public class GeoSettingsActivity extends AppCompatActivity
 
                 // User has declined already somewhere, we should explain why we need this
                 // permission and what's in it for the user
-
                 Log.v(TAG, "Should show request permission rationale");
-
                 if (!requestInProgress) {
 
                     // Request not yet in progress: let's start!
 
                     requestInProgress = true;
-
                     String sb;
                     sb = "Geofencing in Domoticz enables you to switch based on your location" + UsefulBits.newLine();
                     sb += "For Geofencing to work, Domoticz needs to know the location of your device" + UsefulBits.newLine();
                     sb += UsefulBits.newLine();
                     sb += "Enable location permission?";
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
                     builder.setTitle("Domoticz requires your permission")
                             .setMessage(sb)
@@ -514,19 +505,19 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void getLocationServices() {
-
-        //noinspection ResourceType
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mApiClient, mLocationRequest, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        //noinspection ResourceType
-                        currentLocation
-                                = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
-                    }
-                });
-        isLocationUpdatesStarted = true;
-
+        if (mApiClient.isConnected()) {
+            //noinspection ResourceType
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mApiClient, mLocationRequest, new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            //noinspection ResourceType
+                            currentLocation
+                                    = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
+                        }
+                    });
+            isLocationUpdatesStarted = true;
+        }
     }
 
     private void showAddLocationDialog() {
