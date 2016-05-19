@@ -7,6 +7,6 @@
   <string name="action_filter">Filter</string>
   <string name="action_camera_play">Spustiť</string>
   <string name="action_camera_pause">Pauza</string>
-  <string name="action_qrcode_scan">Scan QR Code</string>
-  <string name="action_speech">Speech Recognition</string>
+  <string name="action_qrcode_scan">Skenovať QR kód</string>
+  <string name="action_speech">Rozpoznávanie reči</string>
 </resources>

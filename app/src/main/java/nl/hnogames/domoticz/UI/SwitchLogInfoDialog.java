@@ -46,7 +46,6 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
                                int layout) {
         this.info = _info;
         this.mContext = c;
-
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
                 .positiveText(android.R.string.ok);
@@ -54,9 +53,7 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-
-    }
+    public void onDismiss(DialogInterface dialog) {}
 
     public void show() {
         mdb.title("Log");

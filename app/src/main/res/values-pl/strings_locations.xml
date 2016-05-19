@@ -7,7 +7,7 @@
   <string name="longitude">Długość geograficzna</string>
   <string name="latitude">Szerokość geograficzna</string>
   <string name="radius">Promień (metery)</string>
-  <string name="connectedSwitch">Przełącznik podłączony</string>
+  <string name="connectedSwitch">Powiązany przełącznik</string>
   <string name="unable_to_get_switches">Nie można pobrać wszystkich przełączników, proszę spróbować ponownie</string>
   <string name="delete_short">USUŃ</string>
   <string name="delete">Usuń</string>
