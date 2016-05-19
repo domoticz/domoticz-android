@@ -33,7 +33,7 @@ public class Changelog extends DialogFragment implements DomoticzFragmentListene
             theme = R.style.MyDarkDialogTheme;
 
         return new AlertDialog.Builder(getActivity(), theme)
-                .setTitle("Changelog")
+                .setTitle(getContext().getString(R.string.changelog))
                 .setView(chgList)
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {

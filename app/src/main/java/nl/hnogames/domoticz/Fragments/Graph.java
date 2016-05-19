@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import hugo.weaving.DebugLog;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.ComboLineColumnChartData;
@@ -86,6 +87,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
 
     @Override
+    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
@@ -93,6 +95,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
+    @DebugLog
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -114,6 +117,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
+    @DebugLog
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -125,6 +129,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
+    @DebugLog
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
@@ -135,22 +140,27 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
         mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
             @Override
+            @DebugLog
             public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
-                mGraphList = grphPoints;
-                ComboLineColumnChartData columnData = generateData(root);
-                if (columnData == null)
-                    finish();
-                else {
-                    chart.setComboLineColumnChartData(columnData);
-                    setViewPort(chart);
+                try {
+                    mGraphList = grphPoints;
+                    ComboLineColumnChartData columnData = generateData(root);
+                    if (columnData == null)
+                        finish();
+                    else {
+                        chart.setComboLineColumnChartData(columnData);
+                        setViewPort(chart);
 
-                    if (getActivity() != null)
-                        getActivity().invalidateOptionsMenu();
+                        if (getActivity() != null)
+                            getActivity().invalidateOptionsMenu();
+                    }
+                } catch (Exception ex) {
                 }
             }
 
             @Override
-            public void onError(Exception error) {
+            @DebugLog
+            public void onError(Exception ex) {
                 // Let's check if were still attached to an activity
                 if (isAdded()) {
                     ((GraphActivity) getActivity()).noGraphFound();
@@ -179,6 +189,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
+    @DebugLog
     public void onConnectionOk() {
         if (getView() != null) {
             getGraphs();
@@ -540,6 +551,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
+    @DebugLog
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (lineLabels != null && lineLabels.size() > 1) {
             inflater.inflate(R.menu.menu_graph_sort, menu);
@@ -548,6 +560,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
+    @DebugLog
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort:
@@ -559,6 +572,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         .items(items)
                         .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
+                            @DebugLog
                             public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                                 selectedFilters = which;
                                 enableFilters = true;

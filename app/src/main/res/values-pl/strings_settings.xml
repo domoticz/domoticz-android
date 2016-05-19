@@ -16,7 +16,7 @@
   <string name="category_export">Eksport/Import ustawień</string>
   <string name="category_theme">Motyw</string>
   <string name="category_nfc">Połączenia NFC</string>
-  <string name="category_QRCode">Kod QR</string>
+  <string name="category_QRCode">Kody QR</string>
   <string name="category_Speech">Mowa</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ekran startowy</string>
@@ -28,11 +28,11 @@
   <string name="show_extra_data_on">Pokaż dodatkowe dane na pulpicie</string>
   <string name="show_extra_data_off">Ukryj dodatkowe dane na pulpicie</string>
   <string name="always_on_title">Blokada budzenia</string>
-  <string name="always_on_on">Zablokuj ekran aby był zawsze włączony</string>
+  <string name="always_on_on">Blokuj ekran aby był zawsze włączony</string>
   <string name="always_on_off">Nie blokuj ekranu aby był zawsze włączony</string>
   <string name="switch_buttons_title">Przełączniki</string>
-  <string name="switch_buttons_on">Pokaż przełączniki z przełączaniem włącz/wyłącz</string>
-  <string name="switch_buttons_off">Pokaż przełączniki z przyciskami włącz/wyłącz</string>
+  <string name="switch_buttons_on">Pokaż przełączniki z jednym suwakiem włącz/wyłącz</string>
+  <string name="switch_buttons_off">Pokaż przełączniki z przyciskami włącz i wyłącz</string>
   <string name="dashboard_list_title">Siatka pulpitu</string>
   <string name="show_dashboard_list_on">Pokaż pulpit jako listę</string>
   <string name="show_dashboard_list_off">Pokaż pulpit jako siatkę</string>

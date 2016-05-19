@@ -47,6 +47,7 @@ import java.util.List;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Fragments.Changelog;
 import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.NFCSettingsActivity;
@@ -432,6 +433,14 @@ public class Preference extends PreferenceFragment {
                 td.setText(text);
                 td.show();
                 return false;
+            }
+        });
+        android.preference.Preference changelog = findPreference("info_changelog");
+        changelog.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                ((SettingsActivity) getActivity()).getSupportFragmentManager().beginTransaction().add(new Changelog(), "changelog_dialog").commitAllowingStateLoss();
+                return true;
             }
         });
     }

@@ -29,6 +29,8 @@
   <string name="wizard_nfc_description">Kapcsolókat lehet vezérelni NFC-n keresztül!</string>
   <string name="wizard_qrcode">QR kód</string>
   <string name="wizard_qrcode_description">Kapcsolók vezérlése QR kód (vagy vonalkód) segítségével!</string>
+  <string name="wizard_speech">Speech Commands</string>
+  <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
   <string name="wizard_button_nice">Menő</string>
   <string name="wizard_button_switches">Kapcsolók</string>
   <string name="wizard_button_settings">Beállítások</string>

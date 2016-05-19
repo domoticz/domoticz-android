@@ -75,7 +75,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
             tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
-            if (!configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS)) {
+            if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS)) {
                 isFahrenheit = true;
             }
         } else

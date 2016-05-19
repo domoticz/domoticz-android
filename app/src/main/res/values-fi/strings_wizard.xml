@@ -29,6 +29,8 @@
   <string name="wizard_nfc_description">Sinulla on mahdollisuus käyttää katkaisijoita NFC: n kautta!</string>
   <string name="wizard_qrcode">QR-koodi</string>
   <string name="wizard_qrcode_description">Käytä kytkimiä skannaamalla QR koodi (tai viivakoodi)!</string>
+  <string name="wizard_speech">Speech Commands</string>
+  <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
   <string name="wizard_button_nice">Kiva</string>
   <string name="wizard_button_switches">Kytkimet</string>
   <string name="wizard_button_settings">Asetukset</string>

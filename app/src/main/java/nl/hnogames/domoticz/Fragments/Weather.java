@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
 import nl.hnogames.domoticz.Containers.Language;
@@ -41,6 +42,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private ArrayList<WeatherInfo> mWeatherInfoList;
 
     @Override
+    @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -48,6 +50,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
@@ -57,6 +60,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public void Filter(String text) {
         filter = text;
         try {
@@ -69,6 +73,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
         processWeather();
@@ -80,6 +85,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         mDomoticz.getWeathers(new WeatherReceiver() {
 
             @Override
+            @DebugLog
             public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
                 mWeatherInfoList = mWeatherInfos;
                 if (getView() != null) {
@@ -89,6 +95,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -108,6 +115,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
+            @DebugLog
             public void onRefresh() {
                 processWeather();
             }
@@ -125,6 +133,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         infoDialog.show();
         infoDialog.onDismissListener(new WeatherInfoDialog.DismissListener() {
             @Override
+            @DebugLog
             public void onDismiss(boolean isChanged, boolean isFavorite) {
                 if (isChanged)
                     changeFavorite(mWeatherInfo, isFavorite);
@@ -154,12 +163,14 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
                 null,
                 new setCommandReceiver() {
                     @Override
+                    @DebugLog
                     public void onReceiveResult(String result) {
                         successHandling(result, false);
                         mWeatherInfo.setFavoriteBoolean(isFavorite);
                     }
 
                     @Override
+                    @DebugLog
                     public void onError(Exception error) {
                         errorHandling(error);
                     }
@@ -167,6 +178,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
@@ -177,11 +189,13 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public void onPause() {
         super.onPause();
     }
 
     @Override
+    @DebugLog
     public void onLogClick(final WeatherInfo weather, final String range) {
         final String graphType = weather.getTypeImg()
                 .toLowerCase()
@@ -208,11 +222,13 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public void onLikeButtonClick(int idx, boolean checked) {
         changeFavorite(getWeather(idx), checked);
     }
 
     @Override
+    @DebugLog
     public void onItemClicked(View v, int position) {
         LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
         if (extra_panel != null) {
@@ -238,6 +254,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    @DebugLog
     public boolean onItemLongClicked(int position) {
         showInfoDialog(adapter.filteredData.get(position));
         return true;

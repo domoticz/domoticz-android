@@ -9,5 +9,5 @@
   <string name="nfc_exists">Znacznik NFC już zarejestrowany.</string>
   <string name="nfc_saved">Zapisano nowy znacznik NFC.</string>
   <string name="nfc">NFC</string>
-  <string name="noSwitchSelected_explanation_nfc">Dla efektu NFC, przełącznik powinien być powiązany ze znacznikiem NFC</string>
+  <string name="noSwitchSelected_explanation_nfc">Dla uzyskania efektu NFC, przełącznik powinien być powiązany ze znacznikiem NFC</string>
 </resources>

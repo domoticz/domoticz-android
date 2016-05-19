@@ -17,7 +17,7 @@
   <string name="category_theme">Tema</string>
   <string name="category_nfc">NFC-anslutningar</string>
   <string name="category_QRCode">QR-kod</string>
-  <string name="category_Speech">Speech</string>
+  <string name="category_Speech">Röst</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Startskärm</string>
   <string name="enable_items">Aktivera/inaktivera objekt</string>
@@ -57,16 +57,16 @@
   <string name="server_settings">Inställningar för anslutning till servern</string>
   <string name="server_force_fetch_config">Hämta serverinställningar</string>
   <string name="nfc_settings">Ställ in NFC-anslutningar</string>
-  <string name="speech_settings">Setup Speech Commands</string>
+  <string name="speech_settings">Ställ in röstkommando</string>
   <string name="title_activity_server_settings">Serverinställningar</string>
   <string name="multi_server">Multiserver</string>
   <string name="enable_nfc">Aktivera NFC</string>
-  <string name="enable_speech">Enable Speech Recognition</string>
+  <string name="enable_speech">Aktivera röstigenkänning</string>
   <string name="export_settings">Exportera inställningar</string>
   <string name="import_settings">Importera inställningar</string>
   <string name="multi_server_settings">Aktivera stöd för flera servrar</string>
   <string name="nfc_enable_settings">Aktivera NFC-anslutningar</string>
-  <string name="speech_enable_settings">Enable Speech Recognition</string>
+  <string name="speech_enable_settings">Aktivera röstigenkänning</string>
   <string name="server">Server</string>
   <string name="qrcode_settings">Ställ in QR-koder</string>
   <string name="enable_qrcode">Aktivera QR-koder</string>

@@ -13,6 +13,6 @@
   <string name="error_color">Farba sa nedá zmeniť</string>
   <string name="error_state">Stav sa nedá zmeniť</string>
   <string name="error_timer">Nepodarilo sa zobraziť časovače</string>
-  <string name="error_notifications">Could not show the notifications</string>
+  <string name="error_notifications">Nieje možné zobraziť oznámenia</string>
   <string name="set_level_switch">"Nastavenie úrovne prepínača: %1$s až %2$d"</string>
 </resources>
