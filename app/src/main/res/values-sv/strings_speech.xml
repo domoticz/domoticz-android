@@ -8,6 +8,7 @@
   <string name="Speech_name">Ge röstkommandot en korrekt namn. </string>
   <string name="Speech_exists">Röstkommando redan registrerat. </string>
   <string name="Speech_saved">Spara ett nytt röstkommando. </string>
+  <string name="Speech_desc">Do a new voice command. </string>
   <string name="Speech">Röst</string>
   <string name="Speech_disabled">Röstkommando inaktiverat, vänligen ställ in via inställningar.</string>
   <string name="noSwitchSelected_explanation_Speech">För att röstkommando ska fungera måste det kopplas till en brytare</string>

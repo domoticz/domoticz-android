@@ -13,9 +13,15 @@ android {
         versionProps.load(new FileInputStream(versionPropsFile))
         def value = 0
         def runTasks = gradle.startParameter.taskNames
-        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks) {
+        println "****************************"
+        println "runTasks: ${gradle.startParameter.taskNames}"
+
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks) {
             value = 1;
+
+            println "Build Version: +1"
         }
+        println "****************************"
 
         def versionMajor = 0
         def versionMinor = 1

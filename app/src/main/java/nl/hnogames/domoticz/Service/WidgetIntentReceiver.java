@@ -36,6 +36,7 @@ import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -46,16 +47,38 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private boolean action = false;
     private boolean toggle = true;
     private String password = null;
+    private SharedPrefUtil mSharedPrefs;
+
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
+
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         int idx = intent.getIntExtra("IDX", 999999);
         action = intent.getBooleanExtra("WIDGETACTION", false);
         toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
+        mSharedPrefs = new SharedPrefUtil(context);
 
-        if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
-            processSwitch(context, idx);
+        if (idx == iVoiceAction)//voice
+        {
+            Intent iStart = new Intent(context, MainActivity.class);
+            iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            iStart.putExtra("VOICE", true);
+            context.startActivity(iStart);
+        }
+        else if (idx == iQRCodeAction)//qrcode
+        {
+            Intent iStart = new Intent(context, MainActivity.class);
+            iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            iStart.putExtra("QRCODE", true);
+            context.startActivity(iStart);
+        }
+        else {
+            if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
+                processSwitch(context, idx);
+            }
         }
     }
 
@@ -119,7 +142,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     }
 
     private void processSwitch(final Context context, int idx) {
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         password = mSharedPrefs.getWidgetPassword(widgetID);
         final Domoticz domoticz = new Domoticz(context, null);
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);

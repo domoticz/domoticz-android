@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
-    <changelogversion versionName="0.1.261" changeDate="Beta">
+    <changelogversion versionName="0.1.26*" changeDate="Beta">
         <changelogtext>[b]PREMIUM[/b] Added Speech Commands</changelogtext>
         <changelogtext>[b]PREMIUM[/b] Added Multi users support</changelogtext>
         <changelogtext>[b]PREMIUM[/b] NFC auto open Domoticz app</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] Added Speech Command Widget</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] Added QR Code Widget</changelogtext>
         <changelogtext>New Navigation menu</changelogtext>
         <changelogtext>Tablet view changes</changelogtext>
         <changelogtext>Manual add Wifi SSID</changelogtext>

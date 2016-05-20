@@ -29,6 +29,8 @@
   <string name="wizard_nfc_description">Du er i stand til skifte switche via NFC!</string>
   <string name="wizard_qrcode">QR kode</string>
   <string name="wizard_qrcode_description">Skift switches ved at scanne en QR kode (eller stregkode)!</string>
+  <string name="wizard_speech">Speech Commands</string>
+  <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
   <string name="wizard_button_nice">Rart</string>
   <string name="wizard_button_switches">Switches</string>
   <string name="wizard_button_settings">Indstillinger</string>
