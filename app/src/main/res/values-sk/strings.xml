@@ -8,6 +8,7 @@
   <string name="drawer_open">Otvoriť navigačný panel</string>
   <string name="drawer_close">Zavrieť navigačný panel</string>
   <string name="msg_please_wait">Čakajte, prosím&#8230;</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">Zap</string>
   <string name="button_state_off">Vyp</string>
   <string name="button_state_closed">Zatvorené</string>

@@ -8,6 +8,7 @@
   <string name="drawer_open">Åbn navigationsliste</string>
   <string name="drawer_close">Luk navigationsliste</string>
   <string name="msg_please_wait">Vent venligst&#8230;</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">Tændt</string>
   <string name="button_state_off">Slukket</string>
   <string name="button_state_closed">Lukket</string>

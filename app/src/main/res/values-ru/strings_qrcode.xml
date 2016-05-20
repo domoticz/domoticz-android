@@ -6,6 +6,7 @@
   <string name="qrcode_found">Найден новый QR-код</string>
   <string name="qrcode_edit">Редактировать QR код</string>
   <string name="qrcode_name">Дайте имя этому QR коду. </string>
+  <string name="qrcode_desc">Scan a QR Code. </string>
   <string name="qrcode_exists">QR-код, уже зарегистрирован. </string>
   <string name="qrcode_saved">Новый QR-код сохранен. </string>
   <string name="qrcode">QR-код</string>

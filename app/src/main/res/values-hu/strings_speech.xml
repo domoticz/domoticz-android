@@ -8,6 +8,7 @@
   <string name="Speech_name">Give this Speech Command a proper name. </string>
   <string name="Speech_exists">Speech Command already registered. </string>
   <string name="Speech_saved">Saved a New Speech Command. </string>
+  <string name="Speech_desc">Do a new voice command. </string>
   <string name="Speech">Speech</string>
   <string name="Speech_disabled">Speech Command disabled, please setup via settings.</string>
   <string name="noSwitchSelected_explanation_Speech">For Speech Command to have effect, a switch should be linked</string>

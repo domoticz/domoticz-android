@@ -8,6 +8,7 @@
   <string name="Speech_name">Nadaj temu poleceniu głosowemu właściwą nazwę.</string>
   <string name="Speech_exists">Polecenia głosowe jest już zarejestrowane. </string>
   <string name="Speech_saved">Zapisz nowe polecenie głosowe.</string>
+  <string name="Speech_desc">Do a new voice command. </string>
   <string name="Speech">Polecenia głosowe</string>
   <string name="Speech_disabled">Polecenia głosowe wyłączone, proszę ustaw je poprzez ustawienia.</string>
   <string name="noSwitchSelected_explanation_Speech">Dla uzyskania efektu polecenia głosowego przełącznik powinien być z nim powiązany</string>
