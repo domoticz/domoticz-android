@@ -110,6 +110,8 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
+
+
 @DebugLog
 public class MainActivity extends AppCompatActivity {
     private final int iQRResultCode = 775;
@@ -133,7 +135,10 @@ public class MainActivity extends AppCompatActivity {
     private RecognitionProgressView recognitionProgressView;
     private RecognitionListenerAdapter recognitionListener;
     private boolean listeningSpeechRecognition = false;
+
     private boolean fromVoiceWidget = false;
+    private boolean fromQRCodeWidget = false;
+
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -155,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             if(extras != null) {
                 fromVoiceWidget = extras.getBoolean("VOICE", false);
+                fromQRCodeWidget = extras.getBoolean("QRCODE", false);
             }
         }
 
@@ -193,36 +199,36 @@ public class MainActivity extends AppCompatActivity {
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
 
-            setupMobileDevice();
-            checkDomoticzServerUpdate();
-            setScheduledTasks();
+            if(!fromVoiceWidget && !fromQRCodeWidget) {
+                setupMobileDevice();
+                checkDomoticzServerUpdate();
+                setScheduledTasks();
 
-            WidgetUtils.RefreshWidgets(this);
-            UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-            AppController.getInstance().resendRegistrationIdToBackend();
+                WidgetUtils.RefreshWidgets(this);
+                UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
+                AppController.getInstance().resendRegistrationIdToBackend();
 
-            UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveConfig(ConfigInfo settings) {
-                    if(!fromVoiceWidget) {
+                UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveConfig(ConfigInfo settings) {
                         drawNavigationMenu(settings);
                         addFragment();
                         openDialogFragment(new Changelog());
                     }
-                }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    if(!fromVoiceWidget) {
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
                         drawNavigationMenu(null);
                         addFragment();
                         openDialogFragment(new Changelog());
                     }
-                }
-            }, mServerUtil.getActiveServer().getConfigInfo(this));
-
+                }, mServerUtil.getActiveServer().getConfigInfo(this));
+            }
+            else{
+                addFragment();
+            }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
@@ -335,11 +341,15 @@ public class MainActivity extends AppCompatActivity {
                                                          @DebugLog
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
+                                                             if(fromQRCodeWidget)
+                                                                 MainActivity.this.finish();
                                                          }
 
                                                          @Override
                                                          @DebugLog
                                                          public void onError(Exception error) {
+                                                             if(fromQRCodeWidget)
+                                                                 MainActivity.this.finish();
                                                          }
                                                      });
                                                  }
@@ -347,6 +357,8 @@ public class MainActivity extends AppCompatActivity {
                                                  @Override
                                                  @DebugLog
                                                  public void onError(Exception error) {
+                                                     if(fromQRCodeWidget)
+                                                         MainActivity.this.finish();
                                                  }
                                              });
                                          }
@@ -356,6 +368,8 @@ public class MainActivity extends AppCompatActivity {
                                  @Override
                                  @DebugLog
                                  public void onError(Exception error) {
+                                     if(fromQRCodeWidget)
+                                         MainActivity.this.finish();
                                  }
                              }
         );
@@ -799,68 +813,95 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
-        if ((f instanceof Cameras)) {
-            if (cameraRefreshTimer != null)
-                getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
-            else
-                getMenuInflater().inflate(R.menu.menu_camera, menu);
-        } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
-            if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
-                getMenuInflater().inflate(R.menu.menu_main_sort, menu);
-            else
-                getMenuInflater().inflate(R.menu.menu_main, menu);
+        if(!fromVoiceWidget && !fromQRCodeWidget)
+        {
+            if ((f instanceof Cameras)) {
+                if (cameraRefreshTimer != null)
+                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
+                else
+                    getMenuInflater().inflate(R.menu.menu_camera, menu);
+            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
+                if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
+                    getMenuInflater().inflate(R.menu.menu_main_sort, menu);
+                else
+                    getMenuInflater().inflate(R.menu.menu_main, menu);
 
-            MenuItem searchMenuItem = menu.findItem(R.id.search);
-            searchViewAction = (SearchView) MenuItemCompat
-                    .getActionView(searchMenuItem);
-            searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                @DebugLog
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                @DebugLog
-                public boolean onQueryTextChange(String newText) {
-                    Fragment n = latestFragment;
-                    if (n instanceof DomoticzDashboardFragment) {
-                        ((DomoticzDashboardFragment) n).Filter(newText);
-                    } else if (n instanceof DomoticzRecyclerFragment) {
-                        ((DomoticzRecyclerFragment) n).Filter(newText);
+                MenuItem searchMenuItem = menu.findItem(R.id.search);
+                searchViewAction = (SearchView) MenuItemCompat
+                        .getActionView(searchMenuItem);
+                searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    @DebugLog
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
                     }
-                    return false;
+
+                    @Override
+                    @DebugLog
+                    public boolean onQueryTextChange(String newText) {
+                        Fragment n = latestFragment;
+                        if (n instanceof DomoticzDashboardFragment) {
+                            ((DomoticzDashboardFragment) n).Filter(newText);
+                        } else if (n instanceof DomoticzRecyclerFragment) {
+                            ((DomoticzRecyclerFragment) n).Filter(newText);
+                        }
+                        return false;
+                    }
+                });
+            } else {
+                getMenuInflater().inflate(R.menu.menu_simple, menu);
+            }
+
+            if (mSharedPrefs.isMultiServerEnabled()) {
+                //set multi server actionbar item
+                MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
+                if (searchMenuItem != null && mServerUtil != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
+                    searchMenuItem.setVisible(true);
+                } else if (searchMenuItem != null)
+                    searchMenuItem.setVisible(false);
+            }
+
+            if (mSharedPrefs.isQRCodeEnabled()) {
+                MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
+                if (searchMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+                    searchMenuItem.setVisible(true);
+                } else if (searchMenuItem != null)
+                    searchMenuItem.setVisible(false);
+            }
+
+            if (mSharedPrefs.isSpeechEnabled()) {
+                speechMenuItem = menu.findItem(R.id.action_speech);
+                if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getSpeechList() != null && mSharedPrefs.getSpeechList().size() > 0) {
+                    speechMenuItem.setVisible(true);
+                } else if (speechMenuItem != null)
+                    speechMenuItem.setVisible(false);
+            }
+        }
+        else
+        {
+            if(fromVoiceWidget) {
+                getMenuInflater().inflate(R.menu.menu_speech, menu);
+                if (mSharedPrefs.isSpeechEnabled()) {
+                    speechMenuItem = menu.findItem(R.id.action_speech);
+                    if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getSpeechList() != null && mSharedPrefs.getSpeechList().size() > 0) {
+                        speechMenuItem.setVisible(true);
+                        onOptionsItemSelected(speechMenuItem);
+                    } else if (speechMenuItem != null)
+                        speechMenuItem.setVisible(false);
                 }
-            });
-        } else {
-            getMenuInflater().inflate(R.menu.menu_simple, menu);
-        }
-
-        if (mSharedPrefs.isMultiServerEnabled()) {
-            //set multi server actionbar item
-            MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
-            if (searchMenuItem != null && mServerUtil != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
-                searchMenuItem.setVisible(true);
-            } else if (searchMenuItem != null)
-                searchMenuItem.setVisible(false);
-        }
-
-        if (mSharedPrefs.isQRCodeEnabled()) {
-            MenuItem searchMenuItem = menu.findItem(R.id.action_scan_qrcode);
-            if (searchMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
-                searchMenuItem.setVisible(true);
-            } else if (searchMenuItem != null)
-                searchMenuItem.setVisible(false);
-        }
-
-        if (mSharedPrefs.isSpeechEnabled()) {
-            speechMenuItem = menu.findItem(R.id.action_speech);
-            if (speechMenuItem != null && mSharedPrefs != null && mSharedPrefs.getSpeechList() != null && mSharedPrefs.getSpeechList().size() > 0) {
-                speechMenuItem.setVisible(true);
-                if(fromVoiceWidget)
-                    onOptionsItemSelected(speechMenuItem);
-            } else if (speechMenuItem != null)
-                speechMenuItem.setVisible(false);
+            }
+            else if(fromQRCodeWidget)
+            {
+                getMenuInflater().inflate(R.menu.menu_qrcode, menu);
+                if (mSharedPrefs.isQRCodeEnabled()) {
+                    MenuItem qrcodeMenuItem = menu.findItem(R.id.action_scan_qrcode);
+                    if (qrcodeMenuItem != null && mSharedPrefs != null && mSharedPrefs.getQRCodeList() != null && mSharedPrefs.getQRCodeList().size() > 0) {
+                        qrcodeMenuItem.setVisible(true);
+                        onOptionsItemSelected(qrcodeMenuItem);
+                    } else if (qrcodeMenuItem != null)
+                        qrcodeMenuItem.setVisible(false);
+                }
+            }
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -1076,6 +1117,9 @@ public class MainActivity extends AppCompatActivity {
         }
         stopRecognitionAnimation();
         listeningSpeechRecognition = false;
+
+        if(fromVoiceWidget)
+            this.finish();
     }
 
     @DebugLog
@@ -1181,7 +1225,7 @@ public class MainActivity extends AppCompatActivity {
         if (listeningSpeechRecognition) {
             stopRecognition();
 
-            if(fromVoiceWidget)
+            if(fromVoiceWidget || fromQRCodeWidget)
                 this.finish();
         } else {
             //handle the back press :D close the drawer first and if the drawer is closed close the activity

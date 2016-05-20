@@ -53,6 +53,9 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
 
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
+
     public WidgetsAdapter(Context context,
                           Domoticz mDomoticz,
                           ArrayList<DevicesInfo> data) {
@@ -150,8 +153,11 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
             holder.switch_battery_level.setVisibility(View.GONE);
         }
 
-        if (mDeviceInfo.getName().equals(context.getString(R.string.action_speech))) {
+        if (mDeviceInfo.getIdx() == iVoiceAction) {
             Picasso.with(context).load(R.drawable.mic).into(holder.iconRow);
+        }
+        else if (mDeviceInfo.getIdx() == iQRCodeAction) {
+            Picasso.with(context).load(R.drawable.qrcode).into(holder.iconRow);
         } else {
             Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
                     mDeviceInfo.getType(),

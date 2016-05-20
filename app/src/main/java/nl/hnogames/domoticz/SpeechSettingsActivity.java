@@ -293,7 +293,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_scan_speech:
+            case R.id.action_speech:
                 if (speechRecognizer == null)
                     speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
                 if (recognitionProgressView == null)

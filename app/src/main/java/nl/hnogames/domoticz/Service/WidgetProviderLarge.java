@@ -47,7 +47,10 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderLarge extends AppWidgetProvider {
-    Context context;
+    private Context context;
+
+    private static final int iVoiceAction = -55;
+    private static final int iQRCodeAction = -66;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -102,13 +105,13 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             final Domoticz domoticz = new Domoticz(getApplicationContext(), null);
 
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
-            if (idx == -55) {
+            if (idx == iVoiceAction) {
                 if (mSharedPrefs.darkThemeEnabled()) {
                     views = new RemoteViews(packageName, R.layout.widget_layout_dark);
                 } else {
                     views = new RemoteViews(packageName, R.layout.widget_layout);
                 }
-                views.setTextViewText(R.id.desc, "Speak a command");
+                views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
                 views.setTextViewText(R.id.on_button, "GO");
@@ -120,7 +123,26 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         true));
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
-            } else {
+            }
+            else if (idx == iQRCodeAction) {
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                } else {
+                    views = new RemoteViews(packageName, R.layout.widget_layout);
+                }
+                views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
+                views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
+                views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
+                views.setTextViewText(R.id.on_button, "GO");
+                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                        UpdateWidgetService.this,
+                        appWidgetId,
+                        idx,
+                        false,
+                        true));
+                views.setViewVisibility(R.id.on_button, View.VISIBLE);
+                appWidgetManager.updateAppWidget(appWidgetId, views);
+            }else {
                 final boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);
                 if (!isScene) {
                     domoticz.getDevice(new DevicesReceiver() {

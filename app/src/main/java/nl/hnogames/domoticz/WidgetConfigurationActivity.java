@@ -39,11 +39,17 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
 
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
@@ -96,9 +102,15 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     if (mSharedPrefs.isSpeechEnabled()) {
                         DevicesInfo oVoiceRow = new DevicesInfo();
-                        oVoiceRow.setIdx(-55);
+                        oVoiceRow.setIdx(iVoiceAction);
                         oVoiceRow.setName(WidgetConfigurationActivity.this.getString(R.string.action_speech));
                         mDevicesInfo.add(0, oVoiceRow);
+                    }
+                    if (mSharedPrefs.isQRCodeEnabled()) {
+                        DevicesInfo oQRCodeRow = new DevicesInfo();
+                        oQRCodeRow.setIdx(iQRCodeAction);
+                        oQRCodeRow.setName(WidgetConfigurationActivity.this.getString(R.string.action_qrcode_scan));
+                        mDevicesInfo.add(0, oQRCodeRow);
                     }
 
                     ListView listView = (ListView) findViewById(R.id.list);
