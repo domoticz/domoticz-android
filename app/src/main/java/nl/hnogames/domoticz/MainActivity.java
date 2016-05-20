@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (foundQRCode != null && foundQRCode.isEnabled()) {
                             handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1);
+                            Toast.makeText(MainActivity.this, getString(R.string.qrcode) + " " + foundQRCode.getName(), Toast.LENGTH_SHORT).show();
                         } else {
                             if (foundQRCode == null)
                                 Toast.makeText(MainActivity.this, getString(R.string.qrcode_new_found), Toast.LENGTH_SHORT).show();
@@ -283,6 +284,9 @@ public class MainActivity extends AppCompatActivity {
             //reload settings
             startActivityForResult(new Intent(this, SettingsActivity.class), iSettingsResultCode);
         }
+
+        if(fromQRCodeWidget)
+            this.finish();
     }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction) {
@@ -1072,8 +1076,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (foundSPEECH != null && foundSPEECH.isEnabled()) {
-                showSimpleSnackbar(getString(R.string.Speech) + ": " + SPEECH_ID + " - " + actionFound);
                 handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction);
+                Toast.makeText(MainActivity.this, getString(R.string.Speech) + ": " + SPEECH_ID + " - " + actionFound, Toast.LENGTH_SHORT).show();
             } else {
                 if (foundSPEECH == null)
                     Toast.makeText(MainActivity.this, getString(R.string.Speech_found) + ": " + SPEECH_ID, Toast.LENGTH_SHORT).show();
@@ -1225,9 +1229,12 @@ public class MainActivity extends AppCompatActivity {
         if (listeningSpeechRecognition) {
             stopRecognition();
 
-            if(fromVoiceWidget || fromQRCodeWidget)
+            if(fromVoiceWidget)
                 this.finish();
         } else {
+            if(fromQRCodeWidget)
+                this.finish();
+
             //handle the back press :D close the drawer first and if the drawer is closed close the activity
             if (drawer != null && drawer.isDrawerOpen()) {
                 drawer.closeDrawer();
