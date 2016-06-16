@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/card_global_wrapper"
+    android:background="@color/material_grey_300_"
     android:clickable="true"
+    android:descendantFocusability="blocksDescendants"
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:background="@color/material_grey_300_"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     card_view:cardCornerRadius="0dp"
-    android:descendantFocusability="blocksDescendants"
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/row_global_wrapper"
         android:background="@color/material_grey_300_"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
             android:background="@color/white"
-            android:id="@+id/row_wrapper">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/rowIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
+                android:contentDescription="Icon"
                 android:paddingRight="5dp"
-                android:src="@drawable/clock48"
-                android:contentDescription="Icon" />
+                android:src="@drawable/clock48" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,11 +53,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@+id/linearLayout7864"
-                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/linearLayout7864"
+                        android:layout_toStartOf="@+id/linearLayout7864"
                         android:gravity="center_vertical"
-                        android:layout_centerVertical="true">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/switch_name"
@@ -99,6 +99,7 @@
                         android:layout_centerVertical="true"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
+
                         <Switch
                             android:id="@+id/switch_button"
                             android:layout_width="wrap_content"
@@ -182,9 +183,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
                             android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
-                            android:layout_centerVertical="true"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 

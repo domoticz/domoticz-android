@@ -28,14 +28,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.Adapters.DashboardAdapter;
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
@@ -45,6 +46,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private String filter = "";
 
     @Override
+    @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -52,13 +54,16 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
+    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_events);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_events);
     }
 
     @Override
+    @DebugLog
     public void Filter(String text) {
         filter = text;
         try {
@@ -71,6 +76,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
+    @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
         processUserVariables();
@@ -81,13 +87,15 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             mSwipeRefreshLayout.setRefreshing(true);
         mDomoticz.getEvents(new EventReceiver() {
             @Override
+            @DebugLog
             public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
                 successHandling(mEventInfos.toString(), false);
 
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
+                    @DebugLog
                     public void onEventClick(final int id, boolean action) {
-                        Snackbar.make(coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT).show();
+                        UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT);
                     }
                 });
 
@@ -95,6 +103,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -109,6 +118,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
+                @DebugLog
                 public void onRefresh() {
                     processUserVariables();
                 }
@@ -119,6 +129,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
+    @DebugLog
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity

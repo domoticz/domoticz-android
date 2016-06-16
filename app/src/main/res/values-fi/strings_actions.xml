@@ -7,4 +7,6 @@
   <string name="action_filter">Suodata</string>
   <string name="action_camera_play">Toista</string>
   <string name="action_camera_pause">Keskeytä</string>
+  <string name="action_qrcode_scan">Scan QR Code</string>
+  <string name="action_speech">Speech Recognition</string>
 </resources>

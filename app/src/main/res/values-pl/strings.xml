@@ -8,6 +8,7 @@
   <string name="drawer_open">Otwórz wysuwaną nawigację</string>
   <string name="drawer_close">Zamknij wysuwaną nawigację</string>
   <string name="msg_please_wait">Proszę czekać...</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">Wł.</string>
   <string name="button_state_off">Wył.</string>
   <string name="button_state_closed">Zamknięte</string>

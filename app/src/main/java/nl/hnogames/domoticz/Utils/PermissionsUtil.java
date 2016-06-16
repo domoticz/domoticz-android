@@ -47,6 +47,10 @@ public class PermissionsUtil {
     public static final String[] INITIAL_CAMERA_PERMS = {
             Manifest.permission.CAMERA
     };
+    //these permissions are needed for recording audio
+    public static final String[] INITIAL_AUDIO_PERMS = {
+            Manifest.permission.RECORD_AUDIO
+    };
 
     //This range is from 0 to 255!!
     public static final int INITIAL_LOCATION_REQUEST = 111;
@@ -54,6 +58,7 @@ public class PermissionsUtil {
     public static final int INITIAL_EXPORT_SETTINGS_REQUEST = 133;
     public static final int INITIAL_CAMERA_REQUEST = 144;
     public static final int INITIAL_DEVICE_REQUEST = 155;
+    public static final int INITIAL_AUDIO_REQUEST = 166;
 
     @SuppressWarnings("unused")
     private static final String TAG = PermissionsUtil.class.getSimpleName();
@@ -72,6 +77,10 @@ public class PermissionsUtil {
 
     public static boolean canAccessDeviceState(Context context) {
         return (hasPermission(Manifest.permission.READ_PHONE_STATE, context));
+    }
+
+    public static boolean canAccessAudioState(Context context) {
+        return (hasPermission(Manifest.permission.RECORD_AUDIO, context));
     }
 
     private static boolean hasPermission(String permission, Context context) {

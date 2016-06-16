@@ -109,7 +109,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                 // The user picked a place.
                 Place place = PlacePicker.getPlace(this, data);
                 String text = String.format(getString(R.string.geofence_place), place.getName());
-                showSimpleSnackbar(text);
+                UsefulBits.showSimpleSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT);
             }
         }
     }
@@ -119,6 +119,8 @@ public class GeoSettingsActivity extends AppCompatActivity
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
@@ -272,34 +274,25 @@ public class GeoSettingsActivity extends AppCompatActivity
         // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
                 getString(R.string.geofence));
-        Snackbar.make(coordinatorLayout,
-                text,
-                Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // User clicked undo button
-                        // Let's undo the action on the list view
-                        addLocationToListView(locationInfo);
-                    }
-                })
-                .setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        super.onDismissed(snackbar, event);
 
-                        switch (event) {
-                            case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
-                            case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
-                            case Snackbar.Callback.DISMISS_EVENT_MANUAL:
-                                // Snackbar was timed out so let's remove the data from
-                                // shared preferences
-                                removeLocationFromPreferences(locationInfo);
-                                break;
-                        }
-                    }
-                })
-                .show();
+        UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                switch (event) {
+                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                    case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                        removeLocationFromPreferences(locationInfo);
+                        break;
+                }
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addLocationToListView(locationInfo);
+            }
+        }, this.getString(R.string.undo));
     }
 
     private void removeLocationFromListView(LocationInfo locationInfo) {
@@ -325,17 +318,13 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             @Override
             public void onError(Exception error) {
-                Snackbar.make(coordinatorLayout,
-                        R.string.unable_to_get_switches,
-                        Snackbar.LENGTH_SHORT)
-                        .setAction(R.string.retry, new View.OnClickListener() {
+                UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, GeoSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
+                        null, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // User clicked retry button
                                 getSwitchesAndShowSwitchesDialog(locationInfo);
                             }
-                        })
-                        .show();
+                        }, GeoSettingsActivity.this.getString(R.string.retry));
             }
         });
     }
@@ -406,10 +395,8 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private void checkForLocationPermission(final int actionToStart) {
         if (PermissionsUtil.canAccessLocation(this)) {
-
             // We have permission already!
             Log.v(TAG, "We have permission, let's go!");
-
             switch (actionToStart) {
                 case ACTION_GET_LOCATION:
                     getLocationServices();
@@ -419,11 +406,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                     startGeofenceService();
                     break;
             }
-
         } else {
-
             // No permission, check if the dialog has already been shown to user
-
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this, Manifest.permission.ACCESS_FINE_LOCATION) ||
                     ActivityCompat.shouldShowRequestPermissionRationale(
@@ -431,21 +415,17 @@ public class GeoSettingsActivity extends AppCompatActivity
 
                 // User has declined already somewhere, we should explain why we need this
                 // permission and what's in it for the user
-
                 Log.v(TAG, "Should show request permission rationale");
-
                 if (!requestInProgress) {
 
                     // Request not yet in progress: let's start!
 
                     requestInProgress = true;
-
                     String sb;
                     sb = "Geofencing in Domoticz enables you to switch based on your location" + UsefulBits.newLine();
                     sb += "For Geofencing to work, Domoticz needs to know the location of your device" + UsefulBits.newLine();
                     sb += UsefulBits.newLine();
                     sb += "Enable location permission?";
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
                     builder.setTitle("Domoticz requires your permission")
                             .setMessage(sb)
@@ -525,19 +505,19 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void getLocationServices() {
-
-        //noinspection ResourceType
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mApiClient, mLocationRequest, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        //noinspection ResourceType
-                        currentLocation
-                                = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
-                    }
-                });
-        isLocationUpdatesStarted = true;
-
+        if (mApiClient.isConnected()) {
+            //noinspection ResourceType
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mApiClient, mLocationRequest, new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            //noinspection ResourceType
+                            currentLocation
+                                    = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
+                        }
+                    });
+            isLocationUpdatesStarted = true;
+        }
     }
 
     private void showAddLocationDialog() {
@@ -594,10 +574,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         locationDialog.show();
     }
 
-    private void showSimpleSnackbar(String message) {
-        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
@@ -637,8 +613,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (mSharedPrefs.isGeofenceEnabled()) {
             mSharedPrefs.enableGeoFenceService();
             if (domoticz.isDebugEnabled())
-                Snackbar.make(coordinatorLayout,
-                        R.string.starting_geofence_service, Snackbar.LENGTH_LONG).show();
+                UsefulBits.showSimpleSnackbar(this, coordinatorLayout, R.string.starting_geofence_service, Snackbar.LENGTH_SHORT);
             isGeofenceServiceStarted = true;
         }
     }

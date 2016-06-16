@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="user_switch">Switched from User</string>
+
+    <string name="user_viewer">Viewer</string>
+    <string name="user_admin">Admin</string>
+    <string name="user_user">User</string>
+
+</resources>

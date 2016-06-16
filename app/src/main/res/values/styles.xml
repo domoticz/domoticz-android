@@ -1,6 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
+    <style name="AppThemeMain" parent="MaterialDrawerTheme.Light.DarkToolbar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:dialogTheme">@style/MyDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
+    </style>
+
+    <style name="AppThemeDarkMain" parent="MaterialDrawerTheme">
+        <item name="colorPrimary">@color/secondary</item>
+        <item name="colorPrimaryDark">@color/secondary_dark</item>
+        <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
+    </style>
+
+    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -14,6 +29,7 @@
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
     </style>
+
 
     <!--        Styles Light     -->
     <style name="background_listview">

@@ -2,12 +2,12 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/card_global_wrapper"
+    android:background="@color/material_grey_300_"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:background="@color/material_grey_300_"
     android:orientation="vertical"
     android:padding="10dp"
     android:paddingLeft="20dp"
@@ -15,114 +15,114 @@
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/row_global_wrapper"
         android:background="@color/material_grey_300_"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
             android:background="@color/white"
+            android:minHeight="50dp"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:id="@+id/row_wrapper">
+            android:padding="10dp">
 
-        <ImageView
-            android:id="@+id/rowIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/row_icon_description"
-            tools:src="@drawable/clock48" />
+            <ImageView
+                android:id="@+id/rowIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/row_icon_description"
+                tools:src="@drawable/clock48" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <RelativeLayout
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/linearLayout4"
-                    android:layout_toStartOf="@+id/linearLayout4"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/temperature_name"
-                        style="@style/row_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        tools:text="Utility name" />
-
-                    <TextView
-                        android:id="@+id/temperature_data"
-                        style="@style/row_body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/temperature_name"
-                        android:text="@string/temperature"
-                        android:layout_alignParentLeft="true" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="175dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_toLeftOf="@+id/linearLayout4"
+                        android:layout_toStartOf="@+id/linearLayout4"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/temperature_data2"
-                            style="@style/row_body2"
+                            android:id="@+id/temperature_name"
+                            style="@style/row_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            tools:text="Utility name" />
+
+                        <TextView
+                            android:id="@+id/temperature_data"
+                            style="@style/row_body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
-                            android:layout_below="@+id/temperature_data"
+                            android:layout_below="@+id/temperature_name"
                             android:text="@string/temperature" />
 
-                        <ImageView
-                            android:id="@+id/mode_icon"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="175dp"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="5dp"
-                            android:src="@drawable/ic_schedule_black_18dp" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/temperature_data2"
+                                style="@style/row_body2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_below="@+id/temperature_data"
+                                android:text="@string/temperature" />
+
+                            <ImageView
+                                android:id="@+id/mode_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="5dp"
+                                android:src="@drawable/ic_schedule_black_18dp" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical">
-
-                    <Button
-                        android:id="@+id/set_button"
-                        android:layout_width="56dp"
+                    <LinearLayout
+                        android:id="@+id/linearLayout4"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_gravity="right"
-                        android:background="@drawable/button_status"
-                        android:text="@string/set_temperature"
-                        android:textSize="10dp" />
-                </LinearLayout>
-            </RelativeLayout>
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/set_button"
+                            android:layout_width="56dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="right"
+                            android:background="@drawable/button_status"
+                            android:text="@string/set_temperature"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
+
+        <include layout="@layout/log_graph_buttons_row_default" />
+
     </LinearLayout>
-
-    <include layout="@layout/log_graph_buttons_row_default" />
-
-</LinearLayout>
-    </android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>

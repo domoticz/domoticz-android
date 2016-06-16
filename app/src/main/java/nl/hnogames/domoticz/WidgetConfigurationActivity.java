@@ -23,6 +23,7 @@ import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Service.WidgetProviderLarge;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -38,11 +39,17 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
 
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
@@ -87,13 +94,25 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         }
     }
 
-
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             Log.i(TAG, "Showing switches for widget");
             domoticz.getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
+                    if (mSharedPrefs.isSpeechEnabled()) {
+                        DevicesInfo oVoiceRow = new DevicesInfo();
+                        oVoiceRow.setIdx(iVoiceAction);
+                        oVoiceRow.setName(WidgetConfigurationActivity.this.getString(R.string.action_speech));
+                        mDevicesInfo.add(0, oVoiceRow);
+                    }
+                    if (mSharedPrefs.isQRCodeEnabled()) {
+                        DevicesInfo oQRCodeRow = new DevicesInfo();
+                        oQRCodeRow.setIdx(iQRCodeAction);
+                        oQRCodeRow.setName(WidgetConfigurationActivity.this.getString(R.string.action_qrcode_scan));
+                        mDevicesInfo.add(0, oQRCodeRow);
+                    }
+
                     ListView listView = (ListView) findViewById(R.id.list);
                     adapter = new WidgetsAdapter(WidgetConfigurationActivity.this, domoticz, mDevicesInfo);
 
@@ -147,11 +166,16 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
 
-            if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password);
-            } else {
+            if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
                 mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password);
+            } else {
+                if (mSelectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password);
+                } else {
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password);
+                }
             }
+
             Intent startService = new Intent(WidgetConfigurationActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);

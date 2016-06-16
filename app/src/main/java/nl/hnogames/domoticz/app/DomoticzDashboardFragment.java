@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -124,27 +125,70 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     public void initViews(View root) {
+        gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(getContext());
+
+        setGridViewLayout();
+        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
+        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
+    }
+
+    public void setGridViewLayout() {
+
         try {
-            gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
-            if (mSharedPrefs == null)
-                mSharedPrefs = new SharedPrefUtil(getContext());
+
+            boolean isTablet = false;
+            float screenWidth = 0;
+            boolean isPortrait = false;
+
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                isPortrait = true;
+
+            if (getActivity() instanceof MainActivity) {
+                isTablet = !((MainActivity) getActivity()).onPhone;
+            }
+
+            gridView.setHasFixedSize(true);
 
             if (!mSharedPrefs.showDashboardAsList()) {
-                gridView.setHasFixedSize(true);
-                GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
-                gridView.setLayoutManager(mLayoutManager);
+                if (isTablet) {
+                    if (isPortrait) {
+                        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                        gridView.setLayoutManager(mLayoutManager);
+                    } else {
+                        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+                        gridView.setLayoutManager(mLayoutManager);
+                    }
+                } else {
+                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    gridView.setLayoutManager(mLayoutManager);
+                }
             } else {
-                gridView.setHasFixedSize(false);
-                StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                gridView.setLayoutManager(mLayoutManager);
+                if (isTablet) {
+                    if (isPortrait) {
+                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                        gridView.setLayoutManager(mLayoutManager);
+                    } else {
+                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+                        gridView.setLayoutManager(mLayoutManager);
+                    }
+                } else {
+                    if (isPortrait) {
+                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                        gridView.setLayoutManager(mLayoutManager);
+                    } else {
+                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                        gridView.setLayoutManager(mLayoutManager);
+                    }
+                }
             }
+
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
         } catch (Exception ignored) {
         }
 
-        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
-        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
     }
 
     @Override

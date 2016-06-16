@@ -6,6 +6,7 @@
   <string name="qrcode_found">Ny QR-kode funnet</string>
   <string name="qrcode_edit">Redigere QR-kode</string>
   <string name="qrcode_name">Gi denne QR-kode et egennavn. </string>
+  <string name="qrcode_desc">Scan a QR Code. </string>
   <string name="qrcode_exists">QR-kode allerede registrert. </string>
   <string name="qrcode_saved">Lagret en ny QR-kode. </string>
   <string name="qrcode">QR-kode</string>

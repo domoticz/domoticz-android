@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog bulletedList="false">
+
+    <changelogversion versionName="0.1.266" changeDate="June 16, 2016">
+        <changelogtext>[b]PREMIUM[/b] Added Speech Commands</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] Added Multi users support</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] NFC auto open Domoticz app</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] Added Speech Command Widget</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] Added QR Code Widget</changelogtext>
+        <changelogtext>New Navigation menu</changelogtext>
+        <changelogtext>Tablet view changes</changelogtext>
+        <changelogtext>Manual add Wifi SSID</changelogtext>
+        <changelogtext>Improved logging for debugging</changelogtext>
+        <changelogtext>Added changelog dialog</changelogtext>
+        <changelogtext>Various fixes</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.1.253" changeDate="April 11, 2016">
+        <changelogtext>[b]New![/b] Better Dashboard with Grid</changelogtext>
+        <changelogtext>[b]PREMIUM[/b] QR Code functionality</changelogtext>
+        <changelogtext>[b]New![/b] Added Norwegian</changelogtext>
+        <changelogtext>Hide Off Level for Selector</changelogtext>
+        <changelogtext>Change language from settings screen (fix)</changelogtext>
+        <changelogtext>Show connected switch name on QR Code, NFC and Geofences</changelogtext>
+        <changelogtext>Reworked all screens to recycleviews</changelogtext>
+        <changelogtext>Fix on Blinds</changelogtext>
+        <changelogtext>Fix on NFC functionality</changelogtext>
+        <changelogtext>Log screen for Scenes and Groups</changelogtext>
+        <changelogtext>Added favorite star buttons</changelogtext>
+        <changelogtext>Changed welcome screens</changelogtext>
+        <changelogtext>Only show server update available once per rev</changelogtext>
+        <changelogtext>Reworked dark layout for tablets (small changes)</changelogtext>
+        <changelogtext>Fixed icons for tablets</changelogtext>
+        <changelogtext>Fixed Set Point bug</changelogtext>
+    </changelogversion>
+
+</changelog>

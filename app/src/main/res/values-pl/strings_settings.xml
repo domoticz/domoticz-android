@@ -16,7 +16,8 @@
   <string name="category_export">Eksport/Import ustawień</string>
   <string name="category_theme">Motyw</string>
   <string name="category_nfc">Połączenia NFC</string>
-  <string name="category_QRCode">Kod QR</string>
+  <string name="category_QRCode">Kody QR</string>
+  <string name="category_Speech">Mowa</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ekran startowy</string>
   <string name="enable_items">Włącz/Wyłącz pozycje</string>
@@ -27,14 +28,14 @@
   <string name="show_extra_data_on">Pokaż dodatkowe dane na pulpicie</string>
   <string name="show_extra_data_off">Ukryj dodatkowe dane na pulpicie</string>
   <string name="always_on_title">Blokada budzenia</string>
-  <string name="always_on_on">Zablokuj ekran aby był zawsze włączony</string>
+  <string name="always_on_on">Blokuj ekran aby był zawsze włączony</string>
   <string name="always_on_off">Nie blokuj ekranu aby był zawsze włączony</string>
   <string name="switch_buttons_title">Przełączniki</string>
-  <string name="switch_buttons_on">Pokaż przełączniki z przełączaniem włącz/wyłącz</string>
-  <string name="switch_buttons_off">Pokaż przełączniki z przyciskami włącz/wyłącz</string>
-  <string name="dashboard_list_title">Dashboard Grid</string>
-  <string name="show_dashboard_list_on">Show dashboard as list</string>
-  <string name="show_dashboard_list_off">Show dashboard as grid</string>
+  <string name="switch_buttons_on">Pokaż przełączniki z jednym suwakiem włącz/wyłącz</string>
+  <string name="switch_buttons_off">Pokaż przełączniki z przyciskami włącz i wyłącz</string>
+  <string name="dashboard_list_title">Siatka pulpitu</string>
+  <string name="show_dashboard_list_on">Pokaż pulpit jako listę</string>
+  <string name="show_dashboard_list_off">Pokaż pulpit jako siatkę</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Android Wear własne pozycje</string>
   <string name="custom_wear_select">Wybierz przełączniki Wear</string>
@@ -54,15 +55,18 @@
   <string name="settings_export_failed">Nie udało się wyeksportować ustawień</string>
   <!--        Preference screens      -->
   <string name="server_settings">Ustawienia połączenia serwera</string>
-  <string name="server_force_fetch_config">Fetch server configuration</string>
+  <string name="server_force_fetch_config">Konfiguracja serwera pobierania</string>
   <string name="nfc_settings">Ustawienia połączeń NFC</string>
+  <string name="speech_settings">Ustawienie poleceń mowy</string>
   <string name="title_activity_server_settings">Ustawienia serwera</string>
   <string name="multi_server">Wielo-serwerowość</string>
   <string name="enable_nfc">Włącz NFC</string>
+  <string name="enable_speech">Włącz rozpoznawanie mowy</string>
   <string name="export_settings">Eksport ustawień</string>
   <string name="import_settings">Import ustawień</string>
   <string name="multi_server_settings">Włącz obsługę wielu serwerów</string>
   <string name="nfc_enable_settings">Włącz połączenia NFC</string>
+  <string name="speech_enable_settings">Włącz rozpoznawanie mowy</string>
   <string name="server">Serwer</string>
   <string name="qrcode_settings">Ustawienia kodów QR</string>
   <string name="enable_qrcode">Włącz kody QR</string>

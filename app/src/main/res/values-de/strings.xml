@@ -8,6 +8,7 @@
   <string name="drawer_open">Navigationsleiste öffnen</string>
   <string name="drawer_close">Schließe Navigationsleiste</string>
   <string name="msg_please_wait">Bitte warten&#8230;</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">An</string>
   <string name="button_state_off">Aus</string>
   <string name="button_state_closed">Geschlossen</string>
@@ -61,7 +62,7 @@
   <string name="blind_up">Ziehe Vorhang hoch</string>
   <string name="blind_down">Lasse Vorhang herunter</string>
   <string name="blind_stop">Halte Vorhang an</string>
-  <string name="filter_on">Filter on</string>
+  <string name="filter_on">Filtern nach</string>
   <string name="filterOn_on">Status an</string>
   <string name="filterOn_off">Status aus</string>
   <string name="filterOn_static">Statische Geräte</string>
@@ -73,7 +74,7 @@
   <string name="no_data_on_domoticz">Keine Daten auf Domoticz server</string>
   <string name="row_icon_description">Zeile-Symbol</string>
   <string name="error_image_description">Fehlerbild</string>
-  <string name="device_image_description">Device image</string>
+  <string name="device_image_description">Gerätebild</string>
   <string name="white">Weiß</string>
   <string name="refresh">Neu laden</string>
   <string name="domoticz_logo">Domoticz-Logo</string>

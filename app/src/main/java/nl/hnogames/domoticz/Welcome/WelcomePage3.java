@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -33,12 +34,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.ArrayList;
@@ -77,6 +80,7 @@ public class WelcomePage3 extends Fragment {
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Switch advancedSettings_switch;
     private CheckBox cbShowPassword, cbShowPasswordLocal;
+    private Button btnManualSSID;
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
@@ -139,6 +143,34 @@ public class WelcomePage3 extends Fragment {
         cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
+        btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
+        btnManualSSID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.welcome_ssid_button_prompt)
+                        .content(R.string.welcome_msg_no_ssid_found)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                        .input(null, null, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+                                if (ssidFromPrefs != null) {
+                                    if (ssidFromPrefs.size() > 0) {
+                                        for (String wifi : ssidFromPrefs) {
+                                            ssidListFromPrefs.add(wifi);
+                                        }
+                                    }
+                                }
+                                ssidListFromPrefs.add(String.valueOf(input));
+                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+
+                                setSsid_spinner();
+                            }
+                        }).show();
+            }
+        });
 
         if (callingInstance == SETTINGS) {
             // Hide these settings if being called by settings (instead of welcome wizard)
@@ -208,9 +240,7 @@ public class WelcomePage3 extends Fragment {
         remote_server_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUrl());
         remote_port_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPort());
         remote_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerDirectory());
-
         localServer_switch.setChecked(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent());
-
         local_username_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUsername());
         local_password_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPassword());
         local_server_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUrl());

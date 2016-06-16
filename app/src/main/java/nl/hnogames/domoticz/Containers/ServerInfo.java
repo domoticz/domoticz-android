@@ -93,8 +93,8 @@ public class ServerInfo {
      */
     public String createUniqueServerId() {
         return UsefulBits.getMd5String(
-                LOCAL_SERVER_URL + LOCAL_SERVER_PORT + LOCAL_SERVER_USERNAME +
-                        REMOTE_SERVER_URL + REMOTE_SERVER_PORT + REMOTE_SERVER_USERNAME);
+                LOCAL_SERVER_URL + LOCAL_SERVER_PORT +
+                        REMOTE_SERVER_URL + REMOTE_SERVER_PORT);
     }
 
     public String getRemoteServerUsername() {
@@ -345,7 +345,8 @@ public class ServerInfo {
      * @return Configuration info of this server
      */
     public ConfigInfo getConfigInfo(Context context) {
-        if (configInfo == null) configInfo = readConfigInfoFromFile(context);
+        if (configInfo == null)
+            configInfo = readConfigInfoFromFile(context);
         return configInfo;
     }
 

@@ -21,6 +21,7 @@
     <string name="welcome_msg_numberOfDevices">%1$d devices found</string>
     <string name="welcome_msg_no_ssid_found">No wifi SSID\'s found</string>
     <string name="welcome_ssid_spinner_prompt">Select home SSID\'s</string>
+    <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
     <string name="welcome_server_settings_title">Server settings</string>
     <string name="welcome_server_startScreen">Start screen</string>
     <string name="welcome_button_next">next</string>

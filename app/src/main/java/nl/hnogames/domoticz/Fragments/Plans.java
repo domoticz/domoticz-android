@@ -93,12 +93,12 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                     }
                 });
 
-                mAdapter = new PlansAdapter(plans, getActivity());
+                mAdapter = new PlansAdapter(plans, mContext);
                 mAdapter.setOnItemClickListener(new PlansAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
                         //Toast.makeText(getActivity(), "Clicked " + mPlans.get(position).getName(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), PlanActivity.class);
+                        Intent intent = new Intent(mContext, PlanActivity.class);
                         //noinspection SpellCheckingInspection
                         intent.putExtra("PLANNAME", mPlans.get(position).getName());
                         //noinspection SpellCheckingInspection
@@ -122,7 +122,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         super.onAttach(context);
         mContext = context;
         mSharedPrefs = new SharedPrefUtil(mContext);
-        getActionBar().setTitle(R.string.title_plans);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_plans);
     }
 
     @Override
@@ -136,16 +137,15 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     public ActionBar getActionBar() {
-        return ((AppCompatActivity) getActivity()).getSupportActionBar();
+        return getActivity() != null ? ((AppCompatActivity) getActivity()).getSupportActionBar() : null;
     }
 
     @Override
     public void onConnectionOk() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         processPlans();
     }
 }

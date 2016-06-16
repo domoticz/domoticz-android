@@ -19,6 +19,7 @@
   <string name="welcome_msg_numberOfDevices">S\'han trobat %1$d dispositius</string>
   <string name="welcome_msg_no_ssid_found">No s\'ha trobat SSID de wifi</string>
   <string name="welcome_ssid_spinner_prompt">Seleccioneu SSID de casa</string>
+  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
   <string name="welcome_server_settings_title">Configuració del servidor</string>
   <string name="welcome_server_startScreen">Pantalla d\'inici</string>
   <string name="welcome_button_next">següent</string>

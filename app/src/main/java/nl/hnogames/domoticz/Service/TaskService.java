@@ -52,7 +52,7 @@ public class TaskService extends GcmTaskService {
         if (tag.equals(UsefulBits.TASK_TAG_PERIODIC) || tag.equals("TEST")) {
             final boolean forceUpdate = true;                                     // Force update
             //noinspection ConstantConditions
-            UsefulBits.saveServerConfigToActiveServer(this, forceUpdate, false);
+            UsefulBits.getServerConfigForActiveServer(this, forceUpdate, null, null);
             //noinspection ConstantConditions
             UsefulBits.checkDownloadedLanguage(this, null, forceUpdate, true);
         }

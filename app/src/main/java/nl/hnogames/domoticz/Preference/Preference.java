@@ -47,6 +47,7 @@ import java.util.List;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Fragments.Changelog;
 import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.NFCSettingsActivity;
@@ -55,6 +56,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
+import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
@@ -107,8 +109,10 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
         android.preference.Preference NFCPreference = findPreference("nfc_settings");
         android.preference.Preference QRCodePreference = findPreference("qrcode_settings");
+        android.preference.Preference SpeechPreference = findPreference("speech_settings");
         android.preference.SwitchPreference EnableNFCPreference = (android.preference.SwitchPreference) findPreference("enableNFC");
         android.preference.SwitchPreference EnableQRCodePreference = (android.preference.SwitchPreference) findPreference("enableQRCode");
+        android.preference.SwitchPreference EnableSpeechPreference = (android.preference.SwitchPreference) findPreference("enableSpeech");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
         @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
@@ -183,7 +187,7 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.saveServerConfigToActiveServer(mContext, true, true);
+                UsefulBits.getServerConfigForActiveServer(mContext, true, null, null);
                 return true;
             }
         });
@@ -254,6 +258,17 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        EnableSpeechPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_Speech) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                return true;
+            }
+        });
+
         NFCPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -276,6 +291,20 @@ public class Preference extends PreferenceFragment {
                     return false;
                 } else {
                     Intent intent = new Intent(mContext, QRCodeSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        SpeechPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION) {
+                    Toast.makeText(mContext, getString(R.string.category_Speech) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, SpeechSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -404,6 +433,14 @@ public class Preference extends PreferenceFragment {
                 td.setText(text);
                 td.show();
                 return false;
+            }
+        });
+        android.preference.Preference changelog = findPreference("info_changelog");
+        changelog.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                ((SettingsActivity) getActivity()).getSupportFragmentManager().beginTransaction().add(new Changelog(), "changelog_dialog").commitAllowingStateLoss();
+                return true;
             }
         });
     }
@@ -559,9 +596,10 @@ public class Preference extends PreferenceFragment {
                 }
                 domoticzVersion.setSummary(message);
             }
-
         } catch (Exception ex) {
-            Log.e(TAG, mDomoticz.getErrorMessage(ex));
+            String ex_message = mDomoticz.getErrorMessage(ex);
+            if (!UsefulBits.isEmpty(ex_message))
+                Log.e(TAG, mDomoticz.getErrorMessage(ex));
         }
     }
 

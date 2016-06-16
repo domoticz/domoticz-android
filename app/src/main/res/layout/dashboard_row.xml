@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/card_global_wrapper"
+    android:background="@color/material_grey_300_"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="?android:attr/listPreferredItemHeight"
@@ -12,21 +13,21 @@
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:background="@color/material_grey_300_"
     card_view:cardCornerRadius="0dp"
     card_view:cardUseCompatPadding="true">
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/material_grey_300_"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@color/white"
-            android:id="@+id/row_wrapper">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -40,17 +41,17 @@
                     <LinearLayout
                         android:id="@+id/textwrapper"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <ImageView
                             android:id="@+id/rowIcon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:paddingTop="10dp"
                             android:layout_gravity="center_horizontal"
+                            android:paddingTop="10dp"
                             android:src="@drawable/clock48" />
 
                         <TextView
@@ -58,41 +59,40 @@
                             style="@style/row_dash_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Switch"
-                            android:paddingBottom="7dp"
                             android:layout_gravity="center_horizontal"
-                            />
+                            android:paddingBottom="7dp"
+                            android:text="Switch" />
 
                         <TextView
                             android:id="@+id/switch_battery_level"
                             style="@style/row_dash_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="@string/battery_level"
                             android:layout_gravity="left"
-                            android:gravity="left" />
+                            android:gravity="left"
+                            android:paddingLeft="10dp"
+                            android:text="@string/battery_level" />
 
                         <TextView
                             android:id="@+id/switch_signal_level"
                             style="@style/row_dash_body2"
                             android:layout_width="wrap_content"
-                            android:paddingLeft="10dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/signal_level"
                             android:layout_gravity="left"
-                            android:gravity="left" />
+                            android:gravity="left"
+                            android:paddingLeft="10dp"
+                            android:text="@string/signal_level" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_below="@+id/textwrapper"
                         android:id="@+id/linearLayout4ttt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="10dp"
+                        android:layout_below="@+id/textwrapper"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp">
 
                         <Switch
                             android:id="@+id/switch_button"
@@ -159,11 +159,11 @@
                         android:id="@+id/linearLayout444"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/linearLayout4ttt"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:paddingBottom="10dp"
-                        android:layout_below="@+id/linearLayout4ttt"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
 
                         <TextView
                             android:id="@+id/switch_dimmer_level"
@@ -196,12 +196,13 @@
                             android:layout_marginBottom="5dp"
                             android:layout_marginTop="5dp"
                             android:background="@drawable/button_status"
-                            android:textSize="10dp"
-                            android:text="@string/button_color" />
+                            android:text="@string/button_color"
+                            android:textSize="10dp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
+
         <include layout="@layout/log_timer_button_row_default" />
     </LinearLayout>
 </android.support.v7.widget.CardView>
