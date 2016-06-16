@@ -126,11 +126,13 @@ dependencies {
 
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.4'
+
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-wearable:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.android.gms:play-services-location:8.4.0'
+
     compile 'com.mcxiaoke.volley:library:1.0.15'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'

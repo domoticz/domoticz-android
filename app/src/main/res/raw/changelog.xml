@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
-    <changelogversion versionName="0.1.26*" changeDate="Beta">
+    <changelogversion versionName="0.1.266" changeDate="June 16, 2016">
         <changelogtext>[b]PREMIUM[/b] Added Speech Commands</changelogtext>
         <changelogtext>[b]PREMIUM[/b] Added Multi users support</changelogtext>
         <changelogtext>[b]PREMIUM[/b] NFC auto open Domoticz app</changelogtext>
