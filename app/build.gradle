@@ -133,7 +133,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.android.gms:play-services-location:8.4.0'
 
-    compile 'com.mcxiaoke.volley:library:1.0.19' //DEPRICATED!! SHOULD BE REMOVED
+    compile 'com.android.volley:volley:1.0.0'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
     compile 'com.splunk.mint:mint:5.0.0'
