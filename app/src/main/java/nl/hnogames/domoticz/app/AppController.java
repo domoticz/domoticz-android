@@ -36,7 +36,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.splunk.mint.Mint;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -59,13 +59,14 @@ import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
+
 public class AppController extends MultiDexApplication implements GcmListener {
 
     public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
     int socketTimeout = 1000 * 5;               // 5 seconds
     private RequestQueue mRequestQueue;
-    private Tracker mTracker;
+    private FirebaseAnalytics mTracker;
 
     public static synchronized AppController getInstance() {
         return mInstance;
@@ -75,9 +76,6 @@ public class AppController extends MultiDexApplication implements GcmListener {
     public void onCreate() {
         super.onCreate();
 
-        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey))) {
-            Mint.initAndStartSession(this, getString(R.string.mintapikey));
-        }
         if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
 
@@ -111,18 +109,6 @@ public class AppController extends MultiDexApplication implements GcmListener {
         return mRequestQueue;
     }
 
-    /*
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
-    }
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
-    */
-
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
 
@@ -145,10 +131,9 @@ public class AppController extends MultiDexApplication implements GcmListener {
      *
      * @return tracker
      */
-    synchronized public Tracker getDefaultTracker() {
+    synchronized public FirebaseAnalytics getDefaultTracker() {
         if (mTracker == null) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            mTracker = analytics.newTracker(getString(R.string.analiticsapikey));
+            mTracker = FirebaseAnalytics.getInstance(this);
         }
         return mTracker;
     }
@@ -163,6 +148,18 @@ public class AppController extends MultiDexApplication implements GcmListener {
                 e.printStackTrace();
             }
             NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
+        }
+        else if (bundle.containsKey("notification")) {
+            Bundle bundleNotification = bundle.getBundle("notification");
+            if (bundleNotification.containsKey("body")) {
+                String message = bundleNotification.getString("body");
+                try {
+                    message = URLDecoder.decode(message, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
+            }
         }
     }
 
