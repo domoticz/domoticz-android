@@ -34,7 +34,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -50,7 +49,6 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.R;
@@ -148,8 +146,7 @@ public class AppController extends MultiDexApplication implements GcmListener {
                 e.printStackTrace();
             }
             NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
-        }
-        else if (bundle.containsKey("notification")) {
+        } else if (bundle.containsKey("notification")) {
             Bundle bundleNotification = bundle.getBundle("notification");
             if (bundleNotification.containsKey("body")) {
                 String message = bundleNotification.getString("body");

@@ -88,13 +88,13 @@ public class WelcomePage4 extends Fragment {
             mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override
                 public void onReceiveVersion(String version) {
-                    if(isAdded()) {
+                    if (isAdded()) {
                         tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
 
                         mDomoticz.getDevices(new DevicesReceiver() {
                             @Override
                             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                                if(isAdded()) {
+                                if (isAdded()) {
                                     tempText += "\n";
                                     String formatted = String.format(getString(R.string.welcome_msg_numberOfDevices), mDevicesInfo.size());
                                     tempText += formatted;
@@ -108,7 +108,7 @@ public class WelcomePage4 extends Fragment {
 
                             @Override
                             public void onError(Exception error) {
-                                if(isAdded())
+                                if (isAdded())
                                     setSuccessText(tempText);//no devices found
                             }
                         }, 0, null);
@@ -117,7 +117,7 @@ public class WelcomePage4 extends Fragment {
 
                 @Override
                 public void onError(Exception error) {
-                    if(isAdded())
+                    if (isAdded())
                         setErrorText(mDomoticz.getErrorMessage(error));
                 }
             });

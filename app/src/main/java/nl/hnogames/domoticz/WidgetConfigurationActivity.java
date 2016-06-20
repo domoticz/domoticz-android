@@ -33,14 +33,13 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private final int iWelcomeResultCode = 885;
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
-
-    private final int iVoiceAction = -55;
-    private final int iQRCodeAction = -66;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

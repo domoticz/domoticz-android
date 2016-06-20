@@ -45,6 +45,8 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class WidgetsAdapter extends BaseAdapter implements Filterable {
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
     public ArrayList<DevicesInfo> filteredData = null;
     private Domoticz domoticz;
     private Context context;
@@ -52,9 +54,6 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
     private int layoutResourceId;
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
-
-    private final int iVoiceAction = -55;
-    private final int iQRCodeAction = -66;
 
     public WidgetsAdapter(Context context,
                           Domoticz mDomoticz,
@@ -155,8 +154,7 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
 
         if (mDeviceInfo.getIdx() == iVoiceAction) {
             Picasso.with(context).load(R.drawable.mic).into(holder.iconRow);
-        }
-        else if (mDeviceInfo.getIdx() == iQRCodeAction) {
+        } else if (mDeviceInfo.getIdx() == iQRCodeAction) {
             Picasso.with(context).load(R.drawable.qrcode).into(holder.iconRow);
         } else {
             Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),

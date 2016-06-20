@@ -43,15 +43,13 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
     private int widgetID = 0;
     private boolean action = false;
     private boolean toggle = true;
     private String password = null;
     private SharedPrefUtil mSharedPrefs;
-
-    private final int iVoiceAction = -55;
-    private final int iQRCodeAction = -66;
-
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -67,15 +65,13 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("VOICE", true);
             context.startActivity(iStart);
-        }
-        else if (idx == iQRCodeAction)//qrcode
+        } else if (idx == iQRCodeAction)//qrcode
         {
             Intent iStart = new Intent(context, MainActivity.class);
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("QRCODE", true);
             context.startActivity(iStart);
-        }
-        else {
+        } else {
             if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
                 processSwitch(context, idx);
             }
