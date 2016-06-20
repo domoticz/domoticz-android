@@ -363,12 +363,14 @@ public class Preference extends PreferenceFragment {
                 mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
+                        if(isAdded())
+                            Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
+                        if(isAdded())
+                            Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -379,12 +381,14 @@ public class Preference extends PreferenceFragment {
                 mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
+                        if(isAdded())
+                            Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
+                        if(isAdded())
+                            Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
                     }
                 });
             }
