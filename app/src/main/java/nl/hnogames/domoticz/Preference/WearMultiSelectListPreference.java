@@ -125,10 +125,13 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                         fullEntryValuesList[i] = mEntryValues[i];
                     }
 
-                    for (i = mEntries.length, j = 0; j <= dynamicEntries.length - 1; i++, j++) {
-                        fullEntriesList[i] = dynamicEntries[j];
-                        fullEntryValuesList[i] = dynamicEntryValues[j];
-                    }
+                    try {
+                        for (i = mEntries.length, j = 0; j <= dynamicEntries.length - 1; i++, j++) {
+                            fullEntriesList[i] = dynamicEntries[j];
+                            fullEntryValuesList[i] = dynamicEntryValues[j];
+                        }
+                    }catch(ArrayIndexOutOfBoundsException ex){//List finished, continue}
+
                     //replace the entries and entryValues arrays with the new lists
                     mEntries = fullEntriesList;
                     mEntryValues = fullEntryValuesList;
