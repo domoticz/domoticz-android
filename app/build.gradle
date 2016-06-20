@@ -98,9 +98,6 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
-    maven {
-        url "https://mint.splunk.com/gradle/"
-    }
 }
 
 //noinspection GroovyAssignabilityCheck
