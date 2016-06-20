@@ -88,31 +88,37 @@ public class WelcomePage4 extends Fragment {
             mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override
                 public void onReceiveVersion(String version) {
-                    tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
+                    if(isAdded()) {
+                        tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
 
-                    mDomoticz.getDevices(new DevicesReceiver() {
-                        @Override
-                        public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                            tempText += "\n";
-                            String formatted = String.format(getString(R.string.welcome_msg_numberOfDevices), mDevicesInfo.size());
-                            tempText += formatted;
-                            setSuccessText(tempText);
-                        }
+                        mDomoticz.getDevices(new DevicesReceiver() {
+                            @Override
+                            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                                if(isAdded()) {
+                                    tempText += "\n";
+                                    String formatted = String.format(getString(R.string.welcome_msg_numberOfDevices), mDevicesInfo.size());
+                                    tempText += formatted;
+                                    setSuccessText(tempText);
+                                }
+                            }
 
-                        @Override
-                        public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                        }
+                            @Override
+                            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                            }
 
-                        @Override
-                        public void onError(Exception error) {
-                            setSuccessText(tempText);//no devices found
-                        }
-                    }, 0, null);
+                            @Override
+                            public void onError(Exception error) {
+                                if(isAdded())
+                                    setSuccessText(tempText);//no devices found
+                            }
+                        }, 0, null);
+                    }
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    setErrorText(mDomoticz.getErrorMessage(error));
+                    if(isAdded())
+                        setErrorText(mDomoticz.getErrorMessage(error));
                 }
             });
         }
