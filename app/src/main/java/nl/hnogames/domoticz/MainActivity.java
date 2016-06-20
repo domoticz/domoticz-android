@@ -1125,10 +1125,11 @@ public class MainActivity extends AppCompatActivity {
             speechRecognizer.stopListening();
             speechRecognizer.cancel();
             speechRecognizer.destroy();
+            speechRecognizer = null;
         }
+
         stopRecognitionAnimation();
         listeningSpeechRecognition = false;
-
         if (fromVoiceWidget)
             this.finish();
     }
@@ -1221,6 +1222,9 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         setScreenAlwaysOn();
+        if (listeningSpeechRecognition) {
+            startRecognition();
+        }
     }
 
     @Override
@@ -1228,6 +1232,16 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         stopCameraTimer();
+    }
+
+
+    @Override
+    @DebugLog
+    public void onPause() {
+        if (listeningSpeechRecognition) {
+            stopRecognition();
+        }
+        super.onPause();
     }
 
     @Override
