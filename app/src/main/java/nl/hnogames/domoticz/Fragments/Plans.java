@@ -77,42 +77,49 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     public void processPlans() {
-
         mDomoticz.getPlans(new PlansReceiver() {
-
             @Override
             public void OnReceivePlans(ArrayList<PlanInfo> plans) {
                 successHandling(plans.toString(), false);
 
-                Plans.this.mPlans = plans;
+                if(isAdded()) {
+                    if (plans == null)
+                        return;
 
-                Collections.sort(plans, new Comparator<PlanInfo>() {
-                    @Override
-                    public int compare(PlanInfo left, PlanInfo right) {
-                        return left.getOrder() - right.getOrder();
-                    }
-                });
+                    if (mRecyclerView == null)
+                        setLayout();
 
-                mAdapter = new PlansAdapter(plans, mContext);
-                mAdapter.setOnItemClickListener(new PlansAdapter.onClickListener() {
-                    @Override
-                    public void onItemClick(int position, View v) {
-                        //Toast.makeText(getActivity(), "Clicked " + mPlans.get(position).getName(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(mContext, PlanActivity.class);
-                        //noinspection SpellCheckingInspection
-                        intent.putExtra("PLANNAME", mPlans.get(position).getName());
-                        //noinspection SpellCheckingInspection
-                        intent.putExtra("PLANID", mPlans.get(position).getIdx());
-                        startActivity(intent);
-                    }
-                });
-                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
-                mRecyclerView.setAdapter(alphaSlideIn);
+                    Plans.this.mPlans = plans;
+
+                    Collections.sort(plans, new Comparator<PlanInfo>() {
+                        @Override
+                        public int compare(PlanInfo left, PlanInfo right) {
+                            return left.getOrder() - right.getOrder();
+                        }
+                    });
+
+                    mAdapter = new PlansAdapter(plans, mContext);
+                    mAdapter.setOnItemClickListener(new PlansAdapter.onClickListener() {
+                        @Override
+                        public void onItemClick(int position, View v) {
+                            //Toast.makeText(getActivity(), "Clicked " + mPlans.get(position).getName(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mContext, PlanActivity.class);
+                            //noinspection SpellCheckingInspection
+                            intent.putExtra("PLANNAME", mPlans.get(position).getName());
+                            //noinspection SpellCheckingInspection
+                            intent.putExtra("PLANID", mPlans.get(position).getIdx());
+                            startActivity(intent);
+                        }
+                    });
+                    SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
+                    mRecyclerView.setAdapter(alphaSlideIn);
+                }
             }
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                if(isAdded())
+                    errorHandling(error);
             }
         });
     }
@@ -142,10 +149,15 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     @Override
     public void onConnectionOk() {
+        setLayout();
+        processPlans();
+    }
+
+    private void setLayout()
+    {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        processPlans();
     }
 }
