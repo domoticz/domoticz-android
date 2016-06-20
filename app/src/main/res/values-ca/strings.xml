@@ -8,6 +8,7 @@
   <string name="drawer_open">Obre el calaix de navegació</string>
   <string name="drawer_close">Tanca el calaix de navegació</string>
   <string name="msg_please_wait">Espereu&#8230;</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">Encén</string>
   <string name="button_state_off">Apaga</string>
   <string name="button_state_closed">Tancat</string>

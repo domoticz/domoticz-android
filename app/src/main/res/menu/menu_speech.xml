@@ -4,7 +4,7 @@
     tools:context=".SpeechSettingsActivity">
 
     <item
-        android:id="@+id/action_scan_speech"
+        android:id="@+id/action_speech"
         android:orderInCategory="100"
         android:icon="@drawable/ic_microphone"
         android:title="@string/action_speech"

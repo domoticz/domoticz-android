@@ -61,15 +61,15 @@ public class RequestUtil {
                                               final SessionUtil sessionUtil,
                                               final boolean usePreviousSession,
                                               final int retryCounter) {
+
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
-                        url, new Response.Listener<JSONObject>() {
+                        url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
 
                         String jsonString;
-
                         try {
                             jsonString = response.getString(Domoticz.Json.Field.VERSION);
                             if (parser != null)
@@ -139,7 +139,7 @@ public class RequestUtil {
 
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
-                        url, new Response.Listener<JSONObject>() {
+                        url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -210,7 +210,7 @@ public class RequestUtil {
 
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
-                        url, new Response.Listener<JSONObject>() {
+                        url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -289,7 +289,7 @@ public class RequestUtil {
                                           final int retryCounter) {
 
         JsonObjectRequest jsonObjReq =
-                new JsonObjectRequest(Request.Method.PUT, url,
+                new JsonObjectRequest(Request.Method.PUT, url, null,
                         new Response.Listener<JSONObject>() {
 
                             @Override

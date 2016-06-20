@@ -6,6 +6,7 @@
   <string name="qrcode_found">Bol nájdený nový QR kód</string>
   <string name="qrcode_edit">Upraviť QR kód</string>
   <string name="qrcode_name">Dajte tomuto QR kódu vhodný názov. </string>
+  <string name="qrcode_desc">Scan a QR Code. </string>
   <string name="qrcode_exists">QR kód bol už zaregistrovaný. </string>
   <string name="qrcode_saved">Uložiť nový QR kód. </string>
   <string name="qrcode">QR kód</string>

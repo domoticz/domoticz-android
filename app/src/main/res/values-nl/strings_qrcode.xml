@@ -6,6 +6,7 @@
   <string name="qrcode_found">Nieuwe QR-Code gevonden</string>
   <string name="qrcode_edit">QR-Code bewerken</string>
   <string name="qrcode_name">Geef deze QR-Code een eigen naam. </string>
+  <string name="qrcode_desc">Scan een QR-Code. </string>
   <string name="qrcode_exists">QR-Code al geregistreerd. </string>
   <string name="qrcode_saved">Een nieuwe QR-Code opgeslagen. </string>
   <string name="qrcode">QR-Code</string>

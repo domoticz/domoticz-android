@@ -8,6 +8,7 @@
   <string name="drawer_open">Avaa navigointivalikko</string>
   <string name="drawer_close">Sulje navigointivalikko</string>
   <string name="msg_please_wait">Odota&#8230;</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">Päällä</string>
   <string name="button_state_off">Pois päältä</string>
   <string name="button_state_closed">Suljettu</string>

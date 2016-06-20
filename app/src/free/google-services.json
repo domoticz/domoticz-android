@@ -1,42 +1,49 @@
 {
   "project_info": {
-    "project_id": "domoticz-1191",
-    "project_number": "705545900899",
-    "name": "Domoticz"
+    "project_number": "661310329417",
+    "firebase_url": "https://domoticz-1127.firebaseio.com",
+    "project_id": "domoticz-1127",
+    "storage_bucket": "domoticz-1127.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:705545900899:android:b74c4323e1f98430",
-        "client_id": "android:nl.hnogames.domoticz",
-        "client_type": 1,
+        "mobilesdk_app_id": "1:661310329417:android:b74c4323e1f98430",
         "android_client_info": {
           "package_name": "nl.hnogames.domoticz"
         }
       },
-      "oauth_client": [],
-      "api_key": [],
+      "oauth_client": [
+        {
+          "client_id": "661310329417-kus0ojg6sllgq3muk7eeeqmoh08v9011.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "661310329417-6lral4cvjeh5je0bm2cq0v0pp3rkpf5n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp8CGiVuegZTtGlR3zCRlMHpS6RAWeY_k"
+        }
+      ],
       "services": {
         "analytics_service": {
-          "status": 1
-        },
-        "cloud_messaging_service": {
           "status": 2,
-          "apns_config": []
+          "analytics_property": {
+            "tracking_id": "UA-71812306-1"
+          }
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
         },
-        "google_signin_service": {
-          "status": 1
-        },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

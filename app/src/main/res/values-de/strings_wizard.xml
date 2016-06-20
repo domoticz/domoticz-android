@@ -30,11 +30,12 @@
   <string name="wizard_qrcode">QR-Code</string>
   <string name="wizard_qrcode_description">Schalter durch einen QR-Code zu scannen (oder Barcode) bedienen!</string>
   <string name="wizard_speech">Sprachkommando</string>
-  <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
+  <string name="wizard_speech_description">Schalte mit hilfe der Spracherkennung deine Schalter!
+Konfiguriere Sprachbefehele über die Einstellungen und verbinde ihn mit den Schaltern.</string>
   <string name="wizard_button_nice">Schön</string>
   <string name="wizard_button_switches">Schalter</string>
   <string name="wizard_button_settings">Einstellungen</string>
   <string name="wizard_button_wizard">Entferne</string>
-  <string name="wizard_button_utilities">Dienstprogramme</string>
+  <string name="wizard_button_utilities">Werkzeuge</string>
   <string name="wizard_button_done">Erfolgreich abgeschlossen</string>
 </resources>

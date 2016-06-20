@@ -8,6 +8,7 @@
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
   <string name="msg_please_wait">Patientez&#8230;</string>
+  <string name="changelog">Changelog</string>
   <string name="button_state_on">On</string>
   <string name="button_state_off">Off</string>
   <string name="button_state_closed">Fermé</string>

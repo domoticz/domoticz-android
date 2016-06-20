@@ -20,7 +20,7 @@ Remote-Einstellungen werden verwendet, wenn Sie nicht mit ihrem Home WiFi-Netzwe
   <string name="welcome_msg_numberOfDevices">%1$d Gerät gefunden</string>
   <string name="welcome_msg_no_ssid_found">keine Wlan SSID gefunden</string>
   <string name="welcome_ssid_spinner_prompt">Home SSID\'s auswählen</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_ssid_button_prompt">Füge home SSID hinzu</string>
   <string name="welcome_server_settings_title">Server Einstellungen</string>
   <string name="welcome_server_startScreen">Startbildschirm</string>
   <string name="welcome_button_next">nächstes</string>

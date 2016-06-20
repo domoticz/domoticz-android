@@ -8,6 +8,7 @@
   <string name="drawer_open">Öppna navigeringsmenyn</string>
   <string name="drawer_close">Stäng navigeringsmenyn</string>
   <string name="msg_please_wait">Vänligen vänta&#8230;</string>
+  <string name="changelog">Ändringar</string>
   <string name="button_state_on">På</string>
   <string name="button_state_off">Av</string>
   <string name="button_state_closed">Stäng</string>
