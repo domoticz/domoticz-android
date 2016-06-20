@@ -90,7 +90,8 @@ android {
 
     //noinspection GroovyAssignabilityCheck
     dexOptions {
-        preDexLibraries false
+        preDexLibraries true
+        javaMaxHeapSize "4g"
     }
 }
 
