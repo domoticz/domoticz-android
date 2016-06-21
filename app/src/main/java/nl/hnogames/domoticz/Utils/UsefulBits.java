@@ -37,6 +37,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.javiersantos.piracychecker.PiracyChecker;
+import com.github.javiersantos.piracychecker.PiracyCheckerUtils;
+import com.github.javiersantos.piracychecker.enums.InstallerID;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -539,6 +544,36 @@ public class UsefulBits {
                 }
             }
         } catch (Exception ex) {
+        }
+    }
+
+    public static void checkAPK(final Context context, final SharedPrefUtil mSharedPrefs, final boolean releaseBuild) {
+        if (context == null || mSharedPrefs == null)
+            return;
+        if (!releaseBuild) {
+            if (PiracyCheckerUtils.getAPKSignature(context)
+                    .equals(context.getString(R.string.APK_VALIDATE_DEBUG)))
+                mSharedPrefs.setAPKValidated(true);
+            else
+                mSharedPrefs.setAPKValidated(true);
+        } else {
+            PiracyChecker oPiracyChecker = new PiracyChecker(context);
+            oPiracyChecker
+                    .enableSigningCertificate(context.getString(R.string.APK_VALIDATE_PROD))
+                    .enableGooglePlayLicensing(context.getString(R.string.APK_LICENSE_PREMIUM))
+                    .enableInstallerId(InstallerID.GOOGLE_PLAY)
+                    .callback(new PiracyCheckerCallback() {
+                        @Override
+                        public void allow() {
+                            mSharedPrefs.setAPKValidated(true);
+                        }
+
+                        @Override
+                        public void dontAllow(PiracyCheckerError piracyCheckerError) {
+                            mSharedPrefs.setAPKValidated(false);
+                        }
+                    })
+                    .start();
         }
     }
 }

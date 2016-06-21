@@ -60,6 +60,11 @@ android {
     productFlavors {
         free {
             applicationId 'nl.hnogames.domoticz'
+
+            resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
+            resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
+            resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
+
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
             resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
@@ -68,6 +73,11 @@ android {
         }
         paid {
             applicationId 'nl.hnogames.domoticz.premium'
+
+            resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
+            resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
+            resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
+
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
             resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
@@ -141,6 +151,7 @@ dependencies {
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
     compile 'com.github.jd-alexander:LikeButton:0.2.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+    compile 'com.github.javiersantos:PiracyChecker:0.0.2'
 
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
     compile('com.mikepenz:materialdrawer:5.3.0@aar') {

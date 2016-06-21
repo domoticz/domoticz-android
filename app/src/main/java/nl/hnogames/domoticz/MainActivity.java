@@ -155,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
+        UsefulBits.checkAPK(this, mSharedPrefs,
+                !BuildConfig.DEBUG ? true : false);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -559,7 +561,7 @@ public class MainActivity extends AppCompatActivity {
                     @DebugLog
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
-                            if (BuildConfig.LITE_VERSION) {
+                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                                 Toast.makeText(MainActivity.this, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                                 return false;
                             } else {

@@ -82,7 +82,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             public void OnReceivePlans(ArrayList<PlanInfo> plans) {
                 successHandling(plans.toString(), false);
 
-                if(isAdded()) {
+                if (isAdded()) {
                     if (plans == null)
                         return;
 
@@ -118,7 +118,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                if(isAdded())
+                if (isAdded())
                     errorHandling(error);
             }
         });
@@ -153,8 +153,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         processPlans();
     }
 
-    private void setLayout()
-    {
+    private void setLayout() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);

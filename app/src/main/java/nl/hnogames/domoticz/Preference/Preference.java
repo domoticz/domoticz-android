@@ -91,6 +91,9 @@ public class Preference extends PreferenceFragment {
         ServerUtil mServerUtil = new ServerUtil(mContext);
         mDomoticz = new Domoticz(mContext, mServerUtil);
 
+        UsefulBits.checkAPK(mContext, mSharedPrefs,
+                !BuildConfig.DEBUG ? true : false);
+
         setPreferences();
         setStartUpScreenDefaultValue();
         setVersionInfo();
@@ -149,7 +152,7 @@ public class Preference extends PreferenceFragment {
         ThemePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_theme) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
@@ -162,7 +165,7 @@ public class Preference extends PreferenceFragment {
         MultiServerPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
@@ -219,7 +222,7 @@ public class Preference extends PreferenceFragment {
         GeoSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.geofence) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
@@ -233,7 +236,7 @@ public class Preference extends PreferenceFragment {
         EnableNFCPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_nfc) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
@@ -249,7 +252,7 @@ public class Preference extends PreferenceFragment {
         EnableQRCodePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_QRCode) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
@@ -261,7 +264,7 @@ public class Preference extends PreferenceFragment {
         EnableSpeechPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_Speech) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
@@ -272,7 +275,7 @@ public class Preference extends PreferenceFragment {
         NFCPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_nfc) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
@@ -286,7 +289,7 @@ public class Preference extends PreferenceFragment {
         QRCodePreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_QRCode) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
@@ -300,7 +303,7 @@ public class Preference extends PreferenceFragment {
         SpeechPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_Speech) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 } else {
@@ -314,7 +317,7 @@ public class Preference extends PreferenceFragment {
         WearPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
@@ -325,7 +328,7 @@ public class Preference extends PreferenceFragment {
         AlwaysOnPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     Toast.makeText(mContext, getString(R.string.always_on_title) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
                     return false;
                 }
@@ -363,13 +366,13 @@ public class Preference extends PreferenceFragment {
                 mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
-                        if(isAdded())
+                        if (isAdded())
                             Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        if(isAdded())
+                        if (isAdded())
                             Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -381,13 +384,13 @@ public class Preference extends PreferenceFragment {
                 mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
-                        if(isAdded())
+                        if (isAdded())
                             Toast.makeText(mContext, getString(R.string.notification_settings_pushed), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        if(isAdded())
+                        if (isAdded())
                             Toast.makeText(mContext, getString(R.string.notification_settings_push_failed), Toast.LENGTH_LONG).show();
                     }
                 });

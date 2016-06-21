@@ -31,7 +31,10 @@ import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class WelcomeViewActivity extends IntroActivity {
 
@@ -46,6 +49,9 @@ public class WelcomeViewActivity extends IntroActivity {
 
         setFinishEnabled(false);
         setSkipEnabled(false);
+
+        UsefulBits.checkAPK(this, new SharedPrefUtil(this),
+                !BuildConfig.DEBUG ? true : false);
 
         addSlide(new SimpleSlide.Builder()
                 .image(R.drawable.ic_launcher)

@@ -149,17 +149,17 @@ public class WelcomePage4 extends Fragment {
     }
 
     private void setResultText(String text) {
-        if(please_wait_layout != null)
+        if (please_wait_layout != null)
             please_wait_layout.setVisibility(View.GONE);
-        if(result_layout != null)
+        if (result_layout != null)
             result_layout.setVisibility(View.VISIBLE);
         result.setText(text);
     }
 
     private void resetLayout() {
-        if(please_wait_layout != null)
+        if (please_wait_layout != null)
             please_wait_layout.setVisibility(View.VISIBLE);
-        if(result_layout != null)
+        if (result_layout != null)
             result_layout.setVisibility(View.GONE);
         result.setText("");
     }

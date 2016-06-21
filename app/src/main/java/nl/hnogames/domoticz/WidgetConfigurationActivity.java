@@ -53,7 +53,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
 
-        if (BuildConfig.LITE_VERSION) {
+        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
             Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
             this.finish();
         }
