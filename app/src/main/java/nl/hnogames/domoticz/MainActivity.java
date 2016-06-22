@@ -561,7 +561,15 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
                             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                Toast.makeText(MainActivity.this, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                                Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                        .setAction(R.string.upgrade, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                UsefulBits.openPremiumAppStore(MainActivity.this);
+                                            }
+                                        })
+                                        .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.material_blue_600))
+                                        .show();
                                 return false;
                             } else {
                                 PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
@@ -1239,10 +1247,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     @DebugLog
     public void onPause() {
+        super.onPause();
         if (listeningSpeechRecognition) {
             stopRecognition();
         }
-        super.onPause();
     }
 
     @Override
