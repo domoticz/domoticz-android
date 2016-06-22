@@ -49,9 +49,7 @@ public class WelcomeViewActivity extends IntroActivity {
 
         setFinishEnabled(false);
         setSkipEnabled(false);
-
-        UsefulBits.checkAPK(this, new SharedPrefUtil(this),
-                !BuildConfig.DEBUG ? true : false);
+        UsefulBits.checkAPK(this, new SharedPrefUtil(this));
 
         addSlide(new SimpleSlide.Builder()
                 .image(R.drawable.ic_launcher)

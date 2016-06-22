@@ -91,8 +91,7 @@ public class Preference extends PreferenceFragment {
         ServerUtil mServerUtil = new ServerUtil(mContext);
         mDomoticz = new Domoticz(mContext, mServerUtil);
 
-        UsefulBits.checkAPK(mContext, mSharedPrefs,
-                !BuildConfig.DEBUG ? true : false);
+        UsefulBits.checkAPK(mContext, mSharedPrefs);
 
         setPreferences();
         setStartUpScreenDefaultValue();

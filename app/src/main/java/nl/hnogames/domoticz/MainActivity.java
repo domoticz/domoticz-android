@@ -155,8 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
-        UsefulBits.checkAPK(this, mSharedPrefs,
-                !BuildConfig.DEBUG ? true : false);
+        UsefulBits.checkAPK(this, mSharedPrefs);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

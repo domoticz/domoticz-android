@@ -56,6 +56,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Containers.AuthInfo;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.UserInfo;
@@ -547,16 +548,20 @@ public class UsefulBits {
         }
     }
 
-    public static void checkAPK(final Context context, final SharedPrefUtil mSharedPrefs, final boolean releaseBuild) {
+    public static void checkAPK(final Context context, final SharedPrefUtil mSharedPrefs) {
         if (context == null || mSharedPrefs == null)
-            return;
-        if (!releaseBuild) {
-            if (PiracyCheckerUtils.getAPKSignature(context)
-                    .equals(context.getString(R.string.APK_VALIDATE_DEBUG)))
+            return; //should not happen
+        if(BuildConfig.LITE_VERSION)
+            return; //only validate premium versions
+
+        if (BuildConfig.DEBUG) {
+            //check with debug key
+            if (PiracyCheckerUtils.getAPKSignature(context).equals(context.getString(R.string.APK_VALIDATE_DEBUG)))
                 mSharedPrefs.setAPKValidated(true);
             else
-                mSharedPrefs.setAPKValidated(true);
+                mSharedPrefs.setAPKValidated(false);
         } else {
+            // release build
             PiracyChecker oPiracyChecker = new PiracyChecker(context);
             oPiracyChecker
                     .enableSigningCertificate(context.getString(R.string.APK_VALIDATE_PROD))
