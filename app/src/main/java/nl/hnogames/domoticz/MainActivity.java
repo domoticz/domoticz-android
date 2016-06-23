@@ -54,7 +54,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -136,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean fromVoiceWidget = false;
     private boolean fromQRCodeWidget = false;
-    private FirebaseAnalytics mTracker;
-    private AppController application;
     private MenuItem speechMenuItem;
 
     @DebugLog
@@ -470,7 +469,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @DebugLog
     private void addFragment() {
         if (!isFinishing()) {
             int screenIndex = mSharedPrefs.getStartupScreenIndex();
@@ -483,24 +481,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @DebugLog
     private void saveScreenToAnalytics(String screen) {
         try {
-            if (application == null)
-                application = (AppController) getApplication();
-            if (mTracker == null)
-                mTracker = application.getDefaultTracker();
-
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Screen");
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, screen);
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "text");
-            mTracker.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            AppController application = (AppController) getApplication();
+            Tracker mTracker = application.getDefaultTracker();
+            mTracker.setScreenName(screen);
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         } catch (Exception ignored) {
         }
     }
 
-    @DebugLog
     private void applyLanguage() {
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
             // User has set a language in settings
@@ -508,7 +498,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @DebugLog
     private void setupMobileDevice() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessDeviceState(this)) {
@@ -521,7 +510,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @DebugLog
     private void appRate() {
         if (!BuildConfig.DEBUG) {
             AppRate.with(this)
@@ -1136,9 +1124,9 @@ public class MainActivity extends AppCompatActivity {
             speechRecognizer.destroy();
             speechRecognizer = null;
         }
-
         stopRecognitionAnimation();
         listeningSpeechRecognition = false;
+
         if (fromVoiceWidget)
             this.finish();
     }
@@ -1243,14 +1231,13 @@ public class MainActivity extends AppCompatActivity {
         stopCameraTimer();
     }
 
-
     @Override
     @DebugLog
     public void onPause() {
-        super.onPause();
         if (listeningSpeechRecognition) {
             stopRecognition();
         }
+        super.onPause();
     }
 
     @Override

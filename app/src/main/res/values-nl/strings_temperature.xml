@@ -5,6 +5,6 @@
   <string name="title_temperature">Temperatuur</string>
   <string name="cancel_override">Annuleer aanpassing</string>
   <string name="wind">Wind</string>
-  <string name="error_log">Kan geen log data vinden voor</string>
+  <string name="error_log">De logs konden niet opgehaald worden voor</string>
   <string name="follow_schedule">Volg schema</string>
 </resources>

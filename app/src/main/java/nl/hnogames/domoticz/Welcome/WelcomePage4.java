@@ -174,3 +174,4 @@ public class WelcomePage4 extends Fragment {
         activity.disableFinishButton(false);
     }
 }
+

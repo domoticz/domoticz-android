@@ -9,12 +9,12 @@
   <string name="wizard_favorites_description">U kunt apparaten toevoegen aan het Dashboard door ze op te slaan als favorieten. Hou een item lang ingedrukt om deze op te slaan als favoriet!</string>
   <string name="wizard_startup">Beginscherm</string>
   <string name="wizard_startup_description">U kunt uw opstartscherm veranderen in het instellingen menu!</string>
-  <string name="wizard_notifications">Notificaties ontvangen</string>
-  <string name="wizard_notifications_description">U kunt nu notificaties ontvangen op uw Android toestel! Bepaal zelf welke notificaties worden verstuurd via het instellingen menu.</string>
-  <string name="wizard_multiserver">Meerdere servers</string>
-  <string name="wizard_multiserver_description">U kunt meerdere Domoticz servers configureren in het instellingen menu.</string>
+  <string name="wizard_notifications">Notificaties Instellen</string>
+  <string name="wizard_notifications_description">U kunt nu Notificaties ontvangen op uw Android toestel! Zet notificaties aan of zet sommige notificaties uit via de settings.</string>
+  <string name="wizard_multiserver">Gebruik meerdere Servers</string>
+  <string name="wizard_multiserver_description">U kunt meerdere Domoticz servers connecties configureren in de instellingen.</string>
   <string name="wizard_geo">Geofencing</string>
-  <string name="wizard_geo_description">Activeer geofencing in het instellingen menu en stel hier de gewenste gebieden in.</string>
+  <string name="wizard_geo_description">Pas de Geofencing instellingen aan in het instellingen menu!</string>
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">Specificeer welke schakelaars u graag wilt bedienen vanaf uw Android Wear apparaat!</string>
   <string name="wizard_graph">Grafieken</string>

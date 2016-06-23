@@ -312,6 +312,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     @Override
     @DebugLog
     public void onLogButtonClick(int idx) {
+
         mDomoticz.getSwitchLogs(idx, new SwitchLogReceiver() {
             @Override
             @DebugLog
