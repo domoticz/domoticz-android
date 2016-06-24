@@ -104,6 +104,7 @@ public class SharedPrefUtil {
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private static final String PREF_LAST_VERSION = "lastappversion";
+    private static final String PREF_APK_VALIDATED = "apkvalidated";
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -545,6 +546,16 @@ public class SharedPrefUtil {
     public void setGeofenceEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
     }
+
+
+    public boolean isAPKValidated() {
+        return prefs.getBoolean(PREF_APK_VALIDATED, true);
+    }
+
+    public void setAPKValidated(boolean valid) {
+        editor.putBoolean(PREF_APK_VALIDATED, valid).apply();
+    }
+
 
     public boolean isQRCodeEnabled() {
         return prefs.getBoolean(PREF_QRCODE_ENABLED, false);

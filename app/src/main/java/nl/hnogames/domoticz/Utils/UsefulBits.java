@@ -25,10 +25,14 @@ package nl.hnogames.domoticz.Utils;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.text.format.DateUtils;
@@ -37,6 +41,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.javiersantos.piracychecker.PiracyChecker;
+import com.github.javiersantos.piracychecker.PiracyCheckerUtils;
+import com.github.javiersantos.piracychecker.enums.InstallerID;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
+import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -47,10 +56,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Containers.AuthInfo;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
 import nl.hnogames.domoticz.Containers.UserInfo;
@@ -539,6 +550,69 @@ public class UsefulBits {
                 }
             }
         } catch (Exception ex) {
+        }
+    }
+
+    public static void openPremiumAppStore(Context context) {
+        Intent rateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=nl.hnogames.domoticz.premium"));
+        boolean marketFound = false;
+
+        // find all applications able to handle our rateIntent
+        final List<ResolveInfo> otherApps = context.getPackageManager().queryIntentActivities(rateIntent, 0);
+        for (ResolveInfo otherApp : otherApps) {
+            // look for Google Play application
+            if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
+                ActivityInfo otherAppActivity = otherApp.activityInfo;
+                ComponentName componentName = new ComponentName(
+                        otherAppActivity.applicationInfo.packageName,
+                        otherAppActivity.name
+                );
+                rateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                rateIntent.setComponent(componentName);
+                context.startActivity(rateIntent);
+                marketFound = true;
+                break;
+            }
+        }
+
+        // if GP not present on device, open web browser
+        if (!marketFound) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium"));
+            context.startActivity(webIntent);
+        }
+    }
+
+    public static void checkAPK(final Context context, final SharedPrefUtil mSharedPrefs) {
+        if (context == null || mSharedPrefs == null)
+            return; //should not happen
+        if (BuildConfig.LITE_VERSION)
+            return; //only validate premium versions
+
+        if (BuildConfig.DEBUG) {
+            //check with debug key
+            if (PiracyCheckerUtils.getAPKSignature(context).equals(context.getString(R.string.APK_VALIDATE_DEBUG)))
+                mSharedPrefs.setAPKValidated(true);
+            else
+                mSharedPrefs.setAPKValidated(false);
+        } else {
+            // release build
+            PiracyChecker oPiracyChecker = new PiracyChecker(context);
+            oPiracyChecker
+                    .enableSigningCertificate(context.getString(R.string.APK_VALIDATE_PROD))
+                    .enableGooglePlayLicensing(context.getString(R.string.APK_LICENSE_PREMIUM))
+                    .enableInstallerId(InstallerID.GOOGLE_PLAY)
+                    .callback(new PiracyCheckerCallback() {
+                        @Override
+                        public void allow() {
+                            mSharedPrefs.setAPKValidated(true);
+                        }
+
+                        @Override
+                        public void dontAllow(PiracyCheckerError piracyCheckerError) {
+                            mSharedPrefs.setAPKValidated(false);
+                        }
+                    })
+                    .start();
         }
     }
 }

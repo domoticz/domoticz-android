@@ -47,10 +47,9 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderLarge extends AppWidgetProvider {
-    private Context context;
-
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
+    private Context context;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -123,8 +122,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         true));
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
-            }
-            else if (idx == iQRCodeAction) {
+            } else if (idx == iQRCodeAction) {
                 if (mSharedPrefs.darkThemeEnabled()) {
                     views = new RemoteViews(packageName, R.layout.widget_layout_dark);
                 } else {
@@ -142,7 +140,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         true));
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
-            }else {
+            } else {
                 final boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);
                 if (!isScene) {
                     domoticz.getDevice(new DevicesReceiver() {
