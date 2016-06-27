@@ -75,6 +75,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidmads.updatehandler.app.UpdateHandler;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 onPhone = true;
 
             appRate();
+
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
 
@@ -520,6 +522,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Show a dialog if meets conditions
             AppRate.showRateDialogIfMeetsConditions(this);
+            new UpdateHandler(this).start();
         }
     }
 

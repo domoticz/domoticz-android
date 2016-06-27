@@ -166,6 +166,7 @@ dependencies {
 
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
+    compile 'androidmads.updatehandler:updatehandler:1.0.2'
 
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')
