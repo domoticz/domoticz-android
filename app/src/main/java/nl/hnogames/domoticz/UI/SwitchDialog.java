@@ -90,6 +90,9 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                                 public void onDismiss(String password) {
                                     dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName());
                                 }
+
+                                @Override
+                                public void onCancel() {}
                             });
                         }
                     }

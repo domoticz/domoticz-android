@@ -325,6 +325,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 public void onDismiss(String password) {
                     toggleSwitch(clickedSwitch, checked, password);
                 }
+
+                @Override
+                public void onCancel() {}
             });
         } else {
             toggleSwitch(clickedSwitch, checked, null);
@@ -419,6 +422,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 public void onDismiss(String password) {
                     toggleButton(clickedSwitch, checked, password);
                 }
+
+                @Override
+                public void onCancel() {}
             });
         } else
             toggleButton(clickedSwitch, checked, null);
@@ -494,6 +500,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         public void onDismiss(String password) {
                             setColor(selectedColor, idx, password);
                         }
+
+                        @Override
+                        public void onCancel() {}
                     });
                 } else
                     setColor(selectedColor, idx, null);
@@ -602,6 +611,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                                 }
                                             });
                                 }
+
+                                @Override
+                                public void onCancel() {}
                             });
                         } else {
                             int jsonUrl = Domoticz.Json.Url.Set.TEMP;
@@ -733,6 +745,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                 public void onDismiss(String password) {
                                     setState(idx, stateIds[which], password);
                                 }
+
+                                @Override
+                                public void onCancel() {}
                             });
                         } else
                             setState(idx, stateIds[which], null);
@@ -827,6 +842,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 public void onDismiss(String password) {
                     setBlindState(clickedSwitch, jsonAction, password);
                 }
+
+                @Override
+                public void onCancel() {}
             });
         } else {
             setBlindState(clickedSwitch, jsonAction, null);
@@ -910,6 +928,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 public void onDismiss(String password) {
                     setDimmerState(clickedSwitch, value, selector, password);
                 }
+
+                @Override
+                public void onCancel() {}
             });
         } else {
             setDimmerState(clickedSwitch, value, selector, null);

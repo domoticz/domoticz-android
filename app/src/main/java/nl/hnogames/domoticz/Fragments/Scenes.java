@@ -260,6 +260,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 public void onDismiss(String password) {
                     setScene(clickedScene, action, password);
                 }
+
+                @Override
+                public void onCancel() {}
             });
         } else {
             setScene(clickedScene, action, null);

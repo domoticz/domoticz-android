@@ -68,6 +68,13 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
                         if (dismissListener != null)
                             dismissListener.onDismiss(editPassword.getInputWidgetText().toString());
                     }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        if (dismissListener != null)
+                            dismissListener.onCancel();
+                    }
                 });
         mdb.dismissListener(this);
     }
@@ -115,5 +122,6 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(String password);
+        void onCancel();
     }
 }

@@ -315,6 +315,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                                 public void onDismiss(String password) {
                                     setThermostatAction(tempUtil, newSetPoint, password);
                                 }
+
+                                @Override
+                                public void onCancel() {}
                             });
                         } else {
                             setThermostatAction(tempUtil, newSetPoint, null);
