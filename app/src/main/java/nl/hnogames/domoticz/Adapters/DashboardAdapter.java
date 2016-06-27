@@ -91,6 +91,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.context = context;
         domoticz = new Domoticz(context, serverUtil);
 
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
+        this.listener = listener;
+
+        setData(data);
+    }
+
+    public void setData(ArrayList<DevicesInfo> data) {
         // When not sorted the devices are almost like dashboard on server
         if (!mSharedPrefs.isDashboardSortedLikeServer()) {
             // Sort alphabetically
@@ -102,9 +109,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.data = data;
-        this.listener = listener;
         this.filteredData = data;
     }
 
@@ -119,6 +124,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
     @Override
     public int getItemCount() {
+        if (filteredData == null)
+            return 0;
+
         return filteredData.size();
     }
 

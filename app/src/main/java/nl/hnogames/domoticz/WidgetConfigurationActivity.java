@@ -130,7 +130,8 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onCancel() {}
+                                    public void onCancel() {
+                                    }
                                 });
                             } else {
                                 showAppWidget(mDeviceInfo, null);

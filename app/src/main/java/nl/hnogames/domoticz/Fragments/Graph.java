@@ -87,6 +87,9 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);

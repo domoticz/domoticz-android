@@ -67,6 +67,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     private Animation animShow, animHide;
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -262,7 +265,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             setScene(clickedScene, action, null);

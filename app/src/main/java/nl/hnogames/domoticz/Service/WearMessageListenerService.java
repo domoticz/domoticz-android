@@ -206,7 +206,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         if (supportedSwitches != null && supportedSwitches.size() > 0) {
             String[] sendData = new String[supportedSwitches.size()];
             for (int i = 0; i < supportedSwitches.size(); i++) {
-                sendData[i] = supportedSwitches.get(i).getJsonObject().toString();
+                sendData[i] = supportedSwitches.get(i).getJsonObject();
             }
             String parsedData = new Gson().toJson(sendData);
             Log.v(TAG, "Sending data: " + parsedData);

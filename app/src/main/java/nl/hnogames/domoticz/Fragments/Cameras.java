@@ -176,4 +176,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             getCameras();
         }
     }
+
+    @Override
+    public void onConnectionFailed() {}
 }

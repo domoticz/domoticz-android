@@ -59,6 +59,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private ArrayList<PlanInfo> mPlans;
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {

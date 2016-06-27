@@ -43,6 +43,9 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private String filter = "";
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)

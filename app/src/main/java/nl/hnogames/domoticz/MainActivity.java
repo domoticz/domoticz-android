@@ -603,7 +603,8 @@ public class MainActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onCancel() {}
+                                    public void onCancel() {
+                                    }
                                 });
                             }
 

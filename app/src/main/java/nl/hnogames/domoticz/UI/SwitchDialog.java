@@ -92,7 +92,8 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                                 }
 
                                 @Override
-                                public void onCancel() {}
+                                public void onCancel() {
+                                }
                             });
                         }
                     }

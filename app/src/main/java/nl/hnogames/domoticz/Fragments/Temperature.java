@@ -68,6 +68,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private ArrayList<TemperatureInfo> mTempInfos;
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)

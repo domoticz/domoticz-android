@@ -68,6 +68,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private Animation animShow, animHide;
 
     @Override
+    public void onConnectionFailed() {}
+    @Override
     @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
@@ -317,7 +319,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                                 }
 
                                 @Override
-                                public void onCancel() {}
+                                public void onCancel() {
+                                }
                             });
                         } else {
                             setThermostatAction(tempUtil, newSetPoint, null);

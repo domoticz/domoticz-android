@@ -81,6 +81,9 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private Animation animShow, animHide;
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
@@ -357,7 +360,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                         }
 
                         @Override
-                        public void onCancel() {}
+                        public void onCancel() {
+                        }
                     });
                 } else
                     setColor(selectedColor, idx, null);
@@ -496,7 +500,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                                 }
 
                                 @Override
-                                public void onCancel() {}
+                                public void onCancel() {
+                                }
                             });
                         } else
                             setState(idx, stateIds[which], null);
@@ -614,7 +619,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             toggleSwitch(clickedSwitch, checked, null);
@@ -681,7 +687,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else
             toggleButton(clickedSwitch, checked, null);
@@ -740,7 +747,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             setBlindState(clickedSwitch, jsonAction, null);
@@ -806,7 +814,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             setDimmerState(clickedSwitch, value, selector, null);

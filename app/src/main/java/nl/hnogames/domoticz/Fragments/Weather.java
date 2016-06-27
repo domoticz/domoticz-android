@@ -42,6 +42,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private ArrayList<WeatherInfo> mWeatherInfoList;
 
     @Override
+    public void onConnectionFailed() {}
+    @Override
     @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)

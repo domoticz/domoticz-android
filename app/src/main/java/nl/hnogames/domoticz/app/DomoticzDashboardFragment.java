@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -79,6 +80,7 @@ public class DomoticzDashboardFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
     private SpinnerLoader oSpinner;
+    private PhoneConnectionUtil mPhoneConnectionUtil;
 
     public DomoticzDashboardFragment() {
     }
@@ -255,7 +257,7 @@ public class DomoticzDashboardFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
 
-        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
+        mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] entries) {
             }
@@ -264,7 +266,10 @@ public class DomoticzDashboardFragment extends Fragment {
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
             listener.onConnectionOk();
-        } else setErrorMessage(getString(R.string.error_notConnected));
+        } else {
+            listener.onConnectionFailed();
+            setErrorMessage(getString(R.string.error_notConnected));
+        };
     }
 
     /**
@@ -291,15 +296,34 @@ public class DomoticzDashboardFragment extends Fragment {
      * @param error Exception
      */
     public void errorHandling(Exception error) {
+        errorHandling(error, null);
+    }
+
+    /**
+     * Handles the error messages
+     *
+     * @param error Exception
+     * @param coordinatorLayout
+     */
+    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
 
         showSpinner(false);
         error.printStackTrace();
         String errorMessage = mDomoticz.getErrorMessage(error);
 
-        if (error instanceof JSONException
-                && errorMessage.equalsIgnoreCase("No value for result")) {
-            setMessage(getString(R.string.no_data_on_domoticz));
-        } else setErrorMessage(errorMessage);
+        if (mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (error instanceof JSONException
+                    && errorMessage.equalsIgnoreCase("No value for result")) {
+                setMessage(getString(R.string.no_data_on_domoticz));
+            }
+            else
+                setErrorMessage(errorMessage);
+        }
+        else
+        {
+            if(coordinatorLayout != null)
+                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.noconnection, Snackbar.LENGTH_SHORT);
+        }
     }
 
     public ActionBar getActionBar() {

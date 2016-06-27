@@ -22,6 +22,9 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private String filter = "";
 
     @Override
+    public void onConnectionFailed() {}
+
+    @Override
     @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)

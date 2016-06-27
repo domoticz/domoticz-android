@@ -53,6 +53,10 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         processUserVariables();
     }
 
+
+    @Override
+    public void onConnectionFailed() {}
+
     @Override
     @DebugLog
     public void onAttach(Context context) {

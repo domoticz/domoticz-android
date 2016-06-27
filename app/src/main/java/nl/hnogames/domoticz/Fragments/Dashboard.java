@@ -24,7 +24,9 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Parcelable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -53,6 +55,7 @@ import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 
@@ -72,6 +75,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
+
+    private SlideInBottomAnimationAdapter alphaSlideIn;
+
 
     @Override
     @DebugLog
@@ -115,12 +121,18 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_dashboard);
         super.showSpinner(true);
+
         if (getView() != null) {
             if (planName != null && planName.length() > 0)
                 if (getActionBar() != null)
                     getActionBar().setTitle(planName + "");
             processDashboard();
         }
+    }
+
+    @Override
+    public void onConnectionFailed() {
+        processDashboard(); //load from cache
     }
 
     private void processDashboard() {
@@ -132,24 +144,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
-        mDomoticz.getDevices(new DevicesReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                processDevices(switches);
-            }
-
-            @Override
-            @DebugLog
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        }, planID, null);
+        new GetCachedDataTask().execute();
     }
 
     private void processDevices(ArrayList<DevicesInfo> devicesInfos) {
@@ -213,17 +208,23 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 final switchesClickListener listener = this;
-                if (this.planID <= 0)
-                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, !mSharedPrefs.showDashboardAsList());
-                else {
-                    gridView.setHasFixedSize(true);
-                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
-                    gridView.setLayoutManager(mLayoutManager);
-                    adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, true);
+                if (adapter == null) {
+                    if (this.planID <= 0) {
+                        adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, !mSharedPrefs.showDashboardAsList());
+                    } else {
+                        gridView.setHasFixedSize(true);
+                        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                        gridView.setLayoutManager(mLayoutManager);
+                        adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, true);
+                    }
+                    alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                    gridView.setAdapter(alphaSlideIn);
+                } else {
+                    adapter.setData(supportedSwitches);
+                    adapter.notifyDataSetChanged();
+                    alphaSlideIn.notifyDataSetChanged();
                 }
 
-                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
                 if (state != null) {
                     gridView.getLayoutManager().onRestoreInstanceState(state);
                 }
@@ -243,7 +244,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             this.Filter(filter);
             busy = false;
             super.showSpinner(false);
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
         }
     }
 
@@ -302,7 +303,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             @DebugLog
             public void onError(Exception error) {
-                errorHandling(error);
+                errorHandling(error, coordinatorLayout);
             }
         });
     }
@@ -327,7 +328,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             toggleSwitch(clickedSwitch, checked, null);
@@ -377,7 +379,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     if (!UsefulBits.isEmpty(password))
                         UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     else
-                        errorHandling(error);
+                        errorHandling(error, coordinatorLayout);
                 }
             });
         }
@@ -424,7 +426,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else
             toggleButton(clickedSwitch, checked, null);
@@ -464,7 +467,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 if (!UsefulBits.isEmpty(password))
                     UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                 else
-                    errorHandling(error);
+                    errorHandling(error, coordinatorLayout);
             }
         });
     }
@@ -502,7 +505,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         }
 
                         @Override
-                        public void onCancel() {}
+                        public void onCancel() {
+                        }
                     });
                 } else
                     setColor(selectedColor, idx, null);
@@ -613,7 +617,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                 }
 
                                 @Override
-                                public void onCancel() {}
+                                public void onCancel() {
+                                }
                             });
                         } else {
                             int jsonUrl = Domoticz.Json.Url.Set.TEMP;
@@ -632,7 +637,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                         @Override
                                         @DebugLog
                                         public void onError(Exception error) {
-                                            errorHandling(error);
+                                            errorHandling(error, coordinatorLayout);
                                         }
                                     });
                         }
@@ -660,7 +665,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
-                    errorHandling(error);
+                    errorHandling(error, coordinatorLayout);
                 }
             };
 
@@ -747,7 +752,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                 }
 
                                 @Override
-                                public void onCancel() {}
+                                public void onCancel() {
+                                }
                             });
                         } else
                             setState(idx, stateIds[which], null);
@@ -808,7 +814,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         if (!UsefulBits.isEmpty(password))
                             UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         else
-                            errorHandling(error);
+                            errorHandling(error, coordinatorLayout);
                     }
                 });
     }
@@ -844,7 +850,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             setBlindState(clickedSwitch, jsonAction, null);
@@ -885,7 +892,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 if (!UsefulBits.isEmpty(password))
                     UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                 else
-                    errorHandling(error);
+                    errorHandling(error, coordinatorLayout);
             }
         });
     }
@@ -930,7 +937,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             setDimmerState(clickedSwitch, value, selector, null);
@@ -962,7 +970,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     if (!UsefulBits.isEmpty(password))
                         UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     else
-                        errorHandling(error);
+                        errorHandling(error, coordinatorLayout);
                 }
             });
         }
@@ -976,12 +984,48 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     @Override
     @DebugLog
-    public void errorHandling(Exception error) {
+    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
-                super.errorHandling(error);
+                super.errorHandling(error, this.coordinatorLayout);
             }
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<DevicesInfo> cacheSwitches = null;
+        protected Boolean doInBackground(Boolean... geto) {
+            try {
+                cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
+            } catch (Exception ex) {
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheSwitches != null)
+                processDevices(cacheSwitches);
+
+            mDomoticz.getDevices(new DevicesReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                    SerializableManager.saveSerializable(mContext, switches, "Dashboard");
+                    processDevices(switches);
+                }
+
+                @Override
+                @DebugLog
+                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error, coordinatorLayout);
+                }
+            }, planID, null);
         }
     }
 }
