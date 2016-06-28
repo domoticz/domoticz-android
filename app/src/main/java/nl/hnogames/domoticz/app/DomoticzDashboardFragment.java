@@ -257,12 +257,7 @@ public class DomoticzDashboardFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
 
-        mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
-            @Override
-            public void ReceiveSSIDs(CharSequence[] entries) {
-            }
-        });
-
+        mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
             listener.onConnectionOk();
@@ -322,7 +317,7 @@ public class DomoticzDashboardFragment extends Fragment {
         else
         {
             if(coordinatorLayout != null)
-                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.noconnection, Snackbar.LENGTH_SHORT);
+                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
         }
     }
 

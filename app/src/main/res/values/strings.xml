@@ -64,7 +64,6 @@
     <string name="to">"to"</string>
     <string name="retry">Retry</string>
     <string name="undo">Undo</string>
-    <string name="noconnection">No connection, showing cached data!</string>
     <string name="something_deleted">%1$s deleted</string>
 
     <string name="switch_on">Turning switch on</string>

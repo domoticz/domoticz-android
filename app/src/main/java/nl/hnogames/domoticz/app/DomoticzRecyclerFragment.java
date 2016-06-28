@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -77,6 +78,8 @@ public class DomoticzRecyclerFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
     private SpinnerLoader oSpinner;
+
+    private PhoneConnectionUtil mPhoneConnectionUtil;
 
     public DomoticzRecyclerFragment() {
     }
@@ -230,16 +233,14 @@ public class DomoticzRecyclerFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
 
-        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
-            @Override
-            public void ReceiveSSIDs(CharSequence[] entries) {
-            }
-        });
-
+        mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
             listener.onConnectionOk();
-        } else setErrorMessage(getString(R.string.error_notConnected));
+        } else {
+            listener.onConnectionFailed();
+            setErrorMessage(getString(R.string.error_notConnected));
+        };
     }
 
     /**
@@ -271,10 +272,19 @@ public class DomoticzRecyclerFragment extends Fragment {
         error.printStackTrace();
         String errorMessage = mDomoticz.getErrorMessage(error);
 
-        if (error instanceof JSONException
-                && errorMessage.equalsIgnoreCase("No value for result")) {
-            setMessage(getString(R.string.no_data_on_domoticz));
-        } else setErrorMessage(errorMessage);
+        if (mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (error instanceof JSONException
+                    && errorMessage.equalsIgnoreCase("No value for result")) {
+                setMessage(getString(R.string.no_data_on_domoticz));
+            }
+            else
+                setErrorMessage(errorMessage);
+        }
+        else
+        {
+            if(coordinatorLayout != null)
+                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+        }
     }
 
     public ActionBar getActionBar() {

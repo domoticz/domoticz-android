@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -113,7 +114,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                                 processImage(savePic, cameraTitle.getText().toString());
                             }
                         } catch (Exception ex) {
-                            errorHandling(ex);
+                            errorHandling(ex, coordinatorLayout);
                         }
                     }
                 });
@@ -124,7 +125,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                errorHandling(error, coordinatorLayout);
             }
         });
     }
@@ -151,11 +152,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     @Override
-    public void errorHandling(Exception error) {
+    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
-                super.errorHandling(error);
+                super.errorHandling(error, coordinatorLayout);
             }
         }
     }

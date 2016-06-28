@@ -84,6 +84,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_dashboard);
     }
 
     @Override
@@ -118,8 +120,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     @Override
     @DebugLog
     public void onConnectionOk() {
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_dashboard);
         super.showSpinner(true);
 
         if (getView() != null) {
@@ -132,7 +132,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     @Override
     public void onConnectionFailed() {
-        processDashboard(); //load from cache
+         processDashboard(); //load from cache
     }
 
     private void processDashboard() {
@@ -996,10 +996,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<DevicesInfo> cacheSwitches = null;
         protected Boolean doInBackground(Boolean... geto) {
-            try {
-                cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
-            } catch (Exception ex) {
-            }
+            //if (state == null) {
+                try {
+                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
+                } catch (Exception ex) {
+                }
+            //}
             return true;
         }
 

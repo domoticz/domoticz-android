@@ -25,6 +25,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -115,7 +116,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
             @Override
             public void onError(Exception error) {
-                errorHandling(error);
+                errorHandling(error, coordinatorLayout);
             }
         });
     }
@@ -130,11 +131,11 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     @Override
-    public void errorHandling(Exception error) {
+    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
-                super.errorHandling(error);
+                super.errorHandling(error, coordinatorLayout);
             }
         }
     }

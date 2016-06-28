@@ -82,6 +82,24 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private int lastPosition = -1;
     private ItemFilter mFilter = new ItemFilter();
 
+
+    public void setData(ArrayList<DevicesInfo> data) {
+        // When not sorted the devices are almost like dashboard on server
+        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
+            // Sort alphabetically
+            Collections.sort(data, new Comparator<DevicesInfo>() {
+                @Override
+                public int compare(DevicesInfo left, DevicesInfo right) {
+                    return left.getName().compareTo(right.getName());
+                }
+            });
+        }
+
+        this.data = data;
+        this.filteredData = data;
+    }
+
+
     public SwitchesAdapter(Context context,
                            ServerUtil serverUtil,
                            ArrayList<DevicesInfo> data,
@@ -104,9 +122,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         }
 
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
-        this.data = data;
         this.listener = listener;
-        this.filteredData = data;
+
+        setData(data);
     }
 
     /**
