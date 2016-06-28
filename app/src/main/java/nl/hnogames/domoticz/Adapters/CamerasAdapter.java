@@ -33,8 +33,11 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
+import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.RequestUtil;
@@ -52,11 +55,16 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private boolean refreshTimer;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz, boolean refreshTimer) {
-        this.mDataset = data;
+        setData(data);
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
+    }
+
+
+    public void setData(ArrayList<CameraInfo> data) {
+        this.mDataset = data;
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {

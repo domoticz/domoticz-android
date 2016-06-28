@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.ConfigInfo;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.Language;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
@@ -79,6 +80,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         this.context = context;
         domoticz = mDomoticz;
         mSharedPrefs = new SharedPrefUtil(context);
+        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
+        this.listener = listener;
+        setData(data);
+    }
+
+    public void setData(ArrayList<WeatherInfo> data) {
         Collections.sort(data, new Comparator<WeatherInfo>() {
             @Override
             public int compare(WeatherInfo left, WeatherInfo right) {
@@ -86,10 +93,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             }
         });
 
-        mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.data = data;
         this.filteredData = data;
-        this.listener = listener;
     }
 
     public Filter getFilter() {

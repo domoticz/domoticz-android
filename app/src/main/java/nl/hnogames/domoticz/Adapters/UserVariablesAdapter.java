@@ -37,7 +37,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
@@ -62,8 +64,12 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
+        setData(data);
+    }
 
+    public void setData(ArrayList<UserVariableInfo> data) {
         Collections.reverse(data);
+
         this.data = data;
         this.filteredData = data;
     }

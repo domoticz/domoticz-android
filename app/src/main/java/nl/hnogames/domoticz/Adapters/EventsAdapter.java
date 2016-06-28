@@ -38,7 +38,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
@@ -66,7 +68,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
         this.domoticz = mDomoticz;
         this.listener = listener;
         mSharedPrefs = new SharedPrefUtil(context);
+        setData(data);
+    }
+
+    public void setData(ArrayList<EventInfo> data) {
         Collections.reverse(data);
+
         this.data = data;
         this.filteredData = data;
     }

@@ -31,7 +31,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -44,13 +47,17 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     private ArrayList<PlanInfo> mDataset;
 
     public PlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
-        this.mDataset = data;
+        setData(data);
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
         PlansAdapter.onClickListener = onClickListener;
+    }
+
+    public void setData(ArrayList<PlanInfo> data) {
+        this.mDataset = data;
     }
 
     @Override
