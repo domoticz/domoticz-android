@@ -865,13 +865,13 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<DevicesInfo> cacheSwitches = null;
         protected Boolean doInBackground(Boolean... geto) {
-            //if (state == null) {
-            try {
-                cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
-                extendedStatusSwitches = cacheSwitches;
-            } catch (Exception ex) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
+                    extendedStatusSwitches = cacheSwitches;
+                } catch (Exception ex) {
+                }
             }
-            //}
             return true;
         }
 

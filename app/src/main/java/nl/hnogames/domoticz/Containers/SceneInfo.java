@@ -22,30 +22,33 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SceneInfo {
+public class SceneInfo implements Comparable, Serializable {
 
     private final boolean isProtected;
-    JSONObject jsonObject;
+    private String jsonObject;
 
-    int favorite;
-    int hardwareID;
-    String lastUpdate;
-    String name;
-    String offAction;
-    String onAction;
-    String status;
-    Boolean timers;
-    String type;
-    int idx;
+    private int favorite;
+    private int hardwareID;
+    private String lastUpdate;
+    private String name;
+    private String offAction;
+    private String onAction;
+    private String status;
+    private Boolean timers;
+    private String type;
+    private int idx;
 
     public SceneInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
         if (row.has("Favorite"))
             favorite = row.getInt("Favorite");
 
@@ -158,7 +161,12 @@ public class SceneInfo {
         return idx;
     }
 
-    public JSONObject getJsonObject() {
+    public String getJsonObject() {
         return this.jsonObject;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

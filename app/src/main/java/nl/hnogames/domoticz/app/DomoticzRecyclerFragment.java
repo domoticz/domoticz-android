@@ -78,8 +78,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
     private SpinnerLoader oSpinner;
-
-    private PhoneConnectionUtil mPhoneConnectionUtil;
+    public PhoneConnectionUtil mPhoneConnectionUtil;
 
     public DomoticzRecyclerFragment() {
     }

@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,9 +38,11 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
@@ -49,6 +52,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
@@ -65,9 +69,12 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
-    public void onConnectionFailed() {}
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
 
     @Override
     @DebugLog
@@ -119,25 +126,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         state = gridView.getLayoutManager().onSaveInstanceState();
         WidgetUtils.RefreshWidgets(mContext);
 
-        mDomoticz.getScenes(new ScenesReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
-                successHandling(scenes.toString(), false);
-                createListView(scenes);
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-
-            @Override
-            @DebugLog
-            public void onReceiveScene(SceneInfo scene) {
-            }
-        });
+        new GetCachedDataTask().execute();
     }
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
@@ -163,9 +152,16 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 }
             }
 
-            adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
-            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
+            if(adapter == null) {
+                adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            }
+            else{
+                adapter.setData(supportedScenes);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -384,6 +380,45 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             if (isAdded()) {
                 super.errorHandling(error);
             }
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<SceneInfo> cacheSwitches = null;
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheSwitches = (ArrayList<SceneInfo>) SerializableManager.readSerializedObject(mContext, "Scenes");
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheSwitches != null)
+                createListView(cacheSwitches);
+
+            mDomoticz.getScenes(new ScenesReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
+                    SerializableManager.saveSerializable(mContext, scenes, "Scenes");
+                    successHandling(scenes.toString(), false);
+                    createListView(scenes);
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+
+                @Override
+                @DebugLog
+                public void onReceiveScene(SceneInfo scene) {
+                }
+            });
         }
     }
 }
