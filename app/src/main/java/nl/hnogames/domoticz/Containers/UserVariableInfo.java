@@ -22,11 +22,15 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserVariableInfo {
-    JSONObject jsonObject;
+import java.io.Serializable;
+
+public class UserVariableInfo implements Comparable, Serializable {
+    String jsonObject;
 
     int idx;
     String Type;
@@ -35,7 +39,7 @@ public class UserVariableInfo {
     String Value;
 
     public UserVariableInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
         if (row.has("Name"))
             Name = row.getString("Name");
         if (row.has("Type"))
@@ -78,5 +82,10 @@ public class UserVariableInfo {
                 "Type='" + Type + "', " +
                 "LastUpdate='" + LastUpdate +
                 "'}";
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }
