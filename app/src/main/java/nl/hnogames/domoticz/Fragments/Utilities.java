@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -39,11 +40,13 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
+import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
@@ -53,6 +56,7 @@ import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
@@ -65,6 +69,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private Context mContext;
     private String filter = "";
     private LinearLayout lExtraPanel = null;
+    private SlideInBottomAnimationAdapter alphaSlideIn;
     private Animation animShow, animHide;
 
     @Override
@@ -116,33 +121,22 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
-        final UtilityClickListener listener = this;
-        mDomoticz.getUtilities(new UtilitiesReceiver() {
-
-            @Override
-            @DebugLog
-            public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
-                successHandling(mUtilitiesInfos.toString(), false);
-
-                Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
-                adapter = new UtilityAdapter(mContext, mDomoticz, mUtilitiesInfos, listener);
-
-                createListView();
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+       new GetCachedDataTask().execute();
     }
 
     private void createListView() {
-
         if (getView() != null) {
-            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
+            if(adapter == null) {
+                adapter = new UtilityAdapter(mContext, mDomoticz, mUtilitiesInfos, this);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            }
+            else{
+                adapter.setData(mUtilitiesInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -433,6 +427,43 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     switchLogs,
                     R.layout.dialog_switch_logs);
             infoDialog.show();
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<UtilitiesInfo> cacheUtilities = null;
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheUtilities = (ArrayList<UtilitiesInfo>) SerializableManager.readSerializedObject(mContext, "Utilities");
+                    Utilities.this.mUtilitiesInfos = cacheUtilities;
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheUtilities != null)
+                createListView();
+
+            mDomoticz.getUtilities(new UtilitiesReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
+                    successHandling(mUtilitiesInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mUtilitiesInfos, "Utilities");
+                    Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
+
+                    createListView();
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         }
     }
 }
