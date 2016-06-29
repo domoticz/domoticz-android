@@ -50,6 +50,7 @@
   <string name="add">Afegeix</string>
   <string name="cancel">Cancel·la</string>
   <string name="ok">D’acord</string>
+  <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Alguna cosa ha anat malament</string>
   <string name="no_network_available">Error: Cap connexió de xarxa disponible</string>
   <string name="oops">UI!</string>

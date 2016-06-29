@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
+    <changelogversion versionName="0.1.269" changeDate="ALPHA">
+        <changelogtext>[b]PREMIUM[/b] Fixes on Speech Commands</changelogtext>
+        <changelogtext>Show cached data when offline</changelogtext>
+        <changelogtext>Improved speed on Dashboard (update Domoticz base system via Beta channel)</changelogtext>
+        <changelogtext>Auto check on updates</changelogtext>
+        <changelogtext>Validate apk</changelogtext>
+        <changelogtext>Improve upgrade to premium notifications</changelogtext>
+        <changelogtext>Various crash fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="0.1.266" changeDate="June 16, 2016">
         <changelogtext>[b]PREMIUM[/b] Added Speech Commands</changelogtext>
         <changelogtext>[b]PREMIUM[/b] Added Multi users support</changelogtext>
@@ -13,25 +23,6 @@
         <changelogtext>Improved logging for debugging</changelogtext>
         <changelogtext>Added changelog dialog</changelogtext>
         <changelogtext>Various fixes</changelogtext>
-    </changelogversion>
-
-    <changelogversion versionName="0.1.253" changeDate="April 11, 2016">
-        <changelogtext>[b]New![/b] Better Dashboard with Grid</changelogtext>
-        <changelogtext>[b]PREMIUM[/b] QR Code functionality</changelogtext>
-        <changelogtext>[b]New![/b] Added Norwegian</changelogtext>
-        <changelogtext>Hide Off Level for Selector</changelogtext>
-        <changelogtext>Change language from settings screen (fix)</changelogtext>
-        <changelogtext>Show connected switch name on QR Code, NFC and Geofences</changelogtext>
-        <changelogtext>Reworked all screens to recycleviews</changelogtext>
-        <changelogtext>Fix on Blinds</changelogtext>
-        <changelogtext>Fix on NFC functionality</changelogtext>
-        <changelogtext>Log screen for Scenes and Groups</changelogtext>
-        <changelogtext>Added favorite star buttons</changelogtext>
-        <changelogtext>Changed welcome screens</changelogtext>
-        <changelogtext>Only show server update available once per rev</changelogtext>
-        <changelogtext>Reworked dark layout for tablets (small changes)</changelogtext>
-        <changelogtext>Fixed icons for tablets</changelogtext>
-        <changelogtext>Fixed Set Point bug</changelogtext>
     </changelogversion>
 
 </changelog>

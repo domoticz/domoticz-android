@@ -50,6 +50,7 @@
   <string name="add">Añadir</string>
   <string name="cancel">Cancelar</string>
   <string name="ok">Aceptar</string>
+  <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Hubo algún problema</string>
   <string name="no_network_available">Error: No hay conexión de red disponible</string>
   <string name="oops">¡VAYA!</string>

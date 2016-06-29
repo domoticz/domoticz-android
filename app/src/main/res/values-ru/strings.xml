@@ -50,6 +50,7 @@
   <string name="add">Добавить</string>
   <string name="cancel">Отмена</string>
   <string name="ok">Ok</string>
+  <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Произошла ошибка</string>
   <string name="no_network_available">Ошибка: Сетевое соединение не доступно</string>
   <string name="oops">ОЙ!</string>
