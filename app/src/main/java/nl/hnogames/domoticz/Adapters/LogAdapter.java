@@ -38,6 +38,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
@@ -62,6 +63,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
         this.context = context;
         this.domoticz = mDomoticz;
         mSharedPrefs = new SharedPrefUtil(context);
+        setData(data);
+    }
+
+    public void setData(ArrayList<LogInfo> data) {
         Collections.reverse(data);
         this.data = data;
         this.filteredData = data;

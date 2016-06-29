@@ -25,14 +25,16 @@ package nl.hnogames.domoticz.Containers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LogInfo {
+import java.io.Serializable;
 
-    JSONObject jsonObject;
-    int level;
-    String message;
+public class LogInfo implements Serializable {
+
+    private String jsonObject;
+    private int level;
+    private String message;
 
     public LogInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
 
         if (row.has("level"))
             level = row.getInt("level");
@@ -56,8 +58,8 @@ public class LogInfo {
         return message;
     }
 
-
-    public JSONObject getJsonObject() {
+    public String getJsonObject() {
         return this.jsonObject;
     }
+
 }
