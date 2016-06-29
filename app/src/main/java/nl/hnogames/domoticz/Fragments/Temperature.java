@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -38,10 +39,12 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
+import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
@@ -49,6 +52,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
@@ -66,9 +70,12 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private ArrayList<TemperatureInfo> mTempInfos;
+    private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
-    public void onConnectionFailed() {}
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
 
     @Override
     @DebugLog
@@ -118,28 +125,22 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
-        mDomoticz.getTemperatures(new TemperatureReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
-                mTempInfos = mTemperatureInfos;
-                successHandling(mTemperatureInfos.toString(), false);
-                createListView(mTemperatureInfos);
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+        new GetCachedDataTask().execute();
     }
 
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
-            adapter = new TemperatureAdapter(mContext, mDomoticz, mTemperatureInfos, this);
-            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
+            if(adapter == null) {
+                adapter = new TemperatureAdapter(mContext, mDomoticz, mTemperatureInfos, this);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            }
+            else{
+                adapter.setData(mTemperatureInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -229,8 +230,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         intent.putExtra("TYPE", "temp");
         intent.putExtra("STEPS", 3);
         startActivity(intent);
-
-        // Snackbar.mtake(coordinatorLayout, mContext.getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -344,5 +343,41 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             }
         }
         return clickedTemp;
+    }
+
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<TemperatureInfo> cacheTemperatures = null;
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheTemperatures != null)
+                createListView(cacheTemperatures);
+
+            mDomoticz.getTemperatures(new TemperatureReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
+                    mTempInfos = mTemperatureInfos;
+                    successHandling(mTemperatureInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mTemperatureInfos, "Temperatures");
+                    createListView(mTemperatureInfos);
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
+        }
     }
 }
