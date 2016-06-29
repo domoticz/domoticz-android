@@ -996,12 +996,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<DevicesInfo> cacheSwitches = null;
         protected Boolean doInBackground(Boolean... geto) {
-            //if (state == null) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable())
+            {
                 try {
                     cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
                 } catch (Exception ex) {
                 }
-            //}
+            }//no network available, load cache
             return true;
         }
 
@@ -1009,7 +1010,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (cacheSwitches != null)
                 processDevices(cacheSwitches);
 
-            mDomoticz.getDevices(new DevicesReceiver() {
+            mDomoticz.getFavorites(new DevicesReceiver() {
                 @Override
                 @DebugLog
                 public void onReceiveDevices(ArrayList<DevicesInfo> switches) {

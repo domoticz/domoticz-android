@@ -503,6 +503,10 @@ public class Domoticz {
                 url = Url.Notification.NOTIFICATION;
                 break;
 
+            case Json.Url.Request.FAVORITES:
+                url = Url.Category.FAVORITES;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
@@ -1199,6 +1203,24 @@ public class Domoticz {
                 url, mSessionUtil, true, 3);
     }
 
+
+    @DebugLog
+    public void getFavorites(DevicesReceiver receiver, int plan, String filter) {
+        DevicesParser parser = new DevicesParser(receiver);
+        String url = constructGetUrl(Json.Url.Request.FAVORITES);
+
+        if (filter != null && filter.length() > 0)
+            url = url.replace("filter=all", "filter=" + filter);
+        if (plan > 0)
+            url += "&plan=" + plan;
+
+        Log.v(TAG, url);
+        RequestUtil.makeJsonGetResultRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3);
+    }
+
     @DebugLog
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
         DevicesParser parser = new DevicesParser(receiver);
@@ -1670,6 +1692,7 @@ public class Domoticz {
                 int USERS = 34;
                 int LOGOFF = 35;
                 int AUTH = 36;
+                int FAVORITES = 37;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -1770,6 +1793,7 @@ public class Domoticz {
         interface Category {
             String ALLDEVICES = "/json.htm?type=devices";
             String DEVICES = "/json.htm?type=devices&filter=all&used=true";
+            String FAVORITES = "/json.htm?type=devices&filter=all&used=true&favorite=1";
             String VERSION = "/json.htm?type=command&param=getversion";
             String DASHBOARD = ALLDEVICES + "&filter=all";
             String SCENES = "/json.htm?type=scenes";
