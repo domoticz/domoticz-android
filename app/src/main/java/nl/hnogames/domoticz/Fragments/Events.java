@@ -33,11 +33,9 @@ import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
-import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -101,7 +99,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void createListView(ArrayList<EventInfo> mEventInfos) {
         if (getView() != null) {
-            if(adapter == null) {
+            if (adapter == null) {
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
                     @DebugLog
@@ -111,8 +109,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 });
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
-            }
-            else{
+            } else {
                 adapter.setData(mEventInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
@@ -143,6 +140,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<EventInfo> cacheEventInfos = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {

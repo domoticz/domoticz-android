@@ -26,6 +26,7 @@ package nl.hnogames.domoticz.Interfaces;
 public interface DomoticzFragmentListener {
 
     void onConnectionOk();
+
     void onConnectionFailed();
 
 }

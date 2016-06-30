@@ -84,7 +84,9 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
-    public void onConnectionFailed() { new GetCachedDataTask().execute();}
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
 
     @Override
     @DebugLog
@@ -180,13 +182,12 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     }
                 }
 
-                if(adapter == null) {
+                if (adapter == null) {
                     final switchesClickListener listener = this;
                     adapter = new SwitchesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
                     alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                     gridView.setAdapter(alphaSlideIn);
-                }
-                else{
+                } else {
                     adapter.setData(supportedSwitches);
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
@@ -864,6 +865,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<DevicesInfo> cacheSwitches = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {

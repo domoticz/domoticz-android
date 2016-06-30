@@ -29,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -49,9 +50,11 @@ import nl.hnogames.domoticz.CameraActivity;
 import nl.hnogames.domoticz.Containers.CameraInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
@@ -100,21 +103,27 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        try {
-                            ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
-                            TextView cameraTitle = (TextView) v.findViewById(R.id.name);
-                            Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
+                        if (mPhoneConnectionUtil.isNetworkAvailable()) {
+                            try {
+                                ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
+                                TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                                Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (!PermissionsUtil.canAccessStorage(context)) {
-                                    requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
-                                } else
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    if (!PermissionsUtil.canAccessStorage(context)) {
+                                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                                    } else
+                                        processImage(savePic, cameraTitle.getText().toString());
+                                } else {
                                     processImage(savePic, cameraTitle.getText().toString());
-                            } else {
-                                processImage(savePic, cameraTitle.getText().toString());
+                                }
+                            } catch (Exception ex) {
+                                errorHandling(ex, coordinatorLayout);
                             }
-                        } catch (Exception ex) {
-                            errorHandling(ex, coordinatorLayout);
+                        }
+                        else{
+                            if (coordinatorLayout != null)
+                                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                         }
                     }
                 });
@@ -179,5 +188,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     @Override
-    public void onConnectionFailed() {}
+    public void onConnectionFailed() {
+    }
 }

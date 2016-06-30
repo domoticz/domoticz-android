@@ -33,11 +33,8 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.RequestUtil;

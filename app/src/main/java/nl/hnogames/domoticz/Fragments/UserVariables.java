@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
-import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -76,12 +74,11 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     private void createListView() {
         if (getView() != null) {
-            if(adapter == null) {
+            if (adapter == null) {
                 adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
-            }
-            else{
+            } else {
                 adapter.setData(mUserVariableInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
@@ -112,6 +109,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<UserVariableInfo> cacheUserVariables = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {

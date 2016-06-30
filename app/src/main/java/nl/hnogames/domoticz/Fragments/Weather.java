@@ -17,12 +17,10 @@ import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
 import nl.hnogames.domoticz.Containers.Language;
-import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
@@ -103,12 +101,11 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
             alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
             gridView.setAdapter(alphaSlideIn);
-        }
-        else {
+        } else {
             adapter.setData(mWeatherInfos);
             adapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
@@ -275,6 +272,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<WeatherInfo> cacheWeathers = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {

@@ -132,7 +132,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     @Override
     public void onConnectionFailed() {
-         processDashboard(); //load from cache
+        processDashboard(); //load from cache
     }
 
     private void processDashboard() {
@@ -995,9 +995,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<DevicesInfo> cacheSwitches = null;
+
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable())
-            {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
                 } catch (Exception ex) {

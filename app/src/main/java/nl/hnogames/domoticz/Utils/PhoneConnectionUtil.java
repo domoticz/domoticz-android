@@ -103,7 +103,7 @@ public class PhoneConnectionUtil {
                         }
                     }
                 }
-                if(listener != null)
+                if (listener != null)
                     listener.ReceiveSSIDs(entries);
             }
         };

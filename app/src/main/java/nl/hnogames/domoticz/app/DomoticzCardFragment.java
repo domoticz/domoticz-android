@@ -45,7 +45,6 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
@@ -56,14 +55,14 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 public class DomoticzCardFragment extends Fragment {
 
     public Domoticz mDomoticz;
+    public CoordinatorLayout coordinatorLayout;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private SharedPrefUtil mSharedPrefs;
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
-    public CoordinatorLayout coordinatorLayout;
-    private PhoneConnectionUtil mPhoneConnectionUtil;
+    public PhoneConnectionUtil mPhoneConnectionUtil;
 
     public DomoticzCardFragment() {
     }
@@ -145,7 +144,8 @@ public class DomoticzCardFragment extends Fragment {
         } else {
             listener.onConnectionFailed();
             setErrorMessage(getString(R.string.error_notConnected));
-        };
+        }
+        ;
     }
 
     /**
@@ -172,24 +172,22 @@ public class DomoticzCardFragment extends Fragment {
      * @param error Exception
      */
     public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
-        hideRecyclerView();
-        error.printStackTrace();
 
         String errorMessage = mDomoticz.getErrorMessage(error);
-        if(mPhoneConnectionUtil == null)
+        if (mPhoneConnectionUtil == null)
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
 
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
+            hideRecyclerView();
+            error.printStackTrace();
+
             if (error instanceof JSONException
                     && errorMessage.equalsIgnoreCase("No value for result")) {
                 setMessage(getString(R.string.no_data_on_domoticz));
-            }
-            else
+            } else
                 setErrorMessage(errorMessage);
-        }
-        else
-        {
-            if(coordinatorLayout != null)
+        } else {
+            if (coordinatorLayout != null)
                 UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
         }
     }
@@ -225,13 +223,15 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void setErrorLayoutMessage(String message) {
-        RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
-        if (errorLayout != null) {
-            errorLayout.setVisibility(View.VISIBLE);
-            TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
-            errorTextMessage.setText(message);
-        } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+        if (mPhoneConnectionUtil.isNetworkAvailable()) {
+            RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+            if (errorLayout != null) {
+                errorLayout.setVisibility(View.VISIBLE);
+                TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+                errorTextMessage.setText(message);
+            } else throw new RuntimeException(
+                    "Layout should have a RelativeLayout defined with the ID of errorLayout");
+        }
     }
 
     private void setMessage(String message) {

@@ -38,11 +38,9 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
@@ -152,12 +150,11 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 }
             }
 
-            if(adapter == null) {
+            if (adapter == null) {
                 adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
-            }
-            else{
+            } else {
                 adapter.setData(supportedScenes);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
@@ -385,6 +382,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<SceneInfo> cacheSwitches = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {

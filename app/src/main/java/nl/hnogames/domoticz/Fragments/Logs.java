@@ -31,10 +31,8 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.LogAdapter;
-import nl.hnogames.domoticz.Containers.EventInfo;
 import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -99,12 +97,11 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
     private void createListView(ArrayList<LogInfo> mLogInfos) {
         if (getView() != null) {
-            if(adapter == null) {
+            if (adapter == null) {
                 adapter = new LogAdapter(mContext, mDomoticz, mLogInfos);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
-            }
-            else{
+            } else {
                 adapter.setData(mLogInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
@@ -142,6 +139,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<LogInfo> cacheLogs = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
