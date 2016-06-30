@@ -40,13 +40,11 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
-import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.Containers.UtilitiesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
@@ -73,7 +71,10 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private Animation animShow, animHide;
 
     @Override
-    public void onConnectionFailed() {}
+    public void onConnectionFailed() {
+        processUtilities();
+    }
+
     @Override
     @DebugLog
     public void refreshFragment() {
@@ -121,17 +122,16 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
 
-       new GetCachedDataTask().execute();
+        new GetCachedDataTask().execute();
     }
 
     private void createListView() {
         if (getView() != null) {
-            if(adapter == null) {
+            if (adapter == null) {
                 adapter = new UtilityAdapter(mContext, mDomoticz, mUtilitiesInfos, this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
-            }
-            else{
+            } else {
                 adapter.setData(mUtilitiesInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
@@ -145,6 +145,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     processUtilities();
                 }
             });
+
             super.showSpinner(false);
             this.Filter(filter);
         }
@@ -432,6 +433,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<UtilitiesInfo> cacheUtilities = null;
+
         protected Boolean doInBackground(Boolean... geto) {
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
