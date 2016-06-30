@@ -271,6 +271,8 @@ public class DomoticzRecyclerFragment extends Fragment {
         error.printStackTrace();
         String errorMessage = mDomoticz.getErrorMessage(error);
 
+        if(mPhoneConnectionUtil == null)
+            mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             if (error instanceof JSONException
                     && errorMessage.equalsIgnoreCase("No value for result")) {

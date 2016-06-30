@@ -138,7 +138,7 @@ public class DomoticzCardFragment extends Fragment {
         List<Fragment> fragments = getFragmentManager().getFragments();
         onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
 
-        PhoneConnectionUtil mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
+        mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
             listener.onConnectionOk();
@@ -176,6 +176,9 @@ public class DomoticzCardFragment extends Fragment {
         error.printStackTrace();
 
         String errorMessage = mDomoticz.getErrorMessage(error);
+        if(mPhoneConnectionUtil == null)
+            mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
+
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             if (error instanceof JSONException
                     && errorMessage.equalsIgnoreCase("No value for result")) {
