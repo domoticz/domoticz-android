@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -62,6 +63,7 @@ import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchTimerInfoDialog;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
@@ -79,6 +81,12 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
+    private SlideInBottomAnimationAdapter alphaSlideIn;
+
+    @Override
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
 
     @Override
     @DebugLog
@@ -134,26 +142,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             mSwipeRefreshLayout.setRefreshing(true);
         WidgetUtils.RefreshWidgets(mContext);
 
-        mDomoticz.getDevices(new DevicesReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                extendedStatusSwitches = mDevicesInfo;
-                successHandling(mDevicesInfo.toString(), false);
-                createListView(mDevicesInfo);
-            }
+        new GetCachedDataTask().execute();
 
-            @Override
-            @DebugLog
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        }, 0, "light");
     }
 
     // add dynamic list view
@@ -161,7 +151,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private void createListView(ArrayList<DevicesInfo> switches) {
         if (getView() != null) {
             try {
-
                 ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
                 final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
                 final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
@@ -193,10 +182,16 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     }
                 }
 
-                final switchesClickListener listener = this;
-                adapter = new SwitchesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
-                SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                if (adapter == null) {
+                    final switchesClickListener listener = this;
+                    adapter = new SwitchesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
+                    alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                    gridView.setAdapter(alphaSlideIn);
+                } else {
+                    adapter.setData(supportedSwitches);
+                    adapter.notifyDataSetChanged();
+                    alphaSlideIn.notifyDataSetChanged();
+                }
 
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -210,14 +205,15 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 if (state != null) {
                     gridView.getLayoutManager().onRestoreInstanceState(state);
                 }
+
                 this.Filter(filter);
                 busy = false;
             } catch (Exception ex) {
                 errorHandling(ex);
             }
         }
-        super.showSpinner(false);
 
+        super.showSpinner(false);
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {
@@ -355,6 +351,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                         public void onDismiss(String password) {
                             setColor(selectedColor, idx, password);
                         }
+
+                        @Override
+                        public void onCancel() {
+                        }
                     });
                 } else
                     setColor(selectedColor, idx, null);
@@ -491,6 +491,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                                 public void onDismiss(String password) {
                                     setState(idx, stateIds[which], password);
                                 }
+
+                                @Override
+                                public void onCancel() {
+                                }
                             });
                         } else
                             setState(idx, stateIds[which], null);
@@ -606,6 +610,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 public void onDismiss(String password) {
                     toggleSwitch(clickedSwitch, checked, password);
                 }
+
+                @Override
+                public void onCancel() {
+                }
             });
         } else {
             toggleSwitch(clickedSwitch, checked, null);
@@ -670,6 +678,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 public void onDismiss(String password) {
                     toggleButton(clickedSwitch, checked, password);
                 }
+
+                @Override
+                public void onCancel() {
+                }
             });
         } else
             toggleButton(clickedSwitch, checked, null);
@@ -725,6 +737,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 @DebugLog
                 public void onDismiss(String password) {
                     setBlindState(clickedSwitch, jsonAction, password);
+                }
+
+                @Override
+                public void onCancel() {
                 }
             });
         } else {
@@ -789,6 +805,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 public void onDismiss(String password) {
                     setDimmerState(clickedSwitch, value, selector, password);
                 }
+
+                @Override
+                public void onCancel() {
+                }
             });
         } else {
             setDimmerState(clickedSwitch, value, selector, null);
@@ -840,6 +860,48 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             if (isAdded()) {
                 super.errorHandling(error);
             }
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<DevicesInfo> cacheSwitches = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
+                    extendedStatusSwitches = cacheSwitches;
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheSwitches != null)
+                createListView(cacheSwitches);
+
+            mDomoticz.getDevices(new DevicesReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                    extendedStatusSwitches = switches;
+                    SerializableManager.saveSerializable(mContext, switches, "Switches");
+                    successHandling(switches.toString(), false);
+                    createListView(switches);
+                }
+
+                @Override
+                @DebugLog
+                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            }, 0, "light");
         }
     }
 }

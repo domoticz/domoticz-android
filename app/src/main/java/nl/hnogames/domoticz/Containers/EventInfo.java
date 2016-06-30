@@ -22,22 +22,25 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EventInfo {
+import java.io.Serializable;
+
+public class EventInfo implements Comparable, Serializable {
     @SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal"})
     private final String EVENT_STATUS = "eventstatus";
     @SuppressWarnings("FieldCanBeLocal")
     private final String NAME = "name";
-    JSONObject jsonObject;
-
-    int id;
-    String Name;
-    String Status;
+    private String jsonObject;
+    private int id;
+    private String Name;
+    private String Status;
 
     public EventInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
         if (row.has(NAME))
             Name = row.getString(NAME);
         if (row.has(EVENT_STATUS))
@@ -61,7 +64,6 @@ public class EventInfo {
         return id;
     }
 
-
     @Override
     public String toString() {
         return "EventInfo{" +
@@ -69,5 +71,10 @@ public class EventInfo {
                 ", Name='" + Name + "', " +
                 "Status='" + Status +
                 "'}";
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

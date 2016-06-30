@@ -44,13 +44,17 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     private ArrayList<PlanInfo> mDataset;
 
     public PlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
-        this.mDataset = data;
+        setData(data);
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
         PlansAdapter.onClickListener = onClickListener;
+    }
+
+    public void setData(ArrayList<PlanInfo> data) {
+        this.mDataset = data;
     }
 
     @Override

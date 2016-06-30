@@ -1,6 +1,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
@@ -20,6 +22,12 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private UserVariablesAdapter adapter;
     private Context mContext;
     private String filter = "";
+    private SlideInBottomAnimationAdapter alphaSlideIn;
+
+    @Override
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
 
     @Override
     @DebugLog
@@ -61,29 +69,20 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private void processUserVariables() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
-        mDomoticz.getUserVariables(new UserVariablesReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
-                UserVariables.this.mUserVariableInfos = mVarInfos;
-                successHandling(mUserVariableInfos.toString(), false);
-                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos);
-                createListView();
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+        new GetCachedDataTask().execute();
     }
 
     private void createListView() {
         if (getView() != null) {
-            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
+            if (adapter == null) {
+                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            } else {
+                adapter.setData(mUserVariableInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -105,6 +104,43 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
             if (isAdded()) {
                 super.errorHandling(error);
             }
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<UserVariableInfo> cacheUserVariables = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
+                    UserVariables.this.mUserVariableInfos = cacheUserVariables;
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheUserVariables != null)
+                createListView();
+
+            mDomoticz.getUserVariables(new UserVariablesReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
+                    UserVariables.this.mUserVariableInfos = mVarInfos;
+                    SerializableManager.saveSerializable(mContext, mVarInfos, "UserVariables");
+                    successHandling(mUserVariableInfos.toString(), false);
+                    createListView();
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         }
     }
 }

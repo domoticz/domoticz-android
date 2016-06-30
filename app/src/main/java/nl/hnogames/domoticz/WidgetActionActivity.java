@@ -111,6 +111,10 @@ public class WidgetActionActivity extends AppCompatActivity {
                                     public void onDismiss(String password) {
                                         showAppWidget(mDeviceInfo, password);
                                     }
+
+                                    @Override
+                                    public void onCancel() {
+                                    }
                                 });
                             } else {
                                 showAppWidget(mDeviceInfo, null);

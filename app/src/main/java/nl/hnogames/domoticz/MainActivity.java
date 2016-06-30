@@ -75,6 +75,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidmads.updatehandler.app.UpdateHandler;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 onPhone = true;
 
             appRate();
+
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
 
@@ -520,6 +522,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Show a dialog if meets conditions
             AppRate.showRateDialogIfMeetsConditions(this);
+            new UpdateHandler(this).start();
         }
     }
 
@@ -597,6 +600,10 @@ public class MainActivity extends AppCompatActivity {
                                                 }
                                             }
                                         }
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
                                     }
                                 });
                             }
@@ -1277,20 +1284,22 @@ public class MainActivity extends AppCompatActivity {
      * @param dialogStandardFragment
      */
     private void openDialogFragment(DialogFragment dialogStandardFragment) {
-        if (mSharedPrefs != null) {
-            PackageInfo pInfo = null;
-            try {
-                pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                String version = pInfo.versionName;
-                String preVersion = mSharedPrefs.getPreviousVersionNumber();
-                if (!version.equals(preVersion)) {
-                    if (dialogStandardFragment != null) {
-                        getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+        if (!isFinishing()) {
+            if (mSharedPrefs != null) {
+                PackageInfo pInfo = null;
+                try {
+                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String version = pInfo.versionName;
+                    String preVersion = mSharedPrefs.getPreviousVersionNumber();
+                    if (!version.equals(preVersion)) {
+                        if (dialogStandardFragment != null) {
+                            getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+                        }
+                        mSharedPrefs.setVersionNumber(version);
                     }
-                    mSharedPrefs.setVersionNumber(version);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
                 }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }

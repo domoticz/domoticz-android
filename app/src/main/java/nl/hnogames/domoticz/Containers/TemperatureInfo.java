@@ -22,32 +22,36 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TemperatureInfo {
+import java.io.Serializable;
+
+public class TemperatureInfo implements Comparable, Serializable {
 
     private final boolean isProtected;
-    JSONObject jsonObject;
+    private String jsonObject;
 
-    int idx;
-    String Name;
-    String Data;
-    String LastUpdate;
-    double setPoint;
-    String Type;
-    int Favorite;
-    int HardwareID;
-    String HardwareName;
-    String Status;
-    String TypeImg;
-    String Direction;
-    String Description;
-    double Temp;
-    int signalLevel;
+    private int idx;
+    private String Name;
+    private String Data;
+    private String LastUpdate;
+    private double setPoint;
+    private String Type;
+    private int Favorite;
+    private int HardwareID;
+    private String HardwareName;
+    private String Status;
+    private String TypeImg;
+    private String Direction;
+    private String Description;
+    private double Temp;
+    private int signalLevel;
 
     public TemperatureInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
 
         if (row.has("Favorite"))
             Favorite = row.getInt("Favorite");
@@ -202,7 +206,12 @@ public class TemperatureInfo {
         LastUpdate = lastUpdate;
     }
 
-    public JSONObject getJsonObject() {
+    public String getJsonObject() {
         return this.jsonObject;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

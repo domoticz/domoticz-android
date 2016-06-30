@@ -50,6 +50,7 @@
   <string name="add">Adicionar</string>
   <string name="cancel">Cancelar</string>
   <string name="ok">Aceitar</string>
+  <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Ocorreu algo de errado</string>
   <string name="no_network_available">Erro: Nenhuma rede conexão disponível</string>
   <string name="oops">UPSS!</string>

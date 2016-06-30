@@ -7,7 +7,7 @@
   <string name="welcome_info_swipe">A folytatáshoz lapozz jobbra, vagy használd a navigációs gombot a képernyő alján</string>
   <string name="welcome_info_settings1">A következő képernyőn megadhatja a Domoticz beállításait.</string>
   <string name="welcome_info_settings2">
-        Megadhat a helyi és a távoli kiszolgáló beállítását.
+        Megadhatsz helyi és a távoli kiszolgáló beállításokat.
         A helyi beállítások az otthoni wifi hálózatra kapcsolódáskor érvényesek.
         A távoli beállítások esetén az alkalmazás nem csatlakozik az otthoni wifi hálózatra, mobilnetes (2G, 3G, 4G stb.) hozzáférést használ.</string>
   <string name="welcome_info_checkingConnection">A kapcsolat beállításainak ellenőrzése</string>
@@ -41,8 +41,8 @@
   <string name="welcome_local_server_address">Helyi szerver címe</string>
   <string name="welcome_local_server_protocol">Helyi protokoll</string>
   <string name="welcome_local_server_port">Helyi port</string>
-  <string name="welcome_local_server_directory">Helyi mappa (hagyd üresen, ha nem használatos)</string>
-  <string name="welcome_local_server_username">Helyi név (ha nem használja, hagyja üresen)</string>
+  <string name="welcome_local_server_directory">Helyi mappa (hagyd üresen, ha nem használod)</string>
+  <string name="welcome_local_server_username">Helyi felhasználónév (hagyd üresen, ha nem használod)</string>
   <string name="welcome_local_server_password">Helyi jelszó (ha nem használja, hagyja üresen)</string>
   <string-array name="remote_server_protocols">
     <item>HTTP</item>

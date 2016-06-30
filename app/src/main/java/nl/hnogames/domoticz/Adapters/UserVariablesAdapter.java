@@ -62,8 +62,12 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
+        setData(data);
+    }
 
+    public void setData(ArrayList<UserVariableInfo> data) {
         Collections.reverse(data);
+
         this.data = data;
         this.filteredData = data;
     }

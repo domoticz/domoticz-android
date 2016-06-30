@@ -72,15 +72,20 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
+        this.listener = listener;
+        setData(data);
+    }
+
+    public void setData(ArrayList<TemperatureInfo> data) {
         Collections.sort(data, new Comparator<TemperatureInfo>() {
             @Override
             public int compare(TemperatureInfo left, TemperatureInfo right) {
                 return left.getName().compareTo(right.getName());
             }
         });
+
         this.data = data;
         this.filteredData = data;
-        this.listener = listener;
     }
 
     public Filter getFilter() {
