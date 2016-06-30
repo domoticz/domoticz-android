@@ -22,24 +22,28 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CameraInfo {
-    JSONObject jsonObject;
-    int devices;
-    String Name;
-    String Address;
-    String Username;
-    String Password;
-    String Port;
-    boolean Enabled;
-    String ImageURL;
-    String SnapShotURL;
-    int idx;
+import java.io.Serializable;
+
+public class CameraInfo implements Comparable, Serializable {
+    private String jsonObject;
+    private int devices;
+    private String Name;
+    private String Address;
+    private String Username;
+    private String Password;
+    private String Port;
+    private boolean Enabled;
+    private String ImageURL;
+    private String SnapShotURL;
+    private int idx;
 
     public CameraInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
         if (row.has("Name"))
             Name = row.getString("Name");
         if (row.has("Enabled") &&
@@ -118,4 +122,8 @@ public class CameraInfo {
         return devices;
     }
 
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
+    }
 }

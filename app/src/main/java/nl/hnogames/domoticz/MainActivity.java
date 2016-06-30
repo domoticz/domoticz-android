@@ -75,6 +75,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidmads.updatehandler.app.UpdateHandler;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.ConfigInfo;
@@ -111,7 +112,6 @@ import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 
-
 @DebugLog
 public class MainActivity extends AppCompatActivity {
     private final int iQRResultCode = 775;
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean fromVoiceWidget = false;
     private boolean fromQRCodeWidget = false;
-
+    private MenuItem speechMenuItem;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -155,10 +155,11 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
+        UsefulBits.checkAPK(this, mSharedPrefs);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras != null) {
+            if (extras != null) {
                 fromVoiceWidget = extras.getBoolean("VOICE", false);
                 fromQRCodeWidget = extras.getBoolean("QRCODE", false);
             }
@@ -196,10 +197,11 @@ public class MainActivity extends AppCompatActivity {
                 onPhone = true;
 
             appRate();
+
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
 
-            if(!fromVoiceWidget && !fromQRCodeWidget) {
+            if (!fromVoiceWidget && !fromQRCodeWidget) {
                 setupMobileDevice();
                 checkDomoticzServerUpdate();
                 setScheduledTasks();
@@ -225,8 +227,7 @@ public class MainActivity extends AppCompatActivity {
                         openDialogFragment(new Changelog());
                     }
                 }, mServerUtil.getActiveServer().getConfigInfo(this));
-            }
-            else{
+            } else {
                 addFragment();
             }
         } else {
@@ -285,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(new Intent(this, SettingsActivity.class), iSettingsResultCode);
         }
 
-        if(fromQRCodeWidget)
+        if (fromQRCodeWidget)
             this.finish();
     }
 
@@ -345,14 +346,14 @@ public class MainActivity extends AppCompatActivity {
                                                          @DebugLog
                                                          public void onReceiveResult(String result) {
                                                              Log.d(TAG, result);
-                                                             if(fromQRCodeWidget)
+                                                             if (fromQRCodeWidget)
                                                                  MainActivity.this.finish();
                                                          }
 
                                                          @Override
                                                          @DebugLog
                                                          public void onError(Exception error) {
-                                                             if(fromQRCodeWidget)
+                                                             if (fromQRCodeWidget)
                                                                  MainActivity.this.finish();
                                                          }
                                                      });
@@ -361,7 +362,7 @@ public class MainActivity extends AppCompatActivity {
                                                  @Override
                                                  @DebugLog
                                                  public void onError(Exception error) {
-                                                     if(fromQRCodeWidget)
+                                                     if (fromQRCodeWidget)
                                                          MainActivity.this.finish();
                                                  }
                                              });
@@ -372,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
                                  @Override
                                  @DebugLog
                                  public void onError(Exception error) {
-                                     if(fromQRCodeWidget)
+                                     if (fromQRCodeWidget)
                                          MainActivity.this.finish();
                                  }
                              }
@@ -460,22 +461,26 @@ public class MainActivity extends AppCompatActivity {
 
     @DebugLog
     public void changeFragment(String fragment) {
-        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        latestFragment = Fragment.instantiate(MainActivity.this, fragment);
-        tx.replace(R.id.main, latestFragment);
-        tx.commitAllowingStateLoss();
-        addFragmentStack(fragment);
-        saveScreenToAnalytics(fragment);
+        if (!isFinishing()) {
+            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+            latestFragment = Fragment.instantiate(MainActivity.this, fragment);
+            tx.replace(R.id.main, latestFragment);
+            tx.commitAllowingStateLoss();
+            addFragmentStack(fragment);
+            saveScreenToAnalytics(fragment);
+        }
     }
 
     private void addFragment() {
-        int screenIndex = mSharedPrefs.getStartupScreenIndex();
-        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-        tx.replace(R.id.main, latestFragment);
-        tx.commitAllowingStateLoss();
-        addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-        saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+        if (!isFinishing()) {
+            int screenIndex = mSharedPrefs.getStartupScreenIndex();
+            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+            latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+            tx.replace(R.id.main, latestFragment);
+            tx.commitAllowingStateLoss();
+            addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+            saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+        }
     }
 
     private void saveScreenToAnalytics(String screen) {
@@ -517,6 +522,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Show a dialog if meets conditions
             AppRate.showRateDialogIfMeetsConditions(this);
+            new UpdateHandler(this).start();
         }
     }
 
@@ -545,8 +551,16 @@ public class MainActivity extends AppCompatActivity {
                     @DebugLog
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
-                            if (BuildConfig.LITE_VERSION) {
-                                Toast.makeText(MainActivity.this, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                                Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                        .setAction(R.string.upgrade, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                UsefulBits.openPremiumAppStore(MainActivity.this);
+                                            }
+                                        })
+                                        .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.material_blue_600))
+                                        .show();
                                 return false;
                             } else {
                                 PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
@@ -586,6 +600,10 @@ public class MainActivity extends AppCompatActivity {
                                                 }
                                             }
                                         }
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
                                     }
                                 });
                             }
@@ -810,15 +828,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private MenuItem speechMenuItem;
-
     @Override
     @DebugLog
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
-        if(!fromVoiceWidget && !fromQRCodeWidget)
-        {
+        if (!fromVoiceWidget && !fromQRCodeWidget) {
             if ((f instanceof Cameras)) {
                 if (cameraRefreshTimer != null)
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
@@ -880,10 +895,8 @@ public class MainActivity extends AppCompatActivity {
                 } else if (speechMenuItem != null)
                     speechMenuItem.setVisible(false);
             }
-        }
-        else
-        {
-            if(fromVoiceWidget) {
+        } else {
+            if (fromVoiceWidget) {
                 getMenuInflater().inflate(R.menu.menu_speech, menu);
                 if (mSharedPrefs.isSpeechEnabled()) {
                     speechMenuItem = menu.findItem(R.id.action_speech);
@@ -893,9 +906,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (speechMenuItem != null)
                         speechMenuItem.setVisible(false);
                 }
-            }
-            else if(fromQRCodeWidget)
-            {
+            } else if (fromQRCodeWidget) {
                 getMenuInflater().inflate(R.menu.menu_qrcode, menu);
                 if (mSharedPrefs.isQRCodeEnabled()) {
                     MenuItem qrcodeMenuItem = menu.findItem(R.id.action_scan_qrcode);
@@ -1118,11 +1129,12 @@ public class MainActivity extends AppCompatActivity {
             speechRecognizer.stopListening();
             speechRecognizer.cancel();
             speechRecognizer.destroy();
+            speechRecognizer = null;
         }
         stopRecognitionAnimation();
         listeningSpeechRecognition = false;
 
-        if(fromVoiceWidget)
+        if (fromVoiceWidget)
             this.finish();
     }
 
@@ -1214,6 +1226,9 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         setScreenAlwaysOn();
+        if (listeningSpeechRecognition) {
+            startRecognition();
+        }
     }
 
     @Override
@@ -1225,14 +1240,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     @DebugLog
+    public void onPause() {
+        if (listeningSpeechRecognition) {
+            stopRecognition();
+        }
+        super.onPause();
+    }
+
+    @Override
+    @DebugLog
     public void onBackPressed() {
         if (listeningSpeechRecognition) {
             stopRecognition();
 
-            if(fromVoiceWidget)
+            if (fromVoiceWidget)
                 this.finish();
         } else {
-            if(fromQRCodeWidget)
+            if (fromQRCodeWidget)
                 this.finish();
 
             //handle the back press :D close the drawer first and if the drawer is closed close the activity
@@ -1260,20 +1284,22 @@ public class MainActivity extends AppCompatActivity {
      * @param dialogStandardFragment
      */
     private void openDialogFragment(DialogFragment dialogStandardFragment) {
-        if (mSharedPrefs != null) {
-            PackageInfo pInfo = null;
-            try {
-                pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                String version = pInfo.versionName;
-                String preVersion = mSharedPrefs.getPreviousVersionNumber();
-                if (!version.equals(preVersion)) {
-                    if (dialogStandardFragment != null) {
-                        getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+        if (!isFinishing()) {
+            if (mSharedPrefs != null) {
+                PackageInfo pInfo = null;
+                try {
+                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String version = pInfo.versionName;
+                    String preVersion = mSharedPrefs.getPreviousVersionNumber();
+                    if (!version.equals(preVersion)) {
+                        if (dialogStandardFragment != null) {
+                            getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+                        }
+                        mSharedPrefs.setVersionNumber(version);
                     }
-                    mSharedPrefs.setVersionNumber(version);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
                 }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }

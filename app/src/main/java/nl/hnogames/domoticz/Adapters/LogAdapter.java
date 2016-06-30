@@ -62,6 +62,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
         this.context = context;
         this.domoticz = mDomoticz;
         mSharedPrefs = new SharedPrefUtil(context);
+        setData(data);
+    }
+
+    public void setData(ArrayList<LogInfo> data) {
         Collections.reverse(data);
         this.data = data;
         this.filteredData = data;

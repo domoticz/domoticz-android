@@ -22,15 +22,19 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UtilitiesInfo {
+import java.io.Serializable;
+
+public class UtilitiesInfo implements Comparable, Serializable {
 
     private final boolean isProtected;
-    private JSONObject jsonObject;
+    private String jsonObject;
 
     private int idx;
     private String Name;
@@ -50,7 +54,7 @@ public class UtilitiesInfo {
     private int signalLevel;
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
 
         if (row.has("Favorite"))
             Favorite = row.getInt("Favorite");
@@ -213,7 +217,12 @@ public class UtilitiesInfo {
         LastUpdate = lastUpdate;
     }
 
-    public JSONObject getJsonObject() {
+    public String getJsonObject() {
         return this.jsonObject;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

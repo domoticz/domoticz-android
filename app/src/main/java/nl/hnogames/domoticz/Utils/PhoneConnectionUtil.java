@@ -59,6 +59,14 @@ public class PhoneConnectionUtil {
         this.listener = listener;
     }
 
+    public PhoneConnectionUtil(Context mContext) {
+        this.mContext = mContext;
+        wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+    }
+
     public void stopReceiver() {
         try {
             if (receiver != null) {
@@ -95,7 +103,8 @@ public class PhoneConnectionUtil {
                         }
                     }
                 }
-                listener.ReceiveSSIDs(entries);
+                if (listener != null)
+                    listener.ReceiveSSIDs(entries);
             }
         };
         Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
