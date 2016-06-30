@@ -1284,20 +1284,22 @@ public class MainActivity extends AppCompatActivity {
      * @param dialogStandardFragment
      */
     private void openDialogFragment(DialogFragment dialogStandardFragment) {
-        if (mSharedPrefs != null) {
-            PackageInfo pInfo = null;
-            try {
-                pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                String version = pInfo.versionName;
-                String preVersion = mSharedPrefs.getPreviousVersionNumber();
-                if (!version.equals(preVersion)) {
-                    if (dialogStandardFragment != null) {
-                        getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+        if (!isFinishing()) {
+            if (mSharedPrefs != null) {
+                PackageInfo pInfo = null;
+                try {
+                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String version = pInfo.versionName;
+                    String preVersion = mSharedPrefs.getPreviousVersionNumber();
+                    if (!version.equals(preVersion)) {
+                        if (dialogStandardFragment != null) {
+                            getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
+                        }
+                        mSharedPrefs.setVersionNumber(version);
                     }
-                    mSharedPrefs.setVersionNumber(version);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
                 }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }

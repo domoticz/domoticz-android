@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
-    <changelogversion versionName="0.1.269" changeDate="ALPHA">
+    <changelogversion versionName="0.1.270" changeDate="June 30, 2016">
         <changelogtext>[b]PREMIUM[/b] Fixes on Speech Commands</changelogtext>
         <changelogtext>Show cached data when offline</changelogtext>
         <changelogtext>Improved speed on Dashboard (update Domoticz base system via Beta channel)</changelogtext>
