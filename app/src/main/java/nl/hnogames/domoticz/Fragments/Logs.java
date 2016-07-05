@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
@@ -41,6 +43,13 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private LogAdapter adapter;
     private Context mContext;
     private String filter = "";
+    private SlideInBottomAnimationAdapter alphaSlideIn;
+
+
+    @Override
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
 
     @Override
     @DebugLog
@@ -82,27 +91,22 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private void processLogs() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        mDomoticz.getLogs(new LogsReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
-                successHandling(mLogInfos.toString(), false);
-                adapter = new LogAdapter(mContext, mDomoticz, mLogInfos);
-                createListView();
-            }
 
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+        new GetCachedDataTask().execute();
     }
 
-    private void createListView() {
+    private void createListView(ArrayList<LogInfo> mLogInfos) {
         if (getView() != null) {
-            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
+            if (adapter == null) {
+                adapter = new LogAdapter(mContext, mDomoticz, mLogInfos);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            } else {
+                adapter.setData(mLogInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -130,6 +134,41 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
             if (isAdded()) {
                 super.errorHandling(error);
             }
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<LogInfo> cacheLogs = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheLogs = (ArrayList<LogInfo>) SerializableManager.readSerializedObject(mContext, "Logs");
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheLogs != null)
+                createListView(cacheLogs);
+
+            mDomoticz.getLogs(new LogsReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
+                    successHandling(mLogInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
+                    createListView(mLogInfos);
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         }
     }
 }

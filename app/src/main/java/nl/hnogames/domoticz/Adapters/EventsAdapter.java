@@ -66,7 +66,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
         this.domoticz = mDomoticz;
         this.listener = listener;
         mSharedPrefs = new SharedPrefUtil(context);
+        setData(data);
+    }
+
+    public void setData(ArrayList<EventInfo> data) {
         Collections.reverse(data);
+
         this.data = data;
         this.filteredData = data;
     }

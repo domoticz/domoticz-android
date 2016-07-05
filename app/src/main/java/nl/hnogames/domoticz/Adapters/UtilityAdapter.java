@@ -62,7 +62,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
 
-
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
                           ArrayList<UtilitiesInfo> data,
@@ -73,6 +72,11 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
 
+        setData(data);
+        this.listener = listener;
+    }
+
+    public void setData(ArrayList<UtilitiesInfo> data) {
         Collections.sort(data, new Comparator<UtilitiesInfo>() {
             @Override
             public int compare(UtilitiesInfo left, UtilitiesInfo right) {
@@ -81,7 +85,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         });
         this.data = data;
         this.filteredData = data;
-        this.listener = listener;
     }
 
     public Filter getFilter() {

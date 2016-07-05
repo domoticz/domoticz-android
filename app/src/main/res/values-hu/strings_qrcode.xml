@@ -5,8 +5,8 @@
   <string name="qrcode_register">ÚJ QR kód rögzítése </string>
   <string name="qrcode_found">ÚJ QR kód észlelve</string>
   <string name="qrcode_edit">QR kód szerkesztése</string>
-  <string name="qrcode_name">Nevezze el a QR kódot. </string>
-  <string name="qrcode_desc">Scan a QR Code. </string>
+  <string name="qrcode_name">Nevezd el a QR kódot. </string>
+  <string name="qrcode_desc">Olvass be egy QR kódot. </string>
   <string name="qrcode_exists">Ez a QR kód már rögzítve lett. </string>
   <string name="qrcode_saved">ÚJ QR kód elmentve. </string>
   <string name="qrcode">QR kód</string>

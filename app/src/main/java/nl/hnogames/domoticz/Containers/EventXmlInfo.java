@@ -22,19 +22,22 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EventXmlInfo {
-    JSONObject jsonObject;
+import java.io.Serializable;
 
-    int id;
-    String Name;
-    String Status;
-    String Xmlstatement;
+public class EventXmlInfo implements Comparable, Serializable {
+    private String jsonObject;
+    private int id;
+    private String Name;
+    private String Status;
+    private String Xmlstatement;
 
     public EventXmlInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
         if (row.has("name"))
             Name = row.getString("name");
         if (row.has("eventstatus"))
@@ -74,5 +77,10 @@ public class EventXmlInfo {
                 ", Name='" + Name + "', " +
                 "Status='" + Status +
                 "'}";
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

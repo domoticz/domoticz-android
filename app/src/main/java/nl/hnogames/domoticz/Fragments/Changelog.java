@@ -49,4 +49,9 @@ public class Changelog extends DialogFragment implements DomoticzFragmentListene
     public void onConnectionOk() {
 
     }
+
+
+    @Override
+    public void onConnectionFailed() {
+    }
 }

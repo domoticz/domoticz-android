@@ -50,6 +50,7 @@
   <string name="add">Lisää</string>
   <string name="cancel">Peruuta</string>
   <string name="ok">OK</string>
+  <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Jokin meni pieleen</string>
   <string name="no_network_available">Virhe: Ei verkkoyhteyttä saatavilla</string>
   <string name="oops">OHO!</string>

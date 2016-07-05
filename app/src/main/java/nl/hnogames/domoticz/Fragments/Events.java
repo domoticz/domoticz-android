@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 
@@ -36,6 +37,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventReceiver;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
@@ -44,6 +46,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private EventsAdapter adapter;
     private Context mContext;
     private String filter = "";
+    private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
     @DebugLog
@@ -51,6 +54,12 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         processUserVariables();
+    }
+
+
+    @Override
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
     }
 
     @Override
@@ -85,12 +94,12 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private void processUserVariables() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        mDomoticz.getEvents(new EventReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
-                successHandling(mEventInfos.toString(), false);
+        new GetCachedDataTask().execute();
+    }
 
+    private void createListView(ArrayList<EventInfo> mEventInfos) {
+        if (getView() != null) {
+            if (adapter == null) {
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
                     @DebugLog
@@ -98,23 +107,13 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                         UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT);
                     }
                 });
-
-                createListView();
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            } else {
+                adapter.setData(mEventInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
             }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
-
-    }
-
-    private void createListView() {
-        if (getView() != null) {
-            SlideInBottomAnimationAdapter alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -136,6 +135,41 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             if (isAdded()) {
                 super.errorHandling(error);
             }
+        }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<EventInfo> cacheEventInfos = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheEventInfos = (ArrayList<EventInfo>) SerializableManager.readSerializedObject(mContext, "Events");
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheEventInfos != null)
+                createListView(cacheEventInfos);
+
+            mDomoticz.getEvents(new EventReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
+                    successHandling(mEventInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mEventInfos, "Events");
+                    createListView(mEventInfos);
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         }
     }
 }

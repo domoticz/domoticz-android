@@ -22,12 +22,16 @@
 
 package nl.hnogames.domoticz.Containers;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WeatherInfo {
+import java.io.Serializable;
+
+public class WeatherInfo implements Comparable, Serializable {
     private final boolean isProtected;
-    private JSONObject jsonObject;
+    private String jsonObject;
     private int idx;
 
     private String Name;
@@ -53,7 +57,7 @@ public class WeatherInfo {
 
 
     public WeatherInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
 
         isProtected = row.getBoolean("Protected");
         idx = row.getInt("idx");
@@ -247,7 +251,12 @@ public class WeatherInfo {
         LastUpdate = lastUpdate;
     }
 
-    public JSONObject getJsonObject() {
+    public String getJsonObject() {
         return this.jsonObject;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        return this.getName().compareTo(((DevicesInfo) another).getName());
     }
 }

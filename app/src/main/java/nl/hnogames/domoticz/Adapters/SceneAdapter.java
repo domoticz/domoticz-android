@@ -74,17 +74,20 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
+        setData(data);
+
+        this.listener = listener;
+    }
+
+    public void setData(ArrayList<SceneInfo> data) {
         Collections.sort(data, new Comparator<SceneInfo>() {
             @Override
             public int compare(SceneInfo left, SceneInfo right) {
                 return left.getName().compareTo(right.getName());
             }
         });
-
-        this.filteredData = data;
         this.data = data;
-
-        this.listener = listener;
+        this.filteredData = data;
     }
 
     public Filter getFilter() {

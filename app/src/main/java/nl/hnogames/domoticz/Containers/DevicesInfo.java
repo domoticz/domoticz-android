@@ -29,6 +29,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -36,14 +37,14 @@ import java.util.regex.Pattern;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class DevicesInfo implements Comparable {
+public class DevicesInfo implements Comparable, Serializable {
 
     @SuppressWarnings("unused")
     private final String TAG = DevicesInfo.class.getSimpleName();
 
     @SuppressWarnings("FieldCanBeLocal")
     private final String UNKNOWN = "Unknown";
-    private JSONObject jsonObject;
+    private String jsonObject;
     private boolean timers;
     private int idx;
     private String Name;
@@ -91,7 +92,7 @@ public class DevicesInfo implements Comparable {
     private boolean isLevelOffHidden;
 
     public DevicesInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
         try {
             if (row.has("LevelInt"))
                 level = row.getInt("LevelInt");
@@ -438,7 +439,7 @@ public class DevicesInfo implements Comparable {
         return null;
     }
 
-    public JSONObject getJsonObject() {
+    public String getJsonObject() {
         return this.jsonObject;
     }
 

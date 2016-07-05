@@ -50,6 +50,7 @@
   <string name="add">Lägg till</string>
   <string name="cancel">Avbryt</string>
   <string name="ok">Ok</string>
+  <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Något gick fel</string>
   <string name="no_network_available">Fel: Ingen nätversanslutning tillgänglig</string>
   <string name="oops">HOPPSAN!</string>

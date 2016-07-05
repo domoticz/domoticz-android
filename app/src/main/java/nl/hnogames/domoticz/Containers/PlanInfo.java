@@ -25,17 +25,18 @@ package nl.hnogames.domoticz.Containers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PlanInfo {
+import java.io.Serializable;
 
-    JSONObject jsonObject;
+public class PlanInfo implements Serializable {
 
-    int devices;
-    String name;
-    int order;
-    int idx;
+    private String jsonObject;
+    private int devices;
+    private String name;
+    private int order;
+    private int idx;
 
     public PlanInfo(JSONObject row) throws JSONException {
-        this.jsonObject = row;
+        this.jsonObject = row.toString();
 
         devices = row.getInt("Devices");
         name = row.getString("Name");
@@ -69,4 +70,5 @@ public class PlanInfo {
     public int getOrder() {
         return order;
     }
+
 }

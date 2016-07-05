@@ -1,42 +1,73 @@
 {
   "project_info": {
-    "project_number": "32246034900",
-    "firebase_url": "https://domoticz-premium.firebaseio.com",
-    "project_id": "domoticz-premium",
-    "storage_bucket": "domoticz-premium.appspot.com"
+    "project_id": "domoticz-1191",
+    "project_number": "705545900899",
+    "name": "Domoticz"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:32246034900:android:a4327c5a10906b46",
+        "mobilesdk_app_id": "1:705545900899:android:b74c4323e1f98430",
+        "client_id": "android:nl.hnogames.domoticz",
+        "client_type": 1,
         "android_client_info": {
-          "package_name": "nl.hnogames.domoticz.premium"
+          "package_name": "nl.hnogames.domoticz"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "32246034900-jm4pirnc2mffql4vvh39qgvtk12bb7l2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDwCXyMybKAt_3iVNVVDtuVdOzYxxLIZlM"
-        }
-      ],
+      "oauth_client": [],
+      "api_key": [],
       "services": {
         "analytics_service": {
           "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
         },
+        "google_signin_service": {
+          "status": 1
+        },
         "ads_service": {
-          "status": 2
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705545900899:android:a4327c5a10906b46",
+        "client_id": "android:nl.hnogames.domoticz.premium",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "nl.hnogames.domoticz.premium"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
         }
       }
     }
   ],
-  "configuration_version": "1"
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
 }

@@ -61,7 +61,6 @@ public class RequestUtil {
                                               final SessionUtil sessionUtil,
                                               final boolean usePreviousSession,
                                               final int retryCounter) {
-
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
                         url, null, new Response.Listener<JSONObject>() {
@@ -70,6 +69,7 @@ public class RequestUtil {
                     public void onResponse(JSONObject response) {
 
                         String jsonString;
+
                         try {
                             jsonString = response.getString(Domoticz.Json.Field.VERSION);
                             if (parser != null)
