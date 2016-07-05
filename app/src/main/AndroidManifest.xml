@@ -35,6 +35,22 @@
         android:name="android.hardware.nfc"
         android:required="false" />
 
+    <uses-feature
+        android:name="android.hardware.Camera"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="true" />
+
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
