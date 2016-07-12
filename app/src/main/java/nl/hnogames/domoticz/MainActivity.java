@@ -462,24 +462,30 @@ public class MainActivity extends AppCompatActivity {
     @DebugLog
     public void changeFragment(String fragment) {
         if (!isFinishing()) {
-            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-            latestFragment = Fragment.instantiate(MainActivity.this, fragment);
-            tx.replace(R.id.main, latestFragment);
-            tx.commitAllowingStateLoss();
-            addFragmentStack(fragment);
-            saveScreenToAnalytics(fragment);
+            try {
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                latestFragment = Fragment.instantiate(MainActivity.this, fragment);
+                tx.replace(R.id.main, latestFragment);
+                tx.commitAllowingStateLoss();
+                addFragmentStack(fragment);
+                saveScreenToAnalytics(fragment);
+            } catch (Exception e) {
+            }
         }
     }
 
     private void addFragment() {
         if (!isFinishing()) {
-            int screenIndex = mSharedPrefs.getStartupScreenIndex();
-            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-            latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-            tx.replace(R.id.main, latestFragment);
-            tx.commitAllowingStateLoss();
-            addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-            saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+            try {
+                int screenIndex = mSharedPrefs.getStartupScreenIndex();
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+                tx.replace(R.id.main, latestFragment);
+                tx.commitAllowingStateLoss();
+                addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+                saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+            } catch (Exception e) {
+            }
         }
     }
 
