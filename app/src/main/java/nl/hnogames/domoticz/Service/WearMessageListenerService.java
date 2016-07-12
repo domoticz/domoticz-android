@@ -63,22 +63,24 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     public static void sendMessage(final String path, final String text) {
         Log.d("WEAR Message", "Send: " + text);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
-                for (Node node : nodes.getNodes()) {
-                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                            mApiClient, node.getId(), path, text.getBytes()).await();
+        if (mApiClient != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
+                    for (Node node : nodes.getNodes()) {
+                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                                mApiClient, node.getId(), path, text.getBytes()).await();
 
-                    if (result.getStatus().isSuccess()) {
-                        Log.v("WEAR", "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
-                    } else {
-                        Log.v("WEAR", "ERROR: failed to send Message");
+                        if (result.getStatus().isSuccess()) {
+                            Log.v("WEAR", "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
+                        } else {
+                            Log.v("WEAR", "ERROR: failed to send Message");
+                        }
                     }
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     @Override

@@ -124,6 +124,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     private void createListView()
     {
+        if(getView() == null)
+            return;
+
         Collections.sort(this.mPlans, new Comparator<PlanInfo>() {
             @Override
             public int compare(PlanInfo left, PlanInfo right) {

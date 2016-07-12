@@ -152,6 +152,9 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
     private void createListView(ArrayList<CameraInfo> Cameras)
     {
+        if(getView() == null)
+            return;
+
         if(mRecyclerView == null) {
             mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
