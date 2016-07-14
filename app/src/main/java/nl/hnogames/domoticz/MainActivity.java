@@ -101,6 +101,7 @@ import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.TalkBackUtil;
@@ -279,9 +280,11 @@ public class MainActivity extends AppCompatActivity {
                             setTheme(R.style.AppThemeDarkMain);
                         buildScreen();
                     }
+                    SerializableManager.cleanAllSerializableObjects(this);
                     break;
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
+                    SerializableManager.cleanAllSerializableObjects(this);
                     if (mSharedPrefs.darkThemeEnabled())
                         setTheme(R.style.AppThemeDarkMain);
                     this.recreate();
@@ -313,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (resultCode == 789) {
             //reload settings
             startActivityForResult(new Intent(this, SettingsActivity.class), iSettingsResultCode);
+            SerializableManager.cleanAllSerializableObjects(this);
         }
 
         if (fromQRCodeWidget)

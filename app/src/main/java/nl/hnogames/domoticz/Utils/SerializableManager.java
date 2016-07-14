@@ -33,6 +33,20 @@ import java.io.ObjectOutputStream;
 
 public class SerializableManager {
 
+    public static void cleanAllSerializableObjects(Context context){
+        removeSerializable(context, "Dashboard");
+        removeSerializable(context, "Switches");
+        removeSerializable(context, "Weathers");
+        removeSerializable(context, "Plans");
+        removeSerializable(context, "Cameras");
+        removeSerializable(context, "Temperatures");
+        removeSerializable(context, "Scenes");
+        removeSerializable(context, "Events");
+        removeSerializable(context, "UserVariables");
+        removeSerializable(context, "Logs");
+        removeSerializable(context, "Utilities");
+    }
+
     /**
      * Saves a serializable object.
      *
@@ -100,7 +114,8 @@ public class SerializableManager {
      * @param filename The name of the file.
      */
     public static void removeSerializable(Context context, String filename) {
-        context.deleteFile(filename);
+        try {
+            context.deleteFile(filename);
+        }catch(Exception ex){}
     }
-
 }
