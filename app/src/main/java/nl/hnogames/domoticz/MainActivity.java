@@ -103,6 +103,7 @@ import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.TalkBackUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
@@ -114,6 +115,7 @@ import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 
 @DebugLog
 public class MainActivity extends AppCompatActivity {
+    private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
@@ -127,15 +129,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
     private Timer cameraRefreshTimer = null;
-
     private Fragment latestFragment = null;
     private Drawer drawer;
-
     private SpeechRecognizer speechRecognizer;
     private RecognitionProgressView recognitionProgressView;
     private RecognitionListenerAdapter recognitionListener;
     private boolean listeningSpeechRecognition = false;
-
     private boolean fromVoiceWidget = false;
     private boolean fromQRCodeWidget = false;
     private MenuItem speechMenuItem;
@@ -187,6 +186,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void initTalkBack() {
+        if (mSharedPrefs.isTalkBackEnabled()) {
+            oTalkBackUtil = new TalkBackUtil();
+            if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
+                oTalkBackUtil.Init(this, new Locale(mSharedPrefs.getDisplayLanguage()), new TalkBackUtil.InitListener() {
+                    @Override
+                    public void onInit(int status) {
+                    }
+                });
+            } else {
+                oTalkBackUtil.Init(this, new TalkBackUtil.InitListener() {
+                    @Override
+                    public void onInit(int status) {
+                    }
+                });
+            }
+        }
+    }
+
+    public void Talk(String message) {
+        if (mSharedPrefs.isTalkBackEnabled() && oTalkBackUtil != null)
+            oTalkBackUtil.Talk(message);
+    }
+
+    public void Talk(int message) {
+        Talk(this.getString(message));
+    }
+
+
     @DebugLog
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
@@ -197,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 onPhone = true;
 
             appRate();
+            initTalkBack();
 
             mServerUtil = new ServerUtil(this);
             domoticz = new Domoticz(this, mServerUtil);
@@ -576,7 +605,8 @@ public class MainActivity extends AppCompatActivity {
                                     @DebugLog
                                     public void onDismiss(String password) {
                                         if (UsefulBits.isEmpty(password)) {
-                                            UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            Talk(R.string.security_wrong_code);
                                             drawNavigationMenu(finalConfig);
                                         } else {
                                             for (UserInfo user : finalConfig.getUsers()) {
@@ -590,7 +620,7 @@ public class MainActivity extends AppCompatActivity {
                                                             @Override
                                                             @DebugLog
                                                             public void onReceiveConfig(ConfigInfo settings) {
-                                                                UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
+                                                                UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
                                                                 drawNavigationMenu(finalConfig);
                                                             }
 
@@ -600,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
                                                             }
                                                         }, finalConfig);
                                                     } else {
-                                                        UsefulBits.showSimpleSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                         drawNavigationMenu(finalConfig);
                                                     }
                                                 }
@@ -753,7 +783,7 @@ public class MainActivity extends AppCompatActivity {
                                 getCurrentServerVersion();
                             } else {
                                 // No remote/auto updating available for other systems (like Windows, Synology)
-                                showSimpleSnackbar(getString(R.string.server_update_available));
+                                showSnackbar(getString(R.string.server_update_available));
                             }
                             mSharedPrefs.setLastUpdateShown(serverUpdateInfo.getUpdateRevisionNumber());
                         }
@@ -766,7 +796,7 @@ public class MainActivity extends AppCompatActivity {
                     String message = String.format(
                             getString(R.string.error_couldNotCheckForUpdates),
                             domoticz.getErrorMessage(error));
-                    showSimpleSnackbar(message);
+                    showSnackbar(message);
 
                     if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
                         mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
@@ -816,7 +846,7 @@ public class MainActivity extends AppCompatActivity {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
                         domoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                showSnackbar(message);
             }
         });
     }
@@ -824,7 +854,7 @@ public class MainActivity extends AppCompatActivity {
     private void showSnackBarToUpdateServer(String message) {
         CoordinatorLayout layout = getFragmentCoordinatorLayout();
         if (layout != null) {
-            UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
+            UsefulBits.showSnackbarWithAction(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
                 @Override
                 @DebugLog
                 public void onClick(View v) {
@@ -1171,7 +1201,7 @@ public class MainActivity extends AppCompatActivity {
                             if (s.getServerName().equals(text)) {
                                 String message = String.format(
                                         getString(R.string.switch_to_server), s.getServerName());
-                                showSimpleSnackbar(message);
+                                showSnackbar(message);
                                 setNew = s;
                             }
                         }
@@ -1194,10 +1224,10 @@ public class MainActivity extends AppCompatActivity {
         UsefulBits.setScheduledTasks(this);
     }
 
-    private void showSimpleSnackbar(String message) {
+    private void showSnackbar(String message) {
         CoordinatorLayout layout = getFragmentCoordinatorLayout();
         if (layout != null)
-            UsefulBits.showSimpleSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
         else
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
@@ -1240,8 +1270,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     @DebugLog
     public void onDestroy() {
-        super.onDestroy();
+        if (oTalkBackUtil != null) {
+            oTalkBackUtil.Stop();
+            oTalkBackUtil = null;
+        }
+
         stopCameraTimer();
+        super.onDestroy();
     }
 
     @Override
@@ -1249,6 +1284,10 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         if (listeningSpeechRecognition) {
             stopRecognition();
+        }
+        if (oTalkBackUtil != null) {
+            oTalkBackUtil.Stop();
+            oTalkBackUtil = null;
         }
         super.onPause();
     }

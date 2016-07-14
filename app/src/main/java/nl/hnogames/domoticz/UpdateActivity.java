@@ -177,7 +177,7 @@ public class UpdateActivity extends AppCompatActivity {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForConfig),
                         mDomoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                showSnackbar(message);
             }
         });
     }
@@ -290,7 +290,7 @@ public class UpdateActivity extends AppCompatActivity {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                showSnackbar(message);
                 serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setUpdateRevisionNumber("");
                 updateServerVersionValue.setText(R.string.not_available);
 
@@ -324,7 +324,7 @@ public class UpdateActivity extends AppCompatActivity {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
-                showSimpleSnackbar(message);
+                showSnackbar(message);
 
                 if (serverUtil != null &&
                         serverUtil.getActiveServer() != null &&
@@ -336,11 +336,11 @@ public class UpdateActivity extends AppCompatActivity {
         });
     }
 
-    private void showSimpleSnackbar(String message) {
+    private void showSnackbar(String message) {
         CoordinatorLayout fragmentCoordinatorLayout =
                 (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (fragmentCoordinatorLayout != null) {
-            UsefulBits.showSimpleSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
         }
     }
 

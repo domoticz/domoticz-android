@@ -90,7 +90,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    UsefulBits.showSimpleSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_disable_default_server, Snackbar.LENGTH_SHORT);
+                    UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_disable_default_server, Snackbar.LENGTH_SHORT);
                     server.setEnabled(!checked);
                     createListView();                           //reset values
                 } else {
@@ -103,7 +103,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             @Override
             public void onRemoveClick(ServerInfo server) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    UsefulBits.showSimpleSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
+                    UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
                 } else
                     showRemoveUndoSnackbar(server);
             }
@@ -139,7 +139,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         String text = String.format(getString(R.string.something_deleted),
                 getString(R.string.server));
 
-        UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+        UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);

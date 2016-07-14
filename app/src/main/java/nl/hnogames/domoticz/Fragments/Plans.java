@@ -40,14 +40,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
 import nl.hnogames.domoticz.Containers.PlanInfo;
-import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.PlansReceiver;
-import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -122,9 +120,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         processPlans();
     }
 
-    private void createListView()
-    {
-        if(getView() == null)
+    private void createListView() {
+        if (getView() == null)
             return;
 
         Collections.sort(this.mPlans, new Comparator<PlanInfo>() {
@@ -134,14 +131,14 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             }
         });
 
-        if(mRecyclerView == null) {
+        if (mRecyclerView == null) {
             mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
         }
 
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             mAdapter = new PlansAdapter(this.mPlans, mContext);
             mAdapter.setOnItemClickListener(new PlansAdapter.onClickListener() {
                 @Override
@@ -151,17 +148,17 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                         intent.putExtra("PLANNAME", mPlans.get(position).getName());
                         intent.putExtra("PLANID", mPlans.get(position).getIdx());
                         startActivity(intent);
-                    }
-                    else{
-                        if (coordinatorLayout != null)
-                            UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                    } else {
+                        if (coordinatorLayout != null) {
+                            UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                            ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                        }
                     }
                 }
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
-        }
-        else{
+        } else {
             mAdapter.setData(this.mPlans);
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();

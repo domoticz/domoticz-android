@@ -49,11 +49,9 @@ import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
 import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.PlansReceiver;
-import nl.hnogames.domoticz.PlanActivity;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -150,12 +148,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getCameras();
     }
 
-    private void createListView(ArrayList<CameraInfo> Cameras)
-    {
-        if(getView() == null)
+    private void createListView(ArrayList<CameraInfo> Cameras) {
+        if (getView() == null)
             return;
 
-        if(mRecyclerView == null) {
+        if (mRecyclerView == null) {
             mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
@@ -163,7 +160,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mRecyclerView.setLayoutManager(mLayoutManager);
         }
 
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
             mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                 @Override
@@ -186,15 +183,16 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                             errorHandling(ex, coordinatorLayout);
                         }
                     } else {
-                        if (coordinatorLayout != null)
-                            UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                        if (coordinatorLayout != null) {
+                            UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                            ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                        }
                     }
                 }
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
-        }
-        else{
+        } else {
             mAdapter.setData(Cameras);
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
