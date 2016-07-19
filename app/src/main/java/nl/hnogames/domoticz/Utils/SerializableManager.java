@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Copyright (C) 2015 Domoticz
- * <p>
+ * <p/>
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -20,9 +20,9 @@ import java.io.ObjectOutputStream;
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -32,6 +32,20 @@ import java.io.ObjectOutputStream;
  */
 
 public class SerializableManager {
+
+    public static void cleanAllSerializableObjects(Context context){
+        removeSerializable(context, "Dashboard");
+        removeSerializable(context, "Switches");
+        removeSerializable(context, "Weathers");
+        removeSerializable(context, "Plans");
+        removeSerializable(context, "Cameras");
+        removeSerializable(context, "Temperatures");
+        removeSerializable(context, "Scenes");
+        removeSerializable(context, "Events");
+        removeSerializable(context, "UserVariables");
+        removeSerializable(context, "Logs");
+        removeSerializable(context, "Utilities");
+    }
 
     /**
      * Saves a serializable object.
@@ -100,7 +114,8 @@ public class SerializableManager {
      * @param filename The name of the file.
      */
     public static void removeSerializable(Context context, String filename) {
-        context.deleteFile(filename);
+        try {
+            context.deleteFile(filename);
+        }catch(Exception ex){}
     }
-
 }

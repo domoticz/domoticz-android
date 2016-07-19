@@ -39,7 +39,7 @@ import java.util.Comparator;
 import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.Utils.WearUsefulBits;
 
 public class ListAdapter extends WearableListView.Adapter {
     private final Context mContext;
@@ -88,20 +88,20 @@ public class ListAdapter extends WearableListView.Adapter {
         view.setText(mDeviceInfo.getName());
         status.setText(mDeviceInfo.getData());
 
-        if (!UsefulBits.isEmpty(mDeviceInfo.getUsage()))
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getUsage()))
             status.setText(mContext.getString(R.string.usage) + ": " + mDeviceInfo.getUsage());
-        if (!UsefulBits.isEmpty(mDeviceInfo.getCounterToday()))
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getCounterToday()))
             status.append(" " + mContext.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
-        if (!UsefulBits.isEmpty(mDeviceInfo.getCounter()) &&
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getCounter()) &&
                 !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
             status.append(" " + mContext.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
 
         if (mDeviceInfo.getType().equals("Wind")) {
             status.setText(mContext.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr());
         }
-        if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
             status.setText(mDeviceInfo.getForecastStr());
-        if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getSpeed()))
             status.append(", " + mContext.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed());
         if (mDeviceInfo.getDewPoint() > 0)
             status.append(", " + mContext.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint());
@@ -109,9 +109,9 @@ public class ListAdapter extends WearableListView.Adapter {
             status.append(", " + mContext.getString(R.string.temp) + ": " + mDeviceInfo.getTemp());
         if (mDeviceInfo.getBarometer() > 0)
             status.append(", " + mContext.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
-        if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getChill()))
             status.append(", " + mContext.getString(R.string.chill) + ": " + mDeviceInfo.getChill());
-        if (!UsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
+        if (!WearUsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
             status.append(", " + mContext.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
 
         String imageType = mDataset.get(position).getTypeImg();

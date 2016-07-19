@@ -105,6 +105,8 @@ public class SharedPrefUtil {
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private static final String PREF_LAST_VERSION = "lastappversion";
     private static final String PREF_APK_VALIDATED = "apkvalidated";
+    private static final String PREF_TALK_BACK = "talkBack";
+
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -547,6 +549,9 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
     }
 
+    public boolean isTalkBackEnabled() {
+        return prefs.getBoolean(PREF_TALK_BACK, false);
+    }
 
     public boolean isAPKValidated() {
         return prefs.getBoolean(PREF_APK_VALIDATED, true);

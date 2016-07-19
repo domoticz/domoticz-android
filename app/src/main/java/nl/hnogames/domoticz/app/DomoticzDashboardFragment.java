@@ -315,8 +315,10 @@ public class DomoticzDashboardFragment extends Fragment {
             } else
                 setErrorMessage(errorMessage);
         } else {
-            if (coordinatorLayout != null)
-                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+            if (coordinatorLayout != null) {
+                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+            }
         }
     }
 

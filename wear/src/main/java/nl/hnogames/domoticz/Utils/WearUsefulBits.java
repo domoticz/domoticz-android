@@ -22,7 +22,7 @@
 
 package nl.hnogames.domoticz.Utils;
 
-public class UsefulBits {
+public class WearUsefulBits {
 
     public static boolean isEmpty(String string) {
         //noinspection SimplifiableIfStatement

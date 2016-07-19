@@ -206,6 +206,7 @@ public class UsefulBits {
         res.updateConfiguration(conf, dm);
     }
 
+
     /**
      * Get's the display language of the phone
      *
@@ -502,16 +503,16 @@ public class UsefulBits {
     }
 
     @DebugLog
-    public static void showSimpleSnackbar(Context context, CoordinatorLayout coordinatorLayout, int message_resource_id, int length) {
+    public static void showSnackbar(final Context context, CoordinatorLayout coordinatorLayout, final int message_resource_id, int length) {
         try {
             if (context != null && coordinatorLayout != null)
-                showSimpleSnackbar(context, coordinatorLayout, context.getString(message_resource_id), length);
+                showSnackbar(context, coordinatorLayout, context.getString(message_resource_id), length);
         } catch (Exception ex) {
         }
     }
 
     @DebugLog
-    public static void showSimpleSnackbar(Context context, CoordinatorLayout coordinatorLayout, String message, int length) {
+    public static void showSnackbar(Context context, CoordinatorLayout coordinatorLayout, final String message, int length) {
         try {
             if (context != null && coordinatorLayout != null && !UsefulBits.isEmpty(message))
                 Snackbar.make(coordinatorLayout, message, length).show();
@@ -520,9 +521,9 @@ public class UsefulBits {
     }
 
     @DebugLog
-    public static void showSnackbar(Context context, CoordinatorLayout coordinatorLayout, String message, int length,
-                                    Snackbar.Callback callback,
-                                    View.OnClickListener onclickListener, String actiontext) {
+    public static void showSnackbarWithAction(Context context, CoordinatorLayout coordinatorLayout, final String message, int length,
+                                              Snackbar.Callback callback,
+                                              View.OnClickListener onclickListener, String actiontext) {
         try {
             if (context != null &&
                     coordinatorLayout != null &&

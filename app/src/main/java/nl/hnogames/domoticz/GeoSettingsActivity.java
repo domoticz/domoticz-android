@@ -109,7 +109,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                 // The user picked a place.
                 Place place = PlacePicker.getPlace(this, data);
                 String text = String.format(getString(R.string.geofence_place), place.getName());
-                UsefulBits.showSimpleSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT);
+                UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT);
             }
         }
     }
@@ -275,7 +275,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         String text = String.format(getString(R.string.something_deleted),
                 getString(R.string.geofence));
 
-        UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+        UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
@@ -318,7 +318,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             @Override
             public void onError(Exception error) {
-                UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, GeoSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
+                UsefulBits.showSnackbarWithAction(GeoSettingsActivity.this, coordinatorLayout, GeoSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -613,7 +613,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (mSharedPrefs.isGeofenceEnabled()) {
             mSharedPrefs.enableGeoFenceService();
             if (domoticz.isDebugEnabled())
-                UsefulBits.showSimpleSnackbar(this, coordinatorLayout, R.string.starting_geofence_service, Snackbar.LENGTH_SHORT);
+                UsefulBits.showSnackbar(this, coordinatorLayout, R.string.starting_geofence_service, Snackbar.LENGTH_SHORT);
             isGeofenceServiceStarted = true;
         }
     }
