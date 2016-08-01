@@ -175,10 +175,12 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         addDebugText("Set idx " + mUtilitiesInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite) {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_added);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         } else {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
         }
 
@@ -379,7 +381,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             @Override
             @DebugLog
             public void onError(Exception error) {
-                ((MainActivity) getActivity()).Talk(R.string.error_logs);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_logs);
                 UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
             }
         });
