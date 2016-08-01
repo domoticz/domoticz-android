@@ -467,6 +467,8 @@ public class UsefulBits {
                 showSimpleToast(context, String.format(
                         context.getString(R.string.error_couldNotCheckForConfig),
                         domoticz.getErrorMessage(error)), Toast.LENGTH_SHORT);
+
+                receiver.onError(error);
             }
         });
     }
