@@ -12,6 +12,7 @@
     <string name="category_geofencing">Geofencing</string>
     <string name="category_info">Information</string>
     <string name="category_language">Language</string>
+    <string name="category_talk_back">Talk Back</string>
     <string name="category_notification">Notifications</string>
     <string name="category_debug">Debugging</string>
     <string name="category_export">Export/Import Settings</string>
@@ -56,6 +57,10 @@
     <string name="config_theme">Set Theme</string>
     <string name="set_dark_theme">Switch app theme to Dark</string>
     <string name="set_light_theme">Switch app theme to Light</string>
+
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Let Domoticz talk back to you</string>
+    <string name="set_talk_back_off">Turn talk back off</string>
 
     <!--        Import/Export settings  -->
     <string name="settings_imported">Settings imported, please restart Domoticz</string>

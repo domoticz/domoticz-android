@@ -56,13 +56,13 @@ public class DomoticzCardFragment extends Fragment {
 
     public Domoticz mDomoticz;
     public CoordinatorLayout coordinatorLayout;
+    public PhoneConnectionUtil mPhoneConnectionUtil;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private SharedPrefUtil mSharedPrefs;
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
-    public PhoneConnectionUtil mPhoneConnectionUtil;
 
     public DomoticzCardFragment() {
     }
@@ -187,8 +187,10 @@ public class DomoticzCardFragment extends Fragment {
             } else
                 setErrorMessage(errorMessage);
         } else {
-            if (coordinatorLayout != null)
-                UsefulBits.showSimpleSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+            if (coordinatorLayout != null) {
+                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+            }
         }
     }
 

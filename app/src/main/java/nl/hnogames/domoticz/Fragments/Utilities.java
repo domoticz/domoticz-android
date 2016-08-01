@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
@@ -173,10 +174,13 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mUtilitiesInfo.getIdx() + " favorite to " + isFavorite);
 
-        if (isFavorite)
-            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
-        else
-            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
+        if (isFavorite) {
+            ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
+        } else {
+            ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mUtilitiesInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
+        }
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
@@ -375,7 +379,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             @Override
             @DebugLog
             public void onError(Exception error) {
-                UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
+                ((MainActivity) getActivity()).Talk(R.string.error_logs);
+                UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
             }
         });
     }

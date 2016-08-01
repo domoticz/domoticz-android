@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
+    <changelogversion versionName="0.1.271" changeDate="ALPHA">
+        <changelogtext>[b]PREMIUM[/b] Added Talk Back option</changelogtext>
+        <changelogtext>Various crash fixes</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="0.1.270" changeDate="June 30, 2016">
         <changelogtext>[b]PREMIUM[/b] Fixes on Speech Commands</changelogtext>
         <changelogtext>Show cached data when offline</changelogtext>

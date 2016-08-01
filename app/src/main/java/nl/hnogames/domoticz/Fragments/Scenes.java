@@ -46,6 +46,7 @@ import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SceneInfoDialog;
@@ -139,7 +140,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                     supportedScenes.add(s);
                 } else {
                     if (mContext != null) {
-                        UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
+                        ((MainActivity) getActivity()).Talk(R.string.filter_on);
                         if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
                             supportedScenes.add(s);
                         if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
@@ -211,10 +213,13 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSceneInfo.getIdx() + " favorite to " + isFavorite);
 
-        if (isFavorite)
-            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mSceneInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
-        else
-            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mSceneInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
+        if (isFavorite) {
+            ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mSceneInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
+        } else {
+            ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mSceneInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
+        }
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SCENEFAVORITE;
@@ -285,7 +290,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             @Override
             @DebugLog
             public void onError(Exception error) {
-                UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
+                UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
+                ((MainActivity) getActivity()).Talk(R.string.error_logs);
             }
         });
     }
@@ -336,10 +342,13 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     public void setScene(SceneInfo clickedScene, boolean action, String password) {
-        if (action)
-            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
-        else
-            UsefulBits.showSimpleSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
+        if (action) {
+            ((MainActivity) getActivity()).Talk(R.string.switch_on);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
+        } else {
+            ((MainActivity) getActivity()).Talk(R.string.switch_off);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
+        }
 
         int jsonAction;
         int jsonUrl = Domoticz.Json.Url.Set.SCENES;

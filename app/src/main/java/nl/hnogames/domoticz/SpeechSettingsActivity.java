@@ -104,7 +104,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
 
         createListView();
 
-        UsefulBits.showSimpleSnackbar(this, coordinatorLayout, R.string.Speech_register, Snackbar.LENGTH_SHORT);
+        UsefulBits.showSnackbar(this, coordinatorLayout, R.string.Speech_register, Snackbar.LENGTH_SHORT);
     }
 
     private void createListView() {
@@ -158,7 +158,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
 
             @Override
             public void onError(Exception error) {
-                UsefulBits.showSnackbar(SpeechSettingsActivity.this, coordinatorLayout, SpeechSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
+                UsefulBits.showSnackbarWithAction(SpeechSettingsActivity.this, coordinatorLayout, SpeechSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -255,7 +255,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
         String text = String.format(getString(R.string.something_deleted),
                 getString(R.string.Speech));
 
-        UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+        UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
@@ -419,13 +419,13 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
         }
 
         if (newTagFound) {
-            UsefulBits.showSimpleSnackbar(SpeechSettingsActivity.this, coordinatorLayout, getString(R.string.Speech_saved) + ": " + speechText, Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(SpeechSettingsActivity.this, coordinatorLayout, getString(R.string.Speech_saved) + ": " + speechText, Snackbar.LENGTH_SHORT);
             SpeechInfo SpeechInfo = new SpeechInfo();
             SpeechInfo.setId(speechText);
             SpeechInfo.setName(speechText);
             updateSpeech(SpeechInfo);
         } else {
-            UsefulBits.showSimpleSnackbar(this, coordinatorLayout, R.string.Speech_exists, Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(this, coordinatorLayout, R.string.Speech_exists, Snackbar.LENGTH_SHORT);
             busyWithSpeech = false;
         }
     }
