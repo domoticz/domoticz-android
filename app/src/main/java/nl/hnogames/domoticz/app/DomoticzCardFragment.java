@@ -46,6 +46,7 @@ import java.util.List;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
+import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticz.Utils.ServerUtil;
@@ -86,7 +87,12 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     public ServerUtil getServerUtil() {
-        return ((MainActivity) getActivity()).getServerUtil();
+        if (getActivity() instanceof MainActivity) {
+            return((MainActivity) getActivity()).getServerUtil();
+        } else if (getActivity() instanceof PlanActivity) {
+            return ((PlanActivity) getActivity()).getServerUtil();
+        }
+        else return null;
     }
 
     @Override
@@ -189,7 +195,8 @@ public class DomoticzCardFragment extends Fragment {
         } else {
             if (coordinatorLayout != null) {
                 UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }
         }
     }

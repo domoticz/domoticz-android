@@ -146,10 +146,12 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite) {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_added);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         } else {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
         }
 

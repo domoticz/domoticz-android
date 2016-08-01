@@ -141,7 +141,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 } else {
                     if (mContext != null) {
                         UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
-                        ((MainActivity) getActivity()).Talk(R.string.filter_on);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.filter_on);
                         if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
                             supportedScenes.add(s);
                         if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
@@ -214,10 +215,12 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         addDebugText("Set idx " + mSceneInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite) {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_added);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mSceneInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         } else {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mSceneInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
         }
 
@@ -291,7 +294,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
-                ((MainActivity) getActivity()).Talk(R.string.error_logs);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_logs);
             }
         });
     }
@@ -343,10 +347,12 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     public void setScene(SceneInfo clickedScene, boolean action, String password) {
         if (action) {
-            ((MainActivity) getActivity()).Talk(R.string.switch_on);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.switch_on);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_on) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
         } else {
-            ((MainActivity) getActivity()).Talk(R.string.switch_off);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.switch_off);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
         }
 

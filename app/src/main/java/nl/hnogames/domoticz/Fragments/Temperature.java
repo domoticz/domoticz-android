@@ -176,10 +176,12 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
 
         if (isFavorite) {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_added);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         } else {
-            ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
         }
 

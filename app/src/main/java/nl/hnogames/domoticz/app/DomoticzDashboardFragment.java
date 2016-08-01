@@ -114,7 +114,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public ServerUtil getServerUtil() {
         Activity activity = getActivity();
         if (activity instanceof MainActivity) {
-            return ((MainActivity) getActivity()).getServerUtil();
+                 return((MainActivity) getActivity()).getServerUtil();
         } else if (activity instanceof PlanActivity) {
             return ((PlanActivity) getActivity()).getServerUtil();
         } else return null;
@@ -148,7 +148,7 @@ public class DomoticzDashboardFragment extends Fragment {
                 isPortrait = true;
 
             if (getActivity() instanceof MainActivity) {
-                isTablet = !((MainActivity) getActivity()).onPhone;
+                isTablet = !  ((MainActivity) getActivity()).onPhone;
             }
 
             gridView.setHasFixedSize(true);
@@ -317,7 +317,8 @@ public class DomoticzDashboardFragment extends Fragment {
         } else {
             if (coordinatorLayout != null) {
                 UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }
         }
     }
