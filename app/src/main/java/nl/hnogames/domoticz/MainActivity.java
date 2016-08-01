@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 WidgetUtils.RefreshWidgets(this);
                 UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
                 AppController.getInstance().resendRegistrationIdToBackend();
+                drawNavigationMenu(null);
 
                 UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
                     @Override
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     @DebugLog
                     public void onError(Exception error) {
-                        drawNavigationMenu(null);
+                        //drawNavigationMenu(null);
                         addFragment();
                         openDialogFragment(new Changelog());
                     }
