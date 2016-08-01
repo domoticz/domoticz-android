@@ -144,7 +144,8 @@ public class DomoticzRecyclerFragment extends Fragment {
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
             if (getActivity() instanceof MainActivity) {
-                isTablet = !((MainActivity) getActivity()).onPhone;
+                isTablet = !
+                    ((MainActivity) getActivity()).onPhone;
             }
 
             gridView.setHasFixedSize(true);
@@ -282,7 +283,8 @@ public class DomoticzRecyclerFragment extends Fragment {
         } else {
             if (coordinatorLayout != null) {
                 UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }
         }
     }

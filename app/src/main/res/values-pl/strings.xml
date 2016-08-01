@@ -8,7 +8,7 @@
   <string name="drawer_open">Otwórz wysuwaną nawigację</string>
   <string name="drawer_close">Zamknij wysuwaną nawigację</string>
   <string name="msg_please_wait">Proszę czekać...</string>
-  <string name="changelog">Changelog</string>
+  <string name="changelog">Historia zmian</string>
   <string name="button_state_on">Wł.</string>
   <string name="button_state_off">Wył.</string>
   <string name="button_state_closed">Zamknięte</string>
@@ -50,6 +50,7 @@
   <string name="add">Dodaj</string>
   <string name="cancel">Anuluj</string>
   <string name="ok">OK</string>
+  <string name="upgrade">UAKTUALNIENIE</string>
   <string name="something_went_wrong">Coś poszło nie tak</string>
   <string name="no_network_available">Błąd: Brak dostępnego połączenia sieciowego</string>
   <string name="oops">UPS!</string>

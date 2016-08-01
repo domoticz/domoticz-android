@@ -106,7 +106,8 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                     @DebugLog
                     public void onEventClick(final int id, boolean action) {
                         UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT);
-                        ((MainActivity) getActivity()).Talk(R.string.action_not_supported_yet);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.action_not_supported_yet);
                     }
                 });
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);

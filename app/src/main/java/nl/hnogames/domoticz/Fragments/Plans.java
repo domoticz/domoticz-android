@@ -151,7 +151,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                     } else {
                         if (coordinatorLayout != null) {
                             UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                            ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
                         }
                     }
                 }
