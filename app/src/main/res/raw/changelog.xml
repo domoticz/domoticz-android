@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
-    <changelogversion versionName="0.1.271" changeDate="ALPHA">
-        <changelogtext>[b]PREMIUM[/b] Added Talk Back option</changelogtext>
+    <changelogversion versionName="0.1.275" changeDate="Aug 3, 2016">
+        <changelogtext>[b]PREMIUM[/b] Added Talk Back</changelogtext>
+        <changelogtext>Added Czech translations (thanks to Petr)</changelogtext>
         <changelogtext>Various crash fixes</changelogtext>
     </changelogversion>
 
     <changelogversion versionName="0.1.270" changeDate="June 30, 2016">
         <changelogtext>[b]PREMIUM[/b] Fixes on Speech Commands</changelogtext>
-        <changelogtext>Show cached data when offline</changelogtext>
-        <changelogtext>Improved speed on Dashboard (update Domoticz base system via Beta channel)</changelogtext>
-        <changelogtext>Auto check on updates</changelogtext>
-        <changelogtext>Validate apk</changelogtext>
-        <changelogtext>Improve upgrade to premium notifications</changelogtext>
-        <changelogtext>Various crash fixes</changelogtext>
-    </changelogversion>
-
-    <changelogversion versionName="0.1.266" changeDate="June 16, 2016">
         <changelogtext>[b]PREMIUM[/b] Added Speech Commands</changelogtext>
         <changelogtext>[b]PREMIUM[/b] Added Multi users support</changelogtext>
         <changelogtext>[b]PREMIUM[/b] NFC auto open Domoticz app</changelogtext>
@@ -27,7 +19,12 @@
         <changelogtext>Manual add Wifi SSID</changelogtext>
         <changelogtext>Improved logging for debugging</changelogtext>
         <changelogtext>Added changelog dialog</changelogtext>
-        <changelogtext>Various fixes</changelogtext>
+        <changelogtext>Show cached data when offline</changelogtext>
+        <changelogtext>Improved speed on Dashboard</changelogtext>
+        <changelogtext>Auto check on updates</changelogtext>
+        <changelogtext>Validate apk</changelogtext>
+        <changelogtext>Improve upgrade to premium notifications</changelogtext>
+        <changelogtext>Various crash fixes</changelogtext>
     </changelogversion>
 
 </changelog>
