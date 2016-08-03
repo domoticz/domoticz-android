@@ -4,6 +4,7 @@
     <string-array name="domoticz_language_entryValues" translatable="false">
         <item>EN</item>
         <item>CA</item>
+        <item>CS</item>
         <item>DA</item>
         <item>DE</item>
         <item>ES</item>
@@ -23,6 +24,7 @@
     <string-array name="domoticz_language_entries">
         <item>English</item>
         <item>Catalan</item>
+        <item>Czech</item>
         <item>Danish</item>
         <item>German</item>
         <item>Spanish</item>
