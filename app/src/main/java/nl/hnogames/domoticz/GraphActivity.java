@@ -40,26 +40,31 @@ public class GraphActivity extends AppCompatActivity {
         else
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
-            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+        UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null)
-            this.finish();//get graph info via bundle
+        try {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle == null)
+                this.finish();//get graph info via bundle
 
-        this.setTitle(getString(R.string.wizard_graph));
+            this.setTitle(getString(R.string.wizard_graph));
 
-        String title = bundle.getString("TITLE");
-        if (!UsefulBits.isEmpty(title)) {
-            setTitle(title);
+            String title = bundle.getString("TITLE");
+            if (!UsefulBits.isEmpty(title)) {
+                setTitle(title);
+            }
+
+            Graph graph = new Graph();
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
+                    graph).commit();
+        }catch(Exception ex)
+        {
+            this.finish();
         }
-
-        Graph graph = new Graph();
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-                graph).commit();
     }
 
     public void setTitle(String title) {
