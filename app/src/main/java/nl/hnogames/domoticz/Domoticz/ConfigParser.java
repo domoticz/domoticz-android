@@ -55,6 +55,7 @@ public class ConfigParser implements JSONParserInterface {
     @Override
     public void onError(Exception error) {
         Log.e(TAG, "SettingsParser of JSONParserInterface exception");
-        receiver.onError(error);
+        if(receiver != null)
+            receiver.onError(error);
     }
 }
