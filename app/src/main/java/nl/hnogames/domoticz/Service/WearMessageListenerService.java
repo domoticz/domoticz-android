@@ -39,11 +39,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class WearMessageListenerService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks {
 
@@ -99,33 +101,33 @@ public class WearMessageListenerService extends WearableListenerService implemen
             try {
                 DevicesInfo selectedSwitch = new DevicesInfo(new JSONObject(data));
                 if (domoticz == null)
-                    domoticz = new Domoticz(getApplicationContext(), null);
+                    domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
 
-                if (selectedSwitch.getType() != null && (selectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || selectedSwitch.getType().equals(Domoticz.Scene.Type.SCENE))) {
-                    if (selectedSwitch.getType().equals(Domoticz.Scene.Type.GROUP))
+                if (selectedSwitch.getType() != null && (selectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || selectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE))) {
+                    if (selectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP))
                         onButtonClick(selectedSwitch, true);
                     else
                         onSwitchToggle(selectedSwitch);
                 } else {
                     if (selectedSwitch != null) {
                         switch (selectedSwitch.getSwitchTypeVal()) {
-                            case Domoticz.Device.Type.Value.ON_OFF:
-                            case Domoticz.Device.Type.Value.MEDIAPLAYER:
-                            case Domoticz.Device.Type.Value.X10SIREN:
-                            case Domoticz.Device.Type.Value.DOORLOCK:
-                            case Domoticz.Device.Type.Value.DIMMER:
-                            case Domoticz.Device.Type.Value.BLINDS:
-                            case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
+                            case DomoticzValues.Device.Type.Value.ON_OFF:
+                            case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                            case DomoticzValues.Device.Type.Value.X10SIREN:
+                            case DomoticzValues.Device.Type.Value.DOORLOCK:
+                            case DomoticzValues.Device.Type.Value.DIMMER:
+                            case DomoticzValues.Device.Type.Value.BLINDS:
+                            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                                 onSwitchToggle(selectedSwitch);
                                 break;
 
-                            case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                            case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
-                            case Domoticz.Device.Type.Value.DOORBELL:
+                            case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                            case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                            case DomoticzValues.Device.Type.Value.DOORBELL:
                                 onButtonClick(selectedSwitch, true);
                                 break;
 
-                            case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                            case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                                 onButtonClick(selectedSwitch, false);
                                 break;
 
@@ -150,7 +152,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         currentSwitch = 1;
 
         if (domoticz == null)
-            domoticz = new Domoticz(getApplicationContext(), null);
+            domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
 
         domoticz.getDevices(new DevicesReceiver() {
             @Override
@@ -240,22 +242,22 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     public void onSwitchToggle(DevicesInfo toggledDevice) {
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+        int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
         boolean checked = !toggledDevice.getStatusBoolean();
-        if (toggledDevice.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                toggledDevice.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-            if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
-            else jsonAction = Domoticz.Device.Switch.Action.ON;
+        if (toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+            if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+            else jsonAction = DomoticzValues.Device.Switch.Action.ON;
         } else {
-            if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-            else jsonAction = Domoticz.Device.Switch.Action.OFF;
+            if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+            else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
         }
 
-        if (toggledDevice.getType().equals(Domoticz.Scene.Type.GROUP) || toggledDevice.getType().equals(Domoticz.Scene.Type.SCENE)) {
-            jsonUrl = Domoticz.Json.Url.Set.SCENES;
-            if (checked) jsonAction = Domoticz.Scene.Action.ON;
-            else jsonAction = Domoticz.Scene.Action.OFF;
+        if (toggledDevice.getType().equals(DomoticzValues.Scene.Type.GROUP) || toggledDevice.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+            jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+            if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
+            else jsonAction = DomoticzValues.Scene.Action.OFF;
         }
 
         domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
@@ -271,15 +273,15 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     public void onButtonClick(DevicesInfo toggledDevice, boolean checked) {
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+        int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
-        if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-        else jsonAction = Domoticz.Device.Switch.Action.OFF;
+        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+        else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
 
-        if (toggledDevice.getType().equals(Domoticz.Scene.Type.GROUP) || toggledDevice.getType().equals(Domoticz.Scene.Type.SCENE)) {
-            jsonUrl = Domoticz.Json.Url.Set.SCENES;
-            if (checked) jsonAction = Domoticz.Scene.Action.ON;
-            else jsonAction = Domoticz.Scene.Action.OFF;
+        if (toggledDevice.getType().equals(DomoticzValues.Scene.Type.GROUP) || toggledDevice.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+            jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+            if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
+            else jsonAction = DomoticzValues.Scene.Action.OFF;
         }
 
         domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {

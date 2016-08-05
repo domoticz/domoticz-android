@@ -28,7 +28,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +42,16 @@ import org.json.JSONException;
 
 import java.util.List;
 
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class DomoticzCardFragment extends Fragment {
 
@@ -88,11 +88,10 @@ public class DomoticzCardFragment extends Fragment {
 
     public ServerUtil getServerUtil() {
         if (getActivity() instanceof MainActivity) {
-            return((MainActivity) getActivity()).getServerUtil();
+            return ((MainActivity) getActivity()).getServerUtil();
         } else if (getActivity() instanceof PlanActivity) {
             return ((PlanActivity) getActivity()).getServerUtil();
-        }
-        else return null;
+        } else return null;
     }
 
     @Override
@@ -110,8 +109,8 @@ public class DomoticzCardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mDomoticz = new Domoticz(getActivity(), getServerUtil());
-        debug = mDomoticz.isDebugEnabled();
+        mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
+        debug = mSharedPrefs.isDebugEnabled();
 
         if (debug) showDebugLayout();
 
@@ -160,9 +159,9 @@ public class DomoticzCardFragment extends Fragment {
      * @param result Result text to handle
      */
     public void successHandling(String result, boolean displayToast) {
-        if (result.equalsIgnoreCase(Domoticz.Result.ERROR))
+        if (result.equalsIgnoreCase(DomoticzValues.Result.ERROR))
             Toast.makeText(getActivity(), R.string.action_failed, Toast.LENGTH_SHORT).show();
-        else if (result.equalsIgnoreCase(Domoticz.Result.OK)) {
+        else if (result.equalsIgnoreCase(DomoticzValues.Result.OK)) {
             if (displayToast)
                 Toast.makeText(getActivity(), R.string.action_success, Toast.LENGTH_SHORT).show();
         } else {
@@ -277,16 +276,6 @@ public class DomoticzCardFragment extends Fragment {
                     debugLayout.setVisibility(View.VISIBLE);
 
                     debugText = (TextView) root.findViewById(R.id.debugText);
-                    if (debugText != null) {
-                        debugText.setMovementMethod(new ScrollingMovementMethod());
-                        debugText.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View view) {
-                                mDomoticz.debugTextToClipboard(debugText);
-                                return false;
-                            }
-                        });
-                    }
                 }
             }
         } catch (Exception ex) {

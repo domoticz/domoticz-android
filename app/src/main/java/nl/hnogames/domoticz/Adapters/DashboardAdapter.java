@@ -47,26 +47,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> {
     public static final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
     private final int[] EVOHOME_STATE_IDS = {
-            Domoticz.Device.ModalSwitch.Action.AUTO,
-            Domoticz.Device.ModalSwitch.Action.ECONOMY,
-            Domoticz.Device.ModalSwitch.Action.AWAY,
-            Domoticz.Device.ModalSwitch.Action.AWAY,
-            Domoticz.Device.ModalSwitch.Action.CUSTOM,
-            Domoticz.Device.ModalSwitch.Action.HEATING_OFF
+            DomoticzValues.Device.ModalSwitch.Action.AUTO,
+            DomoticzValues.Device.ModalSwitch.Action.ECONOMY,
+            DomoticzValues.Device.ModalSwitch.Action.AWAY,
+            DomoticzValues.Device.ModalSwitch.Action.AWAY,
+            DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
+            DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
@@ -89,7 +92,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         mSharedPrefs = new SharedPrefUtil(context);
 
         this.context = context;
-        domoticz = new Domoticz(context, serverUtil);
+        domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
@@ -203,11 +206,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
-                case Domoticz.Scene.Type.GROUP:
+                case DomoticzValues.Scene.Type.GROUP:
                     setButtons(holder, Buttons.BUTTONS);
                     setOnOffButtonRowData(mDeviceInfo, holder);
                     break;
-                case Domoticz.Scene.Type.SCENE:
+                case DomoticzValues.Scene.Type.SCENE:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
                     break;
@@ -229,12 +232,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             setDefaultRowData(mDeviceInfo, holder);
         } else {
             switch (mDeviceInfo.getSwitchTypeVal()) {
-                case Domoticz.Device.Type.Value.ON_OFF:
-                case Domoticz.Device.Type.Value.MEDIAPLAYER:
-                case Domoticz.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.ON_OFF:
+                case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                case DomoticzValues.Device.Type.Value.DOORLOCK:
                     switch (mDeviceInfo.getSwitchType()) {
-                        case Domoticz.Device.Type.Name.SECURITY:
-                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.SECURITYPANEL)) {
+                        case DomoticzValues.Device.Type.Name.SECURITY:
+                            if (mDeviceInfo.getSubType().equals(DomoticzValues.Device.SubType.Name.SECURITYPANEL)) {
                                 setButtons(holder, Buttons.BUTTON_ON);
                                 setSecurityPanelSwitchRowData(mDeviceInfo, holder);
                             } else {
@@ -242,8 +245,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                                 setDefaultRowData(mDeviceInfo, holder);
                             }
                             break;
-                        case Domoticz.Device.Type.Name.EVOHOME:
-                            if (mDeviceInfo.getSubType().equals(Domoticz.Device.SubType.Name.EVOHOME)) {
+                        case DomoticzValues.Device.Type.Name.EVOHOME:
+                            if (mDeviceInfo.getSubType().equals(DomoticzValues.Device.SubType.Name.EVOHOME)) {
                                 setButtons(holder, Buttons.MODAL);
                                 setModalSwitchRowData(mDeviceInfo, holder, R.array.evohome_states, R.array.evohome_state_names, EVOHOME_STATE_IDS);
                             } else {
@@ -263,29 +266,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                     break;
 
-                case Domoticz.Device.Type.Value.X10SIREN:
-                case Domoticz.Device.Type.Value.MOTION:
-                case Domoticz.Device.Type.Value.CONTACT:
-                case Domoticz.Device.Type.Value.DUSKSENSOR:
-                case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
-                case Domoticz.Device.Type.Value.DOORBELL:
+                case DomoticzValues.Device.Type.Value.X10SIREN:
+                case DomoticzValues.Device.Type.Value.MOTION:
+                case DomoticzValues.Device.Type.Value.CONTACT:
+                case DomoticzValues.Device.Type.Value.DUSKSENSOR:
+                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                case DomoticzValues.Device.Type.Value.DOORBELL:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setContactSwitchRowData(mDeviceInfo, holder, false);
                     break;
-                case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
+                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
                     break;
 
-                case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, false);
                     break;
 
-                case Domoticz.Device.Type.Value.DIMMER:
-                case Domoticz.Device.Type.Value.BLINDPERCENTAGE:
-                case Domoticz.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (mDeviceInfo.getSubType().startsWith(Domoticz.Device.SubType.Name.RGB)) {
+                case DomoticzValues.Device.Type.Value.DIMMER:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                    if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB)) {
                         if (mSharedPrefs.showSwitchesAsButtons()) {
                             setButtons(holder, Buttons.DIMMER_BUTTONS);
                             setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
@@ -304,7 +307,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                     break;
 
-                case Domoticz.Device.Type.Value.SELECTOR:
+                case DomoticzValues.Device.Type.Value.SELECTOR:
                     if (mSharedPrefs.showSwitchesAsButtons()) {
                         setButtons(holder, Buttons.SELECTOR_BUTTONS);
                         setSelectorRowData(mDeviceInfo, holder);
@@ -314,8 +317,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                     break;
 
-                case Domoticz.Device.Type.Value.BLINDS:
-                case Domoticz.Device.Type.Value.BLINDINVERTED:
+                case DomoticzValues.Device.Type.Value.BLINDS:
+                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                     if (canHandleStopButton(mDeviceInfo)) {
                         setButtons(holder, Buttons.BLINDS);
                         setBlindsRowData(mDeviceInfo, holder);
@@ -325,7 +328,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                     break;
 
-                case Domoticz.Device.Type.Value.BLINDVENETIAN:
+                case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                     setButtons(holder, Buttons.BLINDS);
                     setBlindsRowData(mDeviceInfo, holder);
                     break;
@@ -421,7 +424,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -477,7 +480,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSwitchType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -518,7 +521,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -526,7 +529,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (holder.buttonOn != null) {
-            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonOn.setId(mDeviceInfo.getIdx());
@@ -539,7 +542,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
         if (holder.buttonOff != null) {
-            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.buttonOff.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonOff.setId(mDeviceInfo.getIdx());
@@ -557,7 +560,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.iconRow.setAlpha(1f);
 
         if (holder.buttonLog != null) {
-            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
@@ -597,7 +600,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -610,7 +613,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.iconRow.setAlpha(1f);
 
         if (holder.onOffSwitch != null) {
-            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.onOffSwitch.setId(mDeviceInfo.getIdx());
@@ -631,7 +634,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.buttonLog != null) {
-            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
@@ -684,7 +687,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(setPointText);
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
                 mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
@@ -764,7 +767,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
     /**
@@ -829,7 +832,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDevicesInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDevicesInfo.getTypeImg(),
                 mDevicesInfo.getType(),
                 mDevicesInfo.getSwitchType(),
                 mDevicesInfo.getStatusBoolean(),
@@ -865,7 +868,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -877,7 +880,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         else
             holder.iconRow.setAlpha(1f);
 
-        if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+        if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
             holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
         else
             holder.buttonOn.setId(mDeviceInfo.getIdx());
@@ -905,7 +908,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         });
 
         if (holder.buttonLog != null) {
-            if (mDeviceInfo.getType().equals(Domoticz.Scene.Type.GROUP) || mDeviceInfo.getType().equals(Domoticz.Scene.Type.SCENE))
+            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
@@ -956,10 +959,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
+                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                         else
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
+                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                     }
                 }
             }
@@ -971,7 +974,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.STOP);
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.STOP);
                     }
                 }
             }
@@ -983,16 +986,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDINVERTED)
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.OFF);
+                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)
+                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                         else
-                            handleBlindsClick(e.getIdx(), Domoticz.Device.Blind.Action.ON);
+                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                     }
                 }
             }
         });
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -1141,7 +1144,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.dimmer.setVisibility(View.VISIBLE);
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSwitchType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -1189,7 +1192,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -1336,7 +1339,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),
@@ -1474,7 +1477,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSwitchType(),
                 mDeviceInfo.getStatusBoolean(),

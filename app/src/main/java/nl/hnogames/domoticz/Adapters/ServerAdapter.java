@@ -36,10 +36,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Interfaces.ServerClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.ServerInfo;
 
 public class ServerAdapter extends BaseAdapter {
 

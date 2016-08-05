@@ -37,9 +37,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Domoticz;
 
 public class PasswordDialog implements DialogInterface.OnDismissListener {
 

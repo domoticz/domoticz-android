@@ -32,9 +32,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.PlanInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
 @SuppressWarnings("unused")
 public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHolder> {

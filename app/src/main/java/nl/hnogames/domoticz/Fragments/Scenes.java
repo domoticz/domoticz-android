@@ -38,14 +38,8 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
-import nl.hnogames.domoticz.Containers.SceneInfo;
-import nl.hnogames.domoticz.Containers.SwitchLogInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
-import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
@@ -55,6 +49,12 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         ScenesClickListener {
@@ -225,10 +225,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         }
 
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SCENEFAVORITE;
+        int jsonUrl = DomoticzValues.Json.Url.Set.SCENEFAVORITE;
 
-        if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
-        else jsonAction = Domoticz.Device.Favorite.OFF;
+        if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
+        else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
@@ -357,10 +357,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         }
 
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SCENES;
+        int jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
 
-        if (action) jsonAction = Domoticz.Scene.Action.ON;
-        else jsonAction = Domoticz.Scene.Action.OFF;
+        if (action) jsonAction = DomoticzValues.Scene.Action.ON;
+        else jsonAction = DomoticzValues.Scene.Action.OFF;
 
         mDomoticz.setAction(clickedScene.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override

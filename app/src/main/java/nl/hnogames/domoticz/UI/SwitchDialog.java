@@ -33,11 +33,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
 
 public class SwitchDialog implements DialogInterface.OnDismissListener {
 

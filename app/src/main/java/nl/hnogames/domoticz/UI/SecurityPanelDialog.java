@@ -39,14 +39,15 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.SettingsInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.SettingsInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.SettingsReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
@@ -126,19 +127,19 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         btnDisarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processRequest(Domoticz.Security.Status.DISARM);
+                processRequest(DomoticzValues.Security.Status.DISARM);
             }
         });
         btnArmAway.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processRequest(Domoticz.Security.Status.ARMAWAY);
+                processRequest(DomoticzValues.Security.Status.ARMAWAY);
             }
         });
         btnArmHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processRequest(Domoticz.Security.Status.ARMHOME);
+                processRequest(DomoticzValues.Security.Status.ARMHOME);
             }
         });
     }
@@ -160,7 +161,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                 UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
 
         if (validatePassword(password)) {
-            if (mSettings.getSecOnDelay() <= 0 || status == Domoticz.Security.Status.DISARM) {
+            if (mSettings.getSecOnDelay() <= 0 || status == DomoticzValues.Security.Status.DISARM) {
                 //don't set delay
                 domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
                     @Override

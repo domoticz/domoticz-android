@@ -39,10 +39,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
 
 public class WidgetsAdapter extends BaseAdapter implements Filterable {
     private final int iVoiceAction = -55;
@@ -157,7 +158,7 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
         } else if (mDeviceInfo.getIdx() == iQRCodeAction) {
             Picasso.with(context).load(R.drawable.qrcode).into(holder.iconRow);
         } else {
-            Picasso.with(context).load(domoticz.getDrawableIcon(mDeviceInfo.getTypeImg(),
+            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                     mDeviceInfo.getType(),
                     mDeviceInfo.getSubType(),
                     mDeviceInfo.getStatusBoolean(),

@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.LogAdapter;
-import nl.hnogames.domoticz.Containers.LogInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.LogsReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.LogInfo;
+import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
 
 public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 

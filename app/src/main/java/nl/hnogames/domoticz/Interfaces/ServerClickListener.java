@@ -23,7 +23,7 @@
 package nl.hnogames.domoticz.Interfaces;
 
 
-import nl.hnogames.domoticz.Containers.ServerInfo;
+import nl.hnogames.domoticzapi.Containers.ServerInfo;
 
 public interface ServerClickListener {
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="evohome_states" translatable="false">
+        <item>Auto</item>
+        <item>AutoWithEco</item>
+        <item>Away</item>
+        <item>DayOff</item>
+        <item>Custom</item>
+        <item>HeatingOff</item>
+    </string-array>
+
+    <string-array name="evohome_state_names" translatable="false">
+        <item>@string/normal</item>
+        <item>@string/economy</item>
+        <item>@string/away</item>
+        <item>@string/day_off</item>
+        <item>@string/custom</item>
+        <item>@string/heating_off</item>
+    </string-array>
+
+    <string-array name="evohome_zone_states" translatable="false">
+        <item>Auto</item>
+        <item>PermanentOverride</item>
+        <item>TemporaryOverride</item>
+        <item>OpenWindow</item>
+        <item>LocalOverride</item>
+        <item>RemoteOverride</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="evohome_zone_state_icons" translatable="false">
+        <item></item>
+        <item>@drawable/ic_repeat_black_18dp</item>
+        <item>@drawable/ic_schedule_black_18dp</item>
+    </string-array>
+
+</resources>

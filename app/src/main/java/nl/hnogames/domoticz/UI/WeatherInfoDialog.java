@@ -31,9 +31,9 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import nl.hnogames.domoticz.Containers.WeatherInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 
 public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
 

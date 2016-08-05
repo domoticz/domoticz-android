@@ -49,10 +49,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import nl.hnogames.domoticz.BuildConfig;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Fragments.Changelog;
 import nl.hnogames.domoticz.GeoSettingsActivity;
-import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.QRCodeSettingsActivity;
 import nl.hnogames.domoticz.R;
@@ -64,10 +62,12 @@ import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class Preference extends PreferenceFragment {
 
@@ -92,7 +92,7 @@ public class Preference extends PreferenceFragment {
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
         ServerUtil mServerUtil = new ServerUtil(mContext);
-        mDomoticz = new Domoticz(mContext, mServerUtil);
+        mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 

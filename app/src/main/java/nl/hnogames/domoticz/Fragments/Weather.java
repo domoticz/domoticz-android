@@ -16,14 +16,9 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
-import nl.hnogames.domoticz.Containers.Language;
-import nl.hnogames.domoticz.Containers.WeatherInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
-import nl.hnogames.domoticz.Interfaces.WeatherReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.WeatherInfoDialog;
@@ -32,6 +27,11 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.Language;
+import nl.hnogames.domoticzapi.Containers.WeatherInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmentListener, WeatherClickListener {
 
@@ -156,10 +156,10 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         }
 
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
+        int jsonUrl = DomoticzValues.Json.Url.Set.FAVORITE;
 
-        if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
-        else jsonAction = Domoticz.Device.Favorite.OFF;
+        if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
+        else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mWeatherInfo.getIdx(),
                 jsonUrl,

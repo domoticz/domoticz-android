@@ -22,7 +22,7 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-import nl.hnogames.domoticz.Containers.QRCodeInfo;
+import nl.hnogames.domoticzapi.Containers.QRCodeInfo;
 
 public interface QRCodeClickListener {
     boolean onEnableClick(QRCodeInfo nfc, boolean checked);

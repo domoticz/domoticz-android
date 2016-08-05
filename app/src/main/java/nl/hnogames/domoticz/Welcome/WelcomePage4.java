@@ -32,13 +32,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.VersionReceiver;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class WelcomePage4 extends Fragment {
 
@@ -76,7 +77,7 @@ public class WelcomePage4 extends Fragment {
 
     private void checkConnectionData() {
         ServerUtil mServerUtil = new ServerUtil(getActivity());
-        final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
+        final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
 
         if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"

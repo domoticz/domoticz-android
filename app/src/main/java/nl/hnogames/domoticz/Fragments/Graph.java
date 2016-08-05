@@ -54,13 +54,14 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ComboLineColumnChartView;
-import nl.hnogames.domoticz.Containers.GraphPointInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 
 public class Graph extends Fragment implements DomoticzFragmentListener {
 
@@ -95,7 +96,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        mDomoticz = new Domoticz(context, null);
+        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
     }
 
     @Override
@@ -140,7 +141,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     public void getGraphs() {
         if (mDomoticz == null)
-            mDomoticz = new Domoticz(context, null);
+            mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
             @Override
@@ -338,7 +339,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean setCubic = false;
 
             //setCubic seems bugged in HelloCharts library
-            //if(range.equals(Domoticz.Graph.Range.MONTH) || range.equals(Domoticz.Graph.Range.YEAR))
+            //if(range.equals(DomoticzValues.Graph.Range.MONTH) || range.equals(DomoticzValues.Graph.Range.YEAR))
             //    setCubic=true;
             if ((addTemperature && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {

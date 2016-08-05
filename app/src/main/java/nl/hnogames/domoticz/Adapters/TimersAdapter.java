@@ -33,9 +33,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 
 public class TimersAdapter extends BaseAdapter {
 

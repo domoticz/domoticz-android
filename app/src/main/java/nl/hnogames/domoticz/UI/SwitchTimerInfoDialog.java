@@ -31,8 +31,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.TimersAdapter;
-import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 
 public class SwitchTimerInfoDialog {
 

@@ -170,6 +170,7 @@ dependencies {
 
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')
+    compile project(path: ':domoticzapi')
 }
 
 apply plugin: 'com.google.gms.google-services'

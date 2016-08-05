@@ -24,7 +24,7 @@ package nl.hnogames.domoticz.Interfaces;
 
 import android.view.View;
 
-import nl.hnogames.domoticz.Containers.WeatherInfo;
+import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 
 public interface WeatherClickListener {
     void onLogClick(WeatherInfo weather, String range);

@@ -34,12 +34,12 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.triggertrap.seekarc.SeekArc;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
@@ -75,7 +75,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
             tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
-            if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS)) {
+            if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(DomoticzValues.Temperature.Sign.CELSIUS)) {
                 isFahrenheit = true;
             }
         } else
