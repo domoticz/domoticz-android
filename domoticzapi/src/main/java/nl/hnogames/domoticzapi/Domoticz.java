@@ -130,16 +130,20 @@ public class Domoticz {
 
     public boolean isUserOnLocalWifi() {
         boolean userIsLocal = false;
-        if (getServerUtil().getActiveServer().getIsLocalServerAddressDifferent()) {
-            Set<String> localSsid = getServerUtil().getActiveServer().getLocalServerSsid();
+        if(getServerUtil().getActiveServer().getUseOnlyLocal())
+            return true;
+        else {
+            if (getServerUtil().getActiveServer().getIsLocalServerAddressDifferent()) {
+                Set<String> localSsid = getServerUtil().getActiveServer().getLocalServerSsid();
 
-            if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null && localSsid.size() > 0) {
-                String currentSsid = mPhoneConnectionUtil.getCurrentSsid();
-                if (!UsefulBits.isEmpty(currentSsid)) {
-                    // Remove quotes from current SSID read out
-                    currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
-                    for (String ssid : localSsid) {
-                        if (ssid.equals(currentSsid)) userIsLocal = true;
+                if (mPhoneConnectionUtil.isWifiConnected() && localSsid != null && localSsid.size() > 0) {
+                    String currentSsid = mPhoneConnectionUtil.getCurrentSsid();
+                    if (!UsefulBits.isEmpty(currentSsid)) {
+                        // Remove quotes from current SSID read out
+                        currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
+                        for (String ssid : localSsid) {
+                            if (ssid.equals(currentSsid)) userIsLocal = true;
+                        }
                     }
                 }
             }
@@ -152,16 +156,15 @@ public class Domoticz {
         HashMap<String, String> stringHashMap = new HashMap<>();
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz local port", server.getLocalServerPort());
-        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
-        stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
-
+        if(!getServerUtil().getActiveServer().getUseOnlyLocal()) {
+            stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
+            stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
+        }
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
-
             if (UsefulBits.isEmpty(entry.getValue())) {
                 result = false;
                 break;
             }
-
         }
         return result;
     }
@@ -169,11 +172,12 @@ public class Domoticz {
     public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
         HashMap<String, String> stringHashMap = new HashMap<>();
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
-        stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
-
+        if(!getServerUtil().getActiveServer().getUseOnlyLocal())
+            stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
         if (validatePorts) {
             stringHashMap.put("Domoticz local port", server.getLocalServerPort());
-            stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
+            if(!getServerUtil().getActiveServer().getUseOnlyLocal())
+                stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
         }
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
 

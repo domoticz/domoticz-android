@@ -106,6 +106,7 @@ public class ServerUtil {
                     oPrefServer.setRemoteServerSecure(jsonServer.getBoolean("REMOTE_SERVER_SECURE"));
                     oPrefServer.setRemoteServerAuthentication(jsonServer.getBoolean("REMOTE_SERVER_AUTHENTICATION_METHOD"));
                     oPrefServer.setIsLocalServerAddressDifferent(jsonServer.getBoolean("IS_LOCAL_SERVER_ADDRESS_DIFFERENT"));
+                    oPrefServer.setUseOnlyLocal(jsonServer.getBoolean("USE_ONLY_LOCAL"));
                     oPrefServer.setLocalServerUsername(jsonServer.getString("LOCAL_SERVER_USERNAME"));
                     oPrefServer.setLocalServerPassword(jsonServer.getString("LOCAL_SERVER_PASSWORD"));
                     oPrefServer.setLocalServerUrl(jsonServer.getString("LOCAL_SERVER_URL"));
@@ -169,6 +170,7 @@ public class ServerUtil {
                         oPrefServer.setRemoteServerSecure(jsonServer.getBoolean("REMOTE_SERVER_SECURE"));
                         oPrefServer.setRemoteServerAuthentication(jsonServer.getBoolean("REMOTE_SERVER_AUTHENTICATION_METHOD"));
                         oPrefServer.setIsLocalServerAddressDifferent(jsonServer.getBoolean("IS_LOCAL_SERVER_ADDRESS_DIFFERENT"));
+                        oPrefServer.setUseOnlyLocal(jsonServer.getBoolean("USE_ONLY_LOCAL"));
                         oPrefServer.setLocalServerUsername(jsonServer.getString("LOCAL_SERVER_USERNAME"));
                         oPrefServer.setLocalServerPassword(jsonServer.getString("LOCAL_SERVER_PASSWORD"));
                         oPrefServer.setLocalServerUrl(jsonServer.getString("LOCAL_SERVER_URL"));
@@ -379,6 +381,7 @@ public class ServerUtil {
         String REMOTE_SERVER_AUTHENTICATION_METHOD =
                 "remote_server_authentication_method";
         String IS_LOCAL_SERVER_ADDRESS_DIFFERENT = "local_server_different_address";
+        String USE_ONLY_LOCAL = "use_ony_local";
         String LOCAL_SERVER_USERNAME = "local_server_username";
         String LOCAL_SERVER_PASSWORD = "local_server_password";
         String LOCAL_SERVER_URL = "local_server_url";
@@ -401,6 +404,7 @@ public class ServerUtil {
         if (!prefs.getBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, false))
             oPrefServer.setLocalSameAddressAsRemote();
 
+        oPrefServer.setUseOnlyLocal(prefs.getBoolean(USE_ONLY_LOCAL, false));
         oPrefServer.setIsLocalServerAddressDifferent(prefs.getBoolean(IS_LOCAL_SERVER_ADDRESS_DIFFERENT, false));
         oPrefServer.setLocalServerUsername(prefs.getString(LOCAL_SERVER_USERNAME, ""));
         oPrefServer.setLocalServerPassword(prefs.getString(LOCAL_SERVER_PASSWORD, ""));

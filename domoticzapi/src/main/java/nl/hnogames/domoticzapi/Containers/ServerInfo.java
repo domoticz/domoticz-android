@@ -42,6 +42,8 @@ public class ServerInfo {
     @Expose
     private boolean IS_LOCAL_SERVER_ADDRESS_DIFFERENT = false;
     @Expose
+    private boolean USE_ONLY_LOCAL = false;
+    @Expose
     private String LOCAL_SERVER_USERNAME = "";
     @Expose
     private String LOCAL_SERVER_PASSWORD = "";
@@ -178,6 +180,14 @@ public class ServerInfo {
 
     public void setIsLocalServerAddressDifferent(boolean isLocalServerAddressDifferent) {
         IS_LOCAL_SERVER_ADDRESS_DIFFERENT = isLocalServerAddressDifferent;
+    }
+
+    public boolean getUseOnlyLocal() {
+        return USE_ONLY_LOCAL;
+    }
+
+    public void setUseOnlyLocal(boolean onlyLocal) {
+        USE_ONLY_LOCAL = onlyLocal;
     }
 
     public String getLocalServerUsername() {
