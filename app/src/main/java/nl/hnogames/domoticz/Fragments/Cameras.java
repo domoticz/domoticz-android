@@ -48,8 +48,6 @@ import java.util.ArrayList;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
-import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Interfaces.CameraReceiver;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -58,6 +56,8 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
+import nl.hnogames.domoticzapi.Containers.CameraInfo;
+import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
 

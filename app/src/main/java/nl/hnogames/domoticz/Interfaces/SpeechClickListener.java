@@ -23,7 +23,7 @@
 package nl.hnogames.domoticz.Interfaces;
 
 
-import nl.hnogames.domoticz.Containers.SpeechInfo;
+import nl.hnogames.domoticzapi.Containers.SpeechInfo;
 
 public interface SpeechClickListener {
     boolean onEnableClick(SpeechInfo speech, boolean checked);

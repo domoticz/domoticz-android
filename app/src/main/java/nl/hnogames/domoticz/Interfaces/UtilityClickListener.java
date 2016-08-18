@@ -24,7 +24,7 @@ package nl.hnogames.domoticz.Interfaces;
 
 import android.view.View;
 
-import nl.hnogames.domoticz.Containers.UtilitiesInfo;
+import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 
 public interface UtilityClickListener {
     void onClick(UtilitiesInfo utility);

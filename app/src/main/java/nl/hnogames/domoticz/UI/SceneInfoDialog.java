@@ -31,8 +31,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
 
 public class SceneInfoDialog implements DialogInterface.OnDismissListener {
 

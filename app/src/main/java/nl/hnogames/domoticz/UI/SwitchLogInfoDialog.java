@@ -32,8 +32,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.SwitchLogInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 
 public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
 

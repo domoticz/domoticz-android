@@ -31,8 +31,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.NotificationsAdapter;
-import nl.hnogames.domoticz.Containers.NotificationInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 
 public class NotificationInfoDialog {
 

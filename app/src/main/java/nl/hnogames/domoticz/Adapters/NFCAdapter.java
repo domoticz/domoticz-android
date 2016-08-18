@@ -37,11 +37,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.NFCInfo;
 
 public class NFCAdapter extends BaseAdapter {
 

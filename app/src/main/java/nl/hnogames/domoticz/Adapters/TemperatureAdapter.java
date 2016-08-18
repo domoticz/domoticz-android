@@ -44,11 +44,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.TemperatureInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
+import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
 public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder> {
@@ -131,7 +133,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             if (mTemperatureInfo.getTemperature() > 30)
                 tooHot = true;
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                     mTemperatureInfo.getType(),
                     null, tooHot, false, null)).into(holder.iconRow);
 
@@ -160,7 +162,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 public void onClick(View v) {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
                     }
                 }
             });
@@ -170,7 +172,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 public void onClick(View v) {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
                     }
                 }
             });
@@ -180,7 +182,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 public void onClick(View v) {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
                     }
                 }
             });
@@ -190,7 +192,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 public void onClick(View v) {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
                     }
                 }
             });
@@ -212,7 +214,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             }
 
             holder.name.setText(mTemperatureInfo.getName());
-            if (mTemperatureInfo.getType().equalsIgnoreCase(Domoticz.Device.Type.Name.WIND)) {
+            if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
                 holder.data.setText(R.string.wind);
                 holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
                 holder.data2.setVisibility(View.GONE);

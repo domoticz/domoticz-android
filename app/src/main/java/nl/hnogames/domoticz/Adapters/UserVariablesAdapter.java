@@ -38,10 +38,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import nl.hnogames.domoticz.Containers.UserVariableInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
+import nl.hnogames.domoticzapi.Domoticz;
 
 @SuppressWarnings("unused")
 public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdapter.DataObjectHolder> {

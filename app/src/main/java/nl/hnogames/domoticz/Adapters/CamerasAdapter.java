@@ -34,13 +34,12 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.CameraInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.RequestUtil;
-import nl.hnogames.domoticz.Utils.SessionUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-
+import nl.hnogames.domoticzapi.Containers.CameraInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Utils.RequestUtil;
+import nl.hnogames.domoticzapi.Utils.SessionUtil;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
@@ -58,7 +57,6 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
     }
-
 
     public void setData(ArrayList<CameraInfo> data) {
         this.mDataset = data;

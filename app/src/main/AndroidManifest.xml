@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="nl.hnogames.domoticz">
+    package="nl.hnogames.domoticz" >
 
     <supports-screens
         android:anyDensity="true"
@@ -29,24 +29,20 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.Camera"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.location"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.wifi"
         android:required="true" />
@@ -57,12 +53,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_domoticz"
         android:theme="@style/AppThemeMain"
-        tools:replace="android:icon, android:label, android:theme, android:name">
-
-        <activity android:name=".Service.NFCServiceActivity">
+        tools:replace="android:icon, android:label, android:theme, android:name" >
+        <activity android:name=".Service.NFCServiceActivity" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.domoticz.com"
                     android:pathPrefix="/app"
@@ -75,27 +72,28 @@
         </activity>
 
         <service android:name=".Service.GeofenceTransitionsIntentService" />
-
-        <service android:name=".Service.WearMessageListenerService">
+        <service android:name=".Service.WearMessageListenerService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
                 <action android:name="com.google.android.gms.wearable.CAPABILITY_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.CHANNEL_EVENT" />
-                <data android:scheme="wear" android:host="*" />
+
+                <data
+                    android:host="*"
+                    android:scheme="wear" />
             </intent-filter>
         </service>
-
         <service
             android:name=".Service.TaskService"
             android:exported="true"
-            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE" >
             <intent-filter>
                 <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
             </intent-filter>
         </service>
 
-        <receiver android:name=".Service.WidgetProviderLarge">
+        <receiver android:name=".Service.WidgetProviderLarge" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -104,8 +102,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
-
-        <receiver android:name=".Service.WidgetIntentReceiver">
+        <receiver android:name=".Service.WidgetIntentReceiver" >
             <intent-filter>
                 <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
             </intent-filter>
@@ -118,18 +115,18 @@
         <activity
             android:name=".WidgetConfigurationActivity"
             android:configChanges="orientation|screenSize"
-            android:label="Domoticz Widget Config">
+            android:label="Domoticz Widget Config" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".WidgetActionActivity"
             android:configChanges="orientation|screenSize"
@@ -137,7 +134,7 @@
 
         <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService" />
 
-        <receiver android:name=".Service.BootUpReceiver">
+        <receiver android:name=".Service.BootUpReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -151,13 +148,12 @@
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name_domoticz"
-            android:launchMode="singleTop">
-
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -170,7 +166,7 @@
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/settingsActivity_name"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -185,7 +181,7 @@
             android:name=".CameraActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/cameraActivity_name"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -194,7 +190,7 @@
             android:name=".GraphActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/wizard_graph"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -203,7 +199,7 @@
             android:name=".PlanActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/cameraActivity_name"
-            android:parentActivityName=".PlanActivity">
+            android:parentActivityName=".PlanActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -212,7 +208,7 @@
             android:name=".ServerSettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_server_settings"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".SettingsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.SettingsActivity" />
@@ -221,7 +217,7 @@
             android:name=".GeoSettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_server_settings"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".SettingsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.GeoSettingsActivity" />
@@ -230,34 +226,33 @@
             android:name=".NFCSettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/category_nfc"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".SettingsActivity" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SpeechSettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/category_Speech"
-            android:parentActivityName=".SettingsActivity"></activity>
+            android:parentActivityName=".SettingsActivity" />
         <activity
             android:name=".QRCodeSettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/category_QRCode"
-            android:parentActivityName=".SettingsActivity"></activity>
+            android:parentActivityName=".SettingsActivity" />
         <activity
             android:name=".QRCodeCaptureActivity"
             android:label="@string/category_QRCode"
             android:parentActivityName=".QRCodeSettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ServerListSettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_server_settings"
-            android:parentActivityName=".SettingsActivity">
+            android:parentActivityName=".SettingsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.ServerListSettingsActivity" />
@@ -282,7 +277,7 @@
             android:name=".UpdateActivity"
             android:label="@string/title_activity_update"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.MainActivity" />

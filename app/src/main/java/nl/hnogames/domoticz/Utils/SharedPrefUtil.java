@@ -54,16 +54,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.Language;
-import nl.hnogames.domoticz.Containers.LocationInfo;
-import nl.hnogames.domoticz.Containers.NFCInfo;
-import nl.hnogames.domoticz.Containers.QRCodeInfo;
-import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticz.Containers.SpeechInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.Language;
+import nl.hnogames.domoticzapi.Containers.LocationInfo;
+import nl.hnogames.domoticzapi.Containers.NFCInfo;
+import nl.hnogames.domoticzapi.Containers.QRCodeInfo;
+import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticzapi.Containers.SpeechInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
@@ -901,9 +903,8 @@ public class SharedPrefUtil {
     public boolean getLanguageStringsFromServer(final String langToDownload, ServerUtil server) {
 
         final boolean[] result = new boolean[1];
-
         if (!UsefulBits.isEmpty(langToDownload)) {
-            new Domoticz(mContext, server).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+            new Domoticz(mContext, AppController.getInstance().getRequestQueue()).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
                     Log.d(TAG, "Language " + langToDownload + " downloaded from server");

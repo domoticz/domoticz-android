@@ -46,15 +46,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Containers.Language;
-import nl.hnogames.domoticz.Containers.WeatherInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.Language;
+import nl.hnogames.domoticzapi.Containers.WeatherInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> {
@@ -185,7 +187,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 public void onClick(View v) {
                     for (WeatherInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
                     }
                 }
             });
@@ -196,7 +198,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 public void onClick(View v) {
                     for (WeatherInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
                     }
                 }
             });
@@ -207,7 +209,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 public void onClick(View v) {
                     for (WeatherInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
                     }
                 }
             });
@@ -218,7 +220,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 public void onClick(View v) {
                     for (WeatherInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
-                            listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
                     }
                 }
             });
@@ -254,7 +256,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 }
             });
 
-            Picasso.with(context).load(domoticz.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
+            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
         }
     }
 

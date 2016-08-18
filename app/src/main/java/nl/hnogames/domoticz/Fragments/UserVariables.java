@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
-import nl.hnogames.domoticz.Containers.UserVariableInfo;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
+import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
 
 public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 

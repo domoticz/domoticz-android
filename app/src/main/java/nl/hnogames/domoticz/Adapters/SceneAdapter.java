@@ -43,12 +43,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.SceneInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
+import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
 public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHolder> {
@@ -116,7 +118,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         if (filteredData != null && filteredData.size() > 0) {
             final SceneInfo mSceneInfo = filteredData.get(position);
 
-            if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
+            if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
 
                 setButtons(holder, Buttons.SCENE);
@@ -144,10 +146,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                         + UsefulBits.getFormattedDate(context,
                         mSceneInfo.getLastUpdateDateTime().getTime());
                 holder.signal_level.setText(text);
-                holder.switch_battery_level.setText(Domoticz.Scene.Type.SCENE);
+                holder.switch_battery_level.setText(DomoticzValues.Scene.Type.SCENE);
 
-                Picasso.with(context).load(domoticz.getDrawableIcon(
-                        Domoticz.Scene.Type.SCENE.toLowerCase(),
+                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
+                        DomoticzValues.Scene.Type.SCENE.toLowerCase(),
                         null,
                         null,
                         false,
@@ -192,7 +194,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                         }
                     });
                 }
-            } else if (mSceneInfo.getType().equalsIgnoreCase(Domoticz.Scene.Type.GROUP)) {
+            } else if (mSceneInfo.getType().equalsIgnoreCase(DomoticzValues.Scene.Type.GROUP)) {
                 holder.isProtected = mSceneInfo.isProtected();
 
                 setButtons(holder, Buttons.GROUP);
@@ -222,7 +224,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                         mSceneInfo.getLastUpdateDateTime().getTime());
 
                 holder.signal_level.setText(text);
-                holder.switch_battery_level.setText(Domoticz.Scene.Type.GROUP);
+                holder.switch_battery_level.setText(DomoticzValues.Scene.Type.GROUP);
                 if (holder.buttonOn != null) {
                     holder.buttonOn.setId(mSceneInfo.getIdx());
                     holder.buttonOn.setOnClickListener(new View.OnClickListener() {
@@ -243,8 +245,8 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     });
                 }
 
-                Picasso.with(context).load(domoticz.getDrawableIcon(
-                        Domoticz.Scene.Type.GROUP.toLowerCase(),
+                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
+                        DomoticzValues.Scene.Type.GROUP.toLowerCase(),
                         null,
                         null,
                         mSceneInfo.getStatusInBoolean(),

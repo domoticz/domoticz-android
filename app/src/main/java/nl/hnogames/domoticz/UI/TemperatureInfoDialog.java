@@ -31,8 +31,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import nl.hnogames.domoticz.Containers.TemperatureInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 
 public class TemperatureInfoDialog implements DialogInterface.OnDismissListener {
 

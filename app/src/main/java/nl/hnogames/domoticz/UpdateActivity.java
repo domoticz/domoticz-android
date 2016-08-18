@@ -36,14 +36,15 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import nl.hnogames.domoticz.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.UpdateDownloadReadyReceiver;
-import nl.hnogames.domoticz.Interfaces.UpdateVersionReceiver;
-import nl.hnogames.domoticz.Interfaces.VersionReceiver;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
+import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
+import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -61,10 +62,11 @@ public class UpdateActivity extends AppCompatActivity {
     private TextView updateServerVersionValue;
     private TextView updateSummary;
     private ServerUtil serverUtil;
+    private SharedPrefUtil mSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
         else
@@ -81,7 +83,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
 
         serverUtil = new ServerUtil(this);
-        mDomoticz = new Domoticz(this, serverUtil);
+        mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
         initViews();
     }
@@ -110,7 +112,7 @@ public class UpdateActivity extends AppCompatActivity {
                 updateServerVersionValue.setText(serverUtil.getActiveServer()
                         .getServerUpdateInfo(this)
                         .getUpdateRevisionNumber());
-            } else if (mDomoticz.isDebugEnabled()) {
+            } else if (mSharedPrefs.isDebugEnabled()) {
                 String message = "Debugging: " + getString(R.string.server_update_available);
                 updateSummary.setText(message);
             } else
@@ -124,7 +126,7 @@ public class UpdateActivity extends AppCompatActivity {
                 }
             });
             if (!serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()
-                    && !mDomoticz.isDebugEnabled())
+                    && !mSharedPrefs.isDebugEnabled())
                 buttonUpdateServer.setEnabled(false);
         }
     }
@@ -164,7 +166,7 @@ public class UpdateActivity extends AppCompatActivity {
         mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
             @Override
             public void onUpdateDownloadReady(boolean downloadOk) {
-                if (downloadOk || mDomoticz.isDebugEnabled()) updateServer();
+                if (downloadOk || mSharedPrefs.isDebugEnabled()) updateServer();
                 else {
                     progressDialog.cancel();
                     showMessageUpdateNotReady();
@@ -220,7 +222,7 @@ public class UpdateActivity extends AppCompatActivity {
         };
 
         mCountDownTimer.start();
-        if (!mDomoticz.isDebugEnabled() || serverUtil.getActiveServer()
+        if (!mSharedPrefs.isDebugEnabled() || serverUtil.getActiveServer()
                 .getServerUpdateInfo(this)
                 .isUpdateAvailable()) {
             mDomoticz.updateDomoticzServer(null);
@@ -275,7 +277,7 @@ public class UpdateActivity extends AppCompatActivity {
 
                 serverUtil.getActiveServer().setServerUpdateInfo(UpdateActivity.this, serverUpdateInfo);
                 serverUtil.saveDomoticzServers(false);
-                if (!mDomoticz.isDebugEnabled()) buttonUpdateServer.setEnabled(haveUpdate);
+                if (!mSharedPrefs.isDebugEnabled()) buttonUpdateServer.setEnabled(haveUpdate);
 
                 if (haveUpdate) {
                     updateServerVersionValue.setText(serverUpdateInfo.getUpdateRevisionNumber());

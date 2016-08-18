@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2015 Domoticz
- * <p>
+ * <p/>
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -8,9 +8,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -29,17 +29,19 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.NFCInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticzapi.Containers.NFCInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 
 public class NFCServiceActivity extends AppCompatActivity {
@@ -80,7 +82,7 @@ public class NFCServiceActivity extends AppCompatActivity {
     }
 
     private void handleSwitch(final int idx, final String password) {
-        domoticz = new Domoticz(this, null);
+        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
                                  public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
@@ -91,26 +93,26 @@ public class NFCServiceActivity extends AppCompatActivity {
                                                  public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
 
                                                      int jsonAction;
-                                                     int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                     int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+                                                     if (extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                                                             extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                                                          if (!extendedStatusInfo.getStatusBoolean())
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                                          else
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                                      } else {
                                                          if (!extendedStatusInfo.getStatusBoolean())
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                                          else
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                                      }
 
                                                      switch (extendedStatusInfo.getSwitchTypeVal()) {
-                                                         case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                                              break;
-                                                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                                              break;
                                                      }
 
