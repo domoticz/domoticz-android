@@ -230,37 +230,50 @@ public class MainActivity extends AppCompatActivity {
             initTalkBack();
 
             mServerUtil = new ServerUtil(this);
-            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-            if (!fromVoiceWidget && !fromQRCodeWidget) {
-                setupMobileDevice();
-                checkDomoticzServerUpdate();
-                setScheduledTasks();
+            if(mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl()))
+            {
+                Toast.makeText(this, "Incorrect settings detected, please reconfigure this app.", Toast.LENGTH_LONG).show();
 
-                WidgetUtils.RefreshWidgets(this);
-                UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-                AppController.getInstance().resendRegistrationIdToBackend();
-                drawNavigationMenu(null);
+                //incorrect settings detected
+                mSharedPrefs.setNavigationDefaults();
+                Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
+                startActivityForResult(welcomeWizard, iWelcomeResultCode);
+                mSharedPrefs.setFirstStart(false);
+            }
+            else {
+                domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-                UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
-                    @Override
-                    @DebugLog
-                    public void onReceiveConfig(ConfigInfo settings) {
-                        drawNavigationMenu(settings);
-                        addFragment();
-                        openDialogFragment(new Changelog());
-                    }
+                if (!fromVoiceWidget && !fromQRCodeWidget) {
+                    setupMobileDevice();
+                    checkDomoticzServerUpdate();
+                    setScheduledTasks();
 
-                    @Override
-                    @DebugLog
-                    public void onError(Exception error) {
-                        //drawNavigationMenu(null);
-                        addFragment();
-                        openDialogFragment(new Changelog());
-                    }
-                }, mServerUtil.getActiveServer().getConfigInfo(this));
-            } else {
-                addFragment();
+                    WidgetUtils.RefreshWidgets(this);
+                    UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
+                    AppController.getInstance().resendRegistrationIdToBackend();
+                    drawNavigationMenu(null);
+
+                    UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
+                        @Override
+                        @DebugLog
+                        public void onReceiveConfig(ConfigInfo settings) {
+                            drawNavigationMenu(settings);
+                            addFragment();
+                            openDialogFragment(new Changelog());
+                        }
+
+                        @Override
+                        @DebugLog
+                        public void onError(Exception error) {
+                            //drawNavigationMenu(null);
+                            addFragment();
+                            openDialogFragment(new Changelog());
+                        }
+                    }, mServerUtil.getActiveServer().getConfigInfo(this));
+                } else {
+                    addFragment();
+                }
             }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);

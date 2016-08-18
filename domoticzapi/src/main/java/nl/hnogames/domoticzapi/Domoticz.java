@@ -101,8 +101,8 @@ public class Domoticz {
     private static final String TAG = "DomoticzAPI";
 
     private ServerUtil mServerUtil;
+    private PhoneConnectionUtil mPhoneConnectionUtil;
     private final SessionUtil mSessionUtil;
-    private final PhoneConnectionUtil mPhoneConnectionUtil;
     private final DomoticzUrls mDomoticzUrls;
     private final RequestQueue queue;
 
@@ -114,11 +114,14 @@ public class Domoticz {
         this.mSessionUtil = new SessionUtil(mContext);
         this.mServerUtil = new ServerUtil(mContext);
         this.mDomoticzUrls = new DomoticzUrls(this);
-        mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
-            @Override
-            public void ReceiveSSIDs(CharSequence[] entries) {
-            }
-        });
+
+        if(!getServerUtil().getActiveServer().getUseOnlyLocal()) {
+            mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
+                @Override
+                public void ReceiveSSIDs(CharSequence[] entries) {
+                }
+            });
+        }
     }
 
     public ServerUtil getServerUtil() {
