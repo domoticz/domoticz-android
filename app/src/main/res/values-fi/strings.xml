@@ -8,7 +8,7 @@
   <string name="drawer_open">Avaa navigointivalikko</string>
   <string name="drawer_close">Sulje navigointivalikko</string>
   <string name="msg_please_wait">Odota&#8230;</string>
-  <string name="changelog">Changelog</string>
+  <string name="changelog">Muutoshistoria</string>
   <string name="button_state_on">Päällä</string>
   <string name="button_state_off">Pois päältä</string>
   <string name="button_state_closed">Suljettu</string>
@@ -50,7 +50,7 @@
   <string name="add">Lisää</string>
   <string name="cancel">Peruuta</string>
   <string name="ok">OK</string>
-  <string name="upgrade">UPGRADE</string>
+  <string name="upgrade">PÄIVITÄ</string>
   <string name="something_went_wrong">Jokin meni pieleen</string>
   <string name="no_network_available">Virhe: Ei verkkoyhteyttä saatavilla</string>
   <string name="oops">OHO!</string>

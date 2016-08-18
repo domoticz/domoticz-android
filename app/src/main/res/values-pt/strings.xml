@@ -8,7 +8,7 @@
   <string name="drawer_open">Abra o painel de navegação</string>
   <string name="drawer_close">Feche o painel de navegação</string>
   <string name="msg_please_wait">Aguarde, por favor&#8230;</string>
-  <string name="changelog">Changelog</string>
+  <string name="changelog">Histórico de alterações</string>
   <string name="button_state_on">Ligar</string>
   <string name="button_state_off">Desligar</string>
   <string name="button_state_closed">Fechado</string>
@@ -50,7 +50,7 @@
   <string name="add">Adicionar</string>
   <string name="cancel">Cancelar</string>
   <string name="ok">Aceitar</string>
-  <string name="upgrade">UPGRADE</string>
+  <string name="upgrade">ATUALIZAÇÃO</string>
   <string name="something_went_wrong">Ocorreu algo de errado</string>
   <string name="no_network_available">Erro: Nenhuma rede conexão disponível</string>
   <string name="oops">UPSS!</string>

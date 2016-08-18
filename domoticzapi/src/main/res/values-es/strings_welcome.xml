@@ -18,7 +18,7 @@
   <string name="welcome_msg_numberOfDevices">%1$d dispositivos encontrados</string>
   <string name="welcome_msg_no_ssid_found">No encontrado ninguna SSID wifi</string>
   <string name="welcome_ssid_spinner_prompt">Seleccione las SSID\'s de la casa</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_ssid_button_prompt">Añadir home SSID\'s</string>
   <string name="welcome_server_settings_title">Preferencias del Servidor</string>
   <string name="welcome_server_startScreen">Pantalla de inicio</string>
   <string name="welcome_button_next">siguiente</string>
@@ -30,9 +30,9 @@
   <string name="welcome_remote_server_username">Nombre de usuario</string>
   <string name="welcome_remote_server_password">Contaseña</string>
   <string name="welcome_remote_server_directory">Directorio</string>
-  <string name="remote">Remote</string>
+  <string name="remote">Remoto</string>
   <string name="local">Local</string>
-  <string name="servername">Server Name</string>
+  <string name="servername">Nombre de Servidor</string>
   <string name="welcome_local_server_used_switch_title">Dirección de servidor diferente</string>
   <string name="welcome_local_server_used_switch_summary">Utilice otra dirección para la conexión local</string>
   <string name="welcome_advancedSettings">Configuración avanzada del servidor</string>

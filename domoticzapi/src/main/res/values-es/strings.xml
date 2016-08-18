@@ -8,7 +8,7 @@
   <string name="drawer_open">Abrir el menú</string>
   <string name="drawer_close">Cerrar el menú</string>
   <string name="msg_please_wait">Por favor, espera&#8230;</string>
-  <string name="changelog">Changelog</string>
+  <string name="changelog">Registro de cambios</string>
   <string name="button_state_on">On</string>
   <string name="button_state_off">Off</string>
   <string name="button_state_closed">Cerrado</string>
@@ -50,7 +50,7 @@
   <string name="add">Añadir</string>
   <string name="cancel">Cancelar</string>
   <string name="ok">Aceptar</string>
-  <string name="upgrade">UPGRADE</string>
+  <string name="upgrade">ACTUALIZAR</string>
   <string name="something_went_wrong">Hubo algún problema</string>
   <string name="no_network_available">Error: No hay conexión de red disponible</string>
   <string name="oops">¡VAYA!</string>
