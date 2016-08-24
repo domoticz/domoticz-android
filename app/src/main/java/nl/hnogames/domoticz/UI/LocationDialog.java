@@ -51,7 +51,7 @@ import nl.hnogames.domoticzapi.Containers.LocationInfo;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
-    private final MaterialDialog.Builder mdb;
+    private MaterialDialog.Builder mdb;
     private final GeoUtil mGeoUtil;
     private Context mContext;
     private Address foundLocation;
@@ -81,7 +81,22 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         mGeoUtil = new GeoUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mdb = new MaterialDialog.Builder(mContext);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        }
+        else
+            mdb = new MaterialDialog.Builder(mContext);
+
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
