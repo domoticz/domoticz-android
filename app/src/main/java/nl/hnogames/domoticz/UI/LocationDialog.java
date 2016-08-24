@@ -108,7 +108,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
             @Override
             public void onClick(@NonNull MaterialDialog materialDialog,
                                 @NonNull DialogAction dialogAction) {
-
                 if (dismissListener != null && valuesAreValid()) {
                     if (locationToEdit != null) {
                         // In edit mode

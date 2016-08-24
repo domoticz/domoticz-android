@@ -53,8 +53,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -102,20 +100,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     private boolean isLocationUpdatesStarted;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a place.
-                Place place = PlacePicker.getPlace(this, data);
-                String text = String.format(getString(R.string.geofence_place), place.getName());
-                UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT);
-            }
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
@@ -137,7 +121,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
-
         createListView();
         initSwitches();
         createLocationRequest();
@@ -555,7 +538,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         locationDialog.setLocationToEdit(location);
         locationDialog.setRadius(location.getRadius());
         locationDialog.setCurrentLocation(null);            // Set to null so its in edit mode
-
         locationDialog.onDismissListener(new LocationDialog.DismissListener() {
             @Override
             public void onDismiss(LocationInfo location) {
