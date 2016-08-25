@@ -67,7 +67,6 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
-            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
@@ -80,7 +79,6 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
-            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
@@ -108,9 +106,6 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
-    maven {
-        url "https://mint.splunk.com/gradle/"
-    }
 }
 
 //noinspection GroovyAssignabilityCheck
@@ -135,6 +130,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
 
     compile 'com.google.firebase:firebase-core:9.4.0'
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+
     compile 'com.google.android.gms:play-services-analytics:9.4.0'
     compile 'com.google.android.gms:play-services-wearable:9.4.0'
     compile 'com.google.android.gms:play-services-maps:9.4.0'
@@ -144,7 +141,6 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
-    compile 'com.splunk.mint:mint:5.0.0'
     compile 'com.larswerkman:lobsterpicker:1.0.1'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.dexafree:MaterialList:v3.2.2'
