@@ -4,15 +4,15 @@
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="premium_category">Köp premium!</string>
   <string name="premium_title">Skaffa premiumversionen!</string>
-  <string name="premium_feature">är en premiumfunktion, vänligen köp betalversionen för att stödja utvecklarna!</string>
+  <string name="premium_feature">är en premium funktion, vänligen köp betal versionen för att stödja utvecklarna!</string>
   <string name="drawer_open">Öppna navigeringsmenyn</string>
   <string name="drawer_close">Stäng navigeringsmenyn</string>
   <string name="msg_please_wait">Vänligen vänta&#8230;</string>
-  <string name="changelog">Ändringar</string>
+  <string name="changelog">Ändringslogg</string>
   <string name="button_state_on">På</string>
   <string name="button_state_off">Av</string>
-  <string name="button_state_closed">Stäng</string>
-  <string name="button_state_open">Öppna</string>
+  <string name="button_state_closed">Stängd</string>
+  <string name="button_state_open">Öppen</string>
   <string name="button_status_log">Logg</string>
   <string name="button_status_day">Dag</string>
   <string name="button_status_week">Vecka</string>
@@ -34,11 +34,11 @@
   <string name="action_success">Åtgärden lyckades</string>
   <string name="action_failed">Åtgärden misslyckades</string>
   <string name="action_unknown">Okänt resultat av åtgärden</string>
-  <string name="choose_status">Välj läge</string>
+  <string name="choose_status">Välj tillstånd</string>
   <string name="normal">Normal</string>
-  <string name="economy">Ekonomisk</string>
+  <string name="economy">Ekonomi</string>
   <string name="away">Borta</string>
-  <string name="day_off">Dag</string>
+  <string name="day_off">Ledig dag</string>
   <string name="custom">Anpassad</string>
   <string name="heating_off">Uppvärmning av</string>
   <string name="debug_textview_title">Felsökningsinformation</string>

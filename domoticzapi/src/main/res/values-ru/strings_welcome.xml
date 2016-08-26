@@ -18,7 +18,7 @@
   <string name="welcome_msg_numberOfDevices">Устройство %1$d не найдено</string>
   <string name="welcome_msg_no_ssid_found">Не нейдено SSID wifi</string>
   <string name="welcome_ssid_spinner_prompt">Выберите домашний SSID</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_ssid_button_prompt">Добавьте домашние SSID</string>
   <string name="welcome_server_settings_title">Параметры сервера</string>
   <string name="welcome_server_startScreen">Начальный экран</string>
   <string name="welcome_button_next">следующий</string>
