@@ -25,7 +25,6 @@ package nl.hnogames.domoticz;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;

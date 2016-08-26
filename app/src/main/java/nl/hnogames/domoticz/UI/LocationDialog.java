@@ -51,8 +51,8 @@ import nl.hnogames.domoticzapi.Containers.LocationInfo;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
-    private MaterialDialog.Builder mdb;
     private final GeoUtil mGeoUtil;
+    private MaterialDialog.Builder mdb;
     private Context mContext;
     private Address foundLocation;
     private FloatingLabelEditText editAddress;
@@ -93,8 +93,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                     .negativeColorRes(R.color.white)
                     .widgetColorRes(R.color.white)
                     .buttonRippleColorRes(R.color.white);
-        }
-        else
+        } else
             mdb = new MaterialDialog.Builder(mContext);
 
         boolean wrapInScrollView = true;
