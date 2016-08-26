@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.android.gms.maps.model.LatLng;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
@@ -99,6 +100,7 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel);
 
