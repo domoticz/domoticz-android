@@ -153,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDarkMain);
-
+        else
+            setTheme(R.style.AppThemeMain);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
         UsefulBits.checkAPK(this, mSharedPrefs);
@@ -290,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         if (mSharedPrefs.darkThemeEnabled())
                             setTheme(R.style.AppThemeDarkMain);
-                        buildScreen();
+                        else
+                            setTheme(R.style.AppThemeMain);buildScreen();
                     }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
@@ -299,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
                     SerializableManager.cleanAllSerializableObjects(this);
                     if (mSharedPrefs.darkThemeEnabled())
                         setTheme(R.style.AppThemeDarkMain);
+                    else
+                        setTheme(R.style.AppThemeMain);
                     this.recreate();
                     break;
                 case iQRResultCode:
