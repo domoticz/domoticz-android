@@ -200,9 +200,9 @@
                 android:id="@+id/localServer_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="70dp"
                 android:layout_marginTop="2dp"
-                android:checked="false"
-                android:layout_marginBottom="70dp" />
+                android:checked="false" />
 
             <LinearLayout
                 android:id="@+id/local_server_settings"
