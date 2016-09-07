@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
-    <changelogversion changeDate="Aug 3, 2016" versionName="0.1.275">
+    <changelogversion changeDate="Sept 7, 2016" versionName="BETA">
         <changelogtext>[b]PREMIUM[/b] Added Talk Back</changelogtext>
+        <changelogtext>Change User Variable values</changelogtext>
         <changelogtext>Added Czech translations (thanks to Petr)</changelogtext>
+        <changelogtext>Fixed Graphs for CO2 + GAS</changelogtext>
         <changelogtext>Various crash fixes</changelogtext>
     </changelogversion>
 
