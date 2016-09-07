@@ -13,4 +13,7 @@
   <string name="forecast">Ennuste</string>
   <string name="rain">Sadetta</string>
   <string name="rainrate">Sateen rankkuus</string>
+  <string name="co2">CO2</string>
+  <string name="co2min">CO2 Min</string>
+  <string name="co2max">CO2 Max</string>
 </resources>

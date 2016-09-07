@@ -13,4 +13,7 @@
   <string name="forecast">Prognos</string>
   <string name="rain">Nederbörd</string>
   <string name="rainrate">Nederbördsintensitet</string>
+  <string name="co2">CO2</string>
+  <string name="co2min">CO2 Min</string>
+  <string name="co2max">CO2 Max</string>
 </resources>

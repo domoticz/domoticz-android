@@ -13,4 +13,7 @@
   <string name="forecast">Forecast</string>
   <string name="rain">Precipitação</string>
   <string name="rainrate">Quantidade de chuva</string>
+  <string name="co2">CO2</string>
+  <string name="co2min">CO2 Min</string>
+  <string name="co2max">CO2 Max</string>
 </resources>
