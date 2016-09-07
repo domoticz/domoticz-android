@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
 public class UserVariableInfo implements Comparable, Serializable {
     String jsonObject;
@@ -62,6 +63,23 @@ public class UserVariableInfo implements Comparable, Serializable {
 
     public String getType() {
         return Type;
+    }
+
+    public String getTypeValue() {
+        switch (getType())
+        {
+            case "0":
+                return "Integer";
+            case "1":
+                return "Float";
+            case "2":
+                return "String";
+            case "3":
+                return "Date";
+            case "4":
+                return "Time";
+        }
+        return null;
     }
 
     public String getLastUpdate() {
