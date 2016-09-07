@@ -115,7 +115,9 @@ public class ServerAdapter extends BaseAdapter {
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                handleRemoveButtonClick(data.get(v.getId()));
+                try {
+                    handleRemoveButtonClick(data.get(v.getId()));
+                }catch(Exception ex){}
             }
         });
 

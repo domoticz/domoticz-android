@@ -2,21 +2,29 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.InputType;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.Interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
+public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener, UserVariablesClickListener {
 
     private ArrayList<UserVariableInfo> mUserVariableInfos;
     private UserVariablesAdapter adapter;
@@ -75,7 +83,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private void createListView() {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos);
+                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos, this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -105,6 +113,66 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                 super.errorHandling(error);
             }
         }
+    }
+
+    @Override
+    public void onUserVariableClick(final UserVariableInfo clickedVar) {
+        new MaterialDialog.Builder(mContext)
+                .title(R.string.title_vars)
+                .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if(validateInput(String.valueOf(input), clickedVar.getType()))
+                        {
+                            updateUserVariable(String.valueOf(input), clickedVar);
+                        }
+                        else{
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                        }
+                    }
+                }).show();
+    }
+
+    private boolean validateInput(String input, String type)
+    {
+        try {
+            switch (type)
+            {
+                case "0":
+                    Integer.parseInt(input);
+                    break;
+                case "1":
+                    Float.parseFloat(input);
+                    break;
+                case "3":
+                    new SimpleDateFormat("dd/MM/yyyy").parse(input);
+                    break;
+                case "4":
+                    new SimpleDateFormat("HH:mm").parse(input);
+                    break;
+            }
+        } catch(Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean updateUserVariable(String input, UserVariableInfo clickedVar)
+    {
+        mDomoticz.setUserVariableValue(input, clickedVar, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                processUserVariables();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input_error), Snackbar.LENGTH_SHORT);
+            }
+        });
+        return true;
     }
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {

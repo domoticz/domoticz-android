@@ -24,6 +24,7 @@ import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
+import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.AuthReceiver;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
@@ -564,6 +565,24 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETSECURITY);
         url += "&secstatus=" + secStatus;
         url += "&seccode=" + seccode;
+
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonPutRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3, queue);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public void setUserVariableValue(  String newValue,
+                                       UserVariableInfo var,
+                                       setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATEVAR);
+        url += "&idx=" + var.getIdx();
+        url += "&vname=" + var.getName();
+        url += "&vtype=" + var.getType();
+        url += "&vvalue=" + newValue;
 
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,

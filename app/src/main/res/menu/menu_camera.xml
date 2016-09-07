@@ -12,8 +12,8 @@
 
     <item
         android:id="@+id/action_speech"
-        android:orderInCategory="99"
         android:icon="@drawable/ic_microphone"
+        android:orderInCategory="99"
         android:title="@string/action_speech"
         android:visible="false"
         app:showAsAction="ifRoom" />

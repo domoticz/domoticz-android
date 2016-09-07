@@ -23,13 +23,16 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class TextDialog implements
         DialogInterface.OnDismissListener,
@@ -50,8 +53,21 @@ public class TextDialog implements
 
         this.context = context;
 
-        mdb = new MaterialDialog.Builder(context);
-        mdb.customView(R.layout.dialog_text, true).negativeText(android.R.string.cancel);
+        if ((new SharedPrefUtil(context)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(context)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(context);
+        mdb.customView(R.layout.dialog_text, true).negativeText(android.R.string.cancel)
+                .theme((new SharedPrefUtil(context)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT);
         mdb.dismissListener(this);
         mdb.cancelListener(this);
         mdb.onPositive(this);

@@ -42,7 +42,14 @@ public class WelcomeViewActivity extends IntroActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+
         setFullscreen(true);
         super.onCreate(savedInstanceState);
 
@@ -63,12 +70,12 @@ public class WelcomeViewActivity extends IntroActivity {
                 .build());
 
         addSlide(new FragmentSlide.Builder()
-                .background(R.color.welcome3_background)
+                .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
                 .fragment(WelcomePage3.newInstance(WELCOME_WIZARD))
                 .build());
 
         addSlide(new FragmentSlide.Builder()
-                .background(R.color.welcome4_background)
+                .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
                 .fragment(WelcomePage4.newInstance())
                 .build());
 

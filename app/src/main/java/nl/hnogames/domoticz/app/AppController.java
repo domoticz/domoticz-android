@@ -36,7 +36,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.splunk.mint.Mint;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -50,7 +49,6 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
@@ -75,9 +73,6 @@ public class AppController extends MultiDexApplication implements GcmListener {
     public void onCreate() {
         super.onCreate();
 
-        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey))) {
-            Mint.initAndStartSession(this, getString(R.string.mintapikey));
-        }
         if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
 

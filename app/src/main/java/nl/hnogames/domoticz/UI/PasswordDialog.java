@@ -35,6 +35,7 @@ import android.widget.CompoundButton;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import nl.hnogames.domoticz.R;
@@ -58,10 +59,23 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         this.mContext = c;
         this.domoticz = mDomoticz;
         mSharedPrefs = new SharedPrefUtil(c);
-        mdb = new MaterialDialog.Builder(mContext);
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {

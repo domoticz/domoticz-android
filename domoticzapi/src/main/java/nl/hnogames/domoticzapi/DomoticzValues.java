@@ -198,6 +198,7 @@ public class DomoticzValues {
                 int LOGOFF = 35;
                 int AUTH = 36;
                 int FAVORITES = 37;
+                int UPDATEVAR = 40;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -383,6 +384,11 @@ public class DomoticzValues {
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
+        }
+
+        @SuppressWarnings({"unused", "SpellCheckingInspection"})
+        interface UserVariable {
+            String UPDATE = "/json.htm?type=command&param=updateuservariable";
         }
 
         @SuppressWarnings("SpellCheckingInspection")

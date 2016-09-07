@@ -119,7 +119,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                showEditServerActivity((String) ((TextView) view.findViewById(R.id.server_name)).getText());
+                showEditServerActivity(String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText()));
             }
         });
     }

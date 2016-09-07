@@ -272,22 +272,31 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @Override
     @DebugLog
     public void onLogClick(final UtilitiesInfo utility, final String range) {
+        int steps = 3;
         /*
             Replace so we get the right log
          */
         String graphType = utility.getSubType()
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
+                .replace("Gas", "counter")
                 .replace("Energy", "counter")
+                .replace("Voltcraft", "counter")
                 .replace("SetPoint", "temp")
                 .replace("YouLess counter", "counter");
+
+        if(graphType.contains("counter"))
+            graphType = "counter";
+
+        if(utility.getSubType().equals("Gas"))
+            steps=1;
 
         Intent intent = new Intent(mContext, GraphActivity.class);
         intent.putExtra("IDX", utility.getIdx());
         intent.putExtra("RANGE", range);
         intent.putExtra("TYPE", graphType);
         intent.putExtra("TITLE", utility.getSubType().toUpperCase());
-        intent.putExtra("STEPS", 3);
+        intent.putExtra("STEPS", steps);
         startActivity(intent);
     }
 

@@ -13,4 +13,7 @@
   <string name="forecast">Прогноза</string>
   <string name="rain">Дъжд</string>
   <string name="rainrate">Дъждовна честота</string>
+  <string name="co2">CO2</string>
+  <string name="co2min">CO2 Min</string>
+  <string name="co2max">CO2 Max</string>
 </resources>

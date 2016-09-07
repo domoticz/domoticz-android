@@ -29,8 +29,8 @@
   <string name="wizard_nfc_description">Вы можете изменить переключения через NFC!</string>
   <string name="wizard_qrcode">QR-код</string>
   <string name="wizard_qrcode_description">Переключите тумблеры сканируя QR-код (или штрихкод)!</string>
-  <string name="wizard_speech">Speech Commands</string>
-  <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
+  <string name="wizard_speech">Голосовые команды</string>
+  <string name="wizard_speech_description">Активируйте переключатели вашим голосом! Сконфигурируйте речевые команды через экраны настройки и подключите переключатели.</string>
   <string name="wizard_button_nice">Отлично!</string>
   <string name="wizard_button_switches">Переключатели</string>
   <string name="wizard_button_settings">Настройки</string>

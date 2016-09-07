@@ -339,13 +339,15 @@ public class ServerInfo {
      * @return Configuration info of this server from a file
      */
     private ConfigInfo readConfigInfoFromFile(Context context) {
-        String uniqueServerId = getServerUniqueId();
-        Object serializedServerInfoObject = SerializableManager.readSerializedObject(
-                context,
-                SERIALIZE_CONFIG_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
-        if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ConfigInfo) {
-            return (ConfigInfo) serializedServerInfoObject;
-        } else return null;
+        try {
+            String uniqueServerId = getServerUniqueId();
+            Object serializedServerInfoObject = SerializableManager.readSerializedObject(
+                    context,
+                    SERIALIZE_CONFIG_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
+            if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ConfigInfo) {
+                return (ConfigInfo) serializedServerInfoObject;
+            } else return null;
+        }catch(Exception ex){return null;}
     }
 
     /**

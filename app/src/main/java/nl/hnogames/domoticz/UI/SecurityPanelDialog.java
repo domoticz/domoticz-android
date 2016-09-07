@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import nl.hnogames.domoticz.R;
@@ -73,8 +74,21 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         this.domoticz = mDomoticz;
         this.panelInfo = panelInfo;
         mSharedPrefs = new SharedPrefUtil(c);
-        mdb = new MaterialDialog.Builder(mContext);
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_security, true)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }

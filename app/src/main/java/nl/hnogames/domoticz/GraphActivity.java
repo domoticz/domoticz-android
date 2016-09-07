@@ -50,7 +50,6 @@ public class GraphActivity extends AppCompatActivity {
                 this.finish();//get graph info via bundle
 
             this.setTitle(getString(R.string.wizard_graph));
-
             String title = bundle.getString("TITLE");
             if (!UsefulBits.isEmpty(title)) {
                 setTitle(title);

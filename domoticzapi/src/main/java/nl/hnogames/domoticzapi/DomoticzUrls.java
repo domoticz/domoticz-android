@@ -378,6 +378,10 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.Category.FAVORITES;
                 break;
 
+            case DomoticzValues.Json.Url.Request.UPDATEVAR:
+                url = DomoticzValues.Url.UserVariable.UPDATE;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }

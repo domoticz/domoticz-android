@@ -153,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDarkMain);
-
+        else
+            setTheme(R.style.AppThemeMain);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
         UsefulBits.checkAPK(this, mSharedPrefs);
@@ -230,9 +231,7 @@ public class MainActivity extends AppCompatActivity {
             initTalkBack();
 
             mServerUtil = new ServerUtil(this);
-
-            if(mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl()))
-            {
+            if (mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl())) {
                 Toast.makeText(this, "Incorrect settings detected, please reconfigure this app.", Toast.LENGTH_LONG).show();
 
                 //incorrect settings detected
@@ -240,8 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
                 startActivityForResult(welcomeWizard, iWelcomeResultCode);
                 mSharedPrefs.setFirstStart(false);
-            }
-            else {
+            } else {
                 domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
@@ -293,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         if (mSharedPrefs.darkThemeEnabled())
                             setTheme(R.style.AppThemeDarkMain);
-                        buildScreen();
+                        else
+                            setTheme(R.style.AppThemeMain);buildScreen();
                     }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
@@ -302,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
                     SerializableManager.cleanAllSerializableObjects(this);
                     if (mSharedPrefs.darkThemeEnabled())
                         setTheme(R.style.AppThemeDarkMain);
+                    else
+                        setTheme(R.style.AppThemeMain);
                     this.recreate();
                     break;
                 case iQRResultCode:
@@ -332,6 +333,12 @@ public class MainActivity extends AppCompatActivity {
             //reload settings
             startActivityForResult(new Intent(this, SettingsActivity.class), iSettingsResultCode);
             SerializableManager.cleanAllSerializableObjects(this);
+        } else {
+            switch (requestCode) {
+                case iWelcomeResultCode:
+                    this.finish();
+                    break;
+            }
         }
 
         if (fromQRCodeWidget)

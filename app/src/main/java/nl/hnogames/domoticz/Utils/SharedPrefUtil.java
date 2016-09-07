@@ -542,7 +542,6 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
-
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);
     }
