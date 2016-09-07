@@ -45,6 +45,9 @@ public class GraphPointInfo {
     private String uvi;
     private String mm;
     private String u;
+    private String co2_min;
+    private String co2_max;
+    private String co2;
 
     public GraphPointInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -79,6 +82,13 @@ public class GraphPointInfo {
             u = row.getString("u_max");
         if (row.has("mm"))
             mm = row.getString("mm");
+
+        if (row.has("co2"))
+            co2 = row.getString("co2");
+        if (row.has("co2_max"))
+            co2_max = row.getString("co2_max");
+        if (row.has("co2_min"))
+            co2_min = row.getString("co2_min");
     }
 
     @Override
@@ -137,6 +147,18 @@ public class GraphPointInfo {
 
     public String getDateTime() {
         return dateTime;
+    }
+
+    public String getCo2() {
+        return co2;
+    }
+
+    public String getCo2Max() {
+        return co2_max;
+    }
+
+    public String getCo2Min() {
+        return co2_min;
     }
 
     public JSONObject getJsonObject() {
