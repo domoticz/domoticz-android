@@ -154,7 +154,8 @@ public class WelcomePage4 extends Fragment {
             please_wait_layout.setVisibility(View.GONE);
         if (result_layout != null)
             result_layout.setVisibility(View.VISIBLE);
-        result.setText(text);
+        if (result != null)
+            result.setText(text);
     }
 
     private void resetLayout() {
@@ -162,7 +163,8 @@ public class WelcomePage4 extends Fragment {
             please_wait_layout.setVisibility(View.VISIBLE);
         if (result_layout != null)
             result_layout.setVisibility(View.GONE);
-        result.setText("");
+        if (result != null)
+            result.setText("");
     }
 
     private void disableFinishButton() {
