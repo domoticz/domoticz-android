@@ -22,10 +22,12 @@
 
 package nl.hnogames.domoticz.Preference;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
@@ -35,11 +37,14 @@ import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceFragment;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -126,6 +131,8 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference premiumPreference = findPreference("premium_settings");
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
+        android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
+        android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
 
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
         if (notifications == null || notifications.size() <= 0) {
@@ -185,6 +192,14 @@ public class Preference extends PreferenceFragment {
                     Intent intent = new Intent(mContext, ServerListSettingsActivity.class);
                     startActivity(intent);
                 }
+                return true;
+            }
+        });
+
+        FingerPrintSettingsPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                mContext.startActivity(new Intent(Settings.ACTION_SECURITY_SETTINGS));
                 return true;
             }
         });
@@ -367,6 +382,41 @@ public class Preference extends PreferenceFragment {
                 }
             });
         }
+
+        FingerPrintPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.always_on_title));
+                    return false;
+                } else {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_supported), Toast.LENGTH_LONG);
+                        return false;
+                    }
+
+                    if (!PermissionsUtil.canAccessFingerprint(mContext)) {
+                        requestPermissions(PermissionsUtil.INITIAL_FINGERPRINT_PERMS,
+                                PermissionsUtil.INITIAL_FINGERPRINT_REQUEST);
+                    } else {
+                        FingerprintManager fingerprintManager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
+                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                            return false;
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!fingerprintManager.isHardwareDetected()) {
+                                return false;
+                            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
+                                return true;
+                            } else {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void pushGCMRegistrationIds() {
@@ -650,4 +700,5 @@ public class Preference extends PreferenceFragment {
             }
         }, (300));
     }
+
 }

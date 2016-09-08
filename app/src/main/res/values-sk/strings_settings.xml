@@ -11,11 +11,13 @@
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informácie</string>
   <string name="category_language">Jazyk</string>
+  <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Oznámenia</string>
   <string name="category_debug">Ladenie chýb</string>
   <string name="category_export">Exportovať/importovať nastavenia</string>
   <string name="category_theme">Vzhľad</string>
   <string name="category_nfc">NFC pripojenie</string>
+  <string name="category_account">Accounts</string>
   <string name="category_QRCode">QR kód</string>
   <string name="category_Speech">Reč</string>
   <!--        Generic settings       -->
@@ -36,6 +38,12 @@
   <string name="dashboard_list_title">Zobrazenie hlavného panela</string>
   <string name="show_dashboard_list_on">Zobraziť hlavný panel ako zoznam</string>
   <string name="show_dashboard_list_off">Zobraziť hlavný panel ako mriežku</string>
+  <string name="security_settings">Setup Security</string>
+  <string name="enable_security">Enable fingerprint protection on startup</string>
+  <string name="disable_security">Disable fingerprint protection on startup</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Položky pre Android Wear</string>
   <string name="custom_wear_select">Vybrať prepínače pre Android Wear</string>
@@ -48,6 +56,9 @@
   <string name="config_theme">Nastavenie vzhľadu</string>
   <string name="set_dark_theme">Nastaviť tmavý vzhľad</string>
   <string name="set_light_theme">Nastaviť svetlý vzhľad</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
+  <string name="set_talk_back_off">Turn talk back off</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Nastavenie importované, reštartujte Domoticz</string>
   <string name="settings_import_failed">Nepodarilo sa importovať nastavenia</string>

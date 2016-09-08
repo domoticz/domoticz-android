@@ -285,11 +285,11 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 .replace("SetPoint", "temp")
                 .replace("YouLess counter", "counter");
 
-        if(graphType.contains("counter"))
+        if (graphType.contains("counter"))
             graphType = "counter";
 
-        if(utility.getSubType().equals("Gas"))
-            steps=1;
+        if (utility.getSubType().equals("Gas"))
+            steps = 1;
 
         Intent intent = new Intent(mContext, GraphActivity.class);
         intent.putExtra("IDX", utility.getIdx());

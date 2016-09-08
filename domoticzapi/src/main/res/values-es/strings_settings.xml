@@ -11,11 +11,13 @@
   <string name="category_geofencing">Geocercas</string>
   <string name="category_info">Información</string>
   <string name="category_language">Idioma</string>
+  <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Notificaciones</string>
   <string name="category_debug">Depuración</string>
   <string name="category_export">Exportar/importar preferencias</string>
   <string name="category_theme">Estilo</string>
   <string name="category_nfc">Conexiones NFC</string>
+  <string name="category_account">Accounts</string>
   <string name="category_QRCode">Código QR</string>
   <string name="category_Speech">Discurso</string>
   <!--        Generic settings       -->
@@ -36,6 +38,12 @@
   <string name="dashboard_list_title">Cuadricula de tablero</string>
   <string name="show_dashboard_list_on">Mostrar tablero como lista</string>
   <string name="show_dashboard_list_off">Mostrar tablero cuadriculado</string>
+  <string name="security_settings">Setup Security</string>
+  <string name="enable_security">Enable fingerprint protection on startup</string>
+  <string name="disable_security">Disable fingerprint protection on startup</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Elementos específicos de Android Wear</string>
   <string name="custom_wear_select">Select Wear interruptores</string>
@@ -48,6 +56,9 @@
   <string name="config_theme">Cambiar estilo</string>
   <string name="set_dark_theme">Cambiar estilo de el app a oscuro</string>
   <string name="set_light_theme">Cambiar estilo de el app a claro</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
+  <string name="set_talk_back_off">Turn talk back off</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Configuración importada, por favor recomience Domoticz</string>
   <string name="settings_import_failed">No se pudo importar la configuración</string>

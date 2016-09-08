@@ -71,6 +71,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class SharedPrefUtil {
 
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
+    private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
@@ -149,6 +150,10 @@ public class SharedPrefUtil {
 
     public boolean isMultiServerEnabled() {
         return prefs.getBoolean(PREF_MULTI_SERVER, false);
+    }
+
+    public boolean isStartupSecurityEnabled() {
+        return prefs.getBoolean(PREF_STARTUP_PROTECTION_ENABLED, false);
     }
 
     public boolean isNotificationsEnabled() {

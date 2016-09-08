@@ -51,6 +51,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.digitus.Digitus;
+import com.afollestad.digitus.DigitusCallback;
+import com.afollestad.digitus.DigitusErrorType;
+import com.afollestad.digitus.FingerprintDialog;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
@@ -116,7 +120,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 
 @DebugLog
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DigitusCallback, FingerprintDialog.Callback {
     private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
@@ -140,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean fromVoiceWidget = false;
     private boolean fromQRCodeWidget = false;
     private MenuItem speechMenuItem;
+    private boolean validateOnce = true;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -179,13 +184,20 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
-            // Only start Geofences when not started
-            // Geofences are already started on device boot up by the BootUpReceiver
-            if (!mSharedPrefs.isGeofencingStarted()) {
-                mSharedPrefs.setGeofencingStarted(true);
-                mSharedPrefs.enableGeoFenceService();
+            if (mSharedPrefs.isStartupSecurityEnabled()) {
+                Digitus.init(this,
+                        getString(R.string.app_name),
+                        69,
+                        this);
+            } else {
+                // Only start Geofences when not started
+                // Geofences are already started on device boot up by the BootUpReceiver
+                if (!mSharedPrefs.isGeofencingStarted()) {
+                    mSharedPrefs.setGeofencingStarted(true);
+                    mSharedPrefs.enableGeoFenceService();
+                }
+                buildScreen();
             }
-            buildScreen();
         }
     }
 
@@ -217,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         Talk(this.getString(message));
     }
 
-
     @DebugLog
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
@@ -240,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(welcomeWizard, iWelcomeResultCode);
                 mSharedPrefs.setFirstStart(false);
             } else {
-                domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
+                if (domoticz == null)
+                    domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
                     setupMobileDevice();
@@ -292,7 +304,8 @@ public class MainActivity extends AppCompatActivity {
                         if (mSharedPrefs.darkThemeEnabled())
                             setTheme(R.style.AppThemeDarkMain);
                         else
-                            setTheme(R.style.AppThemeMain);buildScreen();
+                            setTheme(R.style.AppThemeMain);
+                        buildScreen();
                     }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
@@ -500,6 +513,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+
+        // Notify Digitus of the result
+        Digitus.get().handleResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -1302,6 +1318,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         stopCameraTimer();
+        Digitus.deinit();
         super.onDestroy();
     }
 
@@ -1373,5 +1390,80 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onDigitusReady(Digitus digitus) {
+        if (validateOnce)
+            FingerprintDialog.show(this, getString(R.string.app_name), 69, true);
+    }
+
+    @Override
+    public void onDigitusListening(boolean newFingerprint) {
+    }
+
+    @Override
+    public void onDigitusAuthenticated(Digitus digitus) {
+        digitus.deinit();
+        validateOnce = false;
+        if (!mSharedPrefs.isGeofencingStarted()) {
+            mSharedPrefs.setGeofencingStarted(true);
+            mSharedPrefs.enableGeoFenceService();
+        }
+        buildScreen();
+    }
+
+    @Override
+    public void onDigitusError(Digitus digitus, DigitusErrorType type, Exception e) {
+        this.finish();
+    }
+
+    @Override
+    public void onFingerprintDialogAuthenticated() {
+        FingerprintDialog dialog = FingerprintDialog.getVisible(this);
+        if (dialog != null)
+            dialog.dismiss();
+        Digitus.get().deinit();
+        validateOnce = false;
+        if (!mSharedPrefs.isGeofencingStarted()) {
+            mSharedPrefs.setGeofencingStarted(true);
+            mSharedPrefs.enableGeoFenceService();
+        }
+        buildScreen();
+    }
+
+    @Override
+    public void onFingerprintDialogVerifyPassword(FingerprintDialog dialog, String password) {
+        if (domoticz == null)
+            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
+        String pw = domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);
+        if (pw.equals(password)) {
+            if (dialog != null)
+                dialog.dismiss();
+            Digitus.get().deinit();
+            validateOnce = false;
+            if (!mSharedPrefs.isGeofencingStarted()) {
+                mSharedPrefs.setGeofencingStarted(true);
+                mSharedPrefs.enableGeoFenceService();
+            }
+            buildScreen();
+        } else {
+            UsefulBits.showSimpleToast(this, this.getString(R.string.security_wrong_password_fingerprint), Toast.LENGTH_LONG);
+
+            if (dialog != null)
+                dialog.dismiss();
+
+            FingerprintDialog.show(this, getString(R.string.app_name), 69, true);
+        }
+    }
+
+    @Override
+    public void onFingerprintDialogStageUpdated(FingerprintDialog dialog, FingerprintDialog.Stage stage) {
+
+    }
+
+    @Override
+    public void onFingerprintDialogCancelled() {
+        this.finish();
     }
 }

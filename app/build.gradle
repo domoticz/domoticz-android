@@ -111,12 +111,6 @@ repositories {
 //noinspection GroovyAssignabilityCheck
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
-        transitive = true
-    }
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.8@aar') {
-        transitive = true
-    }
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     compile 'com.android.support:support-v4:24.2.0'
@@ -160,6 +154,8 @@ dependencies {
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
     compile 'androidmads.updatehandler:updatehandler:1.0.2'
+
+    compile 'com.afollestad:digitus:0.2.12'
 
     compile project(':libs:MemorizingTrustManager')
     compile project(path: ':SeekArc_library')
