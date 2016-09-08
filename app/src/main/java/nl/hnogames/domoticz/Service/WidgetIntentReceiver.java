@@ -30,16 +30,18 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.SceneInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class WidgetIntentReceiver extends BroadcastReceiver {
 
@@ -87,16 +89,16 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
 
             switch (mExtendedStatusInfo.getType()) {
-                case Domoticz.Scene.Type.GROUP:
+                case DomoticzValues.Scene.Type.GROUP:
                     return true;
             }
         } else {
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-                case Domoticz.Device.Type.Value.ON_OFF:
-                case Domoticz.Device.Type.Value.MEDIAPLAYER:
-                case Domoticz.Device.Type.Value.X10SIREN:
-                case Domoticz.Device.Type.Value.DIMMER:
-                case Domoticz.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.ON_OFF:
+                case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                case DomoticzValues.Device.Type.Value.X10SIREN:
+                case DomoticzValues.Device.Type.Value.DIMMER:
+                case DomoticzValues.Device.Type.Value.DOORLOCK:
                     return true;
             }
         }
@@ -108,15 +110,15 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 (mExtendedStatusInfo.getSwitchType() == null ||
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
-                case Domoticz.Scene.Type.SCENE:
+                case DomoticzValues.Scene.Type.SCENE:
                     return true;
 
             }
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-                case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
-                case Domoticz.Device.Type.Value.DOORBELL:
+                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                case DomoticzValues.Device.Type.Value.DOORBELL:
                     return true;
 
             }
@@ -131,7 +133,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             return false;
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-                case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
+                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                     return true;
             }
         return false;
@@ -139,7 +141,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private void processSwitch(final Context context, int idx) {
         password = mSharedPrefs.getWidgetPassword(widgetID);
-        final Domoticz domoticz = new Domoticz(context, null);
+        final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
 
         if (!isScene) {
@@ -182,7 +184,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveScene(final SceneInfo scene) {
                     if (scene != null) {
-                        if (Domoticz.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
+                        if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
                             onButtonClick(scene, true, domoticz, context);//push on scene
                         } else {//switch
                             if (toggle)
@@ -198,16 +200,16 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+        int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
-        if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-        else jsonAction = Domoticz.Device.Switch.Action.OFF;
+        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+        else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
 
         int idx = clickedSwitch.getIdx();
-        if (clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
-            jsonUrl = Domoticz.Json.Url.Set.SCENES;
-            if (checked) jsonAction = Domoticz.Scene.Action.ON;
-            else jsonAction = Domoticz.Scene.Action.OFF;
+        if (clickedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || clickedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+            jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+            if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
+            else jsonAction = DomoticzValues.Scene.Action.OFF;
         }
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
@@ -228,16 +230,16 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     public void onButtonClick(final DevicesInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+        int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
-        if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-        else jsonAction = Domoticz.Device.Switch.Action.OFF;
+        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+        else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
 
         int idx = clickedSwitch.getIdx();
-        if (clickedSwitch.getType().equals(Domoticz.Scene.Type.GROUP) || clickedSwitch.getType().equals(Domoticz.Scene.Type.SCENE)) {
-            jsonUrl = Domoticz.Json.Url.Set.SCENES;
-            if (checked) jsonAction = Domoticz.Scene.Action.ON;
-            else jsonAction = Domoticz.Scene.Action.OFF;
+        if (clickedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || clickedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+            jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+            if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
+            else jsonAction = DomoticzValues.Scene.Action.OFF;
             idx = idx - 4000;
         }
         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -260,15 +262,15 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     public void onSwitchClick(final DevicesInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
         if (clickedSwitch != null) {
             int jsonAction;
-            int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
+            int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
-            if (clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                    clickedSwitch.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
-                if (checked) jsonAction = Domoticz.Device.Switch.Action.OFF;
-                else jsonAction = Domoticz.Device.Switch.Action.ON;
+            if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                else jsonAction = DomoticzValues.Device.Switch.Action.ON;
             } else {
-                if (checked) jsonAction = Domoticz.Device.Switch.Action.ON;
-                else jsonAction = Domoticz.Device.Switch.Action.OFF;
+                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             }
 
             mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
@@ -293,11 +295,11 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
         if (clickedSwitch != null) {
             int jsonAction;
-            int jsonUrl = Domoticz.Json.Url.Set.SCENES;
+            int jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
             int idx = clickedSwitch.getIdx();
 
-            if (checked) jsonAction = Domoticz.Scene.Action.ON;
-            else jsonAction = Domoticz.Scene.Action.OFF;
+            if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
+            else jsonAction = DomoticzValues.Scene.Action.OFF;
 
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
                 @Override

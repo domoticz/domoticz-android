@@ -24,15 +24,18 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 
-import nl.hnogames.domoticz.Containers.SceneInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
 
 public class SceneInfoDialog implements DialogInterface.OnDismissListener {
 
@@ -48,10 +51,23 @@ public class SceneInfoDialog implements DialogInterface.OnDismissListener {
                            SceneInfo info,
                            int layout) {
         this.info = info;
-        mdb = new MaterialDialog.Builder(mContext);
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }

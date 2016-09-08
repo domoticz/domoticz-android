@@ -39,12 +39,12 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.ServerAdapter;
-import nl.hnogames.domoticz.Containers.ServerInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.ServerClickListener;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ServerInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 
 public class ServerListSettingsActivity extends AppCompatActivity {
@@ -119,7 +119,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                showEditServerActivity((String) ((TextView) view.findViewById(R.id.server_name)).getText());
+                showEditServerActivity(String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText()));
             }
         });
     }

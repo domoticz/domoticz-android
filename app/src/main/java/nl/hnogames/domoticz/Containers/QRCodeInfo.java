@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticz.Containers;
+package nl.hnogames.domoticzapi.Containers;
 
 public class QRCodeInfo {
 

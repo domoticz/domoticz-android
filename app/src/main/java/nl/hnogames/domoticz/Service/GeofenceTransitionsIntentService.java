@@ -36,17 +36,19 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticz.Containers.LocationInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.StatusReceiver;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
+import nl.hnogames.domoticzapi.Containers.LocationInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 /**
  * Listens for geofence transition changes.
@@ -124,7 +126,7 @@ public class GeofenceTransitionsIntentService extends IntentService
     }
 
     private void handleSwitch(final int idx, final String password, final boolean checked) {
-        domoticz = new Domoticz(this, null);
+        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         domoticz.getSwitches(new SwitchesReceiver() {
                                  @Override
                                  public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
@@ -135,26 +137,26 @@ public class GeofenceTransitionsIntentService extends IntentService
                                                  public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
 
                                                      int jsonAction;
-                                                     int jsonUrl = Domoticz.Json.Url.Set.SWITCHES;
-                                                     if (extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDS ||
-                                                             extendedStatusInfo.getSwitchTypeVal() == Domoticz.Device.Type.Value.BLINDPERCENTAGE) {
+                                                     int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+                                                     if (extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                                                             extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                                                          if (checked)
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                                          else
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                                      } else {
                                                          if (checked)
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                                          else
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                                      }
 
                                                      switch (extendedStatusInfo.getSwitchTypeVal()) {
-                                                         case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                                                             jsonAction = Domoticz.Device.Switch.Action.ON;
+                                                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                                              break;
-                                                         case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
-                                                             jsonAction = Domoticz.Device.Switch.Action.OFF;
+                                                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                                              break;
                                                      }
 

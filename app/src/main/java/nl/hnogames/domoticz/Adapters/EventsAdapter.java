@@ -39,11 +39,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import nl.hnogames.domoticz.Containers.EventInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.EventInfo;
+import nl.hnogames.domoticzapi.Domoticz;
 
 @SuppressWarnings("unused")
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObjectHolder> {

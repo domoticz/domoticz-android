@@ -54,13 +54,14 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ComboLineColumnChartView;
-import nl.hnogames.domoticz.Containers.GraphPointInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 
 public class Graph extends Fragment implements DomoticzFragmentListener {
 
@@ -95,7 +96,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        mDomoticz = new Domoticz(context, null);
+        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
     }
 
     @Override
@@ -140,7 +141,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     public void getGraphs() {
         if (mDomoticz == null)
-            mDomoticz = new Domoticz(context, null);
+            mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
             @Override
@@ -218,6 +219,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             List<PointValue> valuesu = new ArrayList<>();
             List<PointValue> valuesmm = new ArrayList<>();
 
+            List<PointValue> valuesco2 = new ArrayList<>();
+            List<PointValue> valuesco2min = new ArrayList<>();
+            List<PointValue> valuesco2max = new ArrayList<>();
+
             List<AxisValue> axisValueX = new ArrayList<>();
 
             int counter = 0;
@@ -231,6 +236,9 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addDirection = false;
             boolean addSpeed = false;
             boolean addRain = false;
+            boolean addCO2 = false;
+            boolean addCO2Min = false;
+            boolean addCO2Max = false;
             boolean addUsage = false;
             boolean onlyDate = false;
             Calendar mydate = Calendar.getInstance();
@@ -306,6 +314,21 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             valuesmm.add(new PointValue(counter, Float.parseFloat(g.getRain())));
                         }
 
+                        if (g.getCo2() != null && g.getCo2().length() > 0) {
+                            addCO2 = true;
+                            valuesco2.add(new PointValue(counter, Float.parseFloat(g.getCo2())));
+                        }
+
+                        if (g.getCo2Min() != null && g.getCo2Min().length() > 0) {
+                            addCO2Min = true;
+                            valuesco2min.add(new PointValue(counter, Float.parseFloat(g.getCo2Min())));
+                        }
+
+                        if (g.getCo2Max() != null && g.getCo2Max().length() > 0) {
+                            addCO2Max = true;
+                            valuesco2max.add(new PointValue(counter, Float.parseFloat(g.getCo2Max())));
+                        }
+
                         try {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                             mydate.setTime(sdf.parse(g.getDateTime()));
@@ -338,7 +361,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean setCubic = false;
 
             //setCubic seems bugged in HelloCharts library
-            //if(range.equals(Domoticz.Graph.Range.MONTH) || range.equals(Domoticz.Graph.Range.YEAR))
+            //if(range.equals(DomoticzValues.Graph.Range.MONTH) || range.equals(DomoticzValues.Graph.Range.YEAR))
             //    setCubic=true;
             if ((addTemperature && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
@@ -459,6 +482,40 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         .setHasPoints(false));
             }
 
+            if ((addCO2 && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2)).getText().toString()))) {
+
+                lines.add(new Line(valuesco2)
+                        .setColor(ContextCompat.getColor(context, R.color.material_blue_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
+
+            if ((addCO2Min && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()))) {
+
+                lines.add(new Line(valuesco2min)
+                        .setColor(ContextCompat.getColor(context, R.color.material_light_green_600))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
+
+            if ((addCO2Max && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()))) {
+
+                lines.add(new Line(valuesco2max)
+                        .setColor(ContextCompat.getColor(context, R.color.md_red_400))
+                        .setCubic(setCubic)
+                        .setHasLabels(false)
+                        .setHasLines(true)
+                        .setHasPoints(false));
+            }
+
+
             if (lines.size() > 1) {
                 if (addTemperature) {
                     (view.findViewById(R.id.legend_temperature))
@@ -524,6 +581,24 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (view.findViewById(R.id.legend_rain))
                             .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_rain)).getText());
+                }
+
+                if (addCO2) {
+                    (view.findViewById(R.id.legend_co2))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2)).getText());
+                }
+
+                if (addCO2Min) {
+                    (view.findViewById(R.id.legend_co2min))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2min)).getText());
+                }
+
+                if (addCO2Max) {
+                    (view.findViewById(R.id.legend_co2max))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2max)).getText());
                 }
             }
 

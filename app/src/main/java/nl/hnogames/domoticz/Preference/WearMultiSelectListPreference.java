@@ -33,10 +33,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = WearMultiSelectListPreference.class.getName();
@@ -52,7 +53,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);
         selectAllValuesByDefault = typedArray.getBoolean(R.styleable.CustomListPreference_selectAllValuesByDefault, false);
         typedArray.recycle();
-        mDomoticz = new Domoticz(context, null);
+        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         initSwitches();
     }
 

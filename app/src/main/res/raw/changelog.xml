@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="false">
 
-    <changelogversion versionName="0.1.275" changeDate="Aug 3, 2016">
+    <changelogversion changeDate="Sept 7, 2016" versionName="BETA">
         <changelogtext>[b]PREMIUM[/b] Added Talk Back</changelogtext>
+        <changelogtext>Change User Variable values</changelogtext>
         <changelogtext>Added Czech translations (thanks to Petr)</changelogtext>
+        <changelogtext>Fixed Graphs for CO2 + GAS</changelogtext>
         <changelogtext>Various crash fixes</changelogtext>
     </changelogversion>
 
-    <changelogversion versionName="0.1.270" changeDate="June 30, 2016">
+    <changelogversion changeDate="June 30, 2016" versionName="0.1.270">
         <changelogtext>[b]PREMIUM[/b] Fixes on Speech Commands</changelogtext>
         <changelogtext>[b]PREMIUM[/b] Added Speech Commands</changelogtext>
         <changelogtext>[b]PREMIUM[/b] Added Multi users support</changelogtext>

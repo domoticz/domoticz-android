@@ -50,17 +50,19 @@ import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 import java.util.ArrayList;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.ServerInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Utils.PhoneConnectionUtil;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ServerInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class SetupServerSettings extends Fragment {
 
@@ -260,7 +262,7 @@ public class SetupServerSettings extends Fragment {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(getActivity());
 
-        final Domoticz mDomoticz = new Domoticz(getActivity(), mServerUtil);
+        final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
 
         if (!UsefulBits.isEmpty(status)) {
@@ -483,12 +485,12 @@ public class SetupServerSettings extends Fragment {
 
     private boolean getSpinnerDomoticzRemoteSecureBoolean() {
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
-        return protocols[remoteProtocolSelectedPosition].equalsIgnoreCase(Domoticz.Protocol.SECURE);
+        return protocols[remoteProtocolSelectedPosition].equalsIgnoreCase(DomoticzValues.Protocol.SECURE);
     }
 
     private boolean getSpinnerDomoticzLocalSecureBoolean() {
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
-        return protocols[localProtocolSelectedPosition].equalsIgnoreCase(Domoticz.Protocol.SECURE);
+        return protocols[localProtocolSelectedPosition].equalsIgnoreCase(DomoticzValues.Protocol.SECURE);
     }
 
     private int getPrefsDomoticzRemoteSecureIndex() {
@@ -497,8 +499,8 @@ public class SetupServerSettings extends Fragment {
         int i = 0;
         String protocolString;
 
-        if (isSecure) protocolString = Domoticz.Protocol.SECURE;
-        else protocolString = Domoticz.Protocol.INSECURE;
+        if (isSecure) protocolString = DomoticzValues.Protocol.SECURE;
+        else protocolString = DomoticzValues.Protocol.INSECURE;
 
         for (String protocol : protocols) {
             if (protocol.equalsIgnoreCase(protocolString)) return i;
@@ -513,8 +515,8 @@ public class SetupServerSettings extends Fragment {
         int i = 0;
         String protocolString;
 
-        if (isSecure) protocolString = Domoticz.Protocol.SECURE;
-        else protocolString = Domoticz.Protocol.INSECURE;
+        if (isSecure) protocolString = DomoticzValues.Protocol.SECURE;
+        else protocolString = DomoticzValues.Protocol.INSECURE;
 
         for (String protocol : protocols) {
             if (protocol.equalsIgnoreCase(protocolString)) return i;

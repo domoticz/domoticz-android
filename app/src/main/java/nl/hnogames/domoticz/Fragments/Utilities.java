@@ -40,15 +40,9 @@ import java.util.ArrayList;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
-import nl.hnogames.domoticz.Containers.SwitchLogInfo;
-import nl.hnogames.domoticz.Containers.UtilitiesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.SwitchLogReceiver;
-import nl.hnogames.domoticz.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
@@ -58,6 +52,12 @@ import nl.hnogames.domoticz.UI.UtilitiesInfoDialog;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
+import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
+import nl.hnogames.domoticzapi.Interfaces.UtilitiesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         UtilityClickListener {
@@ -185,10 +185,10 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         }
 
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
+        int jsonUrl = DomoticzValues.Json.Url.Set.FAVORITE;
 
-        if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
-        else jsonAction = Domoticz.Device.Favorite.OFF;
+        if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
+        else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mUtilitiesInfo.getIdx(),
                 jsonUrl,
@@ -272,22 +272,31 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @Override
     @DebugLog
     public void onLogClick(final UtilitiesInfo utility, final String range) {
+        int steps = 3;
         /*
             Replace so we get the right log
          */
         String graphType = utility.getSubType()
                 .replace("Electric", "counter")
                 .replace("kWh", "counter")
+                .replace("Gas", "counter")
                 .replace("Energy", "counter")
+                .replace("Voltcraft", "counter")
                 .replace("SetPoint", "temp")
                 .replace("YouLess counter", "counter");
+
+        if(graphType.contains("counter"))
+            graphType = "counter";
+
+        if(utility.getSubType().equals("Gas"))
+            steps=1;
 
         Intent intent = new Intent(mContext, GraphActivity.class);
         intent.putExtra("IDX", utility.getIdx());
         intent.putExtra("RANGE", range);
         intent.putExtra("TYPE", graphType);
         intent.putExtra("TITLE", utility.getSubType().toUpperCase());
-        intent.putExtra("STEPS", 3);
+        intent.putExtra("STEPS", steps);
         startActivity(intent);
     }
 
@@ -340,11 +349,11 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                                     double newSetPoint,
                                     String password) {
         thermostatSetPointValue = newSetPoint;
-        int jsonUrl = Domoticz.Json.Url.Set.TEMP;
+        int jsonUrl = DomoticzValues.Json.Url.Set.TEMP;
 
-        int action = Domoticz.Device.Thermostat.Action.PLUS;
+        int action = DomoticzValues.Device.Thermostat.Action.PLUS;
         if (newSetPoint < tempUtil.getSetPoint())
-            action = Domoticz.Device.Thermostat.Action.MIN;
+            action = DomoticzValues.Device.Thermostat.Action.MIN;
 
         mDomoticz.setAction(tempUtil.getIdx(),
                 jsonUrl,

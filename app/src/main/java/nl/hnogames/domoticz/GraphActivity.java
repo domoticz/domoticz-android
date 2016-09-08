@@ -40,7 +40,7 @@ public class GraphActivity extends AppCompatActivity {
         else
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
-        UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
 
@@ -50,7 +50,6 @@ public class GraphActivity extends AppCompatActivity {
                 this.finish();//get graph info via bundle
 
             this.setTitle(getString(R.string.wizard_graph));
-
             String title = bundle.getString("TITLE");
             if (!UsefulBits.isEmpty(title)) {
                 setTitle(title);
@@ -61,8 +60,7 @@ public class GraphActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                     graph).commit();
-        }catch(Exception ex)
-        {
+        } catch (Exception ex) {
             this.finish();
         }
     }

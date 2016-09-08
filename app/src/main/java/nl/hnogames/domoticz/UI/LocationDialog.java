@@ -38,21 +38,22 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.android.gms.maps.model.LatLng;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.Random;
 
-import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.GeoUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.LocationInfo;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
-    private final MaterialDialog.Builder mdb;
     private final GeoUtil mGeoUtil;
+    private MaterialDialog.Builder mdb;
     private Context mContext;
     private Address foundLocation;
     private FloatingLabelEditText editAddress;
@@ -81,10 +82,25 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         mGeoUtil = new GeoUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mdb = new MaterialDialog.Builder(mContext);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
+
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel);
 
@@ -93,7 +109,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
             @Override
             public void onClick(@NonNull MaterialDialog materialDialog,
                                 @NonNull DialogAction dialogAction) {
-
                 if (dismissListener != null && valuesAreValid()) {
                     if (locationToEdit != null) {
                         // In edit mode

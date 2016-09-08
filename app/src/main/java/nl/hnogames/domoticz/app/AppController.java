@@ -36,7 +36,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.splunk.mint.Mint;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -50,14 +49,13 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import eu.inloop.easygcm.EasyGcm;
 import eu.inloop.easygcm.GcmListener;
-import nl.hnogames.domoticz.BuildConfig;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 
 public class AppController extends MultiDexApplication implements GcmListener {
 
@@ -75,9 +73,6 @@ public class AppController extends MultiDexApplication implements GcmListener {
     public void onCreate() {
         super.onCreate();
 
-        if (!BuildConfig.DEBUG && !UsefulBits.isEmpty(getString(R.string.mintapikey))) {
-            Mint.initAndStartSession(this, getString(R.string.mintapikey));
-        }
         if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
 
@@ -185,7 +180,7 @@ public class AppController extends MultiDexApplication implements GcmListener {
         if (UsefulBits.isEmpty(sender_id) || UsefulBits.isEmpty(UUID))
             return;
 
-        final Domoticz mDomoticz = new Domoticz(this, null);
+        final Domoticz mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {
@@ -203,7 +198,7 @@ public class AppController extends MultiDexApplication implements GcmListener {
 
     private void registerMobileForGCM(String UUID, String senderid) {
 
-        final Domoticz mDomoticz = new Domoticz(this, null);
+        final Domoticz mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {

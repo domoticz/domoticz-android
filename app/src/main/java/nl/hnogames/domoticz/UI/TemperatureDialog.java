@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -32,14 +33,15 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.triggertrap.seekarc.SeekArc;
 
-import nl.hnogames.domoticz.Containers.ConfigInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.ServerUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
@@ -66,16 +68,29 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     public TemperatureDialog(Context mContext, double temp) {
         this.mContext = mContext;
 
-        mdb = new MaterialDialog.Builder(mContext);
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
                 .negativeText(android.R.string.cancel)
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok)
                 .onAny(this);
 
         ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
             tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
-            if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(Domoticz.Temperature.Sign.CELSIUS)) {
+            if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(DomoticzValues.Temperature.Sign.CELSIUS)) {
                 isFahrenheit = true;
             }
         } else

@@ -34,14 +34,17 @@ import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.SceneInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticz.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -101,7 +104,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             else
                 views = new RemoteViews(packageName, R.layout.widget_layout);//default
 
-            final Domoticz domoticz = new Domoticz(getApplicationContext(), null);
+            final Domoticz domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
 
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
             if (idx == iVoiceAction) {
@@ -206,7 +209,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     views.setViewVisibility(R.id.on_button, View.GONE);
                                 }
 
-                                views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
+                                views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
                         }
@@ -229,7 +232,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         public void onReceiveScene(SceneInfo s) {
                             if (s != null) {
                                 if (s.getStatusInString() != null) {
-                                    if (s.getType().equals(Domoticz.Scene.Type.SCENE)) {
+                                    if (s.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
                                         if (mSharedPrefs.darkThemeEnabled())
                                             views = new RemoteViews(packageName, R.layout.widget_layout_dark);
                                         else
@@ -277,7 +280,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     views.setViewVisibility(R.id.on_button, View.GONE);
                                 }
 
-                                views.setImageViewResource(R.id.rowIcon, domoticz.getDrawableIcon(s.getType(), null, null, false, false, null));
+                                views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getType(), null, null, false, false, null));
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
                         }
@@ -308,24 +311,24 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 if (s.getSwitchTypeVal() == 0 &&
                         (UsefulBits.isEmpty(s.getSwitchType()))) {
                     switch (s.getType()) {
-                        case Domoticz.Scene.Type.SCENE:
+                        case DomoticzValues.Scene.Type.SCENE:
                             withButton = 1;
                             break;
-                        case Domoticz.Scene.Type.GROUP:
+                        case DomoticzValues.Scene.Type.GROUP:
                             withButton = 2;
                             break;
                     }
                 } else {
                     switch (s.getSwitchTypeVal()) {
-                        case Domoticz.Device.Type.Value.ON_OFF:
-                        case Domoticz.Device.Type.Value.MEDIAPLAYER:
-                        case Domoticz.Device.Type.Value.X10SIREN:
-                        case Domoticz.Device.Type.Value.DOORLOCK:
-                        case Domoticz.Device.Type.Value.PUSH_ON_BUTTON:
-                        case Domoticz.Device.Type.Value.SMOKE_DETECTOR:
-                        case Domoticz.Device.Type.Value.DOORBELL:
-                        case Domoticz.Device.Type.Value.PUSH_OFF_BUTTON:
-                        case Domoticz.Device.Type.Value.DIMMER:
+                        case DomoticzValues.Device.Type.Value.ON_OFF:
+                        case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                        case DomoticzValues.Device.Type.Value.X10SIREN:
+                        case DomoticzValues.Device.Type.Value.DOORLOCK:
+                        case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                        case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                        case DomoticzValues.Device.Type.Value.DOORBELL:
+                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                        case DomoticzValues.Device.Type.Value.DIMMER:
                             withButton = 1;
                             break;
                     }

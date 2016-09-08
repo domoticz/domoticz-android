@@ -1,11 +1,12 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppThemeMain" parent="MaterialDrawerTheme.Light.DarkToolbar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
+        <item name="dialogTheme">@style/MyDialogTheme</item>
+        <item name="alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
     <style name="AppThemeDarkMain" parent="MaterialDrawerTheme">
@@ -13,6 +14,8 @@
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
+        <item name="dialogTheme">@style/MyDarkDialogTheme</item>
+        <item name="alertDialogTheme">@style/MyDarkDialogTheme</item>
     </style>
 
     <!-- Base application theme. -->
@@ -21,6 +24,8 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
+        <item name="dialogTheme">@style/MyDialogTheme</item>
+        <item name="alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat">
@@ -28,8 +33,9 @@
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
+        <item name="dialogTheme">@style/MyDarkDialogTheme</item>
+        <item name="alertDialogTheme">@style/MyDarkDialogTheme</item>
     </style>
-
 
     <!--        Styles Light     -->
     <style name="background_listview">
@@ -153,10 +159,16 @@
         <item name="android:windowCloseOnTouchOutside">false</item>
     </style>
 
-    <style name="MyDarkDialogTheme" parent="Theme.AppCompat.Dialog">
+    <style name="MyDarkDialogTheme" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@color/primary_dark</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

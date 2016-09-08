@@ -52,14 +52,15 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.NFCAdapter;
-import nl.hnogames.domoticz.Containers.NFCInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.NFCInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
 
 public class NFCSettingsActivity extends AppCompatActivity implements NFCClickListener {
 
@@ -114,7 +115,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
             UsefulBits.showSnackbar(this, coordinatorLayout, R.string.nfc_not_supported, Snackbar.LENGTH_SHORT);
         }
 
-        domoticz = new Domoticz(this, null);
+        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         nfcList = mSharedPrefs.getNFCList();
         adapter = new NFCAdapter(this, nfcList, this);
 

@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     def versionPropsFile = file('version.properties')
 
@@ -39,7 +39,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 16
-            targetSdkVersion 23
+            targetSdkVersion 24
             multiDexEnabled true
         }
     } else {
@@ -67,7 +67,6 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
-            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
@@ -80,7 +79,6 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
-            resValue "string", "mintapikey", "$System.env.MINT_API_KEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
@@ -108,45 +106,41 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
-    maven {
-        url "https://mint.splunk.com/gradle/"
-    }
 }
 
 //noinspection GroovyAssignabilityCheck
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':libs:MemorizingTrustManager')
-
     compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
         transitive = true
     }
     compile('com.github.afollestad.material-dialogs:commons:0.8.5.8@aar') {
         transitive = true
     }
-
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v13:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:support-v13:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:cardview-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
 
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.4'
 
-    compile 'com.google.android.gms:play-services-analytics:8.4.0'
-    compile 'com.google.android.gms:play-services-wearable:8.4.0'
-    compile 'com.google.android.gms:play-services-maps:8.4.0'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
-    compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'com.google.firebase:firebase-core:9.4.0'
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+
+    compile 'com.google.android.gms:play-services-analytics:9.4.0'
+    compile 'com.google.android.gms:play-services-wearable:9.4.0'
+    compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
 
     compile 'com.android.volley:volley:1.0.0'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
-    compile 'com.splunk.mint:mint:5.0.0'
     compile 'com.larswerkman:lobsterpicker:1.0.1'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.github.dexafree:MaterialList:v3.2.2'
@@ -163,16 +157,15 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.3.0@aar') {
         transitive = true
     }
-
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
     compile 'androidmads.updatehandler:updatehandler:1.0.2'
 
+    compile project(':libs:MemorizingTrustManager')
     compile project(path: ':SeekArc_library')
     compile project(path: ':materialIntro_library')
+    compile project(path: ':domoticzapi')
 }
-
-apply plugin: 'com.google.gms.google-services'
 
 buildscript {
     repositories {
@@ -186,3 +179,4 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'com.google.gms.google-services'

@@ -36,10 +36,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.ServerInfo;
 import nl.hnogames.domoticz.Interfaces.ServerClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.ServerInfo;
 
 public class ServerAdapter extends BaseAdapter {
 
@@ -115,7 +115,9 @@ public class ServerAdapter extends BaseAdapter {
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                handleRemoveButtonClick(data.get(v.getId()));
+                try {
+                    handleRemoveButtonClick(data.get(v.getId()));
+                }catch(Exception ex){}
             }
         });
 

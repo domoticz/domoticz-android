@@ -25,7 +25,6 @@ package nl.hnogames.domoticz;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -53,25 +52,24 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.LocationAdapter;
-import nl.hnogames.domoticz.Containers.LocationInfo;
-import nl.hnogames.domoticz.Containers.SwitchInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
-import nl.hnogames.domoticz.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.GeoUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.LocationInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
 
 public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -101,20 +99,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     private boolean isLocationUpdatesStarted;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a place.
-                Place place = PlacePicker.getPlace(this, data);
-                String text = String.format(getString(R.string.geofence_place), place.getName());
-                UsefulBits.showSnackbar(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT);
-            }
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
@@ -131,12 +115,11 @@ public class GeoSettingsActivity extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
 
-        domoticz = new Domoticz(this, null);
+        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
-
         createListView();
         initSwitches();
         createLocationRequest();
@@ -554,7 +537,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         locationDialog.setLocationToEdit(location);
         locationDialog.setRadius(location.getRadius());
         locationDialog.setCurrentLocation(null);            // Set to null so its in edit mode
-
         locationDialog.onDismissListener(new LocationDialog.DismissListener() {
             @Override
             public void onDismiss(LocationInfo location) {
@@ -612,7 +594,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     private void startGeofenceService() {
         if (mSharedPrefs.isGeofenceEnabled()) {
             mSharedPrefs.enableGeoFenceService();
-            if (domoticz.isDebugEnabled())
+            if (mSharedPrefs.isDebugEnabled())
                 UsefulBits.showSnackbar(this, coordinatorLayout, R.string.starting_geofence_service, Snackbar.LENGTH_SHORT);
             isGeofenceServiceStarted = true;
         }

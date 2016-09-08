@@ -43,11 +43,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.UtilitiesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
+import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
 public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> {
@@ -191,7 +193,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             }
         });
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
     private void handleLogButtonClick(int idx) {
@@ -226,7 +228,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
                 }
             }
         });
@@ -236,7 +238,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
                 }
             }
         });
@@ -246,7 +248,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
                 }
             }
         });
@@ -257,7 +259,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
                 }
             }
         });
@@ -278,7 +280,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             });
         }
 
-        Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
     private void CreateThermostatRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
@@ -312,7 +314,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.DAY);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
                 }
             }
         });
@@ -322,7 +324,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.MONTH);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
                 }
             }
         });
@@ -332,7 +334,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.WEEK);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
                 }
             }
         });
@@ -343,14 +345,14 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             public void onClick(View v) {
                 for (UtilitiesInfo t : filteredData) {
                     if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, Domoticz.Graph.Range.YEAR);
+                        listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
                 }
             }
         });
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(mUtilitiesInfo.getLastUpdate());
         holder.hardware.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
-        Picasso.with(context).load(domoticz.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
     public void handleThermostatClick(int idx) {
