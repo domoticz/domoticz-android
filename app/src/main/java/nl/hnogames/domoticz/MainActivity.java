@@ -510,8 +510,10 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                 break;
         }
 
-        // Notify Digitus of the result
-        Digitus.get().handleResult(requestCode, permissions, grantResults);
+        try {
+            // Notify Digitus of the result
+            Digitus.get().handleResult(requestCode, permissions, grantResults);
+        }catch(Exception ex){}
     }
 
     @Override
