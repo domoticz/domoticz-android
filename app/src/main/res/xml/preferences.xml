@@ -250,9 +250,6 @@
             android:summary="Version 1.0.2"
             android:title="@string/info_domoticz_version" />
         <Preference
-            android:key="info_changelog"
-            android:title="@string/changelog" />
-        <Preference
             android:key="info_about"
             android:title="@string/info_about" />
         <Preference

@@ -79,11 +79,9 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import androidmads.updatehandler.app.UpdateHandler;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Fragments.Cameras;
-import nl.hnogames.domoticz.Fragments.Changelog;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
@@ -270,7 +268,6 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
                             addFragment();
-                            openDialogFragment(new Changelog());
                         }
 
                         @Override
@@ -278,7 +275,6 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                         public void onError(Exception error) {
                             //drawNavigationMenu(null);
                             addFragment();
-                            openDialogFragment(new Changelog());
                         }
                     }, mServerUtil.getActiveServer().getConfigInfo(this));
                 } else {
@@ -599,7 +595,6 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
 
             // Show a dialog if meets conditions
             AppRate.showRateDialogIfMeetsConditions(this);
-            new UpdateHandler(this).start();
         }
     }
 
