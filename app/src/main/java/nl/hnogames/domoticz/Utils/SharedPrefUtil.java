@@ -790,21 +790,22 @@ public class SharedPrefUtil {
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();
                 String key = entry.getKey();
-
-                if (v instanceof Boolean)
-                    editor.putBoolean(key, ((Boolean) v).booleanValue());
-                else if (v instanceof Float)
-                    editor.putFloat(key, ((Float) v).floatValue());
-                else if (v instanceof Integer)
-                    editor.putInt(key, ((Integer) v).intValue());
-                else if (v instanceof Long)
-                    editor.putLong(key, ((Long) v).longValue());
-                else if (v instanceof String)
-                    editor.putString(key, ((String) v));
-                else if (v instanceof Set)
-                    editor.putStringSet(key, ((Set<String>) v));
-                else
-                    Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                if(v != null && !UsefulBits.isEmpty(key)) {
+                    if (v instanceof Boolean)
+                        editor.putBoolean(key, ((Boolean) v).booleanValue());
+                    else if (v instanceof Float)
+                        editor.putFloat(key, ((Float) v).floatValue());
+                    else if (v instanceof Integer)
+                        editor.putInt(key, ((Integer) v).intValue());
+                    else if (v instanceof Long)
+                        editor.putLong(key, ((Long) v).longValue());
+                    else if (v instanceof String)
+                        editor.putString(key, ((String) v));
+                    else if (v instanceof Set)
+                        editor.putStringSet(key, ((Set<String>) v));
+                    else
+                        Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                }
             }
             editor.commit();
             res = true;
