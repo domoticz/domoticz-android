@@ -59,9 +59,12 @@
                             style="@style/row_dash_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_gravity="left"
+                            android:gravity="left"
                             android:paddingBottom="7dp"
-                            android:text="Switch" />
+                            android:paddingLeft="10dp"
+                            android:maxLines="2"
+                            android:text="testNotificaties asdfefefa afafea" />
 
                         <TextView
                             android:id="@+id/switch_battery_level"
