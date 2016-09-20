@@ -64,7 +64,7 @@
                             android:paddingBottom="7dp"
                             android:paddingLeft="10dp"
                             android:maxLines="2"
-                            android:text="testNotificaties asdfefefa afafea" />
+                            android:text="Switch" />
 
                         <TextView
                             android:id="@+id/switch_battery_level"
