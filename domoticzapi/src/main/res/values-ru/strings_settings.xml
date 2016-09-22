@@ -17,7 +17,8 @@
   <string name="category_export">Экспорт/импорт параметров</string>
   <string name="category_theme">Оформление</string>
   <string name="category_nfc">NFC соединения</string>
-  <string name="category_account">Accounts</string>
+  <string name="category_startup_security">Security</string>
+  <string name="category_account">Учётные записи</string>
   <string name="category_QRCode">QR-код</string>
   <string name="category_Speech">Speech</string>
   <!--        Generic settings       -->
@@ -38,12 +39,6 @@
   <string name="dashboard_list_title">Сетка панели</string>
   <string name="show_dashboard_list_on">Показать панель как список</string>
   <string name="show_dashboard_list_off">Показать панель как сетку</string>
-  <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Android Wear элементы</string>
   <string name="custom_wear_select">Выбрать Wear переключатель</string>
@@ -82,6 +77,13 @@
   <string name="qrcode_settings">Настройка кодов QR</string>
   <string name="enable_qrcode">Включить QR коды</string>
   <string name="qrcode_enable_settings">Включение функции QR-кодов</string>
+  <string name="security_settings">Настройка безопасности</string>
+  <string name="enable_security">Ввод отпечатков пальцев на старте</string>
+  <string name="disable_security">Отключить ввод отпечатков пальцев на старте</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Ввод отпечатков пальцев не поддерживается на этом устройстве</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID сообщений Google Cloud</string>
   <string name="notification_settings_push">Использовать Ваш регистрационный идентификатор для Domoticz</string>

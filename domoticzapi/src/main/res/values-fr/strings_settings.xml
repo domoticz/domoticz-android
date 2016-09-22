@@ -11,13 +11,14 @@
   <string name="category_geofencing">Géorepérage</string>
   <string name="category_info">Informations</string>
   <string name="category_language">Langue</string>
-  <string name="category_talk_back">Talk Back</string>
+  <string name="category_talk_back">Retour Audio</string>
   <string name="category_notification">Notifications</string>
   <string name="category_debug">Debuggage</string>
   <string name="category_export">Export/Import des paramètres</string>
   <string name="category_theme">Thème</string>
   <string name="category_nfc">Associations NFC</string>
-  <string name="category_account">Accounts</string>
+  <string name="category_startup_security">Security</string>
+  <string name="category_account">Comptes</string>
   <string name="category_QRCode">QR Code</string>
   <string name="category_Speech">Commande vocale.</string>
   <!--        Generic settings       -->
@@ -38,12 +39,6 @@
   <string name="dashboard_list_title">Tableau de bord | Grille</string>
   <string name="show_dashboard_list_on">Voir la tableau de bord en tant que liste</string>
   <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
-  <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Activer Android Wear</string>
   <string name="custom_wear_select">Interrupteurs Wear</string>
@@ -57,8 +52,8 @@
   <string name="set_dark_theme">Utilser le thème Dark</string>
   <string name="set_light_theme">Utiliser le thème Light</string>
   <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
-  <string name="set_talk_back_off">Turn talk back off</string>
+  <string name="set_talk_back_on">Autoriser le retour audio de Domoticz</string>
+  <string name="set_talk_back_off">Annule le retour audio</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Paramètres importés, s\'il vous plaît redémarrer Domoticz</string>
   <string name="settings_import_failed">Impossible d\'importer les paramètres</string>
@@ -82,6 +77,13 @@
   <string name="qrcode_settings">Configuration des QR Code</string>
   <string name="enable_qrcode">Activer les QR Code</string>
   <string name="qrcode_enable_settings">Activer la fonctionnalité de QR Code</string>
+  <string name="security_settings">Setup Security</string>
+  <string name="enable_security">Enable fingerprint protection on startup</string>
+  <string name="disable_security">Disable fingerprint protection on startup</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de messagerie Google Cloud</string>
   <string name="notification_settings_push">Envoyer votre id d\'enregistrement à Domoticz</string>

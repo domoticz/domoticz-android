@@ -17,6 +17,7 @@
   <string name="category_export">Exporta/importa la configuració</string>
   <string name="category_theme">Tema</string>
   <string name="category_nfc">Connexions NFC</string>
+  <string name="category_startup_security">Security</string>
   <string name="category_account">Accounts</string>
   <string name="category_QRCode">Codi QR</string>
   <string name="category_Speech">Speech</string>
@@ -38,12 +39,6 @@
   <string name="dashboard_list_title">Dashboard Grid</string>
   <string name="show_dashboard_list_on">Show dashboard as list</string>
   <string name="show_dashboard_list_off">Show dashboard as grid</string>
-  <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Elements personalitzats per Android Wear</string>
   <string name="custom_wear_select">Seleccioneu interruptors per Wear</string>
@@ -82,6 +77,13 @@
   <string name="qrcode_settings">Configura els codis QR</string>
   <string name="enable_qrcode">Enable QR Codes</string>
   <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
+  <string name="security_settings">Setup Security</string>
+  <string name="enable_security">Enable fingerprint protection on startup</string>
+  <string name="disable_security">Disable fingerprint protection on startup</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de Google Cloud Messaging</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>

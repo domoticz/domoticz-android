@@ -17,8 +17,9 @@
   <string name="category_export">Eksport/Import ustawień</string>
   <string name="category_theme">Motyw</string>
   <string name="category_nfc">Połączenia NFC</string>
-  <string name="category_account">Accounts</string>
-  <string name="category_QRCode">Kody QR</string>
+  <string name="category_startup_security">Security</string>
+  <string name="category_account">Konta</string>
+  <string name="category_QRCode">Kod QR</string>
   <string name="category_Speech">Mowa</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ekran startowy</string>
@@ -38,12 +39,6 @@
   <string name="dashboard_list_title">Siatka pulpitu</string>
   <string name="show_dashboard_list_on">Pokaż pulpit jako listę</string>
   <string name="show_dashboard_list_off">Pokaż pulpit jako siatkę</string>
-  <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Android Wear własne pozycje</string>
   <string name="custom_wear_select">Wybierz przełączniki Wear</string>
@@ -82,6 +77,13 @@
   <string name="qrcode_settings">Ustawienia kodów QR</string>
   <string name="enable_qrcode">Włącz kody QR</string>
   <string name="qrcode_enable_settings">Włącz funkcjonalność kodów QR</string>
+  <string name="security_settings">Ustawienia zabezpieczeń</string>
+  <string name="enable_security">Włącz ochronę odciskiem palca na starcie</string>
+  <string name="disable_security">Wyłącz ochronę odciskiem palca na starcie</string>
+  <string name="setup_fingerprints">Ustawienia odcisku palca za pomocą ekranu ustawień Android</string>
+  <string name="fingerprint_not_supported">Zabezpieczenie odciskiem palca nie jest obsługiwane na tym urządzeniu</string>
+  <string name="fingerprint_not_setup_in_android">Po raz pierwszy skonfiguruj/połącz odcisk palca dla tego urządzenia</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID Google Cloud Messaging</string>
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>

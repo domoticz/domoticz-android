@@ -48,7 +48,7 @@
     <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
     <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
     <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
-
+    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
 
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>
