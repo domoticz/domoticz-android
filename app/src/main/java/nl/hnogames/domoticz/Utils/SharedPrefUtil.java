@@ -155,6 +155,10 @@ public class SharedPrefUtil {
     public boolean isStartupSecurityEnabled() {
         return prefs.getBoolean(PREF_STARTUP_PROTECTION_ENABLED, false);
     }
+    public void setStartupSecurityEnabled(Boolean set) {
+        editor.putBoolean(PREF_STARTUP_PROTECTION_ENABLED, set).apply();
+        editor.commit();
+    }
 
     public boolean isNotificationsEnabled() {
         return prefs.getBoolean(PREF_ENABLE_NOTIFICATIONS, true);

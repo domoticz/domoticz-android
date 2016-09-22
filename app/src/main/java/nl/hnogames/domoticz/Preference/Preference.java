@@ -385,15 +385,16 @@ public class Preference extends PreferenceFragment {
         FingerPrintPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                if(mSharedPrefs.isStartupSecurityEnabled())
+                    return true;
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                    showPremiumSnackbar(getString(R.string.always_on_title));
+                    showPremiumSnackbar(getString(R.string.category_startup_security));
                     return false;
                 } else {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                         UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_supported), Toast.LENGTH_LONG);
                         return false;
                     }
-
                     if (!PermissionsUtil.canAccessFingerprint(mContext)) {
                         requestPermissions(PermissionsUtil.INITIAL_FINGERPRINT_PERMS,
                                 PermissionsUtil.INITIAL_FINGERPRINT_REQUEST);
@@ -406,9 +407,24 @@ public class Preference extends PreferenceFragment {
                             if (!fingerprintManager.isHardwareDetected()) {
                                 return false;
                             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                                return true;
+                                UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
+                                return false;
                             } else {
-                                return true;
+                                new MaterialDialog.Builder(mContext)
+                                        .title(R.string.category_startup_security)
+                                        .content(R.string.fingerprint_sure)
+                                        .positiveText(R.string.ok)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                mSharedPrefs.setStartupSecurityEnabled(true);
+                                                ((SettingsActivity) getActivity()).reloadSettings();
+                                            }
+                                        })
+                                        .show();
+
+                                return false;
                             }
                         }
                     }
