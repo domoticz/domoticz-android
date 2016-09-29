@@ -385,7 +385,7 @@ public class Preference extends PreferenceFragment {
         FingerPrintPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
-                if(mSharedPrefs.isStartupSecurityEnabled())
+                if (mSharedPrefs.isStartupSecurityEnabled())
                     return true;
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_startup_security));

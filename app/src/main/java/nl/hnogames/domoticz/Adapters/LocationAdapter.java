@@ -37,11 +37,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticzapi.Containers.LocationInfo;
 
 public class LocationAdapter extends BaseAdapter {
 
@@ -130,6 +130,7 @@ public class LocationAdapter extends BaseAdapter {
 
         holder.name.setText(mLocationInfo.getName());
         holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRadius());
+
         if (!UsefulBits.isEmpty(mLocationInfo.getSwitchName())) {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchName());
         } else if (mLocationInfo.getSwitchIdx() > 0) {
@@ -138,6 +139,9 @@ public class LocationAdapter extends BaseAdapter {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available));
         }
+
+        if (!UsefulBits.isEmpty(mLocationInfo.getValue()))
+            holder.connectedSwitch.setText(holder.connectedSwitch.getText() + " - " + mLocationInfo.getValue());
 
         holder.remove.setId(mLocationInfo.getID());
         holder.remove.setOnClickListener(new View.OnClickListener() {

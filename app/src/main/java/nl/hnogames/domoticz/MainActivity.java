@@ -81,6 +81,8 @@ import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
+import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Scenes;
@@ -99,18 +101,14 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticzapi.Containers.QRCodeInfo;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Containers.SpeechInfo;
-import nl.hnogames.domoticzapi.Containers.SwitchInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
-import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
-import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -320,14 +318,16 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                         ArrayList<QRCodeInfo> qrList = mSharedPrefs.getQRCodeList();
                         QRCodeInfo foundQRCode = null;
                         Log.i(TAG, "QR Code ID Found: " + QR_ID);
+
                         if (qrList != null && qrList.size() > 0) {
                             for (QRCodeInfo n : qrList) {
                                 if (n.getId().equals(QR_ID))
                                     foundQRCode = n;
                             }
                         }
+
                         if (foundQRCode != null && foundQRCode.isEnabled()) {
-                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1);
+                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1, foundQRCode.getValue());
                             Toast.makeText(MainActivity.this, getString(R.string.qrcode) + " " + foundQRCode.getName(), Toast.LENGTH_SHORT).show();
                         } else {
                             if (foundQRCode == null)
@@ -336,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                                 Toast.makeText(MainActivity.this, getString(R.string.qr_code_disabled), Toast.LENGTH_SHORT).show();
                         }
                     }
+
                     break;
             }
         } else if (resultCode == 789) {
@@ -354,95 +355,120 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
             this.finish();
     }
 
-    private void handleSwitch(final int idx, final String password, final int inputJSONAction) {
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        domoticz.getSwitches(new SwitchesReceiver() {
-                                 @Override
-                                 @DebugLog
-                                 public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                                     for (SwitchInfo s : switches) {
-                                         if (s.getIdx() == idx) {
-                                             domoticz.getStatus(idx, new StatusReceiver() {
-                                                 @Override
-                                                 @DebugLog
-                                                 public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
-                                                     int jsonAction;
-                                                     int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
-                                                     if (inputJSONAction < 0) {
-                                                         if (extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                                                 extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                                                             if (!extendedStatusInfo.getStatusBoolean())
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                             else
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                         } else {
-                                                             if (!extendedStatusInfo.getStatusBoolean())
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                             else
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                         }
-                                                     } else {
-                                                         if (extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                                                 extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                                                             if (inputJSONAction == 1)
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                             else
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                         } else {
-                                                             if (inputJSONAction == 1)
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                             else
-                                                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                         }
-                                                     }
-                                                     switch (extendedStatusInfo.getSwitchTypeVal()) {
-                                                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                             break;
-                                                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                             break;
-                                                     }
+    private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value) {
+        if (domoticz == null)
+            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
-                                                         @Override
-                                                         @DebugLog
-                                                         public void onReceiveResult(String result) {
-                                                             Log.d(TAG, result);
-                                                             if (fromQRCodeWidget)
-                                                                 MainActivity.this.finish();
-                                                         }
+        domoticz.getDevice(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
-                                                         @Override
-                                                         @DebugLog
-                                                         public void onError(Exception error) {
-                                                             if (fromQRCodeWidget)
-                                                                 MainActivity.this.finish();
-                                                         }
-                                                     });
-                                                 }
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                int jsonAction;
+                int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+                int jsonValue = 0;
 
-                                                 @Override
-                                                 @DebugLog
-                                                 public void onError(Exception error) {
-                                                     if (fromQRCodeWidget)
-                                                         MainActivity.this.finish();
-                                                 }
-                                             });
-                                         }
-                                     }
-                                 }
+                if (inputJSONAction < 0) {
+                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        if (!mDevicesInfo.getStatusBoolean())
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        else {
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                            }
+                        }
+                    } else {
+                        if (!mDevicesInfo.getStatusBoolean()) {
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                            }
+                        } else
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    }
+                } else {
+                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        if (inputJSONAction == 1)
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        else {
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                            }
+                        }
+                    } else {
+                        if (inputJSONAction == 1) {
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                            }
+                        } else
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    }
+                }
 
-                                 @Override
-                                 @DebugLog
-                                 public void onError(Exception error) {
-                                     if (fromQRCodeWidget)
-                                         MainActivity.this.finish();
-                                 }
-                             }
-        );
+                switch (mDevicesInfo.getSwitchTypeVal()) {
+                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                        break;
+                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        break;
+                }
+
+                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        Log.d(TAG, result);
+                        if (fromQRCodeWidget)
+                            MainActivity.this.finish();
+                    }
+
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        if (fromQRCodeWidget)
+                            MainActivity.this.finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (fromQRCodeWidget)
+                    MainActivity.this.finish();
+            }
+
+        }, idx, false);
     }
+
+    private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        int jsonValue = 0;
+        if (!UsefulBits.isEmpty(value)) {
+            String[] levelNames = mDevicesInfo.getLevelNames();
+            int counter = 10;
+            for (String l : levelNames) {
+                if (l.equals(value))
+                    break;
+                else
+                    counter += 10;
+            }
+            jsonValue = counter;
+        }
+        return jsonValue;
+    }
+
 
     @DebugLog
     public void refreshFragment() {
@@ -513,7 +539,8 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
         try {
             // Notify Digitus of the result
             Digitus.get().handleResult(requestCode, permissions, grantResults);
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 
     @Override
@@ -1136,12 +1163,14 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
         if (mSharedPrefs.isSpeechEnabled()) {
             ArrayList<SpeechInfo> qrList = mSharedPrefs.getSpeechList();
             SpeechInfo foundSPEECH = null;
+
             if (qrList != null && qrList.size() > 0) {
                 for (SpeechInfo n : qrList) {
                     if (n.getId().equals(SPEECH_ID))
                         foundSPEECH = n;
                 }
             }
+
             if (foundSPEECH == null) {
                 if (SPEECH_ID.endsWith(getString(R.string.button_state_off).toLowerCase())) {
                     actionFound = getString(R.string.button_state_off);
@@ -1162,7 +1191,7 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
             }
 
             if (foundSPEECH != null && foundSPEECH.isEnabled()) {
-                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction);
+                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction, foundSPEECH.getValue());
                 Toast.makeText(MainActivity.this, getString(R.string.Speech) + ": " + SPEECH_ID + " - " + actionFound, Toast.LENGTH_SHORT).show();
             } else {
                 if (foundSPEECH == null)

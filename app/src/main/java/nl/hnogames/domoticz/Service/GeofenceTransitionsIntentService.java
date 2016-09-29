@@ -36,18 +36,16 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 
+import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticzapi.Containers.LocationInfo;
-import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
-import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
-import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 /**
@@ -99,7 +97,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                 getString(R.string.geofence_location_entering_text), this);
 
                         if (locationFound.getSwitchIdx() > 0) {
-                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true);
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue());
                         }
                     }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
@@ -116,7 +114,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                 getString(R.string.geofence_location_leaving_text), this);
 
                         if (locationFound.getSwitchIdx() > 0)
-                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false);
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false, locationFound.getValue());
                     }
                 }
             }
@@ -125,72 +123,89 @@ public class GeofenceTransitionsIntentService extends IntentService
         }
     }
 
-    private void handleSwitch(final int idx, final String password, final boolean checked) {
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        domoticz.getSwitches(new SwitchesReceiver() {
-                                 @Override
-                                 public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
-                                     for (SwitchInfo s : switches) {
-                                         if (s.getIdx() == idx) {
-                                             domoticz.getStatus(idx, new StatusReceiver() {
-                                                 @Override
-                                                 public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
+    private void handleSwitch(final int idx, final String password, final boolean checked, final String value) {
+        if (domoticz == null)
+            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-                                                     int jsonAction;
-                                                     int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
-                                                     if (extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                                             extendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                                                         if (checked)
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                         else
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                     } else {
-                                                         if (checked)
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                         else
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                     }
+        domoticz.getDevice(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
-                                                     switch (extendedStatusInfo.getSwitchTypeVal()) {
-                                                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                                             break;
-                                                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                                                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                                             break;
-                                                     }
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                int jsonAction;
+                int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+                int jsonValue = 0;
 
-                                                     domoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
-                                                         @Override
-                                                         public void onReceiveResult(String result) {
-                                                             Log.d(TAG, result);
-                                                         }
+                if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                    if (!mDevicesInfo.getStatusBoolean())
+                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    else {
+                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                        if (!UsefulBits.isEmpty(value)) {
+                            jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                            jsonValue = getSelectorValue(mDevicesInfo, value);
+                        }
+                    }
+                } else {
+                    if (!mDevicesInfo.getStatusBoolean()) {
+                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                        if (!UsefulBits.isEmpty(value)) {
+                            jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                            jsonValue = getSelectorValue(mDevicesInfo, value);
+                        }
+                    } else
+                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                }
 
-                                                         @Override
-                                                         public void onError(Exception error) {
-                                                             if (error != null)
-                                                                 onErrorHandling(error);
-                                                         }
-                                                     });
-                                                 }
+                switch (mDevicesInfo.getSwitchTypeVal()) {
+                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                        break;
+                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        break;
+                }
 
-                                                 @Override
-                                                 public void onError(Exception error) {
-                                                     if (error != null)
-                                                         onErrorHandling(error);
-                                                 }
-                                             });
-                                         }
-                                     }
-                                 }
+                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        Log.d(TAG, result);
+                    }
 
-                                 @Override
-                                 public void onError(Exception error) {
-                                     if (error != null)
-                                         onErrorHandling(error);
-                                 }
-                             }
-        );
+                    @Override
+                    public void onError(Exception error) {
+                        if (error != null)
+                            onErrorHandling(error);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (error != null)
+                    onErrorHandling(error);
+            }
+
+        }, idx, false);
+    }
+
+    private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        int jsonValue = 0;
+        if (!UsefulBits.isEmpty(value)) {
+            String[] levelNames = mDevicesInfo.getLevelNames();
+            int counter = 10;
+            for (String l : levelNames) {
+                if (l.equals(value))
+                    break;
+                else
+                    counter += 10;
+            }
+            jsonValue = counter;
+        }
+        return jsonValue;
     }
 
     private void onErrorHandling(Exception error) {

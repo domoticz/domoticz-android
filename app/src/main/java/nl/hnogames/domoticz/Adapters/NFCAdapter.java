@@ -37,11 +37,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticzapi.Containers.NFCInfo;
 
 public class NFCAdapter extends BaseAdapter {
 
@@ -121,6 +121,9 @@ public class NFCAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available));
         }
+
+        if (!UsefulBits.isEmpty(mNFCInfo.getValue()))
+            holder.nfc_switch_idx.setText(holder.nfc_switch_idx.getText() + " - " + mNFCInfo.getValue());
 
         holder.remove.setId(position);
         holder.remove.setOnClickListener(new View.OnClickListener() {

@@ -23,7 +23,7 @@
 package nl.hnogames.domoticz.Interfaces;
 
 
-import nl.hnogames.domoticzapi.Containers.NFCInfo;
+import nl.hnogames.domoticz.Containers.NFCInfo;
 
 public interface NFCClickListener {
     boolean onEnableClick(NFCInfo nfc, boolean checked);

@@ -37,11 +37,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Interfaces.SpeechClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticzapi.Containers.SpeechInfo;
 
 public class SpeechAdapter extends BaseAdapter {
 
@@ -119,6 +119,9 @@ public class SpeechAdapter extends BaseAdapter {
             holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch)
                     + ": " + context.getString(R.string.not_available));
         }
+
+        if (!UsefulBits.isEmpty(mSpeechInfo.getValue()))
+            holder.Speech_tag_id.setText(holder.Speech_tag_id.getText() + " - " + mSpeechInfo.getValue());
 
         holder.Speech_switch_idx.setText("Commando's: \r\n" + "'" + mSpeechInfo.getName() + "' " + "\r\n'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_on).toLowerCase() + "'\r\n" +
                 "'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_off).toLowerCase() + "'");

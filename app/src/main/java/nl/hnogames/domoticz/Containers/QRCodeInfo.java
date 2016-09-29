@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticzapi.Containers;
+package nl.hnogames.domoticz.Containers;
 
 public class QRCodeInfo {
 
@@ -30,6 +30,7 @@ public class QRCodeInfo {
     private int switchIdx;
     private String switchPassword = "";
     private String switchName;
+    private String value;
 
     public String getId() {
         return id;
@@ -71,6 +72,13 @@ public class QRCodeInfo {
         this.switchPassword = switchPassword;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public String getSwitchName() {
         return switchName;

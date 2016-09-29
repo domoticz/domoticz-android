@@ -51,16 +51,18 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.NFCAdapter;
+import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Containers.NFCInfo;
-import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class NFCSettingsActivity extends AppCompatActivity implements NFCClickListener {
 
@@ -242,13 +244,20 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
     }
 
     private void getSwitchesAndShowSwitchesDialog(final NFCInfo nfcInfo) {
-        domoticz.getSwitches(new SwitchesReceiver() {
+        domoticz.getDevices(new DevicesReceiver() {
             @Override
-            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+            @DebugLog
+            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(nfcInfo, switches);
             }
 
             @Override
+            @DebugLog
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
+
+            @Override
+            @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(NFCSettingsActivity.this, coordinatorLayout, NFCSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {
@@ -258,12 +267,12 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                             }
                         }, NFCSettingsActivity.this.getString(R.string.retry));
             }
-        });
+        }, 0, "light");
     }
 
     private void showSwitchesDialog(
             final NFCInfo nfcInfo,
-            ArrayList<SwitchInfo> switches) {
+            final ArrayList<DevicesInfo> switches) {
 
         SwitchDialog infoDialog = new SwitchDialog(
                 NFCSettingsActivity.this, switches,
@@ -275,11 +284,32 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                 nfcInfo.setSwitchIdx(selectedSwitchIDX);
                 nfcInfo.setSwitchPassword(selectedSwitchPassword);
                 nfcInfo.setSwitchName(selectedSwitchName);
-                updateNFC(nfcInfo);
+
+                for (DevicesInfo s : switches) {
+                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                        showSelectorDialog(nfcInfo, s);
+                    else
+                        updateNFC(nfcInfo);
+                }
             }
         });
 
         infoDialog.show();
+    }
+
+    private void showSelectorDialog(final NFCInfo nfcInfo, DevicesInfo selector) {
+        final String[] levelNames = selector.getLevelNames();
+        new MaterialDialog.Builder(this)
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        nfcInfo.setValue(String.valueOf(text));
+                        updateNFC(nfcInfo);
+                    }
+                })
+                .show();
     }
 
     public void updateNFC(NFCInfo nfcInfo) {
