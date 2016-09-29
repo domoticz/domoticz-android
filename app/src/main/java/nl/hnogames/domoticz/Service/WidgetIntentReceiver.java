@@ -51,6 +51,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private boolean action = false;
     private boolean toggle = true;
     private String password = null;
+    private String value = null;
     private SharedPrefUtil mSharedPrefs;
 
     @Override
@@ -99,6 +100,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 case DomoticzValues.Device.Type.Value.X10SIREN:
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.SELECTOR:
                     return true;
             }
         }
@@ -141,6 +143,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
     private void processSwitch(final Context context, int idx) {
         password = mSharedPrefs.getWidgetPassword(widgetID);
+        value = mSharedPrefs.getWidgetValue(widgetID);
+
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
 
@@ -155,9 +159,9 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                     if (s != null) {
                         if (isOnOffSwitch(s)) {
                             if (toggle)
-                                onSwitchClick(s, !s.getStatusBoolean(), domoticz, context);
+                                onSwitchClick(s, !s.getStatusBoolean(), domoticz, context, value);
                             else
-                                onSwitchClick(s, action, domoticz, context);
+                                onSwitchClick(s, action, domoticz, context, value);
                         }
                         if (isPushOffSwitch(s))
                             onButtonClick(s, false, domoticz, context);
@@ -259,21 +263,34 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         });
     }
 
-    public void onSwitchClick(final DevicesInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
+    public void onSwitchClick(final DevicesInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context, String value) {
         if (clickedSwitch != null) {
             int jsonAction;
             int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
 
+            int jsonValue = 0;
             if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                     clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                 if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                else jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                else {
+                    jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                    if (!UsefulBits.isEmpty(value)) {
+                        jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                        jsonValue = getSelectorValue(clickedSwitch, value);
+                    }
+                }
             } else {
-                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                if (checked) {
+                    jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                    if (!UsefulBits.isEmpty(value)) {
+                        jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                        jsonValue = getSelectorValue(clickedSwitch, value);
+                    }
+                }
                 else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             }
 
-            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
+            mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
@@ -289,6 +306,22 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
             });
         }
+    }
+
+    private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        int jsonValue = 0;
+        if (!UsefulBits.isEmpty(value)) {
+            String[] levelNames = mDevicesInfo.getLevelNames();
+            int counter = 10;
+            for (String l : levelNames) {
+                if (l.equals(value))
+                    break;
+                else
+                    counter += 10;
+            }
+            jsonValue = counter;
+        }
+        return jsonValue;
     }
 
     public void onSwitchClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {

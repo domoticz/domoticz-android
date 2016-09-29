@@ -155,6 +155,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         public void onReceiveDevice(DevicesInfo s) {
                             if (s != null) {
                                 int withButtons = withButtons(s);
+
                                 if (mSharedPrefs.darkThemeEnabled()) {
                                     if (withButtons == 1)
                                         views = new RemoteViews(packageName, R.layout.widget_layout_dark);
@@ -166,6 +167,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     if (withButtons == 2)
                                         views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
                                 }
+
                                 String text = s.getData();
                                 views.setTextViewText(R.id.title, s.getName());
                                 if (s.getUsage() != null && s.getUsage().length() > 0)
@@ -329,6 +331,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.DOORBELL:
                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                         case DomoticzValues.Device.Type.Value.DIMMER:
+                        case DomoticzValues.Device.Type.Value.SELECTOR:
                             withButton = 1;
                             break;
                     }
