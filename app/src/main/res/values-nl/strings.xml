@@ -41,6 +41,7 @@
   <string name="day_off">Vrije dag</string>
   <string name="custom">Aangepast</string>
   <string name="heating_off">Verwarming uit</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Debugging info</string>
   <string name="msg_copiedToClipboard">Tekst gekopieerd naar klembord</string>
   <string name="favorite">Favoriet</string>

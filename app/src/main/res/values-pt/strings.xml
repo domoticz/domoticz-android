@@ -41,6 +41,7 @@
   <string name="day_off">Dia de folga</string>
   <string name="custom">Personalizar</string>
   <string name="heating_off">Aquecimento desligado</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Informação de depuração</string>
   <string name="msg_copiedToClipboard">Texto copiado para a área de transferência</string>
   <string name="favorite">Favorito</string>

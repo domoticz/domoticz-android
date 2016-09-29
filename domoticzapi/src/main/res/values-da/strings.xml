@@ -41,6 +41,7 @@
   <string name="day_off">Fridag</string>
   <string name="custom">Brugerdefineret</string>
   <string name="heating_off">Varme fra</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Debugging info</string>
   <string name="msg_copiedToClipboard">Tekst kopieret til udklipsholder</string>
   <string name="favorite">Favorit</string>

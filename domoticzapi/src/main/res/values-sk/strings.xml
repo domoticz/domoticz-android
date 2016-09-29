@@ -41,6 +41,7 @@
   <string name="day_off">Deň voľna</string>
   <string name="custom">Vlastný</string>
   <string name="heating_off">Kúrenie vypnuté</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Informácie o ladení</string>
   <string name="msg_copiedToClipboard">Text bol skopírovaný do schránky</string>
   <string name="favorite">Obľúbené</string>

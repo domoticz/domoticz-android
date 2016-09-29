@@ -41,6 +41,7 @@
   <string name="day_off">Freier Tag</string>
   <string name="custom">Benutzerdefiniert</string>
   <string name="heating_off">Heizung aus</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Debuginformationen</string>
   <string name="msg_copiedToClipboard">Text in Zwischenablage kopiert</string>
   <string name="favorite">Favorit</string>

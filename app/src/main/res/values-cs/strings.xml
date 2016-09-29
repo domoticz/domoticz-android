@@ -41,6 +41,7 @@
   <string name="day_off">Den volna</string>
   <string name="custom">Vlastní</string>
   <string name="heating_off">Vytápění vypnuté</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Informace o ladění</string>
   <string name="msg_copiedToClipboard">Text byl zkopírován do schránky</string>
   <string name="favorite">Oblíbené</string>
