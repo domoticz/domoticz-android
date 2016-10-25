@@ -41,6 +41,7 @@
   <string name="day_off">Почивен ден</string>
   <string name="custom">По желание</string>
   <string name="heating_off">Heating off</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Debugging info</string>
   <string name="msg_copiedToClipboard">Текста беше копиран в клипборда</string>
   <string name="favorite">Любим</string>

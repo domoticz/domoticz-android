@@ -17,7 +17,7 @@
   <string name="category_export">Importa/Esporta impostazioni</string>
   <string name="category_theme">Tema</string>
   <string name="category_nfc">Connessioni NFC</string>
-  <string name="category_startup_security">Security</string>
+  <string name="category_startup_security">Sicurezza</string>
   <string name="category_account">Accounts</string>
   <string name="category_QRCode">QR Code</string>
   <string name="category_Speech">Comando vocale</string>
@@ -83,7 +83,7 @@
   <string name="setup_fingerprints">Impostazioni impronte digitali tramite le schermate di Android</string>
   <string name="fingerprint_not_supported">Impronta digitale non supportata in questo dispositivo</string>
   <string name="fingerprint_not_setup_in_android">Per prima cosa configurare/collegare un\'impronta digitale a questo dispositivo</string>
-  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+  <string name="fingerprint_sure">Sei sicuro? La password di failover è la password del tuo account Domoticz.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID di messaggistica Google Cloud</string>
   <string name="notification_settings_push">Invia il tuo ID di registrazione a Domoticz</string>

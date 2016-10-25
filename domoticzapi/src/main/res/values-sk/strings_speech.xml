@@ -8,7 +8,7 @@
   <string name="Speech_name">Dajte tomuto hlasovému povelu vhodný názov. </string>
   <string name="Speech_exists">Hlasový povel bol už zaregistrovaný. </string>
   <string name="Speech_saved">Uložiť nový hlasový povel. </string>
-  <string name="Speech_desc">Do a new voice command. </string>
+  <string name="Speech_desc">Zadať nový hlasový povel. </string>
   <string name="Speech">Reč</string>
   <string name="Speech_disabled">Bol zistený nový hlasový povel, prosím, nastavte ho v nastaveniach.</string>
   <string name="noSwitchSelected_explanation_Speech">Pre použitie hlasového povelu, je potrebné s ním spínač prepojiť</string>
