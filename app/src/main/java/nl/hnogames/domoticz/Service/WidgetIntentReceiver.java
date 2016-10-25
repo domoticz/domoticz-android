@@ -286,8 +286,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                         jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                         jsonValue = getSelectorValue(clickedSwitch, value);
                     }
-                }
-                else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                } else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             }
 
             mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
