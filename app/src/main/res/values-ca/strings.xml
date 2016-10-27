@@ -41,6 +41,7 @@
   <string name="day_off">Dia lliure</string>
   <string name="custom">Personalitzat</string>
   <string name="heating_off">Apaga la calefacció</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Informació de depuració</string>
   <string name="msg_copiedToClipboard">S\'ha copiat el text al porta-retalls</string>
   <string name="favorite">Preferit</string>

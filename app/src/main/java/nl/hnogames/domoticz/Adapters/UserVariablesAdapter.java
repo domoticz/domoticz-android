@@ -39,7 +39,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import nl.hnogames.domoticz.Fragments.UserVariables;
 import nl.hnogames.domoticz.Interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -64,7 +63,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
                                 UserVariablesClickListener _listener) {
         super();
 
-        listener=_listener;
+        listener = _listener;
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
@@ -105,16 +104,15 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
             final UserVariableInfo mUserVariableInfo = filteredData.get(position);
 
             holder.name.setText(mUserVariableInfo.getName());
-            holder.message.setText("Value: " + mUserVariableInfo.getValue() + " ("+mUserVariableInfo.getTypeValue()+")");
+            holder.message.setText("Value: " + mUserVariableInfo.getValue() + " (" + mUserVariableInfo.getTypeValue() + ")");
             holder.datetime.setText(mUserVariableInfo.getLastUpdate());
             holder.set.setId(mUserVariableInfo.getIdx());
 
             holder.set.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for(UserVariableInfo v: filteredData)
-                    {
-                        if(v.getIdx() == view.getId())
+                    for (UserVariableInfo v : filteredData) {
+                        if (v.getIdx() == view.getId())
                             listener.onUserVariableClick(v);
                     }
                 }
@@ -149,7 +147,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
             datetime = (TextView) itemView.findViewById(R.id.logs_datetime);
             message = (TextView) itemView.findViewById(R.id.logs_message);
             iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            set = (Button)itemView.findViewById(R.id.set_uservar);
+            set = (Button) itemView.findViewById(R.id.set_uservar);
 
             itemView.setOnClickListener(this);
         }

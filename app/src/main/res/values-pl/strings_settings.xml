@@ -11,13 +11,16 @@
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informacje</string>
   <string name="category_language">Język</string>
+  <string name="category_talk_back">Rozmowa</string>
   <string name="category_notification">Powiadomienia</string>
   <string name="category_debug">Debugowanie</string>
   <string name="category_export">Eksport/Import ustawień</string>
   <string name="category_theme">Motyw</string>
   <string name="category_nfc">Połączenia NFC</string>
-  <string name="category_QRCode">Kody QR</string>
-  <string name="category_Speech">Mowa</string>
+  <string name="category_startup_security">Zabezpieczenia</string>
+  <string name="category_account">Konta</string>
+  <string name="category_QRCode">Kod QR</string>
+  <string name="category_Speech">Polecenia głosowe</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Ekran startowy</string>
   <string name="enable_items">Włącz/Wyłącz pozycje</string>
@@ -48,6 +51,9 @@
   <string name="config_theme">Ustaw motyw</string>
   <string name="set_dark_theme">Przełącz motyw aplikacji na ciemny</string>
   <string name="set_light_theme">Przełącz motyw aplikacji na jasny</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">Niech Domoticz mówi do Ciebie</string>
+  <string name="set_talk_back_off">Wyłącz rozmowę</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Ustawienia zaimportowane, proszę zrestartuj Domoticz</string>
   <string name="settings_import_failed">Nie udało się zaimportować ustawień</string>
@@ -61,16 +67,23 @@
   <string name="title_activity_server_settings">Ustawienia serwera</string>
   <string name="multi_server">Wielo-serwerowość</string>
   <string name="enable_nfc">Włącz NFC</string>
-  <string name="enable_speech">Włącz rozpoznawanie mowy</string>
+  <string name="enable_speech">Włącz polecenia głosowe</string>
   <string name="export_settings">Eksport ustawień</string>
   <string name="import_settings">Import ustawień</string>
   <string name="multi_server_settings">Włącz obsługę wielu serwerów</string>
   <string name="nfc_enable_settings">Włącz połączenia NFC</string>
-  <string name="speech_enable_settings">Włącz rozpoznawanie mowy</string>
+  <string name="speech_enable_settings">Włącz polecenia głosowe</string>
   <string name="server">Serwer</string>
   <string name="qrcode_settings">Ustawienia kodów QR</string>
   <string name="enable_qrcode">Włącz kody QR</string>
   <string name="qrcode_enable_settings">Włącz funkcjonalność kodów QR</string>
+  <string name="security_settings">Ustawienia zabezpieczeń</string>
+  <string name="enable_security">Włącz ochronę odciskiem palca na starcie</string>
+  <string name="disable_security">Wyłącz ochronę odciskiem palca na starcie</string>
+  <string name="setup_fingerprints">Ustawienia odcisku palca za pomocą ekranu ustawień Android</string>
+  <string name="fingerprint_not_supported">Zabezpieczenie odciskiem palca nie jest obsługiwane na tym urządzeniu</string>
+  <string name="fingerprint_not_setup_in_android">Po raz pierwszy skonfiguruj/połącz odcisk palca dla tego urządzenia</string>
+  <string name="fingerprint_sure">Czy jesteś pewny? Hasłem awaryjnym jest hasło do Twojego konta Domoticz.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID Google Cloud Messaging</string>
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>

@@ -22,7 +22,7 @@
 
 package nl.hnogames.domoticz.Interfaces;
 
-import nl.hnogames.domoticzapi.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.LocationInfo;
 
 public interface LocationClickListener {
 

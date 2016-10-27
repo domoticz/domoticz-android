@@ -46,6 +46,7 @@
     <string name="day_off">Day off</string>
     <string name="custom">Custom</string>
     <string name="heating_off">Heating off</string>
+    <string name="selector_value">Selector values</string>
 
     <string name="debug_textview_title">Debugging info</string>
 

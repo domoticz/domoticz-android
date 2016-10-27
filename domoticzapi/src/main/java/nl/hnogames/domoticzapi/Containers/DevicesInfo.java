@@ -306,7 +306,6 @@ public class DevicesInfo implements Comparable, Serializable {
     public String[] getLevelNames() {
         if (UsefulBits.isEmpty(LevelNames))
             return null;
-
         String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
         String[] newNames = new String[names.length - 1];
         for (int i = 1; i < names.length; i++) {

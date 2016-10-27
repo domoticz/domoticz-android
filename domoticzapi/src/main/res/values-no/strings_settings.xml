@@ -11,13 +11,16 @@
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informasjon</string>
   <string name="category_language">Språk</string>
+  <string name="category_talk_back">Snakk tilbake</string>
   <string name="category_notification">Varslinger</string>
   <string name="category_debug">Feilsøking</string>
   <string name="category_export">Eksportere/importere innstillinger</string>
   <string name="category_theme">Tema</string>
   <string name="category_nfc">NFC tilkoblinger</string>
+  <string name="category_startup_security">Sikkerhet</string>
+  <string name="category_account">Kontoer</string>
   <string name="category_QRCode">QR-kode</string>
-  <string name="category_Speech">Speech</string>
+  <string name="category_Speech">Tale</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Startside</string>
   <string name="enable_items">Aktivere/deaktivere elementer</string>
@@ -48,6 +51,9 @@
   <string name="config_theme">Set tema</string>
   <string name="set_dark_theme">Bytt app-temaet til mørk</string>
   <string name="set_light_theme">Bytt app-temaet til lys</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">La Domoticz snakke tilbake til deg</string>
+  <string name="set_talk_back_off">Deaktivere snakk tilbake</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Innstillingene importeres, vær så snill å restart Domoticz</string>
   <string name="settings_import_failed">Kan ikke importere innstillinger</string>
@@ -57,20 +63,27 @@
   <string name="server_settings">Serverens tilkoblingsinnstillinger</string>
   <string name="server_force_fetch_config">Hent serverkonfigurasjonen</string>
   <string name="nfc_settings">NFC tilkoblinger</string>
-  <string name="speech_settings">Setup Speech Commands</string>
+  <string name="speech_settings">Konfigurer talekommandoer </string>
   <string name="title_activity_server_settings">Serverinnstillinger</string>
   <string name="multi_server">Multi Server</string>
   <string name="enable_nfc">Aktiver NFC</string>
-  <string name="enable_speech">Enable Speech Recognition</string>
+  <string name="enable_speech">Aktivere talegjenkjenning</string>
   <string name="export_settings">Eksporter innstillingene</string>
   <string name="import_settings">Import innstillinger</string>
   <string name="multi_server_settings">Aktiver serverstøtte for flere</string>
   <string name="nfc_enable_settings">Aktivere NFC tilkoblinger</string>
-  <string name="speech_enable_settings">Enable Speech Recognition</string>
+  <string name="speech_enable_settings">Aktivere talegjenkjenning</string>
   <string name="server">Server</string>
   <string name="qrcode_settings">Oppsettskoder QR</string>
   <string name="enable_qrcode">Aktiver QR-koder</string>
   <string name="qrcode_enable_settings">Aktivere funksjonaliteten for QR-koder</string>
+  <string name="security_settings">Konfigurere sikkerhet</string>
+  <string name="enable_security">Aktivere fingeravtrykksbeskyttelse ved oppstart</string>
+  <string name="disable_security">Deaktivere fingeravtrykksbeskyttelse ved oppstart</string>
+  <string name="setup_fingerprints">Konfigurer fingeravtrykkene via Android innstillinger</string>
+  <string name="fingerprint_not_supported">Fingeravtrykkssikkerhet støttes ikke på denne enheten</string>
+  <string name="fingerprint_not_setup_in_android">Først konfigurer/koble et fingeravtrykk til denne enheten</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Sky meldings-ID</string>
   <string name="notification_settings_push">Send registrerings-Iden til Domoticz</string>

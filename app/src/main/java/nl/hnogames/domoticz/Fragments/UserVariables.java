@@ -124,22 +124,18 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                 .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        if(validateInput(String.valueOf(input), clickedVar.getType()))
-                        {
+                        if (validateInput(String.valueOf(input), clickedVar.getType())) {
                             updateUserVariable(String.valueOf(input), clickedVar);
-                        }
-                        else{
+                        } else {
                             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
                         }
                     }
                 }).show();
     }
 
-    private boolean validateInput(String input, String type)
-    {
+    private boolean validateInput(String input, String type) {
         try {
-            switch (type)
-            {
+            switch (type) {
                 case "0":
                     Integer.parseInt(input);
                     break;
@@ -153,14 +149,13 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                     new SimpleDateFormat("HH:mm").parse(input);
                     break;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    private boolean updateUserVariable(String input, UserVariableInfo clickedVar)
-    {
+    private boolean updateUserVariable(String input, UserVariableInfo clickedVar) {
         mDomoticz.setUserVariableValue(input, clickedVar, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {

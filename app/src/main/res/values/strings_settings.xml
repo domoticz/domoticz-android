@@ -18,6 +18,7 @@
     <string name="category_export">Export/Import Settings</string>
     <string name="category_theme">Theme</string>
     <string name="category_nfc">NFC Connections</string>
+    <string name="category_startup_security">Security</string>
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR Code</string>
     <string name="category_Speech">Speech</string>
@@ -87,6 +88,13 @@
     <string name="enable_qrcode">Enable QR Codes</string>
     <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
 
+    <string name="security_settings">Setup Security</string>
+    <string name="enable_security">Enable fingerprint protection on startup</string>
+    <string name="disable_security">Disable fingerprint protection on startup</string>
+    <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+    <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+    <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
 
     <!--        GCM settings      -->
     <string name="notification_settings_id">Google Cloud Messaging ID</string>

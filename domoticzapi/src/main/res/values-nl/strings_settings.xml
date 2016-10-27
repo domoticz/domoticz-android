@@ -11,11 +11,14 @@
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informatie</string>
   <string name="category_language">Taal</string>
+  <string name="category_talk_back">Praat Terug</string>
   <string name="category_notification">Notificaties</string>
   <string name="category_debug">Foutopsporing</string>
   <string name="category_export">Instellingen exporteren/importeren</string>
   <string name="category_theme">Thema</string>
   <string name="category_nfc">NFC verbindingen</string>
+  <string name="category_startup_security">Beveiliging</string>
+  <string name="category_account">Accounts</string>
   <string name="category_QRCode">QR-Code</string>
   <string name="category_Speech">Spraak</string>
   <!--        Generic settings       -->
@@ -48,6 +51,9 @@
   <string name="config_theme">Stel thema in</string>
   <string name="set_dark_theme">Verander de thema naar Donker</string>
   <string name="set_light_theme">Verander de thema naar Licht</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">Laat Domoticz tegen u terug praten</string>
+  <string name="set_talk_back_off">Zet het \'terug praten\' uit</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Instellingen geïmporteerd, herstart Domoticz a.u.b.</string>
   <string name="settings_import_failed">Kan de instellingen niet importeren, probeer opnieuw</string>
@@ -71,6 +77,13 @@
   <string name="qrcode_settings">QR-Codes instellen</string>
   <string name="enable_qrcode">Inschakelen van QR-Codes</string>
   <string name="qrcode_enable_settings">QR-Code functionaliteit inschakelen</string>
+  <string name="security_settings">Stel Beveiliging in</string>
+  <string name="enable_security">Controleer uw Vingerafdruk bij opstarten van de app</string>
+  <string name="disable_security">Zet de controle op Vingerafdruk uit</string>
+  <string name="setup_fingerprints">Stel vingerafdrukken in via het Android Settings scherm</string>
+  <string name="fingerprint_not_supported">Beveiliging via Vingerafdruk is niet mogelijk op dit toestel</string>
+  <string name="fingerprint_not_setup_in_android">Configureer eerst een Vingerafdruk in de Android Settings schermen</string>
+  <string name="fingerprint_sure">Weet u dit zeker? Mocht je vingerafdruk niet gevonden worden, kunt u altijd nog inloggen met het wachtwoord van uw Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud Messaging-ID</string>
   <string name="notification_settings_push">Uw registratienummer naar Domoticz versturen</string>

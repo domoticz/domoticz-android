@@ -223,14 +223,17 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setCurrentPageImmediate() {
-        if (viewPager != null) {
-            currentPage = viewPager.getCurrentItem();
-        } else {
-            currentPage = 0;
+        try{
+            if (viewPager != null) {
+                currentPage = viewPager.getCurrentItem();
+            } else {
+                currentPage = 0;
+            }
+            if (dotCenterX != null) {
+                selectedDotX = dotCenterX[currentPage];
+            }
         }
-        if (dotCenterX != null) {
-            selectedDotX = dotCenterX[currentPage];
-        }
+        catch(Exception ex){}
     }
 
     private void resetState() {

@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticzapi.Containers;
+package nl.hnogames.domoticz.Containers;
 
 import android.location.Address;
 
@@ -37,6 +37,7 @@ public class LocationInfo {
     private boolean enabled = false;
     private Address address;
     private String switchName;
+    private String value;
 
     public LocationInfo(int id, String name, LatLng latLng, int radius) {
         this.name = name;
@@ -129,6 +130,13 @@ public class LocationInfo {
         }
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public String getSwitchName() {
         return switchName;

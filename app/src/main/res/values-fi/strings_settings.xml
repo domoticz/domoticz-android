@@ -11,13 +11,16 @@
   <string name="category_geofencing">GeoFencing</string>
   <string name="category_info">Informaatio</string>
   <string name="category_language">Kieli</string>
+  <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Ilmoitukset</string>
   <string name="category_debug">Virheenkorjaus</string>
   <string name="category_export">Vie-/ tuo asetuksia</string>
   <string name="category_theme">Teema</string>
   <string name="category_nfc">NFC-yhteydet</string>
+  <string name="category_startup_security">Security</string>
+  <string name="category_account">Tilit</string>
   <string name="category_QRCode">QR-koodi</string>
-  <string name="category_Speech">Speech</string>
+  <string name="category_Speech">Puhe</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Aloitusnäyttö</string>
   <string name="enable_items">Käyttöön/poistaa kohteita</string>
@@ -48,6 +51,9 @@
   <string name="config_theme">Asettaa teeman</string>
   <string name="set_dark_theme">Switch app theme to Dark</string>
   <string name="set_light_theme">Switch app theme to Light</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
+  <string name="set_talk_back_off">Turn talk back off</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Asetukset tuotu, käynnistä Domoticz uudelleen</string>
   <string name="settings_import_failed">Asetusten tuominen epäonnistui</string>
@@ -71,6 +77,13 @@
   <string name="qrcode_settings">Setup QR Codes</string>
   <string name="enable_qrcode">Enable QR Codes</string>
   <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
+  <string name="security_settings">Setup Security</string>
+  <string name="enable_security">Enable fingerprint protection on startup</string>
+  <string name="disable_security">Disable fingerprint protection on startup</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud Messaging ID</string>
   <string name="notification_settings_push">Push your registration id to Domoticz</string>

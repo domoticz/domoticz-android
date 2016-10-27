@@ -41,6 +41,7 @@
   <string name="day_off">Giorno off</string>
   <string name="custom">Personalizza</string>
   <string name="heating_off">Riscaldamento off</string>
+  <string name="selector_value">Valori del selettore</string>
   <string name="debug_textview_title">Informazioni di debug</string>
   <string name="msg_copiedToClipboard">Testo copiato negli appunti</string>
   <string name="favorite">Preferiti</string>

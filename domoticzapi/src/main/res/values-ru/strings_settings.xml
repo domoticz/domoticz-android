@@ -11,11 +11,14 @@
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Инофрмация</string>
   <string name="category_language">Язык</string>
+  <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Уведомления</string>
   <string name="category_debug">Отладка</string>
   <string name="category_export">Экспорт/импорт параметров</string>
   <string name="category_theme">Оформление</string>
   <string name="category_nfc">NFC соединения</string>
+  <string name="category_startup_security">Security</string>
+  <string name="category_account">Учётные записи</string>
   <string name="category_QRCode">QR-код</string>
   <string name="category_Speech">Speech</string>
   <!--        Generic settings       -->
@@ -48,6 +51,9 @@
   <string name="config_theme">Установить тему</string>
   <string name="set_dark_theme">Переключить тему в темный режим</string>
   <string name="set_light_theme">Переключить тему в светлый режим</string>
+  <!--        Talk Back Settings   -->
+  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
+  <string name="set_talk_back_off">Turn talk back off</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Параметры загружены, пожалуйста перезапустите Domoticz</string>
   <string name="settings_import_failed">Не удалось импортировать настройки</string>
@@ -71,6 +77,13 @@
   <string name="qrcode_settings">Настройка кодов QR</string>
   <string name="enable_qrcode">Включить QR коды</string>
   <string name="qrcode_enable_settings">Включение функции QR-кодов</string>
+  <string name="security_settings">Настройка безопасности</string>
+  <string name="enable_security">Ввод отпечатков пальцев на старте</string>
+  <string name="disable_security">Отключить ввод отпечатков пальцев на старте</string>
+  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+  <string name="fingerprint_not_supported">Ввод отпечатков пальцев не поддерживается на этом устройстве</string>
+  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID сообщений Google Cloud</string>
   <string name="notification_settings_push">Использовать Ваш регистрационный идентификатор для Domoticz</string>

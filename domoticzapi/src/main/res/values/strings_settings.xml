@@ -42,6 +42,13 @@
     <string name="show_dashboard_list_on">Show dashboard as list</string>
     <string name="show_dashboard_list_off">Show dashboard as grid</string>
 
+    <string name="security_settings">Setup Security</string>
+    <string name="enable_security">Enable fingerprint protection on startup</string>
+    <string name="disable_security">Disable fingerprint protection on startup</string>
+    <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+    <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+    <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
 
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>

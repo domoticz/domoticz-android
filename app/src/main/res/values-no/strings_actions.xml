@@ -7,6 +7,6 @@
   <string name="action_filter">Filter</string>
   <string name="action_camera_play">Start</string>
   <string name="action_camera_pause">Pause</string>
-  <string name="action_qrcode_scan">Scan QR Code</string>
-  <string name="action_speech">Speech Recognition</string>
+  <string name="action_qrcode_scan">Skann QR-kode</string>
+  <string name="action_speech">Talegjenkjenning</string>
 </resources>

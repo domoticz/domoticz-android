@@ -8,7 +8,7 @@
   <string name="drawer_open">Åpne navigasjonsskuffen</string>
   <string name="drawer_close">Lukk navigasjonsskuffen</string>
   <string name="msg_please_wait">Vennligst vent</string>
-  <string name="changelog">Changelog</string>
+  <string name="changelog">Endringslogg</string>
   <string name="button_state_on">På</string>
   <string name="button_state_off">Av</string>
   <string name="button_state_closed">Lukket</string>
@@ -41,6 +41,7 @@
   <string name="day_off">Fridag</string>
   <string name="custom">Tilpass</string>
   <string name="heating_off">Oppvarming av</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Feilsøkingsinfo</string>
   <string name="msg_copiedToClipboard">Tekst er kopiert til utklippstavlen</string>
   <string name="favorite">Favoritt</string>
@@ -50,7 +51,7 @@
   <string name="add">Legge til</string>
   <string name="cancel">Avbryt</string>
   <string name="ok">Ok</string>
-  <string name="upgrade">UPGRADE</string>
+  <string name="upgrade">OPPGRADERING</string>
   <string name="something_went_wrong">Noe gikk galt</string>
   <string name="no_network_available">Feil: Ingen nettverkstilkobling tilgjengelig</string>
   <string name="oops">OOPS!</string>

@@ -32,7 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.util.List;
 
-import nl.hnogames.domoticzapi.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.LocationInfo;
 
 public class GeoUtil {
     Context mContext;
