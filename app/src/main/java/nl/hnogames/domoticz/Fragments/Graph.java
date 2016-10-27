@@ -63,6 +63,7 @@ import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 
+
 public class Graph extends Fragment implements DomoticzFragmentListener {
 
     @SuppressWarnings("unused")
@@ -85,7 +86,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private ComboLineColumnChartView chart;
     private View root;
     private Integer[] selectedFilters;
-
 
     @Override
     public void onConnectionFailed() {
