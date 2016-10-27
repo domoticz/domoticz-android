@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Witaj</string>
-  <string name="welcome_info_domoticz">Domoticz to system automatyki domowej, który pozwala na monitorowanie i konfiguracje różnych urządzeń, takich jak: oświetlenie, przełączniki, różne czujniki miar, jak temperatura, deszcz, wiatr, promieniowanie UV, elektryka, gaz, woda i wiele więcej. Powiadomienia / Alarmy mogą byś wysyłane do każdego urządzenia mobilnego.</string>
+  <string name="welcome_info_domoticz">Domoticz to system automatyki domowej, który pozwala na monitorowanie i konfiguracje różnych urządzeń, takich jak: oświetlenie, przełączniki, różne czujniki miar, jak temperatura, deszcz, wiatr, promieniowanie UV, elektryka, gaz, woda i wiele więcej. Powiadomienia / Alarmy mogą być wysyłane do każdego urządzenia mobilnego.</string>
   <string name="welcome_info_swipe">Przesuń palcem w prawo lub użyć przycisków nawigacyjnych na dole, aby kontynuować</string>
   <string name="welcome_info_settings1">Następna strona jest dla Twoich ustawień Domoticz.</string>
   <string name="welcome_info_settings2">Możesz sprecyzować lokalne i zdalne ustawienia serwera.

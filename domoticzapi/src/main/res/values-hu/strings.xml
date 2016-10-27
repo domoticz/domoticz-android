@@ -41,6 +41,7 @@
   <string name="day_off">Szabadnap</string>
   <string name="custom">Egyéni</string>
   <string name="heating_off">Fűtés ki</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Hibakeresési információ</string>
   <string name="msg_copiedToClipboard">Szöveg a vágólapra másolva</string>
   <string name="favorite">Kedvenc</string>

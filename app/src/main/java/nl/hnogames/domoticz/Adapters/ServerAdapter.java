@@ -117,7 +117,8 @@ public class ServerAdapter extends BaseAdapter {
             public void onClick(final View v) {
                 try {
                     handleRemoveButtonClick(data.get(v.getId()));
-                }catch(Exception ex){}
+                } catch (Exception ex) {
+                }
             }
         });
 

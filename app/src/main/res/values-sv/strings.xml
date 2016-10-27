@@ -41,6 +41,7 @@
   <string name="day_off">Ledig dag</string>
   <string name="custom">Anpassad</string>
   <string name="heating_off">Uppvärmning av</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Felsökningsinformation</string>
   <string name="msg_copiedToClipboard">Texten kopierad till urklipp</string>
   <string name="favorite">Favorit</string>

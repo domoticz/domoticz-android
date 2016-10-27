@@ -29,7 +29,7 @@
   <string name="wizard_nfc_description">Du har mulighheten til å aktivere brytere via NFC!</string>
   <string name="wizard_qrcode">QR-kode</string>
   <string name="wizard_qrcode_description">Endre status på brytere ved å skanne en QR-kode (eller strekkode)!</string>
-  <string name="wizard_speech">Speech Commands</string>
+  <string name="wizard_speech">Konfigurer talekommandoer </string>
   <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
   <string name="wizard_button_nice">Fint</string>
   <string name="wizard_button_switches">Brytere</string>

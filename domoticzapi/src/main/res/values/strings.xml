@@ -26,6 +26,7 @@
     <string name="button_color">Color</string>
     <string name="button_arm">Arm</string>
     <string name="button_disarm">Disarm</string>
+    <string name="selector_value">Selector values</string>
 
     <string name="last_update">Last seen</string>
     <string name="signal_level">Signal level</string>

@@ -51,6 +51,10 @@ public class PermissionsUtil {
     public static final String[] INITIAL_AUDIO_PERMS = {
             Manifest.permission.RECORD_AUDIO
     };
+    //these permissions are needed for fingerprint
+    public static final String[] INITIAL_FINGERPRINT_PERMS = {
+            Manifest.permission.USE_FINGERPRINT
+    };
 
     //This range is from 0 to 255!!
     public static final int INITIAL_LOCATION_REQUEST = 111;
@@ -59,6 +63,7 @@ public class PermissionsUtil {
     public static final int INITIAL_CAMERA_REQUEST = 144;
     public static final int INITIAL_DEVICE_REQUEST = 155;
     public static final int INITIAL_AUDIO_REQUEST = 166;
+    public static final int INITIAL_FINGERPRINT_REQUEST = 177;
 
     @SuppressWarnings("unused")
     private static final String TAG = PermissionsUtil.class.getSimpleName();
@@ -69,6 +74,10 @@ public class PermissionsUtil {
 
     public static boolean canAccessStorage(Context context) {
         return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context));
+    }
+
+    public static boolean canAccessFingerprint(Context context) {
+        return (hasPermission(Manifest.permission.USE_FINGERPRINT, context));
     }
 
     public static boolean canAccessCamera(Context context) {

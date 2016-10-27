@@ -41,6 +41,7 @@
   <string name="day_off">Día festivo</string>
   <string name="custom">Personal</string>
   <string name="heating_off">Calef.apagada</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Información de depuración</string>
   <string name="msg_copiedToClipboard">Texto copiado al portapapeles</string>
   <string name="favorite">Favorito</string>

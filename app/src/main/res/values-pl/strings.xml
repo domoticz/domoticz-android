@@ -41,6 +41,7 @@
   <string name="day_off">Dzień wolny</string>
   <string name="custom">Tryb niestandardowy</string>
   <string name="heating_off">Ogrzewanie wyłączone</string>
+  <string name="selector_value">Wybór wartości</string>
   <string name="debug_textview_title">Informacje debugowania</string>
   <string name="msg_copiedToClipboard">Tekst skopiowany do schowka</string>
   <string name="favorite">Ulubione</string>

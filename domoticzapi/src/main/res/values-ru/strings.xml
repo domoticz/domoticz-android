@@ -41,6 +41,7 @@
   <string name="day_off">Выходной день</string>
   <string name="custom">Пользовательский</string>
   <string name="heating_off">Выкл отопление</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Отладочная информация</string>
   <string name="msg_copiedToClipboard">Текст скопирован в буфер обмена</string>
   <string name="favorite">Избранное</string>

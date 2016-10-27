@@ -6,6 +6,6 @@
   <string name="usage">Użycie</string>
   <string name="today">Dzienne</string>
   <string name="total">Całkowite</string>
-  <string name="favorite_added">dodaj do pulpitu.</string>
-  <string name="favorite_removed">usuń z pulpitu.</string>
+  <string name="favorite_added">dodano do pulpitu.</string>
+  <string name="favorite_removed">usunięto z pulpitu.</string>
 </resources>

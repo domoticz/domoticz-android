@@ -41,6 +41,7 @@
   <string name="day_off">Vapaapäivä</string>
   <string name="custom">Mukautettu</string>
   <string name="heating_off">Lämmitys pois</string>
+  <string name="selector_value">Selector values</string>
   <string name="debug_textview_title">Virheenjäljitystiedot</string>
   <string name="msg_copiedToClipboard">Teksti kopioitu leikepöydälle</string>
   <string name="favorite">Suosikki</string>

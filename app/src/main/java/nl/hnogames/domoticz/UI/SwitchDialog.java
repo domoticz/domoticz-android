@@ -37,21 +37,21 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
-import nl.hnogames.domoticzapi.Containers.SwitchInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
 
 public class SwitchDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
-    private ArrayList<SwitchInfo> info;
+    private ArrayList<DevicesInfo> info;
     private DismissListener dismissListener;
     private Context mContext;
     private Domoticz mDomoticz;
 
     public SwitchDialog(Context c,
-                        ArrayList<SwitchInfo> _info,
+                        ArrayList<DevicesInfo> _info,
                         int layout,
                         Domoticz domoticz) {
         this.info = _info;
@@ -131,7 +131,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     public String[] processSwitches() {
         String[] listData = new String[info.size()];
         int counter = 0;
-        for (SwitchInfo s : info) {
+        for (DevicesInfo s : info) {
             String log = s.getIdx() + " | " + s.getName();
             listData[counter] = log;
             counter++;

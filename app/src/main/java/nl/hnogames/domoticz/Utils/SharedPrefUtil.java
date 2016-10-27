@@ -54,15 +54,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Containers.NFCInfo;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
+import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.Language;
-import nl.hnogames.domoticzapi.Containers.LocationInfo;
-import nl.hnogames.domoticzapi.Containers.NFCInfo;
-import nl.hnogames.domoticzapi.Containers.QRCodeInfo;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Containers.SpeechInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
@@ -71,6 +71,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class SharedPrefUtil {
 
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
+    private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
@@ -151,6 +152,15 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_MULTI_SERVER, false);
     }
 
+    public boolean isStartupSecurityEnabled() {
+        return prefs.getBoolean(PREF_STARTUP_PROTECTION_ENABLED, false);
+    }
+
+    public void setStartupSecurityEnabled(Boolean set) {
+        editor.putBoolean(PREF_STARTUP_PROTECTION_ENABLED, set).apply();
+        editor.commit();
+    }
+
     public boolean isNotificationsEnabled() {
         return prefs.getBoolean(PREF_ENABLE_NOTIFICATIONS, true);
     }
@@ -189,10 +199,11 @@ public class SharedPrefUtil {
         return prefs.getInt("COLORPOSITION" + idx, 0);
     }
 
-    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password) {
+    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value) {
         editor.putInt("WIDGET" + widgetID, idx).apply();
         editor.putBoolean("WIDGETSCENE" + widgetID, isScene).apply();
         editor.putString("WIDGETPASSWORD" + widgetID, password).apply();
+        editor.putString("WIDGETVALUE" + widgetID, value).apply();
         editor.commit();
     }
 
@@ -202,6 +213,10 @@ public class SharedPrefUtil {
 
     public String getWidgetPassword(int widgetID) {
         return prefs.getString("WIDGETPASSWORD" + widgetID, null);
+    }
+
+    public String getWidgetValue(int widgetID) {
+        return prefs.getString("WIDGETVALUE" + widgetID, null);
     }
 
     public boolean getWidgetisScene(int widgetID) {
@@ -785,21 +800,22 @@ public class SharedPrefUtil {
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();
                 String key = entry.getKey();
-
-                if (v instanceof Boolean)
-                    editor.putBoolean(key, ((Boolean) v).booleanValue());
-                else if (v instanceof Float)
-                    editor.putFloat(key, ((Float) v).floatValue());
-                else if (v instanceof Integer)
-                    editor.putInt(key, ((Integer) v).intValue());
-                else if (v instanceof Long)
-                    editor.putLong(key, ((Long) v).longValue());
-                else if (v instanceof String)
-                    editor.putString(key, ((String) v));
-                else if (v instanceof Set)
-                    editor.putStringSet(key, ((Set<String>) v));
-                else
-                    Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                if (v != null && !UsefulBits.isEmpty(key)) {
+                    if (v instanceof Boolean)
+                        editor.putBoolean(key, ((Boolean) v).booleanValue());
+                    else if (v instanceof Float)
+                        editor.putFloat(key, ((Float) v).floatValue());
+                    else if (v instanceof Integer)
+                        editor.putInt(key, ((Integer) v).intValue());
+                    else if (v instanceof Long)
+                        editor.putLong(key, ((Long) v).longValue());
+                    else if (v instanceof String)
+                        editor.putString(key, ((String) v));
+                    else if (v instanceof Set)
+                        editor.putStringSet(key, ((Set<String>) v));
+                    else
+                        Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                }
             }
             editor.commit();
             res = true;

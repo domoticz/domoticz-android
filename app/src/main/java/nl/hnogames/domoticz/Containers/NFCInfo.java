@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticzapi.Containers;
+package nl.hnogames.domoticz.Containers;
 
 public class NFCInfo {
 
@@ -30,6 +30,7 @@ public class NFCInfo {
     private int switchIdx;
     private String switchName;
     private String switchPassword = "";
+    private String value;
 
     public String getId() {
         return id;
@@ -79,4 +80,11 @@ public class NFCInfo {
         this.switchName = switchName;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

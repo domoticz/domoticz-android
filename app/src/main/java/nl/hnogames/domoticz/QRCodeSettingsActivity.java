@@ -42,17 +42,19 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.QRCodeAdapter;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Containers.QRCodeInfo;
-import nl.hnogames.domoticzapi.Containers.SwitchInfo;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 
 public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeClickListener {
@@ -139,13 +141,20 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
     }
 
     private void getSwitchesAndShowSwitchesDialog(final QRCodeInfo qrInfo) {
-        domoticz.getSwitches(new SwitchesReceiver() {
+        domoticz.getDevices(new DevicesReceiver() {
             @Override
-            public void onReceiveSwitches(ArrayList<SwitchInfo> switches) {
+            @DebugLog
+            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(qrInfo, switches);
             }
 
             @Override
+            @DebugLog
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
+
+            @Override
+            @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(QRCodeSettingsActivity.this, coordinatorLayout, QRCodeSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {
@@ -155,28 +164,51 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                             }
                         }, QRCodeSettingsActivity.this.getString(R.string.retry));
             }
-        });
+        }, 0, "light");
     }
 
     private void showSwitchesDialog(
             final QRCodeInfo qrcodeInfo,
-            ArrayList<SwitchInfo> switches) {
+            final ArrayList<DevicesInfo> switches) {
 
         SwitchDialog infoDialog = new SwitchDialog(
                 QRCodeSettingsActivity.this, switches,
                 R.layout.dialog_switch_logs,
                 domoticz);
+
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
             public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
                 qrcodeInfo.setSwitchIdx(selectedSwitchIDX);
                 qrcodeInfo.setSwitchPassword(selectedSwitchPassword);
                 qrcodeInfo.setSwitchName(selectedSwitchName);
-                updateQRCode(qrcodeInfo);
+
+                for (DevicesInfo s : switches) {
+                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                        showSelectorDialog(qrcodeInfo, s);
+                    else
+                        updateQRCode(qrcodeInfo);
+
+                }
             }
         });
 
         infoDialog.show();
+    }
+
+    private void showSelectorDialog(final QRCodeInfo qrcodeInfo, DevicesInfo selector) {
+        final String[] levelNames = selector.getLevelNames();
+        new MaterialDialog.Builder(this)
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        qrcodeInfo.setValue(String.valueOf(text));
+                        updateQRCode(qrcodeInfo);
+                    }
+                })
+                .show();
     }
 
     public void updateQRCode(QRCodeInfo qrcodeInfo) {
