@@ -189,6 +189,16 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
+                            <az.plainpie.PieView
+                                xmlns:plainpie="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/pieView"
+                                android:layout_width="72dp"
+                                android:layout_height="73dp"
+                                plainpie:inner_pie_padding="10"
+                                plainpie:percentage="75"
+                                plainpie:percentage_size="15"
+                                plainpie:inner_text_visibility="true"/>
+
                             <Button
                                 android:id="@+id/on_button"
                                 android:layout_width="60dp"

@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import az.plainpie.PieView;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -414,8 +415,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
             if (mDeviceInfo.getDewPoint() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
-            if (mDeviceInfo.getTemp() > 0)
+            if (mDeviceInfo.getTemp() > 0) {
                 holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemp() + " " + tempSign);
+
+                holder.pieView.setVisibility(View.VISIBLE);
+                double temp = mDeviceInfo.getTemp();
+                if(!tempSign.equals("C"))
+                    temp = temp/2;
+                holder.pieView.setmPercentage(Float.valueOf(temp+""));
+                holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
+            }
             if (mDeviceInfo.getBarometer() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
             if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
@@ -708,6 +717,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         int modeIconRes = 0;
         holder.isProtected = mDeviceInfo.isProtected();
 
+        String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
         holder.switch_name.setText(mDeviceInfo.getName());
         if (Double.isNaN(temperature) || Double.isNaN(setPoint)) {
             if (holder.signal_level != null)
@@ -726,7 +736,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 String batteryLevelText = context.getString(R.string.temperature)
                         + ": "
                         + String.valueOf(temperature)
-                        + " C";
+                        + " " + sign;
                 holder.switch_battery_level.setText(batteryLevelText);
             }
 
@@ -734,7 +744,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 String signalText = context.getString(R.string.set_point)
                         + ": "
                         + String.valueOf(mDeviceInfo.getSetPoint()
-                        + " C");
+                        + " " + sign);
                 holder.signal_level.setText(signalText);
             }
         }
@@ -756,6 +766,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             modeIconRes = getEvohomeStateIconResource(mDeviceInfo.getStatus());
         } else {
             holder.buttonSet.setVisibility(View.GONE);
+            holder.pieView.setVisibility(View.VISIBLE);
+
+            double temp = temperature;
+            if(!sign.equals("C"))
+                temp = temp/2;
+            holder.pieView.setmPercentage(Float.valueOf(temp+""));
+            holder.pieView.setInnerText(temperature + " " + sign);
         }
 
         if (holder.iconMode != null) {
@@ -1831,11 +1848,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         ImageView iconRow, iconMode;
         SeekBar dimmer;
         LinearLayout extraPanel;
+        PieView pieView;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
             extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            pieView = (PieView) itemView.findViewById(R.id.pieView);
             buttonOn = (Button) itemView.findViewById(R.id.on_button);
             buttonOff = (Button) itemView.findViewById(R.id.off_button);
             onOffSwitch = (Switch) itemView.findViewById(R.id.switch_button);
@@ -1862,6 +1881,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 buttonTimer.setVisibility(View.GONE);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
+
+            pieView.setVisibility(View.GONE);//default
         }
     }
 

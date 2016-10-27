@@ -44,13 +44,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import az.plainpie.PieView;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
 public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder> {
@@ -61,17 +64,20 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     public ArrayList<TemperatureInfo> filteredData = null;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
+    private ConfigInfo mConfigInfo;
     private Context context;
     private ArrayList<TemperatureInfo> data = null;
     private ItemFilter mFilter = new ItemFilter();
 
     public TemperatureAdapter(Context context,
                               Domoticz mDomoticz,
+                              ServerUtil configInfo,
                               ArrayList<TemperatureInfo> data,
                               TemperatureClickListener listener) {
         super();
 
         this.context = context;
+        this.mConfigInfo = configInfo.getActiveServer() != null ? configInfo.getActiveServer().getConfigInfo(context) : null;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
         this.listener = listener;
@@ -127,6 +133,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             }
 
             holder.isProtected = mTemperatureInfo.isProtected();
+            String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
 
             int modeIconRes = 0;
             boolean tooHot = false;
@@ -139,9 +146,17 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
 
             if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
                 holder.setButton.setVisibility(View.VISIBLE);
+                holder.pieView.setVisibility(View.GONE);
                 modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
             } else {
                 holder.setButton.setVisibility(View.GONE);
+                holder.pieView.setVisibility(View.VISIBLE);
+
+                double temp = mTemperatureInfo.getTemperature();
+                if(!sign.equals("C"))
+                    temp = temp/2;
+                holder.pieView.setmPercentage(Float.valueOf(temp+""));
+                holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
             }
 
             holder.setButton.setText(context.getString(R.string.set_temperature));
@@ -213,7 +228,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 });
             }
 
-            holder.name.setText(mTemperatureInfo.getName());
+           holder.name.setText(mTemperatureInfo.getName());
             if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
                 holder.data.setText(R.string.wind);
                 holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
@@ -225,8 +240,8 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
                     holder.data2.setVisibility(View.GONE);
                 } else {
-                    holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " C");
-                    holder.data2.setText(context.getString(R.string.set_point) + ": " + mTemperatureInfo.getSetPoint() + " C");
+                    holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " " + sign);
+                    holder.data2.setText(context.getString(R.string.set_point) + ": " + mTemperatureInfo.getSetPoint() + " " + sign);
                     holder.data2.setVisibility(View.VISIBLE);
                 }
             }
@@ -247,7 +262,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     return true;
                 }
             });
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -299,6 +313,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         Boolean isProtected;
         LikeButton likeButton;
         LinearLayout extraPanel;
+        PieView pieView;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -308,6 +323,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             data2 = (TextView) itemView.findViewById(R.id.temperature_data2);
             iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
             iconMode = (ImageView) itemView.findViewById(R.id.mode_icon);
+            pieView = (PieView) itemView.findViewById(R.id.pieView);
 
             dayButton = (Button) itemView.findViewById(R.id.day_button);
             monthButton = (Button) itemView.findViewById(R.id.month_button);
