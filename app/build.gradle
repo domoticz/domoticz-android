@@ -100,7 +100,6 @@ android {
         preDexLibraries false
     }
 }
-
 repositories {
     maven {
         url "https://jitpack.io"
@@ -149,9 +148,11 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
     compile 'com.github.javiersantos:PiracyChecker:0.0.2'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+
     compile('com.mikepenz:materialdrawer:5.6.0@aar') {
         transitive = true
     }
+
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
     compile 'com.afollestad:digitus:0.2.12'
 

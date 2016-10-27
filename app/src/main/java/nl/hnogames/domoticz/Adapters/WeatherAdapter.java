@@ -144,7 +144,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
-
+            holder.data.setText("");
+            holder.hardware.setText("");
             if (language != null) {
                 String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
                 holder.hardware.setText(hardware);
@@ -165,7 +166,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             }
             if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
                 holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
-
             if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
                 holder.data.append(", " + mWeatherInfo.getForecastStr());
             if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
