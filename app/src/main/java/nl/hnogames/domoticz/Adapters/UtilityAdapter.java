@@ -242,6 +242,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 }
             }
         });
+
+        holder.weekButton.setVisibility(View.GONE);
         holder.weekButton.setId(mUtilitiesInfo.getIdx());
         holder.weekButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -328,6 +330,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 }
             }
         });
+
+        holder.weekButton.setVisibility(View.GONE);
         holder.weekButton.setId(mUtilitiesInfo.getIdx());
         holder.weekButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,6 +342,16 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 }
             }
         });
+
+        if (mUtilitiesInfo.getSubType()
+                .replace("Electric", "counter")
+                .replace("kWh", "counter")
+                .replace("Gas", "counter")
+                .replace("Energy", "counter")
+                .replace("Voltcraft", "counter")
+                .replace("SetPoint", "temp")
+                .replace("YouLess counter", "counter").contains("counter"))
+            holder.weekButton.setVisibility(View.VISIBLE);
 
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
         holder.yearButton.setOnClickListener(new View.OnClickListener() {

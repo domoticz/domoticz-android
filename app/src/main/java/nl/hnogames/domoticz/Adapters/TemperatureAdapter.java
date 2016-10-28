@@ -194,6 +194,8 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     }
                 }
             });
+
+            holder.weekButton.setVisibility(View.GONE);
             holder.weekButton.setId(mTemperatureInfo.getIdx());
             holder.weekButton.setOnClickListener(new View.OnClickListener() {
                 @Override

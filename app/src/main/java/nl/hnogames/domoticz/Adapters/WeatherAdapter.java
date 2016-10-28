@@ -226,6 +226,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 }
             });
 
+            holder.weekButton.setVisibility(View.GONE);
             holder.weekButton.setId(mWeatherInfo.getIdx());
             holder.weekButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -35,9 +35,18 @@ public class GraphPointInfo {
     private String dateTime;
     private String hu;
     private String ba;
-    private float te = Float.NaN;
     private float se = Float.NaN;
+
+    private float te = Float.NaN;
+    private float ta = Float.NaN;
+    private float tm = Float.NaN;
+    boolean hasTemperatureRange = true;
+
     private String v;
+    private String vMin;
+    private String vMax;
+    boolean hasPercentageRange = true;
+
     private String c;
     private String di;
     private String gu;
@@ -54,14 +63,27 @@ public class GraphPointInfo {
 
         if (row.has("te"))
             te = (float) row.optDouble("te");
+        if (row.has("ta")) {
+            ta = (float) row.optDouble("ta");
+            if (row.has("tm"))
+                tm = (float) row.optDouble("tm");
+        }
+        else
+            hasTemperatureRange=false;
         if (row.has("se"))
             se = (float) row.optDouble("se");
         if (row.has("d"))
             dateTime = row.getString("d");
+
         if (row.has("v"))
             v = row.getString("v");
-        else if (row.has("v_avg"))
+        else if (row.has("v_avg")) {
+            hasPercentageRange=true;
             v = row.getString("v_avg");
+            vMin = row.getString("v_min");
+            vMax = row.getString("v_max");
+        }
+
         if (row.has("c"))
             c = row.getString("c");
         if (row.has("hu"))
@@ -104,9 +126,33 @@ public class GraphPointInfo {
     public String getPercentage() {
         return v;
     }
+    public String getPercentageMin() {
+        return vMin;
+    }
+    public String getPercentageMax() {
+        return vMax;
+    }
+    public boolean hasPercentageRange() {
+        return hasPercentageRange;
+    }
 
     public float getTemperature() {
+        if(!hasTemperatureRange)
+            return te;
+        else
+            return ta;
+    }
+
+    public float getTemperatureMin() {
+        return tm;
+    }
+
+    public float getTemperatureMax() {
         return te;
+    }
+
+    public boolean hasTemperatureRange() {
+        return hasTemperatureRange;
     }
 
     public float getSetPoint() {

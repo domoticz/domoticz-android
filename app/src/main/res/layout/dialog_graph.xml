@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <lecho.lib.hellocharts.view.ComboLineColumnChartView
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.fenjuly.mylibrary.SpinnerLoader
+            android:id="@+id/spinner"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:alpha="0.7"
+            app:point_color="@color/material_orange_600" />
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
+        android:padding="10dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:gravity="right"
         android:orientation="vertical">
 

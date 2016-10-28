@@ -136,7 +136,7 @@ dependencies {
     compile 'com.larswerkman:lobsterpicker:1.0.1'
 
     compile 'com.github.zurche:plain-pie:v0.1.1'
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
 
     compile 'com.github.dexafree:MaterialList:v3.2.2'
     compile 'com.github.hotchemi:android-rate:1.0.1'
