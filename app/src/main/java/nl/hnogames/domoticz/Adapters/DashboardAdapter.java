@@ -204,6 +204,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      */
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   DataObjectHolder holder) {
+        holder.pieView.setVisibility(View.GONE);
+
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             switch (mDeviceInfo.getType()) {
@@ -425,6 +427,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.pieView.setmPercentage(Float.valueOf(temp+""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
             }
+            else{
+                holder.pieView.setVisibility(View.GONE);
+            }
+
             if (mDeviceInfo.getBarometer() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
             if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))

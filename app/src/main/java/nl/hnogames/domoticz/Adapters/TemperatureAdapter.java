@@ -150,13 +150,16 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
             } else {
                 holder.setButton.setVisibility(View.GONE);
-                holder.pieView.setVisibility(View.VISIBLE);
-
-                double temp = mTemperatureInfo.getTemperature();
-                if(!sign.equals("C"))
-                    temp = temp/2;
-                holder.pieView.setmPercentage(Float.valueOf(temp+""));
-                holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
+                if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
+                    holder.pieView.setVisibility(View.GONE);}
+                else {
+                    holder.pieView.setVisibility(View.VISIBLE);
+                    double temp = mTemperatureInfo.getTemperature();
+                    if (!sign.equals("C"))
+                        temp = temp / 2;
+                    holder.pieView.setmPercentage(Float.valueOf(temp + ""));
+                    holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
+                }
             }
 
             holder.setButton.setText(context.getString(R.string.set_temperature));

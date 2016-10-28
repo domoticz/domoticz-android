@@ -182,7 +182,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                     temp = temp/2;
                 holder.pieView.setmPercentage(Float.valueOf(temp+""));
                 holder.pieView.setInnerText(mWeatherInfo.getTemp() + " " + tempSign);
-            }if (mWeatherInfo.getBarometer() > 0)
+            }
+            else{
+                holder.pieView.setVisibility(View.GONE);
+            }
+            if (mWeatherInfo.getBarometer() > 0)
                 holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
             if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
                 holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + tempSign);
