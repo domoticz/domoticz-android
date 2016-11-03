@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -36,7 +35,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,22 +53,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Containers.EventInfo;
 import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 
 
@@ -99,6 +92,8 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private SharedPrefUtil mSharedPrefs;
 
     private com.fenjuly.mylibrary.SpinnerLoader mSpinner;
+    private XAxis xAxis;
+    private YAxis yAxis;
 
     @Override
     public void onConnectionFailed() {
@@ -142,14 +137,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_graph, null);
 
-        mSpinner = (com.fenjuly.mylibrary.SpinnerLoader)root.findViewById(R.id.spinner);
+        mSpinner = (com.fenjuly.mylibrary.SpinnerLoader) root.findViewById(R.id.spinner);
         mSpinner.animate();
 
         chart = (LineChart) root.findViewById(R.id.chart);
         xAxis = chart.getXAxis();
         yAxis = chart.getAxisLeft();
 
-        if(mSharedPrefs.darkThemeEnabled()) {
+        if (mSharedPrefs.darkThemeEnabled()) {
             xAxis.setTextColor(Color.WHITE);
             yAxis.setTextColor(Color.WHITE);
             chart.getLegend().setTextColor(Color.WHITE);
@@ -157,8 +152,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 mSpinner.setPointcolor(ContextCompat.getColor(getContext(), R.color.secondary));
             chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
             chart.setDrawGridBackground(true);
-        }
-        else{
+        } else {
             chart.setBackgroundColor(Color.WHITE);
             chart.setDrawGridBackground(true);
         }
@@ -186,10 +180,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 int mMinutes = calendar.get(Calendar.MINUTE);
 
                 String xValue = "";
-                if(mHours <= 0 && mMinutes <= 0)
-                    xValue = String.format("%02d", mHours) +":"+String.format("%02d", mMinutes);
+                if (mHours <= 0 && mMinutes <= 0)
+                    xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
                 else
-                    xValue = mDay+"/"+mMonth+ " " + String.format("%02d", mHours) +":"+String.format("%02d", mMinutes);
+                    xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
                 return xValue;
             }
 
@@ -278,9 +272,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         }
     }
 
-    private XAxis xAxis;
-    private YAxis yAxis;
-
     @SuppressWarnings("SpellCheckingInspection")
     private LineData generateData(View view) {
         try {
@@ -350,8 +341,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             addTemperature = true;
                             valuest.add(new Entry(mydate.getTimeInMillis(), g.getTemperature()));
 
-                            if (g.hasTemperatureRange())
-                            {
+                            if (g.hasTemperatureRange()) {
                                 addTemperatureRange = true;
                                 valuestMax.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMax()));
                                 valuestMin.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMin()));
@@ -384,8 +374,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         if (g.getPercentage() != null && g.getPercentage().length() > 0) {
                             addPercentage = true;
                             valuesv.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentage())));
-                            if(g.hasPercentageRange())
-                            {
+                            if (g.hasPercentageRange()) {
                                 addPercentageRange = true;
                                 valuesvMin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMin())));
                                 valuesvMax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMax())));
@@ -461,8 +450,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     entries.add(dataSet);
                 }
 
-                if(addTemperatureRange)
-                {
+                if (addTemperatureRange) {
                     dataSet = new LineDataSet(valuestMax, "Max"); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
@@ -476,7 +464,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
                     dataSet.setFillAlpha(255);
-                        dataSet.setFillColor(R.color.white);
+                    dataSet.setFillColor(R.color.white);
                     dataSet.setDrawFilled(true);
                     entries.add(dataSet);
                 }
@@ -517,8 +505,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
                 entries.add(dataSet);
 
-                if(addPercentageRange)
-                {
+                if (addPercentageRange) {
                     dataSet = new LineDataSet(valuesvMax, "Max"); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
@@ -698,7 +685,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            for(LineDataSet s: entries)
+            for (LineDataSet s : entries)
                 dataSets.add(s);
 
             LineData lineChartData = new LineData(dataSets);

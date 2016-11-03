@@ -151,8 +151,8 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             } else {
                 holder.setButton.setVisibility(View.GONE);
                 if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
-                    holder.pieView.setVisibility(View.GONE);}
-                else {
+                    holder.pieView.setVisibility(View.GONE);
+                } else {
                     holder.pieView.setVisibility(View.VISIBLE);
                     double temp = mTemperatureInfo.getTemperature();
                     if (!sign.equals("C"))
@@ -233,7 +233,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 });
             }
 
-           holder.name.setText(mTemperatureInfo.getName());
+            holder.name.setText(mTemperatureInfo.getName());
             if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
                 holder.data.setText(R.string.wind);
                 holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());

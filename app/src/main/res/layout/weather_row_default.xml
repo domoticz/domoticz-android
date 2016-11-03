@@ -97,6 +97,7 @@
                             plainpie:inner_pie_padding="10"
                             plainpie:percentage="75"
                             plainpie:percentage_size="15"
+                            android:visibility="gone"
                             plainpie:inner_text_visibility="true"/>
 
                     </LinearLayout>

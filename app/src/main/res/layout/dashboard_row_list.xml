@@ -177,6 +177,13 @@
                             android:layout_gravity="bottom"
                             android:minWidth="150dp" />
 
+                        <Spinner
+                            android:id="@+id/spSelector"
+                            android:layout_width="129dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:minWidth="150dp" />
+
                         <LinearLayout
                             android:id="@+id/linearLayout44"
                             android:layout_width="wrap_content"
@@ -195,6 +202,7 @@
                                 android:layout_width="72dp"
                                 android:layout_height="73dp"
                                 plainpie:inner_pie_padding="10"
+                                android:visibility="gone"
                                 plainpie:percentage="75"
                                 plainpie:percentage_size="15"
                                 plainpie:inner_text_visibility="true"/>

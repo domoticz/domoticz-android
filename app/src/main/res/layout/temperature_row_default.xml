@@ -116,6 +116,7 @@
                             android:layout_height="73dp"
                             plainpie:inner_pie_padding="10"
                             plainpie:percentage="75"
+                            android:visibility="gone"
                             plainpie:percentage_size="15"
                             plainpie:inner_text_visibility="true"/>
 

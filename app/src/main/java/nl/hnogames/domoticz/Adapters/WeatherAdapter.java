@@ -178,12 +178,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
                 holder.pieView.setVisibility(View.VISIBLE);
                 double temp = mWeatherInfo.getTemp();
-                if(!tempSign.equals("C"))
-                    temp = temp/2;
-                holder.pieView.setmPercentage(Float.valueOf(temp+""));
+                if (!tempSign.equals("C"))
+                    temp = temp / 2;
+                holder.pieView.setmPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mWeatherInfo.getTemp() + " " + tempSign);
-            }
-            else{
+            } else {
                 holder.pieView.setVisibility(View.GONE);
             }
             if (mWeatherInfo.getBarometer() > 0)

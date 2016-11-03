@@ -193,6 +193,13 @@
                             android:layout_gravity="bottom"
                             android:minWidth="150dp" />
 
+                        <Spinner
+                            android:id="@+id/spSelector"
+                            android:layout_width="129dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:minWidth="150dp" />
+
                         <Switch
                             android:id="@+id/switch_dimmer_switch"
                             android:layout_width="wrap_content"

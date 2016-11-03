@@ -31,6 +31,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Filter;
@@ -38,12 +40,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -72,6 +76,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
             DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
+
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private boolean showAsList = false;
@@ -422,12 +427,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                 holder.pieView.setVisibility(View.VISIBLE);
                 double temp = mDeviceInfo.getTemp();
-                if(!tempSign.equals("C"))
-                    temp = temp/2;
-                holder.pieView.setmPercentage(Float.valueOf(temp+""));
+                if (!tempSign.equals("C"))
+                    temp = temp / 2;
+                holder.pieView.setmPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
-            }
-            else{
+            } else {
                 holder.pieView.setVisibility(View.GONE);
             }
 
@@ -775,9 +779,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setVisibility(View.VISIBLE);
 
             double temp = temperature;
-            if(!sign.equals("C"))
-                temp = temp/2;
-            holder.pieView.setmPercentage(Float.valueOf(temp+""));
+            if (!sign.equals("C"))
+                temp = temp / 2;
+            holder.pieView.setmPercentage(Float.valueOf(temp + ""));
             holder.pieView.setInnerText(temperature + " " + sign);
         }
 
@@ -1061,16 +1065,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         int loadLevel = (mDeviceInfo.getLevel() - 1) / 10;
         final String[] levelNames = mDeviceInfo.getLevelNames();
         String statusText = context.getString(R.string.unknown);
-
         if (levelNames != null && levelNames.length > loadLevel)
             statusText = levelNames[loadLevel];
 
+        holder.spSelector.setTag(mDeviceInfo.getIdx());
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_item, new ArrayList<String>(Arrays.asList(levelNames)));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holder.spSelector.setAdapter(dataAdapter);
+        holder.spSelector.setSelection(loadLevel);
+
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(statusText);
-
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
-
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
             holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1079,13 +1087,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     handleOnOffSwitchClick(compoundButton.getId(), checked);
                     mDeviceInfo.setStatusBoolean(checked);
                     if (checked) {
-                        holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                        holder.dimmer.setVisibility(View.VISIBLE);
-                        holder.dimmer.setProgress(0);
+                        holder.spSelector.setVisibility(View.VISIBLE);
                     } else {
-                        holder.switch_dimmer_level.setVisibility(View.GONE);
-                        holder.dimmer.setVisibility(View.GONE);
+                        holder.spSelector.setVisibility(View.GONE);
                     }
+
                     if (!checked)
                         holder.iconRow.setAlpha(0.5f);
                     else
@@ -1093,16 +1099,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
             });
         }
+
         if (holder.buttonOn != null) {
             holder.buttonOn.setId(mDeviceInfo.getIdx());
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    handleOnOffSwitchClick(v.getId(), true);
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                    holder.dimmer.setVisibility(View.VISIBLE);
-                    holder.dimmer.setProgress(0);
                     holder.iconRow.setAlpha(1f);
+                    holder.spSelector.setVisibility(View.VISIBLE);
+                    holder.spSelector.setSelection(0);
+                    listener.onSelectorChange(mDeviceInfo.getIdx(), 0);
                 }
             });
         }
@@ -1113,8 +1119,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onClick(View v) {
                     handleOnOffSwitchClick(v.getId(), false);
-                    holder.switch_dimmer_level.setVisibility(View.GONE);
-                    holder.dimmer.setVisibility(View.GONE);
+                    holder.spSelector.setVisibility(View.GONE);
                     holder.iconRow.setAlpha(0.5f);
                 }
             });
@@ -1125,46 +1130,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.buttonOff.setVisibility(View.GONE);
             if (holder.buttonOn != null)
                 holder.buttonOn.setVisibility(View.GONE);
-            holder.dimmer.setVisibility(View.VISIBLE);
-            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+            holder.spSelector.setVisibility(View.VISIBLE);
             holder.iconRow.setAlpha(1f);
         }
 
-        holder.dimmer.incrementProgressBy(1);
-        holder.dimmer.setProgress(loadLevel);
-
-        if (levelNames != null && levelNames.length > 0)
-            holder.dimmer.setMax(levelNames.length - 1);
-        holder.dimmer.setOnClickListener(new View.OnClickListener() {
+        holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                handleSelectorDimmerClick(mDeviceInfo.getIdx(), levelNames);
-            }
-        });
-
-        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                if (((int) holder.spSelector.getTag()) == mDeviceInfo.getIdx()) {
+                    holder.spSelector.setTag(mDeviceInfo.getIdx() * 3);
+                } else {
+                    String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
+                    handleSelectorChange(mDeviceInfo.getIdx(), selValue, levelNames);
+                }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                handleSelectorDimmerClick(mDeviceInfo.getIdx(), levelNames);
+            public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
 
         if (!mDeviceInfo.getStatusBoolean()) {
-            holder.switch_dimmer_level.setVisibility(View.GONE);
-            holder.dimmer.setVisibility(View.GONE);
+            holder.spSelector.setVisibility(View.GONE);
         } else {
-            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-            holder.dimmer.setVisibility(View.VISIBLE);
+            holder.spSelector.setVisibility(View.VISIBLE);
         }
 
         Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
@@ -1629,6 +1619,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     /**
+     * Handles the selector dimmer click
+     *
+     * @param idx        IDX of the device to change
+     * @param levelNames Names om the levels
+     */
+    private void handleSelectorChange(int idx, String levelName, String[] levelNames) {
+        for (int i = 0; i < levelNames.length; i++) {
+            if (levelNames[i].equals(levelName)) {
+                listener.onSelectorChange(idx, i * 10);
+            }
+        }
+    }
+
+    /**
      * Handles the log button click
      *
      * @param idx IDX of the device to change
@@ -1720,6 +1724,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.onOffSwitch != null) {
             holder.onOffSwitch.setVisibility(View.GONE);
         }
+        if (holder.spSelector != null) {
+            holder.spSelector.setVisibility(View.GONE);
+        }
         if (!mSharedPrefs.showExtraData()) {
             holder.signal_level.setVisibility(View.GONE);
             holder.switch_battery_level.setVisibility(View.GONE);
@@ -1799,22 +1806,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SELECTOR:
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.spSelector != null)
+                    holder.spSelector.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
-                if (holder.dimmer != null)
-                    holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SELECTOR_BUTTONS:
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
-                if (holder.dimmer != null)
-                    holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.spSelector != null)
+                    holder.spSelector.setVisibility(View.VISIBLE);
                 break;
             default:
                 if (!mSharedPrefs.showExtraData())
@@ -1853,6 +1856,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         Boolean isProtected;
         ImageView iconRow, iconMode;
         SeekBar dimmer;
+        Spinner spSelector;
         LinearLayout extraPanel;
         PieView pieView;
 
@@ -1872,13 +1876,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             switch_dimmer_level = (TextView) itemView.findViewById(R.id.switch_dimmer_level);
             dimmerOnOffSwitch = (Switch) itemView.findViewById(R.id.switch_dimmer_switch);
             dimmer = (SeekBar) itemView.findViewById(R.id.switch_dimmer);
+            spSelector = (Spinner) itemView.findViewById(R.id.spSelector);
             buttonColor = (Button) itemView.findViewById(R.id.color_button);
             buttonLog = (Button) itemView.findViewById(R.id.log_button);
             buttonTimer = (Button) itemView.findViewById(R.id.timer_button);
             buttonUp = (ImageButton) itemView.findViewById(R.id.switch_button_up);
             buttonStop = (ImageButton) itemView.findViewById(R.id.switch_button_stop);
             buttonDown = (ImageButton) itemView.findViewById(R.id.switch_button_down);
-            //buttonSetStatus = (Button) itemView.findViewById(R.id.set_status_button);
             buttonSet = (Button) itemView.findViewById(R.id.set_button);
 
             if (buttonLog != null)
