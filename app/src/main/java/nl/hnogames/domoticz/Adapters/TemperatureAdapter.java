@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import az.plainpie.PieView;
+import az.plainpie.animation.PieAngleAnimation;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -157,8 +158,12 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     double temp = mTemperatureInfo.getTemperature();
                     if (!sign.equals("C"))
                         temp = temp / 2;
-                    holder.pieView.setmPercentage(Float.valueOf(temp + ""));
+                    holder.pieView.setPercentage(Float.valueOf(temp + ""));
                     holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
+
+                    PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                    animation.setDuration(2000);
+                    holder.pieView.startAnimation(animation);
                 }
             }
 

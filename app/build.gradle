@@ -135,7 +135,7 @@ dependencies {
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
     compile 'com.larswerkman:lobsterpicker:1.0.1'
 
-    compile 'com.github.zurche:plain-pie:v0.1.1'
+    compile 'com.github.zurche:plain-pie:v0.2.2'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
 
     compile 'com.github.dexafree:MaterialList:v3.2.2'

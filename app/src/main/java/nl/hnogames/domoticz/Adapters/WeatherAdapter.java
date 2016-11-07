@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import az.plainpie.PieView;
+import az.plainpie.animation.PieAngleAnimation;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -180,8 +181,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 double temp = mWeatherInfo.getTemp();
                 if (!tempSign.equals("C"))
                     temp = temp / 2;
-                holder.pieView.setmPercentage(Float.valueOf(temp + ""));
+                holder.pieView.setPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mWeatherInfo.getTemp() + " " + tempSign);
+
+                PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                animation.setDuration(2000);
+                holder.pieView.startAnimation(animation);
             } else {
                 holder.pieView.setVisibility(View.GONE);
             }

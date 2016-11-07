@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import az.plainpie.PieView;
+import az.plainpie.animation.PieAngleAnimation;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -429,8 +430,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 double temp = mDeviceInfo.getTemp();
                 if (!tempSign.equals("C"))
                     temp = temp / 2;
-                holder.pieView.setmPercentage(Float.valueOf(temp + ""));
+                holder.pieView.setPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
+
+                PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                animation.setDuration(2000);
+                holder.pieView.startAnimation(animation);
             } else {
                 holder.pieView.setVisibility(View.GONE);
             }
@@ -781,8 +786,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             double temp = temperature;
             if (!sign.equals("C"))
                 temp = temp / 2;
-            holder.pieView.setmPercentage(Float.valueOf(temp + ""));
+            holder.pieView.setPercentage(Float.valueOf(temp + ""));
             holder.pieView.setInnerText(temperature + " " + sign);
+
+            PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+            animation.setDuration(2000);
+            holder.pieView.startAnimation(animation);
         }
 
         if (holder.iconMode != null) {
