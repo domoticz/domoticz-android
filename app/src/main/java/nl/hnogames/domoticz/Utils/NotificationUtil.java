@@ -30,6 +30,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 
@@ -75,7 +78,9 @@ public class NotificationUtil {
                 nManager.notify(NOTIFICATION_ID, builder.build());
             }
 
-            prefUtil.addReceivedNotification(text);
+            prefUtil.addUniqueReceivedNotification(text);
+            prefUtil.addLoggedNotification(new SimpleDateFormat ("yyyy\\MM\\dd hh:mm ").format(new Date())+text);
+
         } catch (Exception ex) {
         }
     }
