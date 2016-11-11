@@ -438,7 +438,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuest, ((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
 
                 if ((addSetpoint && !enableFilters) ||
@@ -446,7 +446,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     dataSet = new LineDataSet(valuesse, ((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.material_pink_600));
                     dataSet.setDrawCircles(false);
-                    dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
                     entries.add(dataSet);
                 }
 
@@ -454,7 +454,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     dataSet = new LineDataSet(valuestMax, "Max"); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
-                    dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setDrawFilled(true);
                     dataSet.setFillColor(R.color.md_blue_300);
                     entries.add(dataSet);
@@ -462,7 +462,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     dataSet = new LineDataSet(valuestMin, "Min"); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
-                    dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setFillAlpha(255);
                     dataSet.setFillColor(R.color.white);
                     dataSet.setDrawFilled(true);
@@ -475,7 +475,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valueshu, ((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -484,7 +484,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesba, ((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -493,7 +493,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesc, ((TextView) view.findViewById(R.id.legend_counter)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_indigo_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -502,14 +502,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesv, ((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
 
                 if (addPercentageRange) {
                     dataSet = new LineDataSet(valuesvMax, "Max"); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
-                    dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setDrawFilled(true);
                     dataSet.setFillColor(R.color.md_blue_300);
                     entries.add(dataSet);
@@ -517,7 +517,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     dataSet = new LineDataSet(valuesvMin, "Min"); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
-                    dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setFillAlpha(255);
                     dataSet.setFillColor(R.color.white);
                     dataSet.setDrawFilled(true);
@@ -530,7 +530,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesdi, ((TextView) view.findViewById(R.id.legend_direction)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -539,7 +539,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesuv, ((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -548,7 +548,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuessp, ((TextView) view.findViewById(R.id.legend_speed)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_amber_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -557,7 +557,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesu, ((TextView) view.findViewById(R.id.legend_usage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -566,7 +566,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesmm, ((TextView) view.findViewById(R.id.legend_rain)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -575,7 +575,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesco2, ((TextView) view.findViewById(R.id.legend_co2)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -584,7 +584,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesco2min, ((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
@@ -593,7 +593,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuesco2max, ((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
                 dataSet.setDrawCircles(false);
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
             }
 
