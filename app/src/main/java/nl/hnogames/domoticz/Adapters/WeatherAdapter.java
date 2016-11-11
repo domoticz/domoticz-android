@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import az.plainpie.PieView;
+import az.plainpie.animation.PieAngleAnimation;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -144,7 +146,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
-
+            holder.data.setText("");
+            holder.hardware.setText("");
             if (language != null) {
                 String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
                 holder.hardware.setText(hardware);
@@ -165,15 +168,28 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             }
             if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
                 holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
-
             if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
                 holder.data.append(", " + mWeatherInfo.getForecastStr());
             if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
                 holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + windSign);
             if (mWeatherInfo.getDewPoint() > 0)
                 holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + tempSign);
-            if (mWeatherInfo.getTemp() > 0)
+            if (mWeatherInfo.getTemp() > 0) {
                 holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
+
+                holder.pieView.setVisibility(View.VISIBLE);
+                double temp = mWeatherInfo.getTemp();
+                if (!tempSign.equals("C"))
+                    temp = temp / 2;
+                holder.pieView.setPercentage(Float.valueOf(temp + ""));
+                holder.pieView.setInnerText(mWeatherInfo.getTemp() + " " + tempSign);
+
+                PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                animation.setDuration(2000);
+                holder.pieView.startAnimation(animation);
+            } else {
+                holder.pieView.setVisibility(View.GONE);
+            }
             if (mWeatherInfo.getBarometer() > 0)
                 holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
             if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
@@ -214,6 +230,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 }
             });
 
+            holder.weekButton.setVisibility(View.GONE);
             holder.weekButton.setId(mWeatherInfo.getIdx());
             holder.weekButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -281,9 +298,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         Button weekButton;
         LikeButton likeButton;
         LinearLayout extraPanel;
+        PieView pieView;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
+
+            pieView = (PieView) itemView.findViewById(R.id.pieView);
+            pieView.setVisibility(View.GONE);
 
             dayButton = (Button) itemView.findViewById(R.id.day_button);
             monthButton = (Button) itemView.findViewById(R.id.month_button);

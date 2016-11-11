@@ -321,6 +321,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public void onSwitchClick(int idx, final boolean checked) {
         if (busy)
             return;
+
         addDebugText("onSwitchClick");
         addDebugText("Set idx " + idx + " to " + checked);
         final DevicesInfo clickedSwitch = getDevice(idx);
@@ -812,9 +813,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
+    public void onSelectorChange(int idx, int level) {
+        onDimmerChange(idx, level, true);
+    }
+
+    @Override
     @DebugLog
     public void onItemClicked(View v, int position) {
-
     }
 
     @Override

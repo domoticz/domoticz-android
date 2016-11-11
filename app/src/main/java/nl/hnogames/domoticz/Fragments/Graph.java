@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -38,6 +39,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,22 +56,16 @@ import java.util.Calendar;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.ComboLineColumnChartData;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.view.ComboLineColumnChartView;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
+
 
 public class Graph extends Fragment implements DomoticzFragmentListener {
 
@@ -82,10 +86,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private List<String> filterLabels;
 
     private ArrayList<GraphPointInfo> mGraphList;
-    private ComboLineColumnChartView chart;
+    private LineChart chart;
     private View root;
     private Integer[] selectedFilters;
+    private SharedPrefUtil mSharedPrefs;
 
+    private com.fenjuly.mylibrary.SpinnerLoader mSpinner;
+    private XAxis xAxis;
+    private YAxis yAxis;
 
     @Override
     public void onConnectionFailed() {
@@ -97,6 +105,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         super.onAttach(context);
         this.context = context;
         mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
+        mSharedPrefs = new SharedPrefUtil(context);
     }
 
     @Override
@@ -127,7 +136,62 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_graph, null);
-        chart = (ComboLineColumnChartView) root.findViewById(R.id.chart);
+
+        mSpinner = (com.fenjuly.mylibrary.SpinnerLoader) root.findViewById(R.id.spinner);
+        mSpinner.animate();
+
+        chart = (LineChart) root.findViewById(R.id.chart);
+        xAxis = chart.getXAxis();
+        yAxis = chart.getAxisLeft();
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            xAxis.setTextColor(Color.WHITE);
+            yAxis.setTextColor(Color.WHITE);
+            chart.getLegend().setTextColor(Color.WHITE);
+            if (mSpinner != null)
+                mSpinner.setPointcolor(ContextCompat.getColor(getContext(), R.color.secondary));
+            chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+            chart.setDrawGridBackground(true);
+        } else {
+            chart.setBackgroundColor(Color.WHITE);
+            chart.setDrawGridBackground(true);
+        }
+
+        chart.getDescription().setEnabled(false);
+        xAxis.setDrawGridLines(false); // no grid lines
+        chart.getAxisRight().setEnabled(false); // no right axis
+        chart.setDragDecelerationFrictionCoef(0.9f);
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setDrawGridBackground(false);
+        chart.setHighlightPerDragEnabled(true);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis((long) value);
+
+                int mYear = calendar.get(Calendar.YEAR);
+                int mMonth = calendar.get(Calendar.MONTH);
+                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                int mHours = calendar.get(Calendar.HOUR);
+                int mMinutes = calendar.get(Calendar.MINUTE);
+
+                String xValue = "";
+                if (mHours <= 0 && mMinutes <= 0)
+                    xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                else
+                    xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                return xValue;
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
 
         getGraphs();
         return root;
@@ -140,49 +204,56 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     public void getGraphs() {
-        if (mDomoticz == null)
-            mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
+        chart.setVisibility(View.GONE);
+        mSpinner.setVisibility(View.VISIBLE);
+        mSpinner.animate();
 
-        mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
+        new Thread() {
             @Override
-            @DebugLog
-            public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
-                try {
-                    mGraphList = grphPoints;
-                    ComboLineColumnChartData columnData = generateData(root);
-                    if (columnData == null)
-                        finish();
-                    else {
-                        chart.setComboLineColumnChartData(columnData);
-                        setViewPort(chart);
+            public void run() {
+                if (mDomoticz == null)
+                    mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
-                        if (getActivity() != null)
-                            getActivity().invalidateOptionsMenu();
+                mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
+                        try {
+                            mGraphList = grphPoints;
+                            LineData columnData = generateData(root);
+                            if (columnData == null)
+                                finish();
+                            else {
+                                chart.setData(columnData);
+                                chart.invalidate(); // refresh
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        chart.setVisibility(View.VISIBLE);
+                                        mSpinner.setVisibility(View.GONE);
+                                        chart.animateX(1000);
+
+                                        if (getActivity() != null)
+                                            getActivity().invalidateOptionsMenu();
+                                    }
+                                });
+                            }
+                        } catch (Exception ex) {
+                        }
                     }
-                } catch (Exception ex) {
-                }
-            }
 
-            @Override
-            @DebugLog
-            public void onError(Exception ex) {
-                // Let's check if were still attached to an activity
-                if (isAdded()) {
-                    ((GraphActivity) getActivity()).noGraphFound();
-                }
+                    @Override
+                    @DebugLog
+                    public void onError(Exception ex) {
+                        // Let's check if were still attached to an activity
+                        if (isAdded()) {
+                            ((GraphActivity) getActivity()).noGraphFound();
+                        }
+                    }
+                });
             }
-        });
-    }
-
-    //The viewport adds a margin to the top and bottom
-    private void setViewPort(ComboLineColumnChartView chart) {
-        final Viewport v = new Viewport(chart.getMaximumViewport());
-        v.top += (v.height() * 0.20f);
-        if (!(v.bottom <= 1))
-            v.bottom -= (v.height() * 0.50f);
-        chart.setMaximumViewport(v);
-        chart.setCurrentViewport(v);
-        chart.setViewportCalculationEnabled(false);
+        }.start();
     }
 
     public ActionBar getActionBar() {
@@ -202,36 +273,44 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    private ComboLineColumnChartData generateData(View view) {
+    private LineData generateData(View view) {
         try {
-            List<Line> lines = new ArrayList<>();
+            List<LineDataSet> entries = new ArrayList<LineDataSet>();
 
-            List<PointValue> values = new ArrayList<>();
-            List<PointValue> valuesse = new ArrayList<>();
-            List<PointValue> valueshu = new ArrayList<>();
-            List<PointValue> valuesba = new ArrayList<>();
-            List<PointValue> valuesc = new ArrayList<>();
-            List<PointValue> valuesv = new ArrayList<>();
+            List<Entry> valuest = new ArrayList<>();
+            List<Entry> valuestMin = new ArrayList<>();
+            List<Entry> valuestMax = new ArrayList<>();
 
-            List<PointValue> valuessp = new ArrayList<>();
-            List<PointValue> valuesdi = new ArrayList<>();
-            List<PointValue> valuesuv = new ArrayList<>();
-            List<PointValue> valuesu = new ArrayList<>();
-            List<PointValue> valuesmm = new ArrayList<>();
+            List<Entry> valuesse = new ArrayList<>();
+            List<Entry> valueshu = new ArrayList<>();
+            List<Entry> valuesba = new ArrayList<>();
+            List<Entry> valuesc = new ArrayList<>();
 
-            List<PointValue> valuesco2 = new ArrayList<>();
-            List<PointValue> valuesco2min = new ArrayList<>();
-            List<PointValue> valuesco2max = new ArrayList<>();
+            List<Entry> valuesv = new ArrayList<>();
+            List<Entry> valuesvMin = new ArrayList<>();
+            List<Entry> valuesvMax = new ArrayList<>();
 
-            List<AxisValue> axisValueX = new ArrayList<>();
+            List<Entry> valuessp = new ArrayList<>();
+            List<Entry> valuesdi = new ArrayList<>();
+            List<Entry> valuesuv = new ArrayList<>();
+            List<Entry> valuesu = new ArrayList<>();
+            List<Entry> valuesmm = new ArrayList<>();
+
+            List<Entry> valuesco2 = new ArrayList<>();
+            List<Entry> valuesco2min = new ArrayList<>();
+            List<Entry> valuesco2max = new ArrayList<>();
+
+            ArrayList<String> axisValueX = new ArrayList<>();
 
             int counter = 0;
             boolean addHumidity = false;
             boolean addBarometer = false;
             boolean addTemperature = false;
+            boolean addTemperatureRange = false;
             boolean addSetpoint = false;
             boolean addCounter = false;
             boolean addPercentage = false;
+            boolean addPercentageRange = false;
             boolean addSunPower = false;
             boolean addDirection = false;
             boolean addSpeed = false;
@@ -250,273 +329,275 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     stepcounter = 0;
 
                     try {
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            mydate.setTime(sdf.parse(g.getDateTime()));
+                        } catch (ParseException e) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            mydate.setTime(sdf.parse(g.getDateTime()));
+                        }
 
                         if (!Float.isNaN(g.getTemperature())) {
                             addTemperature = true;
-                            values.add(new PointValue(counter, g.getTemperature()));
+                            valuest.add(new Entry(mydate.getTimeInMillis(), g.getTemperature()));
+
+                            if (g.hasTemperatureRange()) {
+                                addTemperatureRange = true;
+                                valuestMax.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMax()));
+                                valuestMin.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMin()));
+                            }
                         }
 
                         if (!Float.isNaN(g.getSetPoint())) {
                             addSetpoint = true;
-                            valuesse.add(new PointValue(counter, g.getSetPoint()));
+                            valuesse.add(new Entry(mydate.getTimeInMillis(), g.getSetPoint()));
                         }
 
                         if (g.getBarometer() != null && g.getBarometer().length() > 0) {
                             addBarometer = true;
                             try {
-                                valuesba.add(new PointValue(counter, Integer.parseInt(g.getBarometer())));
+                                valuesba.add(new Entry(mydate.getTimeInMillis(), Integer.parseInt(g.getBarometer())));
                             } catch (Exception ex) {
-                                valuesba.add(new PointValue(counter, Float.parseFloat(g.getBarometer())));
+                                valuesba.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getBarometer())));
                             }
                         }
 
                         if (g.getHumidity() != null && g.getHumidity().length() > 0) {
                             addHumidity = true;
                             try {
-                                valueshu.add(new PointValue(counter, Integer.parseInt(g.getHumidity())));
+                                valueshu.add(new Entry(mydate.getTimeInMillis(), Integer.parseInt(g.getHumidity())));
                             } catch (Exception ex) {
-                                valuesba.add(new PointValue(counter, Float.parseFloat(g.getHumidity())));
+                                valuesba.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getHumidity())));
                             }
                         }
 
                         if (g.getPercentage() != null && g.getPercentage().length() > 0) {
                             addPercentage = true;
-                            valuesv.add(new PointValue(counter, Float.parseFloat(g.getPercentage())));
+                            valuesv.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentage())));
+                            if (g.hasPercentageRange()) {
+                                addPercentageRange = true;
+                                valuesvMin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMin())));
+                                valuesvMax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMax())));
+                            }
                         }
 
                         if (g.getCounter() != null && g.getCounter().length() > 0) {
                             addCounter = true;
-                            valuesc.add(new PointValue(counter, Float.parseFloat(g.getCounter())));
+                            valuesc.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getCounter())));
                         }
 
                         if (g.getSpeed() != null && g.getSpeed().length() > 0) {
                             addSpeed = true;
-                            valuessp.add(new PointValue(counter, Float.parseFloat(g.getSpeed())));
+                            valuessp.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSpeed())));
                         }
 
                         if (g.getDirection() != null && g.getDirection().length() > 0) {
                             addDirection = true;
-                            valuesdi.add(new PointValue(counter, Float.parseFloat(g.getDirection())));
+                            valuesdi.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getDirection())));
                         }
 
                         if (g.getSunPower() != null && g.getSunPower().length() > 0) {
                             addSunPower = true;
-                            valuesuv.add(new PointValue(counter, Float.parseFloat(g.getSunPower())));
+                            valuesuv.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSunPower())));
                         }
 
                         if (g.getUsage() != null && g.getUsage().length() > 0) {
                             addUsage = true;
-                            valuesu.add(new PointValue(counter, Float.parseFloat(g.getUsage())));
+                            valuesu.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getUsage())));
                         }
 
                         if (g.getRain() != null && g.getRain().length() > 0) {
                             addRain = true;
-                            valuesmm.add(new PointValue(counter, Float.parseFloat(g.getRain())));
+                            valuesmm.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getRain())));
                         }
 
                         if (g.getCo2() != null && g.getCo2().length() > 0) {
                             addCO2 = true;
-                            valuesco2.add(new PointValue(counter, Float.parseFloat(g.getCo2())));
+                            valuesco2.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getCo2())));
                         }
 
                         if (g.getCo2Min() != null && g.getCo2Min().length() > 0) {
                             addCO2Min = true;
-                            valuesco2min.add(new PointValue(counter, Float.parseFloat(g.getCo2Min())));
+                            valuesco2min.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getCo2Min())));
                         }
 
                         if (g.getCo2Max() != null && g.getCo2Max().length() > 0) {
                             addCO2Max = true;
-                            valuesco2max.add(new PointValue(counter, Float.parseFloat(g.getCo2Max())));
+                            valuesco2max.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getCo2Max())));
                         }
 
-                        try {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                            mydate.setTime(sdf.parse(g.getDateTime()));
-                        } catch (ParseException e) {
-                            onlyDate = true;
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            mydate.setTime(sdf.parse(g.getDateTime()));
-                        }
-
-                        String label;
-                        if (!onlyDate) {
-                            label = String.valueOf(mydate.get(Calendar.HOUR_OF_DAY))
-                                    + ":"
-                                    + String.valueOf(
-                                    mydate.get(Calendar.MINUTE));
-                        } else {
-                            label = (mydate.get(Calendar.MONTH) + 1) + "/"
-                                    + mydate.get(Calendar.DAY_OF_MONTH);
-                        }
-
-                        axisValueX.add(new AxisValue(counter, label
-                                .toCharArray()));
                         counter++;
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
 
-            boolean setCubic = false;
-
-            //setCubic seems bugged in HelloCharts library
-            //if(range.equals(DomoticzValues.Graph.Range.MONTH) || range.equals(DomoticzValues.Graph.Range.YEAR))
-            //    setCubic=true;
             if ((addTemperature && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
-                lines.add(new Line(values)
-                        .setColor(ContextCompat.getColor(context, R.color.material_blue_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuest, ((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
 
                 if ((addSetpoint && !enableFilters) ||
                         (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()))) {
-                    lines.add(new Line(valuesse)
-                            .setColor(ContextCompat.getColor(context, R.color.material_pink_600))
-                            .setCubic(setCubic)
-                            .setHasLabels(false)
-                            .setHasLines(true)
-                            .setHasPoints(false));
+                    dataSet = new LineDataSet(valuesse, ((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()); // add entries to dataset
+                    dataSet.setColor(ContextCompat.getColor(context, R.color.material_pink_600));
+                    dataSet.setDrawCircles(false);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
+                    entries.add(dataSet);
+                }
+
+                if (addTemperatureRange) {
+                    dataSet = new LineDataSet(valuestMax, "Max"); // add entries to dataset
+                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setDrawCircles(false);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
+                    dataSet.setDrawFilled(true);
+                    dataSet.setFillColor(R.color.md_blue_300);
+                    entries.add(dataSet);
+
+                    dataSet = new LineDataSet(valuestMin, "Min"); // add entries to dataset
+                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setDrawCircles(false);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
+                    dataSet.setFillAlpha(255);
+                    dataSet.setFillColor(R.color.white);
+                    dataSet.setDrawFilled(true);
+                    entries.add(dataSet);
                 }
             }
 
             if ((addHumidity && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
-
-                lines.add(new Line(valueshu)
-                        .setColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valueshu, ((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addBarometer && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
-
-                lines.add(new Line(valuesba)
-                        .setColor(ContextCompat.getColor(context, R.color.material_green_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesba, ((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addCounter && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
-
-                lines.add(new Line(valuesc)
-                        .setColor(ContextCompat.getColor(context, R.color.material_indigo_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesc, ((TextView) view.findViewById(R.id.legend_counter)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_indigo_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addPercentage && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesv, ((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
 
-                lines.add(new Line(valuesv)
-                        .setColor(ContextCompat.getColor(context, R.color.material_yellow_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                if (addPercentageRange) {
+                    dataSet = new LineDataSet(valuesvMax, "Max"); // add entries to dataset
+                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setDrawCircles(false);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
+                    dataSet.setDrawFilled(true);
+                    dataSet.setFillColor(R.color.md_blue_300);
+                    entries.add(dataSet);
+
+                    dataSet = new LineDataSet(valuesvMin, "Min"); // add entries to dataset
+                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setDrawCircles(false);
+                    dataSet.setMode(LineDataSet.Mode.LINEAR);
+                    dataSet.setFillAlpha(255);
+                    dataSet.setFillColor(R.color.white);
+                    dataSet.setDrawFilled(true);
+                    entries.add(dataSet);
+                }
             }
 
             if ((addDirection && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
-
-                lines.add(new Line(valuesdi)
-                        .setColor(ContextCompat.getColor(context, R.color.material_green_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesdi, ((TextView) view.findViewById(R.id.legend_direction)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addSunPower && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
-
-                lines.add(new Line(valuesuv)
-                        .setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesuv, ((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addSpeed && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
-
-                lines.add(new Line(valuessp)
-                        .setColor(ContextCompat.getColor(context, R.color.material_amber_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuessp, ((TextView) view.findViewById(R.id.legend_speed)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_amber_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addUsage && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
-
-                lines.add(new Line(valuesu)
-                        .setColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesu, ((TextView) view.findViewById(R.id.legend_usage)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addRain && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
-
-                lines.add(new Line(valuesmm)
-                        .setColor(ContextCompat.getColor(context, R.color.material_light_green_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesmm, ((TextView) view.findViewById(R.id.legend_rain)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addCO2 && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2)).getText().toString()))) {
-
-                lines.add(new Line(valuesco2)
-                        .setColor(ContextCompat.getColor(context, R.color.material_blue_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesco2, ((TextView) view.findViewById(R.id.legend_co2)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addCO2Min && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()))) {
-
-                lines.add(new Line(valuesco2min)
-                        .setColor(ContextCompat.getColor(context, R.color.material_light_green_600))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesco2min, ((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
             if ((addCO2Max && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()))) {
-
-                lines.add(new Line(valuesco2max)
-                        .setColor(ContextCompat.getColor(context, R.color.md_red_400))
-                        .setCubic(setCubic)
-                        .setHasLabels(false)
-                        .setHasLines(true)
-                        .setHasPoints(false));
+                LineDataSet dataSet = new LineDataSet(valuesco2max, ((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
             }
 
-
-            if (lines.size() > 1) {
+            if (entries.size() > 1) {
                 if (addTemperature) {
                     (view.findViewById(R.id.legend_temperature))
                             .setVisibility(View.VISIBLE);
@@ -525,6 +606,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                 .setVisibility(View.VISIBLE);
                     }
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_temperature)).getText());
+
                 }
 
                 if (addHumidity) {
@@ -602,17 +684,24 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 }
             }
 
-            LineChartData lineChartData = new LineChartData(lines);
-            ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
-            Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
-            Axis axisY = new Axis().setHasLines(true);
-            axisX.setMaxLabelChars(5);
-            axisX.setName("Date");
-            axisY.setName(axisYLabel);
-            data.setAxisXBottom(axisX);
-            data.setAxisYLeft(axisY);
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            for (LineDataSet s : entries)
+                dataSets.add(s);
 
-            return data;
+            LineData lineChartData = new LineData(dataSets);
+            lineChartData.setHighlightEnabled(true);
+            lineChartData.setDrawValues(false);
+
+            //ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
+            //Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
+            //Axis axisY = new Axis().setHasLines(true);
+            //axisX.setMaxLabelChars(5);
+            //axisX.setName("Date");
+            //axisY.setName(axisYLabel);
+            //data.setAxisXBottom(axisX);
+            //data.setAxisYLeft(axisY);
+
+            return lineChartData;
         } catch (Exception ex) {
             return null;
         }
@@ -663,13 +752,18 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                     for (CharSequence c : text)
                                         filterLabels.add((String) c);
 
-                                    ComboLineColumnChartData columnData = generateData(root);
-
+                                    LineData columnData = generateData(root);
                                     if (columnData == null)
                                         finish();
                                     else {
-                                        chart.setComboLineColumnChartData(columnData);
-                                        setViewPort(chart);
+                                        chart.setData(columnData);
+                                        chart.invalidate(); // refresh
+                                        chart.setVisibility(View.VISIBLE);
+                                        mSpinner.setVisibility(View.GONE);
+                                        chart.animateX(1000);
+
+                                        if (getActivity() != null)
+                                            getActivity().invalidateOptionsMenu();
                                     }
                                 } else {
                                     enableFilters = false;

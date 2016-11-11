@@ -30,25 +30,34 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 
 public class NotificationUtil {
 
-    final static String GROUP_KEY_NOTIFICATIONS = "domoticz_notifications";
+    private final static String GROUP_KEY_NOTIFICATIONS = "domoticz_notifications";
+    private static SharedPrefUtil prefUtil;
 
     public static void sendSimpleNotification(String title, String text, Context context) {
         if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
             return;
+        int NOTIFICATION_ID = 12345;
 
+        if(prefUtil == null)
+            prefUtil = new SharedPrefUtil(context);
+
+        prefUtil.addUniqueReceivedNotification(text);
+        prefUtil.addLoggedNotification(new SimpleDateFormat ("yyyy-MM-dd hh:mm ").format(new Date())+text);
+
+        List<String> suppressedNot = prefUtil.getSuppressedNotifications();
         try {
-            int NOTIFICATION_ID = 12345;
-            SharedPrefUtil prefUtil = new SharedPrefUtil(context);
-            if (prefUtil.isNotificationsEnabled() &&
-                    prefUtil.getSuppressedNotifications() != null &&
-                    !prefUtil.getSuppressedNotifications().contains(text)) {
-
-                NotificationCompat.Builder builder =
+             if (prefUtil.isNotificationsEnabled() &&
+                     suppressedNot != null && !suppressedNot.contains(text)) {
+                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.domoticz_white)
                                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
@@ -74,8 +83,6 @@ public class NotificationUtil {
                 NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nManager.notify(NOTIFICATION_ID, builder.build());
             }
-
-            prefUtil.addReceivedNotification(text);
         } catch (Exception ex) {
         }
     }

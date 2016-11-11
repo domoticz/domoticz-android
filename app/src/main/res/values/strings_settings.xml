@@ -101,6 +101,9 @@
     <string name="notification_settings_push">Push your registration id to Domoticz</string>
     <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
     <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
+    <string name="notification_show_title">Last Notifications</string>
+    <string name="notification_show_nothing">No notifications found</string>
+    <string name="notification_show">Show last couple of Notifications</string>
 
     <!--        Notification settings      -->
     <string name="overwrite_notifications_title">Overwrite Notifications</string>

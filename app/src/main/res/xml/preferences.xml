@@ -230,6 +230,13 @@
                 android:key="notification_registration_id"
                 android:summary="@string/notification_settings_push"
                 android:title="@string/notification_settings_id" />
+
+            <Preference
+                android:dependency="enableNotifications"
+                android:key="notification_show_logs"
+                android:summary="@string/notification_show"
+                android:title="@string/notification_show_title" />
+
         </PreferenceScreen>
     </PreferenceCategory>
 

@@ -23,6 +23,7 @@
 package nl.hnogames.domoticz.Preference;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -40,7 +41,7 @@ import android.preference.PreferenceFragment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
+import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +51,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -111,6 +113,7 @@ public class Preference extends PreferenceFragment {
 
         final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         android.preference.Preference ServerSettings = findPreference("server_settings");
+        android.preference.Preference NotificationLogged = findPreference("notification_show_logs");
         android.preference.Preference fetchServerConfig = findPreference("server_force_fetch_config");
         android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
@@ -363,6 +366,24 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        NotificationLogged.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                //show dialog
+                List<String> logs = mSharedPrefs.getLoggedNotifications();
+                Collections.reverse(logs);
+                if(logs != null && logs.size() > 0) {
+                    new MaterialDialog.Builder(mContext)
+                            .title(mContext.getString(R.string.notification_show_title))
+                            .items(logs.toArray(new String[0]))
+                            .show();
+                }
+                else
+                    UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
+                return true;
+            }
+        });
+
         //noinspection PointlessBooleanExpression
         if (!BuildConfig.LITE_VERSION) {
             preferenceScreen.removePreference(premiumCategory);
@@ -383,6 +404,7 @@ public class Preference extends PreferenceFragment {
         }
 
         FingerPrintPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @SuppressLint("NewApi")
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
                 if (mSharedPrefs.isStartupSecurityEnabled())
