@@ -105,6 +105,7 @@ public class SharedPrefUtil {
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
+    private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLog";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
     private static final String PREF_LAST_VERSION = "lastappversion";
     private static final String PREF_APK_VALIDATED = "apkvalidated";
@@ -311,13 +312,33 @@ public class SharedPrefUtil {
     }
 
     /**
-     * Adds the notification to the list of received notifications
+     * Get's a list of received notifications
+     *
+     * @return List of received notifications
+     */
+    public List<String> getLoggedNotifications() {
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) return null;
+
+        Set<String> notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
+        if (notifications != null) {
+            List<String> notificationsValues = new ArrayList<>();
+            for (String s : notifications) {
+                notificationsValues.add(s);
+            }
+            java.util.Collections.sort(notificationsValues);
+            return notificationsValues;
+        } else return null;
+    }
+
+    /**
+     * Adds the notification to the list of received notifications (only unique ones are stored)
      *
      * @param notification Notification string to add
      */
-    public void addReceivedNotification(String notification) {
+    public void addUniqueReceivedNotification(String notification) {
         if (UsefulBits.isEmpty(notification))
             return;
+
         Set<String> notifications;
         if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) {
             notifications = new HashSet<>();
@@ -330,6 +351,39 @@ public class SharedPrefUtil {
             if (!notifications.contains(notification)) {
                 notifications.add(notification);
                 editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+            }
+        }
+    }
+
+    /**
+     * Adds the notification to the list of received notifications (only unique ones are stored)
+     *
+     * @param notification Notification string to add
+     */
+    public void addLoggedNotification(String notification) {
+        if (UsefulBits.isEmpty(notification))
+            return;
+
+        Set<String> notifications;
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
+            notifications = new HashSet<>();
+            notifications.add(notification);
+            editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
+        } else {
+            notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
+            if (notifications == null)
+                notifications = new HashSet<>();
+            notifications.add(notification);
+            if(notifications.size()>20) {
+                List<String> notificationsValues = new ArrayList<>();
+                for (String s : notifications) {
+                    notificationsValues.add(s);
+                }
+                notificationsValues.remove(0);
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG,  new HashSet<String>(notificationsValues)).apply();
+            }
+            else{
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG,  notifications).apply();
             }
         }
     }

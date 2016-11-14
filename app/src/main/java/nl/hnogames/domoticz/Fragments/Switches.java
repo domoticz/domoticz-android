@@ -552,6 +552,11 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     @Override
+    public void onSelectorChange(int idx, int level) {
+        onDimmerChange(idx, level, true);
+    }
+
+    @Override
     @DebugLog
     public void onItemClicked(View v, int position) {
         LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);

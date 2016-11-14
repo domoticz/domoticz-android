@@ -130,7 +130,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new TemperatureAdapter(mContext, mDomoticz, mTemperatureInfos, this);
+                adapter = new TemperatureAdapter(mContext, mDomoticz, getServerUtil(), mTemperatureInfos, this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {

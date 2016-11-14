@@ -54,6 +54,8 @@ public interface switchesClickListener {
 
     void onSelectorDimmerClick(int idx, String[] levelNames);
 
+    void onSelectorChange(int idx, int l);
+
     void onItemClicked(View v, int position);
 
     boolean onItemLongClicked(int position);
