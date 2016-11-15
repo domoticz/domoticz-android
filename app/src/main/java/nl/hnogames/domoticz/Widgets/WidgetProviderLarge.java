@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticz.Service;
+package nl.hnogames.domoticz.Widgets;
 
 import android.app.IntentService;
 import android.app.PendingIntent;

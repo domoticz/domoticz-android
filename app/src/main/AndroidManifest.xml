@@ -74,6 +74,7 @@
                     android:scheme="wear" />
             </intent-filter>
         </service>
+
         <service
             android:name=".Service.TaskService"
             android:exported="true"
@@ -83,27 +84,26 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".Service.WidgetProviderLarge" >
+        <receiver android:name=".Widgets.WidgetProviderLarge" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
-        <receiver android:name=".Service.WidgetIntentReceiver" >
+
+        <receiver android:name=".Widgets.WidgetIntentReceiver" >
             <intent-filter>
                 <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
         <activity
-            android:name=".WidgetConfigurationActivity"
+            android:name=".Widgets.WidgetConfigurationActivity"
             android:configChanges="orientation|screenSize"
             android:label="Domoticz Widget Config" >
             <intent-filter>
@@ -117,12 +117,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity
-            android:name=".WidgetActionActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Domoticz Widget Action" />
 
-        <service android:name=".Service.WidgetProviderLarge$UpdateWidgetService" />
+        <service android:name=".Widgets.WidgetProviderLarge$UpdateWidgetService" />
 
         <receiver android:name=".Service.BootUpReceiver" >
             <intent-filter>

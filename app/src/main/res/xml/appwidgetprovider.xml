@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="nl.hnogames.domoticz.WidgetConfigurationActivity"
+    android:configure="nl.hnogames.domoticz.Widgets.WidgetConfigurationActivity"
     android:initialLayout="@layout/widget_layout"
     android:minHeight="40dp"
-    android:minWidth="110dp"
+    android:minWidth="165dp"
     android:previewImage="@drawable/widgetpreview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1000000" />
