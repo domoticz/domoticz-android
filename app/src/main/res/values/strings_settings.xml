@@ -11,6 +11,7 @@
     <string name="category_server">Server</string>
     <string name="category_geofencing">Geofencing</string>
     <string name="category_info">Information</string>
+    <string name="category_advanced">Advanced</string>
     <string name="category_language">Language</string>
     <string name="category_talk_back">Talk Back</string>
     <string name="category_notification">Notifications</string>
@@ -22,6 +23,7 @@
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR Code</string>
     <string name="category_Speech">Speech</string>
+    <string name="category_Reset">Reset</string>
 
     <!--        Generic settings       -->
     <string name="startup_screen">Startup screen</string>
@@ -79,6 +81,7 @@
     <string name="enable_nfc">Enable NFC</string>
     <string name="enable_speech">Enable Speech Recognition</string>
     <string name="export_settings">Export settings</string>
+    <string name="reset_settings">Reset all app settings (WARNING!!)</string>
     <string name="import_settings">Import settings</string>
     <string name="multi_server_settings">Enable multiple server support</string>
     <string name="nfc_enable_settings">Enable NFC Connections</string>
