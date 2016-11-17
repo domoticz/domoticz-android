@@ -373,8 +373,8 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 //show dialog
                 List<String> logs = mSharedPrefs.getLoggedNotifications();
-                Collections.reverse(logs);
                 if(logs != null && logs.size() > 0) {
+                    Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
                             .title(mContext.getString(R.string.notification_show_title))
                             .items(logs.toArray(new String[0]))
