@@ -3,22 +3,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Tervetuloa</string>
-  <string name="welcome_info_domoticz">Domoticz on kotiautomaatiojärjestelmä, jonka avulla voit seurata ja määrittää eri laitteita, kuten: valot, kytkimet, erilaisia antureita tai mittareita kuten lämpötila, sade, tuuli, UV, sähkö, kaasun, veden ja paljon muuta. Ilmoitukset/hälytysyleistiedot voidaan lähettää maktapuhelimeen.</string>
+  <string name="welcome_info_domoticz">Domoticz on kotiautomaatiojärjestelmä jonka avulla voit ohjata erilaisia laitteita, kuten valoja ja kytkimiä. Lisäksi voit kytkeä järjestelmään erilaisia antureita esimerkiksi lämpötilan, sateen, tuulen, sähkön-, kaasun- tai vedenkulutuksen mittaamiseen. Järjestelmästä on mahdollista saada ilmoituksia ja hälytyksiä mobiililaitteisiin.</string>
   <string name="welcome_info_swipe">Pyyhkäise oikealle tai käytä siirtymispainikkeita alareunassa jatkaaksesi</string>
-  <string name="welcome_info_settings1">Seuraavalla sivulla on Domoticz asetukset.</string>
+  <string name="welcome_info_settings1">Seuraavalla sivulla määritetään sinun Domoticz-asetukset.</string>
   <string name="welcome_info_settings2">
-Voit määrittää paikallisen- ja etäserverin asetukset.
-Paikalliset asetukset ovat voimassa kun olet yhdistynyt paikalliseen wifi verkkoon.
-Etä asetukset ovat käytössä kun et ole yhteydessä paikalliseen wifi verkkoon tai käytät mobiilidataa.</string>
-  <string name="welcome_info_checkingConnection">Yhteyden asetusten tarkistaminen</string>
-  <string name="welcome_msg_connectionDataIncomplete">Yhteyden tiedot puutteeliset tai puuttuvat kokonaan</string>
-  <string name="welcome_msg_connectionDataInvalid">URL pitäisi ei saa alkaa \"http\"</string>
+Voit määrittää paikallisen ja etäpalvelimen asetukset. Paikalliset asetukset ovat voimassa kun olet liittyneenä kotisi wifi-verkkoon. Etäpalvelinasetukset ovat käytössä kun et ole liittyneenä kotisi wifi-verkkoon tai käytät mobiilidataa (2G, 3G, 4G tmv.).</string>
+  <string name="welcome_info_checkingConnection">Vahvistetaan yhteysasetukset</string>
+  <string name="welcome_msg_connectionDataIncomplete">Yhteysasetukset ovat puutteelliset tai puuttuvat kokonaan</string>
+  <string name="welcome_msg_connectionDataInvalid">URL ei saa alkaa \"http\"</string>
   <string name="welcome_msg_correctOnPreviousPage">Korjaa tiedot edellisellä sivulla</string>
-  <string name="welcome_msg_serverVersion">Domoticz versio</string>
-  <string name="welcome_msg_numberOfDevices">löydetyt laitteet-%1$d</string>
-  <string name="welcome_msg_no_ssid_found">Ei löytynyt yhtään wifin SSID:tä</string>
-  <string name="welcome_ssid_spinner_prompt">Valitse koti SSID</string>
-  <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+  <string name="welcome_msg_serverVersion">Domoticzin versio</string>
+  <string name="welcome_msg_numberOfDevices">%1$d laitetta löydetty</string>
+  <string name="welcome_msg_no_ssid_found">Yhtään SSID:tä ei löytynyt</string>
+  <string name="welcome_ssid_spinner_prompt">Valitse kotisi SSID</string>
+  <string name="welcome_ssid_button_prompt">Lisää kotisi SSID:t</string>
   <string name="welcome_server_settings_title">Palvelimen asetukset</string>
   <string name="welcome_server_startScreen">Aloitusnäyttö</string>
   <string name="welcome_button_next">seuraava</string>
@@ -34,16 +32,16 @@ Etä asetukset ovat käytössä kun et ole yhteydessä paikalliseen wifi verkkoo
   <string name="local">Paikallinen</string>
   <string name="servername">Palvelimen nimi</string>
   <string name="welcome_local_server_used_switch_title">Eri palvelimen osoite</string>
-  <string name="welcome_local_server_used_switch_summary">Käyttää eri osoitetta paikalliseen yhteyteen</string>
+  <string name="welcome_local_server_used_switch_summary">Käytä eri osoitetta paikallisverkossa</string>
   <string name="welcome_advancedSettings">Palvelimen lisäasetukset</string>
-  <string name="welcome_advancedSettings_summary">Käytetään vain palvelimilla jotka eivät ole standardin mukaisia</string>
-  <string name="welcome_local_server_ssid">Paikallisten wifien SSID</string>
+  <string name="welcome_advancedSettings_summary">Käytetään vain ei-standardeilla Domoticz-palvelimilla</string>
+  <string name="welcome_local_server_ssid">Paikalliset SSID:t</string>
   <string name="welcome_local_server_address">Paikallisen palvelimen osoite</string>
   <string name="welcome_local_server_protocol">Paikallinen protokolla</string>
   <string name="welcome_local_server_port">Paikallinen portti</string>
-  <string name="welcome_local_server_directory">Paikallinen hakemisto (jätä tämä tyhjäksi jos ei käytetä)</string>
-  <string name="welcome_local_server_username">Paikallisen käyttäjätunnus (jätä tämä tyhjäksi jos ei käytetä)</string>
-  <string name="welcome_local_server_password">Paikallinen salasana (jätä tämä tyhjäksi jos ei käytetä)</string>
+  <string name="welcome_local_server_directory">Paikallinen hakemisto (jätä tyhjäksi jos ei käytetä)</string>
+  <string name="welcome_local_server_username">Paikallinen käyttäjänimi (jätä tyhjäksi jos ei käytetä)</string>
+  <string name="welcome_local_server_password">Paikallinen salasana (jätä tyhjäksi jos ei käytetä)</string>
   <string-array name="remote_server_protocols">
     <item>HTTP</item>
     <item>HTTPS</item>

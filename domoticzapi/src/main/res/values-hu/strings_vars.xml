@@ -3,6 +3,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="title_vars">Felhasználói változók</string>
-  <string name="var_input">Input value is not valid</string>
-  <string name="var_input_error">Failed to update user variable</string>
+  <string name="var_input">Bemeneti érték érvénytelen</string>
+  <string name="var_input_error">Nem sikerült frissíteni a felhasználói változót</string>
 </resources>
