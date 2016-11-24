@@ -3,13 +3,14 @@ package com.heinrichreimersoftware.materialintro.view;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FadeableViewPager extends ViewPager {
+public class FadeableViewPager extends SwipeBlockableViewPager {
+
     public FadeableViewPager(Context context) {
         super(context);
     }
@@ -25,7 +26,8 @@ public class FadeableViewPager extends ViewPager {
 
     @Override
     public PagerAdapter getAdapter() {
-        return ((PagerAdapterWrapper) super.getAdapter()).getAdapter();
+        PagerAdapterWrapper wrapper = (PagerAdapterWrapper) super.getAdapter();
+        return wrapper == null ? null : wrapper.getAdapter();
     }
 
     @SuppressWarnings("deprecation")
@@ -36,12 +38,12 @@ public class FadeableViewPager extends ViewPager {
     }
 
     @Override
-    public void addOnPageChangeListener(OnPageChangeListener listener) {
+    public void addOnPageChangeListener(@NonNull OnPageChangeListener listener) {
         super.addOnPageChangeListener(new OnPageChangeListenerWrapper(listener));
     }
 
     @Override
-    public void removeOnPageChangeListener(OnPageChangeListener listener) {
+    public void removeOnPageChangeListener(@NonNull OnPageChangeListener listener) {
         super.removeOnPageChangeListener(new OnPageChangeListenerWrapper(listener));
     }
 
@@ -49,7 +51,6 @@ public class FadeableViewPager extends ViewPager {
     public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
         super.setPageTransformer(reverseDrawingOrder, new PageTransformerWrapper(transformer, getAdapter()));
     }
-
 
     private class OnPageChangeListenerWrapper implements OnPageChangeListener{
         private final OnPageChangeListener listener;
@@ -62,7 +63,7 @@ public class FadeableViewPager extends ViewPager {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             int count = listener instanceof OnOverscrollPageChangeListener ?
                     FadeableViewPager.super.getAdapter().getCount() : getAdapter().getCount();
-            listener.onPageScrolled(Math.min(position, count),
+            listener.onPageScrolled(Math.min(position, count - 1),
                     position < count ? positionOffset : 0,
                     position < count ? positionOffsetPixels : 0);
         }
@@ -71,7 +72,7 @@ public class FadeableViewPager extends ViewPager {
         public void onPageSelected(int position) {
             int count = listener instanceof OnOverscrollPageChangeListener ?
                     FadeableViewPager.super.getAdapter().getCount() : getAdapter().getCount();
-            listener.onPageSelected(Math.min(position, count));
+            listener.onPageSelected(Math.min(position, count - 1));
         }
 
         @Override
@@ -109,7 +110,7 @@ public class FadeableViewPager extends ViewPager {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return adapter.isViewFromObject(view, object);
+            return object != null && adapter.isViewFromObject(view, object);
         }
 
         @Override
@@ -218,7 +219,7 @@ public class FadeableViewPager extends ViewPager {
         public float getPageWidth(int position) {
             if(position < adapter.getCount())
                 return adapter.getPageWidth(position);
-            return 1.f;
+            return 1f;
         }
     }
 
