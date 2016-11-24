@@ -270,6 +270,10 @@ public class IntroActivity extends AppCompatActivity {
         buttonNext = (ImageButton) findViewById(R.id.mi_button_next);
         buttonBack = (ImageButton) findViewById(R.id.mi_button_skip);
 
+        buttonNext.setAlpha(0.5f);
+        buttonBack.setAlpha(0.5f);
+        pagerIndicator.setAlpha(0.5f);
+
         try {
             buttonCta = (TextSwitcher) findViewById(R.id.mi_button_cta);
             if (buttonCta != null) {
