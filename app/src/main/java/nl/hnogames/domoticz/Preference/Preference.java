@@ -72,7 +72,9 @@ import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
@@ -211,7 +213,17 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.getServerConfigForActiveServer(mContext, true, null, null);
+                UsefulBits.getServerConfigForActiveServer(mContext, true, new ConfigReceiver() {
+                    @Override
+                    public void onReceiveConfig(ConfigInfo settings) {
+                        showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
+                    }
+                }, null);
                 return true;
             }
         });

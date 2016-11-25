@@ -93,6 +93,7 @@ public class SetupServerSettings extends Fragment {
     private Context mContext;
     private Button btnManualSSID;
 
+
     public static SetupServerSettings newInstance(int instance) {
         SetupServerSettings f = new SetupServerSettings();
 
