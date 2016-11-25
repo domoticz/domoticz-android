@@ -6,6 +6,6 @@
   <string name="usage">Használat</string>
   <string name="today">Ma</string>
   <string name="total">Összesen</string>
-  <string name="favorite_added">Vezérlőpulthoz hozzáadva.</string>
+  <string name="favorite_added">vezérlőpulthoz hozzáadva.</string>
   <string name="favorite_removed">vezérlőpultról eltávolítva.</string>
 </resources>

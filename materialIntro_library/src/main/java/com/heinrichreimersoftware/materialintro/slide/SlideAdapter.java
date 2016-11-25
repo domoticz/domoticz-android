@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
+
+import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,50 +15,77 @@ import java.util.List;
 
 public class SlideAdapter extends FragmentPagerAdapter {
     private List<Slide> data = new ArrayList<>();
+    private FragmentManager fragmentManager;
 
     public SlideAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
+        this.fragmentManager = fragmentManager;
         data = new ArrayList<>();
     }
 
     public SlideAdapter(FragmentManager fragmentManager, @NonNull Collection<? extends Slide> collection) {
         super(fragmentManager);
+        this.fragmentManager = fragmentManager;
         data = new ArrayList<>(collection);
     }
 
     public void addSlide(int location, Slide object) {
-        data.add(location, object);
-        notifyDataSetChanged();
+        if (!data.contains(object)) {
+            data.add(location, object);
+        }
     }
 
     public boolean addSlide(Slide object) {
+        if (data.contains(object)) {
+            return false;
+        }
         boolean modified = data.add(object);
-        if (modified) notifyDataSetChanged();
+        if (modified) {
+            notifyDataSetChanged();
+        }
         return modified;
     }
 
     public boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
-        boolean modified = data.addAll(location, collection);
-        if (modified) notifyDataSetChanged();
+        boolean modified = false;
+        int i = 0;
+        for (Slide slide : collection) {
+            if (!data.contains(slide)) {
+                data.add(location + i, slide);
+                i++;
+                modified = true;
+            }
+        }
+        if (modified) {
+            notifyDataSetChanged();
+        }
         return modified;
     }
 
     public boolean addSlides(@NonNull Collection<? extends Slide> collection) {
-        boolean modified = data.addAll(collection);
-        if (modified) notifyDataSetChanged();
+        boolean modified = false;
+        for (Slide slide : collection) {
+            if (!data.contains(slide)) {
+                data.add(slide);
+                modified = true;
+            }
+        }
+        if (modified) {
+            notifyDataSetChanged();
+        }
         return modified;
     }
 
-    public void clearSlides() {
+    public boolean clearSlides() {
         if (!data.isEmpty()) {
             data.clear();
-            notifyDataSetChanged();
+            return true;
         }
+        return false;
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
     public boolean containsSlide(Object object) {
-        return data.contains(object);
+        return object instanceof Slide && data.contains(object);
     }
 
     public boolean containsSlides(@NonNull Collection<?> collection) {
@@ -69,6 +99,44 @@ public class SlideAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return data.get(position).getFragment();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        if (object instanceof Fragment) {
+            fragmentManager.beginTransaction()
+                    .detach((Fragment) object)
+                    .attach((Fragment) object)
+                    .commit();
+        }
+        return super.getItemPosition(object);
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = getItem(position);
+        if (fragment.isAdded()) {
+            return fragment;
+        }
+
+        Fragment instantiatedFragment = (Fragment) super.instantiateItem(container, position);
+        Slide slide = data.get(position);
+        if (slide instanceof RestorableSlide) {
+            //Load old fragment from fragment manager
+            ((RestorableSlide) slide).setFragment(instantiatedFragment);
+            data.set(position, slide);
+            if (instantiatedFragment instanceof SlideFragment)
+                ((SlideFragment) instantiatedFragment).updateNavigation();
+        }
+        return instantiatedFragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        Fragment fragment = (Fragment) object;
+        if (fragment == null)
+            return;
+        super.destroyItem(container, position, object);
     }
 
     @ColorRes
@@ -105,9 +173,7 @@ public class SlideAdapter extends FragmentPagerAdapter {
     }
 
     public Slide removeSlide(int location) {
-        Slide object = data.remove(location);
-        notifyDataSetChanged();
-        return object;
+        return data.remove(location);
     }
 
     @SuppressWarnings("SuspiciousMethodCalls")
@@ -115,7 +181,6 @@ public class SlideAdapter extends FragmentPagerAdapter {
         int locationToRemove = data.indexOf(object);
         if (locationToRemove >= 0) {
             data.remove(locationToRemove);
-            notifyDataSetChanged();
             return true;
         }
         return false;
@@ -131,7 +196,6 @@ public class SlideAdapter extends FragmentPagerAdapter {
                 modified = true;
             }
         }
-        if (modified) notifyDataSetChanged();
         return modified;
     }
 
@@ -144,20 +208,24 @@ public class SlideAdapter extends FragmentPagerAdapter {
                 i--;
             }
         }
-        if (modified) notifyDataSetChanged();
         return modified;
     }
 
     public Slide setSlide(int location, Slide object) {
-        Slide oldObject = data.set(location, object);
-        notifyDataSetChanged();
-        return oldObject;
+        if (!data.contains(object)) {
+            return data.set(location, object);
+        }
+        return data.set(location, object);
     }
 
     public List<Slide> setSlides(List<? extends Slide> list) {
         List<Slide> oldList = new ArrayList<>(data);
         data = new ArrayList<>(list);
-        notifyDataSetChanged();
         return oldList;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

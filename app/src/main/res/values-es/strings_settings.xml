@@ -10,6 +10,7 @@
   <string name="category_server">Servidor</string>
   <string name="category_geofencing">Geocercas</string>
   <string name="category_info">Información</string>
+  <string name="category_advanced">Advanced</string>
   <string name="category_language">Idioma</string>
   <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Notificaciones</string>
@@ -21,6 +22,7 @@
   <string name="category_account">Accounts</string>
   <string name="category_QRCode">Código QR</string>
   <string name="category_Speech">Discurso</string>
+  <string name="category_Reset">Reset</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Pantalla de inicio</string>
   <string name="enable_items">Activar/desactivar elementos</string>
@@ -69,6 +71,7 @@
   <string name="enable_nfc">Activar NFC</string>
   <string name="enable_speech">Habilitar reconocimiento de voz</string>
   <string name="export_settings">Exportar ajustes</string>
+  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
   <string name="import_settings">Importar ajustes</string>
   <string name="multi_server_settings">Habilitar la compatibilidad con servidores múltiples</string>
   <string name="nfc_enable_settings">Habilitar las conexiones NFC</string>
@@ -89,6 +92,9 @@
   <string name="notification_settings_push">Enviar su id de registro a Domoticz</string>
   <string name="notification_settings_pushed">Su id de registro a sido guardado ahora en Domoticz</string>
   <string name="notification_settings_push_failed">No se pudo guardar su id de registro en Domoticz, por favor Inténtelo más tarde.</string>
+  <string name="notification_show_title">Last Notifications</string>
+  <string name="notification_show_nothing">No notifications found</string>
+  <string name="notification_show">Show last couple of Notifications</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Sobrescribir las notificaciones</string>
   <string name="overwrite_notifications">Sobrescribir las notificaciones anteriores de este dispositivo</string>

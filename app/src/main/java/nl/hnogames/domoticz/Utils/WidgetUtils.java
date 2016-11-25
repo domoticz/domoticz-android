@@ -27,7 +27,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import nl.hnogames.domoticz.Service.WidgetProviderLarge;
+import nl.hnogames.domoticz.Widgets.WidgetProviderLarge;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 

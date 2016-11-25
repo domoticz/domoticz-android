@@ -68,6 +68,7 @@ public class SetupServerSettings extends Fragment {
 
     private static final String INSTANCE = "INSTANCE";
     private static final int ADDSERVER = 22;
+    boolean activeServerChanged = false;
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
@@ -117,6 +118,7 @@ public class SetupServerSettings extends Fragment {
             if (!UsefulBits.isEmpty(updateServerName)) {
                 newServer = mServerUtil.getServerInfo(updateServerName);
             }
+            activeServerChanged = extras.getBoolean("SERVERACTIVE", false);
         }
     }
 
@@ -346,8 +348,19 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void setSsid_spinner() {
+        Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+        //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
+        if (ssidFromPrefs != null) {
+            if (ssidFromPrefs.size() > 0) {
+                for (String wifi : ssidFromPrefs) {
+                    ssids.add(wifi);
+                    ssidListFromPrefs.add(wifi);
+                }
+            }
+        }
+
         mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
             @Override
             public void ReceiveSSIDs(CharSequence[] ssidFound) {
@@ -432,6 +445,7 @@ public class SetupServerSettings extends Fragment {
     }
 
     private void buildServerInfo() {
+
         newServer = new ServerInfo();
         newServer.setRemoteServerUsername(
                 remote_username_input.getInputWidgetText().toString());
@@ -446,6 +460,7 @@ public class SetupServerSettings extends Fragment {
         newServer.setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         newServer.setEnabled(false);
+
         if (!useSameAddress.isChecked()) {
             newServer.setLocalSameAddressAsRemote();
             newServer.setIsLocalServerAddressDifferent(false);
@@ -464,6 +479,8 @@ public class SetupServerSettings extends Fragment {
                     getSpinnerDomoticzLocalSecureBoolean());
             newServer.setIsLocalServerAddressDifferent(true);
         }
+
+        newServer.setEnabled(activeServerChanged);
         newServer.setServerName(server_name_input.getInputWidgetText().toString());
         newServer.setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
     }
@@ -480,6 +497,8 @@ public class SetupServerSettings extends Fragment {
             mServerUtil.putServerInList(newServer);
             mServerUtil.saveDomoticzServers(false);
             ((ServerSettingsActivity) getActivity()).ServerAdded(true);
+            if (activeServerChanged)
+                mServerUtil.setActiveServer(newServer);
         }
     }
 
