@@ -413,7 +413,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
                     !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                 holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
-            if (mDeviceInfo.getType().equals("Wind")) {
+            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
+                    mDeviceInfo.getType().equals("Wind")) {
                 text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
                 holder.switch_battery_level.setText(text);
             }
@@ -428,8 +429,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                 holder.pieView.setVisibility(View.VISIBLE);
                 double temp = mDeviceInfo.getTemp();
-                if (!tempSign.equals("C"))
+                if (tempSign != null && !tempSign.equals("C"))
                     temp = temp / 2;
+
                 holder.pieView.setPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
 
