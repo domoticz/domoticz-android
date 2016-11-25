@@ -385,14 +385,13 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 //show dialog
                 List<String> logs = mSharedPrefs.getLoggedNotifications();
-                if(logs != null && logs.size() > 0) {
+                if (logs != null && logs.size() > 0) {
                     Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
                             .title(mContext.getString(R.string.notification_show_title))
                             .items(logs.toArray(new String[0]))
                             .show();
-                }
-                else
+                } else
                     UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
                 return true;
             }
@@ -430,14 +429,14 @@ public class Preference extends PreferenceFragment {
                                 @SuppressLint("NewApi")
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    ((ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE))
+                                    ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
                                             .clearApplicationUserData();
                                 }
                             })
                             .show();
                 } else {
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
-                    }
+                }
                 return true;
             }
         });

@@ -47,17 +47,17 @@ public class NotificationUtil {
             return;
         int NOTIFICATION_ID = 12345;
 
-        if(prefUtil == null)
+        if (prefUtil == null)
             prefUtil = new SharedPrefUtil(context);
 
         prefUtil.addUniqueReceivedNotification(text);
-        prefUtil.addLoggedNotification(new SimpleDateFormat ("yyyy-MM-dd hh:mm ").format(new Date())+text);
+        prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + text);
 
         List<String> suppressedNot = prefUtil.getSuppressedNotifications();
         try {
-             if (prefUtil.isNotificationsEnabled() &&
-                     suppressedNot != null && !suppressedNot.contains(text)) {
-                 NotificationCompat.Builder builder =
+            if (prefUtil.isNotificationsEnabled() &&
+                    suppressedNot != null && !suppressedNot.contains(text)) {
+                NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.domoticz_white)
                                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
