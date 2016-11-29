@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Preference;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -71,7 +72,9 @@ import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
@@ -115,6 +118,7 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference ServerSettings = findPreference("server_settings");
         android.preference.Preference NotificationLogged = findPreference("notification_show_logs");
         android.preference.Preference fetchServerConfig = findPreference("server_force_fetch_config");
+        android.preference.Preference resetApplication = findPreference("reset_settings");
         android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
         android.preference.Preference GeoSettings = findPreference("geo_settings");
@@ -209,7 +213,17 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.getServerConfigForActiveServer(mContext, true, null, null);
+                UsefulBits.getServerConfigForActiveServer(mContext, true, new ConfigReceiver() {
+                    @Override
+                    public void onReceiveConfig(ConfigInfo settings) {
+                        showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
+                    }
+                }, null);
                 return true;
             }
         });
@@ -371,14 +385,13 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 //show dialog
                 List<String> logs = mSharedPrefs.getLoggedNotifications();
-                Collections.reverse(logs);
-                if(logs != null && logs.size() > 0) {
+                if (logs != null && logs.size() > 0) {
+                    Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
                             .title(mContext.getString(R.string.notification_show_title))
                             .items(logs.toArray(new String[0]))
                             .show();
-                }
-                else
+                } else
                     UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
                 return true;
             }
@@ -402,6 +415,31 @@ public class Preference extends PreferenceFragment {
                 }
             });
         }
+
+        resetApplication.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.category_Reset)
+                            .content(R.string.are_you_sure)
+                            .positiveText(R.string.ok)
+                            .negativeText(R.string.cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @SuppressLint("NewApi")
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
+                                            .clearApplicationUserData();
+                                }
+                            })
+                            .show();
+                } else {
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                }
+                return true;
+            }
+        });
 
         FingerPrintPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @SuppressLint("NewApi")

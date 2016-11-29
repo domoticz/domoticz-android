@@ -147,16 +147,6 @@
             android:title="@string/qrcode_settings" />
     </PreferenceCategory>
 
-
-    <PreferenceCategory android:title="@string/category_export">
-        <Preference
-            android:key="export_settings"
-            android:title="@string/export_settings" />
-        <Preference
-            android:key="import_settings"
-            android:title="@string/import_settings" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/category_language">
         <ListPreference
             android:entries="@array/domoticz_language_entries"
@@ -236,40 +226,61 @@
                 android:key="notification_show_logs"
                 android:summary="@string/notification_show"
                 android:title="@string/notification_show_title" />
-
         </PreferenceScreen>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_info">
-        <Preference
-            android:key="version"
-            android:summary="Version 1.0.2"
-            android:title="@string/info_version" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="checkForSystemUpdates"
-            android:summaryOff="@string/check_for_update"
-            android:summaryOn="@string/check_for_update"
-            android:title="@string/check_for_update_title" />
-        <Preference
-            android:dependency="checkForSystemUpdates"
-            android:key="version_domoticz"
-            android:summary="Version 1.0.2"
-            android:title="@string/info_domoticz_version" />
-        <Preference
-            android:key="info_about"
-            android:title="@string/info_about" />
-        <Preference
-            android:key="info_credits"
-            android:title="@string/info_credits" />
+    <PreferenceCategory android:title="@string/timer_other">
+        <PreferenceScreen android:title="@string/category_advanced">
+            <PreferenceCategory android:title="@string/category_advanced">
+                <Preference
+                    android:key="version"
+                    android:summary="Version 1.0.2"
+                    android:title="@string/info_version" />
+                <SwitchPreference
+                    android:defaultValue="false"
+                    android:key="checkForSystemUpdates"
+                    android:summaryOff="@string/check_for_update"
+                    android:summaryOn="@string/check_for_update"
+                    android:title="@string/check_for_update_title" />
+                <Preference
+                    android:dependency="checkForSystemUpdates"
+                    android:key="version_domoticz"
+                    android:summary="Version 1.0.2"
+                    android:title="@string/info_domoticz_version" />
+            </PreferenceCategory>
+
+            <PreferenceCategory android:title="@string/category_export">
+                <Preference
+                    android:key="export_settings"
+                    android:title="@string/export_settings" />
+                <Preference
+                    android:key="import_settings"
+                    android:title="@string/import_settings" />
+            </PreferenceCategory>
+
+            <PreferenceCategory android:title="@string/category_Reset">
+                <Preference
+                    android:key="reset_settings"
+                    android:title="@string/reset_settings" />
+            </PreferenceCategory>
+
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="debugging"
+                android:summaryOff="@string/debug_switch_summary_off"
+                android:summaryOn="@string/debug_switch_summary_on"
+                android:title="@string/debug_switch_title" />
+        </PreferenceScreen>
+        <PreferenceScreen android:title="@string/category_info">
+        <PreferenceCategory android:title="@string/category_info">
+            <Preference
+                android:key="info_about"
+                android:title="@string/info_about" />
+            <Preference
+                android:key="info_credits"
+                android:title="@string/info_credits" />
+        </PreferenceCategory>
+        </PreferenceScreen>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_debug">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="debugging"
-            android:summaryOff="@string/debug_switch_summary_off"
-            android:summaryOn="@string/debug_switch_summary_on"
-            android:title="@string/debug_switch_title" />
-    </PreferenceCategory>
 </PreferenceScreen>

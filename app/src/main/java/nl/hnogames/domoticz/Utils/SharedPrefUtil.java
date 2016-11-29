@@ -374,16 +374,15 @@ public class SharedPrefUtil {
             if (notifications == null)
                 notifications = new HashSet<>();
             notifications.add(notification);
-            if(notifications.size()>20) {
+            if (notifications.size() > 20) {
                 List<String> notificationsValues = new ArrayList<>();
                 for (String s : notifications) {
                     notificationsValues.add(s);
                 }
                 notificationsValues.remove(0);
-                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG,  new HashSet<String>(notificationsValues)).apply();
-            }
-            else{
-                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG,  notifications).apply();
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet<String>(notificationsValues)).apply();
+            } else {
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
             }
         }
     }

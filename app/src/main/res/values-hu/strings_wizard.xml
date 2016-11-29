@@ -3,8 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="title_wizard">Beállítási Varázsló</string>
-  <string name="wizard_welcome">Üdözlünk</string>
-  <string name="wizard_welcome_description">A Domoticz egy nagyon alacsony erőforrásigényű otthonautomatizálási rendszer, segítségével beállíthatja és nyomon követheti eszközeit.</string>
+  <string name="wizard_welcome">Üdvözlünk</string>
+  <string name="wizard_welcome_description">A Domoticz egy nagyon alacsony erőforrásigényű otthonautomatizálási rendszer, segítségével beállíthatod és nyomon követheted az eszközeid.</string>
   <string name="wizard_favorites">Kedvencek</string>
   <string name="wizard_favorites_description">Eszközeid közül kedvenceket adhatsz a kezdőképernyőre. Ehhez tartsd az ujjad az eszköz nevén!</string>
   <string name="wizard_startup">Kezdőképernyő</string>

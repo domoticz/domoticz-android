@@ -56,6 +56,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
     private ServerUtil mServerUtil;
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;
+    private ArrayList<ServerInfo> mServerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +85,17 @@ public class ServerListSettingsActivity extends AppCompatActivity {
 
     private void createListView() {
         mServerUtil = new ServerUtil(this);
-        ArrayList<ServerInfo> mServerList = mServerUtil.getServerList();
-
+        mServerList = mServerUtil.getServerList();
         adapter = new ServerAdapter(this, mServerList, new ServerClickListener() {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_disable_default_server, Snackbar.LENGTH_SHORT);
-                    server.setEnabled(!checked);
+                    if(server.isEnabled())
+                        UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
+                    else {
+                        server.setEnabled(true);
+                        mServerUtil.updateServerInfo(server);
+                    }
                     createListView();                           //reset values
                 } else {
                     server.setEnabled(checked);
@@ -103,7 +107,12 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             @Override
             public void onRemoveClick(ServerInfo server) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
+                    if(server.isEnabled())
+                        UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
+                    else {
+                        server.setEnabled(true);
+                        mServerUtil.updateServerInfo(server);
+                    }
                 } else
                     showRemoveUndoSnackbar(server);
             }
@@ -113,13 +122,25 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         if ((new SharedPrefUtil(this)).darkThemeEnabled()) {
             listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
+
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                showEditServerActivity(String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText()));
+                String servername = String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText());
+                boolean active = false;
+                for (ServerInfo s : mServerList) {
+                    if (s.getServerName().equals(servername)) {
+                        if (mServerUtil.getActiveServer().getServerName().equals(servername)) {
+                            active = true;
+                            break;
+                        }
+                    }
+                }
+
+                showEditServerActivity(servername, active);
             }
         });
     }
@@ -181,10 +202,11 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_ADD_SERVER);
     }
 
-    public void showEditServerActivity(String name) {
+    public void showEditServerActivity(String name, boolean active) {
         Intent i = new Intent(ServerListSettingsActivity.this, ServerSettingsActivity.class);
         i.putExtra("ADDSERVER", false);
         i.putExtra("SERVERNAME", name);
+        i.putExtra("SERVERACTIVE", active);
         startActivityForResult(i, REQUEST_ADD_SERVER);
     }
 

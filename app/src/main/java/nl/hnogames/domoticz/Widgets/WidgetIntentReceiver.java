@@ -20,7 +20,7 @@
  *
  */
 
-package nl.hnogames.domoticz.Service;
+package nl.hnogames.domoticz.Widgets;
 
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;

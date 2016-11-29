@@ -7,4 +7,5 @@
     <string name="switch_to_server">"Switching server to %1$s"</string>
     <string name="cant_disable_default_server">Can\'t disable the default server</string>
     <string name="fetched_server_config_success">Successfully fetched server config</string>
+    <string name="fetched_server_config_failed">Failed to fetched server config</string>
 </resources>

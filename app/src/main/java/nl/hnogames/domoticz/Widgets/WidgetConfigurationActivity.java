@@ -1,4 +1,4 @@
-package nl.hnogames.domoticz;
+package nl.hnogames.domoticz.Widgets;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -19,9 +19,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapters.WidgetsAdapter;
-import nl.hnogames.domoticz.Service.WidgetProviderLarge;
+import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -32,10 +34,12 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
-public class WidgetActionActivity extends AppCompatActivity {
+public class WidgetConfigurationActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private final int iWelcomeResultCode = 885;
+    private final int iVoiceAction = -55;
+    private final int iQRCodeAction = -66;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
@@ -47,8 +51,10 @@ public class WidgetActionActivity extends AppCompatActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
-        super.onCreate(savedInstanceState);
+        else
+            setTheme(R.style.AppTheme);
 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
 
@@ -56,8 +62,8 @@ public class WidgetActionActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
             this.finish();
         }
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
+        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -92,28 +98,27 @@ public class WidgetActionActivity extends AppCompatActivity {
         }
     }
 
-    private void showSelectorDialog(final DevicesInfo selector, final String pass) {
-        final String[] levelNames = selector.getLevelNames();
-        new MaterialDialog.Builder(this)
-                .title(R.string.selector_value)
-                .items(levelNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(selector, pass, String.valueOf(text));
-                    }
-                })
-                .show();
-    }
-
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             Log.i(TAG, "Showing switches for widget");
             domoticz.getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
+                    if (mSharedPrefs.isSpeechEnabled()) {
+                        DevicesInfo oVoiceRow = new DevicesInfo();
+                        oVoiceRow.setIdx(iVoiceAction);
+                        oVoiceRow.setName(WidgetConfigurationActivity.this.getString(R.string.action_speech));
+                        mDevicesInfo.add(0, oVoiceRow);
+                    }
+                    if (mSharedPrefs.isQRCodeEnabled()) {
+                        DevicesInfo oQRCodeRow = new DevicesInfo();
+                        oQRCodeRow.setIdx(iQRCodeAction);
+                        oQRCodeRow.setName(WidgetConfigurationActivity.this.getString(R.string.action_qrcode_scan));
+                        mDevicesInfo.add(0, oQRCodeRow);
+                    }
+
                     ListView listView = (ListView) findViewById(R.id.list);
-                    adapter = new WidgetsAdapter(WidgetActionActivity.this, domoticz, mDevicesInfo);
+                    adapter = new WidgetsAdapter(WidgetConfigurationActivity.this, domoticz, mDevicesInfo);
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -121,7 +126,7 @@ public class WidgetActionActivity extends AppCompatActivity {
                             final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
-                                        WidgetActionActivity.this, domoticz);
+                                        WidgetConfigurationActivity.this, domoticz);
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override
@@ -153,15 +158,30 @@ public class WidgetActionActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(WidgetActionActivity.this, R.string.failed_to_get_switches, Toast.LENGTH_SHORT).show();
-                    WidgetActionActivity.this.finish();
+                    Toast.makeText(WidgetConfigurationActivity.this, R.string.failed_to_get_switches, Toast.LENGTH_SHORT).show();
+                    WidgetConfigurationActivity.this.finish();
                 }
             }, 0, null);
+
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    private void showSelectorDialog(final DevicesInfo selector, final String pass) {
+        final String[] levelNames = selector.getLevelNames();
+        new MaterialDialog.Builder(this)
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        showAppWidget(selector, pass, String.valueOf(text));
+                    }
+                })
+                .show();
     }
 
     private void showAppWidget(DevicesInfo mSelectedSwitch, String password, String value) {
@@ -173,13 +193,18 @@ public class WidgetActionActivity extends AppCompatActivity {
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
-            if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value);
-            } else {
+
+            if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
                 mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value);
+            } else {
+                if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value);
+                } else {
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value);
+                }
             }
 
-            Intent startService = new Intent(WidgetActionActivity.this,
+            Intent startService = new Intent(WidgetConfigurationActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
@@ -207,7 +232,6 @@ public class WidgetActionActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_search, menu);
-
         MenuItem searchMenuItem = menu.findItem(R.id.search);
         searchViewAction = (SearchView) MenuItemCompat
                 .getActionView(searchMenuItem);

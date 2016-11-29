@@ -143,24 +143,11 @@ public class GeofenceTransitionsIntentService extends IntentService
 
                 if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                         mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                    if (!mDevicesInfo.getStatusBoolean())
-                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                    else {
-                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                        if (!UsefulBits.isEmpty(value)) {
-                            jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                            jsonValue = getSelectorValue(mDevicesInfo, value);
-                        }
-                    }
+                    if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    else jsonAction = DomoticzValues.Device.Switch.Action.ON;
                 } else {
-                    if (!mDevicesInfo.getStatusBoolean()) {
-                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                        if (!UsefulBits.isEmpty(value)) {
-                            jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                            jsonValue = getSelectorValue(mDevicesInfo, value);
-                        }
-                    } else
-                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                    else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                 }
 
                 switch (mDevicesInfo.getSwitchTypeVal()) {

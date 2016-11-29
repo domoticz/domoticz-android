@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -41,7 +42,7 @@ import java.util.Arrays;
  * An ink inspired widget for indicating pages in a {@link ViewPager}.
  */
 public class InkPageIndicator extends View implements ViewPager.OnPageChangeListener,
-                                                      View.OnAttachStateChangeListener {
+        View.OnAttachStateChangeListener {
 
     // defaults
     private static final int DEFAULT_DOT_SIZE = 8;                      // dp
@@ -55,14 +56,16 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private static final float MINIMAL_REVEAL = 0.00001f;
 
     // configurable attributes
-    private final int dotDiameter;
-    private final int gap;
-    private final long animDuration;
+    private int dotDiameter;
+    private int gap;
+    private long animDuration;
+    private int unselectedColour;
+    private int selectedColour;
 
     // derived from attributes
-    private final float dotRadius;
-    private final float halfDotRadius;
-    private final long animHalfDuration;
+    private float dotRadius;
+    private float halfDotRadius;
+    private long animHalfDuration;
     private float dotTopY;
     private float dotCenterY;
     private float dotBottomY;
@@ -71,8 +74,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private ViewPager viewPager;
 
     // state
-    private int pageCount;
-    private int currentPage;
+    private int pageCount = 0;
+    private int currentPage = 0;
     private int previousPage;
     private float selectedDotX;
     private boolean selectedDotInPosition;
@@ -96,6 +99,18 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private PendingRetreatAnimator retreatAnimation;
     private PendingRevealAnimator[] revealAnimations;
     private final Interpolator interpolator;
+
+    // working values for beziers
+    float endX1;
+    float endY1;
+    float endX2;
+    float endY2;
+    float controlX1;
+    float controlY1;
+    float controlX2;
+    float controlY2;
+
+    private boolean measured = false;
 
     public InkPageIndicator(Context context) {
         this(context, null, 0);
@@ -123,9 +138,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         animDuration = (long) a.getInteger(R.styleable.InkPageIndicator_animationDuration,
                 DEFAULT_ANIM_DURATION);
         animHalfDuration = animDuration / 2;
-        int unselectedColour = a.getColor(R.styleable.InkPageIndicator_pageIndicatorColor,
+        unselectedColour = a.getColor(R.styleable.InkPageIndicator_pageIndicatorColor,
                 DEFAULT_UNSELECTED_COLOUR);
-        int selectedColour = a.getColor(R.styleable.InkPageIndicator_currentPageIndicatorColor,
+        selectedColour = a.getColor(R.styleable.InkPageIndicator_currentPageIndicatorColor,
                 DEFAULT_SELECTED_COLOUR);
 
         a.recycle();
@@ -146,6 +161,26 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         addOnAttachStateChangeListener(this);
     }
 
+    @ColorInt
+    public int getPageIndicatorColor(){
+        return unselectedPaint.getColor();
+    }
+
+    public void setPageIndicatorColor(@ColorInt int pageIndicatorColor){
+        unselectedPaint.setColor(pageIndicatorColor);
+        invalidate();
+    }
+
+    @ColorInt
+    public int getCurrentPageIndicatorColor(){
+        return selectedPaint.getColor();
+    }
+
+    public void setCurrentPageIndicatorColor(@ColorInt int currentPageIndicatorColor){
+        selectedPaint.setColor(currentPageIndicatorColor);
+        invalidate();
+    }
+
     public void setViewPager(ViewPager viewPager) {
         this.viewPager = viewPager;
         viewPager.addOnPageChangeListener(this);
@@ -154,9 +189,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             @Override
             public void onChanged() {
                 setPageCount(InkPageIndicator.this.viewPager.getAdapter().getCount());
+                invalidate();
             }
         });
-        setCurrentPageImmediate();
     }
 
     @Override
@@ -183,8 +218,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     @Override
     public void onPageSelected(int position) {
         if (isAttachedToWindow) {
-            // this is the main event we're interested in!
             setSelectedPage(position);
+            // this is the main event we're interested in!
         } else {
             // when not attached, don't animate the move, just store immediately
             setCurrentPageImmediate();
@@ -198,46 +233,53 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     private void setPageCount(int pages) {
         pageCount = pages;
+        calculateDotPositions(getWidth(), getHeight());
         resetState();
         requestLayout();
     }
 
-    private void calculateDotPositions(int width) {
+    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+        calculateDotPositions(w, h);
+    }
+
+    private void calculateDotPositions(int width, int height) {
+        if (!measured)
+            return;
+
         int left = getPaddingLeft();
         int top = getPaddingTop();
         int right = width - getPaddingRight();
+        int bottom = height - getPaddingBottom();
+        float middle = top + bottom / 2f;
+        float center = left + right / 2f;
 
         int requiredWidth = getRequiredWidth();
-        float startLeft = left + ((right - left - requiredWidth) / 2) + dotRadius;
+        float startLeft = center - requiredWidth / 2f + dotRadius;
 
-        dotCenterX = new float[pageCount];
+        dotCenterX = new float[Math.max(1, pageCount)];
         for (int i = 0; i < pageCount; i++) {
             dotCenterX[i] = startLeft + i * (dotDiameter + gap);
         }
-        // todo just top aligning for now… should make this smarter
-        dotTopY = top;
-        dotCenterY = top + dotRadius;
-        dotBottomY = top + dotDiameter;
+
+        dotTopY = middle - dotRadius;
+        dotCenterY = middle;
+        dotBottomY = middle + dotRadius;
 
         setCurrentPageImmediate();
     }
 
     private void setCurrentPageImmediate() {
-        try{
-            if (viewPager != null) {
-                currentPage = viewPager.getCurrentItem();
-            } else {
-                currentPage = 0;
-            }
-            if (dotCenterX != null) {
-                selectedDotX = dotCenterX[currentPage];
-            }
+        if (viewPager != null) {
+            currentPage = viewPager.getCurrentItem();
+        } else {
+            currentPage = 0;
         }
-        catch(Exception ex){}
+        if (dotCenterX != null)
+            selectedDotX = dotCenterX[Math.max(0, Math.min(currentPage, dotCenterX.length - 1))];
     }
 
     private void resetState() {
-        joiningFractions = new float[Math.max(1, pageCount - 1)];
+        joiningFractions = new float[Math.max(pageCount - 1, 0)];
         Arrays.fill(joiningFractions, 0f);
         dotRevealFractions = new float[pageCount];
         Arrays.fill(dotRevealFractions, 0f);
@@ -248,7 +290,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         int desiredHeight = getDesiredHeight();
         int height;
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
@@ -258,7 +299,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             case MeasureSpec.AT_MOST:
                 height = Math.min(desiredHeight, MeasureSpec.getSize(heightMeasureSpec));
                 break;
-            default: // MeasureSpec.UNSPECIFIED
+            case MeasureSpec.UNSPECIFIED:
+            default:
                 height = desiredHeight;
                 break;
         }
@@ -272,12 +314,16 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             case MeasureSpec.AT_MOST:
                 width = Math.min(desiredWidth, MeasureSpec.getSize(widthMeasureSpec));
                 break;
-            default: // MeasureSpec.UNSPECIFIED
+            case MeasureSpec.UNSPECIFIED:
+            default:
                 width = desiredWidth;
                 break;
         }
         setMeasuredDimension(width, height);
-        calculateDotPositions(width);
+
+        if (!measured) {
+            measured = true;
+        }
     }
 
     private int getDesiredHeight() {
@@ -316,15 +362,25 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         // draw any settled, revealing or joining dots
         for (int page = 0; page < pageCount; page++) {
             int nextXIndex = page == pageCount - 1 ? page : page + 1;
-            combinedUnselectedPath.addPath(getUnselectedPath(page,
+            Path unselectedPath = getUnselectedPath(page,
                     dotCenterX[page],
                     dotCenterX[nextXIndex],
                     page == pageCount - 1 ? INVALID_FRACTION : joiningFractions[page],
-                    dotRevealFractions[page]));
+                    dotRevealFractions[page]);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                combinedUnselectedPath.op(unselectedPath, Path.Op.UNION);
+            } else {
+                combinedUnselectedPath.addPath(unselectedPath);
+            }
         }
         // draw any retreating joins
         if (retreatingJoinX1 != INVALID_FRACTION) {
-            combinedUnselectedPath.addPath(getRetreatingJoinPath());
+            Path retreatingJoinPath = getRetreatingJoinPath();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                combinedUnselectedPath.op(retreatingJoinPath, Path.Op.UNION);
+            } else {
+                combinedUnselectedPath.addPath(retreatingJoinPath);
+            }
         }
         canvas.drawPath(combinedUnselectedPath, unselectedPaint);
     }
@@ -363,14 +419,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             unselectedDotPath.addCircle(dotCenterX[page], dotCenterY, dotRadius, Path.Direction.CW);
         }
 
-        float endX1;
-        float endY1;
-        float endX2;
-        float endY2;
-        float controlX1;
-        float controlY1;
-        float controlX2;
-        float controlY2;
         if (joiningFraction > 0f && joiningFraction <= 0.5f
                 && retreatingJoinX1 == INVALID_FRACTION) {
 
@@ -408,7 +456,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     controlX2, controlY2,
                     endX2, endY2);
 
-            unselectedDotPath.addPath(unselectedDotLeftPath);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                unselectedDotPath.op(unselectedDotLeftPath, Path.Op.UNION);
+            } else {
+                unselectedDotPath.addPath(unselectedDotLeftPath);
+            }
 
             // now do the next dot to the right
             unselectedDotRightPath.rewind();
@@ -418,7 +470,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
             // semi circle to the top center
             rectF.set(nextCenterX - dotRadius, dotTopY, nextCenterX + dotRadius, dotBottomY);
-            unselectedDotRightPath.arcTo(rectF, 90, 180, true);
+            unselectedDotRightPath.arcTo(rectF, 90, -180, true);
 
             // cubic to the left middle
             endX1 = nextCenterX - dotRadius - (joiningFraction * gap);
@@ -441,7 +493,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             unselectedDotRightPath.cubicTo(controlX1, controlY1,
                     controlX2, controlY2,
                     endX2, endY2);
-            unselectedDotPath.addPath(unselectedDotRightPath);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                unselectedDotPath.op(unselectedDotRightPath, Path.Op.UNION);
+            } else {
+                unselectedDotPath.addPath(unselectedDotRightPath);
+            }
         }
 
         if (joiningFraction > 0.5f && joiningFraction < 1f
@@ -542,7 +598,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setSelectedPage(int now) {
-        if (now == currentPage || now >= pageCount) return;
+        now = Math.min(now, pageCount - 1);
+
+        if (now == currentPage) return;
 
         pageChanging = true;
         previousPage = currentPage;
@@ -565,8 +623,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         // retreat animations when it has moved 75% of the way.
         // The retreat animation in turn will kick of reveal anims when the
         // retreat has passed any dots to be revealed
-        ValueAnimator moveAnimation = createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps);
-        moveAnimation.start();
+        if (getVisibility() == VISIBLE) createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start(); // dotCenterX is null when getVisibility() != VISIBLE
     }
 
     private ValueAnimator createMoveSelectedAnimator(
@@ -590,9 +647,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         moveSelected.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                // todo avoid autoboxing
                 selectedDotX = (Float) valueAnimator.getAnimatedValue();
                 retreatAnimation.startIfNecessary(selectedDotX);
+
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     postInvalidateOnAnimation();
                 }
@@ -618,20 +675,18 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         });
         // slightly delay the start to give the joins a chance to run
         // unless dot isn't in position yet – then don't delay!
-        moveSelected.setStartDelay(selectedDotInPosition ? animDuration / 4l : 0l);
-        moveSelected.setDuration(animDuration * 3l / 4l);
+        moveSelected.setStartDelay(selectedDotInPosition ? animDuration / 4L : 0L);
+        moveSelected.setDuration(animDuration * 3L / 4L);
         moveSelected.setInterpolator(interpolator);
         return moveSelected;
     }
 
     private void setJoiningFraction(int leftDot, float fraction) {
         if (leftDot < joiningFractions.length) {
-
             joiningFractions[leftDot] = fraction;
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 postInvalidateOnAnimation();
-            }
-            else{
+            } else {
                 postInvalidate();
             }
         }
@@ -651,8 +706,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         dotRevealFractions[dot] = fraction;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             postInvalidateOnAnimation();
-        }
-        else{
+        } else {
             postInvalidate();
         }
     }
@@ -663,7 +717,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     public abstract class PendingStartAnimator extends ValueAnimator {
 
         protected boolean hasStarted;
-        protected final StartPredicate predicate;
+        protected StartPredicate predicate;
 
         public PendingStartAnimator(StartPredicate predicate) {
             super();
@@ -719,7 +773,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        // todo avoid autoboxing
                         retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             postInvalidateOnAnimation();
@@ -744,7 +797,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        // todo avoid autoboxing
                         retreatingJoinX2 = (Float) valueAnimator.getAnimatedValue();
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             postInvalidateOnAnimation();
@@ -797,7 +849,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
      */
     public class PendingRevealAnimator extends PendingStartAnimator {
 
-        private final int dot;
+        private int dot;
 
         public PendingRevealAnimator(int dot, StartPredicate predicate) {
             super(predicate);
@@ -808,7 +860,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             addUpdateListener(new AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    // todo avoid autoboxing
                     setDotRevealFraction(PendingRevealAnimator.this.dot,
                             (Float) valueAnimator.getAnimatedValue());
                 }
@@ -833,7 +884,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
      */
     public abstract class StartPredicate {
 
-        protected final float thresholdValue;
+        protected float thresholdValue;
 
         public StartPredicate(float thresholdValue) {
             this.thresholdValue = thresholdValue;

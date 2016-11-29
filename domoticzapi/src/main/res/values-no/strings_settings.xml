@@ -10,6 +10,7 @@
   <string name="category_server">Server</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informasjon</string>
+  <string name="category_advanced">Advanced</string>
   <string name="category_language">Språk</string>
   <string name="category_talk_back">Snakk tilbake</string>
   <string name="category_notification">Varslinger</string>
@@ -21,6 +22,7 @@
   <string name="category_account">Kontoer</string>
   <string name="category_QRCode">QR-kode</string>
   <string name="category_Speech">Tale</string>
+  <string name="category_Reset">Reset</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Startside</string>
   <string name="enable_items">Aktivere/deaktivere elementer</string>
@@ -69,6 +71,7 @@
   <string name="enable_nfc">Aktiver NFC</string>
   <string name="enable_speech">Aktivere talegjenkjenning</string>
   <string name="export_settings">Eksporter innstillingene</string>
+  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
   <string name="import_settings">Import innstillinger</string>
   <string name="multi_server_settings">Aktiver serverstøtte for flere</string>
   <string name="nfc_enable_settings">Aktivere NFC tilkoblinger</string>
@@ -89,6 +92,9 @@
   <string name="notification_settings_push">Send registrerings-Iden til Domoticz</string>
   <string name="notification_settings_pushed">Registrerings-Iden er nå lagret i Domoticz</string>
   <string name="notification_settings_push_failed">Kunne ikke lagre registrerings-Iden i Domoticz, prøv igjen senere.</string>
+  <string name="notification_show_title">Last Notifications</string>
+  <string name="notification_show_nothing">No notifications found</string>
+  <string name="notification_show">Show last couple of Notifications</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Overskrive varsler</string>
   <string name="overwrite_notifications">Overskrive tidligere varsler på denne enheten</string>

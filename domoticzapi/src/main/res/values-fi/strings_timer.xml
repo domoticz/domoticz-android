@@ -7,10 +7,10 @@
   <string name="notapplicable">Ei saatavilla</string>
   <string name="timer_before_sunset">Ennen auringonlaskua</string>
   <string name="timer_after_sunset">Auringonlaskun jälkeen</string>
-  <string name="timer_ontime">Ajoissa</string>
+  <string name="timer_ontime">Tiettyyn aikaan</string>
   <string name="timer_before_sunrise">Ennen auringonnousua</string>
   <string name="timer_after_sunrise">Auringonnousun jälkeen</string>
-  <string name="timer_fixed">Kiinteä päivämäärä ja kellonaika</string>
+  <string name="timer_fixed">Tietty päivämäärä ja kellonaika</string>
   <string name="odd_day_numbers">Parittomat päivät</string>
   <string name="even_day_numbers">Parilliset päivät</string>
   <string name="odd_week_numbers">Parittomat viikot</string>
@@ -20,7 +20,7 @@
   <string name="yearly">Vuosittain</string>
   <string name="yearly_weekday">Vuosittain (viikonpäivä)</string>
   <string name="timer_every_days">Joka päivä</string>
-  <string name="timer_working_days">Työpäivät</string>
+  <string name="timer_working_days">Työpäivisin</string>
   <string name="timer_weekend">Viikonloppu</string>
   <string name="timer_other">Muu</string>
   <string name="timers">Ajastimet</string>

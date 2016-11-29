@@ -45,6 +45,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
     private String updateName = "";
     private boolean addNew = false;
+    private boolean activeServer = false;
 
 
     @Override
@@ -65,6 +66,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
             {
                 addNew = extras.getBoolean("ADDSERVER");
                 updateName = extras.getString("SERVERNAME");
+                activeServer = extras.getBoolean("SERVERACTIVE");
             }
         }
 
@@ -82,6 +84,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
             if (!UsefulBits.isEmpty(updateName)) {
                 Bundle data = new Bundle();
                 data.putString("SERVERNAME", updateName);
+                data.putBoolean("SERVERACTIVE", activeServer);
                 serverSettings.setArguments(data);
             }
 
