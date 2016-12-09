@@ -10,7 +10,7 @@
   <string name="category_server">Serwer</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informacje</string>
-  <string name="category_advanced">Advanced</string>
+  <string name="category_advanced">Zaawansowane</string>
   <string name="category_language">Język</string>
   <string name="category_talk_back">Rozmowa</string>
   <string name="category_notification">Powiadomienia</string>
@@ -71,7 +71,7 @@
   <string name="enable_nfc">Włącz NFC</string>
   <string name="enable_speech">Włącz polecenia głosowe</string>
   <string name="export_settings">Eksport ustawień</string>
-  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+  <string name="reset_settings">Reset wszystkich ustawień aplikacji (Ostrożnie!!)</string>
   <string name="import_settings">Import ustawień</string>
   <string name="multi_server_settings">Włącz obsługę wielu serwerów</string>
   <string name="nfc_enable_settings">Włącz połączenia NFC</string>
@@ -92,9 +92,9 @@
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>
   <string name="notification_settings_pushed">Twój identyfikator rejestracji jest teraz zapisany w Domoticz</string>
   <string name="notification_settings_push_failed">Nie można zapisać Twojego identyfikatora rejestracji w Domoticz, prosimy spróbować ponownie później.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
-  <string name="notification_show">Show last couple of Notifications</string>
+  <string name="notification_show_title">Otatnie powiadomienia</string>
+  <string name="notification_show_nothing">Nie znaleziono powiadomień</string>
+  <string name="notification_show">Pokaż parę ostatnich powiadomień</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Zastąp powiadomienia</string>
   <string name="overwrite_notifications">Zastąp poprzednie powiadomienia na tym urządzeniu</string>
