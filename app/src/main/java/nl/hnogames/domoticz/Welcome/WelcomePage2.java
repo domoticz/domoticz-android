@@ -91,8 +91,7 @@ public class WelcomePage2 extends Fragment {
             case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
                 if (PermissionsUtil.canAccessStorage(getActivity())) {
                     importSettings();
-                } else
-                    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
+                }
                 break;
         }
     }

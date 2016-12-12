@@ -270,8 +270,8 @@ public class WelcomePage3 extends Fragment {
                     if (mPhoneConnectionUtil != null)
                         mPhoneConnectionUtil.stopReceiver();
 
-                    if (getActivity() instanceof WelcomeViewActivity)
-                        ((WelcomeViewActivity) getActivity()).finishWithResult(false);
+                    //if (getActivity() instanceof WelcomeViewActivity)
+                    //    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
                 }
                 break;
         }
