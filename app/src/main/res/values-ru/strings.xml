@@ -51,6 +51,7 @@
   <string name="add">Добавить</string>
   <string name="cancel">Отмена</string>
   <string name="ok">Ok</string>
+  <string name="request_again">Request Again</string>
   <string name="upgrade">ПРЕМИУМ-ПОДПИСКА</string>
   <string name="something_went_wrong">Произошла ошибка</string>
   <string name="no_network_available">Ошибка: Сетевое соединение не доступно</string>

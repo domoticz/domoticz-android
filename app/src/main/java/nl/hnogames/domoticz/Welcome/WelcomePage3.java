@@ -22,13 +22,17 @@
 
 package nl.hnogames.domoticz.Welcome;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +46,12 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import nl.hnogames.domoticz.R;
@@ -57,7 +64,7 @@ import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class WelcomePage3 extends Fragment {
+public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
     private static final String INSTANCE = "INSTANCE";
     private static final int WELCOME_WIZARD = 1;
@@ -82,6 +89,8 @@ public class WelcomePage3 extends Fragment {
     private CheckBox cbShowPassword, cbShowPasswordLocal;
     private Button btnManualSSID;
 
+    private PermissionFragmentHelper permissionFragmentHelper;
+
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
 
@@ -101,6 +110,7 @@ public class WelcomePage3 extends Fragment {
             callingInstance = WELCOME_WIZARD;
         }
         mSharedPrefs = new SharedPrefUtil(getActivity());
+        permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
 
         if (mSharedPrefs.darkThemeEnabled())
             v = inflater.inflate(R.layout.fragment_welcome3_dark, container, false);
@@ -252,29 +262,11 @@ public class WelcomePage3 extends Fragment {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessLocation(getActivity())) {
-                requestPermissions(PermissionsUtil.INITIAL_LOCATION_PERMS, PermissionsUtil.INITIAL_LOCATION_REQUEST);
+                permissionFragmentHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
             } else
                 setSsid_spinner();
         } else
             setSsid_spinner();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_LOCATION_REQUEST:
-                if (PermissionsUtil.canAccessLocation(getActivity())) {
-                    setSsid_spinner();
-                } else {
-                    if (mPhoneConnectionUtil != null)
-                        mPhoneConnectionUtil.stopReceiver();
-
-                    //if (getActivity() instanceof WelcomeViewActivity)
-                    //    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
-                }
-                break;
-        }
     }
 
     private void setSsid_spinner() {
@@ -466,5 +458,59 @@ public class WelcomePage3 extends Fragment {
         if (callingInstance == SETTINGS) {
             writePreferenceValues();   // Only when used by settings
         }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_LOCATION_PERMS);
+        AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
+                getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (mPhoneConnectionUtil != null)
+                            mPhoneConnectionUtil.stopReceiver();
+                    }
+                });
+        if (!alert.isShowing()) {
+            alert.show();
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionFragmentHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionFragmentHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+        if (PermissionsUtil.canAccessLocation(getActivity()))
+            setSsid_spinner();
     }
 }

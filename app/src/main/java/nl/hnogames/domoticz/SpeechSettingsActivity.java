@@ -31,8 +31,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,11 +44,14 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import hugo.weaving.DebugLog;
@@ -64,7 +69,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 
-public class SpeechSettingsActivity extends AppCompatActivity implements SpeechClickListener {
+public class SpeechSettingsActivity extends AppCompatActivity implements SpeechClickListener, OnPermissionCallback {
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
@@ -79,6 +84,8 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
     private RecognitionListenerAdapter recognitionListener;
     private boolean listeningSpeechRecognition = false;
 
+    private PermissionHelper permissionHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
@@ -88,7 +95,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
-
+        permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_settings);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -393,7 +400,7 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
                 listeningSpeechRecognition = true;
                 playRecognitionAnimation();
             } else {
-                requestPermissions(PermissionsUtil.INITIAL_AUDIO_PERMS, PermissionsUtil.INITIAL_AUDIO_REQUEST);
+                permissionHelper.request(PermissionsUtil.INITIAL_AUDIO_PERMS);
             }
         } else {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -415,19 +422,6 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
         }
         stopRecognitionAnimation();
         listeningSpeechRecognition = false;
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_AUDIO_REQUEST:
-                if (PermissionsUtil.canAccessAudioState(this)) {
-                    startRecognition();
-                }
-                break;
-        }
     }
 
     private void removeSpeechFromListView(SpeechInfo SpeechInfo) {
@@ -467,6 +461,58 @@ public class SpeechSettingsActivity extends AppCompatActivity implements SpeechC
             stopRecognition();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        try {
+            String[] neededDevicePermission = PermissionHelper.declinedPermissions(this, PermissionsUtil.INITIAL_AUDIO_PERMS);
+            AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
+                    this.getString(R.string.permission_desc_audio), neededDevicePermission);
+            if (!alert.isShowing()) {
+                alert.show();
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+        if (PermissionsUtil.canAccessAudioState(this)) {
+            startRecognition();
         }
     }
 }

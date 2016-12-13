@@ -24,14 +24,14 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Preference.Preference;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatPermissionsActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +40,21 @@ public class SettingsActivity extends AppCompatActivity {
             setTheme(R.style.AppThemeDark);
         else
             setTheme(R.style.AppTheme);
+        super.onCreate(savedInstanceState);
 
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
-        super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new Preference()).commit();
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case android.R.id.home:
                 finishWithResult(true);
                 return true;

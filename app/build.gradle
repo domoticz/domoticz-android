@@ -155,6 +155,7 @@ dependencies {
         transitive = true
     }
 
+    compile 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
     compile 'com.afollestad:digitus:0.3.0'
 

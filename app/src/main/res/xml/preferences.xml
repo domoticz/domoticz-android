@@ -258,6 +258,12 @@
                     android:title="@string/import_settings" />
             </PreferenceCategory>
 
+            <PreferenceCategory android:title="@string/permission_prefs_title">
+                <Preference
+                    android:key="permissionssettings"
+                    android:title="@string/permission_config" />
+            </PreferenceCategory>
+
             <PreferenceCategory android:title="@string/category_Reset">
                 <Preference
                     android:key="reset_settings"

@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
 
 import java.io.File;
 import java.util.Collections;
@@ -90,6 +91,7 @@ public class Preference extends PreferenceFragment {
     private File SettingsFile;
     private Context mContext;
     private Domoticz mDomoticz;
+    private PermissionHelper permissionHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class Preference extends PreferenceFragment {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+        permissionHelper = PermissionHelper.getInstance(getActivity());
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
@@ -113,7 +116,6 @@ public class Preference extends PreferenceFragment {
     }
 
     private void setPreferences() {
-
         final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         android.preference.Preference ServerSettings = findPreference("server_settings");
         android.preference.Preference NotificationLogged = findPreference("notification_show_logs");
@@ -241,7 +243,7 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessDeviceState(mContext)) {
-                        requestPermissions(PermissionsUtil.INITIAL_DEVICE_PERMS, PermissionsUtil.INITIAL_DEVICE_REQUEST);
+                        permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
                     } else {
                         pushGCMRegistrationIds();
                     }
@@ -456,8 +458,7 @@ public class Preference extends PreferenceFragment {
                         return false;
                     }
                     if (!PermissionsUtil.canAccessFingerprint(mContext)) {
-                        requestPermissions(PermissionsUtil.INITIAL_FINGERPRINT_PERMS,
-                                PermissionsUtil.INITIAL_FINGERPRINT_REQUEST);
+                        permissionHelper.request(PermissionsUtil.INITIAL_FINGERPRINT_PERMS);
                     } else {
                         FingerprintManager fingerprintManager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
                         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
@@ -588,7 +589,6 @@ public class Preference extends PreferenceFragment {
 
         final String sPath = SettingsFile.getPath().
                 substring(0, SettingsFile.getPath().lastIndexOf("/"));
-
         //noinspection unused
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
@@ -599,8 +599,7 @@ public class Preference extends PreferenceFragment {
                     public boolean onPreferenceClick(android.preference.Preference preference) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (!PermissionsUtil.canAccessStorage(mContext)) {
-                                requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
-                                        PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
+                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                             } else
                                 exportSettings();
                         } else
@@ -609,15 +608,13 @@ public class Preference extends PreferenceFragment {
                         return false;
                     }
                 });
-
         android.preference.Preference importButton = findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(mContext)) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
-                                PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else
                         importSettings();
                 } else
@@ -626,28 +623,6 @@ public class Preference extends PreferenceFragment {
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(mContext)) {
-                    importSettings();
-                }
-                break;
-            case PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(mContext)) {
-                    exportSettings();
-                }
-                break;
-            case PermissionsUtil.INITIAL_DEVICE_REQUEST:
-                if (PermissionsUtil.canAccessDeviceState(mContext))
-                    pushGCMRegistrationIds();
-                break;
-        }
     }
 
     private void importSettings() {
@@ -669,7 +644,6 @@ public class Preference extends PreferenceFragment {
 
     private void setVersionInfo() {
         ServerUtil serverUtil = new ServerUtil(mContext);
-
         PackageInfo pInfo = null;
         try {
             pInfo = mContext
@@ -686,7 +660,6 @@ public class Preference extends PreferenceFragment {
         appVersion.setSummary(appVersionStr);
 
         final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
-
         String message;
 
         try {

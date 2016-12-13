@@ -39,7 +39,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -56,6 +55,8 @@ import com.afollestad.digitus.DigitusCallback;
 import com.afollestad.digitus.DigitusErrorType;
 import com.afollestad.digitus.FingerprintDialog;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.google.android.gms.analytics.HitBuilders;
@@ -74,6 +75,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -96,6 +98,7 @@ import nl.hnogames.domoticz.Utils.TalkBackUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
@@ -114,9 +117,8 @@ import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-
 @DebugLog
-public class MainActivity extends AppCompatActivity implements DigitusCallback, FingerprintDialog.Callback {
+public class MainActivity extends AppCompatPermissionsActivity implements DigitusCallback, FingerprintDialog.Callback {
     private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
     private boolean fromQRCodeWidget = false;
     private MenuItem speechMenuItem;
     private boolean validateOnce = true;
+    private PermissionHelper permissionHelper;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -156,9 +159,11 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
             setTheme(R.style.AppThemeDarkMain);
         else
             setTheme(R.style.AppThemeMain);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
         UsefulBits.checkAPK(this, mSharedPrefs);
+        permissionHelper = PermissionHelper.getInstance(this);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -167,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                 fromQRCodeWidget = extras.getBoolean("QRCODE", false);
             }
         }
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -287,7 +291,8 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
     }
 
     /* Called when the second activity's finishes */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             switch (requestCode) {
                 case iWelcomeResultCode:
@@ -336,7 +341,6 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                                 Toast.makeText(MainActivity.this, getString(R.string.qr_code_disabled), Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     break;
             }
         } else if (resultCode == 789) {
@@ -350,11 +354,11 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                     break;
             }
         }
-
         if (fromQRCodeWidget)
             this.finish();
-    }
 
+        permissionHelper.onActivityForResult(requestCode);
+    }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value) {
         if (domoticz == null)
@@ -516,26 +520,8 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
 
     @Override
     @DebugLog
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_DEVICE_REQUEST:
-                if (PermissionsUtil.canAccessDeviceState(this))
-                    AppController.getInstance().StartEasyGCM();
-                break;
-            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
-                if (PermissionsUtil.canAccessStorage(this)) {
-                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
-                    startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
-                }
-                break;
-            case PermissionsUtil.INITIAL_AUDIO_REQUEST:
-                if (PermissionsUtil.canAccessAudioState(this)) {
-                    startRecognition();
-                }
-                break;
-        }
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             // Notify Digitus of the result
             Digitus.get().handleResult(requestCode, permissions, grantResults);
@@ -605,7 +591,7 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
     private void setupMobileDevice() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessDeviceState(this)) {
-                requestPermissions(PermissionsUtil.INITIAL_DEVICE_PERMS, PermissionsUtil.INITIAL_DEVICE_REQUEST);
+                permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
             } else {
                 AppController.getInstance().StartEasyGCM();
             }
@@ -1100,7 +1086,7 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                             Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                             startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
                         } else {
-                            requestPermissions(PermissionsUtil.INITIAL_CAMERA_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                            permissionHelper.request(PermissionsUtil.INITIAL_CAMERA_PERMS);
                         }
                     } else {
                         Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
@@ -1214,7 +1200,7 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
                 listeningSpeechRecognition = true;
                 playRecognitionAnimation();
             } else {
-                requestPermissions(PermissionsUtil.INITIAL_AUDIO_PERMS, PermissionsUtil.INITIAL_AUDIO_REQUEST);
+                permissionHelper.request(PermissionsUtil.INITIAL_AUDIO_PERMS);
             }
         } else {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -1485,11 +1471,41 @@ public class MainActivity extends AppCompatActivity implements DigitusCallback, 
 
     @Override
     public void onFingerprintDialogStageUpdated(FingerprintDialog dialog, FingerprintDialog.Stage stage) {
-
     }
 
     @Override
     public void onFingerprintDialogCancelled() {
         this.finish();
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+        StringBuilder builder = new StringBuilder(permissionName.length);
+        if (permissionName.length > 0) {
+            for (String permission : permissionName) {
+                builder.append(permission).append("\n");
+            }
+        }
+
+        if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
+            if (PermissionsUtil.canAccessDeviceState(this))
+                AppController.getInstance().StartEasyGCM();
+        }
+
+        if (builder.toString().contains("android.permission.CAMERA")) {
+            if (PermissionsUtil.canAccessStorage(this)) {
+                Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
+            }
+        }
+
+        if (builder.toString().contains("android.permission.RECORD_AUDIO")) {
+            if (PermissionsUtil.canAccessAudioState(this)) {
+                startRecognition();
+            }
+        }
+
+        super.onPermissionGranted(permissionName);
     }
 }
