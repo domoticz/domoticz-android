@@ -51,6 +51,7 @@
   <string name="add">Добави</string>
   <string name="cancel">Откажи</string>
   <string name="ok">ОК</string>
+  <string name="request_again">Request Again</string>
   <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Нещо се обърка</string>
   <string name="no_network_available">Грешка: Няма мрежова връзка</string>

@@ -28,8 +28,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,9 +38,11 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.QRCodeAdapter;
@@ -50,6 +52,7 @@ import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -57,7 +60,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 
-public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeClickListener {
+public class QRCodeSettingsActivity extends AppCompatPermissionsActivity implements QRCodeClickListener {
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
@@ -66,6 +69,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
     private ArrayList<QRCodeInfo> qrcodeList;
     private QRCodeAdapter adapter;
     private boolean busyWithQRCode = false;
+    private PermissionHelper permissionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
-
+        permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_settings);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -321,7 +325,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                         Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                         startActivityForResult(iQRCodeScannerActivity, 998);
                     } else {
-                        requestPermissions(PermissionsUtil.INITIAL_CAMERA_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                        permissionHelper.request(PermissionsUtil.INITIAL_CAMERA_PERMS);
                     }
                 } else {
                     Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
@@ -333,29 +337,15 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
-                if (PermissionsUtil.canAccessStorage(this)) {
-                    Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
-                    startActivityForResult(iQRCodeScannerActivity, 998);
-                }
-                break;
-        }
-    }
-
     private void removeQRCodeFromListView(QRCodeInfo qrcodeInfo) {
         qrcodeList.remove(qrcodeInfo);
         mSharedPrefs.saveQRCodeList(qrcodeList);
-
         adapter.data = qrcodeList;
         adapter.notifyDataSetChanged();
     }
 
     /* Called when the second activity's finishes */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             final String QR_Code_ID = data.getStringExtra("QRCODE");
 
@@ -391,6 +381,16 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
                 UsefulBits.showSnackbar(this, coordinatorLayout, R.string.qrcode_exists, Snackbar.LENGTH_SHORT);
                 busyWithQRCode = false;
             }
+        }
+        permissionHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+        if (PermissionsUtil.canAccessStorage(this)) {
+            Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+            startActivityForResult(iQRCodeScannerActivity, 998);
         }
     }
 }

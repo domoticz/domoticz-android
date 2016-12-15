@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Vyberte oznámení k potlačení</string>
   <string name="suppress_notifications">Potlačit konkrétní upozornění na tomto zařízení</string>
   <string name="suppress_notifications_title">Potlačit upozornění</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Verze</string>
   <string name="info_domoticz_version">verze Domoticz</string>

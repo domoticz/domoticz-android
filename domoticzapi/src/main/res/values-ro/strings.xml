@@ -51,6 +51,7 @@
   <string name="add">Add</string>
   <string name="cancel">Cancel</string>
   <string name="ok">OK</string>
+  <string name="request_again">Request Again</string>
   <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="no_network_available">Error: No network connection available</string>

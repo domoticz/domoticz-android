@@ -10,7 +10,7 @@
   <string name="category_server">Server</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informatie</string>
-  <string name="category_advanced">Geadvanceerd</string>
+  <string name="category_advanced">Geavanceerd</string>
   <string name="category_language">Taal</string>
   <string name="category_talk_back">Praat Terug</string>
   <string name="category_notification">Notificaties</string>
@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Selecteer een notificatie om deze te onderdrukken</string>
   <string name="suppress_notifications">Onderdruk specifieke notificaties</string>
   <string name="suppress_notifications_title">Notificaties onderdrukken</string>
+  <string name="alarm_notifications_select">Welke notificaties moeten als alarm dienen?</string>
+  <string name="alarm_notifications">Laat het alarm klinken voor specifieke notificaties</string>
+  <string name="alarm_notifications_title">Alarmeringen en Notificaties</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Versie</string>
   <string name="info_domoticz_version">Domoticz versie</string>

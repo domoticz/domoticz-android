@@ -51,6 +51,7 @@
   <string name="add">Toevoegen</string>
   <string name="cancel">Annuleren</string>
   <string name="ok">Ok</string>
+  <string name="request_again">Vraag opnieuw</string>
   <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Oeps, er ging iets mis</string>
   <string name="no_network_available">Fout: Geen netwerkverbinding beschikbaar</string>

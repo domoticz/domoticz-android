@@ -21,6 +21,8 @@ public class DomoticzIcons {
                     return R.drawable.cooling;
                 case "ChristmasTree":
                     return R.drawable.christmastree;
+                case "Door":
+                    return R.drawable.door;
                 case "Fan":
                     return R.drawable.wind;
                 case "Fireplace":

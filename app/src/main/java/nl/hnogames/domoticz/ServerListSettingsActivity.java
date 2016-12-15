@@ -90,7 +90,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    if(server.isEnabled())
+                    if (server.isEnabled())
                         UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
                     else {
                         server.setEnabled(true);
@@ -107,7 +107,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
             @Override
             public void onRemoveClick(ServerInfo server) {
                 if (server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
-                    if(server.isEnabled())
+                    if (server.isEnabled())
                         UsefulBits.showSnackbar(ServerListSettingsActivity.this, coordinatorLayout, R.string.cant_remove_default_server, Snackbar.LENGTH_SHORT);
                     else {
                         server.setEnabled(true);

@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -42,7 +41,6 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class Camera extends Fragment {
@@ -82,18 +80,6 @@ public class Camera extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mSharedPrefs = new SharedPrefUtil(context);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_CAMERA_REQUEST:
-                if (PermissionsUtil.canAccessStorage(getActivity())) {
-                    processImage();
-                }
-                break;
-        }
     }
 
     private void processImage() {

@@ -29,21 +29,28 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
@@ -59,7 +66,7 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 
-public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener {
+public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener, OnPermissionCallback {
 
     @SuppressWarnings("unused")
     private static final String TAG = Cameras.class.getSimpleName();
@@ -71,12 +78,12 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private boolean refreshTimer = false;
     private SharedPrefUtil mSharedPrefs;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private PermissionFragmentHelper permissionFragmentHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -97,7 +104,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     public void getCameras() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
+        permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         new GetCachedDataTask().execute();
     }
 
@@ -173,7 +180,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 if (!PermissionsUtil.canAccessStorage(context)) {
-                                    requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_CAMERA_REQUEST);
+                                    permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                                 } else
                                     processImage(savePic, cameraTitle.getText().toString());
                             } else {
@@ -200,6 +207,58 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
+        StringBuilder builder = new StringBuilder(neededPermission.length);
+        if (neededPermission.length > 0) {
+            for (String permission : neededPermission) {
+                builder.append(permission).append("\n");
+            }
+        }
+        AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
+        if (!alert.isShowing()) {
+            alert.show();
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionFragmentHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionFragmentHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {

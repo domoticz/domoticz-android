@@ -72,10 +72,8 @@ public class AppController extends MultiDexApplication implements GcmListener {
     @Override
     public void onCreate() {
         super.onCreate();
-
         if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
-
         mInstance = this;
     }
 
