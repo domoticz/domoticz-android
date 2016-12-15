@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -62,7 +63,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 
-public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeClickListener, OnPermissionCallback {
+public class QRCodeSettingsActivity extends AppCompatPermissionsActivity implements QRCodeClickListener {
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
@@ -347,7 +348,7 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
     }
 
     /* Called when the second activity's finishes */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             final String QR_Code_ID = data.getStringExtra("QRCODE");
 
@@ -385,45 +386,6 @@ public class QRCodeSettingsActivity extends AppCompatActivity implements QRCodeC
             }
         }
         permissionHelper.onActivityForResult(requestCode);
-    }
-
-    @Override
-    public void onPermissionDeclined(@NonNull String[] permissionName) {
-        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
-        try {
-            String[] neededDevicePermission = PermissionHelper.declinedPermissions(this, PermissionsUtil.INITIAL_CAMERA_PERMS);
-            AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                    this.getString(R.string.permission_desc_camera), neededDevicePermission);
-            if (!alert.isShowing()) {
-                alert.show();
-            }
-        } catch (Exception ex) {
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onPermissionPreGranted(@NonNull String permissionsName) {
-        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
-    }
-
-    @Override
-    public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
-    }
-
-    @Override
-    public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
-    }
-
-    @Override
-    public void onNoPermissionNeeded() {
-        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
     }
 
     @Override
