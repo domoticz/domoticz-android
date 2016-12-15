@@ -139,6 +139,7 @@ public class Preference extends PreferenceFragment {
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
+        NotificationsMultiSelectListPreference alarmMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("alarmNotifications");
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
@@ -146,8 +147,10 @@ public class Preference extends PreferenceFragment {
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
         if (notifications == null || notifications.size() <= 0) {
             notificationsMultiSelectListPreference.setEnabled(false);
+            alarmMultiSelectListPreference.setEnabled(false);
         } else {
             notificationsMultiSelectListPreference.setEnabled(true);
+            alarmMultiSelectListPreference.setEnabled(true);
         }
 
         PermissionsSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {

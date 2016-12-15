@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Выберите уведомления для подавления</string>
   <string name="suppress_notifications">Подавлять определенные уведомления на этом устройстве</string>
   <string name="suppress_notifications_title">Подавлять уведомления</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Версия</string>
   <string name="info_domoticz_version">Версия Domoticz</string>

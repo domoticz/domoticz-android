@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Felfüggesztendő értesítések kiválasztása</string>
   <string name="suppress_notifications">Adott értesítések felfüggesztése ezen az eszközön</string>
   <string name="suppress_notifications_title">Értesítések felfüggesztése</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Verzió</string>
   <string name="info_domoticz_version">Domoticz verzió</string>

@@ -104,6 +104,7 @@ public class SharedPrefUtil {
     private static final String PREF_ENABLE_NOTIFICATIONS = "enableNotifications";
     private static final String PREF_OVERWRITE_NOTIFICATIONS = "overwriteNotifications";
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
+    private static final String PREF_ALARM_NOTIFICATIONS = "alarmNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLog";
     private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
@@ -281,6 +282,25 @@ public class SharedPrefUtil {
         if (!prefs.contains(PREF_SUPPRESS_NOTIFICATIONS)) return null;
 
         Set<String> notifications = prefs.getStringSet(PREF_SUPPRESS_NOTIFICATIONS, null);
+        if (notifications != null) {
+            List<String> notificationsValues = new ArrayList<>();
+
+            for (String s : notifications) {
+                notificationsValues.add(s);
+            }
+            return notificationsValues;
+        } else return null;
+    }
+
+    /**
+     * Get's a list of alarm notifications
+     *
+     * @return list of alarm notifications
+     */
+    public List<String> getAlarmNotifications() {
+        if (!prefs.contains(PREF_ALARM_NOTIFICATIONS)) return null;
+
+        Set<String> notifications = prefs.getStringSet(PREF_ALARM_NOTIFICATIONS, null);
         if (notifications != null) {
             List<String> notificationsValues = new ArrayList<>();
 

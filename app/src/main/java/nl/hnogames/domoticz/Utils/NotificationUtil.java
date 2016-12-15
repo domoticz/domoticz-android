@@ -27,7 +27,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 
 import java.text.SimpleDateFormat;
@@ -53,33 +56,51 @@ public class NotificationUtil {
         prefUtil.addUniqueReceivedNotification(text);
         prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + text);
 
+        boolean isAlarm = false;
         List<String> suppressedNot = prefUtil.getSuppressedNotifications();
+        List<String> alarmNot = prefUtil.getAlarmNotifications();
         try {
-            if (prefUtil.isNotificationsEnabled() &&
-                    suppressedNot != null && !suppressedNot.contains(text)) {
+            if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(text)) {
+                isAlarm = true;
+                Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                if (alert == null) {
+                    alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    if (alert == null)
+                        alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                }
+                if (alert != null) {
+                    final Ringtone r = RingtoneManager.getRingtone(context, alert);
+                    r.play();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            r.stop();
+                        }
+                    }, 5000);
+                }
+            }
+
+            if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(text)) {
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.domoticz_white)
                                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
                                 .setContentTitle(title)
-                                .setContentText(text)
+                                .setContentText(isAlarm ? context.getString(R.string.alarm) + ": " + text : text)
                                 .setGroupSummary(true)
                                 .setGroup(GROUP_KEY_NOTIFICATIONS)
                                 .setAutoCancel(true);
-
-                if (!prefUtil.OverWriteNotifications()) {
+                if (!prefUtil.OverWriteNotifications())
                     NOTIFICATION_ID = text.hashCode();
-                }
                 if (prefUtil.getNotificationVibrate())
                     builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
-
                 if (!UsefulBits.isEmpty(prefUtil.getNotificationSound()))
                     builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
-
                 Intent targetIntent = new Intent(context, MainActivity.class);
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
-
                 NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nManager.notify(NOTIFICATION_ID, builder.build());
             }

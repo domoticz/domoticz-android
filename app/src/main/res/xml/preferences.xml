@@ -215,6 +215,17 @@
                 android:summary="@string/notification_sound_summary"
                 android:title="@string/notification_sound_title" />
 
+            <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
+                android:defaultValue="@array/empty_array"
+                android:dependency="enableNotifications"
+                android:dialogTitle="@string/alarm_notifications_select"
+                android:entries="@array/empty_array"
+                android:entryValues="@array/empty_array"
+                android:key="alarmNotifications"
+                android:summary="@string/alarm_notifications"
+                android:title="@string/alarm_notifications_title"
+                customPreference:selectAllValuesByDefault="false" />
+
             <Preference
                 android:dependency="enableNotifications"
                 android:key="notification_registration_id"
