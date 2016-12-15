@@ -111,7 +111,7 @@ public class SharedPrefUtil {
     private static final String PREF_LAST_VERSION = "lastappversion";
     private static final String PREF_APK_VALIDATED = "apkvalidated";
     private static final String PREF_TALK_BACK = "talkBack";
-
+    private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -177,6 +177,10 @@ public class SharedPrefUtil {
 
     public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
+    }
+
+    public int getAlarmTimer() {
+        return prefs.getInt(PREF_ALARM_TIMER, 5);
     }
 
     public void completeCard(String cardTag) {

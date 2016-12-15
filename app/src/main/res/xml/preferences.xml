@@ -198,45 +198,57 @@
                 android:summaryOn="@string/overwrite_notifications"
                 android:title="@string/overwrite_notifications_title" />
 
-            <SwitchPreference
-                android:defaultValue="true"
-                android:dependency="enableNotifications"
-                android:key="notification_vibrate"
-                android:summaryOff="@string/notification_vibrate_off"
-                android:summaryOn="@string/notification_vibrate_on"
-                android:title="@string/notification_vibrate_title" />
+            <PreferenceCategory android:title="@string/notification_sound_title">
+                <SwitchPreference
+                    android:defaultValue="true"
+                    android:dependency="enableNotifications"
+                    android:key="notification_vibrate"
+                    android:summaryOff="@string/notification_vibrate_off"
+                    android:summaryOn="@string/notification_vibrate_on"
+                    android:title="@string/notification_vibrate_title" />
+                <RingtonePreference
+                    android:dependency="enableNotifications"
+                    android:key="notification_sound"
+                    android:ringtoneType="notification"
+                    android:showDefault="true"
+                    android:showSilent="true"
+                    android:summary="@string/notification_sound_summary"
+                    android:title="@string/notification_sound_title" />
+            </PreferenceCategory>
 
-            <RingtonePreference
-                android:dependency="enableNotifications"
-                android:key="notification_sound"
-                android:ringtoneType="notification"
-                android:showDefault="true"
-                android:showSilent="true"
-                android:summary="@string/notification_sound_summary"
-                android:title="@string/notification_sound_title" />
+            <PreferenceCategory android:title="@string/alarm">
+                <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
+                    android:defaultValue="@array/empty_array"
+                    android:dependency="enableNotifications"
+                    android:dialogTitle="@string/alarm_notifications_select"
+                    android:entries="@array/empty_array"
+                    android:entryValues="@array/empty_array"
+                    android:key="alarmNotifications"
+                    android:summary="@string/alarm_notifications"
+                    android:title="@string/alarm_notifications_title"
+                    customPreference:selectAllValuesByDefault="false" />
 
-            <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
-                android:defaultValue="@array/empty_array"
-                android:dependency="enableNotifications"
-                android:dialogTitle="@string/alarm_notifications_select"
-                android:entries="@array/empty_array"
-                android:entryValues="@array/empty_array"
-                android:key="alarmNotifications"
-                android:summary="@string/alarm_notifications"
-                android:title="@string/alarm_notifications_title"
-                customPreference:selectAllValuesByDefault="false" />
+                <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+                    android:summary="@string/alarmtimer_title"
+                    android:title="@string/alarmtimer"
+                    android:key="alarmNotificationTimer"
+                    android:dependency="enableNotifications"
+                    android:defaultValue="5" />
+            </PreferenceCategory>
 
-            <Preference
-                android:dependency="enableNotifications"
-                android:key="notification_registration_id"
-                android:summary="@string/notification_settings_push"
-                android:title="@string/notification_settings_id" />
+            <PreferenceCategory android:title="@string/category_advanced">
+                <Preference
+                    android:dependency="enableNotifications"
+                    android:key="notification_show_logs"
+                    android:summary="@string/notification_show"
+                    android:title="@string/notification_show_title" />
+                <Preference
+                    android:dependency="enableNotifications"
+                    android:key="notification_registration_id"
+                    android:summary="@string/notification_settings_push"
+                    android:title="@string/notification_settings_id" />
+            </PreferenceCategory>
 
-            <Preference
-                android:dependency="enableNotifications"
-                android:key="notification_show_logs"
-                android:summary="@string/notification_show"
-                android:title="@string/notification_show_title" />
         </PreferenceScreen>
     </PreferenceCategory>
 

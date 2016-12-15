@@ -126,6 +126,8 @@
     <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
     <string name="alarm_notifications_title">Alarm Notifications</string>
     <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Alarm Timer</string>
+    <string name="alarmtimer">Number of seconds to time the alarm</string>
 
     <!--        Information category       -->
     <string name="info_version">Version</string>
