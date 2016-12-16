@@ -180,7 +180,15 @@ public class SharedPrefUtil {
     }
 
     public int getAlarmTimer() {
-        return prefs.getInt(PREF_ALARM_TIMER, 5);
+        try
+        {
+            String timer = prefs.getString(PREF_ALARM_TIMER, "5");
+            return Integer.valueOf(timer);
+        }
+        catch (Exception ex){
+            editor.putString(PREF_ALARM_TIMER, "5").apply();
+            return 5;
+        }
     }
 
     public void completeCard(String cardTag) {

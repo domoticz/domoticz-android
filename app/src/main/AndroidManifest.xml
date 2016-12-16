@@ -79,6 +79,8 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".Service.StopAlarmButtonListener" />
+
         <service
             android:name=".Service.TaskService"
             android:exported="true"

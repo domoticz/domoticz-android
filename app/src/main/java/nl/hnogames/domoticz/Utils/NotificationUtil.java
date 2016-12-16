@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Utils;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,7 @@ import java.util.List;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.RingtonePlayingService;
+import nl.hnogames.domoticz.Service.StopAlarmButtonListener;
 
 public class NotificationUtil {
 
@@ -82,6 +84,11 @@ public class NotificationUtil {
                 Intent targetIntent = new Intent(context, MainActivity.class);
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
+
+                Intent stopAlarmIntent = new Intent(context, StopAlarmButtonListener.class);
+                PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.addAction(android.R.drawable.ic_delete, context.getString(R.string.blind_stop), pendingAlarmIntent);
+
                 NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nManager.notify(NOTIFICATION_ID, builder.build());
 
@@ -97,9 +104,11 @@ public class NotificationUtil {
                         ringtoneServiceStartIntent.putExtra("ringtone-uri", alert.toString());
                         context.startService(ringtoneServiceStartIntent);
 
-                        Thread.sleep(prefUtil.getAlarmTimer()*1000);
-                        Intent stopIntent = new Intent(context, RingtonePlayingService.class);
-                        context.stopService(stopIntent);
+                        if(prefUtil.getAlarmTimer() > 0) {
+                            Thread.sleep(prefUtil.getAlarmTimer() * 1000);
+                            Intent stopIntent = new Intent(context, RingtonePlayingService.class);
+                            context.stopService(stopIntent);
+                        }
                     }
                 }
             }
