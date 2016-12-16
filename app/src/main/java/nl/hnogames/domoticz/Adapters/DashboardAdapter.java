@@ -424,16 +424,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
             if (mDeviceInfo.getDewPoint() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
-            if (mDeviceInfo.getTemp() > 0) {
-                holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemp() + " " + tempSign);
+            if (mDeviceInfo.getTemperature() > 0) {
+                holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
 
                 holder.pieView.setVisibility(View.VISIBLE);
-                double temp = mDeviceInfo.getTemp();
+                double temp = mDeviceInfo.getTemperature();
                 if (tempSign != null && !tempSign.equals("C"))
                     temp = temp / 2;
 
                 holder.pieView.setPercentage(Float.valueOf(temp + ""));
-                holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
+                holder.pieView.setInnerText(mDeviceInfo.getTemperature() + " " + tempSign);
 
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);
