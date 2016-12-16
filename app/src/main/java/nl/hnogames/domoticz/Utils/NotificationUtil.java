@@ -85,9 +85,11 @@ public class NotificationUtil {
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
 
-                Intent stopAlarmIntent = new Intent(context, StopAlarmButtonListener.class);
-                PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.addAction(android.R.drawable.ic_delete, context.getString(R.string.blind_stop), pendingAlarmIntent);
+                if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(text)) {
+                    Intent stopAlarmIntent = new Intent(context, StopAlarmButtonListener.class);
+                    PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    builder.addAction(android.R.drawable.ic_delete, "Stop", pendingAlarmIntent);
+                }
 
                 NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nManager.notify(NOTIFICATION_ID, builder.build());
