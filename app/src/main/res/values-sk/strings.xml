@@ -51,6 +51,7 @@
   <string name="add">Pridať</string>
   <string name="cancel">Zrušiť</string>
   <string name="ok">OK</string>
+  <string name="request_again">Request Again</string>
   <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Niečo sa pokazilo</string>
   <string name="no_network_available">Chyba: Žiadne pripojenie k sieti</string>

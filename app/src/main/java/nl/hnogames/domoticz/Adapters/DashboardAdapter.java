@@ -177,6 +177,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if ((row.findViewById(R.id.color_button)) != null)
                 (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
+
         return new DataObjectHolder(row);
     }
 
@@ -184,8 +185,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public void onBindViewHolder(DataObjectHolder holder, final int position) {
         if (filteredData != null && filteredData.size() >= position) {
             DevicesInfo extendedStatusInfo = filteredData.get(position);
-            setSwitchRowData(extendedStatusInfo, holder);
 
+            if(!this.mSharedPrefs.darkThemeEnabled()) {
+                holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
+                holder.pieView.setPercentageTextSize(17);
+            }
+
+            setSwitchRowData(extendedStatusInfo, holder);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -424,16 +431,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
             if (mDeviceInfo.getDewPoint() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
-            if (mDeviceInfo.getTemp() > 0) {
-                holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemp() + " " + tempSign);
+            if (mDeviceInfo.getTemperature() > 0) {
+                holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
 
                 holder.pieView.setVisibility(View.VISIBLE);
-                double temp = mDeviceInfo.getTemp();
+                double temp = mDeviceInfo.getTemperature();
                 if (tempSign != null && !tempSign.equals("C"))
                     temp = temp / 2;
 
                 holder.pieView.setPercentage(Float.valueOf(temp + ""));
-                holder.pieView.setInnerText(mDeviceInfo.getTemp() + " " + tempSign);
+                holder.pieView.setInnerText(mDeviceInfo.getTemperature() + " " + tempSign);
 
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);

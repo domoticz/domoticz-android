@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Valitse vaiennettavat ilmoitukset</string>
   <string name="suppress_notifications">Vaienna tietyt ilmoitukset tässä laitteessa</string>
   <string name="suppress_notifications_title">Ilmoitusten vaiennus</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Versio</string>
   <string name="info_domoticz_version">Domoticz versio</string>

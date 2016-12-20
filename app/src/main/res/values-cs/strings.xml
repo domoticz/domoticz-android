@@ -51,6 +51,7 @@
   <string name="add">Přidat</string>
   <string name="cancel">Zrušit</string>
   <string name="ok">Ok</string>
+  <string name="request_again">Request Again</string>
   <string name="upgrade">Aktualizace</string>
   <string name="something_went_wrong">Něco se pokazilo</string>
   <string name="no_network_available">Chyba: Žádné síťové připojení není dispozici</string>

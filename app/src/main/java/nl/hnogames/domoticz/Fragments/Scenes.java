@@ -390,6 +390,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
+                if (mSwipeRefreshLayout != null)
+                    mSwipeRefreshLayout.setRefreshing(false);
+
                 super.errorHandling(error);
             }
         }

@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Vyberte zakázané oznámenia</string>
   <string name="suppress_notifications">Môžete zakázať niektoré oznámenia na tomto zariadení</string>
   <string name="suppress_notifications_title">Zakázať oznámenia</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Verzia</string>
   <string name="info_domoticz_version">Domoticz verzia</string>

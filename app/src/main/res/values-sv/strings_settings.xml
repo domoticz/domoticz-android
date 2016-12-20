@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Välj notifiering som ska hindras</string>
   <string name="suppress_notifications">Hindra särskilda notifieringar på den här enheten</string>
   <string name="suppress_notifications_title">Hindra notifieringar</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Domoticz-version</string>

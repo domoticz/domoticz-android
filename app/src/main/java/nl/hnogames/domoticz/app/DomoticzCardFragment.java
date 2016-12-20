@@ -183,14 +183,12 @@ public class DomoticzCardFragment extends Fragment {
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
 
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
-            hideRecyclerView();
-            error.printStackTrace();
-
-            if (error instanceof JSONException
-                    && errorMessage.equalsIgnoreCase("No value for result")) {
+            if (errorMessage.contains("No value for result")) {
                 setMessage(getString(R.string.no_data_on_domoticz));
-            } else
+            }
+            else {
                 setErrorMessage(errorMessage);
+            }
         } else {
             if (coordinatorLayout != null) {
                 UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);

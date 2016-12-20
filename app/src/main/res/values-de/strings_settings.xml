@@ -109,6 +109,10 @@
   <string name="suppress_notifications_select">Wählen Sie Benachrichtigungen unterdrücken</string>
   <string name="suppress_notifications">Auf diesem Gerät bestimmte Benachrichtigungen unterdrücken</string>
   <string name="suppress_notifications_title">Benachrichtigungen unterdrücken</string>
+  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm">Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Domoticz version</string>

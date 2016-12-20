@@ -22,26 +22,34 @@
 
 package nl.hnogames.domoticz.Welcome;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+
 import java.io.File;
+import java.util.Arrays;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class WelcomePage2 extends Fragment {
+public class WelcomePage2 extends Fragment implements OnPermissionCallback {
 
     private File SettingsFile;
+    private PermissionFragmentHelper permissionFragmentHelper;
 
     public static WelcomePage2 newInstance() {
         return new WelcomePage2();
@@ -53,13 +61,15 @@ public class WelcomePage2 extends Fragment {
         View v = inflater.inflate(R.layout.fragment_welcome2, container, false);
         SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
 
+        permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         Button importButton = (Button) v.findViewById(R.id.import_settings);
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS, PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                        permissionFragmentHelper
+                                .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else {
                         importSettings();
                     }
@@ -68,7 +78,6 @@ public class WelcomePage2 extends Fragment {
                 }
             }
         });
-
         if (!SettingsFile.exists()) {
             importButton.setVisibility(View.GONE);
         }
@@ -85,15 +94,50 @@ public class WelcomePage2 extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(getActivity())) {
-                    importSettings();
-                } else
-                    ((WelcomeViewActivity) getActivity()).finishWithResult(false);
-                break;
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
+        AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
+        if (!alert.isShowing()) {
+            alert.show();
         }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionFragmentHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionFragmentHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+        if (PermissionsUtil.canAccessStorage(getActivity()))
+            importSettings();
     }
 }

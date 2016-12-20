@@ -24,8 +24,15 @@ package nl.hnogames.domoticz.Utils;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.PermissionHelper;
+
+import nl.hnogames.domoticz.R;
 
 public class PermissionsUtil {
 
@@ -96,5 +103,88 @@ public class PermissionsUtil {
         // Using ContextCompat.checkSelfPermission will work on all API versions
         return (PackageManager.PERMISSION_GRANTED
                 == ContextCompat.checkSelfPermission(context, permission));
+    }
+
+    public static AlertDialog getAlertDialog(Context context, final PermissionFragmentHelper permissionFragmentHelper, String title, String description, final String[] permissions) {
+        return getAlertDialog(context, permissionFragmentHelper, title, description, permissions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+    }
+
+    public static AlertDialog getAlertDialog(Context context, final PermissionFragmentHelper permissionFragmentHelper, String title, String description, final String[] permissions, DialogInterface.OnClickListener oncancel) {
+        AlertDialog builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .create();
+        builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.request_again), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                permissionFragmentHelper.requestAfterExplanation(permissions);
+            }
+        });
+        builder.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage(description);
+        return builder;
+    }
+
+    public static AlertDialog getAlertDialog(Context context, final PermissionFragmentHelper permissionFragmentHelper, String title, String description, final String permission) {
+        AlertDialog builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .create();
+        builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                permissionFragmentHelper.requestAfterExplanation(permission);
+            }
+        });
+        builder.setMessage(description);
+        return builder;
+    }
+
+
+    public static AlertDialog getAlertDialog(Context context, final PermissionHelper permissionFragmentHelper, String title, String description, final String[] permissions) {
+        return getAlertDialog(context, permissionFragmentHelper, title, description, permissions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+    }
+
+    public static AlertDialog getAlertDialog(Context context, final PermissionHelper permissionFragmentHelper, String title, String description, final String[] permissions, DialogInterface.OnClickListener oncancel) {
+        AlertDialog builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .create();
+        builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.request_again), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                permissionFragmentHelper.requestAfterExplanation(permissions);
+            }
+        });
+        builder.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage(description);
+        return builder;
+    }
+
+    public static AlertDialog getAlertDialog(Context context, final PermissionHelper permissionFragmentHelper, String title, String description, final String permission) {
+        AlertDialog builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .create();
+        builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                permissionFragmentHelper.requestAfterExplanation(permission);
+            }
+        });
+        builder.setMessage(description);
+        return builder;
     }
 }

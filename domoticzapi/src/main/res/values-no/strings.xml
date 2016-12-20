@@ -51,6 +51,7 @@
   <string name="add">Legge til</string>
   <string name="cancel">Avbryt</string>
   <string name="ok">Ok</string>
+  <string name="request_again">Request Again</string>
   <string name="upgrade">OPPGRADERING</string>
   <string name="something_went_wrong">Noe gikk galt</string>
   <string name="no_network_available">Feil: Ingen nettverkstilkobling tilgjengelig</string>

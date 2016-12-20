@@ -155,6 +155,13 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     holder.pieView.setVisibility(View.GONE);
                 } else {
                     holder.pieView.setVisibility(View.VISIBLE);
+
+                    if(!this.mSharedPrefs.darkThemeEnabled()) {
+                        holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                        holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
+                        holder.pieView.setPercentageTextSize(17);
+                    }
+
                     double temp = mTemperatureInfo.getTemperature();
                     if (!sign.equals("C"))
                         temp = temp / 2;
