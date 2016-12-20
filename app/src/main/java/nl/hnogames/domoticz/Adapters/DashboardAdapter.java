@@ -177,6 +177,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if ((row.findViewById(R.id.color_button)) != null)
                 (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
         }
+
         return new DataObjectHolder(row);
     }
 
@@ -184,8 +185,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public void onBindViewHolder(DataObjectHolder holder, final int position) {
         if (filteredData != null && filteredData.size() >= position) {
             DevicesInfo extendedStatusInfo = filteredData.get(position);
-            setSwitchRowData(extendedStatusInfo, holder);
 
+            if(!this.mSharedPrefs.darkThemeEnabled()) {
+                holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
+                holder.pieView.setPercentageTextSize(17);
+            }
+
+            setSwitchRowData(extendedStatusInfo, holder);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
