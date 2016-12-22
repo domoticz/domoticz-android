@@ -38,7 +38,7 @@ public class RingtonePlayingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(this.ringtone != null && this.ringtone.isPlaying())
+        if (this.ringtone != null && this.ringtone.isPlaying())
             return START_NOT_STICKY;//only start once
 
         Uri ringtoneUri = Uri.parse(intent.getExtras().getString("ringtone-uri"));

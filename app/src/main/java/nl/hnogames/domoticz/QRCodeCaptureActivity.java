@@ -88,7 +88,7 @@ public class QRCodeCaptureActivity extends AppCompatActivity implements ZXingSca
         // Do something with the result here
         Log.v("SCANNER", rawResult.getText()); // Prints scan results
         Log.v("SCANNER", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
-        finishWithResult(UsefulBits.ByteArrayToHexString(rawResult.getText().toString().getBytes()));
+        finishWithResult(UsefulBits.ByteArrayToHexString(rawResult.getText().getBytes()));
     }
 
     private void finishWithResult(String QRCode) {

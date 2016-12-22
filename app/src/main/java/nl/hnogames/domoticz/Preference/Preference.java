@@ -102,7 +102,6 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
-        ServerUtil mServerUtil = new ServerUtil(mContext);
         mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
@@ -402,7 +401,7 @@ public class Preference extends PreferenceFragment {
                     Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
                             .title(mContext.getString(R.string.notification_show_title))
-                            .items(logs.toArray(new String[0]))
+                            .items((CharSequence[]) logs.toArray(new String[0]))
                             .show();
                 } else
                     UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
@@ -745,6 +744,7 @@ public class Preference extends PreferenceFragment {
                 }
             }, (300));
         } catch (Exception ex) {
+            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
         }
     }
 
@@ -759,6 +759,7 @@ public class Preference extends PreferenceFragment {
                 }
             }, (300));
         } catch (Exception ex) {
+            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
         }
     }
 }

@@ -32,6 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v13.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -76,8 +77,6 @@ public class GeoSettingsActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final int PLACE_PICKER_REQUEST = 333;
-    @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_INTERVAL = 100000;
     @SuppressWarnings("FieldCanBeLocal")
     private final int LOCATION_FASTEST_INTERVAL = 50000;
@@ -119,7 +118,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
         createListView();
         initSwitches();
@@ -205,7 +204,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         final String[] levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
-                .items(levelNames)
+                .items((CharSequence[]) levelNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -254,7 +253,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
         ListView listView = (ListView) findViewById(R.id.listView);
         if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
@@ -290,6 +289,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                     case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
                     case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
                     case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                    case Snackbar.Callback.DISMISS_EVENT_SWIPE:
+                    case Snackbar.Callback.DISMISS_EVENT_ACTION:
                         removeLocationFromPreferences(locationInfo);
                         break;
                 }

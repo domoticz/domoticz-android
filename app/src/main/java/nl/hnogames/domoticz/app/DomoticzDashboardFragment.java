@@ -48,8 +48,6 @@ import android.widget.Toast;
 
 import com.fenjuly.mylibrary.SpinnerLoader;
 
-import org.json.JSONException;
-
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
@@ -311,8 +309,7 @@ public class DomoticzDashboardFragment extends Fragment {
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             if (errorMessage.contains("No value for result")) {
                 setMessage(getString(R.string.no_data_on_domoticz));
-            }
-            else {
+            } else {
                 setErrorMessage(errorMessage);
             }
         } else {

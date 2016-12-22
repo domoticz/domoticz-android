@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,7 +77,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
 
         createListView();
@@ -119,7 +120,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listView);
         if ((new SharedPrefUtil(this)).darkThemeEnabled()) {
-            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
 
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
@@ -155,11 +156,8 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         // remove location from list view
         removeServerFromListView(serverInfo);
 
-        // Show snackbar with undo option
-        String text = String.format(getString(R.string.something_deleted),
-                getString(R.string.server));
-
-        UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+        UsefulBits.showSnackbarWithAction(this, coordinatorLayout, String.format(getString(R.string.something_deleted),
+                getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
@@ -167,6 +165,8 @@ public class ServerListSettingsActivity extends AppCompatActivity {
                     case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
                     case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
                     case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                    case Snackbar.Callback.DISMISS_EVENT_ACTION:
+                    case Snackbar.Callback.DISMISS_EVENT_SWIPE:
                         removeServerFromSettings(serverInfo);
                         break;
                 }

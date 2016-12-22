@@ -37,8 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-
 import java.util.List;
 
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -184,8 +182,7 @@ public class DomoticzCardFragment extends Fragment {
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             if (errorMessage.contains("No value for result")) {
                 setMessage(getString(R.string.no_data_on_domoticz));
-            }
-            else {
+            } else {
                 setErrorMessage(errorMessage);
             }
         } else {

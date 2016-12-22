@@ -185,7 +185,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (filteredData != null && filteredData.size() >= position) {
             DevicesInfo extendedStatusInfo = filteredData.get(position);
 
-            if(!this.mSharedPrefs.darkThemeEnabled()) {
+            if (!this.mSharedPrefs.darkThemeEnabled()) {
                 holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                 holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
                 holder.pieView.setPercentageTextSize(17);

@@ -180,12 +180,10 @@ public class SharedPrefUtil {
     }
 
     public int getAlarmTimer() {
-        try
-        {
+        try {
             String timer = prefs.getString(PREF_ALARM_TIMER, "5");
             return Integer.valueOf(timer);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             editor.putString(PREF_ALARM_TIMER, "5").apply();
             return 5;
         }
@@ -419,8 +417,7 @@ public class SharedPrefUtil {
                 } else
                     editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
             }
-        }catch(Exception ex)
-        {
+        } catch (Exception ex) {
             Log.e(TAG, "Failed to save received notification: " + ex.getMessage());
         }
     }

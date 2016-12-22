@@ -637,7 +637,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
                             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                if(getFragmentCoordinatorLayout()!= null) {
+                                if (getFragmentCoordinatorLayout() != null) {
                                     Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
                                             .setAction(R.string.upgrade, new View.OnClickListener() {
                                                 @Override

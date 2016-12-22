@@ -178,7 +178,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
                 holder.pieView.setVisibility(View.VISIBLE);
 
-                if(!this.mSharedPrefs.darkThemeEnabled()) {
+                if (!this.mSharedPrefs.darkThemeEnabled()) {
                     holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
                     holder.pieView.setPercentageTextSize(17);
