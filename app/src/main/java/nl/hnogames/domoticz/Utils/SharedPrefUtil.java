@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,15 +9,14 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Utils;
@@ -49,6 +48,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -180,12 +180,10 @@ public class SharedPrefUtil {
     }
 
     public int getAlarmTimer() {
-        try
-        {
+        try {
             String timer = prefs.getString(PREF_ALARM_TIMER, "5");
             return Integer.valueOf(timer);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             editor.putString(PREF_ALARM_TIMER, "5").apply();
             return 5;
         }
@@ -396,26 +394,31 @@ public class SharedPrefUtil {
         if (UsefulBits.isEmpty(notification))
             return;
 
-        Set<String> notifications;
-        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
-            notifications = new HashSet<>();
-            notifications.add(notification);
-            editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
-        } else {
-            notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
-            if (notifications == null)
+        try {
+            Set<String> notifications;
+            if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
                 notifications = new HashSet<>();
-            notifications.add(notification);
-            if (notifications.size() > 20) {
-                List<String> notificationsValues = new ArrayList<>();
-                for (String s : notifications) {
-                    notificationsValues.add(s);
-                }
-                notificationsValues.remove(0);
-                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet<String>(notificationsValues)).apply();
-            } else {
+                notifications.add(notification);
                 editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
+            } else {
+                notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
+                if (notifications == null)
+                    notifications = new HashSet<>();
+                notifications.add(notification);
+
+                if (notifications.size() > 20) {
+                    List<String> notificationsValues = new ArrayList<>();
+                    for (String s : notifications)
+                        notificationsValues.add(s);
+                    Collections.sort(notificationsValues);
+                    notificationsValues.remove(0);
+                    Collections.reverse(notificationsValues);
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet<String>(notificationsValues)).apply();
+                } else
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
             }
+        } catch (Exception ex) {
+            Log.e(TAG, "Failed to save received notification: " + ex.getMessage());
         }
     }
 

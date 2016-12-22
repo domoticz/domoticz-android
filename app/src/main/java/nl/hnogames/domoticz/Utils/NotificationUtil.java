@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,22 +9,20 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Utils;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -106,7 +104,7 @@ public class NotificationUtil {
                         ringtoneServiceStartIntent.putExtra("ringtone-uri", alert.toString());
                         context.startService(ringtoneServiceStartIntent);
 
-                        if(prefUtil.getAlarmTimer() > 0) {
+                        if (prefUtil.getAlarmTimer() > 0) {
                             Thread.sleep(prefUtil.getAlarmTimer() * 1000);
                             Intent stopIntent = new Intent(context, RingtonePlayingService.class);
                             context.stopService(stopIntent);
