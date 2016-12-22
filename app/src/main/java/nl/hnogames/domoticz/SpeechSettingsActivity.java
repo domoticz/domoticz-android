@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,15 +9,14 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz;
@@ -37,7 +36,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -75,7 +73,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<SpeechInfo> SpeechList;
     private SpeechAdapter adapter;
-    private boolean busyWithSpeech = false;
 
     private SpeechRecognizer speechRecognizer;
     private RecognitionProgressView recognitionProgressView;
@@ -98,7 +95,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         setContentView(R.layout.activity_speech_settings);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
 
         if (getSupportActionBar() != null)
@@ -117,7 +114,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private void createListView() {
         ListView listView = (ListView) findViewById(R.id.listView);
         if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(getResources().getColor(R.color.background_dark));
+            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
@@ -138,7 +135,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void showEditDialog(final SpeechInfo mSpeechInfo) {
-        busyWithSpeech = true;
         new MaterialDialog.Builder(this)
                 .title(R.string.Speech_edit)
                 .content(R.string.Speech_name)
@@ -151,7 +147,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                             mSpeechInfo.setName(String.valueOf(input));
                             updateSpeech(mSpeechInfo);
                         }
-                        busyWithSpeech = false;
                     }
                 }).show();
     }
@@ -215,7 +210,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         final String[] levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
-                .items(levelNames)
+                .items((CharSequence[]) levelNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -300,6 +295,8 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                     case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
                     case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
                     case Snackbar.Callback.DISMISS_EVENT_MANUAL:
+                    case Snackbar.Callback.DISMISS_EVENT_ACTION:
+                    case Snackbar.Callback.DISMISS_EVENT_SWIPE:
                         removeSpeechFromListView(SpeechInfo);
                         break;
                 }
@@ -368,13 +365,13 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void playRecognitionAnimation() {
-        ((LinearLayout) findViewById(R.id.main)).setVisibility(View.GONE);
+        findViewById(R.id.main).setVisibility(View.GONE);
         recognitionProgressView.setVisibility(View.VISIBLE);
         recognitionProgressView.play();
     }
 
     private void stopRecognitionAnimation() {
-        ((LinearLayout) findViewById(R.id.main)).setVisibility(View.VISIBLE);
+        findViewById(R.id.main).setVisibility(View.VISIBLE);
         recognitionProgressView.setVisibility(View.GONE);
         recognitionProgressView.stop();
     }
@@ -433,7 +430,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     /* Called when the second activity's finishes */
     protected void processResult(final String speechText) {
         boolean newTagFound = true;
-        busyWithSpeech = true;
         if (SpeechList != null && SpeechList.size() > 0) {
             for (SpeechInfo n : SpeechList) {
                 if (n.getId().equals(speechText))
@@ -449,7 +445,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
             updateSpeech(SpeechInfo);
         } else {
             UsefulBits.showSnackbar(this, coordinatorLayout, R.string.Speech_exists, Snackbar.LENGTH_SHORT);
-            busyWithSpeech = false;
         }
     }
 

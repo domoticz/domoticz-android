@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,15 +9,14 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Preference;
@@ -103,7 +102,6 @@ public class Preference extends PreferenceFragment {
 
         mContext = getActivity();
         mSharedPrefs = new SharedPrefUtil(mContext);
-        ServerUtil mServerUtil = new ServerUtil(mContext);
         mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
@@ -403,7 +401,7 @@ public class Preference extends PreferenceFragment {
                     Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
                             .title(mContext.getString(R.string.notification_show_title))
-                            .items(logs.toArray(new String[0]))
+                            .items((CharSequence[]) logs.toArray(new String[0]))
                             .show();
                 } else
                     UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
@@ -728,29 +726,40 @@ public class Preference extends PreferenceFragment {
     }
 
     private void showPremiumSnackbar(final String category) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                        .setAction(R.string.upgrade, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                UsefulBits.openPremiumAppStore(mContext);
-                            }
-                        })
-                        .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
-                        .show();
-            }
-        }, (300));
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getView() != null) {
+                        Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                .setAction(R.string.upgrade, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        UsefulBits.openPremiumAppStore(mContext);
+                                    }
+                                })
+                                .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
+                                .show();
+                    }
+                }
+            }, (300));
+        } catch (Exception ex) {
+            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
+        }
     }
 
     private void showSnackbar(final String text) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
-            }
-        }, (300));
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getView() != null) {
+                        Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            }, (300));
+        } catch (Exception ex) {
+            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
+        }
     }
-
 }
