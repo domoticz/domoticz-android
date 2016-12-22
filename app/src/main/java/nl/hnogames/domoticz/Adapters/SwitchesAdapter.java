@@ -1076,11 +1076,14 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             statusText = levelNames[loadLevel];
 
         holder.spSelector.setTag(mDeviceInfo.getIdx());
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_item, new ArrayList<String>(Arrays.asList(levelNames)));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.spSelector.setAdapter(dataAdapter);
-        holder.spSelector.setSelection(loadLevel);
+
+        if (levelNames != null && levelNames.length > loadLevel) {
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_item, new ArrayList<String>(Arrays.asList(levelNames)));
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.spSelector.setAdapter(dataAdapter);
+            holder.spSelector.setSelection(loadLevel);
+        }
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         holder.switch_dimmer_level.setText(statusText);
