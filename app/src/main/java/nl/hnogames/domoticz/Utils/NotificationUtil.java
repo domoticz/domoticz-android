@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.Utils;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -106,7 +105,7 @@ public class NotificationUtil {
                         ringtoneServiceStartIntent.putExtra("ringtone-uri", alert.toString());
                         context.startService(ringtoneServiceStartIntent);
 
-                        if(prefUtil.getAlarmTimer() > 0) {
+                        if (prefUtil.getAlarmTimer() > 0) {
                             Thread.sleep(prefUtil.getAlarmTimer() * 1000);
                             Intent stopIntent = new Intent(context, RingtonePlayingService.class);
                             context.stopService(stopIntent);

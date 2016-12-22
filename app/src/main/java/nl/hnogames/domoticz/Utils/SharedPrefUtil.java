@@ -49,6 +49,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -396,26 +397,32 @@ public class SharedPrefUtil {
         if (UsefulBits.isEmpty(notification))
             return;
 
-        Set<String> notifications;
-        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
-            notifications = new HashSet<>();
-            notifications.add(notification);
-            editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
-        } else {
-            notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
-            if (notifications == null)
+        try {
+            Set<String> notifications;
+            if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
                 notifications = new HashSet<>();
-            notifications.add(notification);
-            if (notifications.size() > 20) {
-                List<String> notificationsValues = new ArrayList<>();
-                for (String s : notifications) {
-                    notificationsValues.add(s);
-                }
-                notificationsValues.remove(0);
-                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet<String>(notificationsValues)).apply();
-            } else {
+                notifications.add(notification);
                 editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
+            } else {
+                notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
+                if (notifications == null)
+                    notifications = new HashSet<>();
+                notifications.add(notification);
+
+                if (notifications.size() > 20) {
+                    List<String> notificationsValues = new ArrayList<>();
+                    for (String s : notifications)
+                        notificationsValues.add(s);
+                    Collections.sort(notificationsValues);
+                    notificationsValues.remove(0);
+                    Collections.reverse(notificationsValues);
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet<String>(notificationsValues)).apply();
+                } else
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
             }
+        }catch(Exception ex)
+        {
+            Log.e(TAG, "Failed to save received notification: " + ex.getMessage());
         }
     }
 
