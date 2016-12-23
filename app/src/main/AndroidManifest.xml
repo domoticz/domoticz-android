@@ -123,6 +123,7 @@
         <receiver android:name=".Widgets.WidgetIntentReceiver" >
             <intent-filter>
                 <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

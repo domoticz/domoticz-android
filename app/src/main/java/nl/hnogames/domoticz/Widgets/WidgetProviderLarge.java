@@ -160,11 +160,15 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                         views = new RemoteViews(packageName, R.layout.widget_layout_dark);
                                     if (withButtons == 2)
                                         views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
+                                    if (withButtons == 3)
+                                        views = new RemoteViews(packageName, R.layout.widget_layout_blinds_dark);
                                 } else {
                                     if (withButtons == 1)
                                         views = new RemoteViews(packageName, R.layout.widget_layout);
                                     if (withButtons == 2)
                                         views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                                    if (withButtons == 3)
+                                        views = new RemoteViews(packageName, R.layout.widget_layout_blinds);
                                 }
 
                                 String text = s.getData();
@@ -206,6 +210,24 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             s.getIdx(), false,
                                             false));
                                     views.setViewVisibility(R.id.off_button, View.VISIBLE);
+                                } else if (withButtons == 3 && s.getStatus() != null) {
+                                    views.setOnClickPendingIntent(R.id.switch_button_up, buildBlindPendingIntent(
+                                            UpdateWidgetService.this,
+                                            appWidgetId,
+                                            s.getIdx(), DomoticzValues.Device.Blind.Action.UP));
+                                    views.setViewVisibility(R.id.switch_button_up, View.VISIBLE);
+
+                                    views.setOnClickPendingIntent(R.id.switch_button_stop, buildBlindPendingIntent(
+                                            UpdateWidgetService.this,
+                                            appWidgetId,
+                                            s.getIdx(), DomoticzValues.Device.Blind.Action.STOP));
+                                    views.setViewVisibility(R.id.switch_button_stop, View.VISIBLE);
+
+                                    views.setOnClickPendingIntent(R.id.switch_button_down, buildBlindPendingIntent(
+                                            UpdateWidgetService.this,
+                                            appWidgetId,
+                                            s.getIdx(), DomoticzValues.Device.Blind.Action.DOWN));
+                                    views.setViewVisibility(R.id.switch_button_down, View.VISIBLE);
                                 } else {
                                     views.setViewVisibility(R.id.on_button, View.GONE);
                                 }
@@ -306,6 +328,24 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 return PendingIntent.getBroadcast(context, widget_id + 9999, intent, 0);
         }
 
+        public PendingIntent buildBlindPendingIntent(Context context, int widget_id, int idx, int action) {
+            Intent intent = new Intent();
+            intent.setAction("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
+            intent.putExtra("IDX", idx);
+            intent.putExtra("WIDGETID", widget_id);
+            intent.putExtra("WIDGETACTION", action);
+
+            int requestCode;
+            switch (action) {
+                case DomoticzValues.Device.Blind.Action.UP: requestCode = widget_id; break;
+                case DomoticzValues.Device.Blind.Action.STOP: requestCode = widget_id + 8888; break;
+                case DomoticzValues.Device.Blind.Action.DOWN: requestCode = widget_id + 9999; break;
+                default: requestCode = widget_id + 7777;
+            }
+
+            return PendingIntent.getBroadcast(context, requestCode, intent, 0);
+        }
+
         private int withButtons(DevicesInfo s) {
             int withButton = 0;
             if (s != null) {
@@ -332,6 +372,14 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.DIMMER:
                         case DomoticzValues.Device.Type.Value.SELECTOR:
                             withButton = 1;
+                            break;
+
+                        case DomoticzValues.Device.Type.Value.BLINDS:
+                        case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                        case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                            withButton = 3;
                             break;
                     }
                 }
