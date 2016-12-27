@@ -73,10 +73,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("QRCODE", true);
             context.startActivity(iStart);
-        } else {
-            if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
-                processSwitch(context, idx);
-            }
+        } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
+            processSwitch(context, idx);
+        } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION")) {
+            processBlind(context, idx, intent.getIntExtra("WIDGETACTION", -1));
         }
     }
 
@@ -126,6 +126,17 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
+    private boolean isBlinds(DevicesInfo mExtendedStatusInfo) {
+        switch (mExtendedStatusInfo.getSwitchTypeVal()) {
+            case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+            case DomoticzValues.Device.Type.Value.BLINDS:
+            case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                return true;
+        }
+        return false;
+    }
 
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
@@ -199,6 +210,32 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
             }, idx);
         }
+    }
+
+    private void processBlind(final Context context, int idx, final int action) {
+        password = mSharedPrefs.getWidgetPassword(widgetID);
+        value = mSharedPrefs.getWidgetValue(widgetID);
+
+        final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
+
+            domoticz.getDevice(new DevicesReceiver() {
+                @Override
+                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                }
+
+                @Override
+                public void onReceiveDevice(final DevicesInfo s) {
+                    if (s != null) {
+                        if (isBlinds(s))
+                            onBlindsToggle(s, action, domoticz, context);
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
+                }
+            }, idx, false);
     }
 
     public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
@@ -304,6 +341,27 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
             });
         }
+    }
+
+    public void onBlindsToggle(final DevicesInfo blind, int action, Domoticz mDomoticz, final Context context) {
+        int idx = blind.getIdx();
+        int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+
+        mDomoticz.setAction(idx, jsonUrl, action, 0, password, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + blind.getName(), Toast.LENGTH_SHORT).show();
+                updateWidget(context);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (!UsefulBits.isEmpty(password))
+                    Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
