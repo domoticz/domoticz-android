@@ -36,7 +36,6 @@ import com.afollestad.materialdialogs.DialogAction;
 
 import java.util.ArrayList;
 
-import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
 import nl.hnogames.domoticz.GraphActivity;
@@ -76,7 +75,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -84,7 +82,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
@@ -94,7 +91,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void Filter(String text) {
         filter = text;
         try {
@@ -107,7 +103,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
         processUtilities();
@@ -140,7 +135,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                @DebugLog
                 public void onRefresh() {
                     processUtilities();
                 }
@@ -162,7 +156,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         infoDialog.show();
         infoDialog.onDismissListener(new UtilitiesInfoDialog.DismissListener() {
             @Override
-            @DebugLog
             public void onDismiss(boolean isChanged, boolean isFavorite) {
                 if (isChanged) changeFavorite(mUtilitiesInfo, isFavorite);
             }
@@ -196,14 +189,12 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 null,
                 new setCommandReceiver() {
                     @Override
-                    @DebugLog
                     public void onReceiveResult(String result) {
                         successHandling(result, false);
                         mUtilitiesInfo.setFavoriteBoolean(isFavorite);
                     }
 
                     @Override
-                    @DebugLog
                     public void onError(Exception error) {
                         errorHandling(error);
                     }
@@ -238,7 +229,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
@@ -252,7 +242,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void onPause() {
         super.onPause();
     }
@@ -267,12 +256,10 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void onClick(UtilitiesInfo utility) {
     }
 
     @Override
-    @DebugLog
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         int steps = 3;
         /*
@@ -303,7 +290,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void onThermostatClick(final int idx) {
         addDebugText("onThermostatClick");
         final UtilitiesInfo tempUtil = getUtility(idx);
@@ -314,7 +300,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
             @Override
-            @DebugLog
             public void onDialogAction(final double newSetPoint, DialogAction dialogAction) {
                 if (dialogAction == DialogAction.POSITIVE) {
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
@@ -325,7 +310,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
-                                @DebugLog
                                 public void onDismiss(String password) {
                                     setThermostatAction(tempUtil, newSetPoint, password);
                                 }
@@ -364,14 +348,12 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 password,
                 new setCommandReceiver() {
                     @Override
-                    @DebugLog
                     public void onReceiveResult(String result) {
                         updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
                         successHandling(result, false);
                     }
 
                     @Override
-                    @DebugLog
                     public void onError(Exception error) {
                         errorHandling(error);
                     }
@@ -380,17 +362,14 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
 
     @Override
-    @DebugLog
     public void onLogButtonClick(int idx) {
         mDomoticz.getTextLogs(idx, new SwitchLogReceiver() {
             @Override
-            @DebugLog
             public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
                 showLogDialog(switchesLogs);
             }
 
             @Override
-            @DebugLog
             public void onError(Exception error) {
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.error_logs);
@@ -400,13 +379,11 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public void onLikeButtonClick(int idx, boolean checked) {
         changeFavorite(getUtility(idx), checked);
     }
 
     @Override
-    @DebugLog
     public void onItemClicked(View v, int position) {
         LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
         if (extra_panel != null) {
@@ -432,7 +409,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-    @DebugLog
     public boolean onItemLongClicked(int position) {
         showInfoDialog(adapter.filteredData.get(position));
         return true;
@@ -470,7 +446,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
             mDomoticz.getUtilities(new UtilitiesReceiver() {
                 @Override
-                @DebugLog
                 public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
                     successHandling(mUtilitiesInfos.toString(), false);
                     SerializableManager.saveSerializable(mContext, mUtilitiesInfos, "Utilities");
@@ -480,7 +455,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 }
 
                 @Override
-                @DebugLog
                 public void onError(Exception error) {
                     errorHandling(error);
                 }

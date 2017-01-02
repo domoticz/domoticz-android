@@ -45,7 +45,6 @@ import com.dexafree.materialList.view.MaterialListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
@@ -75,7 +74,6 @@ public class Wizard extends Fragment {
     private Context context;
 
     @Override
-    @DebugLog
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,7 +99,6 @@ public class Wizard extends Fragment {
 
         mListView.setOnDismissCallback(new OnDismissCallback() {
             @Override
-            @DebugLog
             public void onDismiss(@NonNull Card card, int position) {
                 String cardTag = "Unknown";
                 try {
@@ -168,7 +165,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(titleColorLight)
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -190,7 +186,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
                                     }
@@ -200,7 +195,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -223,7 +217,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -233,7 +226,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -256,7 +248,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -266,7 +257,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -289,7 +279,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -299,7 +288,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -321,7 +309,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -331,7 +318,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -353,7 +339,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -363,7 +348,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -387,7 +371,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -397,7 +380,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -420,7 +402,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -430,7 +411,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -453,7 +433,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
@@ -463,7 +442,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -486,7 +464,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
                                     }
@@ -496,7 +473,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -519,7 +495,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
                                     }
@@ -529,7 +504,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -552,7 +526,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
 
@@ -563,7 +536,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         card.dismiss();
                                     }
@@ -586,7 +558,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
                                         ((MainActivity) getActivity()).drawNavigationMenu(null);
@@ -599,7 +570,6 @@ public class Wizard extends Fragment {
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
-                                    @DebugLog
                                     public void onActionClicked(View view, Card card) {
                                         mSharedPrefs.removeWizard();
                                         ((MainActivity) getActivity()).drawNavigationMenu(null);

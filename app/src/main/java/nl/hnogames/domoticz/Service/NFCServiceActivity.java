@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.R;
@@ -152,14 +151,12 @@ public class NFCServiceActivity extends AppCompatActivity {
 
                 domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
-                    @DebugLog
                     public void onReceiveResult(String result) {
                         Log.d(TAG, result);
                         finish();
                     }
 
                     @Override
-                    @DebugLog
                     public void onError(Exception error) {
                         Log.d(TAG, error.getMessage());
                         finish();

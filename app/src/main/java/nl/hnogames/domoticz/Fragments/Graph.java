@@ -54,7 +54,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
@@ -99,7 +98,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
@@ -108,7 +106,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -130,7 +127,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -197,7 +193,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
@@ -215,7 +210,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
                 mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
                     @Override
-                    @DebugLog
                     public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
                         try {
                             mGraphList = grphPoints;
@@ -243,7 +237,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     }
 
                     @Override
-                    @DebugLog
                     public void onError(Exception ex) {
                         // Let's check if were still attached to an activity
                         if (isAdded()) {
@@ -264,7 +257,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public void onConnectionOk() {
         if (getView() != null) {
             getGraphs();
@@ -718,7 +710,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (lineLabels != null && lineLabels.size() > 1) {
             inflater.inflate(R.menu.menu_graph_sort, menu);
@@ -727,7 +718,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    @DebugLog
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort:
@@ -739,7 +729,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         .items(items)
                         .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
-                            @DebugLog
                             public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                                 selectedFilters = which;
                                 enableFilters = true;
