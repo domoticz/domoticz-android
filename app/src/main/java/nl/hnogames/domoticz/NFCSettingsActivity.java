@@ -52,6 +52,7 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.NFCAdapter;
 import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
@@ -247,15 +248,18 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
     private void getSwitchesAndShowSwitchesDialog(final NFCInfo nfcInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
+            @DebugLog
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(nfcInfo, switches);
             }
 
             @Override
+            @DebugLog
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(NFCSettingsActivity.this, coordinatorLayout, NFCSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {

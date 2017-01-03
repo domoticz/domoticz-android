@@ -80,6 +80,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
@@ -114,6 +115,7 @@ import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
+@DebugLog
 public class MainActivity extends AppCompatPermissionsActivity implements DigitusCallback, FingerprintDialog.Callback {
     private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
 
+    @DebugLog
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
@@ -224,6 +227,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         Talk(this.getString(message));
     }
 
+    @DebugLog
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
@@ -260,12 +264,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
                     UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
                         @Override
+                        @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
                             addFragment();
                         }
 
                         @Override
+                        @DebugLog
                         public void onError(Exception error) {
                             //drawNavigationMenu(null);
                             addFragment();
@@ -424,6 +430,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
                 domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
+                    @DebugLog
                     public void onReceiveResult(String result) {
                         Log.d(TAG, result);
                         if (fromQRCodeWidget)
@@ -431,6 +438,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     }
 
                     @Override
+                    @DebugLog
                     public void onError(Exception error) {
                         if (fromQRCodeWidget)
                             MainActivity.this.finish();
@@ -464,6 +472,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
 
+    @DebugLog
     public void refreshFragment() {
         Fragment f = latestFragment;
         if (f instanceof DomoticzRecyclerFragment) {
@@ -474,6 +483,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             ((DomoticzDashboardFragment) f).refreshFragment();
     }
 
+    @DebugLog
     public void removeFragmentStack(String fragment) {
         if (stackFragments != null) {
             if (stackFragments.contains(fragment))
@@ -481,6 +491,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
     }
 
+    @DebugLog
     public void addFragmentStack(String fragment) {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
@@ -506,6 +517,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
@@ -516,6 +528,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Fragment f = latestFragment;
@@ -526,6 +539,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
     }
 
+    @DebugLog
     public void changeFragment(String fragment) {
         if (!isFinishing()) {
             try {
@@ -597,6 +611,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
     }
 
+    @DebugLog
     public void drawNavigationMenu(final ConfigInfo mConfig) {
         ConfigInfo config = mConfig;
 
@@ -618,6 +633,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 .withOnlyMainProfileImageVisible(true)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
+                    @DebugLog
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
                             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
@@ -638,6 +654,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override
+                                    @DebugLog
                                     public void onDismiss(String password) {
                                         if (UsefulBits.isEmpty(password)) {
                                             UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
@@ -653,12 +670,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                                         domoticz.LogOff();
                                                         UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
                                                             @Override
+                                                            @DebugLog
                                                             public void onReceiveConfig(ConfigInfo settings) {
                                                                 UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
                                                                 drawNavigationMenu(finalConfig);
                                                             }
 
                                                             @Override
+                                                            @DebugLog
                                                             public void onError(Exception error) {
                                                             }
                                                         }, finalConfig);
@@ -711,6 +730,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 .withDrawerItems(getDrawerItems())
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
+                    @DebugLog
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
                             if (searchViewAction != null) {
@@ -800,6 +820,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             // Get latest Domoticz version update
             domoticz.getUpdate(new UpdateVersionReceiver() {
                 @Override
+                @DebugLog
                 public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                     boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
@@ -822,6 +843,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 }
 
                 @Override
+                @DebugLog
                 public void onError(Exception error) {
                     String message = String.format(
                             getString(R.string.error_couldNotCheckForUpdates),
@@ -840,6 +862,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         // Get current Domoticz server version
         domoticz.getServerVersion(new VersionReceiver() {
             @Override
+            @DebugLog
             public void onReceiveVersion(String serverVersion) {
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
@@ -870,6 +893,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
@@ -884,6 +908,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (layout != null) {
             UsefulBits.showSnackbarWithAction(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
                 @Override
+                @DebugLog
                 public void onClick(View v) {
                     startActivity(new Intent(MainActivity.this, UpdateActivity.class));
                 }
@@ -892,6 +917,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
@@ -912,11 +938,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         .getActionView(searchMenuItem);
                 searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
+                    @DebugLog
                     public boolean onQueryTextSubmit(String query) {
                         return false;
                     }
 
                     @Override
+                    @DebugLog
                     public boolean onQueryTextChange(String newText) {
                         Fragment n = latestFragment;
                         if (n instanceof DomoticzDashboardFragment) {
@@ -984,6 +1012,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
+    @DebugLog
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
@@ -1029,9 +1058,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         cameraRefreshTimer = new Timer("camera", true);
                         cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                             @Override
+                            @DebugLog
                             public void run() {
                                 runOnUiThread(new Runnable() {
                                     @Override
+                                    @DebugLog
                                     public void run() {
                                         //call refresh fragment
                                         Fragment f = latestFragment;
@@ -1072,6 +1103,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             R.layout.dialog_switch_logs);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
+                        @DebugLog
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = latestFragment;
@@ -1106,6 +1138,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         recognitionProgressView.stop();
     }
 
+    @DebugLog
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -1195,6 +1228,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             this.finish();
     }
 
+    @DebugLog
     public void showServerDialog() {
         String[] serverNames = new String[mServerUtil.getServerList().size()];
         int count = 0;
@@ -1214,6 +1248,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 .items(serverNames)
                 .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
+                    @DebugLog
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         ServerInfo setNew = null;
                         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
@@ -1251,6 +1286,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @DebugLog
     public CoordinatorLayout getFragmentCoordinatorLayout() {
         CoordinatorLayout layout = null;
         try {
@@ -1276,6 +1312,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public void onResume() {
         super.onResume();
         setScreenAlwaysOn();
@@ -1285,6 +1322,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public void onDestroy() {
         if (oTalkBackUtil != null) {
             oTalkBackUtil.Stop();
@@ -1297,6 +1335,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public void onPause() {
         if (listeningSpeechRecognition) {
             stopRecognition();
@@ -1309,6 +1348,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Override
+    @DebugLog
     public void onBackPressed() {
         if (listeningSpeechRecognition) {
             stopRecognition();

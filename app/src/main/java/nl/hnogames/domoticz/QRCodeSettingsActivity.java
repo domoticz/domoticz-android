@@ -44,6 +44,7 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
@@ -143,15 +144,18 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
     private void getSwitchesAndShowSwitchesDialog(final QRCodeInfo qrInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
+            @DebugLog
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(qrInfo, switches);
             }
 
             @Override
+            @DebugLog
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(QRCodeSettingsActivity.this, coordinatorLayout, QRCodeSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {

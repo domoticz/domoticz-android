@@ -32,6 +32,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -58,6 +59,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     @Override
+    @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -65,6 +67,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     @Override
+    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
@@ -73,6 +76,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     @Override
+    @DebugLog
     public void Filter(String text) {
         filter = text;
         try {
@@ -85,6 +89,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     @Override
+    @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
         processUserVariables();
@@ -110,6 +115,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
+                @DebugLog
                 public void onRefresh() {
                     processUserVariables();
                 }
@@ -120,6 +126,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     @Override
+    @DebugLog
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
@@ -207,6 +214,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
             mDomoticz.getUserVariables(new UserVariablesReceiver() {
                 @Override
+                @DebugLog
                 public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
                     UserVariables.this.mUserVariableInfos = mVarInfos;
                     SerializableManager.saveSerializable(mContext, mVarInfos, "UserVariables");
@@ -215,6 +223,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                 }
 
                 @Override
+                @DebugLog
                 public void onError(Exception error) {
                     errorHandling(error);
                 }

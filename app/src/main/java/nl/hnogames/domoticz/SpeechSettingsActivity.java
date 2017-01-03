@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.SpeechAdapter;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Interfaces.SpeechClickListener;
@@ -62,6 +63,7 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+
 
 public class SpeechSettingsActivity extends AppCompatPermissionsActivity implements SpeechClickListener {
 
@@ -152,15 +154,18 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private void getSwitchesAndShowSwitchesDialog(final SpeechInfo qrInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
+            @DebugLog
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(qrInfo, switches);
             }
 
             @Override
+            @DebugLog
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(SpeechSettingsActivity.this, coordinatorLayout, SpeechSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {
