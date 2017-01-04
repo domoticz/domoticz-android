@@ -84,6 +84,18 @@
                 android:resource="@xml/nfc_tech_list" />
         </activity>
 
+        <receiver android:name=".Service.AutoMessageHeardReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.Service.ACTION_MESSAGE_READ"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".Service.AutoMessageReplyReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.Service.ACTION_MESSAGE_REPLY"/>
+            </intent-filter>
+        </receiver>
+
         <service android:name=".Service.RingtonePlayingService" />
 
         <service android:name=".Service.GeofenceTransitionsIntentService" />
@@ -295,6 +307,8 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+        <meta-data android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
 
         <activity
             android:name=".UpdateActivity"
