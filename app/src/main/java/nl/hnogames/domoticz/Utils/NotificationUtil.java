@@ -95,8 +95,10 @@ public class NotificationUtil {
                     builder.addAction(android.R.drawable.ic_delete, "Stop", pendingAlarmIntent);
                 }
 
-                builder.extend( new NotificationCompat.CarExtender()
-                        .setUnreadConversation( getUnreadConversation(context, text) ));
+                if(prefUtil.showAutoNotifications()) {
+                    builder.extend(new NotificationCompat.CarExtender()
+                            .setUnreadConversation(getUnreadConversation(context, text)));
+                }
 
                 NotificationManagerCompat.from( context ).notify( NOTIFICATION_ID, builder.build() );
                 if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(text)) {
