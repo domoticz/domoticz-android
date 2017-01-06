@@ -192,7 +192,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_notification">
-        <PreferenceScreen android:title="@string/notification_screen_title">
+        <PreferenceScreen android:title="@string/notification_screen_title"
+            android:key="notificationscreen">
             <SwitchPreference
                 android:defaultValue="true"
                 android:key="enableNotifications"
@@ -257,7 +258,8 @@
                     android:defaultValue="5" />
             </PreferenceCategory>
 
-            <PreferenceCategory android:title="@string/category_auto">
+            <PreferenceCategory android:title="@string/category_auto"
+                android:key="androidautocategory">
                 <SwitchPreference
                     android:defaultValue="false"
                     android:key="enableAutoNotifications"
