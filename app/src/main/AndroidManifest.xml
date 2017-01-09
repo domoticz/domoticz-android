@@ -75,9 +75,8 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:host="www.domoticz.com"
-                    android:pathPrefix="/app"
-                    android:scheme="http" />
+                    android:host="domoticz"
+                    android:scheme="app" />
             </intent-filter>
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
