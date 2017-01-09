@@ -184,6 +184,11 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.X10SIREN);
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
+        switchesSupported.add(Device.Type.Value.BLINDINVERTED);
+        switchesSupported.add(Device.Type.Value.BLINDPERCENTAGE);
+        switchesSupported.add(Device.Type.Value.BLINDPERCENTAGEINVERTED);
+        switchesSupported.add(Device.Type.Value.BLINDS);
+        switchesSupported.add(Device.Type.Value.BLINDVENETIAN);
         return switchesSupported;
     }
 
@@ -198,6 +203,11 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.X10SIREN);
         switchesSupported.add(Device.Type.Name.DOORLOCK);
         switchesSupported.add(Device.Type.Name.DOORBELL);
+        switchesSupported.add(Device.Type.Name.BLINDINVERTED);
+        switchesSupported.add(Device.Type.Name.BLINDPERCENTAGE);
+        switchesSupported.add(Device.Type.Name.BLINDPERCENTAGEINVERTED);
+        switchesSupported.add(Device.Type.Name.BLINDS);
+        switchesSupported.add(Device.Type.Name.BLINDVENETIAN);
         return switchesSupported;
     }
 

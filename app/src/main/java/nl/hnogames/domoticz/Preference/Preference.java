@@ -37,7 +37,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -141,6 +143,12 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
+
+        if(!BuildConfig.DEBUG) {
+            PreferenceCategory oAndroidAutoCategory  = (android.preference.PreferenceCategory) findPreference("androidautocategory");
+            PreferenceScreen oNotificationScreen  = (android.preference.PreferenceScreen) findPreference("notificationscreen");
+            oNotificationScreen.removePreference(oAndroidAutoCategory);
+        }
 
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
         if (notifications == null || notifications.size() <= 0) {
