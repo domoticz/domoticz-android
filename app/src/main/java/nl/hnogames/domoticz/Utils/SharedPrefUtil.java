@@ -212,12 +212,12 @@ public class SharedPrefUtil {
         return prefs.getInt("COLORPOSITION" + idx, 0);
     }
 
-    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, String background) {
+    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
         editor.putInt("WIDGET" + widgetID, idx).apply();
         editor.putBoolean("WIDGETSCENE" + widgetID, isScene).apply();
         editor.putString("WIDGETPASSWORD" + widgetID, password).apply();
         editor.putString("WIDGETVALUE" + widgetID, value).apply();
-        editor.putString("WIDGETBACKGROUND" + widgetID, background).apply();
+        editor.putInt("WIDGETLAYOUT" + widgetID, layout).apply();
         editor.commit();
     }
 
@@ -229,8 +229,8 @@ public class SharedPrefUtil {
         return prefs.getString("WIDGETPASSWORD" + widgetID, null);
     }
 
-    public String getWidgetBackground(int widgetID) {
-        return prefs.getString("WIDGETBACKGROUND" + widgetID, null);
+    public int getWidgetLayout(int widgetID) {
+        return prefs.getInt("WIDGETLAYOUT" + widgetID, -1);
     }
 
     public String getWidgetValue(int widgetID) {

@@ -57,6 +57,9 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetConfigurationActivity extends AppCompatActivity {
 
+    private static final int BUTTON_TOGGLE = 1;
+    private static final int BUTTON_ONOFF = 2;
+    private static final int BUTTON_BLINDS = 3;
     private final String TAG = this.getClass().getSimpleName();
     private final int iWelcomeResultCode = 885;
     private final int iVoiceAction = -55;
@@ -204,6 +207,44 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 .show();
     }
 
+    private int getWidgetLayout(String background, DevicesInfo mSelectedSwitch) {
+        int layout = R.layout.widget_layout;
+        String backgroundWidget = String.valueOf(background);
+
+        //default layouts
+        if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_dark))) {
+            layout = R.layout.widget_layout_dark;
+        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_light))) {
+            layout = R.layout.widget_layout;
+        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent))) {
+            layout = R.layout.widget_layout_transparent;
+        }
+
+        try {
+            if (!(mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE))) {
+                int withButtons = withButtons(mSelectedSwitch);
+                if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_dark))) {
+                    if (withButtons == BUTTON_ONOFF)
+                        layout = R.layout.widget_layout_buttons_dark;
+                    if (withButtons == BUTTON_BLINDS)
+                        layout = R.layout.widget_layout_blinds_dark;
+                } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_light))) {
+                    if (withButtons == BUTTON_ONOFF)
+                        layout = R.layout.widget_layout_buttons;
+                    if (withButtons == BUTTON_BLINDS)
+                        layout = R.layout.widget_layout_blinds;
+                } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent))) {
+                    if (withButtons == BUTTON_ONOFF)
+                        layout = R.layout.widget_layout_buttons_transparent;
+                    if (withButtons == BUTTON_BLINDS)
+                        layout = R.layout.widget_layout_blinds_transparent;
+                }
+            }
+        } catch (Exception ex) { /*if this crashes we use the default layouts */ }
+
+        return layout;
+    }
+
     private void getBackground(final DevicesInfo mSelectedSwitch, final String password, final String value) {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
@@ -211,7 +252,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(mSelectedSwitch, password, value, String.valueOf(text));
+                        showAppWidget(mSelectedSwitch, password, value, getWidgetLayout(String.valueOf(text), mSelectedSwitch));
                         return true;
                     }
                 })
@@ -219,7 +260,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void showAppWidget(DevicesInfo mSelectedSwitch, String password, String value, String background) {
+    private void showAppWidget(DevicesInfo mSelectedSwitch, String password, String value, int layoutId) {
         mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -228,12 +269,12 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, background);
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
             } else {
                 if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value, background);
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value, layoutId);
                 } else {
-                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, background);
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
                 }
             }
             Intent startService = new Intent(WidgetConfigurationActivity.this,
@@ -278,5 +319,46 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private int withButtons(DevicesInfo s) {
+        int withButton = 0;
+        if (s != null) {
+            if (s.getSwitchTypeVal() == 0 &&
+                    (UsefulBits.isEmpty(s.getSwitchType()))) {
+                switch (s.getType()) {
+                    case DomoticzValues.Scene.Type.SCENE:
+                        withButton = BUTTON_TOGGLE;
+                        break;
+                    case DomoticzValues.Scene.Type.GROUP:
+                        withButton = BUTTON_ONOFF;
+                        break;
+                }
+            } else {
+                switch (s.getSwitchTypeVal()) {
+                    case DomoticzValues.Device.Type.Value.ON_OFF:
+                    case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                    case DomoticzValues.Device.Type.Value.X10SIREN:
+                    case DomoticzValues.Device.Type.Value.DOORLOCK:
+                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                    case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                    case DomoticzValues.Device.Type.Value.DOORBELL:
+                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                    case DomoticzValues.Device.Type.Value.DIMMER:
+                    case DomoticzValues.Device.Type.Value.SELECTOR:
+                        withButton = BUTTON_TOGGLE;
+                        break;
+
+                    case DomoticzValues.Device.Type.Value.BLINDS:
+                    case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                    case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                    case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                    case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                        withButton = BUTTON_BLINDS;
+                        break;
+                }
+            }
+        }
+        return withButton;
     }
 }

@@ -53,9 +53,9 @@ public class WidgetProviderLarge extends AppWidgetProvider {
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
 
-    private static final int BUTTON_TOGGLE = 1;
-    private static final int BUTTON_ONOFF = 2;
-    private static final int BUTTON_BLINDS = 3;
+    private static SharedPrefUtil mSharedPrefs;
+    private static String packageName;
+    private static Domoticz domoticz;
 
     private static Context context;
 
@@ -64,6 +64,12 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         this.context = context;
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(context);
+        if (domoticz == null)
+            domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
+        packageName = context.getPackageName();
+
         if (appWidgetIds != null) {
             for (int mAppWidgetId : appWidgetIds) {
                 Intent intent = new Intent(context, UpdateWidgetService.class);
@@ -75,6 +81,9 @@ public class WidgetProviderLarge extends AppWidgetProvider {
     }
 
     public static class UpdateWidgetService extends IntentService {
+        private static final int BUTTON_TOGGLE = 1;
+        private static final int BUTTON_ONOFF = 2;
+        private static final int BUTTON_BLINDS = 3;
         private RemoteViews views;
 
         public UpdateWidgetService() {
@@ -99,29 +108,14 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
         public void updateAppWidget(final AppWidgetManager appWidgetManager,
                                     final int appWidgetId) {
-
-            final SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getApplicationContext());
-            final String packageName = this.getPackageName();
-
-            final Domoticz domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
-            final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
-            String backgroundWidget = mSharedPrefs.getWidgetBackground(appWidgetId);
-
-            if (UsefulBits.isEmpty(backgroundWidget)) {
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                } else {
-                    views = new RemoteViews(packageName, R.layout.widget_layout);
-                }
-            } else {
-                if (backgroundWidget.equals(this.getString(R.string.widget_dark))) {
-                    views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                } else if (backgroundWidget.equals(this.getString(R.string.widget_light))) {
-                    views = new RemoteViews(packageName, R.layout.widget_layout);
-                } else if (backgroundWidget.equals(this.getString(R.string.widget_transparent))) {
-                    views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
-                }
+            if (appWidgetId == INVALID_APPWIDGET_ID) {
+                Log.i("WIDGET", "I am invalid");
+                return;
             }
+            final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
+            views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
+            if (views == null)
+                return;
 
             if (idx == iVoiceAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
@@ -150,6 +144,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else {
+                appWidgetManager.updateAppWidget(appWidgetId, views);
                 final boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);
                 if (!isScene) {
                     domoticz.getDevice(new DevicesReceiver() {
@@ -160,50 +155,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         @Override
                         public void onReceiveDevice(DevicesInfo s) {
                             if (s != null) {
+                                views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
+                                if (views == null)
+                                    return;
+
                                 int withButtons = withButtons(s);
-
-                                String backgroundWidget = mSharedPrefs.getWidgetBackground(appWidgetId);
-                                if (UsefulBits.isEmpty(backgroundWidget)) {
-                                    if (mSharedPrefs.darkThemeEnabled()) {
-                                        if (withButtons == BUTTON_TOGGLE)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                        if (withButtons == BUTTON_ONOFF)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
-                                        if (withButtons == BUTTON_BLINDS)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds_dark);
-                                    } else {
-                                        if (withButtons == BUTTON_TOGGLE)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout);
-                                        if (withButtons == BUTTON_ONOFF)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
-                                        if (withButtons == BUTTON_BLINDS)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds);
-                                    }
-                                } else {
-                                    if (backgroundWidget.equals(context.getString(R.string.widget_dark))) {
-                                        if (withButtons == BUTTON_TOGGLE)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                        if (withButtons == BUTTON_ONOFF)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
-                                        if (withButtons == BUTTON_BLINDS)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds_dark);
-                                    } else if (backgroundWidget.equals(context.getString(R.string.widget_light))) {
-                                        if (withButtons == BUTTON_TOGGLE)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout);
-                                        if (withButtons == BUTTON_ONOFF)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
-                                        if (withButtons == BUTTON_BLINDS)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds);
-                                    } else if (backgroundWidget.equals(context.getString(R.string.widget_transparent))) {
-                                        if (withButtons == BUTTON_TOGGLE)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
-                                        if (withButtons == BUTTON_ONOFF)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_transparent);
-                                        if (withButtons == BUTTON_BLINDS)
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds_transparent);
-                                    }
-                                }
-
                                 String text = s.getData();
                                 views.setTextViewText(R.id.title, s.getName());
                                 if (s.getUsage() != null && s.getUsage().length() > 0)
@@ -217,10 +173,9 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 views.setTextViewText(R.id.desc, text);
                                 if (withButtons == BUTTON_TOGGLE && s.getStatus() != null) {
                                     if (s.getStatusBoolean())
-                                        views.setTextViewText(R.id.on_button, "off");
+                                        views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_off));
                                     else
-                                        views.setTextViewText(R.id.on_button, "on");
-
+                                        views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
                                     views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
@@ -228,7 +183,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             !s.getStatusBoolean(),
                                             true));
                                     views.setViewVisibility(R.id.on_button, View.VISIBLE);
-
                                 } else if (withButtons == BUTTON_ONOFF && s.getStatus() != null) {
                                     views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
@@ -286,31 +240,17 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
                         @Override
                         public void onReceiveScene(SceneInfo s) {
-
-                            String backgroundWidget = mSharedPrefs.getWidgetBackground(appWidgetId);
                             if (s != null) {
+                                views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
+                                if (views == null)
+                                    return;
+
                                 if (s.getStatusInString() != null) {
                                     if (s.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                                        if (UsefulBits.isEmpty(backgroundWidget)) {
-                                            if (mSharedPrefs.darkThemeEnabled()) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                            } else {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout);
-                                            }
-                                        } else {
-                                            if (backgroundWidget.equals(context.getString(R.string.widget_dark))) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_light))) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout);
-                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_transparent))) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
-                                            }
-                                        }
-
                                         views.setTextViewText(R.id.title, s.getName());
                                         views.setTextViewText(R.id.desc, s.getStatusInString());
 
-                                        views.setTextViewText(R.id.on_button, "on");
+                                        views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
                                         views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                                 UpdateWidgetService.this,
                                                 appWidgetId,
@@ -319,26 +259,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                                 true));
                                         views.setViewVisibility(R.id.on_button, View.VISIBLE);
                                     } else {
-                                        if (UsefulBits.isEmpty(backgroundWidget)) {
-                                            if (mSharedPrefs.darkThemeEnabled()) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                            } else {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout);
-                                            }
-                                        } else {
-                                            if (backgroundWidget.equals(context.getString(R.string.widget_dark))) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_light))) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout);
-                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_transparent))) {
-                                                views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
-                                            }
-                                        }
 
                                         views.setTextViewText(R.id.title, s.getName());
                                         views.setTextViewText(R.id.desc, s.getStatusInString());
-                                        views.setTextViewText(R.id.off_button, "off");
-                                        views.setTextViewText(R.id.on_button, "on");
+                                        views.setTextViewText(R.id.off_button, context.getString(R.string.button_state_off));
+                                        views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
                                         views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                                 UpdateWidgetService.this,
                                                 appWidgetId,
