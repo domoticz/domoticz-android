@@ -38,7 +38,7 @@
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">Môžete určiť ktoré zariadenia chcete ovládať pomocou Vášho Android wear zariadenia!</string>
   <string name="wizard_auto">Android Auto</string>
-  <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+  <string name="wizard_auto_description">Prímaj notifikácie z Domoticz priamo na Tvoje zariadenie Android Auto!</string>
   <string name="wizard_graph">Grafy</string>
   <string name="wizard_graph_description">Môžete vidieť históriu grafov spotreby, počasia alebo teploty!</string>
   <string name="wizard_filter">Filtre</string>

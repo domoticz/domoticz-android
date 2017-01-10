@@ -90,7 +90,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private Integer[] selectedFilters;
     private SharedPrefUtil mSharedPrefs;
 
-    private com.fenjuly.mylibrary.SpinnerLoader mSpinner;
     private XAxis xAxis;
     private YAxis yAxis;
 
@@ -136,9 +135,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_graph, null);
 
-        mSpinner = (com.fenjuly.mylibrary.SpinnerLoader) root.findViewById(R.id.spinner);
-        mSpinner.animate();
-
         chart = (LineChart) root.findViewById(R.id.chart);
         xAxis = chart.getXAxis();
         yAxis = chart.getAxisLeft();
@@ -147,8 +143,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             xAxis.setTextColor(Color.WHITE);
             yAxis.setTextColor(Color.WHITE);
             chart.getLegend().setTextColor(Color.WHITE);
-            if (mSpinner != null)
-                mSpinner.setPointcolor(ContextCompat.getColor(getContext(), R.color.secondary));
             chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
             chart.setDrawGridBackground(true);
         } else {
@@ -204,9 +198,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     public void getGraphs() {
         chart.setVisibility(View.GONE);
-        mSpinner.setVisibility(View.VISIBLE);
-        mSpinner.animate();
-
         new Thread() {
             @Override
             public void run() {
@@ -230,7 +221,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                     @Override
                                     public void run() {
                                         chart.setVisibility(View.VISIBLE);
-                                        mSpinner.setVisibility(View.GONE);
                                         chart.animateX(1000);
 
                                         if (getActivity() != null)
@@ -758,7 +748,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                         chart.setData(columnData);
                                         chart.invalidate(); // refresh
                                         chart.setVisibility(View.VISIBLE);
-                                        mSpinner.setVisibility(View.GONE);
                                         chart.animateX(1000);
 
                                         if (getActivity() != null)

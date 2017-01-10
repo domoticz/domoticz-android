@@ -144,9 +144,9 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
 
-        if(!BuildConfig.DEBUG) {
-            PreferenceCategory oAndroidAutoCategory  = (android.preference.PreferenceCategory) findPreference("androidautocategory");
-            PreferenceScreen oNotificationScreen  = (android.preference.PreferenceScreen) findPreference("notificationscreen");
+        if (!BuildConfig.DEBUG) {
+            PreferenceCategory oAndroidAutoCategory = (android.preference.PreferenceCategory) findPreference("androidautocategory");
+            PreferenceScreen oNotificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
             oNotificationScreen.removePreference(oAndroidAutoCategory);
         }
 

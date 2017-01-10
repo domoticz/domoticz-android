@@ -21,7 +21,6 @@
 
 package nl.hnogames.domoticz.Utils;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -45,15 +44,13 @@ import nl.hnogames.domoticz.Service.StopAlarmButtonListener;
 
 public class NotificationUtil {
 
-    private final static String GROUP_KEY_NOTIFICATIONS = "domoticz_notifications";
-    private static SharedPrefUtil prefUtil;
-
-    private static final String MESSAGE_READ_ACTION = "nl.hnogames.domoticz.Service.ACTION_MESSAGE_READ";
-    private static final String MESSAGE_REPLY_ACTION = "nl.hnogames.domoticz.Service.ACTION_MESSAGE_REPLY";
-
     public static final String MESSAGE_CONVERSATION_ID_KEY = "conversaton_key";
     public static final String VOICE_REPLY_KEY = "voice_reply_key";
+    private final static String GROUP_KEY_NOTIFICATIONS = "domoticz_notifications";
+    private static final String MESSAGE_READ_ACTION = "nl.hnogames.domoticz.Service.ACTION_MESSAGE_READ";
+    private static final String MESSAGE_REPLY_ACTION = "nl.hnogames.domoticz.Service.ACTION_MESSAGE_REPLY";
     private static final String UNREAD_CONVERSATION_BUILDER_NAME = "Domoticz -";
+    private static SharedPrefUtil prefUtil;
     private static int NOTIFICATION_ID = 12345;
 
     public static void sendSimpleNotification(String title, String text, final Context context) {
@@ -95,12 +92,12 @@ public class NotificationUtil {
                     builder.addAction(android.R.drawable.ic_delete, "Stop", pendingAlarmIntent);
                 }
 
-                if(prefUtil.showAutoNotifications()) {
+                if (prefUtil.showAutoNotifications()) {
                     builder.extend(new NotificationCompat.CarExtender()
                             .setUnreadConversation(getUnreadConversation(context, text)));
                 }
 
-                NotificationManagerCompat.from( context ).notify( NOTIFICATION_ID, builder.build() );
+                NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build());
                 if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(text)) {
                     Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                     if (alert == null) {
@@ -134,39 +131,39 @@ public class NotificationUtil {
     }
 
     private static PendingIntent getMessageReadPendingIntent(Context context) {
-        return PendingIntent.getBroadcast( context,
+        return PendingIntent.getBroadcast(context,
                 NOTIFICATION_ID,
                 getMessageReadIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT );
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static Intent getMessageReplyIntent() {
         return new Intent()
-                .addFlags( Intent.FLAG_INCLUDE_STOPPED_PACKAGES )
-                .setAction( MESSAGE_REPLY_ACTION )
-                .putExtra( MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID );
+                .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+                .setAction(MESSAGE_REPLY_ACTION)
+                .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
     }
 
     private static PendingIntent getMessageReplyPendingIntent(Context context) {
-        return PendingIntent.getBroadcast( context,
+        return PendingIntent.getBroadcast(context,
                 NOTIFICATION_ID,
                 getMessageReplyIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT );
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static RemoteInput getVoiceReplyRemoteInput() {
-        return new RemoteInput.Builder( VOICE_REPLY_KEY )
-                .setLabel( "Reply" )
+        return new RemoteInput.Builder(VOICE_REPLY_KEY)
+                .setLabel("Reply")
                 .build();
     }
 
     private static NotificationCompat.CarExtender.UnreadConversation getUnreadConversation(Context context, String text) {
         NotificationCompat.CarExtender.UnreadConversation.Builder unreadConversationBuilder =
-                new NotificationCompat.CarExtender.UnreadConversation.Builder( UNREAD_CONVERSATION_BUILDER_NAME + text );
-        unreadConversationBuilder.setReadPendingIntent( getMessageReadPendingIntent(context) );
-        unreadConversationBuilder.setReplyAction( getMessageReplyPendingIntent(context), getVoiceReplyRemoteInput() );
+                new NotificationCompat.CarExtender.UnreadConversation.Builder(UNREAD_CONVERSATION_BUILDER_NAME + text);
+        unreadConversationBuilder.setReadPendingIntent(getMessageReadPendingIntent(context));
+        unreadConversationBuilder.setReplyAction(getMessageReplyPendingIntent(context), getVoiceReplyRemoteInput());
         unreadConversationBuilder.addMessage(text);
-        unreadConversationBuilder.setLatestTimestamp(Calendar.getInstance().get( Calendar.SECOND ) );
+        unreadConversationBuilder.setLatestTimestamp(Calendar.getInstance().get(Calendar.SECOND));
         return unreadConversationBuilder.build();
     }
 }

@@ -218,24 +218,24 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
-            domoticz.getDevice(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                }
+        domoticz.getDevice(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
-                @Override
-                public void onReceiveDevice(final DevicesInfo s) {
-                    if (s != null) {
-                        if (isBlinds(s))
-                            onBlindsToggle(s, action, domoticz, context);
-                    }
+            @Override
+            public void onReceiveDevice(final DevicesInfo s) {
+                if (s != null) {
+                    if (isBlinds(s))
+                        onBlindsToggle(s, action, domoticz, context);
                 }
+            }
 
-                @Override
-                public void onError(Exception error) {
-                    Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
-                }
-            }, idx, false);
+            @Override
+            public void onError(Exception error) {
+                Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
+            }
+        }, idx, false);
     }
 
     public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {

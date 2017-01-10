@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.SpeechRecognizer;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
@@ -28,16 +27,17 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 public class AutoMessageReplyReceiver extends BroadcastReceiver {
 
     private Context mContext;
+    private Domoticz domoticz;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText( context, "Message Received", Toast.LENGTH_LONG ).show();
+        Toast.makeText(context, "Message Received", Toast.LENGTH_LONG).show();
         mContext = context;
-        int conversationId = intent.getIntExtra( NotificationUtil.MESSAGE_CONVERSATION_ID_KEY, -1 );
-        Log.d( "Message", "id: " + conversationId );
-        NotificationManagerCompat.from(context).cancel( conversationId );
-        String message = getMessageFromIntent( intent );
-        if(!UsefulBits.isEmpty(message))
+        int conversationId = intent.getIntExtra(NotificationUtil.MESSAGE_CONVERSATION_ID_KEY, -1);
+        Log.d("Message", "id: " + conversationId);
+        NotificationManagerCompat.from(context).cancel(conversationId);
+        String message = getMessageFromIntent(intent);
+        if (!UsefulBits.isEmpty(message))
             showSpeechResults(message);
     }
 
@@ -87,7 +87,6 @@ public class AutoMessageReplyReceiver extends BroadcastReceiver {
         }
     }
 
-    private Domoticz domoticz;
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value) {
         if (domoticz == null)
             domoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
@@ -195,11 +194,11 @@ public class AutoMessageReplyReceiver extends BroadcastReceiver {
         return jsonValue;
     }
 
-    private String getMessageFromIntent( Intent intent ) {
+    private String getMessageFromIntent(Intent intent) {
         //Note that Android Auto does not currently allow voice responses in their simulator
-        Bundle remoteInput = RemoteInput.getResultsFromIntent( intent );
-        if( remoteInput != null && remoteInput.containsKey( "extra_voice_reply" ) ) {
-            return remoteInput.getCharSequence( "extra_voice_reply" ).toString();
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        if (remoteInput != null && remoteInput.containsKey("extra_voice_reply")) {
+            return remoteInput.getCharSequence("extra_voice_reply").toString();
         }
         return null;
     }
