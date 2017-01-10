@@ -31,7 +31,7 @@
   <string name="category_server">Server</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informácie</string>
-  <string name="category_advanced">Advanced</string>
+  <string name="category_advanced">Pokročilé</string>
   <string name="category_language">Jazyk</string>
   <string name="category_talk_back">Spätné odpovede</string>
   <string name="category_notification">Oznámenia</string>
@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Povoliť Android Wear</string>
   <string name="wear_custom_off">Zakázať Android Wear</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Zapnúť upozornenia Android Auto</string>
+  <string name="auto_custom_off">Zakázať Android Auto oznámenia</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Konfigurovať Geofencing</string>
   <!--        Theming settings -->
@@ -95,7 +95,7 @@
   <string name="enable_nfc">Povoliť NFC</string>
   <string name="enable_speech">Povoliť rozpoznanie hlasu</string>
   <string name="export_settings">Exportovať nastavenia</string>
-  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+  <string name="reset_settings">Reset všetkých nastavení aplikácie (UPOZORNENIE!!)</string>
   <string name="import_settings">Importovať nastavenia</string>
   <string name="multi_server_settings">Zapnúť podporu viacerých serverov</string>
   <string name="nfc_enable_settings">Povolit NFC prepojenia</string>
@@ -116,9 +116,9 @@
   <string name="notification_settings_push">Poslať vaše registračné ID do Domoticz</string>
   <string name="notification_settings_pushed">Vaše registračné id je teraz uložené v Domoticz</string>
   <string name="notification_settings_push_failed">Nebolo možné uložiť Vaše registračné id v Domoticz, prosím skúste to znova neskôr.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
-  <string name="notification_show">Show last couple of Notifications</string>
+  <string name="notification_show_title">Posledné oznámenia</string>
+  <string name="notification_show_nothing">Žiadne nájdené notifikácie</string>
+  <string name="notification_show">Zobraziť posledných pár upozornení</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Prepísať oznámenia</string>
   <string name="overwrite_notifications">Prepísať predchádzajúce oznámenia tohto zariadenia</string>
@@ -133,12 +133,12 @@
   <string name="suppress_notifications_select">Vyberte zakázané oznámenia</string>
   <string name="suppress_notifications">Môžete zakázať niektoré oznámenia na tomto zariadení</string>
   <string name="suppress_notifications_title">Zakázať oznámenia</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarm_notifications_select">Vyberte upozornenia pre hlásenie</string>
+  <string name="alarm_notifications">Zvukové hlásenie pre osobitné upozornenia</string>
+  <string name="alarm_notifications_title">Hlásiť upozornenie</string>
+  <string name="alarm">Hlásenia</string>
+  <string name="alarmtimer_title">Časovač hlásení</string>
+  <string name="alarmtimer">Trvanie hlásenia</string>
   <!--        Information category       -->
   <string name="info_version">Verzia</string>
   <string name="info_domoticz_version">Domoticz verzia</string>
