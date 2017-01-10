@@ -140,7 +140,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
                     ListView listView = (ListView) findViewById(R.id.list);
                     adapter = new WidgetsAdapter(WidgetConfigurationActivity.this, domoticz, mDevicesInfo);
-
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -155,7 +154,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                                         if (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                                             showSelectorDialog(mDeviceInfo, password);
                                         else
-                                            showAppWidget(mDeviceInfo, password, null);
+                                            getBackground(mDeviceInfo, password, null);
                                     }
 
                                     @Override
@@ -166,7 +165,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                                 if (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                                     showSelectorDialog(mDeviceInfo, null);
                                 else
-                                    showAppWidget(mDeviceInfo, null, null);
+                                    getBackground(mDeviceInfo, null, null);
                             }
                         }
                     });
@@ -199,39 +198,50 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(selector, pass, String.valueOf(text));
+                        getBackground(selector, pass, String.valueOf(text));
                     }
                 })
                 .show();
     }
 
-    private void showAppWidget(DevicesInfo mSelectedSwitch, String password, String value) {
+    private void getBackground(final DevicesInfo mSelectedSwitch, final String password, final String value) {
+        new MaterialDialog.Builder(this)
+                .title(this.getString(R.string.widget_background))
+                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent)})
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        showAppWidget(mSelectedSwitch, password, value, String.valueOf(text));
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .show();
+    }
+
+    private void showAppWidget(DevicesInfo mSelectedSwitch, String password, String value, String background) {
         mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         int idx = mSelectedSwitch.getIdx();
-
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
-
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value);
+                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, background);
             } else {
                 if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value);
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value, background);
                 } else {
-                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value);
+                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, background);
                 }
             }
-
             Intent startService = new Intent(WidgetConfigurationActivity.this,
                     WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
             setResult(RESULT_OK, startService);
-
             finish();
         }
         if (mAppWidgetId == INVALID_APPWIDGET_ID) {
@@ -251,7 +261,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchMenuItem = menu.findItem(R.id.search);
         searchViewAction = (SearchView) MenuItemCompat
@@ -268,7 +277,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         return super.onCreateOptionsMenu(menu);
     }
 }

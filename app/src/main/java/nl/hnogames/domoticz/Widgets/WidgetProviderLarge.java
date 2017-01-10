@@ -49,9 +49,15 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderLarge extends AppWidgetProvider {
+
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
-    private Context context;
+
+    private static final int BUTTON_TOGGLE = 1;
+    private static final int BUTTON_ONOFF = 2;
+    private static final int BUTTON_BLINDS = 3;
+
+    private static Context context;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -95,23 +101,29 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     final int appWidgetId) {
 
             final SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getApplicationContext());
-
             final String packageName = this.getPackageName();
 
-            if (mSharedPrefs.darkThemeEnabled())
-                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-            else
-                views = new RemoteViews(packageName, R.layout.widget_layout);//default
-
             final Domoticz domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
-
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
-            if (idx == iVoiceAction) {
+            String backgroundWidget = mSharedPrefs.getWidgetBackground(appWidgetId);
+
+            if (UsefulBits.isEmpty(backgroundWidget)) {
                 if (mSharedPrefs.darkThemeEnabled()) {
                     views = new RemoteViews(packageName, R.layout.widget_layout_dark);
                 } else {
                     views = new RemoteViews(packageName, R.layout.widget_layout);
                 }
+            } else {
+                if (backgroundWidget.equals(this.getString(R.string.widget_dark))) {
+                    views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                } else if (backgroundWidget.equals(this.getString(R.string.widget_light))) {
+                    views = new RemoteViews(packageName, R.layout.widget_layout);
+                } else if (backgroundWidget.equals(this.getString(R.string.widget_transparent))) {
+                    views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
+                }
+            }
+
+            if (idx == iVoiceAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
@@ -125,11 +137,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else if (idx == iQRCodeAction) {
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                } else {
-                    views = new RemoteViews(packageName, R.layout.widget_layout);
-                }
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
@@ -155,20 +162,46 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                             if (s != null) {
                                 int withButtons = withButtons(s);
 
-                                if (mSharedPrefs.darkThemeEnabled()) {
-                                    if (withButtons == 1)
-                                        views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                    if (withButtons == 2)
-                                        views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
-                                    if (withButtons == 3)
-                                        views = new RemoteViews(packageName, R.layout.widget_layout_blinds_dark);
+                                String backgroundWidget = mSharedPrefs.getWidgetBackground(appWidgetId);
+                                if (UsefulBits.isEmpty(backgroundWidget)) {
+                                    if (mSharedPrefs.darkThemeEnabled()) {
+                                        if (withButtons == BUTTON_TOGGLE)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                        if (withButtons == BUTTON_ONOFF)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
+                                        if (withButtons == BUTTON_BLINDS)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds_dark);
+                                    } else {
+                                        if (withButtons == BUTTON_TOGGLE)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout);
+                                        if (withButtons == BUTTON_ONOFF)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                                        if (withButtons == BUTTON_BLINDS)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds);
+                                    }
                                 } else {
-                                    if (withButtons == 1)
-                                        views = new RemoteViews(packageName, R.layout.widget_layout);
-                                    if (withButtons == 2)
-                                        views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
-                                    if (withButtons == 3)
-                                        views = new RemoteViews(packageName, R.layout.widget_layout_blinds);
+                                    if (backgroundWidget.equals(context.getString(R.string.widget_dark))) {
+                                        if (withButtons == BUTTON_TOGGLE)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                        if (withButtons == BUTTON_ONOFF)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
+                                        if (withButtons == BUTTON_BLINDS)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds_dark);
+                                    } else if (backgroundWidget.equals(context.getString(R.string.widget_light))) {
+                                        if (withButtons == BUTTON_TOGGLE)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout);
+                                        if (withButtons == BUTTON_ONOFF)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                                        if (withButtons == BUTTON_BLINDS)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds);
+                                    } else if (backgroundWidget.equals(context.getString(R.string.widget_transparent))) {
+                                        if (withButtons == BUTTON_TOGGLE)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
+                                        if (withButtons == BUTTON_ONOFF)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_transparent);
+                                        if (withButtons == BUTTON_BLINDS)
+                                            views = new RemoteViews(packageName, R.layout.widget_layout_blinds_transparent);
+                                    }
                                 }
 
                                 String text = s.getData();
@@ -182,7 +215,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     text += " Total: " + s.getCounter();
 
                                 views.setTextViewText(R.id.desc, text);
-                                if (withButtons == 1 && s.getStatus() != null) {
+                                if (withButtons == BUTTON_TOGGLE && s.getStatus() != null) {
                                     if (s.getStatusBoolean())
                                         views.setTextViewText(R.id.on_button, "off");
                                     else
@@ -196,7 +229,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             true));
                                     views.setViewVisibility(R.id.on_button, View.VISIBLE);
 
-                                } else if (withButtons == 2 && s.getStatus() != null) {
+                                } else if (withButtons == BUTTON_ONOFF && s.getStatus() != null) {
                                     views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
@@ -210,7 +243,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             s.getIdx(), false,
                                             false));
                                     views.setViewVisibility(R.id.off_button, View.VISIBLE);
-                                } else if (withButtons == 3 && s.getStatus() != null) {
+                                } else if (withButtons == BUTTON_BLINDS && s.getStatus() != null) {
                                     views.setOnClickPendingIntent(R.id.switch_button_up, buildBlindPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
@@ -253,13 +286,26 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
                         @Override
                         public void onReceiveScene(SceneInfo s) {
+
+                            String backgroundWidget = mSharedPrefs.getWidgetBackground(appWidgetId);
                             if (s != null) {
                                 if (s.getStatusInString() != null) {
                                     if (s.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                                        if (mSharedPrefs.darkThemeEnabled())
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_dark);
-                                        else
-                                            views = new RemoteViews(packageName, R.layout.widget_layout);
+                                        if (UsefulBits.isEmpty(backgroundWidget)) {
+                                            if (mSharedPrefs.darkThemeEnabled()) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                            } else {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout);
+                                            }
+                                        } else {
+                                            if (backgroundWidget.equals(context.getString(R.string.widget_dark))) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_light))) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout);
+                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_transparent))) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
+                                            }
+                                        }
 
                                         views.setTextViewText(R.id.title, s.getName());
                                         views.setTextViewText(R.id.desc, s.getStatusInString());
@@ -273,16 +319,26 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                                 true));
                                         views.setViewVisibility(R.id.on_button, View.VISIBLE);
                                     } else {
-                                        if (mSharedPrefs.darkThemeEnabled())
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons_dark);
-                                        else
-                                            views = new RemoteViews(packageName, R.layout.widget_layout_buttons);
+                                        if (UsefulBits.isEmpty(backgroundWidget)) {
+                                            if (mSharedPrefs.darkThemeEnabled()) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                            } else {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout);
+                                            }
+                                        } else {
+                                            if (backgroundWidget.equals(context.getString(R.string.widget_dark))) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout_dark);
+                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_light))) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout);
+                                            } else if (backgroundWidget.equals(context.getString(R.string.widget_transparent))) {
+                                                views = new RemoteViews(packageName, R.layout.widget_layout_transparent);
+                                            }
+                                        }
 
                                         views.setTextViewText(R.id.title, s.getName());
                                         views.setTextViewText(R.id.desc, s.getStatusInString());
                                         views.setTextViewText(R.id.off_button, "off");
                                         views.setTextViewText(R.id.on_button, "on");
-
                                         views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                                 UpdateWidgetService.this,
                                                 appWidgetId,
@@ -337,10 +393,17 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
             int requestCode;
             switch (action) {
-                case DomoticzValues.Device.Blind.Action.UP: requestCode = widget_id; break;
-                case DomoticzValues.Device.Blind.Action.STOP: requestCode = widget_id + 8888; break;
-                case DomoticzValues.Device.Blind.Action.DOWN: requestCode = widget_id + 9999; break;
-                default: requestCode = widget_id + 7777;
+                case DomoticzValues.Device.Blind.Action.UP:
+                    requestCode = widget_id;
+                    break;
+                case DomoticzValues.Device.Blind.Action.STOP:
+                    requestCode = widget_id + 8888;
+                    break;
+                case DomoticzValues.Device.Blind.Action.DOWN:
+                    requestCode = widget_id + 9999;
+                    break;
+                default:
+                    requestCode = widget_id + 7777;
             }
 
             return PendingIntent.getBroadcast(context, requestCode, intent, 0);
@@ -353,10 +416,10 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         (UsefulBits.isEmpty(s.getSwitchType()))) {
                     switch (s.getType()) {
                         case DomoticzValues.Scene.Type.SCENE:
-                            withButton = 1;
+                            withButton = BUTTON_TOGGLE;
                             break;
                         case DomoticzValues.Scene.Type.GROUP:
-                            withButton = 2;
+                            withButton = BUTTON_ONOFF;
                             break;
                     }
                 } else {
@@ -371,7 +434,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                         case DomoticzValues.Device.Type.Value.DIMMER:
                         case DomoticzValues.Device.Type.Value.SELECTOR:
-                            withButton = 1;
+                            withButton = BUTTON_TOGGLE;
                             break;
 
                         case DomoticzValues.Device.Type.Value.BLINDS:
@@ -379,7 +442,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                         case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                            withButton = 3;
+                            withButton = BUTTON_BLINDS;
                             break;
                     }
                 }

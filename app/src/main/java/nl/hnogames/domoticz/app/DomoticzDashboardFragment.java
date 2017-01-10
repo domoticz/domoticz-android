@@ -47,6 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -75,7 +76,8 @@ public class DomoticzDashboardFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
 
-    public DomoticzDashboardFragment() {}
+    public DomoticzDashboardFragment() {
+    }
 
     public void setTheme() {
         if (mSharedPrefs == null)
