@@ -20,11 +20,11 @@
   ~  under the License.
   -->
 
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="nl.hnogames.domoticz.Widgets.WidgetConfigurationActivity"
-    android:initialLayout="@layout/widget_layout"
-    android:minHeight="40dp"
-    android:minWidth="110dp"
-    android:previewImage="@drawable/widgetpreview"
-    android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="1000000" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical">
+
+</LinearLayout>

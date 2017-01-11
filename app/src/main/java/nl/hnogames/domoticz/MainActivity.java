@@ -542,16 +542,16 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     @DebugLog
     public void changeFragment(String fragment) {
         //if (!isFinishing()) {
-            try {
-                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                latestFragment = Fragment.instantiate(MainActivity.this, fragment);
-                tx.replace(R.id.main, latestFragment);
-                tx.commitAllowingStateLoss();
-                addFragmentStack(fragment);
-                saveScreenToAnalytics(fragment);
-            } catch (Exception e) {
-                Log.e("Fragment", e.getMessage());
-            }
+        try {
+            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+            latestFragment = Fragment.instantiate(MainActivity.this, fragment);
+            tx.replace(R.id.main, latestFragment);
+            tx.commitAllowingStateLoss();
+            addFragmentStack(fragment);
+            saveScreenToAnalytics(fragment);
+        } catch (Exception e) {
+            Log.e("Fragment", e.getMessage());
+        }
         //}
     }
 

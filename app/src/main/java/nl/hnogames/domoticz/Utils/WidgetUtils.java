@@ -26,6 +26,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import nl.hnogames.domoticz.Widgets.SecurityWidgetProvider;
 import nl.hnogames.domoticz.Widgets.WidgetProviderLarge;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -41,6 +42,14 @@ public class WidgetUtils {
         for (int i = 0; i < appWidgetIds.length; i++) {
             Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
             updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            updateIntent.setAction("FROM WIDGET PROVIDER");
+            context.startService(updateIntent);
+        }
+        ComponentName widgetSecurityComponent = new ComponentName(context, SecurityWidgetProvider.class);
+        int[] appSecurityWidgetIds = widgetManager.getAppWidgetIds(widgetSecurityComponent);
+        for (int i = 0; i < appSecurityWidgetIds.length; i++) {
+            Intent updateIntent = new Intent(context, SecurityWidgetProvider.UpdateSecurityWidgetService.class);
+            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSecurityWidgetIds[i]);
             updateIntent.setAction("FROM WIDGET PROVIDER");
             context.startService(updateIntent);
         }

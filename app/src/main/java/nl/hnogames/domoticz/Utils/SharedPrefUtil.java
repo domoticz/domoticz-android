@@ -221,6 +221,20 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public void setSecurityWidgetIDX(int widgetID, int idx, String value) {
+        editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
+        editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();
+        editor.commit();
+    }
+
+    public int getSecurityWidgetIDX(int widgetID) {
+        return prefs.getInt("WIDGETSECURITY" + widgetID, INVALID_IDX);
+    }
+
+    public String getSecurityWidgetValue(int widgetID) {
+        return prefs.getString("WIDGETSECURITYVALUE" + widgetID, null);
+    }
+
     public int getWidgetIDX(int widgetID) {
         return prefs.getInt("WIDGET" + widgetID, INVALID_IDX);
     }
@@ -668,7 +682,8 @@ public class SharedPrefUtil {
     }
 
     public boolean isAPKValidated() {
-        return prefs.getBoolean(PREF_APK_VALIDATED, true);
+        //return prefs.getBoolean(PREF_APK_VALIDATED, true);
+        return true;
     }
 
     public void setAPKValidated(boolean valid) {
