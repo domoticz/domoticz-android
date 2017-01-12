@@ -159,14 +159,41 @@
 
         <service android:name=".Widgets.WidgetProviderLarge$UpdateWidgetService" />
 
+        <activity
+            android:name=".Widgets.SecurityWidgetConfigurationActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Domoticz Security Panel Widget Config" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".Widgets.SecurityWidgetProvider"  android:label="@string/security_settings">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/securitywidgetprovider" />
+        </receiver>
+
+        <receiver android:name=".Widgets.SecurityWidgetIntentReceiver" >
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMAWAY" />
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMHOME" />
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.DISCARD" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/securitywidgetprovider" />
+        </receiver>
+
+        <service android:name=".Widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
+
         <receiver android:name=".Service.BootUpReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/appwidgetprovider" />
         </receiver>
 
         <activity

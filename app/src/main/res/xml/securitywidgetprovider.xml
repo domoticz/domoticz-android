@@ -26,5 +26,5 @@
     android:minHeight="120dp"
     android:minWidth="300dp"
     android:previewImage="@drawable/security_widget_preview"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="1000000" />

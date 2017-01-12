@@ -22,13 +22,14 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Esculli un dispositiu</string>
-  <string name="choose_switch">Escolliu dispositiu</string>
-  <string name="failed_to_get_switches">No s\'ha pogut obtenir els dispositius</string>
-  <string name="failed_toggle_switch">No s\'ha pogut canviar el dispositiu</string>
-  <string name="switch_toggled">"Canvia dispositiu"</string>
-  <string name="text_loading">Carregant...</string>
-  <string name="text_go">ANAR-HI</string>
+  <string name="pick_device_title">Pick a device</string>
+  <string name="choose_switch">Choose device</string>
+  <string name="failed_to_get_securitypanel">No security panel found under your switches</string>
+  <string name="failed_to_get_switches">Failed to get devices</string>
+  <string name="failed_toggle_switch">Failed to toggle device</string>
+  <string name="switch_toggled">"Switch device"</string>
+  <string name="text_loading">Loading...</string>
+  <string name="text_go">GO</string>
   <string name="widget_background">Background</string>
   <string name="widget_dark">Dark</string>
   <string name="widget_light">Light</string>

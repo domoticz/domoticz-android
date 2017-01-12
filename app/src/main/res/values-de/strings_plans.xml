@@ -4,7 +4,7 @@
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="title_plans">Räume</string>
   <plurals name="devices">
-    <item quantity="one">%1d Geräte</item>
+    <item quantity="one">%1d Gerät</item>
     <item quantity="other">%1d Geräte</item>
   </plurals>
 </resources>

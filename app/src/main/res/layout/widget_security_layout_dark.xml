@@ -23,7 +23,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-    android:background="@drawable/appwidget_bg_clickable"
+    android:background="@drawable/appwidget_dark_bg_clickable"
 android:orientation="vertical">
 
 <TextView
@@ -35,7 +35,7 @@ android:orientation="vertical">
     android:paddingTop="10dp"
     android:text="Security Panel"
     style="@style/row_name_small"
-    android:textColor="@color/primary_dark" />
+    android:textColor="@color/white" />
 
 <TextView
     android:id="@+id/status"
@@ -43,8 +43,8 @@ android:orientation="vertical">
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:paddingBottom="20dp"
-    android:textColor="@color/primary_dark"
     android:text="Status: Armed"
+    android:textColor="@color/white"
     android:textSize="@dimen/text_size_small" />
 
     <LinearLayout
@@ -67,7 +67,7 @@ android:orientation="vertical">
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button_status"
+            android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_home"
             android:textSize="12dp" />
 
@@ -79,7 +79,7 @@ android:orientation="vertical">
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button_status"
+            android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_away"
             android:textSize="12dp" />
 
@@ -92,7 +92,7 @@ android:orientation="vertical">
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button_status"
+            android:background="@drawable/button_status_dark"
             android:text="@string/security_disarm"
             android:textSize="12dp" />
     </LinearLayout>

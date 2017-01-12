@@ -24,11 +24,12 @@
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="pick_device_title">Kies een apparaat</string>
   <string name="choose_switch">Kies apparaat</string>
+  <string name="failed_to_get_securitypanel">Geen beveiliging paneel als apparaat gevonden</string>
   <string name="failed_to_get_switches">Fout bij het ophalen van apparaten</string>
   <string name="failed_toggle_switch">Mislukt apparaat in of uit te schakelen</string>
-  <string name="switch_toggled">"Apparaat schakelen"</string>
-  <string name="text_loading">Gegevens laden...</string>
-  <string name="text_go">GA</string>
+  <string name="switch_toggled">"Schakelaar apparaat"</string>
+  <string name="text_loading">Laden ...</string>
+  <string name="text_go">GO</string>
   <string name="widget_background">Achtergrond</string>
   <string name="widget_dark">Donker</string>
   <string name="widget_light">Licht</string>

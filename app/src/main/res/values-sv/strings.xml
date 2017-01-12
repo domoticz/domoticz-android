@@ -71,7 +71,7 @@
   <string name="add">Lägg till</string>
   <string name="cancel">Avbryt</string>
   <string name="ok">Ok</string>
-  <string name="request_again">Request Again</string>
+  <string name="request_again">Begär igen</string>
   <string name="upgrade">UPPGRADERA</string>
   <string name="something_went_wrong">Något gick fel</string>
   <string name="no_network_available">Fel: Ingen nätversanslutning tillgänglig</string>

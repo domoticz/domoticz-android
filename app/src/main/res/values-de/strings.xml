@@ -24,7 +24,7 @@
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="premium_category">Premium kaufen!</string>
   <string name="premium_title">Hole Dir die Premium-Version!</string>
-  <string name="premium_feature">ist ein Premium-Feature, kaufen Sie bitte die kostenpflichtige Version um die Entwickler zu unterstützen!</string>
+  <string name="premium_feature">ist ein Premium-Feature, kaufe bitte die kostenpflichtige Version um die Entwickler zu unterstützen!</string>
   <string name="drawer_open">Navigationsleiste öffnen</string>
   <string name="drawer_close">Schließe Navigationsleiste</string>
   <string name="msg_please_wait">Bitte warten&#8230;</string>
@@ -71,7 +71,7 @@
   <string name="add">Hinzufügen</string>
   <string name="cancel">Abbrechen</string>
   <string name="ok">Fertig</string>
-  <string name="request_again">Request Again</string>
+  <string name="request_again">Anfrage wiederholen</string>
   <string name="upgrade">UPGRADE</string>
   <string name="something_went_wrong">Da ist was schiefgelaufen</string>
   <string name="no_network_available">Fehler: Keine Netzwerkverbindung verfügbar</string>

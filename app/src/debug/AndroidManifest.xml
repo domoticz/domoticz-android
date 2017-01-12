@@ -177,6 +177,17 @@
                 android:resource="@xml/securitywidgetprovider" />
         </receiver>
 
+        <receiver android:name=".Widgets.SecurityWidgetIntentReceiver" >
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMAWAY" />
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMHOME" />
+                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.DISCARD" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/securitywidgetprovider" />
+        </receiver>
+
         <service android:name=".Widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
 
         <receiver android:name=".Service.BootUpReceiver" >

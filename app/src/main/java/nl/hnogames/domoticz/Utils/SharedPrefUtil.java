@@ -221,9 +221,11 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
-    public void setSecurityWidgetIDX(int widgetID, int idx, String value) {
+    public void setSecurityWidgetIDX(int widgetID, int idx, String value, String pin, int layout) {
         editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
         editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();
+        editor.putString("WIDGETSECURITYPIN" + widgetID, pin).apply();
+        editor.putInt("WIDGETSECURITYPINLAYOUT" + widgetID, layout).apply();
         editor.commit();
     }
 
@@ -231,8 +233,16 @@ public class SharedPrefUtil {
         return prefs.getInt("WIDGETSECURITY" + widgetID, INVALID_IDX);
     }
 
+    public int getSecurityWidgetLayout(int widgetID) {
+        return prefs.getInt("WIDGETSECURITYPINLAYOUT" + widgetID, -1);
+    }
+
     public String getSecurityWidgetValue(int widgetID) {
         return prefs.getString("WIDGETSECURITYVALUE" + widgetID, null);
+    }
+
+    public String getSecurityWidgetPin(int widgetID) {
+        return prefs.getString("WIDGETSECURITYPIN" + widgetID, null);
     }
 
     public int getWidgetIDX(int widgetID) {

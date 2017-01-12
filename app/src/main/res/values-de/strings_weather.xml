@@ -8,7 +8,7 @@
   <string name="pressure">Druck</string>
   <string name="chill">Kälte</string>
   <string name="direction">Richtung</string>
-  <string name="humidity">Luftfeuchte</string>
+  <string name="humidity">Luftfeuchtigkeit</string>
   <string name="speed">Geschwindigkeit</string>
   <string name="forecast">Vorhersage</string>
   <string name="rain">Regen</string>

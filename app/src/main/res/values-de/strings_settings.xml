@@ -46,7 +46,7 @@
   <string name="category_Reset">Zurücksetzen</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Startbildschirm</string>
-  <string name="enable_items">Artikel einschalten/ausschalten</string>
+  <string name="enable_items">Menüpunkte einschalten/ausschalten</string>
   <string name="sort_dashboardLikeServer_title">Dashboard Sortierung</string>
   <string name="sort_dashboardLikeServer_on">Dashboard wie auf dem Server sortieren</string>
   <string name="sort_dashboardLikeServer_off">Dashboard alphabetisch sortieren</string>
@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Schalte Android Wear benutzerdifinierte Elemente ein</string>
   <string name="wear_custom_off">Schalte Android Wear benutzerdifinierte Elemente aus</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Aktiviere Android Auto Benachrichtungen</string>
+  <string name="auto_custom_off">Deaktiviere Android Auto Benachrichtigungen</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Konfiguriere GeoFencing</string>
   <!--        Theming settings -->
@@ -116,8 +116,8 @@
   <string name="notification_settings_push">Schicke Registrierungs-ID an Domoticz</string>
   <string name="notification_settings_pushed">Ihre Registrierungs-ID ist jetzt in Domoticz gespeichert</string>
   <string name="notification_settings_push_failed">Konnte Ihre Registrierungs-Id in Domoticz nicht speichern, bitte später erneut versuchen.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
+  <string name="notification_show_title">Letzte Benachrichtigungen</string>
+  <string name="notification_show_nothing">Keine Benachrichtigungen gefunden</string>
   <string name="notification_show">Letzte Benachrichtigungen anzeigen</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Benachrichtigungen überschreiben</string>
@@ -135,10 +135,10 @@
   <string name="suppress_notifications_title">Benachrichtigungen unterdrücken</string>
   <string name="alarm_notifications_select">Select Notifications to Alarm</string>
   <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm_notifications_title">Alarmbenachrichtigungen</string>
   <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarmtimer_title">Alarmtimer</string>
+  <string name="alarmtimer">Sekunden bis zum Alarm</string>
   <!--        Information category       -->
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Domoticz version</string>

@@ -5,7 +5,7 @@
   <string name="Speech_register">Registrieren eines Sprachkommandos</string>
   <string name="Speech_found">Neues Sprachkommando gefunden</string>
   <string name="Speech_edit">Kommando bearbeiten</string>
-  <string name="Speech_name">gib dem Sprachbefehl einen Namen</string>
+  <string name="Speech_name">Gib dem Sprachbefehl einen Namen. </string>
   <string name="Speech_exists">Sprachkommando ist bereits Vorhanden</string>
   <string name="Speech_saved">Neues Sprachkommando gespeichert</string>
   <string name="Speech_desc">Neuer Sprachbefehl</string>

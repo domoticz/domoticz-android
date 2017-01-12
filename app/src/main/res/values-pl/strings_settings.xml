@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Włącz własne pozycje Android Wear</string>
   <string name="wear_custom_off">Wyłącz własne pozycje Android Wear</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Włącz powiadomienia Android Auto</string>
+  <string name="auto_custom_off">Wyłącz powiadomienia Android Auto</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Konfiguruj Geofencing</string>
   <!--        Theming settings -->
@@ -137,8 +137,8 @@
   <string name="alarm_notifications">Dźwięk alarmu dla szczegółowych powiadomień</string>
   <string name="alarm_notifications_title">Alarm powiadomień</string>
   <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarmtimer_title">Budzik</string>
+  <string name="alarmtimer">Liczba sekund do czasu alarmu</string>
   <!--        Information category       -->
   <string name="info_version">Wersja</string>
   <string name="info_domoticz_version">Wersja Domoticz</string>
