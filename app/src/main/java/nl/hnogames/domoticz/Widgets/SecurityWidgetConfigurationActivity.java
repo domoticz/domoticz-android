@@ -192,8 +192,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
             layout = R.layout.widget_security_layout;
         } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_light))) {
             layout = R.layout.widget_security_layout_transparent;
-        }
-        else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_dark))) {
+        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_dark))) {
             layout = R.layout.widget_security_layout_transparent_dark;
         }
 

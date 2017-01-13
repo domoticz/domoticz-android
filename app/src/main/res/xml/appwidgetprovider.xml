@@ -24,7 +24,7 @@
     android:configure="nl.hnogames.domoticz.Widgets.WidgetConfigurationActivity"
     android:initialLayout="@layout/widget_layout"
     android:minHeight="40dp"
-    android:minWidth="110dp"
+    android:minWidth="220dp"
     android:previewImage="@drawable/widgetpreview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1000000" />

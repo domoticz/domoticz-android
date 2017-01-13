@@ -59,6 +59,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
     private static Context context;
 
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
@@ -81,9 +82,9 @@ public class WidgetProviderLarge extends AppWidgetProvider {
     }
 
     public static class UpdateWidgetService extends IntentService {
-        private static final int BUTTON_TOGGLE = 1;
-        private static final int BUTTON_ONOFF = 2;
-        private static final int BUTTON_BLINDS = 3;
+        private static final int BUTTON_1 = 1;
+        private static final int BUTTON_2 = 2;
+        private static final int BUTTON_3 = 3;
         private RemoteViews views;
 
         public UpdateWidgetService() {
@@ -171,11 +172,18 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                     text += " Total: " + s.getCounter();
 
                                 views.setTextViewText(R.id.desc, text);
-                                if (withButtons == BUTTON_TOGGLE && s.getStatus() != null) {
-                                    if (s.getStatusBoolean())
-                                        views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_off));
-                                    else
+                                if (withButtons == BUTTON_1 && s.getStatus() != null) {
+                                    if(s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON)
                                         views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
+                                    else if (s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON)
+                                        views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_off));
+                                    else {
+                                        if (s.getStatusBoolean())
+                                            views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_off));
+                                        else
+                                            views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
+                                    }
+                                    
                                     views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
@@ -183,7 +191,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             !s.getStatusBoolean(),
                                             true));
                                     views.setViewVisibility(R.id.on_button, View.VISIBLE);
-                                } else if (withButtons == BUTTON_ONOFF && s.getStatus() != null) {
+                                } else if (withButtons == BUTTON_2 && s.getStatus() != null) {
                                     views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
@@ -197,7 +205,8 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             s.getIdx(), false,
                                             false));
                                     views.setViewVisibility(R.id.off_button, View.VISIBLE);
-                                } else if (withButtons == BUTTON_BLINDS && s.getStatus() != null) {
+
+                                } else if (withButtons == BUTTON_3 && s.getStatus() != null) {
                                     views.setOnClickPendingIntent(R.id.switch_button_up, buildBlindPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
@@ -341,25 +350,31 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         (UsefulBits.isEmpty(s.getSwitchType()))) {
                     switch (s.getType()) {
                         case DomoticzValues.Scene.Type.SCENE:
-                            withButton = BUTTON_TOGGLE;
+                            withButton = BUTTON_1;
                             break;
                         case DomoticzValues.Scene.Type.GROUP:
-                            withButton = BUTTON_ONOFF;
+                            withButton = BUTTON_2;
                             break;
                     }
                 } else {
                     switch (s.getSwitchTypeVal()) {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                        case DomoticzValues.Device.Type.Value.X10SIREN:
                         case DomoticzValues.Device.Type.Value.DOORLOCK:
+                            if (mSharedPrefs.showSwitchesAsButtons())
+                                withButton = BUTTON_2;
+                            else
+                                withButton = BUTTON_1;
+                            break;
+
+                        case DomoticzValues.Device.Type.Value.X10SIREN:
                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                         case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
                         case DomoticzValues.Device.Type.Value.DOORBELL:
                         case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                         case DomoticzValues.Device.Type.Value.DIMMER:
                         case DomoticzValues.Device.Type.Value.SELECTOR:
-                            withButton = BUTTON_TOGGLE;
+                            withButton = BUTTON_1;
                             break;
 
                         case DomoticzValues.Device.Type.Value.BLINDS:
@@ -367,7 +382,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                         case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                            withButton = BUTTON_BLINDS;
+                            withButton = BUTTON_3;
                             break;
                     }
                 }
