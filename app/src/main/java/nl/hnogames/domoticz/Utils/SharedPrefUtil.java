@@ -692,14 +692,12 @@ public class SharedPrefUtil {
     }
 
     public boolean isAPKValidated() {
-        //return prefs.getBoolean(PREF_APK_VALIDATED, true);
-        return true;
+        return prefs.getBoolean(PREF_APK_VALIDATED, true);
     }
 
     public void setAPKValidated(boolean valid) {
         editor.putBoolean(PREF_APK_VALIDATED, valid).apply();
     }
-
 
     public boolean isQRCodeEnabled() {
         return prefs.getBoolean(PREF_QRCODE_ENABLED, false);
