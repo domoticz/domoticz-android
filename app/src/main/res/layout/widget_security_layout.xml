@@ -25,10 +25,22 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
     android:background="@drawable/appwidget_bg_clickable"
 android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/rowIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:src="@drawable/defaultimage" />
 
 <TextView
     android:id="@+id/title"
-    android:layout_width="match_parent"
+    android:layout_width="290dp"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:paddingBottom="10dp"
@@ -36,13 +48,14 @@ android:orientation="vertical">
     android:text="Security Panel"
     style="@style/row_name_small"
     android:textColor="@color/primary_dark" />
+    </LinearLayout>
 
 <TextView
     android:id="@+id/status"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:paddingBottom="20dp"
+    android:paddingBottom="10dp"
     android:textColor="@color/primary_dark"
     android:text="Status: Armed"
     android:textSize="@dimen/text_size_small" />

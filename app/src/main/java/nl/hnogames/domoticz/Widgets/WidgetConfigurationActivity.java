@@ -216,8 +216,10 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             layout = R.layout.widget_layout_dark;
         } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_light))) {
             layout = R.layout.widget_layout;
-        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent))) {
+        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_light))) {
             layout = R.layout.widget_layout_transparent;
+        }else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_dark))) {
+            layout = R.layout.widget_layout_transparent_dark;
         }
 
         try {
@@ -233,13 +235,19 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                         layout = R.layout.widget_layout_buttons;
                     if (withButtons == BUTTON_BLINDS)
                         layout = R.layout.widget_layout_blinds;
-                } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent))) {
+                } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_light))) {
                     if (withButtons == BUTTON_ONOFF)
                         layout = R.layout.widget_layout_buttons_transparent;
                     if (withButtons == BUTTON_BLINDS)
                         layout = R.layout.widget_layout_blinds_transparent;
+                }else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_dark))) {
+                    if (withButtons == BUTTON_ONOFF)
+                        layout = R.layout.widget_layout_buttons_transparent_dark;
+                    if (withButtons == BUTTON_BLINDS)
+                        layout = R.layout.widget_layout_blinds_transparent_dark;
                 }
             }
+
         } catch (Exception ex) { /*if this crashes we use the default layouts */ }
 
         return layout;
@@ -248,7 +256,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private void getBackground(final DevicesInfo mSelectedSwitch, final String password, final String value) {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
-                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent)})
+                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {

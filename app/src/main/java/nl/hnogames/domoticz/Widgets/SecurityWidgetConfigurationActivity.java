@@ -170,7 +170,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
     private void getBackground(final DevicesInfo mSelectedSwitch, final String password, final String value) {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
-                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent)})
+                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -190,8 +190,11 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
             layout = R.layout.widget_security_layout_dark;
         } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_light))) {
             layout = R.layout.widget_security_layout;
-        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent))) {
+        } else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_light))) {
             layout = R.layout.widget_security_layout_transparent;
+        }
+        else if (backgroundWidget.equals(getApplicationContext().getString(R.string.widget_transparent_dark))) {
+            layout = R.layout.widget_security_layout_transparent_dark;
         }
 
         return layout;

@@ -25,7 +25,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="5sp"
-    android:background="@drawable/appwidget_dark_bg_clickable"
     android:orientation="horizontal">
 
     <ImageView
@@ -79,7 +78,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/on_button"
@@ -87,22 +86,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="7dp"
-                    android:background="@drawable/button_status_dark"
-                    android:text="@string/button_state_on"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-
-                <Button
-                    android:id="@+id/off_button"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/button_status_dark"
-                    android:text="@string/button_state_off"
-                    android:textColor="@color/white"
+                    android:text="@string/button_state_on"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </LinearLayout>

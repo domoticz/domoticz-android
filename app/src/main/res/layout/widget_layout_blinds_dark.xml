@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/rowIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_vertical"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_up"
                     android:layout_margin="5dp"
-                    android:background="@drawable/button_status"
+                    android:background="@drawable/button_status_dark"
                     android:textSize="10dp" />
 
                 <ImageButton
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_stop"
-                    android:background="@drawable/button_status"
+                    android:background="@drawable/button_status_dark"
                     android:textSize="10dp" />
 
                 <ImageButton
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_down"
                     android:layout_margin="5dp"
-                    android:background="@drawable/button_status"
+                    android:background="@drawable/button_status_dark"
                     android:textSize="10dp" />
 
             </LinearLayout>
