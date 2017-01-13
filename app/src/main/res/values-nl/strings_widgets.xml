@@ -33,5 +33,6 @@
   <string name="widget_background">Achtergrond</string>
   <string name="widget_dark">Donker</string>
   <string name="widget_light">Licht</string>
-  <string name="widget_transparent">Transparant</string>
+  <string name="widget_transparent_dark">Transparant voor donkere achtergrond</string>
+  <string name="widget_transparent_light">Transparant voor lichte achtergrond</string>
 </resources>

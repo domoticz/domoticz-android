@@ -61,7 +61,7 @@
   <string name="day_off">Día festivo</string>
   <string name="custom">Personal</string>
   <string name="heating_off">Calef.apagada</string>
-  <string name="selector_value">Selector values</string>
+  <string name="selector_value">Valores del selector</string>
   <string name="debug_textview_title">Información de depuración</string>
   <string name="msg_copiedToClipboard">Texto copiado al portapapeles</string>
   <string name="favorite">Favorito</string>
@@ -71,7 +71,7 @@
   <string name="add">Añadir</string>
   <string name="cancel">Cancelar</string>
   <string name="ok">Aceptar</string>
-  <string name="request_again">Request Again</string>
+  <string name="request_again">Solicitar de nuevo</string>
   <string name="upgrade">ACTUALIZAR</string>
   <string name="something_went_wrong">Hubo algún problema</string>
   <string name="no_network_available">Error: No hay conexión de red disponible</string>

@@ -183,7 +183,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                         else
                                             views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
                                     }
-                                    
+
                                     views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
                                             appWidgetId,
