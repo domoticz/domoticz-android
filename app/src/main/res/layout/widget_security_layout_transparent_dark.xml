@@ -79,6 +79,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_home"
@@ -91,6 +92,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_away"
@@ -105,10 +107,10 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:background="@drawable/button_status_dark"
             android:text="@string/security_disarm"
             android:textSize="12dp" />
     </LinearLayout>
-
 
 </LinearLayout>

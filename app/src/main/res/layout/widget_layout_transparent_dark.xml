@@ -89,9 +89,8 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/button_status_dark"
                     android:text="@string/button_state_on"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="10dp" />
-
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
