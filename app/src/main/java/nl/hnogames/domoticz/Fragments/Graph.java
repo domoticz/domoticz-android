@@ -158,34 +158,43 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         chart.setScaleEnabled(true);
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+        if(range.equals("day"))
+        {
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis((long) value);
+                    return String.format("%02d", calendar.get(Calendar.HOUR)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+                }
+            });
+        }
+        else {
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis((long) value);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis((long) value);
+                    //int mYear = calendar.get(Calendar.YEAR);
+                    int mMonth = calendar.get(Calendar.MONTH) + 1;
+                    int mDay = calendar.get(Calendar.DAY_OF_MONTH) + 1;
+                    int mHours = calendar.get(Calendar.HOUR);
+                    int mMinutes = calendar.get(Calendar.MINUTE);
 
-                int mYear = calendar.get(Calendar.YEAR);
-                int mMonth = calendar.get(Calendar.MONTH);
-                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                int mHours = calendar.get(Calendar.HOUR);
-                int mMinutes = calendar.get(Calendar.MINUTE);
+                    String xValue = "";
+                    if (mHours <= 0 && mMinutes <= 0)
+                        xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                    else
+                        xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                    return xValue;
+                }
+            });
+        }
 
-                String xValue = "";
-                if (mHours <= 0 && mMinutes <= 0)
-                    xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
-                else
-                    xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
-                return xValue;
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        });
-
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setLabelCount(15);
         getGraphs();
         return root;
     }
@@ -680,15 +689,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             LineData lineChartData = new LineData(dataSets);
             lineChartData.setHighlightEnabled(true);
             lineChartData.setDrawValues(false);
-
-            //ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
-            //Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
-            //Axis axisY = new Axis().setHasLines(true);
-            //axisX.setMaxLabelChars(5);
-            //axisX.setName("Date");
-            //axisY.setName(axisYLabel);
-            //data.setAxisXBottom(axisX);
-            //data.setAxisYLeft(axisY);
 
             return lineChartData;
         } catch (Exception ex) {
