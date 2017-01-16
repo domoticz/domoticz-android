@@ -221,6 +221,35 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public void setSmallWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
+        editor.putInt("SMALLWIDGET" + widgetID, idx).apply();
+        editor.putBoolean("SMALLWIDGETSCENE" + widgetID, isScene).apply();
+        editor.putString("SMALLWIDGETPASSWORD" + widgetID, password).apply();
+        editor.putString("SMALLWIDGETVALUE" + widgetID, value).apply();
+        editor.putInt("SMALLWIDGETLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSmallWidgetIDX(int widgetID) {
+        return prefs.getInt("SMALLWIDGET" + widgetID, INVALID_IDX);
+    }
+
+    public String getSmallWidgetPassword(int widgetID) {
+        return prefs.getString("SMALLWIDGETPASSWORD" + widgetID, null);
+    }
+
+    public int getSmallWidgetLayout(int widgetID) {
+        return prefs.getInt("SMALLWIDGETLAYOUT" + widgetID, -1);
+    }
+
+    public String getSmallWidgetValue(int widgetID) {
+        return prefs.getString("SMALLWIDGETVALUE" + widgetID, null);
+    }
+
+    public boolean getSmallWidgetisScene(int widgetID) {
+        return prefs.getBoolean("SMALLWIDGETSCENE" + widgetID, false);
+    }
+
     public void setSecurityWidgetIDX(int widgetID, int idx, String value, String pin, int layout) {
         editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
         editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();

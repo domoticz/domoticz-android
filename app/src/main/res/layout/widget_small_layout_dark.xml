@@ -50,7 +50,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="0dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/primary_dark" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/desc"
@@ -63,7 +63,7 @@
                 android:paddingLeft="5dp"
                 android:text="@string/text_loading"
                 android:visibility="gone"
-                android:textColor="@color/primary_dark" />
+                android:textColor="@color/white" />
 
     </LinearLayout>
 </LinearLayout>

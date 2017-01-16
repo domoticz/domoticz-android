@@ -33,6 +33,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
@@ -409,10 +410,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     }
 
     private void updateWidget(Context context) {
-        Intent intent = new Intent(context, WidgetProviderLarge.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        int[] ids = {widgetID};
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        context.sendBroadcast(intent);
+        WidgetUtils.RefreshWidgets(context);
     }
 }

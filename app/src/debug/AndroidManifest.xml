@@ -159,6 +159,33 @@
 
         <service android:name=".Widgets.WidgetProviderLarge$UpdateWidgetService" />
 
+        <receiver android:name=".Widgets.WidgetProviderSmall" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/smallwidgetprovider" />
+        </receiver>
+
+        <activity
+            android:name=".Widgets.SmallWidgetConfigurationActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Domoticz Widget Config" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <service android:name=".Widgets.WidgetProviderSmall$UpdateWidgetService" />
+
         <activity
             android:name=".Widgets.SecurityWidgetConfigurationActivity"
             android:configChanges="orientation|screenSize"
