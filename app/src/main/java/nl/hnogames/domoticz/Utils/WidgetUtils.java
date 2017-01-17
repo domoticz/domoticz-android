@@ -33,7 +33,6 @@ import nl.hnogames.domoticz.Widgets.WidgetProviderSmall;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class WidgetUtils {
-    public final static String WIDGET_UPDATE_ACTION = "nl.hnogames.domoticz.Utils.intent.action.UPDATE_WIDGET";
 
     public static void RefreshWidgets(Context context) {
         //refresh all widgets
@@ -46,6 +45,7 @@ public class WidgetUtils {
             updateIntent.setAction("FROM WIDGET PROVIDER");
             context.startService(updateIntent);
         }
+
         ComponentName widgetSecurityComponent = new ComponentName(context, SecurityWidgetProvider.class);
         int[] appSecurityWidgetIds = widgetManager.getAppWidgetIds(widgetSecurityComponent);
         for (int i = 0; i < appSecurityWidgetIds.length; i++) {

@@ -256,7 +256,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
+                WidgetUtils.RefreshWidgets(context);
             }
 
             @Override
@@ -287,7 +287,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
+                WidgetUtils.RefreshWidgets(context);
             }
 
             @Override
@@ -330,7 +330,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                    updateWidget(context);
+                    WidgetUtils.RefreshWidgets(context);
                 }
 
                 @Override
@@ -352,7 +352,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + blind.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
+                WidgetUtils.RefreshWidgets(context);
             }
 
             @Override
@@ -395,7 +395,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                    updateWidget(context);
+                    WidgetUtils.RefreshWidgets(context);
                 }
 
                 @Override
@@ -409,7 +409,4 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         }
     }
 
-    private void updateWidget(Context context) {
-        WidgetUtils.RefreshWidgets(context);
-    }
 }

@@ -90,7 +90,7 @@ public class SecurityWidgetIntentReceiver extends BroadcastReceiver {
                                     mContext.getString(R.string.security_disarm),
                             Toast.LENGTH_LONG).show();
                 }
-                updateWidget(mContext);
+                WidgetUtils.RefreshWidgets(mContext);
             }
 
             @Override
@@ -103,7 +103,4 @@ public class SecurityWidgetIntentReceiver extends BroadcastReceiver {
         });
     }
 
-    private void updateWidget(Context context) {
-        WidgetUtils.RefreshWidgets(context);
-    }
 }
