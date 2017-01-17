@@ -120,27 +120,23 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
-                views.setTextViewText(R.id.on_button, "GO");
-                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
                         UpdateWidgetService.this,
                         appWidgetId,
                         idx,
                         false,
                         true));
-                views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else if (idx == iQRCodeAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
-                views.setTextViewText(R.id.on_button, "GO");
-                views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
+                views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
                         UpdateWidgetService.this,
                         appWidgetId,
                         idx,
                         false,
                         true));
-                views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else {
                 appWidgetManager.updateAppWidget(appWidgetId, views);

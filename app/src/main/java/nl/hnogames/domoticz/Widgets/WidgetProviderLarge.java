@@ -229,10 +229,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
-                                if (!s.getStatusBoolean())
-                                    views.setInt(R.id.rowIcon, "setAlpha", 100);
-                                else
-                                    views.setInt(R.id.rowIcon, "setAlpha", 255);
 
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
@@ -299,10 +295,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getType(), null, null, false, false, null));
-                                if (!s.getStatusInBoolean())
-                                    views.setInt(R.id.rowIcon, "setAlpha", 100);
-                                else
-                                    views.setInt(R.id.rowIcon, "setAlpha", 255);
 
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
