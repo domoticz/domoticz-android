@@ -379,12 +379,22 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                             withButton = BUTTON_1;
                             break;
 
-                        case DomoticzValues.Device.Type.Value.BLINDS:
-                        case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                         case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                        case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
+                            withButton = BUTTON_3;
+                            break;
+
+                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                             withButton = BUTTON_3;
+                            break;
+
+                        case DomoticzValues.Device.Type.Value.BLINDS:
+                        case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                            if(DomoticzValues.canHandleStopButton(s))
+                                withButton = BUTTON_3;
+                            else
+                                withButton = BUTTON_2;
                             break;
                     }
                 }

@@ -21,6 +21,8 @@
 
 package nl.hnogames.domoticzapi;
 
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+
 /**
  * Created by m.heinis on 8/5/2016.
  */
@@ -34,6 +36,23 @@ public class DomoticzValues {
             String AUTH_METHOD_LOGIN_FORM = "Login form";
             String AUTH_METHOD_BASIC_AUTHENTICATION = "Basic authentication";
         }
+    }
+
+    /**
+     * Checks if the device has a stop button
+     *
+     * @param mDeviceInfo Device to check
+     * @return Returns true if the device has a stop button
+     */
+    public static boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
+        //noinspection SpellCheckingInspection
+        return (mDeviceInfo.getSubType().contains("RAEX")) ||
+                (mDeviceInfo.getSubType().contains("A-OK")) ||
+                (mDeviceInfo.getSubType().contains("RollerTrol")) ||
+                (mDeviceInfo.getSubType().contains("Harrison")) ||
+                (mDeviceInfo.getSubType().contains("RFY")) ||
+                (mDeviceInfo.getSubType().contains("ASA")) ||
+                (mDeviceInfo.getSubType().contains("T6 DC"));
     }
 
     public interface Result {
@@ -116,6 +135,7 @@ public class DomoticzValues {
                 int DOORLOCK = 11;
                 int BLINDPERCENTAGE = 13;
                 int BLINDVENETIAN = 15;
+                int BLINDVENETIANUS = 19;
                 int BLINDINVERTED = 6;
                 int BLINDPERCENTAGEINVERTED = 16;
                 int SELECTOR = 18;
@@ -139,6 +159,7 @@ public class DomoticzValues {
                 String DOORLOCK = "Door Lock";
                 String BLINDPERCENTAGE = "Blinds Percentage";
                 String BLINDVENETIAN = "Venetian Blinds EU";
+                String BLINDVENETIANUS = "Venetian Blinds US";
                 String BLINDINVERTED = "Blinds Inverted";
                 String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";

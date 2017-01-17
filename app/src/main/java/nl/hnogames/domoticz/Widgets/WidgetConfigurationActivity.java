@@ -361,12 +361,23 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                         withButton = BUTTON_TOGGLE;
                         break;
 
-                    case DomoticzValues.Device.Type.Value.BLINDS:
-                    case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                    case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+
                     case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                    case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
+                        withButton = BUTTON_BLINDS;
+                        break;
+
+                    case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                     case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                         withButton = BUTTON_BLINDS;
+                        break;
+
+                    case DomoticzValues.Device.Type.Value.BLINDS:
+                    case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                        if(DomoticzValues.canHandleStopButton(s))
+                            withButton = BUTTON_BLINDS;
+                        else
+                            withButton = BUTTON_ONOFF;
                         break;
                 }
             }
