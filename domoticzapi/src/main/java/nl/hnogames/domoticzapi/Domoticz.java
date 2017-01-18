@@ -243,6 +243,7 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.BLINDINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+            case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
             case DomoticzValues.Device.Type.Value.BLINDS:
             case DomoticzValues.Device.Type.Value.DIMMER:
                 return true;
@@ -269,6 +270,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIAN);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDS);
@@ -293,6 +295,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIAN);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDS);

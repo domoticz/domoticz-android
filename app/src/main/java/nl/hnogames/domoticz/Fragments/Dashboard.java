@@ -940,8 +940,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                } else
-                    errorHandling(error, coordinatorLayout);
+                } //else
+                   // errorHandling(error, coordinatorLayout);
             }
         });
     }

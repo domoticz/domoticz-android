@@ -135,7 +135,7 @@ public class DomoticzValues {
                 int DOORLOCK = 11;
                 int BLINDPERCENTAGE = 13;
                 int BLINDVENETIAN = 15;
-                int BLINDVENETIANUS = 19;
+                int BLINDVENETIANUS = 14;
                 int BLINDINVERTED = 6;
                 int BLINDPERCENTAGEINVERTED = 16;
                 int SELECTOR = 18;
