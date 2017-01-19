@@ -38,7 +38,7 @@
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">È possibile specificare quali dispositivi controllare dal tuo Android Wear!</string>
   <string name="wizard_auto">Android Auto</string>
-  <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+  <string name="wizard_auto_description">Ricevere le notifiche di Domoticz direttamente sul tuo dispositivo Android Auto!</string>
   <string name="wizard_graph">Grafico</string>
   <string name="wizard_graph_description">Puoi visualizzare il grafico storico di Previsioni o Temperature!</string>
   <string name="wizard_filter">Filtri</string>

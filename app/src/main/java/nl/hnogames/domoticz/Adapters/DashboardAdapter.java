@@ -334,7 +334,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
                 case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                    if (canHandleStopButton(mDeviceInfo)) {
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
                         setButtons(holder, Buttons.BLINDS);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
@@ -344,6 +344,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
                     setButtons(holder, Buttons.BLINDS);
                     setBlindsRowData(mDeviceInfo, holder);
                     break;
@@ -353,23 +354,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             "No supported switch type defined in the adapter (setSwitchRowData)");
             }
         }
-    }
-
-    /**
-     * Checks if the device has a stop button
-     *
-     * @param mDeviceInfo Device to check
-     * @return Returns true if the device has a stop button
-     */
-    private boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
-        //noinspection SpellCheckingInspection
-        return (mDeviceInfo.getSubType().contains("RAEX")) ||
-                (mDeviceInfo.getSubType().contains("A-OK")) ||
-                (mDeviceInfo.getSubType().contains("RollerTrol")) ||
-                (mDeviceInfo.getSubType().contains("Harrison")) ||
-                (mDeviceInfo.getSubType().contains("RFY")) ||
-                (mDeviceInfo.getSubType().contains("ASA")) ||
-                (mDeviceInfo.getSubType().contains("T6 DC"));
     }
 
     /**

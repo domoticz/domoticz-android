@@ -243,6 +243,7 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.BLINDINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+            case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
             case DomoticzValues.Device.Type.Value.BLINDS:
             case DomoticzValues.Device.Type.Value.DIMMER:
                 return true;
@@ -269,6 +270,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIAN);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDS);
@@ -293,6 +295,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIAN);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDS);
@@ -725,6 +728,7 @@ public class Domoticz {
         StatusInfoParser parser = new StatusInfoParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + String.valueOf(idx);
 
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -734,6 +738,7 @@ public class Domoticz {
     public void getUtilities(UtilitiesReceiver receiver) {
         UtilitiesParser parser = new UtilitiesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UTILITIES);
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -743,6 +748,7 @@ public class Domoticz {
     public void getSettings(SettingsReceiver receiver) {
         SettingsParser parser = new SettingsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETTINGS);
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -752,6 +758,7 @@ public class Domoticz {
     public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -761,6 +768,7 @@ public class Domoticz {
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
         LanguageParser parser = new LanguageParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LANGUAGE);
+        Log.v(TAG, url);
         url += language + ".json";
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
@@ -771,6 +779,7 @@ public class Domoticz {
     public void getTemperatures(TemperatureReceiver receiver) {
         TemperaturesParser parser = new TemperaturesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPERATURE);
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -780,6 +789,7 @@ public class Domoticz {
     public void getWeathers(WeatherReceiver receiver) {
         WeatherParser parser = new WeatherParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.WEATHER);
+        Log.v(TAG, url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),

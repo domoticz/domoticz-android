@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Abilita dispositivi personalizzati Android Wear</string>
   <string name="wear_custom_off">Disabilita dispositivi personalizzati Android Wear</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Attivare le notifiche di Android Auto</string>
+  <string name="auto_custom_off">Disattivare le notifiche di Android Auto</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Configura Localizzazione</string>
   <!--        Theming settings -->
@@ -133,12 +133,12 @@
   <string name="suppress_notifications_select">Seleziona le Notifiche da cancellare</string>
   <string name="suppress_notifications">Cancella una Notifica specifica del dispositivo</string>
   <string name="suppress_notifications_title">Cancella le Notifiche</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarm_notifications_select">Selezionare notifiche di allarme</string>
+  <string name="alarm_notifications">Allarme sonoro per notifiche specifiche</string>
+  <string name="alarm_notifications_title">Notifiche di Allarme</string>
+  <string name="alarm">Allarme</string>
+  <string name="alarmtimer_title">Tempo di Allarme</string>
+  <string name="alarmtimer">Durata dell\'allarme in secondi</string>
   <!--        Information category       -->
   <string name="info_version">Versione</string>
   <string name="info_domoticz_version">Versione Domoticz</string>

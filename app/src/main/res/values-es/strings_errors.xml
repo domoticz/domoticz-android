@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="error_authentication">Credenciales no válidas</string>
-  <string name="error_timeout">Timeout o sin conexión</string>
+  <string name="error_timeout">Tiempo de espera o sin conexión</string>
   <string name="error_server">Error del servidor</string>
   <string name="error_network">Error de red, código de estado %1$d</string>
   <string name="error_parse">Error de análisis</string>

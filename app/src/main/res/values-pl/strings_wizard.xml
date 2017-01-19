@@ -38,7 +38,7 @@
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">Można określić, którymi przełącznikami chcesz sterować z urządzenia Android Wear!</string>
   <string name="wizard_auto">Android Auto</string>
-  <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+  <string name="wizard_auto_description">Otrzymywanie powiadomień Domoticz bezpośrednio na urządzeniu Android Auto!</string>
   <string name="wizard_graph">Wykresy</string>
   <string name="wizard_graph_description">Możesz zobaczyć historyczne wykresy narzędzi, warunków pogodowych i temperatury!</string>
   <string name="wizard_filter">Filtry</string>

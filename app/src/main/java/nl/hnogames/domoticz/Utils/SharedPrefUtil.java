@@ -221,6 +221,59 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public void setSmallWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
+        editor.putInt("SMALLWIDGET" + widgetID, idx).apply();
+        editor.putBoolean("SMALLWIDGETSCENE" + widgetID, isScene).apply();
+        editor.putString("SMALLWIDGETPASSWORD" + widgetID, password).apply();
+        editor.putString("SMALLWIDGETVALUE" + widgetID, value).apply();
+        editor.putInt("SMALLWIDGETLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSmallWidgetIDX(int widgetID) {
+        return prefs.getInt("SMALLWIDGET" + widgetID, INVALID_IDX);
+    }
+
+    public String getSmallWidgetPassword(int widgetID) {
+        return prefs.getString("SMALLWIDGETPASSWORD" + widgetID, null);
+    }
+
+    public int getSmallWidgetLayout(int widgetID) {
+        return prefs.getInt("SMALLWIDGETLAYOUT" + widgetID, -1);
+    }
+
+    public String getSmallWidgetValue(int widgetID) {
+        return prefs.getString("SMALLWIDGETVALUE" + widgetID, null);
+    }
+
+    public boolean getSmallWidgetisScene(int widgetID) {
+        return prefs.getBoolean("SMALLWIDGETSCENE" + widgetID, false);
+    }
+
+    public void setSecurityWidgetIDX(int widgetID, int idx, String value, String pin, int layout) {
+        editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
+        editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();
+        editor.putString("WIDGETSECURITYPIN" + widgetID, pin).apply();
+        editor.putInt("WIDGETSECURITYPINLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSecurityWidgetIDX(int widgetID) {
+        return prefs.getInt("WIDGETSECURITY" + widgetID, INVALID_IDX);
+    }
+
+    public int getSecurityWidgetLayout(int widgetID) {
+        return prefs.getInt("WIDGETSECURITYPINLAYOUT" + widgetID, -1);
+    }
+
+    public String getSecurityWidgetValue(int widgetID) {
+        return prefs.getString("WIDGETSECURITYVALUE" + widgetID, null);
+    }
+
+    public String getSecurityWidgetPin(int widgetID) {
+        return prefs.getString("WIDGETSECURITYPIN" + widgetID, null);
+    }
+
     public int getWidgetIDX(int widgetID) {
         return prefs.getInt("WIDGET" + widgetID, INVALID_IDX);
     }
@@ -674,7 +727,6 @@ public class SharedPrefUtil {
     public void setAPKValidated(boolean valid) {
         editor.putBoolean(PREF_APK_VALIDATED, valid).apply();
     }
-
 
     public boolean isQRCodeEnabled() {
         return prefs.getBoolean(PREF_QRCODE_ENABLED, false);

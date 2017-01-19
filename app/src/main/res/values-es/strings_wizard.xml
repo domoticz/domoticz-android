@@ -38,7 +38,7 @@
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">Puedes especificar cuales interruptores te gustaría controlar de tu dispositivo Android Wear!</string>
   <string name="wizard_auto">Android Auto</string>
-  <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+  <string name="wizard_auto_description">¡Recibe las notificaciones de Domoticz en tu dispositivo Android Auto!</string>
   <string name="wizard_graph">Gráficos</string>
   <string name="wizard_graph_description">Puedes ver el gráfico de la historia de una utilidad, clima o temperatura!</string>
   <string name="wizard_filter">Filtros</string>

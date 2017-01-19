@@ -3,7 +3,7 @@
 <resources>
   <string name="qrcode_not_supported">QR-Code ist auf diesem Gerät nicht unterstützt</string>
   <string name="qrcode_register">Registrieren Sie einen QR-Code </string>
-  <string name="qrcode_found">Neue QR-Code gefunden</string>
+  <string name="qrcode_found">Neuer QR-Code gefunden</string>
   <string name="qrcode_edit">QR Code bearbeiten</string>
   <string name="qrcode_name">Geben Sie diesen QR-Code einen Eigennamen. </string>
   <string name="qrcode_desc">QR Code scannen</string>
@@ -15,5 +15,5 @@
   <string name="noSwitchSelected_explanation_qrcode">Für QR Code Scan zu haben, sollte Sie einen Schalter verbinden auf einem QR Code</string>
   <string name="permission_camera_rationale">Zugriff auf die Kamera ist für die Erkennung benötigt</string>
   <string name="low_storage_error">QR Code Abhängigkeiten können aufgrund der niedrigen Gerätespeicher nicht heruntergeladen werden</string>
-  <string name="no_camera_permission">Diese Anwendung kann nicht ausgeführt werden, da es nicht die Kamera-Berechtigung besitzt.  Die Anwendung wird jetzt beendet.</string>
+  <string name="no_camera_permission">Diese Anwendung kann nicht ausgeführt da die Berechtigung zur Kamera Nutzung fehlt. Die Anwendung wird beendet.</string>
 </resources>

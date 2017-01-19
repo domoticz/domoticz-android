@@ -24,13 +24,15 @@
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="pick_device_title">Wybierz urządzenie</string>
   <string name="choose_switch">Wybierz urządzenie</string>
+  <string name="failed_to_get_securitypanel">Brak panelu zabezpieczeń w twoich urządzeniach</string>
   <string name="failed_to_get_switches">Nie udało się pobrać urządzeń</string>
   <string name="failed_toggle_switch">Nie udało się przełączyć urządzenia</string>
-  <string name="switch_toggled">"Przełączone urządzenie"</string>
+  <string name="switch_toggled">"Przełącz urządzenie"</string>
   <string name="text_loading">Ładowanie...</string>
   <string name="text_go">IDŹ</string>
-  <string name="widget_background">Background</string>
-  <string name="widget_dark">Dark</string>
-  <string name="widget_light">Light</string>
-  <string name="widget_transparent">Transparent</string>
+  <string name="widget_background">Tło</string>
+  <string name="widget_dark">Ciemny</string>
+  <string name="widget_light">Jasny</string>
+  <string name="widget_transparent_dark">Ciemny przezroczysty</string>
+  <string name="widget_transparent_light">Jasny przezroczysty</string>
 </resources>

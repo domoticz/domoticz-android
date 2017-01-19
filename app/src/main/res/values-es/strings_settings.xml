@@ -31,19 +31,19 @@
   <string name="category_server">Servidor</string>
   <string name="category_geofencing">Geocercas</string>
   <string name="category_info">Información</string>
-  <string name="category_advanced">Advanced</string>
+  <string name="category_advanced">Avanzada</string>
   <string name="category_language">Idioma</string>
-  <string name="category_talk_back">Talk Back</string>
+  <string name="category_talk_back">Respuestas habladas</string>
   <string name="category_notification">Notificaciones</string>
   <string name="category_debug">Depuración</string>
   <string name="category_export">Exportar/importar preferencias</string>
   <string name="category_theme">Estilo</string>
   <string name="category_nfc">Conexiones NFC</string>
-  <string name="category_startup_security">Security</string>
-  <string name="category_account">Accounts</string>
+  <string name="category_startup_security">Seguridad</string>
+  <string name="category_account">Cuentas</string>
   <string name="category_QRCode">Código QR</string>
   <string name="category_Speech">Discurso</string>
-  <string name="category_Reset">Reset</string>
+  <string name="category_Reset">Reestablecer</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Pantalla de inicio</string>
   <string name="enable_items">Activar/desactivar elementos</string>
@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Habilitar elementos específicos de Android Wear</string>
   <string name="wear_custom_off">Deshabilitar elementos específicos de Android Wear</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Habilitar las Notificaciones de Android Auto</string>
+  <string name="auto_custom_off">Desactivar las Notificaciones de Android Auto</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Configurar geocercas</string>
   <!--        Theming settings -->
@@ -78,8 +78,8 @@
   <string name="set_dark_theme">Cambiar estilo de el app a oscuro</string>
   <string name="set_light_theme">Cambiar estilo de el app a claro</string>
   <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
-  <string name="set_talk_back_off">Turn talk back off</string>
+  <string name="set_talk_back_on">Permitir a Domoticz que te responda hablando</string>
+  <string name="set_talk_back_off">Desactivar las respuestas habladas</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Configuración importada, por favor recomience Domoticz</string>
   <string name="settings_import_failed">No se pudo importar la configuración</string>
@@ -95,7 +95,7 @@
   <string name="enable_nfc">Activar NFC</string>
   <string name="enable_speech">Habilitar reconocimiento de voz</string>
   <string name="export_settings">Exportar ajustes</string>
-  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+  <string name="reset_settings">Restablecer todos los ajustes de la aplicación (¡¡CUIDADO!!)</string>
   <string name="import_settings">Importar ajustes</string>
   <string name="multi_server_settings">Habilitar la compatibilidad con servidores múltiples</string>
   <string name="nfc_enable_settings">Habilitar las conexiones NFC</string>
@@ -104,21 +104,21 @@
   <string name="qrcode_settings">Configuración de códigos QR</string>
   <string name="enable_qrcode">Habilitar códigos QR</string>
   <string name="qrcode_enable_settings">Habilitar la funcionalidad de los códigos QR</string>
-  <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
-  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+  <string name="security_settings">Configuración de Seguridad</string>
+  <string name="enable_security">Habilitar la protección por huella dactilar al inicio</string>
+  <string name="disable_security">Desactivar la protección por huella dactilar en el inicio</string>
+  <string name="setup_fingerprints">Configurar las huellas dactilares a través de los Ajustes de Android</string>
+  <string name="fingerprint_not_supported">Este dispositivo no soporta Seguridad por Huella Dactilar</string>
+  <string name="fingerprint_not_setup_in_android">Configurar primero una Huella Dactilar en este dispositivo</string>
+  <string name="fingerprint_sure">¿Estás seguro? La contraseña alternativa es la contraseña de tu cuenta de Domoticz.</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de mensajería de Google Cloud</string>
   <string name="notification_settings_push">Enviar su id de registro a Domoticz</string>
   <string name="notification_settings_pushed">Su id de registro a sido guardado ahora en Domoticz</string>
   <string name="notification_settings_push_failed">No se pudo guardar su id de registro en Domoticz, por favor Inténtelo más tarde.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
-  <string name="notification_show">Show last couple of Notifications</string>
+  <string name="notification_show_title">Últimas Notificaciones</string>
+  <string name="notification_show_nothing">No se han encontrado Notificaciones</string>
+  <string name="notification_show">Mostrar último par de Notificaciones</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Sobrescribir las notificaciones</string>
   <string name="overwrite_notifications">Sobrescribir las notificaciones anteriores de este dispositivo</string>
@@ -133,12 +133,12 @@
   <string name="suppress_notifications_select">Seleccione las notificaciones para suprimir</string>
   <string name="suppress_notifications">Suprimir notificaciones específicas en este dispositivo</string>
   <string name="suppress_notifications_title">No mostrar notificaciones</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarm_notifications_select">Seleccionar Notificaciones a Alarma</string>
+  <string name="alarm_notifications">Reproducir una Alarma para determinadas Notificaciones</string>
+  <string name="alarm_notifications_title">Notificaciones de Alarma</string>
+  <string name="alarm">Alarma</string>
+  <string name="alarmtimer_title">Temporizador de alarma</string>
+  <string name="alarmtimer">Número de segundos que dura la alarma</string>
   <!--        Information category       -->
   <string name="info_version">Versión</string>
   <string name="info_domoticz_version">Versión de Domoticz</string>

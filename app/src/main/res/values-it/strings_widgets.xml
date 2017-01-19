@@ -22,15 +22,17 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Scegli un dispositivo</string>
-  <string name="choose_switch">Scegliere il dispositivo</string>
+  <string name="pick_device_title">Preleva un dispositivo</string>
+  <string name="choose_switch">Scegli un dispositivo</string>
+  <string name="failed_to_get_securitypanel">Nessun pannello di sicurezza trovato negli interruttori</string>
   <string name="failed_to_get_switches">Impossibile ottenere dispositivi</string>
   <string name="failed_toggle_switch">Impossibile attivare il dispositivo</string>
-  <string name="switch_toggled">"Cambia il dispositivo"</string>
+  <string name="switch_toggled">"Commuta il dispositivo"</string>
   <string name="text_loading">Caricamento...</string>
   <string name="text_go">VAI</string>
-  <string name="widget_background">Background</string>
-  <string name="widget_dark">Dark</string>
-  <string name="widget_light">Light</string>
-  <string name="widget_transparent">Transparent</string>
+  <string name="widget_background">Sfondo</string>
+  <string name="widget_dark">Scuro</string>
+  <string name="widget_light">Chiaro</string>
+  <string name="widget_transparent_dark">Scuro trasparente</string>
+  <string name="widget_transparent_light">Chiaro trasparente</string>
 </resources>
