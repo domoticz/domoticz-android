@@ -25,6 +25,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="5sp"
+    android:background="@drawable/appwidget_dark_bg_clickable"
     android:orientation="vertical">
 
     <ImageView
