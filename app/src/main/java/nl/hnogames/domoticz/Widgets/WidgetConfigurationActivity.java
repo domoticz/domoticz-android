@@ -369,7 +369,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
                     case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                     case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                        withButton = BUTTON_BLINDS;
+                        withButton = BUTTON_ONOFF;
                         break;
 
                     case DomoticzValues.Device.Type.Value.BLINDS:

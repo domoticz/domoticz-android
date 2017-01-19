@@ -25,6 +25,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -53,15 +54,14 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private String password = null;
     private String value = null;
     private SharedPrefUtil mSharedPrefs;
+    private int blind_action = -1;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        widgetID = intent.getIntExtra("WIDGETID", 999999);
-        int idx = intent.getIntExtra("IDX", 999999);
-        action = intent.getBooleanExtra("WIDGETACTION", false);
-        toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
         mSharedPrefs = new SharedPrefUtil(context);
 
+        widgetID = intent.getIntExtra("WIDGETID", 999999);
+        int idx = intent.getIntExtra("IDX", 999999);
         if (idx == iVoiceAction)//voice
         {
             Intent iStart = new Intent(context, MainActivity.class);
@@ -74,10 +74,21 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("QRCODE", true);
             context.startActivity(iStart);
-        } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
-            processSwitch(context, idx);
-        } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION")) {
-            processBlind(context, idx, intent.getIntExtra("WIDGETACTION", -1));
+        }
+        else {
+            loadPasswordandValue();
+
+            if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
+                Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
+                action = intent.getBooleanExtra("WIDGETACTION", false);
+                toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
+                processSwitch(context, idx);
+            } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION")) {
+                Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
+                blind_action = intent.getIntExtra("WIDGETBLINDACTION", -1);
+                Log.i("BLIND TOGGLE", "BLIND TOGGLE:" + idx + " | " + blind_action);
+                processBlind(context, idx, blind_action);
+            }
         }
     }
 
@@ -88,7 +99,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
-
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.GROUP:
                     return true;
@@ -97,11 +107,31 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.ON_OFF:
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                case DomoticzValues.Device.Type.Value.X10SIREN:
-                case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
+                    if (mSharedPrefs.showSwitchesAsButtons())
+                        return true;
+                    else
+                        return false;
+                case DomoticzValues.Device.Type.Value.X10SIREN:
+                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                case DomoticzValues.Device.Type.Value.DOORBELL:
+                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.SELECTOR:
+                    return false;
+                case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
+                    return false;
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     return true;
+                case DomoticzValues.Device.Type.Value.BLINDS:
+                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                    if(DomoticzValues.canHandleStopButton(mExtendedStatusInfo))
+                        return false;
+                    else
+                        return true;
             }
         }
         return false;
@@ -127,18 +157,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private boolean isBlinds(DevicesInfo mExtendedStatusInfo) {
-        switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-            case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-            case DomoticzValues.Device.Type.Value.BLINDS:
-            case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
-                return true;
-        }
-        return false;
-    }
-
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
@@ -152,9 +170,18 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private void processSwitch(final Context context, int idx) {
+    private void loadPasswordandValue()
+    {
         password = mSharedPrefs.getWidgetPassword(widgetID);
         value = mSharedPrefs.getWidgetValue(widgetID);
+        if(UsefulBits.isEmpty(value) && UsefulBits.isEmpty(password))
+        {
+            password = mSharedPrefs.getSmallWidgetPassword(widgetID);
+            value = mSharedPrefs.getSmallWidgetValue(widgetID);
+        }
+    }
+
+    private void processSwitch(final Context context, int idx) {
 
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
@@ -214,9 +241,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     }
 
     private void processBlind(final Context context, int idx, final int action) {
-        password = mSharedPrefs.getWidgetPassword(widgetID);
-        value = mSharedPrefs.getWidgetValue(widgetID);
-
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         domoticz.getDevice(new DevicesReceiver() {
@@ -227,8 +251,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             @Override
             public void onReceiveDevice(final DevicesInfo s) {
                 if (s != null) {
-                    if (isBlinds(s))
-                        onBlindsToggle(s, action, domoticz, context);
+                    onBlindsToggle(s, action, domoticz, context);
                 }
             }
 
