@@ -29,6 +29,7 @@
     <!--        Categories             -->
     <string name="category_generic">Generic</string>
     <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
     <string name="category_server">Server</string>
     <string name="category_geofencing">Geofencing</string>
     <string name="category_info">Information</string>
@@ -73,6 +74,10 @@
     <string name="custom_wear_select_desc">Select which switches you like to see on your Android Wear device</string>
     <string name="wear_custom_on">Enable Android Wear custom items</string>
     <string name="wear_custom_off">Disable Android Wear custom items</string>
+
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Enable Android Auto Notifications</string>
+    <string name="auto_custom_off">Disable Android Auto Notifications</string>
 
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Configure Geofencing</string>

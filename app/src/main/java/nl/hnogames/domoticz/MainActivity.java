@@ -541,17 +541,18 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @DebugLog
     public void changeFragment(String fragment) {
-        if (!isFinishing()) {
-            try {
-                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                latestFragment = Fragment.instantiate(MainActivity.this, fragment);
-                tx.replace(R.id.main, latestFragment);
-                tx.commitAllowingStateLoss();
-                addFragmentStack(fragment);
-                saveScreenToAnalytics(fragment);
-            } catch (Exception e) {
-            }
+        //if (!isFinishing()) {
+        try {
+            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+            latestFragment = Fragment.instantiate(MainActivity.this, fragment);
+            tx.replace(R.id.main, latestFragment);
+            tx.commitAllowingStateLoss();
+            addFragmentStack(fragment);
+            saveScreenToAnalytics(fragment);
+        } catch (Exception e) {
+            Log.e("Fragment", e.getMessage());
         }
+        //}
     }
 
     private void addFragment() {
@@ -742,17 +743,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                 stopCameraTimer();
                                 startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
                             } else if (drawerItem.getTag() != null) {
-                                try {
-                                    latestFragment = Fragment.instantiate(MainActivity.this,
-                                            String.valueOf(drawerItem.getTag()));
-                                    FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                                    tx.replace(R.id.main,
-                                            latestFragment);
-                                    tx.commitAllowingStateLoss();
-                                    addFragmentStack(String.valueOf(drawerItem.getTag()));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                changeFragment(String.valueOf(drawerItem.getTag()));
                                 stopCameraTimer();
 
                                 invalidateOptionsMenu();

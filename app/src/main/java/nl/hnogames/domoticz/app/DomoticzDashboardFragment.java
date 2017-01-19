@@ -46,8 +46,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fenjuly.mylibrary.SpinnerLoader;
-
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
@@ -77,7 +75,6 @@ public class DomoticzDashboardFragment extends Fragment {
     private boolean debug;
     private ViewGroup root;
     private String sort = "";
-    private SpinnerLoader oSpinner;
 
     public DomoticzDashboardFragment() {
     }
@@ -93,8 +90,6 @@ public class DomoticzDashboardFragment extends Fragment {
                 (root.findViewById(R.id.debugLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if ((root.findViewById(R.id.coordinatorLayout)) != null)
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
-            if (oSpinner != null)
-                oSpinner.setPointcolor(ContextCompat.getColor(getContext(), R.color.secondary));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
 
@@ -129,7 +124,6 @@ public class DomoticzDashboardFragment extends Fragment {
             mSharedPrefs = new SharedPrefUtil(getContext());
 
         setGridViewLayout();
-        oSpinner = (SpinnerLoader) root.findViewById(R.id.spinner);
         coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
     }
@@ -137,7 +131,6 @@ public class DomoticzDashboardFragment extends Fragment {
     public void setGridViewLayout() {
 
         try {
-
             boolean isTablet = false;
             float screenWidth = 0;
             boolean isPortrait = false;
@@ -237,11 +230,7 @@ public class DomoticzDashboardFragment extends Fragment {
         if (show) {
             if (gridView != null)
                 gridView.setVisibility(View.GONE);
-            if (oSpinner != null)
-                oSpinner.setVisibility(View.VISIBLE);
         } else {
-            if (oSpinner != null)
-                oSpinner.setVisibility(View.GONE);
             if (gridView != null)
                 gridView.setVisibility(View.VISIBLE);
         }

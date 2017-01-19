@@ -25,6 +25,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
@@ -52,15 +54,14 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private String password = null;
     private String value = null;
     private SharedPrefUtil mSharedPrefs;
+    private int blind_action = -1;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        widgetID = intent.getIntExtra("WIDGETID", 999999);
-        int idx = intent.getIntExtra("IDX", 999999);
-        action = intent.getBooleanExtra("WIDGETACTION", false);
-        toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
         mSharedPrefs = new SharedPrefUtil(context);
 
+        widgetID = intent.getIntExtra("WIDGETID", 999999);
+        int idx = intent.getIntExtra("IDX", 999999);
         if (idx == iVoiceAction)//voice
         {
             Intent iStart = new Intent(context, MainActivity.class);
@@ -73,9 +74,20 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("QRCODE", true);
             context.startActivity(iStart);
-        } else {
+        }
+        else {
+            loadPasswordandValue();
+
             if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
+                Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
+                action = intent.getBooleanExtra("WIDGETACTION", false);
+                toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
                 processSwitch(context, idx);
+            } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION")) {
+                Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
+                blind_action = intent.getIntExtra("WIDGETBLINDACTION", -1);
+                Log.i("BLIND TOGGLE", "BLIND TOGGLE:" + idx + " | " + blind_action);
+                processBlind(context, idx, blind_action);
             }
         }
     }
@@ -87,7 +99,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
-
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.GROUP:
                     return true;
@@ -96,11 +107,31 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.ON_OFF:
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                case DomoticzValues.Device.Type.Value.X10SIREN:
-                case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
+                    if (mSharedPrefs.showSwitchesAsButtons())
+                        return true;
+                    else
+                        return false;
+                case DomoticzValues.Device.Type.Value.X10SIREN:
+                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                case DomoticzValues.Device.Type.Value.DOORBELL:
+                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.SELECTOR:
+                    return false;
+                case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
+                    return false;
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     return true;
+                case DomoticzValues.Device.Type.Value.BLINDS:
+                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                    if(DomoticzValues.canHandleStopButton(mExtendedStatusInfo))
+                        return false;
+                    else
+                        return true;
             }
         }
         return false;
@@ -126,7 +157,6 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
@@ -140,9 +170,18 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private void processSwitch(final Context context, int idx) {
+    private void loadPasswordandValue()
+    {
         password = mSharedPrefs.getWidgetPassword(widgetID);
         value = mSharedPrefs.getWidgetValue(widgetID);
+        if(UsefulBits.isEmpty(value) && UsefulBits.isEmpty(password))
+        {
+            password = mSharedPrefs.getSmallWidgetPassword(widgetID);
+            value = mSharedPrefs.getSmallWidgetValue(widgetID);
+        }
+    }
+
+    private void processSwitch(final Context context, int idx) {
 
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
@@ -201,6 +240,28 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         }
     }
 
+    private void processBlind(final Context context, int idx, final int action) {
+        final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
+
+        domoticz.getDevice(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
+
+            @Override
+            public void onReceiveDevice(final DevicesInfo s) {
+                if (s != null) {
+                    onBlindsToggle(s, action, domoticz, context);
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Toast.makeText(context, R.string.failed_toggle_switch, Toast.LENGTH_SHORT).show();
+            }
+        }, idx, false);
+    }
+
     public void onButtonClick(final SceneInfo clickedSwitch, boolean checked, Domoticz mDomoticz, final Context context) {
         int jsonAction;
         int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
@@ -218,7 +279,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
+                WidgetUtils.RefreshWidgets(context);
             }
 
             @Override
@@ -249,7 +310,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             @Override
             public void onReceiveResult(String result) {
                 Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                updateWidget(context);
+                WidgetUtils.RefreshWidgets(context);
             }
 
             @Override
@@ -292,7 +353,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                    updateWidget(context);
+                    WidgetUtils.RefreshWidgets(context);
                 }
 
                 @Override
@@ -304,6 +365,27 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 }
             });
         }
+    }
+
+    public void onBlindsToggle(final DevicesInfo blind, int action, Domoticz mDomoticz, final Context context) {
+        int idx = blind.getIdx();
+        int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+
+        mDomoticz.setAction(idx, jsonUrl, action, 0, password, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + blind.getName(), Toast.LENGTH_SHORT).show();
+                WidgetUtils.RefreshWidgets(context);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (!UsefulBits.isEmpty(password))
+                    Toast.makeText(context, context.getString(R.string.security_wrong_code), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, context.getString(R.string.failed_toggle_switch), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
@@ -336,7 +418,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveResult(String result) {
                     Toast.makeText(context, context.getString(R.string.switch_toggled) + ": " + clickedSwitch.getName(), Toast.LENGTH_SHORT).show();
-                    updateWidget(context);
+                    WidgetUtils.RefreshWidgets(context);
                 }
 
                 @Override
@@ -350,11 +432,4 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         }
     }
 
-    private void updateWidget(Context context) {
-        Intent intent = new Intent(context, WidgetProviderLarge.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        int[] ids = {widgetID};
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        context.sendBroadcast(intent);
-    }
 }

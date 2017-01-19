@@ -73,6 +73,7 @@ public class SharedPrefUtil {
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_CUSTOM_AUTO = "enableAutoNotifications";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
@@ -211,12 +212,66 @@ public class SharedPrefUtil {
         return prefs.getInt("COLORPOSITION" + idx, 0);
     }
 
-    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value) {
+    public void setWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
         editor.putInt("WIDGET" + widgetID, idx).apply();
         editor.putBoolean("WIDGETSCENE" + widgetID, isScene).apply();
         editor.putString("WIDGETPASSWORD" + widgetID, password).apply();
         editor.putString("WIDGETVALUE" + widgetID, value).apply();
+        editor.putInt("WIDGETLAYOUT" + widgetID, layout).apply();
         editor.commit();
+    }
+
+    public void setSmallWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
+        editor.putInt("SMALLWIDGET" + widgetID, idx).apply();
+        editor.putBoolean("SMALLWIDGETSCENE" + widgetID, isScene).apply();
+        editor.putString("SMALLWIDGETPASSWORD" + widgetID, password).apply();
+        editor.putString("SMALLWIDGETVALUE" + widgetID, value).apply();
+        editor.putInt("SMALLWIDGETLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSmallWidgetIDX(int widgetID) {
+        return prefs.getInt("SMALLWIDGET" + widgetID, INVALID_IDX);
+    }
+
+    public String getSmallWidgetPassword(int widgetID) {
+        return prefs.getString("SMALLWIDGETPASSWORD" + widgetID, null);
+    }
+
+    public int getSmallWidgetLayout(int widgetID) {
+        return prefs.getInt("SMALLWIDGETLAYOUT" + widgetID, -1);
+    }
+
+    public String getSmallWidgetValue(int widgetID) {
+        return prefs.getString("SMALLWIDGETVALUE" + widgetID, null);
+    }
+
+    public boolean getSmallWidgetisScene(int widgetID) {
+        return prefs.getBoolean("SMALLWIDGETSCENE" + widgetID, false);
+    }
+
+    public void setSecurityWidgetIDX(int widgetID, int idx, String value, String pin, int layout) {
+        editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
+        editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();
+        editor.putString("WIDGETSECURITYPIN" + widgetID, pin).apply();
+        editor.putInt("WIDGETSECURITYPINLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSecurityWidgetIDX(int widgetID) {
+        return prefs.getInt("WIDGETSECURITY" + widgetID, INVALID_IDX);
+    }
+
+    public int getSecurityWidgetLayout(int widgetID) {
+        return prefs.getInt("WIDGETSECURITYPINLAYOUT" + widgetID, -1);
+    }
+
+    public String getSecurityWidgetValue(int widgetID) {
+        return prefs.getString("WIDGETSECURITYVALUE" + widgetID, null);
+    }
+
+    public String getSecurityWidgetPin(int widgetID) {
+        return prefs.getString("WIDGETSECURITYPIN" + widgetID, null);
     }
 
     public int getWidgetIDX(int widgetID) {
@@ -225,6 +280,10 @@ public class SharedPrefUtil {
 
     public String getWidgetPassword(int widgetID) {
         return prefs.getString("WIDGETPASSWORD" + widgetID, null);
+    }
+
+    public int getWidgetLayout(int widgetID) {
+        return prefs.getInt("WIDGETLAYOUT" + widgetID, -1);
     }
 
     public String getWidgetValue(int widgetID) {
@@ -619,6 +678,10 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
     }
 
+    public boolean showAutoNotifications() {
+        return prefs.getBoolean(PREF_CUSTOM_AUTO, false);
+    }
+
     public boolean isNFCEnabled() {
         return prefs.getBoolean(PREF_ENABLE_NFC, false);
     }
@@ -664,7 +727,6 @@ public class SharedPrefUtil {
     public void setAPKValidated(boolean valid) {
         editor.putBoolean(PREF_APK_VALIDATED, valid).apply();
     }
-
 
     public boolean isQRCodeEnabled() {
         return prefs.getBoolean(PREF_QRCODE_ENABLED, false);

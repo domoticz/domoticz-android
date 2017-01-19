@@ -90,7 +90,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private Integer[] selectedFilters;
     private SharedPrefUtil mSharedPrefs;
 
-    private com.fenjuly.mylibrary.SpinnerLoader mSpinner;
     private XAxis xAxis;
     private YAxis yAxis;
 
@@ -136,9 +135,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_graph, null);
 
-        mSpinner = (com.fenjuly.mylibrary.SpinnerLoader) root.findViewById(R.id.spinner);
-        mSpinner.animate();
-
         chart = (LineChart) root.findViewById(R.id.chart);
         xAxis = chart.getXAxis();
         yAxis = chart.getAxisLeft();
@@ -147,8 +143,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             xAxis.setTextColor(Color.WHITE);
             yAxis.setTextColor(Color.WHITE);
             chart.getLegend().setTextColor(Color.WHITE);
-            if (mSpinner != null)
-                mSpinner.setPointcolor(ContextCompat.getColor(getContext(), R.color.secondary));
             chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
             chart.setDrawGridBackground(true);
         } else {
@@ -164,34 +158,43 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         chart.setScaleEnabled(true);
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+        if(range.equals("day"))
+        {
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis((long) value);
+                    return String.format("%02d", calendar.get(Calendar.HOUR)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+                }
+            });
+        }
+        else {
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis((long) value);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis((long) value);
+                    //int mYear = calendar.get(Calendar.YEAR);
+                    int mMonth = calendar.get(Calendar.MONTH) + 1;
+                    int mDay = calendar.get(Calendar.DAY_OF_MONTH) + 1;
+                    int mHours = calendar.get(Calendar.HOUR);
+                    int mMinutes = calendar.get(Calendar.MINUTE);
 
-                int mYear = calendar.get(Calendar.YEAR);
-                int mMonth = calendar.get(Calendar.MONTH);
-                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                int mHours = calendar.get(Calendar.HOUR);
-                int mMinutes = calendar.get(Calendar.MINUTE);
+                    String xValue = "";
+                    if (mHours <= 0 && mMinutes <= 0)
+                        xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                    else
+                        xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                    return xValue;
+                }
+            });
+        }
 
-                String xValue = "";
-                if (mHours <= 0 && mMinutes <= 0)
-                    xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
-                else
-                    xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
-                return xValue;
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        });
-
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setLabelCount(15);
         getGraphs();
         return root;
     }
@@ -204,9 +207,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     public void getGraphs() {
         chart.setVisibility(View.GONE);
-        mSpinner.setVisibility(View.VISIBLE);
-        mSpinner.animate();
-
         new Thread() {
             @Override
             public void run() {
@@ -230,7 +230,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                     @Override
                                     public void run() {
                                         chart.setVisibility(View.VISIBLE);
-                                        mSpinner.setVisibility(View.GONE);
                                         chart.animateX(1000);
 
                                         if (getActivity() != null)
@@ -286,6 +285,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             List<Entry> valuesc = new ArrayList<>();
 
             List<Entry> valuesv = new ArrayList<>();
+            List<Entry> valuesv2 = new ArrayList<>();
             List<Entry> valuesvMin = new ArrayList<>();
             List<Entry> valuesvMax = new ArrayList<>();
 
@@ -309,6 +309,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addSetpoint = false;
             boolean addCounter = false;
             boolean addPercentage = false;
+            boolean addSecondPercentage = false;
             boolean addPercentageRange = false;
             boolean addSunPower = false;
             boolean addDirection = false;
@@ -318,7 +319,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addCO2Min = false;
             boolean addCO2Max = false;
             boolean addUsage = false;
-            boolean onlyDate = false;
             Calendar mydate = Calendar.getInstance();
 
             int stepcounter = 0;
@@ -378,6 +378,11 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                 valuesvMin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMin())));
                                 valuesvMax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMax())));
                             }
+                        }
+
+                        if (g.getSecondPercentage() != null && g.getSecondPercentage().length() > 0) {
+                            addSecondPercentage = true;
+                            valuesv2.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSecondPercentage())));
                         }
 
                         if (g.getCounter() != null && g.getCounter().length() > 0) {
@@ -524,6 +529,15 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 }
             }
 
+            if ((addSecondPercentage && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesv2, ((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
             if ((addDirection && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesdi, ((TextView) view.findViewById(R.id.legend_direction)).getText().toString()); // add entries to dataset
@@ -634,6 +648,12 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage)).getText());
                 }
 
+                if (addSecondPercentage) {
+                    (view.findViewById(R.id.legend_percentage2))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage2)).getText());
+                }
+
                 if (addDirection) {
                     (view.findViewById(R.id.legend_direction))
                             .setVisibility(View.VISIBLE);
@@ -690,15 +710,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             LineData lineChartData = new LineData(dataSets);
             lineChartData.setHighlightEnabled(true);
             lineChartData.setDrawValues(false);
-
-            //ComboLineColumnChartData data = new ComboLineColumnChartData(null, lineChartData);
-            //Axis axisX = new Axis().setValues(axisValueX).setHasLines(true);
-            //Axis axisY = new Axis().setHasLines(true);
-            //axisX.setMaxLabelChars(5);
-            //axisX.setName("Date");
-            //axisY.setName(axisYLabel);
-            //data.setAxisXBottom(axisX);
-            //data.setAxisYLeft(axisY);
 
             return lineChartData;
         } catch (Exception ex) {
@@ -758,7 +769,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                         chart.setData(columnData);
                                         chart.invalidate(); // refresh
                                         chart.setVisibility(View.VISIBLE);
-                                        mSpinner.setVisibility(View.GONE);
                                         chart.animateX(1000);
 
                                         if (getActivity() != null)

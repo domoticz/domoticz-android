@@ -842,8 +842,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                } else
-                    errorHandling(error);
+                } //else
+                  //  errorHandling(error);
             }
         });
     }

@@ -113,6 +113,12 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
+    <style name="row_name_micro" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="row_name_small" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:paddingLeft">10dp</item>
         <item name="android:textSize">18sp</item>
