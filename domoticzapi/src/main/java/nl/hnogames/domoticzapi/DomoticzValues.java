@@ -45,14 +45,20 @@ public class DomoticzValues {
      * @return Returns true if the device has a stop button
      */
     public static boolean canHandleStopButton(DevicesInfo mDeviceInfo) {
-        //noinspection SpellCheckingInspection
         return (mDeviceInfo.getSubType().contains("RAEX")) ||
                 (mDeviceInfo.getSubType().contains("A-OK")) ||
-                (mDeviceInfo.getSubType().contains("RollerTrol")) ||
                 (mDeviceInfo.getSubType().contains("Harrison")) ||
                 (mDeviceInfo.getSubType().contains("RFY")) ||
                 (mDeviceInfo.getSubType().contains("ASA")) ||
-                (mDeviceInfo.getSubType().contains("T6 DC"));
+                (mDeviceInfo.getSubType().contains("Hasta")) ||
+                (mDeviceInfo.getSubType().contains("Media Mount")) ||
+                (mDeviceInfo.getSubType().contains("Forest")) ||
+                (mDeviceInfo.getSubType().contains("Chamberlain")) ||
+                (mDeviceInfo.getSubType().contains("Sunpery")) ||
+                (mDeviceInfo.getSubType().contains("Dolat")) ||
+                (mDeviceInfo.getSubType().contains("DC106")) ||
+                (mDeviceInfo.getSubType().contains("Confexx")) ||
+                (mDeviceInfo.getSubType().contains("ASP"));
     }
 
     public interface Result {
