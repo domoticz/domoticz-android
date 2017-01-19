@@ -28,6 +28,6 @@
   <string name="security_arm_away">Armar fuera</string>
   <string name="security_wrong_code">Introducido código incorrecto!</string>
   <string name="security_generic_error">No se pudo cambiar el estado de la seguridad</string>
-  <string name="security_wrong_password_fingerprint">Wrong password entered, your domoticz account password is the failover for your fingerprint...!</string>
+  <string name="security_wrong_password_fingerprint">Contraseña incorrecta. ¡La contraseña de tu cuenta domoticz es la alternativa por si falla tu huella dactilar...!</string>
   <string name="show_password">Mostrar contraseña</string>
 </resources>

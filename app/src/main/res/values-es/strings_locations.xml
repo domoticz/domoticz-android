@@ -8,7 +8,7 @@
   <string name="latitude">Latitud</string>
   <string name="radius">Radio (metros)</string>
   <string name="connectedSwitch">Interruptor conectado</string>
-  <string name="unable_to_get_switches">Incapaz de conseguir todos los interruptores, por favor, inténtelo de nuevo</string>
+  <string name="unable_to_get_switches">Incapaz de cargar todos los interruptores, por favor, inténtelo de nuevo</string>
   <string name="delete_short">SUPR</string>
   <string name="delete">Eliminar</string>
   <string name="Location_name">Nombre de ubicación</string>
@@ -18,7 +18,7 @@
   <string name="locationAddress">Dirección</string>
   <string name="unknown">Desconocido</string>
   <string name="not_available">No disponible</string>
-  <string name="no_valid_latLong">Latitud o longitud no válido</string>
+  <string name="no_valid_latLong">Latitud o longitud no válida</string>
   <string name="starting_geofence_service">Iniciando servicio de Geocerca</string>
   <string name="could_not_find_location">No se pudo encontrar la ubicación, por favor intente otra vez.</string>
   <string name="google_play_services_unavailable">Servicios de Google Play no disponibles.</string>

@@ -133,8 +133,8 @@
   <string name="suppress_notifications_select">Wählen Sie Benachrichtigungen unterdrücken</string>
   <string name="suppress_notifications">Auf diesem Gerät bestimmte Benachrichtigungen unterdrücken</string>
   <string name="suppress_notifications_title">Benachrichtigungen unterdrücken</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="alarm_notifications_select">Wählen Sie Benachrichtigungen für Alarm</string>
+  <string name="alarm_notifications">Alarmton für bestimmte Benachrichtigungen erklingen lassen</string>
   <string name="alarm_notifications_title">Alarmbenachrichtigungen</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtimer</string>

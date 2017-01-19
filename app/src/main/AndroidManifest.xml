@@ -255,7 +255,6 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-
         <activity
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize"

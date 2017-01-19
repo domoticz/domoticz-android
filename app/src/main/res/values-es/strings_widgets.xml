@@ -33,6 +33,6 @@
   <string name="widget_background">Fondo</string>
   <string name="widget_dark">Oscuro</string>
   <string name="widget_light">Claro</string>
-  <string name="widget_transparent_dark">Dark Transparent</string>
-  <string name="widget_transparent_light">Light Transparent</string>
+  <string name="widget_transparent_dark">Transparente oscuro</string>
+  <string name="widget_transparent_light">Transparente claro</string>
 </resources>
