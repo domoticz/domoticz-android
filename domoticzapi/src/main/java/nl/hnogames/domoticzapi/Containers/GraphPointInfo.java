@@ -41,7 +41,14 @@ public class GraphPointInfo {
     private float tm = Float.NaN;
     boolean hasTemperatureRange = true;
 
+    private String eu;
+
     private String v;
+    private String v2;
+
+    private String r1;
+    private String r2;
+
     private String vMin;
     private String vMax;
     boolean hasPercentageRange = true;
@@ -83,6 +90,14 @@ public class GraphPointInfo {
             vMax = row.getString("v_max");
         }
 
+        if (row.has("v2"))
+            v2 = row.getString("v2");
+        if (row.has("r1"))
+            r1 = row.getString("r1");
+        if (row.has("r2"))
+            r2 = row.getString("r2");
+        if (row.has("eu"))
+            eu = row.getString("eu");
         if (row.has("c"))
             c = row.getString("c");
         if (row.has("hu"))
@@ -125,6 +140,21 @@ public class GraphPointInfo {
     public String getPercentage() {
         return v;
     }
+    public String getSecondPercentage() {
+        return v2;
+    }
+
+    public String getPowerReturn() {
+        return r1;
+    }
+    public String getSecondPowerReturn() {
+        return r2;
+    }
+
+    public String getPowerUsage() {
+        return eu;
+    }
+
     public String getPercentageMin() {
         return vMin;
     }

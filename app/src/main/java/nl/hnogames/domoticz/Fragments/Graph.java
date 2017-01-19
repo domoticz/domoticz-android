@@ -285,6 +285,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             List<Entry> valuesc = new ArrayList<>();
 
             List<Entry> valuesv = new ArrayList<>();
+            List<Entry> valuesv2 = new ArrayList<>();
             List<Entry> valuesvMin = new ArrayList<>();
             List<Entry> valuesvMax = new ArrayList<>();
 
@@ -308,6 +309,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addSetpoint = false;
             boolean addCounter = false;
             boolean addPercentage = false;
+            boolean addSecondPercentage = false;
             boolean addPercentageRange = false;
             boolean addSunPower = false;
             boolean addDirection = false;
@@ -317,7 +319,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addCO2Min = false;
             boolean addCO2Max = false;
             boolean addUsage = false;
-            boolean onlyDate = false;
             Calendar mydate = Calendar.getInstance();
 
             int stepcounter = 0;
@@ -377,6 +378,11 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                 valuesvMin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMin())));
                                 valuesvMax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMax())));
                             }
+                        }
+
+                        if (g.getSecondPercentage() != null && g.getSecondPercentage().length() > 0) {
+                            addSecondPercentage = true;
+                            valuesv2.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSecondPercentage())));
                         }
 
                         if (g.getCounter() != null && g.getCounter().length() > 0) {
@@ -523,6 +529,15 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 }
             }
 
+            if ((addSecondPercentage && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesv2, ((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
             if ((addDirection && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesdi, ((TextView) view.findViewById(R.id.legend_direction)).getText().toString()); // add entries to dataset
@@ -631,6 +646,12 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (view.findViewById(R.id.legend_percentage))
                             .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage)).getText());
+                }
+
+                if (addSecondPercentage) {
+                    (view.findViewById(R.id.legend_percentage2))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage2)).getText());
                 }
 
                 if (addDirection) {
