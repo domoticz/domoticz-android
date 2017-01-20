@@ -195,7 +195,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Widgets.SecurityWidgetProvider"  android:label="@string/security_settings">
+        <receiver android:name=".Widgets.SecurityWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
