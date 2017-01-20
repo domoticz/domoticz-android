@@ -39,7 +39,7 @@ public class GraphPointInfo {
     private float te = Float.NaN;
     private float ta = Float.NaN;
     private float tm = Float.NaN;
-    boolean hasTemperatureRange = true;
+    boolean hasTemperatureRange = false;
 
     private String eu;
 
@@ -51,7 +51,7 @@ public class GraphPointInfo {
 
     private String vMin;
     private String vMax;
-    boolean hasPercentageRange = true;
+    boolean hasPercentageRange = false;
 
     private String c;
     private String di;
@@ -137,10 +137,10 @@ public class GraphPointInfo {
                 '}';
     }
 
-    public String getPercentage() {
+    public String getValue() {
         return v;
     }
-    public String getSecondPercentage() {
+    public String getSecondValue() {
         return v2;
     }
 
@@ -155,13 +155,13 @@ public class GraphPointInfo {
         return eu;
     }
 
-    public String getPercentageMin() {
+    public String getValueMin() {
         return vMin;
     }
-    public String getPercentageMax() {
+    public String getValueMax() {
         return vMax;
     }
-    public boolean hasPercentageRange() {
+    public boolean hasValueRange() {
         return hasPercentageRange;
     }
 
