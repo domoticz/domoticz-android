@@ -373,6 +373,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                 int jsonValue = 0;
 
+                if(mDevicesInfo == null)
+                    return;
+
                 if (inputJSONAction < 0) {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                             mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -103,7 +104,8 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    Log.e(SecurityWidgetProvider.class.getSimpleName(), e.getMessage());
+                    if(e != null && !UsefulBits.isEmpty(e.getMessage()))
+                        Log.e(SecurityWidgetProvider.class.getSimpleName(), e.getMessage());
                 }
             }
         }

@@ -275,11 +275,14 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
                     INVALID_APPWIDGET_ID);
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
+                Log.i(TAG, "Widget without a type saved");
                 mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
             } else {
                 if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+                    Log.i(TAG, "Widget Scene saved " + mSelectedSwitch.getType());
                     mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value, layoutId);
                 } else {
+                    Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
                     mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
                 }
             }

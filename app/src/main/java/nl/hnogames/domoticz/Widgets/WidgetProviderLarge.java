@@ -102,7 +102,8 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    Log.e(WidgetProviderLarge.class.getSimpleName(), e.getMessage());
+                    if(e != null && !UsefulBits.isEmpty(e.getMessage()))
+                        Log.e(WidgetProviderLarge.class.getSimpleName(), e.getMessage());
                 }
             }
         }
