@@ -370,19 +370,19 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             }
                         }
 
-                        if (g.getPercentage() != null && g.getPercentage().length() > 0) {
+                        if (g.getValue() != null && g.getValue().length() > 0) {
                             addPercentage = true;
-                            valuesv.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentage())));
-                            if (g.hasPercentageRange()) {
+                            valuesv.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getValue())));
+                            if (g.hasValueRange()) {
                                 addPercentageRange = true;
-                                valuesvMin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMin())));
-                                valuesvMax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPercentageMax())));
+                                valuesvMin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getValueMin())));
+                                valuesvMax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getValueMax())));
                             }
                         }
 
-                        if (g.getSecondPercentage() != null && g.getSecondPercentage().length() > 0) {
+                        if (g.getSecondValue() != null && g.getSecondValue().length() > 0) {
                             addSecondPercentage = true;
-                            valuesv2.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSecondPercentage())));
+                            valuesv2.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSecondValue())));
                         }
 
                         if (g.getCounter() != null && g.getCounter().length() > 0) {
