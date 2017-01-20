@@ -55,6 +55,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private String value = null;
     private SharedPrefUtil mSharedPrefs;
     private int blind_action = -1;
+    private boolean smallWidget = false;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -79,9 +80,11 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             loadPasswordandValue();
 
             if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
-                Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
+                Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION");
+                smallWidget = intent.getBooleanExtra("WIDGETSMALL", false);
                 action = intent.getBooleanExtra("WIDGETACTION", false);
                 toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
+                Log.i("SWITCH TOGGLE", "SWITCH TOGGLE:" + idx + " | " + action);
                 processSwitch(context, idx);
             } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION")) {
                 Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
@@ -95,6 +98,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo == null)
             return false;
+        if(smallWidget)
+            return true;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
@@ -107,22 +112,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.ON_OFF:
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                case DomoticzValues.Device.Type.Value.DOORLOCK:
-                    if (mSharedPrefs.showSwitchesAsButtons())
-                        return true;
-                    else
-                        return false;
                 case DomoticzValues.Device.Type.Value.X10SIREN:
-                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
-                case DomoticzValues.Device.Type.Value.DOORBELL:
-                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                 case DomoticzValues.Device.Type.Value.DIMMER:
+                case DomoticzValues.Device.Type.Value.DOORLOCK:
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                    return false;
-                case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
-                case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
-                    return false;
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     return true;
@@ -134,6 +127,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                         return true;
             }
         }
+
         return false;
     }
 
@@ -185,6 +179,9 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
+        if(smallWidget)
+            isScene = mSharedPrefs.getSmallWidgetisScene(widgetID);
+        Log.i("PROCESS SWITCH", "Device: " + idx + " " + isScene);
 
         if (!isScene) {
             domoticz.getDevice(new DevicesReceiver() {
@@ -195,12 +192,15 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 @Override
                 public void onReceiveDevice(final DevicesInfo s) {
                     if (s != null) {
+                        Log.i("SWITCH TOGGLE", "Device: " + s.getName() + " | " + s.getSwitchType());
+
                         if (isOnOffSwitch(s)) {
                             if (toggle)
                                 onSwitchClick(s, !s.getStatusBoolean(), domoticz, context, value);
                             else
                                 onSwitchClick(s, action, domoticz, context, value);
                         }
+
                         if (isPushOffSwitch(s))
                             onButtonClick(s, false, domoticz, context);
                         if (isPushOnSwitch(s))
@@ -225,6 +225,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onReceiveScene(final SceneInfo scene) {
+                    Log.i("SCENE TOGGLE", "Device: " + scene.getName() );
+
                     if (scene != null) {
                         if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
                             onButtonClick(scene, true, domoticz, context);//push on scene
