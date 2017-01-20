@@ -100,7 +100,8 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    Log.e(WidgetProviderSmall.class.getSimpleName(), e.getMessage());
+                    if(e != null && !UsefulBits.isEmpty(e.getMessage()))
+                        Log.e(WidgetProviderSmall.class.getSimpleName(), e.getMessage());
                 }
             }
         }
@@ -240,6 +241,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             intent.putExtra("WIDGETID", widget_id);
             intent.putExtra("WIDGETACTION", action);
             intent.putExtra("WIDGETTOGGLE", toggle);
+            intent.putExtra("WIDGETSMALL", true);
 
             if (toggle)
                 return PendingIntent.getBroadcast(context, widget_id, intent, 0);
