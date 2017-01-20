@@ -1,3 +1,24 @@
+<!--
+  ~ Copyright (C) 2015 Domoticz - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -110,6 +131,16 @@
                 app:flw_labelTextSize="@dimen/text_size_medium" />
         </LinearLayout>
 
+        <CheckBox
+            android:id="@+id/showpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:text="@string/show_password"
+            android:textColor="@color/default_text_color_light"
+            android:textSize="@dimen/text_size_small" />
+
         <TextView
             android:id="@+id/advancedSettings_label"
             android:layout_width="wrap_content"
@@ -190,6 +221,7 @@
                 android:id="@+id/localServer_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="70dp"
                 android:layout_marginTop="2dp"
                 android:checked="false" />
 
@@ -215,6 +247,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/welcome_ssid_spinner_prompt" />
+
+                <Button
+                    android:id="@+id/set_ssid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_status"
+                    android:text="@string/add"
+                    android:textSize="10dp" />
 
                 <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                     android:id="@+id/local_server_input"
@@ -293,6 +338,16 @@
                     app:flw_labelText="@string/welcome_local_server_password"
                     app:flw_labelTextColor="@color/default_text_color_light"
                     app:flw_labelTextSize="@dimen/text_size_medium" />
+
+                <CheckBox
+                    android:id="@+id/showpasswordlocal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/show_password"
+                    android:textColor="@color/default_text_color_light"
+                    android:textSize="@dimen/text_size_small" />
 
                 <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
                     android:id="@+id/local_directory_input"

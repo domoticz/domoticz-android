@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,22 +9,24 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
@@ -34,15 +36,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Containers.SettingsInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.SettingsReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.SettingsInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.SettingsReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
 
@@ -51,6 +56,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
+    private SharedPrefUtil mSharedPrefs;
     private DevicesInfo panelInfo;
     private Domoticz domoticz;
     private SettingsInfo mSettings;
@@ -62,12 +68,26 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Button btnArmAway;
     private CountDownTimer countDownTimer;
 
-    public SecurityPanelDialog(Context c, DevicesInfo panelInfo) {
+    public SecurityPanelDialog(Context c, Domoticz mDomoticz, DevicesInfo panelInfo) {
         this.mContext = c;
-        this.domoticz = new Domoticz(mContext);
+        this.domoticz = mDomoticz;
         this.panelInfo = panelInfo;
-        mdb = new MaterialDialog.Builder(mContext);
+        mSharedPrefs = new SharedPrefUtil(c);
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_security, true)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }
@@ -83,14 +103,26 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         md = mdb.build();
         View view = md.getCustomView();
 
-        editPinCode = (FloatingLabelEditText) view.findViewById(R.id.securitypin);
-        editPinCode.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+        if (view != null) {
+            editPinCode = (FloatingLabelEditText) view.findViewById(R.id.securitypin);
+            editPinCode.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        btnDisarm = (Button) view.findViewById(R.id.disarm);
-        btnArmHome = (Button) view.findViewById(R.id.armhome);
-        btnArmAway = (Button) view.findViewById(R.id.armaway);
-        txtCountDown = (TextView) view.findViewById(R.id.countdown);
+            btnDisarm = (Button) view.findViewById(R.id.disarm);
+            btnArmHome = (Button) view.findViewById(R.id.armhome);
+            btnArmAway = (Button) view.findViewById(R.id.armaway);
+            txtCountDown = (TextView) view.findViewById(R.id.countdown);
 
+            if (mSharedPrefs.darkThemeEnabled()) {
+                btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+                btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+                btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+                editPinCode.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
+                int[] colors = new int[]{Color.WHITE, Color.WHITE};
+                editPinCode.setLabelTextColor(new ColorStateList(states, colors));
+            }
+        }
         domoticz.getSettings(new SettingsReceiver() {
             @Override
             public void onReceiveSettings(SettingsInfo settings) {
@@ -108,19 +140,19 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         btnDisarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processRequest(Domoticz.Security.Status.DISARM);
+                processRequest(DomoticzValues.Security.Status.DISARM);
             }
         });
         btnArmAway.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processRequest(Domoticz.Security.Status.ARMAWAY);
+                processRequest(DomoticzValues.Security.Status.ARMAWAY);
             }
         });
         btnArmHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processRequest(Domoticz.Security.Status.ARMHOME);
+                processRequest(DomoticzValues.Security.Status.ARMHOME);
             }
         });
     }
@@ -142,7 +174,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                 UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
 
         if (validatePassword(password)) {
-            if (mSettings.getSecOnDelay() <= 0 || status == Domoticz.Security.Status.DISARM) {
+            if (mSettings.getSecOnDelay() <= 0 || status == DomoticzValues.Security.Status.DISARM) {
                 //don't set delay
                 domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
                     @Override

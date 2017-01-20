@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,24 +9,26 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -35,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.android.gms.maps.model.LatLng;
 import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
@@ -43,12 +46,13 @@ import java.util.Random;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.GeoUtil;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class LocationDialog implements DialogInterface.OnDismissListener {
 
-    private final MaterialDialog.Builder mdb;
     private final GeoUtil mGeoUtil;
+    private MaterialDialog.Builder mdb;
     private Context mContext;
     private Address foundLocation;
     private FloatingLabelEditText editAddress;
@@ -68,17 +72,34 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
     private int radiusDefaultValue = 120;
     private Button editModeButton;
     private LinearLayout layout_latLong;
+    private Button getLocation;
     private String title;
+    private SharedPrefUtil mSharedPrefs;
 
     public LocationDialog(final Context mContext, int layout) {
         this.mContext = mContext;
 
         mGeoUtil = new GeoUtil(mContext);
+        mSharedPrefs = new SharedPrefUtil(mContext);
 
-        mdb = new MaterialDialog.Builder(mContext);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
+
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel);
 
@@ -87,7 +108,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
             @Override
             public void onClick(@NonNull MaterialDialog materialDialog,
                                 @NonNull DialogAction dialogAction) {
-
                 if (dismissListener != null && valuesAreValid()) {
                     if (locationToEdit != null) {
                         // In edit mode
@@ -107,8 +127,8 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
                     }
                 } else
                     Toast.makeText(mContext,
-                        R.string.location_not_found,
-                        Toast.LENGTH_SHORT).show();
+                            R.string.location_not_found,
+                            Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -167,8 +187,6 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-
-        Button getLocation = (Button) view.findViewById(R.id.get_address);
 
         initViews(view);
 
@@ -287,12 +305,31 @@ public class LocationDialog implements DialogInterface.OnDismissListener {
 
         editAddress = (FloatingLabelEditText) view.findViewById(R.id.address);
         editName = (FloatingLabelEditText) view.findViewById(R.id.name);
+        layout_latLong = (LinearLayout) view.findViewById(R.id.layout_latLong);
 
         editModeButton = (Button) view.findViewById(R.id.edit_mode_button);
-        layout_latLong = (LinearLayout) view.findViewById(R.id.layout_latLong);
+        getLocation = (Button) view.findViewById(R.id.get_address);
 
         editLatitude = (FloatingLabelEditText) view.findViewById(R.id.latitude);
         editLongitude = (FloatingLabelEditText) view.findViewById(R.id.longitude);
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            getLocation.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+            editModeButton.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+
+            int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
+            int[] colors = new int[]{Color.WHITE, Color.WHITE};
+            radiusText.setLabelTextColor(new ColorStateList(states, colors));
+            radiusText.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editName.setLabelTextColor(new ColorStateList(states, colors));
+            editName.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editAddress.setLabelTextColor(new ColorStateList(states, colors));
+            editAddress.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editLongitude.setLabelTextColor(new ColorStateList(states, colors));
+            editLongitude.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editLatitude.setLabelTextColor(new ColorStateList(states, colors));
+            editLatitude.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+        }
     }
 
     @Override

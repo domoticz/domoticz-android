@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,24 +9,26 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.larswerkman.lobsterpicker.LobsterPicker;
 import com.larswerkman.lobsterpicker.OnColorListener;
 import com.larswerkman.lobsterpicker.sliders.LobsterShadeSlider;
@@ -48,10 +50,24 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.idx = idx;
-        mdb = new MaterialDialog.Builder(mContext);
-        boolean wrapInScrollView = true;
-        mdb.customView(R.layout.dialog_color, wrapInScrollView)
+
+        if (mSharedPrefs.darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
+        mdb.customView(R.layout.dialog_color, true)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
+
         mdb.dismissListener(this);
     }
 
@@ -60,24 +76,38 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
-        shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
-        lobsterPicker.addDecorator(shadeSlider);
-        lobsterPicker.setColorHistoryEnabled(true);
-        lobsterPicker.setHistory(mSharedPrefs.getPreviousColor(idx));
-        lobsterPicker.setColorPosition(mSharedPrefs.getPreviousColorPosition(idx));
+        if (view != null) {
+            lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
+            shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
+            lobsterPicker.addDecorator(shadeSlider);
+            lobsterPicker.setColorHistoryEnabled(true);
+            lobsterPicker.setHistory(mSharedPrefs.getPreviousColor(idx));
+            lobsterPicker.setColorPosition(mSharedPrefs.getPreviousColorPosition(idx));
 
-        lobsterPicker.addOnColorListener(new OnColorListener() {
-            @Override
-            public void onColorChanged(int color) {
-            }
+            shadeSlider.addOnColorListener(new OnColorListener() {
+                @Override
+                public void onColorChanged(@ColorInt int color) {
+                }
 
-            @Override
-            public void onColorSelected(int color) {
-                mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
-                dismissListener.onChangeColor(color);
-            }
-        });
+                @Override
+                public void onColorSelected(@ColorInt int color) {
+                    mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
+                    dismissListener.onChangeColor(color);
+                }
+            });
+
+            lobsterPicker.addOnColorListener(new OnColorListener() {
+                @Override
+                public void onColorChanged(@ColorInt int color) {
+                }
+
+                @Override
+                public void onColorSelected(@ColorInt int color) {
+                    mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
+                    dismissListener.onChangeColor(color);
+                }
+            });
+        }
 
         md.show();
     }
@@ -85,7 +115,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         if (dismissListener != null)
-            dismissListener.onDismiss(lobsterPicker.getColor());
+            dismissListener.onDismiss(shadeSlider.getColor());
     }
 
     public void onDismissListener(DismissListener dismissListener) {
