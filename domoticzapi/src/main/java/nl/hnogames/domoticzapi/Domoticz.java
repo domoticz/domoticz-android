@@ -116,9 +116,6 @@ public class Domoticz {
     public static final int DOMOTICZ_FAKE_ID = 99999;
     public static final String HIDDEN_CHARACTER = "$";
 
-    public static final String UTILITIES_TYPE_THERMOSTAT = "Thermostat";
-    public static final String UTILITIES_TYPE_HEATING = "Heating";
-    public static final String UTILITIES_SUBTYPE_TEXT = "Text";
     public static final String DOMOTICZ_DEFAULT_SERVER = "DEFAULT";
     private static final String TAG = "DomoticzAPI";
 

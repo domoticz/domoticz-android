@@ -86,6 +86,26 @@ public class DomoticzValues {
             }
         }
 
+        interface Utility {
+            interface Type {
+                String HEATING = "Heating";
+                String THERMOSTAT = "Thermostat";
+            }
+
+            interface SubType {
+                String TEXT = "Text";
+
+                String PERCENTAGE = "Percentage";
+                String ENERGY = "Energy";
+                String KWH = "kWh";
+                String GAS = "Gas";
+                String ELECTRIC = "Electric";
+                String VOLTCRAFT = "Voltcraft";
+                String SETPOINT = "SetPoint";
+                String YOULESS = "YouLess";
+            }
+        }
+
         interface Blind {
             interface State {
                 String CLOSED = "Closed";

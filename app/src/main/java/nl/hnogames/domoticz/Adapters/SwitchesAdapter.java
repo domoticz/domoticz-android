@@ -249,11 +249,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     setButtons(holder, Buttons.BUTTON_ON);
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
                     break;
-                case Domoticz.UTILITIES_TYPE_THERMOSTAT:
+                case DomoticzValues.Device.Utility.Type.THERMOSTAT:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setThermostatRowData(mDeviceInfo, holder);
                     break;
-                case Domoticz.UTILITIES_TYPE_HEATING:
+                case DomoticzValues.Device.Utility.Type.HEATING:
                     setButtons(holder, Buttons.SET);
                     setTemperatureRowData(mDeviceInfo, holder);
                     break;
