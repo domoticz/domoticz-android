@@ -258,11 +258,14 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                     INVALID_APPWIDGET_ID);
 
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
+                Log.i(TAG, "Widget without a type saved");
                 mSharedPrefs.setSmallWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
             } else {
                 if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+                    Log.i(TAG, "Widget Scene saved " + mSelectedSwitch.getType());
                     mSharedPrefs.setSmallWidgetIDX(mAppWidgetId, idx, true, password, value, layoutId);
                 } else {
+                    Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
                     mSharedPrefs.setSmallWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
                 }
             }
@@ -310,45 +313,6 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private int withButtons(DevicesInfo s) {
-        int withButton = 0;
-        if (s != null) {
-            if (s.getSwitchTypeVal() == 0 &&
-                    (UsefulBits.isEmpty(s.getSwitchType()))) {
-                switch (s.getType()) {
-                    case DomoticzValues.Scene.Type.SCENE:
-                        withButton = BUTTON_TOGGLE;
-                        break;
-                    case DomoticzValues.Scene.Type.GROUP:
-                        withButton = BUTTON_ONOFF;
-                        break;
-                }
-            } else {
-                switch (s.getSwitchTypeVal()) {
-                    case DomoticzValues.Device.Type.Value.ON_OFF:
-                    case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                    case DomoticzValues.Device.Type.Value.DOORLOCK:
-                        if (mSharedPrefs.showSwitchesAsButtons())
-                            withButton = BUTTON_ONOFF;
-                        else
-                            withButton = BUTTON_TOGGLE;
-                        break;
-
-                    case DomoticzValues.Device.Type.Value.X10SIREN:
-                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                    case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
-                    case DomoticzValues.Device.Type.Value.DOORBELL:
-                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                    case DomoticzValues.Device.Type.Value.DIMMER:
-                    case DomoticzValues.Device.Type.Value.SELECTOR:
-                        withButton = BUTTON_TOGGLE;
-                        break;
-                }
-            }
-        }
-        return withButton;
     }
 
     private boolean SmallWidgetSupported(DevicesInfo s) {
