@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,33 +9,41 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Containers;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Pattern;
+
 public class DevicesInfo implements Comparable {
 
-    private final String UNKNOWN = "Unknown";
+    @SuppressWarnings("unused")
     private final String TAG = DevicesInfo.class.getSimpleName();
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String UNKNOWN = "Unknown";
     private JSONObject jsonObject;
     private boolean timers;
     private int idx;
     private String Name;
+    private String Description;
     private String LastUpdate;
+    private double temp;
     private double setPoint;
     private String Type;
     private String SubType;
@@ -54,14 +62,28 @@ public class DevicesInfo implements Comparable {
     private String switchType;
     private String CounterToday;
     private String Counter;
+    private String LevelNames;
     private String Usage;
     private String Image;
     private String Data;
     private String Timers;
+
+    private String ForecastStr;
+    private String HumidityStatus;
+    private String DirectionStr;
+    private String Direction;
+    private String Chill;
+    private String Speed;
+
+    private long DewPoint;
+    private long Temp;
+    private int Barometer;
+
+    private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
 
-    public DevicesInfo(JSONObject row)  throws JSONException {
+    public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
         try {
             if (row.has("LevelInt"))
@@ -69,22 +91,30 @@ public class DevicesInfo implements Comparable {
         } catch (Exception e) {
             level = 0;
         }
+
+        if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
+        if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
+        if (row.has("Direction")) Direction = row.getString("Direction");
+        if (row.has("DirectionStr")) DirectionStr = row.getString("DirectionStr");
+        if (row.has("Chill")) Chill = row.getString("Chill");
+        if (row.has("Speed")) Speed = row.getString("Speed");
+        if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
+        if (row.has("Temp")) Temp = row.getLong("Temp");
+        if (row.has("Barometer")) Barometer = row.getInt("Barometer");
+
         try {
             if (row.has("MaxDimLevel"))
                 maxDimLevel = row.getInt("MaxDimLevel");
         } catch (Exception e) {
             maxDimLevel = 1;
         }
+
         try {
-            if (row.has("CustomImage")) {
-                if(row.getInt("CustomImage")>0)
-                    useCustomImage = true;
-                else
-                    useCustomImage = false;
-            }
+            if (row.has("CustomImage"))
+                useCustomImage = row.getInt("CustomImage") > 0;
             else
                 useCustomImage = false;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             useCustomImage = false;
         }
 
@@ -93,6 +123,8 @@ public class DevicesInfo implements Comparable {
         if (row.has("Image"))
             Image = row.getString("Image");
 
+        if (row.has("LevelNames"))
+            LevelNames = row.getString("LevelNames");
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
 
@@ -171,6 +203,8 @@ public class DevicesInfo implements Comparable {
             SubType = row.getString("SubType");
         if (row.has("Timers"))
             timers = row.getBoolean("Timers");
+        if (row.has("Notifications"))
+            Notifications = row.getBoolean("Notifications");
 
         idx = row.getInt("idx");
 
@@ -180,8 +214,25 @@ public class DevicesInfo implements Comparable {
             signalLevel = 0;
         }
 
-        if (row.has("SetPoint"))
-            setPoint = row.getLong("SetPoint");
+        try {
+            if (row.has("Temp")) {
+                temp = row.getDouble("Temp");
+            } else {
+                temp = Double.NaN;
+            }
+        } catch (Exception ex) {
+            temp = Double.NaN;
+        }
+
+        try {
+            if (row.has("SetPoint")) {
+                setPoint = row.getDouble("SetPoint");
+            } else {
+                setPoint = Double.NaN;
+            }
+        } catch (Exception ex) {
+            setPoint = Double.NaN;
+        }
     }
 
     public boolean getFavoriteBoolean() {
@@ -193,6 +244,11 @@ public class DevicesInfo implements Comparable {
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+
+    public double getTemperature() {
+        return temp;
     }
 
     public double getSetPoint() {
@@ -231,6 +287,10 @@ public class DevicesInfo implements Comparable {
         this.status = status;
     }
 
+    public String[] getLevelNames() {
+        return Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
+    }
+
     public boolean getStatusBoolean() {
         try {
             boolean statusBoolean = true;
@@ -252,7 +312,7 @@ public class DevicesInfo implements Comparable {
 
     public void setStatusBoolean(boolean status) {
         this.statusBoolean = status;
-        if(status)
+        if (status)
             setStatus("On");
         else
             setStatus("Off");
@@ -261,7 +321,10 @@ public class DevicesInfo implements Comparable {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
-                new Gson().toJson(this) +
+                new GsonBuilder()
+                        .serializeSpecialFloatingPointValues()
+                        .create()
+                        .toJson(this) +
                 '}';
     }
 
@@ -277,13 +340,17 @@ public class DevicesInfo implements Comparable {
         return Name;
     }
 
-    ;
-
     public void setName(String name) {
         Name = name;
     }
 
-    ;
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
 
     public boolean getUseCustomImage() {
         return useCustomImage;
@@ -341,6 +408,17 @@ public class DevicesInfo implements Comparable {
         LastUpdate = lastUpdate;
     }
 
+    public Date getLastUpdateDateTime() {
+        //Time format: 2016-01-30 12:48:37
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(LastUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public JSONObject getJsonObject() {
         return this.jsonObject;
     }
@@ -373,10 +451,6 @@ public class DevicesInfo implements Comparable {
         return signalLevel;
     }
 
-    public void setSignalLevel(int signalLevel) {
-        this.signalLevel = signalLevel;
-    }
-
     public int getSwitchTypeVal() {
         return switchTypeVal;
     }
@@ -387,6 +461,50 @@ public class DevicesInfo implements Comparable {
 
     @Override
     public int compareTo(Object another) {
-        return this.getName().compareTo(((DevicesInfo)another).getName());
+        return this.getName().compareTo(((DevicesInfo) another).getName());
+    }
+
+    public boolean hasNotifications() {
+        return Notifications;
+    }
+
+    public String getForecastStr() {
+        return ForecastStr;
+    }
+
+    public String getHumidityStatus() {
+        return HumidityStatus;
+    }
+
+    public String getDirectionStr() {
+        return DirectionStr;
+    }
+
+    public String getDirection() {
+        return Direction;
+    }
+
+    public String getChill() {
+        return Chill;
+    }
+
+    public String getSpeed() {
+        return Speed;
+    }
+
+    public int getBarometer() {
+        return Barometer;
+    }
+
+    public long getDewPoint() {
+        return DewPoint;
+    }
+
+    public long getTemp() {
+        return Temp;
+    }
+
+    public void setNotifications(boolean notifications) {
+        Notifications = notifications;
     }
 }

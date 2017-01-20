@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,15 +9,14 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.UI;
@@ -103,24 +102,30 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
 
     @SuppressWarnings("unused")
     public void setItems(String[] items) {
-        _items = items;
-        mSelection = new boolean[_items.length];
-        simple_adapter.clear();
-        simple_adapter.add(_items[0]);
-        Arrays.fill(mSelection, false);
+        if (items != null && items.length > 0) {
+            _items = items;
+            mSelection = new boolean[_items.length];
+            simple_adapter.clear();
+            simple_adapter.add(_items[0]);
+            Arrays.fill(mSelection, false);
+        }
     }
 
     public void setItems(List<String> items) {
-        _items = items.toArray(new String[items.size()]);
-        mSelection = new boolean[_items.length];
-        simple_adapter.clear();
-        simple_adapter.add(_items[0]);
-        Arrays.fill(mSelection, false);
+        if (items != null && items.size() > 0) {
+            _items = items.toArray(new String[items.size()]);
+            mSelection = new boolean[_items.length];
+            simple_adapter.clear();
+            simple_adapter.add(_items[0]);
+            Arrays.fill(mSelection, false);
+        }
     }
 
     @SuppressWarnings("unused")
     public void setSelection(String[] selection) {
-        if (mSelection == null) throw new IllegalArgumentException("No items in adapter");
+        if (mSelection == null || selection.length <= 0)
+            throw new IllegalArgumentException("No items in adapter");
+
         for (String cell : selection) {
             for (int j = 0; j < _items.length; ++j) {
                 if (_items[j].equals(cell)) {
@@ -131,7 +136,9 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
     }
 
     public void setSelection(List<String> selection) {
-        if (mSelection == null) throw new IllegalArgumentException("No items in adapter");
+        if (mSelection == null || mSelection.length <= 0)
+            throw new IllegalArgumentException("No items in adapter");
+
         for (int i = 0; i < mSelection.length; i++) {
             mSelection[i] = false;
         }

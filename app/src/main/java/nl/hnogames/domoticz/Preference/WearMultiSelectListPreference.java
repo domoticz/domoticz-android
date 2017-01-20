@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,15 +9,14 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Preference;
@@ -33,10 +32,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
-import nl.hnogames.domoticz.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = WearMultiSelectListPreference.class.getName();
@@ -52,7 +52,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);
         selectAllValuesByDefault = typedArray.getBoolean(R.styleable.CustomListPreference_selectAllValuesByDefault, false);
         typedArray.recycle();
-        mDomoticz = new Domoticz(context);
+        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         initSwitches();
     }
 
@@ -61,8 +61,8 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         mDomoticz.getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();
-                final List<String> appSupportedSwitchesNames = mDomoticz.getWearSupportedSwitchesNames();
+                //final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();
+                //final List<String> appSupportedSwitchesNames = mDomoticz.getWearSupportedSwitchesNames();
                 ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
 
                 for (DevicesInfo mExtendedStatusInfo : mDevicesInfo) {
@@ -70,9 +70,10 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
 
                     int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
                     String switchType = mExtendedStatusInfo.getSwitchType();
-                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                            appSupportedSwitchesValues.contains(switchTypeVal) &&
-                            appSupportedSwitchesNames.contains(switchType)) {
+                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) //&&
+                        //appSupportedSwitchesValues.contains(switchTypeVal) &&
+                        //appSupportedSwitchesNames.contains(switchType)
+                            ) {
                         supportedSwitches.add(mExtendedStatusInfo);
                     }
                 }
@@ -90,7 +91,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                 if (error != null && error.getMessage() != null && error.getMessage().length() > 0)
                     Log.e(TAG, error.getMessage());
             }
-        }, 0, "lights");
+        }, 0, "all");
     }
 
     private void processSwitches(ArrayList<DevicesInfo> switches) {
@@ -124,10 +125,14 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                         fullEntryValuesList[i] = mEntryValues[i];
                     }
 
-                    for (i = mEntries.length, j = 0; j <= dynamicEntries.length - 1; i++, j++) {
-                        fullEntriesList[i] = dynamicEntries[j];
-                        fullEntryValuesList[i] = dynamicEntryValues[j];
+                    try {
+                        for (i = mEntries.length, j = 0; j <= dynamicEntries.length - 1; i++, j++) {
+                            fullEntriesList[i] = dynamicEntries[j];
+                            fullEntryValuesList[i] = dynamicEntryValues[j];
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ex) {
                     }
+
                     //replace the entries and entryValues arrays with the new lists
                     mEntries = fullEntriesList;
                     mEntryValues = fullEntryValuesList;

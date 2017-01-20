@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,21 +9,21 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +32,7 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class SortDialog implements DialogInterface.OnDismissListener {
 
@@ -45,7 +46,19 @@ public class SortDialog implements DialogInterface.OnDismissListener {
         this.mContext = c;
 
         names = new String[]{mContext.getString(R.string.filterOn_on), mContext.getString(R.string.filterOn_off), mContext.getString(R.string.filterOn_static), mContext.getString(R.string.filterOn_all)};
-        mdb = new MaterialDialog.Builder(mContext);
+        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+            mdb = new MaterialDialog.Builder(mContext)
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
+        } else
+            mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
                 .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);

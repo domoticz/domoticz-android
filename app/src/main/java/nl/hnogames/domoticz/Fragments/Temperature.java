@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,62 +9,74 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+import com.afollestad.materialdialogs.DialogAction;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
-import nl.hnogames.domoticz.Containers.GraphPointInfo;
-import nl.hnogames.domoticz.Containers.TemperatureInfo;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
+import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
-import nl.hnogames.domoticz.Interfaces.TemperatureReceiver;
-import nl.hnogames.domoticz.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.UI.GraphDialog;
+import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
+import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.TemperatureInfoDialog;
-import nl.hnogames.domoticz.app.DomoticzFragment;
+import nl.hnogames.domoticz.Utils.SerializableManager;
+import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class Temperature extends DomoticzFragment implements DomoticzFragmentListener, TemperatureClickListener {
+public class Temperature extends DomoticzRecyclerFragment implements DomoticzFragmentListener, TemperatureClickListener {
+
+    public static final String AUTO = "Auto";
+    public static final String PERMANENT_OVERRIDE = "PermanentOverride";
+    public static final String TEMPORARY_OVERRIDE = "TemporaryOverride";
 
     @SuppressWarnings("unused")
     private static final String TAG = Temperature.class.getSimpleName();
-
-    private ProgressDialog progressDialog;
-    private Domoticz mDomoticz;
     private Context mContext;
-
-    private ListView listView;
     private TemperatureAdapter adapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
     private String filter = "";
+    private LinearLayout lExtraPanel = null;
+    private Animation animShow, animHide;
+    private ArrayList<TemperatureInfo> mTempInfos;
+    private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
+    }
+
+    @Override
+    @DebugLog
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -73,15 +85,19 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     @Override
+    @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        getActionBar().setTitle(R.string.title_temperature);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_temperature);
+        initAnimation();
     }
 
     @Override
+    @DebugLog
     public void Filter(String text) {
-        filter=text;
+        filter = text;
         try {
             if (adapter != null)
                 adapter.getFilter().filter(text);
@@ -92,54 +108,40 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     @Override
+    @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
-        coordinatorLayout = (CoordinatorLayout) getView().findViewById(R.id
-                .coordinatorLayout);
-        listView = (ListView) getView().findViewById(R.id.listView);
-
-        mDomoticz = new Domoticz(mContext);
         processTemperature();
     }
 
+    private void initAnimation() {
+        animShow = AnimationUtils.loadAnimation(mContext, R.anim.enter_from_right);
+        animHide = AnimationUtils.loadAnimation(mContext, R.anim.exit_to_right);
+    }
+
     private void processTemperature() {
-        mSwipeRefreshLayout.setRefreshing(true);
-        mDomoticz.getTemperatures(new TemperatureReceiver() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
-            @Override
-            public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
-                successHandling(mTemperatureInfos.toString(), false);
-
-                createListView(mTemperatureInfos);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        });
+        new GetCachedDataTask().execute();
     }
 
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
-            adapter = new TemperatureAdapter(mContext, mTemperatureInfos, this);
-            SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
+            if (adapter == null) {
+                adapter = new TemperatureAdapter(mContext, mDomoticz, getServerUtil(), mTemperatureInfos, this);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            } else {
+                adapter.setData(mTemperatureInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
 
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-                                               int index, long id) {
-                    showInfoDialog(adapter.filteredData.get(index));
-                    return true;
-                }
-            });
             mSwipeRefreshLayout.setRefreshing(false);
-
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
+                @DebugLog
                 public void onRefresh() {
                     processTemperature();
                 }
@@ -151,7 +153,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
         TemperatureInfoDialog infoDialog = new TemperatureInfoDialog(
-                getActivity(),
+                mContext,
                 mTemperatureInfo,
                 R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mTemperatureInfo.getIdx()));
@@ -160,6 +162,7 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         infoDialog.show();
         infoDialog.onDismissListener(new TemperatureInfoDialog.DismissListener() {
             @Override
+            @DebugLog
             public void onDismiss(boolean isChanged, boolean isFavorite) {
                 if (isChanged)
                     changeFavorite(mTemperatureInfo, isFavorite);
@@ -171,25 +174,32 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
 
-        if (isFavorite)
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + getActivity().getString(R.string.favorite_added), Snackbar.LENGTH_SHORT).show();
-        else
-            Snackbar.make(coordinatorLayout, mTemperatureInfo.getName() + " " + getActivity().getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT).show();
+        if (isFavorite) {
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_added);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
+        } else {
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mTemperatureInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
+        }
 
         int jsonAction;
-        int jsonUrl = Domoticz.Json.Url.Set.FAVORITE;
+        int jsonUrl = DomoticzValues.Json.Url.Set.FAVORITE;
 
-        if (isFavorite) jsonAction = Domoticz.Device.Favorite.ON;
-        else jsonAction = Domoticz.Device.Favorite.OFF;
+        if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
+        else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, new setCommandReceiver() {
+        mDomoticz.setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
+            @DebugLog
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 mTemperatureInfo.setFavoriteBoolean(isFavorite);
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
                 errorHandling(error);
             }
@@ -197,40 +207,183 @@ public class Temperature extends DomoticzFragment implements DomoticzFragmentLis
     }
 
     @Override
+    @DebugLog
     public void errorHandling(Exception error) {
-        // Let's check if were still attached to an activity
-        if (isAdded()) {
-            super.errorHandling(error);
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                if (mSwipeRefreshLayout != null)
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                super.errorHandling(error);
+            }
         }
     }
 
     @Override
+    @DebugLog
     public void onPause() {
         super.onPause();
     }
 
     @Override
+    @DebugLog
     public void onLogClick(final TemperatureInfo temp, final String range) {
-        mDomoticz.getGraphData(temp.getIdx(), range, "temp", new GraphDataReceiver() {
+        Intent intent = new Intent(mContext, GraphActivity.class);
+        intent.putExtra("IDX", temp.getIdx());
+        intent.putExtra("RANGE", range);
+        intent.putExtra("TYPE", "temp");
+        intent.putExtra("STEPS", 3);
+        startActivity(intent);
+    }
+
+    @Override
+    @DebugLog
+    public void onSetClick(final TemperatureInfo t) {
+        addDebugText("onSetClick");
+        final int idx = t.getIdx();
+
+        final setCommandReceiver commandReceiver = new setCommandReceiver() {
             @Override
-            public void onReceive(ArrayList<GraphPointInfo> mGraphList) {
-                GraphDialog infoDialog = new GraphDialog(
-                        getActivity(),
-                        mGraphList,
-                        R.layout.dialog_graph);
-                infoDialog.setRange(range);
-                infoDialog.setSteps(3);
-                infoDialog.setTitle(getActivity().getString(R.string.title_temperature));
-                infoDialog.show();
+            @DebugLog
+            public void onReceiveResult(String result) {
+                successHandling(result, false);
+                processTemperature();
             }
 
             @Override
+            @DebugLog
             public void onError(Exception error) {
-                // Let's check if were still attached to an activity
-                if (isAdded()) {
-                    Snackbar.make(coordinatorLayout, getActivity().getString(R.string.error_log) + ": " + temp.getName(), Snackbar.LENGTH_SHORT).show();
+                errorHandling(error);
+            }
+        };
+
+        final boolean evohomeZone = "evohome".equals(t.getHardwareName());
+
+        TemperatureDialog tempDialog;
+        if (evohomeZone) {
+            tempDialog = new ScheduledTemperatureDialog(
+                    mContext,
+                    t.getSetPoint(),
+                    !"auto".equalsIgnoreCase(t.getStatus()));
+        } else {
+            tempDialog = new TemperatureDialog(
+                    mContext,
+                    t.getSetPoint());
+        }
+
+        tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
+            @Override
+            @DebugLog
+            public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
+                if (dialogAction == DialogAction.POSITIVE) {
+                    addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+
+                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                            "&mode=" + PERMANENT_OVERRIDE;
+
+                    // add query parameters
+                    mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+                } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
+                    addDebugText("Set idx " + idx + " to Auto");
+
+                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                            "&mode=" + AUTO;
+
+                    // add query parameters
+                    mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+                } else {
+                    addDebugText("Not updating idx " + idx);
                 }
             }
         });
+
+        tempDialog.show();
+    }
+
+    @Override
+    @DebugLog
+    public void onLikeButtonClick(int idx, boolean checked) {
+        changeFavorite(getTemperature(idx), checked);
+    }
+
+    @Override
+    @DebugLog
+    public void onItemClicked(View v, int position) {
+        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        if (extra_panel != null) {
+            if (extra_panel.getVisibility() == View.VISIBLE) {
+                extra_panel.startAnimation(animHide);
+                extra_panel.setVisibility(View.GONE);
+            } else {
+                extra_panel.setVisibility(View.VISIBLE);
+                extra_panel.startAnimation(animShow);
+            }
+
+            if (extra_panel != lExtraPanel) {
+                if (lExtraPanel != null) {
+                    if (lExtraPanel.getVisibility() == View.VISIBLE) {
+                        lExtraPanel.startAnimation(animHide);
+                        lExtraPanel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            lExtraPanel = extra_panel;
+        }
+    }
+
+    @Override
+    @DebugLog
+    public boolean onItemLongClicked(int position) {
+        showInfoDialog(adapter.filteredData.get(position));
+        return true;
+    }
+
+    private TemperatureInfo getTemperature(int idx) {
+        TemperatureInfo clickedTemp = null;
+        for (TemperatureInfo mTempInfo : mTempInfos) {
+            if (mTempInfo.getIdx() == idx) {
+                clickedTemp = mTempInfo;
+            }
+        }
+        return clickedTemp;
+    }
+
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<TemperatureInfo> cacheTemperatures = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheTemperatures != null)
+                createListView(cacheTemperatures);
+
+            mDomoticz.getTemperatures(new TemperatureReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
+                    mTempInfos = mTemperatureInfos;
+                    successHandling(mTemperatureInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mTemperatureInfos, "Temperatures");
+                    createListView(mTemperatureInfos);
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
+        }
     }
 }

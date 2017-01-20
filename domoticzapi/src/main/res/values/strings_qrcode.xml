@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 Domoticz - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
+<resources>
+
+    <string name="qrcode_not_supported">QR Code is not supported on this device</string>
+    <string name="qrcode_register">Register a QR Code </string>
+    <string name="qrcode_found">New QR Code found</string>
+    <string name="qrcode_edit">Edit QR Code</string>
+    <string name="qrcode_name">Give this QR Code a proper name. </string>
+    <string name="qrcode_desc">Scan a QR Code. </string>
+    <string name="qrcode_exists">QR Code  already registered. </string>
+    <string name="qrcode_saved">Saved a New QR Code. </string>
+    <string name="qrcode">QR Code</string>
+
+    <string name="qrcode_new_found">New QR Code detected, please setup via settings.</string>
+    <string name="qr_code_disabled">QR Code disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_qrcode">For QR Code Scan to have effect, a switch should be linked to an QR Code</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="low_storage_error">QR Code dependencies cannot be downloaded due to low device storage</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+
+</resources>

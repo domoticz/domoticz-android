@@ -1,0 +1,87 @@
+/*
+ * Copyright (C) 2015 Domoticz - Mark Heinis
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "23.0.3"
+
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def value = 0
+        def runTasks = gradle.startParameter.taskNames
+        println "****************************"
+        println "runTasks: ${gradle.startParameter.taskNames}"
+
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks) {
+            value = 1;
+
+            println "Build Version: +1"
+        }
+        println "****************************"
+
+        def versionMajor = 0
+        def versionMinor = 1
+        def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
+        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+        def version_Code = versionProps['VERSION_CODE'].toInteger() + value
+
+        versionProps['VERSION_PATCH'] = versionPatch.toString()
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['VERSION_CODE'] = version_Code.toString()
+
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            versionCode version_Code
+            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
+            minSdkVersion 15
+            targetSdkVersion 25
+        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            lintOptions {
+                disable 'MissingTranslation'
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+
+    compile 'com.android.support:appcompat-v7:25.0.0'
+
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.android.volley:volley:1.0.0'
+}

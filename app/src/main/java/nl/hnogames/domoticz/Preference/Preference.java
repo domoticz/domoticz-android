@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,43 +9,76 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Preference;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v13.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
+
 import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import nl.hnogames.domoticz.BuildConfig;
-import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.GeoSettingsActivity;
-import nl.hnogames.domoticz.Interfaces.VersionReceiver;
+import nl.hnogames.domoticz.NFCSettingsActivity;
+import nl.hnogames.domoticz.QRCodeSettingsActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
+import nl.hnogames.domoticz.SettingsActivity;
+import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
+import nl.hnogames.domoticz.UpdateActivity;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
+import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class Preference extends PreferenceFragment {
 
@@ -57,6 +90,9 @@ public class Preference extends PreferenceFragment {
     private final String TAG_EXPORT = "Export Settings";
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
+    private Context mContext;
+    private Domoticz mDomoticz;
+    private PermissionHelper permissionHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,8 +100,13 @@ public class Preference extends PreferenceFragment {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+        permissionHelper = PermissionHelper.getInstance(getActivity());
 
-        mSharedPrefs = new SharedPrefUtil(getActivity());
+        mContext = getActivity();
+        mSharedPrefs = new SharedPrefUtil(mContext);
+        mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
+
+        UsefulBits.checkAPK(mContext, mSharedPrefs);
 
         setPreferences();
         setStartUpScreenDefaultValue();
@@ -75,59 +116,307 @@ public class Preference extends PreferenceFragment {
     }
 
     private void setPreferences() {
-
+        final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         android.preference.Preference ServerSettings = findPreference("server_settings");
-        ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+        android.preference.Preference PermissionsSettings = findPreference("permissionssettings");
+        android.preference.Preference NotificationLogged = findPreference("notification_show_logs");
+        android.preference.Preference fetchServerConfig = findPreference("server_force_fetch_config");
+        android.preference.Preference resetApplication = findPreference("reset_settings");
+        android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
+        final android.preference.Preference registrationId = findPreference("notification_registration_id");
+        android.preference.Preference GeoSettings = findPreference("geo_settings");
+        android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
+        android.preference.Preference NFCPreference = findPreference("nfc_settings");
+        android.preference.Preference QRCodePreference = findPreference("qrcode_settings");
+        android.preference.Preference SpeechPreference = findPreference("speech_settings");
+        android.preference.SwitchPreference EnableNFCPreference = (android.preference.SwitchPreference) findPreference("enableNFC");
+        android.preference.SwitchPreference EnableQRCodePreference = (android.preference.SwitchPreference) findPreference("enableQRCode");
+        android.preference.SwitchPreference EnableSpeechPreference = (android.preference.SwitchPreference) findPreference("enableSpeech");
+        android.preference.SwitchPreference EnableTalkBackPreference = (android.preference.SwitchPreference) findPreference("talkBack");
+        MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
+        @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+        @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
+        android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
+        android.preference.Preference premiumPreference = findPreference("premium_settings");
+        NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
+        NotificationsMultiSelectListPreference alarmMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("alarmNotifications");
+        android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
+        android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
+        android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
+
+        if (!BuildConfig.DEBUG) {
+            PreferenceCategory oAndroidAutoCategory = (android.preference.PreferenceCategory) findPreference("androidautocategory");
+            PreferenceScreen oNotificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
+            oNotificationScreen.removePreference(oAndroidAutoCategory);
+        }
+
+        List<String> notifications = mSharedPrefs.getReceivedNotifications();
+        if (notifications == null || notifications.size() <= 0) {
+            notificationsMultiSelectListPreference.setEnabled(false);
+            alarmMultiSelectListPreference.setEnabled(false);
+        } else {
+            notificationsMultiSelectListPreference.setEnabled(true);
+            alarmMultiSelectListPreference.setEnabled(true);
+        }
+
+        PermissionsSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                Intent intent = new Intent(getActivity(), ServerSettingsActivity.class);
-                startActivity(intent);
+                permissionHelper.openSettingsScreen();
                 return true;
             }
         });
 
-        android.preference.Preference GeoSettings = findPreference("geo_settings");
+        drawerItems.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                try {
+                    final HashSet selectedDrawerItems = (HashSet) newValue;
+                    if (selectedDrawerItems.size() < 1) {
+                        showSnackbar(mContext.getString(R.string.error_atLeastOneItemInDrawer));
+                        return false;
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        ThemePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_theme));
+                    return false;
+                } else {
+                    ((SettingsActivity) getActivity()).reloadSettings();
+                    return true;
+                }
+            }
+        });
+
+        MultiServerPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.multi_server));
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        ServerSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (!MultiServerPreference.isChecked()) {
+                    Intent intent = new Intent(mContext, ServerSettingsActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, ServerListSettingsActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+        FingerPrintSettingsPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                mContext.startActivity(new Intent(Settings.ACTION_SECURITY_SETTINGS));
+                return true;
+            }
+        });
+
+        fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                UsefulBits.getServerConfigForActiveServer(mContext, true, new ConfigReceiver() {
+                    @Override
+                    public void onReceiveConfig(ConfigInfo settings) {
+                        showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
+                    }
+                }, null);
+                return true;
+            }
+        });
+
+        displayLanguage.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                showRestartMessage();
+                return true;
+            }
+        });
+
+        registrationId.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessDeviceState(mContext)) {
+                        permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
+                    } else {
+                        pushGCMRegistrationIds();
+                    }
+                } else {
+                    pushGCMRegistrationIds();
+                }
+                return true;
+            }
+        });
+
         GeoSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(getActivity(), getString(R.string.geofence) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.geofence));
                     return false;
                 } else {
-                    Intent intent = new Intent(getActivity(), GeoSettingsActivity.class);
+                    Intent intent = new Intent(mContext, GeoSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
             }
         });
 
-        android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
+        EnableNFCPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_nfc));
+                    return false;
+                }
+
+                if (NfcAdapter.getDefaultAdapter(mContext) == null) {
+                    showSnackbar(mContext.getString(R.string.nfc_not_supported));
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        EnableQRCodePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_QRCode));
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
+        EnableSpeechPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_Speech));
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        EnableTalkBackPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_talk_back));
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        NFCPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_nfc));
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, NFCSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        QRCodePreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_QRCode));
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, QRCodeSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        SpeechPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_Speech));
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, SpeechSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
         WearPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(getActivity(), getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_wear));
                     return false;
                 }
                 return true;
             }
         });
 
-        android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
         AlwaysOnPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
-                if (BuildConfig.LITE_VERSION) {
-                    Toast.makeText(getActivity(), getString(R.string.category_wear) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.always_on_title));
                     return false;
                 }
                 return true;
             }
         });
 
-        android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
-        android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
-        android.preference.Preference premiumPreference = findPreference("premium_settings");
+        NotificationLogged.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                //show dialog
+                List<String> logs = mSharedPrefs.getLoggedNotifications();
+                if (logs != null && logs.size() > 0) {
+                    Collections.reverse(logs);
+                    new MaterialDialog.Builder(mContext)
+                            .title(mContext.getString(R.string.notification_show_title))
+                            .items((CharSequence[]) logs.toArray(new String[0]))
+                            .show();
+                } else
+                    UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
+                return true;
+            }
+        });
+
         //noinspection PointlessBooleanExpression
         if (!BuildConfig.LITE_VERSION) {
             preferenceScreen.removePreference(premiumCategory);
@@ -135,10 +424,10 @@ public class Preference extends PreferenceFragment {
             premiumPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    String packageID = getActivity().getPackageName() + ".premium";
+                    String packageID = mContext.getPackageName() + ".premium";
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
+                    } catch (android.content.ActivityNotFoundException ignored) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageID)));
                     }
 
@@ -146,6 +435,142 @@ public class Preference extends PreferenceFragment {
                 }
             });
         }
+
+        resetApplication.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.category_Reset)
+                            .content(R.string.are_you_sure)
+                            .positiveText(R.string.ok)
+                            .negativeText(R.string.cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @SuppressLint("NewApi")
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
+                                            .clearApplicationUserData();
+                                }
+                            })
+                            .show();
+                } else {
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                }
+                return true;
+            }
+        });
+
+        FingerPrintPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                if (mSharedPrefs.isStartupSecurityEnabled())
+                    return true;
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_startup_security));
+                    return false;
+                } else {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_supported), Toast.LENGTH_LONG);
+                        return false;
+                    }
+                    if (!PermissionsUtil.canAccessFingerprint(mContext)) {
+                        permissionHelper.request(PermissionsUtil.INITIAL_FINGERPRINT_PERMS);
+                    } else {
+                        FingerprintManager fingerprintManager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
+                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                            return false;
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (!fingerprintManager.isHardwareDetected()) {
+                                return false;
+                            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
+                                UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
+                                return false;
+                            } else {
+                                new MaterialDialog.Builder(mContext)
+                                        .title(R.string.category_startup_security)
+                                        .content(R.string.fingerprint_sure)
+                                        .positiveText(R.string.ok)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                mSharedPrefs.setStartupSecurityEnabled(true);
+                                                ((SettingsActivity) getActivity()).reloadSettings();
+                                            }
+                                        })
+                                        .show();
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void pushGCMRegistrationIds() {
+        final String UUID = DeviceUtils.getUniqueID(mContext);
+        final String senderId = AppController.getInstance().getGCMRegistrationId();
+        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
+            @Override
+            public void onSuccess() {
+                //previous id cleaned
+                mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        if (isAdded())
+                            showSnackbar(mContext.getString(R.string.notification_settings_pushed));
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (isAdded())
+                            showSnackbar(mContext.getString(R.string.notification_settings_push_failed));
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //nothing to clean..
+                mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
+                    @Override
+                    public void onSuccess() {
+                        if (isAdded())
+                            showSnackbar(mContext.getString(R.string.notification_settings_pushed));
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (isAdded())
+                            showSnackbar(mContext.getString(R.string.notification_settings_push_failed));
+                    }
+                });
+            }
+        });
+    }
+
+    private void showRestartMessage() {
+        new MaterialDialog.Builder(mContext)
+                .title(R.string.restart_required_title)
+                .content(mContext.getString(R.string.restart_required_msg)
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + mContext.getString(R.string.restart_now))
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        UsefulBits.restartApplication(getActivity());
+                    }
+                })
+                .show();
     }
 
     private void handleInfoAndAbout() {
@@ -153,7 +578,7 @@ public class Preference extends PreferenceFragment {
         about.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                SimpleTextDialog td = new SimpleTextDialog(getActivity());
+                SimpleTextDialog td = new SimpleTextDialog(mContext);
                 td.setTitle(R.string.info_about);
                 td.setText(R.string.welcome_info_domoticz);
                 td.show();
@@ -167,7 +592,7 @@ public class Preference extends PreferenceFragment {
                 String text = getString(R.string.info_credits_text);
                 text = text + ":\n\n" + getString(R.string.info_credits_text_urls);
 
-                SimpleTextDialog td = new SimpleTextDialog(getActivity());
+                SimpleTextDialog td = new SimpleTextDialog(mContext);
                 td.setTitle(R.string.info_credits);
                 td.setText(text);
                 td.show();
@@ -179,10 +604,11 @@ public class Preference extends PreferenceFragment {
     private void handleImportExportButtons() {
         SettingsFile = new File(Environment.getExternalStorageDirectory(),
                 "/Domoticz/DomoticzSettings.txt");
+
         final String sPath = SettingsFile.getPath().
                 substring(0, SettingsFile.getPath().lastIndexOf("/"));
         //noinspection unused
-        boolean mkdirsResultIsOk = new File(sPath).mkdirs();
+        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
         android.preference.Preference exportButton = findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(
@@ -190,116 +616,158 @@ public class Preference extends PreferenceFragment {
                     @Override
                     public boolean onPreferenceClick(android.preference.Preference preference) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                                requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
-                                        PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST);
+                            if (!PermissionsUtil.canAccessStorage(mContext)) {
+                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                             } else
                                 exportSettings();
-                        } else {
+                        } else
                             exportSettings();
-                        }
+
                         return false;
                     }
                 });
-
         android.preference.Preference importButton = findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        requestPermissions(PermissionsUtil.INITIAL_STORAGE_PERMS,
-                                PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST);
+                    if (!PermissionsUtil.canAccessStorage(mContext)) {
+                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else
                         importSettings();
-                } else {
+                } else
                     importSettings();
-                }
+
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_IMPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(getActivity())) {
-                    importSettings();
-                }
-                break;
-            case PermissionsUtil.INITIAL_EXPORT_SETTINGS_REQUEST:
-                if (PermissionsUtil.canAccessStorage(getActivity())) {
-                    exportSettings();
-                }
-                break;
-        }
     }
 
     private void importSettings() {
         Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
         mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(getActivity(),
-                    R.string.settings_imported,
-                    Toast.LENGTH_SHORT).show();
+            showSnackbar(mContext.getString(R.string.settings_imported));
         else
-            Toast.makeText(getActivity(),
-                    R.string.settings_import_failed,
-                    Toast.LENGTH_SHORT).show();
+            showSnackbar(mContext.getString(R.string.settings_import_failed));
     }
 
     private void exportSettings() {
         Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
         if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            Toast.makeText(getActivity(), "Settings Exported.", Toast.LENGTH_SHORT).show();
+            showSnackbar(mContext.getString(R.string.settings_exported));
         else
-            Toast.makeText(getActivity(), "Failed to Export Settings.", Toast.LENGTH_SHORT).show();
+            showSnackbar(mContext.getString(R.string.settings_export_failed));
     }
 
     private void setVersionInfo() {
+        ServerUtil serverUtil = new ServerUtil(mContext);
         PackageInfo pInfo = null;
         try {
-            pInfo = getActivity()
+            pInfo = mContext
                     .getPackageManager()
-                    .getPackageInfo(getActivity()
+                    .getPackageInfo(mContext
                             .getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String appVersionStr = getActivity().getString(R.string.unknown);
+        String appVersionStr = mContext.getString(R.string.unknown);
         if (pInfo != null) appVersionStr = pInfo.versionName;
 
         final android.preference.Preference appVersion = findPreference("version");
-        final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
         appVersion.setSummary(appVersionStr);
 
-        Domoticz domoticz = new Domoticz(getActivity());
-        domoticz.getVersion(new VersionReceiver() {
-            @Override
-            public void onReceiveVersion(String version) {
-                try {
-                    String sVersion = version;
-                    String sUpdateVersion = mSharedPrefs.getUpdateAvailable();
-                    if (sUpdateVersion != null && sUpdateVersion.length() > 0)
-                        sVersion += "  " + getString(R.string.update_available) + ": " + sUpdateVersion;
-                    domoticzVersion.setSummary(sVersion);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+        final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
+        String message;
 
-            @Override
-            public void onError(Exception error) {
+        try {
+
+            if (serverUtil.getActiveServer() != null) {
+                if ((serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null
+                        && serverUtil.getActiveServer().getServerUpdateInfo(mContext).isUpdateAvailable()
+                        && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion())) ||
+                        mSharedPrefs.isDebugEnabled()) {
+
+                    // Update is available or debugging is enabled
+                    String version;
+                    if (mSharedPrefs.isDebugEnabled())
+                        version = mContext.getString(R.string.debug_test_text);
+                    else
+                        version = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null)
+                                ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
+
+                    message = String.format(getString(R.string.update_available_enhanced),
+                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion(),
+                            version);
+                    if (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
+                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName() != null &&
+                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName().equalsIgnoreCase("linux")) {
+                        // Only offer remote/auto update on Linux systems
+                        message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
+                        domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(android.preference.Preference preference) {
+                                Intent intent = new Intent(mContext, UpdateActivity.class);
+                                startActivity(intent);
+                                return false;
+                            }
+                        });
+                    }
+                } else {
+                    message = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
+                            !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber()))
+                            ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
+                }
+                domoticzVersion.setSummary(message);
             }
-        });
+        } catch (Exception ex) {
+            String ex_message = mDomoticz.getErrorMessage(ex);
+            if (!UsefulBits.isEmpty(ex_message))
+                Log.e(TAG, mDomoticz.getErrorMessage(ex));
+        }
     }
 
     private void setStartUpScreenDefaultValue() {
         int defaultValue = mSharedPrefs.getStartupScreenIndex();
         ListPreference startup_screen = (ListPreference) findPreference("startup_screen");
         startup_screen.setValueIndex(defaultValue);
+    }
+
+    private void showPremiumSnackbar(final String category) {
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getView() != null) {
+                        Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                .setAction(R.string.upgrade, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        UsefulBits.openPremiumAppStore(mContext);
+                                    }
+                                })
+                                .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
+                                .show();
+                    }
+                }
+            }, (300));
+        } catch (Exception ex) {
+            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
+        }
+    }
+
+    private void showSnackbar(final String text) {
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getView() != null) {
+                        Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            }, (300));
+        } catch (Exception ex) {
+            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
+        }
     }
 }

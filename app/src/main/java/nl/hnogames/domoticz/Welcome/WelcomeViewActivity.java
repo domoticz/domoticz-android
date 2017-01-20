@@ -1,57 +1,112 @@
+/*
+ * Copyright (C) 2015 Domoticz - Mark Heinis
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
+
 package nl.hnogames.domoticz.Welcome;
 
-import android.animation.ArgbEvaluator;
-import android.annotation.SuppressLint;
-import android.app.Fragment;
+
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.viewpagerindicator.CirclePageIndicator;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
+import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class WelcomeViewActivity extends FragmentActivity
-        implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class WelcomeViewActivity extends IntroActivity {
 
     private static final int WELCOME_WIZARD = 1;
-    @SuppressWarnings("unused")
-    private static final int SETTINGS = 2;
+    private int p = 0;
 
-    private final List<Fragment> fList = new ArrayList<>();
-    private WelcomePageAdapter mAdapter;
-    private ViewPager mPager;
-    private TextView buttonPrev, buttonNext;
-    private RelativeLayout navigation;
-    private Integer[] background_colors;
-    private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
-
-
-    @SuppressLint("MissingSuperCall")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+        if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
+            UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+
+        setFullscreen(true);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        setFinishEnabled(false);
+        setSkipEnabled(false);
+        UsefulBits.checkAPK(this, new SharedPrefUtil(this));
+
+        addSlide(new SimpleSlide.Builder()
+                .image(R.drawable.ic_launcher)
+                .title(R.string.app_name_domoticz)
+                .description(R.string.welcome_info_domoticz)
+                .background(R.color.black)
+                .build());
+
+        addSlide(new FragmentSlide.Builder()
+                .background(R.color.welcome2_background)
+                .fragment(WelcomePage2.newInstance())
+                .build());
+
+        addSlide(new FragmentSlide.Builder()
+                .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
+                .fragment(WelcomePage3.newInstance(WELCOME_WIZARD))
+                .build());
+
+        addSlide(new FragmentSlide.Builder()
+                .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
+                .fragment(WelcomePage4.newInstance())
+                .build());
+
+        addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                p = position;
+                if (position == 3) {
+                    setFinishEnabled(true);
+                } else {
+                    setFinishEnabled(false);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (p > 0) {
+            previousSlide();
+            disableFinishButton(false);
+        } else {
+            finishWithResult(false);
         }
-
-        setUpBackgroundColors();
-        buildLayout();
     }
 
     public void finishWithResult(boolean success) {
@@ -63,125 +118,11 @@ public class WelcomeViewActivity extends FragmentActivity
         super.finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() > 0) {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-            disableFinishButton(false);
-        } else {
-            finishWithResult(false);
-        }
-    }
-
-    private void setUpBackgroundColors() {
-        Integer color1 = ContextCompat.getColor(this, R.color.welcome1_background);
-        Integer color2 = ContextCompat.getColor(this, R.color.welcome2_background);
-        Integer color3 = ContextCompat.getColor(this, R.color.welcome3_background);
-        Integer color4 = ContextCompat.getColor(this, R.color.welcome4_background);
-
-        background_colors = new Integer[]{color1, color2, color3, color4};
-    }
-
-    private void buildLayout() {
-        List<Fragment> fragments = getFragments();
-        mAdapter = new WelcomePageAdapter(getFragmentManager(), fragments);
-
-        mPager = (ViewPager) findViewById(R.id.viewpager);
-        mPager.setAdapter(mAdapter);
-
-        navigation = (RelativeLayout) findViewById(R.id.navigation);
-        navigation.setBackgroundResource(R.color.welcome1_background);
-
-        CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-        mIndicator.setViewPager(mPager);
-        float radius = mIndicator.getRadius();
-        mIndicator.setRadius(radius + 4);
-        mIndicator.setFillColor(ContextCompat.getColor(this, android.R.color.darker_gray));
-        mIndicator.setOnPageChangeListener(this);
-
-        buttonPrev = (TextView) findViewById(R.id.btn_prev);
-        buttonPrev.setText(getString(R.string.welcome_button_previous).toUpperCase());
-        buttonPrev.setOnClickListener(this);
-
-        buttonNext = (TextView) findViewById(R.id.btn_next);
-        buttonNext.setText(getString(R.string.welcome_button_next).toUpperCase());
-        buttonNext.setTextColor(ContextCompat.getColor(this, R.color.white));
-        buttonNext.setOnClickListener(this);
-    }
-
-    private List<Fragment> getFragments() {
-        fList.add(WelcomePage1.newInstance());
-        fList.add(WelcomePage2.newInstance());
-        fList.add(WelcomePage3.newInstance(WELCOME_WIZARD));
-        fList.add(WelcomePage4.newInstance());
-        return fList;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_next:
-                if (mPager.getCurrentItem() < fList.size() - 1) {
-                    // Go to next page
-                    mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-                } else {
-                    // Last page, end wizard
-                    endWelcomeWizard();
-                }
-                break;
-
-            case R.id.btn_prev:
-                if (mPager.getCurrentItem() != 0) {
-                    mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-                    disableFinishButton(false);
-                }
-                break;
-        }
-    }
-
     public void disableFinishButton(boolean disable) {
-        if (disable) buttonNext.setVisibility(View.INVISIBLE);
-        else buttonNext.setVisibility(View.VISIBLE);
+        setFinishEnabled(!disable);
     }
 
     private void endWelcomeWizard() {
         finishWithResult(true);
     }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (position < (mAdapter.getCount() - 1) && position < (background_colors.length - 1)) {
-            mPager.setBackgroundColor((Integer) argbEvaluator.evaluate(positionOffset, background_colors[position], background_colors[position + 1]));
-        } else {
-            mPager.setBackgroundColor(background_colors[background_colors.length - 1]);
-        }
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        pageSelected(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-    }
-
-    private void pageSelected(int position) {
-        if (position == 0) {
-            // First page
-            navigation.setBackgroundResource(R.color.welcome1_background);
-            buttonPrev.setVisibility(View.INVISIBLE);
-        } else if (position == fList.size() - 1) {
-            // Last page
-            buttonNext.setText(getString(R.string.welcome_button_finish).toUpperCase());
-        } else {
-            // Everything in between
-            navigation.setBackgroundResource(R.color.default_background_color_light);
-            buttonPrev.setVisibility(View.VISIBLE);
-            buttonNext.setText(getString(R.string.welcome_button_next).toUpperCase());
-            buttonNext.setTextColor(ContextCompat.getColor(this, R.color.light_gray));
-            disableFinishButton(false);
-        }
-    }
-
 }

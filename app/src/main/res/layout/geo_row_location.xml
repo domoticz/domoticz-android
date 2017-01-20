@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  ~ Copyright (C) 2015 Domoticz - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row_global_wrapper"
+    style="@style/background_listview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_grey_300_"
-    android:paddingLeft="@dimen/row_space"
-    android:paddingRight="@dimen/row_space">
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/row_wrapper"
+        style="@style/listview_row"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:descendantFocusability="blocksDescendants"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
+        android:paddingBottom="10dp"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:background="@drawable/bordershadow"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:paddingBottom="10dp">
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
         <CheckBox
             android:id="@+id/enableSwitch"
@@ -29,7 +50,7 @@
             android:gravity="center_vertical" />
 
         <RelativeLayout
-            android:layout_width="233dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
@@ -54,7 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/location_address"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/location_address"
                 android:layout_below="@+id/location_address"
                 tools:text="United States" />
 
@@ -64,7 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/location_country"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/location_country"
                 android:layout_below="@+id/location_country"
                 tools:text="Radius (meter): 120" />
 
@@ -73,18 +98,32 @@
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/location_radius" />
-
         </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/remove_button"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_off"
+            android:layout_gravity="center_vertical|right"
+            android:background="@drawable/button_status"
             android:text="@string/delete_short"
-            android:layout_gravity="center" />
+            android:textSize="10dp" />
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

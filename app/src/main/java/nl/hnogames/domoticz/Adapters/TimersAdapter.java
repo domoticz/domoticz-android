@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Domoticz
+ * Copyright (C) 2015 Domoticz - Mark Heinis
  *
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -9,21 +9,21 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing,
+ *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *
  */
 
 package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +32,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 
 public class TimersAdapter extends BaseAdapter {
 
     private static final String TAG = TimersAdapter.class.getSimpleName();
+
+    private SharedPrefUtil mSharedPrefs;
 
     private Context context;
     private ArrayList<SwitchTimerInfo> data = null;
@@ -47,6 +50,7 @@ public class TimersAdapter extends BaseAdapter {
         super();
 
         this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
         this.data = data;
     }
 
@@ -80,10 +84,16 @@ public class TimersAdapter extends BaseAdapter {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
 
+                if (mSharedPrefs.darkThemeEnabled()) {
+                    if ((convertView.findViewById(R.id.row_wrapper)) != null)
+                        (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                    if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
+                        (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                }
+
                 holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
                 holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);
                 holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
-
                 holder.switch_name.setText(mSwitchTimerInfo.getActive());
                 String commando = "";
                 if (mSwitchTimerInfo.getCmd() == 0)
@@ -104,6 +114,22 @@ public class TimersAdapter extends BaseAdapter {
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunset);
                 else if (mSwitchTimerInfo.getType() == 5)
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_fixed);
+                else if (mSwitchTimerInfo.getType() == 6)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_day_numbers);
+                else if (mSwitchTimerInfo.getType() == 7)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.even_day_numbers);
+                else if (mSwitchTimerInfo.getType() == 8)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_week_numbers);
+                else if (mSwitchTimerInfo.getType() == 9)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.even_week_numbers);
+                else if (mSwitchTimerInfo.getType() == 10)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.monthly);
+                else if (mSwitchTimerInfo.getType() == 11)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.monthly_weekday);
+                else if (mSwitchTimerInfo.getType() == 12)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly);
+                else if (mSwitchTimerInfo.getType() == 13)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly_weekday);
                 else
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.notapplicable);
 
