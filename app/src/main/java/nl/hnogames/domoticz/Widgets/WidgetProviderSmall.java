@@ -28,7 +28,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import java.util.ArrayList;
@@ -85,6 +84,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
     public static class UpdateWidgetService extends IntentService {
         private static final int WITHBUTTON = 1;
         private RemoteViews views;
+
         public UpdateWidgetService() {
             super("UpdateWidgetService");
         }
@@ -100,7 +100,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    if(e != null && !UsefulBits.isEmpty(e.getMessage()))
+                    if (e != null && !UsefulBits.isEmpty(e.getMessage()))
                         Log.e(WidgetProviderSmall.class.getSimpleName(), e.getMessage());
                 }
             }
@@ -210,14 +210,14 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                     return;
 
                                 if (s.getStatusInString() != null) {
-                                        views.setTextViewText(R.id.title, s.getName());
-                                        views.setTextViewText(R.id.desc, s.getStatusInString());
-                                        views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                                                UpdateWidgetService.this,
-                                                appWidgetId,
-                                                idx,
-                                                !s.getStatusInBoolean(),
-                                                true));
+                                    views.setTextViewText(R.id.title, s.getName());
+                                    views.setTextViewText(R.id.desc, s.getStatusInString());
+                                    views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
+                                            UpdateWidgetService.this,
+                                            appWidgetId,
+                                            idx,
+                                            !s.getStatusInBoolean(),
+                                            true));
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getType(), null, null, false, false, null));

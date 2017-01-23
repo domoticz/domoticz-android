@@ -159,8 +159,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
 
-        if(range.equals("day"))
-        {
+        if (range.equals("day")) {
             xAxis.setValueFormatter(new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
@@ -169,8 +168,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     return String.format("%02d", calendar.get(Calendar.HOUR)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
                 }
             });
-        }
-        else {
+        } else {
             xAxis.setValueFormatter(new IAxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
