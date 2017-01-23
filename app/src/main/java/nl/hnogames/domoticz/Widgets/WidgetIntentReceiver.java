@@ -21,7 +21,6 @@
 
 package nl.hnogames.domoticz.Widgets;
 
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -75,8 +74,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("QRCODE", true);
             context.startActivity(iStart);
-        }
-        else {
+        } else {
             loadPasswordandValue();
 
             if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION")) {
@@ -98,7 +96,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo == null)
             return false;
-        if(smallWidget)
+        if (smallWidget)
             return true;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
@@ -121,7 +119,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                     return true;
                 case DomoticzValues.Device.Type.Value.BLINDS:
                 case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                    if(DomoticzValues.canHandleStopButton(mExtendedStatusInfo))
+                    if (DomoticzValues.canHandleStopButton(mExtendedStatusInfo))
                         return false;
                     else
                         return true;
@@ -164,12 +162,10 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
         return false;
     }
 
-    private void loadPasswordandValue()
-    {
+    private void loadPasswordandValue() {
         password = mSharedPrefs.getWidgetPassword(widgetID);
         value = mSharedPrefs.getWidgetValue(widgetID);
-        if(UsefulBits.isEmpty(value) && UsefulBits.isEmpty(password))
-        {
+        if (UsefulBits.isEmpty(value) && UsefulBits.isEmpty(password)) {
             password = mSharedPrefs.getSmallWidgetPassword(widgetID);
             value = mSharedPrefs.getSmallWidgetValue(widgetID);
         }
@@ -179,7 +175,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
-        if(smallWidget)
+        if (smallWidget)
             isScene = mSharedPrefs.getSmallWidgetisScene(widgetID);
         Log.i("PROCESS SWITCH", "Device: " + idx + " " + isScene);
 
@@ -225,7 +221,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onReceiveScene(final SceneInfo scene) {
-                    Log.i("SCENE TOGGLE", "Device: " + scene.getName() );
+                    Log.i("SCENE TOGGLE", "Device: " + scene.getName());
 
                     if (scene != null) {
                         if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {

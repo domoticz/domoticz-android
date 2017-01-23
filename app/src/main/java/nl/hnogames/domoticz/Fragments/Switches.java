@@ -843,7 +843,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                 } //else
-                  //  errorHandling(error);
+                //  errorHandling(error);
             }
         });
     }

@@ -120,6 +120,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
+        
         createListView();
         initSwitches();
         createLocationRequest();

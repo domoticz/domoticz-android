@@ -104,7 +104,7 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    if(e != null && !UsefulBits.isEmpty(e.getMessage()))
+                    if (e != null && !UsefulBits.isEmpty(e.getMessage()))
                         Log.e(SecurityWidgetProvider.class.getSimpleName(), e.getMessage());
                 }
             }

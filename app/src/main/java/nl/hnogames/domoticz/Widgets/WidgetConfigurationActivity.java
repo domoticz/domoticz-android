@@ -377,7 +377,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
                     case DomoticzValues.Device.Type.Value.BLINDS:
                     case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                        if(DomoticzValues.canHandleStopButton(s))
+                        if (DomoticzValues.canHandleStopButton(s))
                             withButton = BUTTON_BLINDS;
                         else
                             withButton = BUTTON_ONOFF;

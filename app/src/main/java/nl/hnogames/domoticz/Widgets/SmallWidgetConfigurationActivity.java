@@ -130,9 +130,8 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     ArrayList<DevicesInfo> mNewDevicesInfo = new ArrayList<DevicesInfo>();
-                    for (DevicesInfo d : mDevicesInfo)
-                    {
-                        if(SmallWidgetSupported(d))
+                    for (DevicesInfo d : mDevicesInfo) {
+                        if (SmallWidgetSupported(d))
                             mNewDevicesInfo.add(d);
                     }
 

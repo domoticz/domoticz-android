@@ -102,7 +102,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    if(e != null && !UsefulBits.isEmpty(e.getMessage()))
+                    if (e != null && !UsefulBits.isEmpty(e.getMessage()))
                         Log.e(WidgetProviderLarge.class.getSimpleName(), e.getMessage());
                 }
             }
@@ -174,7 +174,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
                                 views.setTextViewText(R.id.desc, text);
                                 if (withButtons == BUTTON_1 && s.getStatus() != null) {
-                                    if(s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON)
+                                    if (s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON)
                                         views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_on));
                                     else if (s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON)
                                         views.setTextViewText(R.id.on_button, context.getString(R.string.button_state_off));
@@ -395,7 +395,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
                         case DomoticzValues.Device.Type.Value.BLINDS:
                         case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                            if(DomoticzValues.canHandleStopButton(s))
+                            if (DomoticzValues.canHandleStopButton(s))
                                 withButton = BUTTON_3;
                             else
                                 withButton = BUTTON_2;
