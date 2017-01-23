@@ -86,9 +86,11 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                     .buttonRippleColorRes(R.color.white);
         } else
             mdb = new MaterialDialog.Builder(mContext);
+
         mdb.customView(R.layout.dialog_security, true)
                 .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .negativeText(android.R.string.cancel);
+
         mdb.dismissListener(this);
     }
 
