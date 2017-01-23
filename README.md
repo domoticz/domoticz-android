@@ -5,16 +5,19 @@ This is a Android client for Domoticz and is available for download in the Play 
 -----
 **Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
 
+For Beta registration or more information check:  
+http://hnogames.nl/domoticz.html
+
 
 # Google Play Store
 -----
 You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets.  
 
 **Free:**  
-[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)
+[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)
 
 **Premium:**  
-[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/11994769/a4f0bd22-aa44-11e5-9151-b09c19971c7c.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)
+[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)
 
 # Geofencing
 -----

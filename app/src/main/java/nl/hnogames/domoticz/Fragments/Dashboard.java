@@ -941,7 +941,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                 } //else
-                   // errorHandling(error, coordinatorLayout);
+                // errorHandling(error, coordinatorLayout);
             }
         });
     }
