@@ -220,10 +220,12 @@
         </receiver>
 
         <service android:name=".Widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
-
+        
         <receiver android:name=".Service.BootUpReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
 

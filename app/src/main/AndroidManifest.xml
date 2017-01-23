@@ -70,7 +70,7 @@
         android:label="@string/app_name_domoticz"
         android:theme="@style/AppThemeMain"
         tools:replace="android:icon, android:label, android:theme, android:name" >
-        
+
         <activity android:name=".Service.NFCServiceActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -224,6 +224,8 @@
         <receiver android:name=".Service.BootUpReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
 
