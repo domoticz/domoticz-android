@@ -5,6 +5,9 @@ This is a Android client for Domoticz and is available for download in the Play 
 -----
 **Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
 
+For Beta registration or more information check:  
+http://hnogames.nl/domoticz.html
+
 
 # Google Play Store
 -----
