@@ -72,11 +72,19 @@
         tools:replace="android:icon, android:label, android:theme, android:name" >
         <activity android:name=".Service.NFCServiceActivity" >
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:host="domoticz"
-                    android:scheme="app" />
+                    android:scheme="https"
+                    android:host="www.domoticz.com"
+                    android:pathPrefix="/app" />
+                <data
+                    android:scheme="http"
+                    android:host="www.domoticz.com"
+                    android:pathPrefix="/app" />
             </intent-filter>
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
