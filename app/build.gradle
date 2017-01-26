@@ -168,7 +168,7 @@ dependencies {
     compile 'me.dm7.barcodescanner:zxing:1.9'
     compile 'com.github.jd-alexander:LikeButton:0.2.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
-    compile 'com.github.javiersantos:PiracyChecker:0.0.2'
+    compile 'com.github.javiersantos:PiracyChecker:0.0.3'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
 
     compile('com.mikepenz:materialdrawer:5.7.0@aar') {
