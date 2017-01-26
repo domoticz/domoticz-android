@@ -795,7 +795,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        if((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
+            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
+                    temperature > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
+                    true, "Freezing")).into(holder.iconRow);
+        }
+        else
+        {
+            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
+                    temperature > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
+                    false, null)).into(holder.iconRow);
+        }
     }
 
     /**

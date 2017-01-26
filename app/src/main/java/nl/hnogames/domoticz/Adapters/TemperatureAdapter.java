@@ -136,13 +136,19 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
 
             int modeIconRes = 0;
-            boolean tooHot = false;
-            if (mTemperatureInfo.getTemperature() > 30)
-                tooHot = true;
-
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                    mTemperatureInfo.getType(),
-                    null, tooHot, false, null)).into(holder.iconRow);
+            if((sign.equals("C") && mTemperatureInfo.getTemperature() < 0) || (sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
+                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                        mTemperatureInfo.getType(),
+                        null, mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
+                        true, "Freezing")).into(holder.iconRow);
+            }
+            else
+            {
+                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                        mTemperatureInfo.getType(),
+                        null, mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
+                        false, null)).into(holder.iconRow);
+            }
 
             if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
                 holder.setButton.setVisibility(View.VISIBLE);
