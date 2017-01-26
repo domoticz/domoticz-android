@@ -425,6 +425,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.pieView.setPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemperature() + " " + tempSign);
 
+                if ((tempSign.equals("C") && temp < 0) || (tempSign.equals("F") && temp < 30)) {
+                    holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
+                }
+
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);
                 holder.pieView.startAnimation(animation);
@@ -780,6 +784,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 temp = temp / 2;
             holder.pieView.setPercentage(Float.valueOf(temp + ""));
             holder.pieView.setInnerText(temperature + " " + sign);
+
+            if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
+                holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
+            }
 
             PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
             animation.setDuration(2000);
