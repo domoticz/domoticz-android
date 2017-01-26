@@ -136,14 +136,12 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
 
             int modeIconRes = 0;
-            if((sign.equals("C") && mTemperatureInfo.getTemperature() < 0) || (sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
+            if ((sign.equals("C") && mTemperatureInfo.getTemperature() < 0) || (sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                         mTemperatureInfo.getType(),
                         null, mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
                         true, "Freezing")).into(holder.iconRow);
-            }
-            else
-            {
+            } else {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                         mTemperatureInfo.getType(),
                         null, mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
