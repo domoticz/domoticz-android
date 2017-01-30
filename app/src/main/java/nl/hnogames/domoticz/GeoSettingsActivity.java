@@ -27,7 +27,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +36,7 @@ import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +65,6 @@ import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.LocationAdapter;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
-import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.GeoUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
@@ -550,24 +549,53 @@ public class GeoSettingsActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                LocationInfo location = new LocationInfo(new Random().nextInt(999999),
+                final LocationInfo location = new LocationInfo(new Random().nextInt(999999),
                         data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS),
                         new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
                         500);
-                mSharedPrefs.addLocation(location);
-                locations = mSharedPrefs.getLocations();
-                setGeoFenceService();
-                createListView();
+
+                new MaterialDialog.Builder(this)
+                        .title(R.string.radius)
+                        .content(R.string.radius)
+                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                        .input("500", "500", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                try {
+                                    location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                }
+                                catch(Exception ex){}
+                                mSharedPrefs.addLocation(location);
+                                locations = mSharedPrefs.getLocations();
+                                setGeoFenceService();
+                                createListView();
+                            }
+                        }).show();
             }
         }
-        if (requestCode == 2) {
+        else if (requestCode == 2) {
             if(resultCode == RESULT_OK){
-                LocationInfo locationEdit = mSharedPrefs.getLocation(EditLocationID);
-                locationEdit.setLocation(new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)));
-                mSharedPrefs.updateLocation(locationEdit);
-                locations = mSharedPrefs.getLocations();
-                setGeoFenceService();
-                createListView();
+                final LocationInfo location = mSharedPrefs.getLocation(EditLocationID);
+                location.setLocation(new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)));
+
+                new MaterialDialog.Builder(this)
+                        .title(R.string.radius)
+                        .content(R.string.radius)
+                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                        .input("500", "500", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                try {
+                                    location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                }
+                                catch(Exception ex){}
+                                mSharedPrefs.updateLocation(location);
+                                locations = mSharedPrefs.getLocations();
+                                setGeoFenceService();
+                                createListView();
+                            }
+                        }).show();
+
             }
         }
     }
