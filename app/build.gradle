@@ -66,7 +66,7 @@ android {
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
         }
@@ -78,7 +78,7 @@ android {
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "googleapikey", "$System.env.GOOGLE_API_KEY"
+            resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
         }
@@ -174,6 +174,8 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.7.0@aar') {
         transitive = true
     }
+
+    compile 'com.schibstedspain.android:leku:2.3.1'
 
     compile 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'

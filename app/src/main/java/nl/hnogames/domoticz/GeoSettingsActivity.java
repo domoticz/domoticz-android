@@ -24,8 +24,10 @@ package nl.hnogames.domoticz;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -54,8 +56,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+import com.schibstedspain.leku.LocationPickerActivity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.LocationAdapter;
@@ -516,7 +520,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void startLocationUpdates() {
-
         checkForLocationPermission(ACTION_GET_LOCATION);
     }
 
@@ -537,56 +540,44 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     private void showAddLocationDialog() {
-        LocationDialog locationDialog = new LocationDialog(
-                this,
-                R.layout.dialog_location);
-        locationDialog.setCurrentLocation(currentLocation);
-        locationDialog.setLocationToEdit(null);             // Set to null so its in add mode
-        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
-            @Override
-            public void onDismiss(LocationInfo location) {
+        Intent i = new Intent(this, LocationPickerActivity.class);
+        startActivityForResult(i, 1);
+    }
 
+    private int EditLocationID = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                LocationInfo location = new LocationInfo(new Random().nextInt(999999),
+                        data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS),
+                        new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
+                        500);
                 mSharedPrefs.addLocation(location);
                 locations = mSharedPrefs.getLocations();
-
                 setGeoFenceService();
                 createListView();
             }
-
-            @Override
-            public void onDismissEmpty() {
-                //nothing selected
+        }
+        if (requestCode == 2) {
+            if(resultCode == RESULT_OK){
+                LocationInfo locationEdit = mSharedPrefs.getLocation(EditLocationID);
+                locationEdit.setLocation(new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)));
+                mSharedPrefs.updateLocation(locationEdit);
+                locations = mSharedPrefs.getLocations();
+                setGeoFenceService();
+                createListView();
             }
-        });
-        locationDialog.show();
+        }
     }
 
     private void showEditLocationDialog(LocationInfo location) {
-        LocationDialog locationDialog = new LocationDialog(
-                this,
-                R.layout.dialog_location);
-
-        locationDialog.setTitle(getString(R.string.title_edit_location));
-        locationDialog.setLocationToEdit(location);
-        locationDialog.setRadius(location.getRadius());
-        locationDialog.setCurrentLocation(null);            // Set to null so its in edit mode
-        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
-            @Override
-            public void onDismiss(LocationInfo location) {
-
-                mSharedPrefs.updateLocation(location);
-                locations = mSharedPrefs.getLocations();
-
-                setGeoFenceService();
-                createListView();
-            }
-
-            @Override
-            public void onDismissEmpty() {
-                //nothing selected
-            }
-        });
-        locationDialog.show();
+        EditLocationID = location.getID();
+        Intent intent = new Intent(getApplicationContext(), LocationPickerActivity.class);
+        intent.putExtra(LocationPickerActivity.LATITUDE, location.getLocation().latitude);
+        intent.putExtra(LocationPickerActivity.LONGITUDE, location.getLocation().longitude);
+        startActivityForResult(intent, 2);
     }
 
     @Override
@@ -610,7 +601,6 @@ public class GeoSettingsActivity extends AppCompatActivity
                 showAddLocationDialog();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -641,7 +631,6 @@ public class GeoSettingsActivity extends AppCompatActivity
     @Override
     public void onConnectionSuspended(int i) {
         PendingIntent mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
-
         if (mGeofenceRequestIntent != null && mApiClient != null)
             LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
         isGeofenceServiceStarted = false;

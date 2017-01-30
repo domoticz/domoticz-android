@@ -1149,15 +1149,14 @@ public class SharedPrefUtil {
                                     try {
                                         LocationServices.GeofencingApi.removeGeofences(mApiClient,
                                                 mGeofenceRequestIntent);
+                                        //noinspection ResourceType
+                                        LocationServices
+                                                .GeofencingApi
+                                                .addGeofences(mApiClient,
+                                                        getGeofencingRequest(mGeofenceList),
+                                                        mGeofenceRequestIntent);
                                     } catch (Exception ignored) {
                                     }
-
-                                    //noinspection ResourceType
-                                    LocationServices
-                                            .GeofencingApi
-                                            .addGeofences(mApiClient,
-                                                    getGeofencingRequest(mGeofenceList),
-                                                    mGeofenceRequestIntent);
                                 }
 
                                 @Override
