@@ -151,6 +151,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services-gcm:10.0.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'com.google.android.gms:play-services-places:10.0.1'
 
     compile 'com.android.volley:volley:1.0.0'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'

@@ -582,7 +582,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                         .title(R.string.radius)
                         .content(R.string.radius)
                         .inputType(InputType.TYPE_CLASS_NUMBER)
-                        .input("500", "500", new MaterialDialog.InputCallback() {
+                        .input(String.valueOf(location.getRadius()), String.valueOf(location.getRadius()), new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 try {
