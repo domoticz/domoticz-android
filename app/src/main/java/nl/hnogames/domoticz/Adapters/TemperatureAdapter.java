@@ -141,13 +141,17 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                         mTemperatureInfo.getType(),
-                        null, mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
-                        true, "Freezing")).into(holder.iconRow);
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        true,
+                        "Freezing")).into(holder.iconRow);
             } else {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
                         mTemperatureInfo.getType(),
-                        null, mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature() ? true : false,
-                        false, null)).into(holder.iconRow);
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        false,
+                        null)).into(holder.iconRow);
             }
 
             if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
