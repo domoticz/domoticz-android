@@ -177,11 +177,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     holder.pieView.setPercentage(Float.valueOf(temp + ""));
                     holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
 
-                    if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
-                            (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
-                        holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
-                    }
-
                     PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                     animation.setDuration(2000);
                     holder.pieView.startAnimation(animation);

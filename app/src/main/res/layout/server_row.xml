@@ -20,7 +20,7 @@
   ~  under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/row_global_wrapper"
     style="@style/background_listview"
@@ -31,8 +31,7 @@
     <LinearLayout
         android:id="@+id/row_wrapper"
         style="@style/listview_row"
-
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
@@ -50,7 +49,7 @@
             android:gravity="center_vertical" />
 
         <RelativeLayout
-            android:layout_width="233dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
@@ -80,17 +79,28 @@
                 tools:text="Local Address" />
 
         </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/remove_button"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_gravity="center_vertical|right"
             android:background="@drawable/button_status"
             android:text="@string/delete_short"
             android:textSize="10dp" />
+
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
