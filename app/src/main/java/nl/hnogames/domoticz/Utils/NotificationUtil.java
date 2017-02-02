@@ -71,6 +71,7 @@ public class NotificationUtil {
                                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
                                 .setContentTitle(alarmNot != null && alarmNot.contains(text) ? context.getString(R.string.alarm) + ": " + title : title)
                                 .setContentText(alarmNot != null && alarmNot.contains(text) ? context.getString(R.string.alarm) + ": " + text : text)
+								.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                                 .setGroupSummary(true)
                                 .setGroup(GROUP_KEY_NOTIFICATIONS)
                                 .setAutoCancel(true);

@@ -148,13 +148,19 @@ public class AppController extends MultiDexApplication implements GcmListener {
     @Override
     public void onMessage(String s, Bundle bundle) {
         if (bundle.containsKey("message")) {
-            String message = bundle.getString("message");
-            try {
-                message = URLDecoder.decode(message, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+
+            String message = decode(bundle.getString("message"));
+
+            String subject = decode(bundle.getString("subject"));
+            if (subject != null) {
+                String body = decode(bundle.getString("body"));
+                //String priority = decode(bundle.getString("priority"));
+                //String extradata = decode(bundle.getString("extradata"));
+                //String deviceid = decode(bundle.getString("deviceid"));
+                NotificationUtil.sendSimpleNotification(subject, body, this);
+            } else {
+                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
             }
-            NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
         }
     }
 
@@ -209,4 +215,16 @@ public class AppController extends MultiDexApplication implements GcmListener {
             }
         });
     }
+
+    private String decode(String str) {
+        if (str != null) {
+            try {
+                return URLDecoder.decode(str, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return str;
+    }
+
 }
