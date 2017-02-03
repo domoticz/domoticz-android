@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -53,7 +54,7 @@ public class NotificationUtil {
     private static SharedPrefUtil prefUtil;
     private static int NOTIFICATION_ID = 12345;
 
-    public static void sendSimpleNotification(int idx, String title, String text, final Context context) {
+    public static void sendSimpleNotification(int idx, String title, String text, int priority, final Context context) {
         if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
             return;
 
@@ -69,9 +70,25 @@ public class NotificationUtil {
             prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + text);
         }
 
+        int prio = Notification.PRIORITY_DEFAULT;
+        switch (priority)
+        {
+            case 1:
+                prio = Notification.PRIORITY_HIGH;
+                break;
+            case 2:
+                prio = Notification.PRIORITY_MAX;
+                break;
+            case -1:
+                prio = Notification.PRIORITY_LOW;
+                break;
+            case -2:
+                prio = Notification.PRIORITY_MIN;
+                break;
+        }
+
         List<String> suppressedNot = prefUtil.getSuppressedNotifications();
         List<String> alarmNot = prefUtil.getAlarmNotifications();
-
         try {
             if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(text)) {
                 NotificationCompat.Builder builder =
@@ -83,6 +100,7 @@ public class NotificationUtil {
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                                 .setGroupSummary(true)
                                 .setGroup(GROUP_KEY_NOTIFICATIONS)
+                                .setPriority(prio)
                                 .setAutoCancel(true);
 
                 if (!prefUtil.OverWriteNotifications())
@@ -137,8 +155,8 @@ public class NotificationUtil {
         }
     }
 
-    public static void sendSimpleNotification(String title, String text, final Context context) {
-        sendSimpleNotification(-1, title, text, context);
+    public static void sendSimpleNotification(String title, String text, int priority, final Context context) {
+        sendSimpleNotification(-1, title, text, priority, context);
     }
 
     private static Intent getMessageReadIntent() {

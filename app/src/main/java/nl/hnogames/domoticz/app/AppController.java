@@ -153,18 +153,22 @@ public class AppController extends MultiDexApplication implements GcmListener {
         if (bundle.containsKey("message")) {
             String message = decode(bundle.getString("message"));
             String subject = decode(bundle.getString("subject"));
+            String body = decode(bundle.getString("body"));
 
-            if (subject != null && !message.equals(subject)) {
-                String body = decode(bundle.getString("body"));
-                //String priority = decode(bundle.getString("priority"));
+            int prio = 0; //default
+            String priority = decode(bundle.getString("priority"));
+            if(!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
+                prio = Integer.valueOf(priority);
+
+            if (subject != null && !body.equals(subject)) {
                 //String extradata = decode(bundle.getString("extradata"));
                 String deviceid = decode(bundle.getString("deviceid"));
-                if(!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid))
-                    NotificationUtil.sendSimpleNotification(subject, body, this);
+                if(!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
+                    NotificationUtil.sendSimpleNotification(subject, body, prio, this);
                 else
-                    NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, this);
+                    NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
             } else {
-                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
+                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
             }
         }
     }
