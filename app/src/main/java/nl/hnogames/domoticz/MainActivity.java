@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 fromQRCodeWidget = extras.getBoolean("QRCODE", false);
             }
         }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

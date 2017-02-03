@@ -35,6 +35,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.zxing.common.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -55,6 +56,8 @@ import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
+
+import static android.text.TextUtils.isDigitsOnly;
 
 public class AppController extends MultiDexApplication implements GcmListener {
 
@@ -148,16 +151,18 @@ public class AppController extends MultiDexApplication implements GcmListener {
     @Override
     public void onMessage(String s, Bundle bundle) {
         if (bundle.containsKey("message")) {
-
             String message = decode(bundle.getString("message"));
-
             String subject = decode(bundle.getString("subject"));
-            if (subject != null) {
+
+            if (subject != null && !message.equals(subject)) {
                 String body = decode(bundle.getString("body"));
                 //String priority = decode(bundle.getString("priority"));
                 //String extradata = decode(bundle.getString("extradata"));
-                //String deviceid = decode(bundle.getString("deviceid"));
-                NotificationUtil.sendSimpleNotification(subject, body, this);
+                String deviceid = decode(bundle.getString("deviceid"));
+                if(!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid))
+                    NotificationUtil.sendSimpleNotification(subject, body, this);
+                else
+                    NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, this);
             } else {
                 NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
             }

@@ -53,16 +53,25 @@ public class NotificationUtil {
     private static SharedPrefUtil prefUtil;
     private static int NOTIFICATION_ID = 12345;
 
-    public static void sendSimpleNotification(String title, String text, final Context context) {
+    public static void sendSimpleNotification(int idx, String title, String text, final Context context) {
         if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
             return;
+
         if (prefUtil == null)
             prefUtil = new SharedPrefUtil(context);
-        prefUtil.addUniqueReceivedNotification(text);
-        prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + text);
+
+        if(!title.equals(text)) {
+            prefUtil.addUniqueReceivedNotification(title + ": " + text);
+            prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + title + ": " + text);
+        }
+        else{
+            prefUtil.addUniqueReceivedNotification(text);
+            prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + text);
+        }
 
         List<String> suppressedNot = prefUtil.getSuppressedNotifications();
         List<String> alarmNot = prefUtil.getAlarmNotifications();
+
         try {
             if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(text)) {
                 NotificationCompat.Builder builder =
@@ -71,19 +80,23 @@ public class NotificationUtil {
                                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
                                 .setContentTitle(alarmNot != null && alarmNot.contains(text) ? context.getString(R.string.alarm) + ": " + title : title)
                                 .setContentText(alarmNot != null && alarmNot.contains(text) ? context.getString(R.string.alarm) + ": " + text : text)
-								.setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                                 .setGroupSummary(true)
                                 .setGroup(GROUP_KEY_NOTIFICATIONS)
                                 .setAutoCancel(true);
 
                 if (!prefUtil.OverWriteNotifications())
                     NOTIFICATION_ID = text.hashCode();
+
                 if (prefUtil.getNotificationVibrate())
                     builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+
                 if (!UsefulBits.isEmpty(prefUtil.getNotificationSound()))
                     builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
 
                 Intent targetIntent = new Intent(context, MainActivity.class);
+                if(idx>-1)
+                    targetIntent.putExtra("TARGETIDX", idx);
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
 
@@ -122,6 +135,10 @@ public class NotificationUtil {
         } catch (Exception ex) {
             Log.i("NOTIFY", ex.getMessage());
         }
+    }
+
+    public static void sendSimpleNotification(String title, String text, final Context context) {
+        sendSimpleNotification(-1, title, text, context);
     }
 
     private static Intent getMessageReadIntent() {
