@@ -89,6 +89,7 @@ import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
+import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 // Geofences are already started on device boot up by the BootUpReceiver
                 if (!mSharedPrefs.isGeofencingStarted()) {
                     mSharedPrefs.setGeofencingStarted(true);
-                    mSharedPrefs.enableGeoFenceService();
+                    new GeoUtils(this).enableGeoFenceService();
                 }
                 buildScreen();
             }
@@ -1414,7 +1415,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         validateOnce = false;
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
-            mSharedPrefs.enableGeoFenceService();
+            new GeoUtils(this).enableGeoFenceService();
         }
         buildScreen();
     }
@@ -1431,10 +1432,12 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             dialog.dismiss();
         Digitus.get().deinit();
         validateOnce = false;
+
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
-            mSharedPrefs.enableGeoFenceService();
+            new GeoUtils(this).enableGeoFenceService();
         }
+
         buildScreen();
     }
 
@@ -1448,14 +1451,15 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 dialog.dismiss();
             Digitus.get().deinit();
             validateOnce = false;
+
             if (!mSharedPrefs.isGeofencingStarted()) {
                 mSharedPrefs.setGeofencingStarted(true);
-                mSharedPrefs.enableGeoFenceService();
+                new GeoUtils(this).enableGeoFenceService();
             }
+
             buildScreen();
         } else {
             UsefulBits.showSimpleToast(this, this.getString(R.string.security_wrong_password_fingerprint), Toast.LENGTH_LONG);
-
             if (dialog != null)
                 dialog.dismiss();
 

@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 
@@ -42,7 +43,7 @@ public class BootUpReceiver extends BroadcastReceiver {
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(context);
 
         if (mSharedPrefUtil.isGeofenceEnabled()) {
-            mSharedPrefUtil.enableGeoFenceService();
+            new GeoUtils(context).enableGeoFenceService();
             Log.i("BOOT", "Bootup received, starting geofences");
         }
     }
