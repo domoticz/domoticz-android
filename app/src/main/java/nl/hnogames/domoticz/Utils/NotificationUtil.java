@@ -61,14 +61,12 @@ public class NotificationUtil {
         if (prefUtil == null)
             prefUtil = new SharedPrefUtil(context);
 
-        if(!title.equals(text)) {
-            prefUtil.addUniqueReceivedNotification(title + ": " + text);
-            prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + title + ": " + text);
-        }
-        else{
-            prefUtil.addUniqueReceivedNotification(text);
-            prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + text);
-        }
+        String loggedNotification = title;
+        if(title.equals(context.getString(R.string.app_name_domoticz)))
+            loggedNotification = text;
+
+        prefUtil.addUniqueReceivedNotification(loggedNotification);
+        prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + loggedNotification);
 
         int prio = Notification.PRIORITY_DEFAULT;
         switch (priority)
