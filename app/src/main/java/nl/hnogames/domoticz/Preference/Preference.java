@@ -118,6 +118,7 @@ public class Preference extends PreferenceFragment {
     private void setPreferences() {
         final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         android.preference.Preference ServerSettings = findPreference("server_settings");
+        android.preference.Preference ClearNotifications = findPreference("clear_notifications");
         android.preference.Preference PermissionsSettings = findPreference("permissionssettings");
         android.preference.Preference NotificationLogged = findPreference("notification_show_logs");
         android.preference.Preference fetchServerConfig = findPreference("server_force_fetch_config");
@@ -268,6 +269,14 @@ public class Preference extends PreferenceFragment {
                 } else {
                     pushGCMRegistrationIds();
                 }
+                return true;
+            }
+        });
+
+        ClearNotifications.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                mSharedPrefs.clearPreviousNotification();
                 return true;
             }
         });

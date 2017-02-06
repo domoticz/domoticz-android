@@ -443,6 +443,11 @@ public class SharedPrefUtil {
         }
     }
 
+    public void clearPreviousNotification() {
+        editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null).apply();
+        editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, null).apply();
+    }
+
     /**
      * Adds the notification to the list of received notifications (only unique ones are stored)
      *
