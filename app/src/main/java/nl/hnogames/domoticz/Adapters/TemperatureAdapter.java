@@ -254,7 +254,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 });
             }
 
-            if(!UsefulBits.isEmpty(mTemperatureInfo.getName()))
+            if (!UsefulBits.isEmpty(mTemperatureInfo.getName()))
                 holder.name.setText(mTemperatureInfo.getName());
             if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
                 holder.data.setText(R.string.wind);

@@ -62,15 +62,14 @@ public class NotificationUtil {
             prefUtil = new SharedPrefUtil(context);
 
         String loggedNotification = title;
-        if(title.equals(context.getString(R.string.app_name_domoticz)))
+        if (title.equals(context.getString(R.string.app_name_domoticz)))
             loggedNotification = text;
 
         prefUtil.addUniqueReceivedNotification(loggedNotification);
         prefUtil.addLoggedNotification(new SimpleDateFormat("yyyy-MM-dd hh:mm ").format(new Date()) + loggedNotification);
 
         int prio = Notification.PRIORITY_DEFAULT;
-        switch (priority)
-        {
+        switch (priority) {
             case 1:
                 prio = Notification.PRIORITY_HIGH;
                 break;
@@ -111,7 +110,7 @@ public class NotificationUtil {
                     builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
 
                 Intent targetIntent = new Intent(context, MainActivity.class);
-                if(idx>-1)
+                if (idx > -1)
                     targetIntent.putExtra("TARGETIDX", idx);
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);

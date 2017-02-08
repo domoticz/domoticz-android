@@ -91,6 +91,7 @@ public class GeoSettingsActivity extends AppCompatActivity
     private boolean requestInProgress;
     private boolean isGeofenceServiceStarted;
     private GeoUtils oGeoUtils;
+    private int EditLocationID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -494,12 +495,10 @@ public class GeoSettingsActivity extends AppCompatActivity
         startActivityForResult(i, 1);
     }
 
-    private int EditLocationID = 0;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 final LocationInfo location = new LocationInfo(new Random().nextInt(999999),
                         data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS),
                         new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
@@ -514,8 +513,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 try {
                                     location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                } catch (Exception ex) {
                                 }
-                                catch(Exception ex){}
                                 mSharedPrefs.addLocation(location);
                                 locations = mSharedPrefs.getLocations();
                                 setGeoFenceService();
@@ -523,9 +522,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                             }
                         }).show();
             }
-        }
-        else if (requestCode == 2) {
-            if(resultCode == RESULT_OK){
+        } else if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
                 final LocationInfo location = mSharedPrefs.getLocation(EditLocationID);
                 location.setLocation(new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)));
 
@@ -538,8 +536,8 @@ public class GeoSettingsActivity extends AppCompatActivity
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 try {
                                     location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                } catch (Exception ex) {
                                 }
-                                catch(Exception ex){}
                                 mSharedPrefs.updateLocation(location);
                                 locations = mSharedPrefs.getLocations();
                                 setGeoFenceService();
@@ -602,7 +600,8 @@ public class GeoSettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

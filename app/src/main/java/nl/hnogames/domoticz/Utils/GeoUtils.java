@@ -207,10 +207,10 @@ public class GeoUtils {
 
     public void refreshGeofences() {
         final List<Geofence> mGeofenceList = this.mSharedPrefs.getEnabledGeofences();
-        if(mGeofenceList == null)
+        if (mGeofenceList == null)
             return;
 
-        if(mApiClient == null || !mApiClient.isConnected()) {
+        if (mApiClient == null || !mApiClient.isConnected()) {
             mApiClient = new GoogleApiClient.Builder(mContext)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -239,8 +239,7 @@ public class GeoUtils {
                     })
                     .build();
             mApiClient.connect();
-        }
-        else{
+        } else {
             PendingIntent mGeofenceRequestIntent =
                     getGeofenceTransitionPendingIntent();
 
@@ -265,8 +264,7 @@ public class GeoUtils {
             // thus there is nothing to stop
             PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
             LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
-        }
-        else{
+        } else {
             mApiClient = new GoogleApiClient.Builder(mContext)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -281,6 +279,7 @@ public class GeoUtils {
                             } catch (Exception ignored) {
                             }
                         }
+
                         @Override
                         public void onConnectionSuspended(int i) {
                         }

@@ -35,7 +35,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.google.zxing.common.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -157,13 +156,13 @@ public class AppController extends MultiDexApplication implements GcmListener {
 
             int prio = 0; //default
             String priority = decode(bundle.getString("priority"));
-            if(!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
+            if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
                 prio = Integer.valueOf(priority);
 
             if (subject != null && !body.equals(subject)) {
                 //String extradata = decode(bundle.getString("extradata"));
                 String deviceid = decode(bundle.getString("deviceid"));
-                if(!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
+                if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
                     NotificationUtil.sendSimpleNotification(subject, body, prio, this);
                 else
                     NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
