@@ -25,6 +25,7 @@ package nl.hnogames.domoticzapi;
  * Created by m.heinis on 8/5/2016.
  */
 public class DomoticzIcons {
+
     @SuppressWarnings("SpellCheckingInspection")
     public static int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
@@ -33,6 +34,8 @@ public class DomoticzIcons {
             switch (CustomImage) {
                 case "Alarm":
                     return R.drawable.alarm;
+                case "Freezing":
+                    return R.drawable.freezing;
                 case "Amplifier":
                     return R.drawable.volume;
                 case "Computer":

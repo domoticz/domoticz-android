@@ -22,20 +22,14 @@
 package nl.hnogames.domoticz.Utils;
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -59,7 +53,6 @@ import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
@@ -126,7 +119,6 @@ public class SharedPrefUtil {
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private GoogleApiClient mApiClient = null;
 
     @SuppressLint("CommitPrefEdits")
     public SharedPrefUtil(Context mContext) {
@@ -442,6 +434,11 @@ public class SharedPrefUtil {
                 editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
             }
         }
+    }
+
+    public void clearPreviousNotification() {
+        editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null).apply();
+        editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, null).apply();
     }
 
     /**
@@ -970,7 +967,8 @@ public class SharedPrefUtil {
             editor.commit();
             res = true;
 
-            if (isGeofenceEnabled()) enableGeoFenceService();
+            if (isGeofenceEnabled())
+                new GeoUtils(mContext).enableGeoFenceService();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1129,75 +1127,5 @@ public class SharedPrefUtil {
                     mGeofenceList.add(locationInfo.toGeofence());
             return mGeofenceList;
         } else return null;
-    }
-
-    public void enableGeoFenceService() {
-        if (isGeofenceEnabled()) {
-            //only continue when we have the correct permissions!
-            if (PermissionsUtil.canAccessLocation(mContext)) {
-                final List<Geofence> mGeofenceList = getEnabledGeofences();
-                if (mGeofenceList != null && mGeofenceList.size() > 0) {
-                    mApiClient = new GoogleApiClient.Builder(mContext)
-                            .addApi(LocationServices.API)
-                            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                                @Override
-                                public void onConnected(Bundle bundle) {
-                                    PendingIntent mGeofenceRequestIntent =
-                                            getGeofenceTransitionPendingIntent();
-
-                                    // First remove all GeoFences
-                                    try {
-                                        LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                                                mGeofenceRequestIntent);
-                                    } catch (Exception ignored) {
-                                    }
-
-                                    //noinspection ResourceType
-                                    LocationServices
-                                            .GeofencingApi
-                                            .addGeofences(mApiClient,
-                                                    getGeofencingRequest(mGeofenceList),
-                                                    mGeofenceRequestIntent);
-                                }
-
-                                @Override
-                                public void onConnectionSuspended(int i) {
-                                }
-                            })
-                            .build();
-                    mApiClient.connect();
-                } else {
-                    // No enabled geofences, disabling
-                    setGeofenceEnabled(false);
-                }
-            }
-        }
-    }
-
-    public void stopGeofenceService() {
-        if (mApiClient != null) {
-            // If mApiClient is null enableGeofenceService was not called
-            // thus there is nothing to stop
-            PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
-            LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
-        }
-    }
-
-    private GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofenceList);
-        return builder.build();
-    }
-
-    /**
-     * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
-     * transition occurs.
-     *
-     * @return Intent which will be called
-     */
-    public PendingIntent getGeofenceTransitionPendingIntent() {
-        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
-        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

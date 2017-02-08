@@ -191,13 +191,6 @@
                             android:layout_marginRight="6dp"
                             android:text="55%" />
 
-                        <SeekBar
-                            android:id="@+id/switch_dimmer"
-                            android:layout_width="129dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:minWidth="150dp" />
-
                         <Spinner
                             android:id="@+id/spSelector"
                             android:layout_width="129dp"
@@ -268,6 +261,18 @@
                             android:text="@string/button_color"
                             android:textSize="10dp" />
                     </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/switch_dimmer"
+                        android:layout_width="129dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_below="@+id/linearLayout7864"
+                        android:paddingTop="15dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

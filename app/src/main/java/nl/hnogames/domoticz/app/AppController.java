@@ -56,6 +56,8 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 
+import static android.text.TextUtils.isDigitsOnly;
+
 public class AppController extends MultiDexApplication implements GcmListener {
 
     public static final String TAG = AppController.class.getSimpleName();
@@ -148,13 +150,25 @@ public class AppController extends MultiDexApplication implements GcmListener {
     @Override
     public void onMessage(String s, Bundle bundle) {
         if (bundle.containsKey("message")) {
-            String message = bundle.getString("message");
-            try {
-                message = URLDecoder.decode(message, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            String message = decode(bundle.getString("message"));
+            String subject = decode(bundle.getString("subject"));
+            String body = decode(bundle.getString("body"));
+
+            int prio = 0; //default
+            String priority = decode(bundle.getString("priority"));
+            if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
+                prio = Integer.valueOf(priority);
+
+            if (subject != null && !body.equals(subject)) {
+                //String extradata = decode(bundle.getString("extradata"));
+                String deviceid = decode(bundle.getString("deviceid"));
+                if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
+                    NotificationUtil.sendSimpleNotification(subject, body, prio, this);
+                else
+                    NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
+            } else {
+                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
             }
-            NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, this);
         }
     }
 
@@ -209,4 +223,16 @@ public class AppController extends MultiDexApplication implements GcmListener {
             }
         });
     }
+
+    private String decode(String str) {
+        if (str != null) {
+            try {
+                return URLDecoder.decode(str, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return str;
+    }
+
 }

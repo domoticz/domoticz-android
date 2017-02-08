@@ -93,7 +93,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                 getString(R.string.geofence_location_entering),
                                 locationFound.getName());
                         NotificationUtil.sendSimpleNotification(text,
-                                getString(R.string.geofence_location_entering_text), this);
+                                getString(R.string.geofence_location_entering_text), 0, this);
 
                         if (locationFound.getSwitchIdx() > 0) {
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue());
@@ -110,7 +110,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                                 getString(R.string.geofence_location_leaving),
                                 locationFound.getName());
                         NotificationUtil.sendSimpleNotification(text,
-                                getString(R.string.geofence_location_leaving_text), this);
+                                getString(R.string.geofence_location_leaving_text), 0, this);
 
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false, locationFound.getValue());
