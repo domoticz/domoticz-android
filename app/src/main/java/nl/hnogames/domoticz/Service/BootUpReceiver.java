@@ -43,6 +43,7 @@ public class BootUpReceiver extends BroadcastReceiver {
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(context);
 
         if (mSharedPrefUtil.isGeofenceEnabled()) {
+            GeoUtils.geofencesAlreadyRegistered = false;
             new GeoUtils(context).enableGeoFenceService();
             Log.i("BOOT", "Bootup received, starting geofences");
         }
