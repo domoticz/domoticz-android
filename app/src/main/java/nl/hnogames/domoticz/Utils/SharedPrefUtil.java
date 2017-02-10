@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -718,7 +719,7 @@ public class SharedPrefUtil {
     }
 
     public boolean isAPKValidated() {
-        return prefs.getBoolean(PREF_APK_VALIDATED, true);
+        return true;//prefs.getBoolean(PREF_APK_VALIDATED, true);
     }
 
     public void setAPKValidated(boolean valid) {
@@ -903,6 +904,20 @@ public class SharedPrefUtil {
             mServerUpdateInfo.setUpdateAvailable(false);
         }
 
+        Map<String, ?> oAllPrefs = this.prefs.getAll();
+        HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
+        for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
+            //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+            if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+            else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
+                Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+            else {
+                Log.i("PREFS", "Exported: " + entry.getKey() + ": " + entry.getValue().toString());
+                oSavePrefs.put(entry.getKey(), entry.getValue());
+            }
+        }
+
         boolean result = true;
         if (dst.exists())
             result = dst.delete();
@@ -913,7 +928,7 @@ public class SharedPrefUtil {
             //noinspection TryWithIdenticalCatches
             try {
                 output = new ObjectOutputStream(new FileOutputStream(dst));
-                output.writeObject(this.prefs.getAll());
+                output.writeObject(oSavePrefs);
                 result = true;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -942,26 +957,32 @@ public class SharedPrefUtil {
         //noinspection TryWithIdenticalCatches
         try {
             input = new ObjectInputStream(new FileInputStream(src));
-            editor.clear();
+            //editor.clear();
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();
                 String key = entry.getKey();
                 if (v != null && !UsefulBits.isEmpty(key)) {
-                    if (v instanceof Boolean)
-                        editor.putBoolean(key, ((Boolean) v).booleanValue());
-                    else if (v instanceof Float)
-                        editor.putFloat(key, ((Float) v).floatValue());
-                    else if (v instanceof Integer)
-                        editor.putInt(key, ((Integer) v).intValue());
-                    else if (v instanceof Long)
-                        editor.putLong(key, ((Long) v).longValue());
-                    else if (v instanceof String)
-                        editor.putString(key, ((String) v));
-                    else if (v instanceof Set)
-                        editor.putStringSet(key, ((Set<String>) v));
-                    else
-                        Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                        Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+                    else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
+                        Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+                    else {
+                        if (v instanceof Boolean)
+                            editor.putBoolean(key, ((Boolean) v).booleanValue());
+                        else if (v instanceof Float)
+                            editor.putFloat(key, ((Float) v).floatValue());
+                        else if (v instanceof Integer)
+                            editor.putInt(key, ((Integer) v).intValue());
+                        else if (v instanceof Long)
+                            editor.putLong(key, ((Long) v).longValue());
+                        else if (v instanceof String)
+                            editor.putString(key, ((String) v));
+                        else if (v instanceof Set)
+                            editor.putStringSet(key, ((Set<String>) v));
+                        else
+                            Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                    }
                 }
             }
             editor.commit();
