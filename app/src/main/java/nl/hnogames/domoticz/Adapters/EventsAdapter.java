@@ -109,12 +109,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                     public void onClick(View v) {
                         for (EventInfo e : data) {
                             if (e.getId() == v.getId()) {
-                                //reset switch to previous state (we can't handle toggles yet!)
-                                if (e.getStatusBoolean()) {
-                                    holder.buttonON.setChecked(true);
-                                } else {
-                                    holder.buttonON.setChecked(false);
-                                }
+                                listener.onEventClick(e.getId(), !e.getStatusBoolean());
                             }
                         }
                     }
@@ -126,6 +121,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                     holder.buttonON.setChecked(false);
                 }
             }
+
             if (holder.name != null)
                 holder.name.setText(mEventInfo.getName());
 
@@ -136,6 +132,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                     holder.message.setText("Status: " + context.getString(R.string.button_state_off));
                 }
             }
+
             Picasso.with(context).load(R.drawable.cone).into(holder.iconRow);
         }
     }
@@ -148,7 +145,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     public interface onClickListener {
         void onItemClick(int position, View v);
     }
-
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
