@@ -104,6 +104,12 @@
 
         <service android:name=".Service.GeofenceTransitionsIntentService" />
 
+        <service
+            android:name=".Service.GeolocationService"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name_domoticz" >
+        </service>
+
         <service android:name=".Service.WearMessageListenerService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />

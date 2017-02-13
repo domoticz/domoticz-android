@@ -190,12 +190,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         69,
                         this);
             } else {
-                // Only start Geofences when not started
-                // Geofences are already started on device boot up by the BootUpReceiver
-                if (!mSharedPrefs.isGeofencingStarted()) {
-                    mSharedPrefs.setGeofencingStarted(true);
-                    new GeoUtils(this).enableGeoFenceService();
-                }
+                new GeoUtils(this).enableGeoFenceService();
                 buildScreen();
             }
         }

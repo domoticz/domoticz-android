@@ -67,7 +67,6 @@ public class GeofenceTransitionsIntentService extends IntentService
         mSharedPrefs = new SharedPrefUtil(this);
     }
 
-
     /**
      * Handles incoming intents.
      *
@@ -179,22 +178,6 @@ public class GeofenceTransitionsIntentService extends IntentService
             }
 
         }, idx, false);
-    }
-
-    private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
-        int jsonValue = 0;
-        if (!UsefulBits.isEmpty(value)) {
-            String[] levelNames = mDevicesInfo.getLevelNames();
-            int counter = 10;
-            for (String l : levelNames) {
-                if (l.equals(value))
-                    break;
-                else
-                    counter += 10;
-            }
-            jsonValue = counter;
-        }
-        return jsonValue;
     }
 
     private void onErrorHandling(Exception error) {

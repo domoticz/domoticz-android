@@ -40,11 +40,13 @@ import java.util.List;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
+import nl.hnogames.domoticz.Service.GeolocationService;
 
 public class GeoUtils {
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private GoogleApiClient mApiClient = null;
+    public static boolean geofencesAlreadyRegistered = false;
 
     public GeoUtils(Context mContext) {
         this.mContext = mContext;
@@ -156,104 +158,25 @@ public class GeoUtils {
         return mAddress;
     }
 
+    public void disableGeoFenceService() {
+        //only continue when we have the correct permissions!
+        if (PermissionsUtil.canAccessLocation(mContext)) {
+            mContext.stopService(new Intent(mContext, GeolocationService.class));
+            removeGeofences();
+        }
+    }
+
     public void enableGeoFenceService() {
         if (this.mSharedPrefs.isGeofenceEnabled()) {
             //only continue when we have the correct permissions!
             if (PermissionsUtil.canAccessLocation(mContext)) {
                 final List<Geofence> mGeofenceList = this.mSharedPrefs.getEnabledGeofences();
                 if (mGeofenceList != null && mGeofenceList.size() > 0) {
-                    mApiClient = new GoogleApiClient.Builder(mContext)
-                            .addApi(LocationServices.API)
-                            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                                @Override
-                                public void onConnected(Bundle bundle) {
-                                    PendingIntent mGeofenceRequestIntent =
-                                            getGeofenceTransitionPendingIntent();
-
-                                    // First remove all GeoFences
-                                    try {
-                                        LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                                                mGeofenceRequestIntent);
-                                        //noinspection ResourceType
-                                        LocationServices
-                                                .GeofencingApi
-                                                .addGeofences(mApiClient,
-                                                        getGeofencingRequest(mGeofenceList),
-                                                        mGeofenceRequestIntent);
-                                    } catch (Exception ignored) {
-                                    }
-                                }
-
-                                @Override
-                                public void onConnectionSuspended(int i) {
-                                }
-                            })
-                            .build();
-                    mApiClient.connect();
+                    mContext.startService(new Intent(mContext, GeolocationService.class));
                 } else {
                     // No enabled geofences, disabling
                     mSharedPrefs.setGeofenceEnabled(false);
                 }
-            }
-        }
-    }
-
-    public GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofenceList);
-        return builder.build();
-    }
-
-    public void refreshGeofences() {
-        final List<Geofence> mGeofenceList = this.mSharedPrefs.getEnabledGeofences();
-        if (mGeofenceList == null)
-            return;
-
-        if (mApiClient == null || !mApiClient.isConnected()) {
-            mApiClient = new GoogleApiClient.Builder(mContext)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle bundle) {
-                            PendingIntent mGeofenceRequestIntent =
-                                    getGeofenceTransitionPendingIntent();
-
-                            // First remove all GeoFences
-                            try {
-                                LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                                        mGeofenceRequestIntent);
-                                //noinspection ResourceType
-                                LocationServices
-                                        .GeofencingApi
-                                        .addGeofences(mApiClient,
-                                                getGeofencingRequest(mGeofenceList),
-                                                mGeofenceRequestIntent);
-                            } catch (Exception ignored) {
-                            }
-                        }
-
-                        @Override
-                        public void onConnectionSuspended(int i) {
-                        }
-                    })
-                    .build();
-            mApiClient.connect();
-        } else {
-            PendingIntent mGeofenceRequestIntent =
-                    getGeofenceTransitionPendingIntent();
-
-            // First remove all GeoFences
-            try {
-                LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                        mGeofenceRequestIntent);
-                //noinspection ResourceType
-                LocationServices
-                        .GeofencingApi
-                        .addGeofences(mApiClient,
-                                getGeofencingRequest(mGeofenceList),
-                                mGeofenceRequestIntent);
-            } catch (Exception ignored) {
             }
         }
     }

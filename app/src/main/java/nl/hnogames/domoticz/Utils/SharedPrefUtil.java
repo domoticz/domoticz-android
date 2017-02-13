@@ -719,7 +719,7 @@ public class SharedPrefUtil {
     }
 
     public boolean isAPKValidated() {
-        return true;//prefs.getBoolean(PREF_APK_VALIDATED, true);
+        return prefs.getBoolean(PREF_APK_VALIDATED, true);
     }
 
     public void setAPKValidated(boolean valid) {
