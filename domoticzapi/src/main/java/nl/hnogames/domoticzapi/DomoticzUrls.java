@@ -108,11 +108,6 @@ public class DomoticzUrls {
                 actionUrl = DomoticzValues.FavoriteAction.OFF;
                 break;
 
-            case DomoticzValues.Event.Action.OFF:
-            case DomoticzValues.Event.Action.ON:
-                actionUrl = DomoticzValues.Url.System.EVENTSTATUS + String.valueOf(value);
-                break;
-
             case DomoticzValues.Device.Dimmer.Action.DIM_LEVEL:
                 actionUrl = DomoticzValues.Url.Switch.DIM_LEVEL + String.valueOf(value);
                 break;
@@ -143,6 +138,14 @@ public class DomoticzUrls {
 
             case DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF:
                 actionUrl = DomoticzValues.Url.ModalAction.HEATING_OFF;
+                break;
+
+            case DomoticzValues.Event.Action.ON:
+                actionUrl = DomoticzValues.Url.Event.ON;
+                break;
+
+            case DomoticzValues.Event.Action.OFF:
+                actionUrl = DomoticzValues.Url.Event.OFF;
                 break;
 
             default:
@@ -192,20 +195,20 @@ public class DomoticzUrls {
                         + DomoticzValues.Url.Favorite.VALUE + actionUrl;
                 break;
 
-            case DomoticzValues.Json.Url.Set.EVENT:
-                url = DomoticzValues.Url.System.EVENTACTION;
-                jsonUrl = url
-                        + String.valueOf(idx)
-                        + actionUrl
-                        + "&xml=";
-                break;
-
             case DomoticzValues.Json.Url.Set.RGBCOLOR:
                 url = DomoticzValues.Url.System.RGBCOLOR;
                 jsonUrl = url
                         + String.valueOf(idx)
                         + actionUrl;
                 break;
+
+            case DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS:
+                url = DomoticzValues.Url.System.EVENTS_UPDATE_STATUS;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + actionUrl;
+                break;
+
         }
 
         String fullString = buildUrl.append(protocol)
@@ -361,10 +364,6 @@ public class DomoticzUrls {
 
             case DomoticzValues.Json.Url.Request.LOGOFF:
                 url = DomoticzValues.Url.System.LOGOFF;
-                break;
-
-            case DomoticzValues.Json.Url.Request.EVENTXML:
-                url = DomoticzValues.Url.System.EVENTXML;
                 break;
 
             case DomoticzValues.Json.Url.Request.SETTINGS:

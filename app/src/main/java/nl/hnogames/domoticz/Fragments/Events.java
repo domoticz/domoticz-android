@@ -39,7 +39,10 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.EventInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
@@ -53,7 +56,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        processUserVariables();
+        processEvents();
     }
 
 
@@ -88,10 +91,10 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     @DebugLog
     public void onConnectionOk() {
         super.showSpinner(true);
-        processUserVariables();
+        processEvents();
     }
 
-    private void processUserVariables() {
+    private void processEvents() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         new GetCachedDataTask().execute();
@@ -103,10 +106,23 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
                     @DebugLog
-                    public void onEventClick(final int id, boolean action) {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.action_not_supported_yet, Snackbar.LENGTH_SHORT);
-                        if (getActivity() instanceof MainActivity)
-                            ((MainActivity) getActivity()).Talk(R.string.action_not_supported_yet);
+                    public void onEventClick(final int idx, boolean action) {
+                        int jsonAction = action ? DomoticzValues.Event.Action.ON : DomoticzValues.Event.Action.OFF;
+                        int jsonUrl = DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS;
+
+                        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+                            @Override
+                            @DebugLog
+                            public void onReceiveResult(String result) {
+                                successHandling(result, false);
+                            }
+
+                            @Override
+                            @DebugLog
+                            public void onError(Exception error) {
+                                errorHandling(error);
+                            }
+                        });
                     }
                 });
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
@@ -121,7 +137,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 @Override
                 @DebugLog
                 public void onRefresh() {
-                    processUserVariables();
+                    processEvents();
                 }
             });
             super.showSpinner(false);
