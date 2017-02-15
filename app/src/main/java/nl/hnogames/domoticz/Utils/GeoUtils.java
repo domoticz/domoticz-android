@@ -21,23 +21,36 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Bundle;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.List;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
+import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
+import nl.hnogames.domoticz.Service.GeolocationService;
 
-public class GeoUtil {
-    Context mContext;
+public class GeoUtils {
+    private Context mContext;
+    private SharedPrefUtil mSharedPrefs;
+    private GoogleApiClient mApiClient = null;
+    public static boolean geofencesAlreadyRegistered = false;
 
-    public GeoUtil(Context mContext) {
+    public GeoUtils(Context mContext) {
         this.mContext = mContext;
+        this.mSharedPrefs = new SharedPrefUtil(mContext);
     }
 
     /**
@@ -135,17 +148,78 @@ public class GeoUtil {
 
         try {
             addressList = mGeocoder.getFromLocation(mLatLong.latitude, mLatLong.longitude, 5);
-
             if (addressList == null || addressList.size() <= 0) {
                 return null;
             }
-
             mAddress = addressList.get(0);//get first
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return mAddress;
+    }
+
+    public void disableGeoFenceService() {
+        //only continue when we have the correct permissions!
+        if (PermissionsUtil.canAccessLocation(mContext)) {
+            mContext.stopService(new Intent(mContext, GeolocationService.class));
+            removeGeofences();
+        }
+    }
+
+    public void enableGeoFenceService() {
+        if (this.mSharedPrefs.isGeofenceEnabled()) {
+            //only continue when we have the correct permissions!
+            if (PermissionsUtil.canAccessLocation(mContext)) {
+                final List<Geofence> mGeofenceList = this.mSharedPrefs.getEnabledGeofences();
+                if (mGeofenceList != null && mGeofenceList.size() > 0) {
+                    mContext.startService(new Intent(mContext, GeolocationService.class));
+                } else {
+                    // No enabled geofences, disabling
+                    mSharedPrefs.setGeofenceEnabled(false);
+                }
+            }
+        }
+    }
+
+    public void removeGeofences() {
+        if (mApiClient != null) {
+            // If mApiClient is null enableGeofenceService was not called
+            // thus there is nothing to stop
+            PendingIntent mGeofenceRequestIntent = getGeofenceTransitionPendingIntent();
+            LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
+        } else {
+            mApiClient = new GoogleApiClient.Builder(mContext)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(Bundle bundle) {
+                            PendingIntent mGeofenceRequestIntent =
+                                    getGeofenceTransitionPendingIntent();
+                            // First remove all GeoFences
+                            try {
+                                LocationServices.GeofencingApi.removeGeofences(mApiClient,
+                                        mGeofenceRequestIntent);
+                            } catch (Exception ignored) {
+                            }
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                        }
+                    })
+                    .build();
+            mApiClient.connect();
+        }
+    }
+
+    /**
+     * Create a PendingIntent that triggers GeofenceTransitionIntentService when a geofence
+     * transition occurs.
+     *
+     * @return Intent which will be called
+     */
+    public PendingIntent getGeofenceTransitionPendingIntent() {
+        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
+        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

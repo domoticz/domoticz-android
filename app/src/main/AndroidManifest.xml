@@ -62,6 +62,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
 
     <application
         android:name=".app.AppController"
@@ -102,6 +103,12 @@
         <service android:name=".Service.RingtonePlayingService" />
 
         <service android:name=".Service.GeofenceTransitionsIntentService" />
+
+        <service
+            android:name=".Service.GeolocationService"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name_domoticz" >
+        </service>
 
         <service android:name=".Service.WearMessageListenerService" >
             <intent-filter>
@@ -392,6 +399,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="com.schibstedspain.leku.LocationPickerActivity"
+            android:label="@string/title_add_location"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".GeoSettingsActivity"
+            android:theme="@style/AppThemeMain">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".GeoSettingsActivity" />
         </activity>
     </application>
 

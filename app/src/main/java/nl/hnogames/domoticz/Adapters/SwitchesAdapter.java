@@ -43,6 +43,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -132,6 +134,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         this.filteredData = data;
     }
 
+    private void handleLikeButtonClick(int idx, boolean checked) {
+        listener.onLikeButtonClick(idx, checked);
+    }
+
+
     /**
      * Get's the filter
      *
@@ -191,6 +198,22 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     handleLogButtonClick(v.getId());
                 }
             });
+
+            if (holder.likeButton != null) {
+                holder.likeButton.setId(extendedStatusInfo.getIdx());
+                holder.likeButton.setLiked(extendedStatusInfo.getFavoriteBoolean());
+                holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                    @Override
+                    public void liked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), true);
+                    }
+
+                    @Override
+                    public void unLiked(LikeButton likeButton) {
+                        handleLikeButtonClick(likeButton.getId(), false);
+                    }
+                });
+            }
 
             holder.buttonTimer.setId(extendedStatusInfo.getIdx());
             holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
@@ -1857,6 +1880,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         ImageButton buttonUp, buttonDown, buttonStop;
         Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet, buttonOff, buttonNotifications;
         Boolean isProtected;
+        LikeButton likeButton;
         ImageView iconRow, iconMode;
         SeekBar dimmer;
         Spinner spSelector;
@@ -1885,6 +1909,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             buttonStop = (ImageButton) itemView.findViewById(R.id.switch_button_stop);
             buttonDown = (ImageButton) itemView.findViewById(R.id.switch_button_down);
             buttonSet = (Button) itemView.findViewById(R.id.set_button);
+
+            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
 
             if (buttonLog != null)
                 buttonLog.setVisibility(View.GONE);

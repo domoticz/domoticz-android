@@ -79,6 +79,10 @@ public class DomoticzValues {
             }
         }
 
+        interface Hardware {
+           String EVOHOME = "evohome";
+        }
+
         interface Dimmer {
             interface Action {
                 int DIM_LEVEL = 20;

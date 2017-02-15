@@ -21,20 +21,16 @@
 
 package nl.hnogames.domoticz;
 
-import android.Manifest;
-import android.app.PendingIntent;
-import android.content.DialogInterface;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,27 +39,25 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+import com.schibstedspain.leku.LocationPickerActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.LocationAdapter;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
-import nl.hnogames.domoticz.UI.LocationDialog;
 import nl.hnogames.domoticz.UI.SwitchDialog;
-import nl.hnogames.domoticz.Utils.GeoUtil;
+import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -73,30 +67,17 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
-public class GeoSettingsActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GeoSettingsActivity extends AppCompatActivity implements OnPermissionCallback {
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int LOCATION_INTERVAL = 100000;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int LOCATION_FASTEST_INTERVAL = 50000;
-    private final int ACTION_SET_GEOFENCE_SERVICE = 11;
-    private final int ACTION_GET_LOCATION = 12;
-    private final int REQUEST_GEOFENCE_SERVICE = 21;
-    private final int REQUEST_GET_LOCATION = 22;
     boolean result = false;
-    private String TAG = GeoSettingsActivity.class.getSimpleName();
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
-    private GoogleApiClient mApiClient;
     private ArrayList<LocationInfo> locations;
     private LocationAdapter adapter;
+    private GeoUtils oGeoUtils;
     private CoordinatorLayout coordinatorLayout;
-    private Location currentLocation;
-    private LocationRequest mLocationRequest;
-    private boolean requestInProgress;
-    private boolean isGeofenceServiceStarted;
-    private boolean isLocationUpdatesStarted;
+    private int EditLocationID = 0;
+    private PermissionHelper permissionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +88,9 @@ public class GeoSettingsActivity extends AppCompatActivity
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
+        oGeoUtils = new GeoUtils(this);
 
+        permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_settings);
 
@@ -120,21 +103,40 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
-        
+
+        oGeoUtils.enableGeoFenceService();
         createListView();
         initSwitches();
-        createLocationRequest();
     }
 
-    private void initSwitches() {
-        Switch geoSwitch = (Switch) findViewById(R.id.switch_button);
+    private Switch geoSwitch;
 
+    private void initSwitches() {
+        geoSwitch = (Switch) findViewById(R.id.switch_button);
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
         geoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSharedPrefs.setGeofenceEnabled(isChecked);
-                invalidateOptionsMenu();
+                if(isChecked) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
+                            geoSwitch.setChecked(false);
+                            permissionHelper
+                                    .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+                        } else {
+                            mSharedPrefs.setGeofenceEnabled(isChecked);
+                            invalidateOptionsMenu();
+                            oGeoUtils.enableGeoFenceService();
+                        }
+                    } else {
+                        invalidateOptionsMenu();
+                        oGeoUtils.enableGeoFenceService();
+                    }
+                }
+                else{
+                    mSharedPrefs.setGeofenceEnabled(false);
+                    oGeoUtils.disableGeoFenceService();
+                }
             }
         });
     }
@@ -142,33 +144,11 @@ public class GeoSettingsActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (mApiClient.isConnected()) mApiClient.disconnect();
-
-        if ((mSharedPrefs.getEnabledGeofences() == null || mSharedPrefs.getEnabledGeofences().size() <= 0) &&
-                mSharedPrefs.isGeofenceEnabled()) {
-            mSharedPrefs.setGeofenceEnabled(false);
-            stopGeofenceService();
-            Toast.makeText(this, R.string.geofencing_disabled_no_enabled_fences,
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (mApiClient != null) {
-            mApiClient.connect();
-        } else {
-            mApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-
-            mApiClient.connect();
-        }
     }
 
     private void showSwitchesDialog(
@@ -221,27 +201,17 @@ public class GeoSettingsActivity extends AppCompatActivity
     private void createListView() {
         locations = mSharedPrefs.getLocations();
         boolean addressChanged = false;
-
-        if (locations != null) {
-            for (LocationInfo l : locations) {
-                if (l.getAddress() == null && l.getLocation() != null) {
-                    //load the address
-                    l.setAddress(new GeoUtil(GeoSettingsActivity.this).getAddressFromLatLng(
-                            new LatLng(l.getLocation().latitude, l.getLocation().longitude)));
-                    addressChanged = true;
-                }
-            }
-            if (addressChanged) mSharedPrefs.saveLocations(locations);
-        }
-
         adapter = new LocationAdapter(this, locations, new LocationClickListener() {
             @Override
             public boolean onEnableClick(LocationInfo locationInfo, boolean checked) {
                 if (locationInfo.getSwitchIdx() <= 0 && checked)
                     return showNoDeviceAttachedDialog(locationInfo);
                 else {
+                    //enable or disable geofences
                     locationInfo.setEnabled(checked);
                     mSharedPrefs.updateLocation(locationInfo);
+                    GeoUtils.geofencesAlreadyRegistered = false;
+                    oGeoUtils.enableGeoFenceService();
                     return checked;
                 }
             }
@@ -256,6 +226,7 @@ public class GeoSettingsActivity extends AppCompatActivity
         if (mSharedPrefs.darkThemeEnabled()) {
             listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
+
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
@@ -265,6 +236,7 @@ public class GeoSettingsActivity extends AppCompatActivity
                 showEditLocationDialog(locations.get(item));
             }
         });
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -311,6 +283,8 @@ public class GeoSettingsActivity extends AppCompatActivity
 
     private void removeLocationFromPreferences(LocationInfo locationInfo) {
         mSharedPrefs.removeLocation(locationInfo);
+        GeoUtils.geofencesAlreadyRegistered = false;
+        oGeoUtils.enableGeoFenceService();
     }
 
     private void addLocationToListView(LocationInfo locationInfo) {
@@ -328,8 +302,7 @@ public class GeoSettingsActivity extends AppCompatActivity
 
             @Override
             @DebugLog
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
 
             @Override
             @DebugLog
@@ -365,228 +338,77 @@ public class GeoSettingsActivity extends AppCompatActivity
         return result;
     }
 
-    private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(LOCATION_INTERVAL);
-        mLocationRequest.setFastestInterval(LOCATION_FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    private void showAddLocationDialog() {
+        Intent i = new Intent(this, LocationPickerActivity.class);
+        startActivityForResult(i, 1);
     }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                final LocationInfo location = new LocationInfo(new Random().nextInt(999999),
+                        data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS),
+                        new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
+                        500);
 
-        requestInProgress = false;
-
-        switch (requestCode) {
-            case PermissionsUtil.INITIAL_LOCATION_REQUEST:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startLocationUpdates();
-                    startGeofenceService();
-                }
-                break;
-
-            case REQUEST_GEOFENCE_SERVICE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startGeofenceService();
-                    if (!isLocationUpdatesStarted) startLocationUpdates();
-                } else {
-                    stopGeofenceService();
-                }
-                break;
-
-            case REQUEST_GET_LOCATION:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startLocationUpdates();
-                    if (!isGeofenceServiceStarted) stopGeofenceService();
-                }
-                break;
-        }
-    }
-
-    private void checkForLocationPermission(final int actionToStart) {
-        if (PermissionsUtil.canAccessLocation(this)) {
-            // We have permission already!
-            Log.v(TAG, "We have permission, let's go!");
-            switch (actionToStart) {
-                case ACTION_GET_LOCATION:
-                    getLocationServices();
-                    break;
-
-                case ACTION_SET_GEOFENCE_SERVICE:
-                    startGeofenceService();
-                    break;
-            }
-        } else {
-            // No permission, check if the dialog has already been shown to user
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, Manifest.permission.ACCESS_FINE_LOCATION) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(
-                            this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-
-                // User has declined already somewhere, we should explain why we need this
-                // permission and what's in it for the user
-                Log.v(TAG, "Should show request permission rationale");
-                if (!requestInProgress) {
-
-                    // Request not yet in progress: let's start!
-
-                    requestInProgress = true;
-                    String sb;
-                    sb = "Geofencing in Domoticz enables you to switch based on your location" + UsefulBits.newLine();
-                    sb += "For Geofencing to work, Domoticz needs to know the location of your device" + UsefulBits.newLine();
-                    sb += UsefulBits.newLine();
-                    sb += "Enable location permission?";
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GeoSettingsActivity.this);
-                    builder.setTitle("Domoticz requires your permission")
-                            .setMessage(sb)
-                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    // Let's find out which request this is
-                                    switch (actionToStart) {
-                                        case ACTION_GET_LOCATION:
-                                            ActivityCompat.requestPermissions(
-                                                    GeoSettingsActivity.this,
-                                                    PermissionsUtil.INITIAL_LOCATION_PERMS,
-                                                    REQUEST_GET_LOCATION);
-                                            break;
-
-                                        case ACTION_SET_GEOFENCE_SERVICE:
-                                            ActivityCompat.requestPermissions(
-                                                    GeoSettingsActivity.this,
-                                                    PermissionsUtil.INITIAL_LOCATION_PERMS,
-                                                    REQUEST_GEOFENCE_SERVICE);
-                                            break;
-                                    }
+                new MaterialDialog.Builder(this)
+                        .title(R.string.radius)
+                        .content(R.string.radius)
+                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                        .input("500", "500", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                try {
+                                    location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                } catch (Exception ex) {
                                 }
-                            })
-                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Toast.makeText(GeoSettingsActivity.this,
-                                            "Without location permission Domoticz cannot use Geofencing",
-                                            Toast.LENGTH_SHORT).show();
-                                    stopGeofenceService();
-                                    GeoSettingsActivity.this.finish();
+                                mSharedPrefs.addLocation(location);
+                                locations = mSharedPrefs.getLocations();
+
+                                GeoUtils.geofencesAlreadyRegistered = false;
+                                oGeoUtils.enableGeoFenceService();
+
+                                createListView();
+                            }
+                        }).show();
+            }
+        } else if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                final LocationInfo location = mSharedPrefs.getLocation(EditLocationID);
+                location.setLocation(new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)));
+
+                new MaterialDialog.Builder(this)
+                        .title(R.string.radius)
+                        .content(R.string.radius)
+                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                        .input(String.valueOf(location.getRadius()), String.valueOf(location.getRadius()), new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                try {
+                                    location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                } catch (Exception ex) {
                                 }
-                            })
-                            .show();
-                }
-            } else {
+                                mSharedPrefs.updateLocation(location);
+                                locations = mSharedPrefs.getLocations();
+                                GeoUtils.geofencesAlreadyRegistered = false;
+                                oGeoUtils.enableGeoFenceService();
+                                createListView();
+                            }
+                        }).show();
 
-                if (!requestInProgress) {
-
-                    // Request not yet in progress: let's start!
-
-                    requestInProgress = true;
-
-                    // Users hasn't seen the permission dialog, let show it to them
-
-                    Log.v(TAG, "Requesting permission");
-
-                    int requestCode;
-
-                    switch (actionToStart) {
-                        case ACTION_GET_LOCATION:
-                            requestCode = REQUEST_GET_LOCATION;
-                            break;
-
-                        case ACTION_SET_GEOFENCE_SERVICE:
-                            requestCode = REQUEST_GEOFENCE_SERVICE;
-                            break;
-                        default:
-                            requestCode = PermissionsUtil.INITIAL_LOCATION_REQUEST;
-                            break;
-
-                    }
-                    ActivityCompat.requestPermissions(
-                            this,
-                            PermissionsUtil.INITIAL_LOCATION_PERMS,
-                            requestCode);
-                }
             }
         }
-    }
 
-    private void startLocationUpdates() {
-
-        checkForLocationPermission(ACTION_GET_LOCATION);
-    }
-
-    private void getLocationServices() {
-        if (mApiClient.isConnected()) {
-            //noinspection ResourceType
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mApiClient, mLocationRequest, new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            //noinspection ResourceType
-                            currentLocation
-                                    = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
-                        }
-                    });
-            isLocationUpdatesStarted = true;
-        }
-    }
-
-    private void showAddLocationDialog() {
-        LocationDialog locationDialog = new LocationDialog(
-                this,
-                R.layout.dialog_location);
-        locationDialog.setCurrentLocation(currentLocation);
-        locationDialog.setLocationToEdit(null);             // Set to null so its in add mode
-        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
-            @Override
-            public void onDismiss(LocationInfo location) {
-
-                mSharedPrefs.addLocation(location);
-                locations = mSharedPrefs.getLocations();
-
-                setGeoFenceService();
-                createListView();
-            }
-
-            @Override
-            public void onDismissEmpty() {
-                //nothing selected
-            }
-        });
-        locationDialog.show();
+        permissionHelper.onActivityForResult(requestCode);
     }
 
     private void showEditLocationDialog(LocationInfo location) {
-        LocationDialog locationDialog = new LocationDialog(
-                this,
-                R.layout.dialog_location);
-
-        locationDialog.setTitle(getString(R.string.title_edit_location));
-        locationDialog.setLocationToEdit(location);
-        locationDialog.setRadius(location.getRadius());
-        locationDialog.setCurrentLocation(null);            // Set to null so its in edit mode
-        locationDialog.onDismissListener(new LocationDialog.DismissListener() {
-            @Override
-            public void onDismiss(LocationInfo location) {
-
-                mSharedPrefs.updateLocation(location);
-                locations = mSharedPrefs.getLocations();
-
-                setGeoFenceService();
-                createListView();
-            }
-
-            @Override
-            public void onDismissEmpty() {
-                //nothing selected
-            }
-        });
-        locationDialog.show();
+        EditLocationID = location.getID();
+        Intent intent = new Intent(getApplicationContext(), LocationPickerActivity.class);
+        intent.putExtra(LocationPickerActivity.LATITUDE, location.getLocation().latitude);
+        intent.putExtra(LocationPickerActivity.LONGITUDE, location.getLocation().longitude);
+        startActivityForResult(intent, 2);
     }
 
     @Override
@@ -610,55 +432,50 @@ public class GeoSettingsActivity extends AppCompatActivity
                 showAddLocationDialog();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-        setGeoFenceService();
-        startLocationUpdates();
-    }
-
-    private void setGeoFenceService() {
-        checkForLocationPermission(ACTION_SET_GEOFENCE_SERVICE);
-    }
-
-    private void startGeofenceService() {
-        if (mSharedPrefs.isGeofenceEnabled()) {
-            mSharedPrefs.enableGeoFenceService();
-            if (mSharedPrefs.isDebugEnabled())
-                UsefulBits.showSnackbar(this, coordinatorLayout, R.string.starting_geofence_service, Snackbar.LENGTH_SHORT);
-            isGeofenceServiceStarted = true;
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        String[] neededPermission = PermissionHelper.declinedPermissions(GeoSettingsActivity.this, PermissionsUtil.INITIAL_LOCATION_PERMS);
+        AlertDialog alert = PermissionsUtil.getAlertDialog(GeoSettingsActivity.this, permissionHelper, GeoSettingsActivity.this.getString(R.string.permission_title),
+                GeoSettingsActivity.this.getString(R.string.permission_desc_location), neededPermission);
+        if (!alert.isShowing()) {
+            alert.show();
         }
     }
 
-    private void stopGeofenceService() {
-        if (mApiClient != null) mSharedPrefs.stopGeofenceService();
-        isGeofenceServiceStarted = false;
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        PendingIntent mGeofenceRequestIntent = mSharedPrefs.getGeofenceTransitionPendingIntent();
-
-        if (mGeofenceRequestIntent != null && mApiClient != null)
-            LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
-        isGeofenceServiceStarted = false;
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // If the error has a resolution, start a Google Play services activity to resolve it.
-        if (connectionResult.hasResolution()) {
-            try {
-                connectionResult.startResolutionForResult(this, 999);
-            } catch (IntentSender.SendIntentException e) {
-                Log.e(TAG, "Exception while resolving connection error.", e);
-            }
-        } else {
-            int errorCode = connectionResult.getErrorCode();
-            Log.e(TAG, "Connection to Google Play services failed with error code " + errorCode);
-        }
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+        if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this))
+            geoSwitch.setChecked(true);
+        invalidateOptionsMenu();
     }
 }

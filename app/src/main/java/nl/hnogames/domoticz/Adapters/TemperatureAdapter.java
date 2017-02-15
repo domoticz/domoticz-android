@@ -48,6 +48,7 @@ import az.plainpie.animation.PieAngleAnimation;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -136,21 +137,30 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
 
             int modeIconRes = 0;
-            boolean tooHot = false;
-            if (mTemperatureInfo.getTemperature() > 30)
-                tooHot = true;
+            if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
+                    (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
+                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                        mTemperatureInfo.getType(),
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        true,
+                        "Freezing")).into(holder.iconRow);
+            } else {
+                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                        mTemperatureInfo.getType(),
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        false,
+                        null)).into(holder.iconRow);
+            }
 
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                    mTemperatureInfo.getType(),
-                    null, tooHot, false, null)).into(holder.iconRow);
-
-            if ("evohome".equals(mTemperatureInfo.getHardwareName())) {
+            if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
                 holder.setButton.setVisibility(View.VISIBLE);
                 holder.pieView.setVisibility(View.GONE);
                 modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
             } else {
                 holder.setButton.setVisibility(View.GONE);
-                if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
+                if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
                     holder.pieView.setVisibility(View.GONE);
                 } else {
                     holder.pieView.setVisibility(View.VISIBLE);
@@ -162,7 +172,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     }
 
                     double temp = mTemperatureInfo.getTemperature();
-                    if (!sign.equals("C"))
+                    if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
                         temp = temp / 2;
                     holder.pieView.setPercentage(Float.valueOf(temp + ""));
                     holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
@@ -244,8 +254,9 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 });
             }
 
-            holder.name.setText(mTemperatureInfo.getName());
-            if (mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
+            if (!UsefulBits.isEmpty(mTemperatureInfo.getName()))
+                holder.name.setText(mTemperatureInfo.getName());
+            if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
                 holder.data.setText(R.string.wind);
                 holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
                 holder.data2.setVisibility(View.GONE);
