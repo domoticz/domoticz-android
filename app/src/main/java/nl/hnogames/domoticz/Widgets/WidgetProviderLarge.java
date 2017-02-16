@@ -65,8 +65,10 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         this.context = context;
+
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
+
         if (domoticz == null)
             domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         packageName = context.getPackageName();
@@ -114,6 +116,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 Log.i("WIDGET", "I am invalid");
                 return;
             }
+
+            if (mSharedPrefs == null)
+                mSharedPrefs = new SharedPrefUtil(context);
+
+
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
             views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
             if (views == null)

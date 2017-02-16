@@ -173,9 +173,6 @@ public class GeoUtils {
                 final List<Geofence> mGeofenceList = this.mSharedPrefs.getEnabledGeofences();
                 if (mGeofenceList != null && mGeofenceList.size() > 0) {
                     mContext.startService(new Intent(mContext, GeolocationService.class));
-                } else {
-                    // No enabled geofences, disabling
-                    mSharedPrefs.setGeofenceEnabled(false);
                 }
             }
         }

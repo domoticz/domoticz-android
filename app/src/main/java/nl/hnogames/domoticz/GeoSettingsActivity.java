@@ -125,8 +125,8 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                     .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
                         } else {
                             mSharedPrefs.setGeofenceEnabled(isChecked);
-                            invalidateOptionsMenu();
                             oGeoUtils.enableGeoFenceService();
+                            invalidateOptionsMenu();
                         }
                     } else {
                         invalidateOptionsMenu();

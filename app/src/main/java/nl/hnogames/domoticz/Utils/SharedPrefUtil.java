@@ -712,6 +712,7 @@ public class SharedPrefUtil {
 
     public void setGeofenceEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
+        editor.commit();
     }
 
     public boolean isTalkBackEnabled() {
