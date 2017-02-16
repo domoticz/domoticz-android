@@ -61,7 +61,7 @@
   <string name="day_off">Den volna</string>
   <string name="custom">Vlastní</string>
   <string name="heating_off">Vytápění vypnuté</string>
-  <string name="selector_value">Selector values</string>
+  <string name="selector_value">Výběr hodnoty</string>
   <string name="debug_textview_title">Informace o ladění</string>
   <string name="msg_copiedToClipboard">Text byl zkopírován do schránky</string>
   <string name="favorite">Oblíbené</string>
@@ -71,7 +71,7 @@
   <string name="add">Přidat</string>
   <string name="cancel">Zrušit</string>
   <string name="ok">Ok</string>
-  <string name="request_again">Request Again</string>
+  <string name="request_again">Požádat znova</string>
   <string name="upgrade">Aktualizace</string>
   <string name="something_went_wrong">Něco se pokazilo</string>
   <string name="no_network_available">Chyba: Žádné síťové připojení není dispozici</string>

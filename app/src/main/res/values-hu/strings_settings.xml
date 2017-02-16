@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Android Wear egyéni elemek engedélyezése</string>
   <string name="wear_custom_off">Android Wear egyéni elemek letiltása</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Android Auto értesítések engedélyezése</string>
+  <string name="auto_custom_off">Android Auto értesítések letiltása</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Geofencing beállítása</string>
   <!--        Theming settings -->
@@ -135,10 +135,11 @@
   <string name="suppress_notifications_title">Értesítések felfüggesztése</string>
   <string name="alarm_notifications_select">Válaszd ki mely értesítések aktiváljanak riasztást</string>
   <string name="alarm_notifications">Riasztás beállítása egyedi értesítésekhez</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Riasztási értesítések</string>
   <string name="alarm">Riasztás</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarmtimer_title">Riasztás időzítő</string>
+  <string name="alarmtimer">A riasztás ideje másodpercben</string>
   <!--        Information category       -->
   <string name="info_version">Verzió</string>
   <string name="info_domoticz_version">Domoticz verzió</string>

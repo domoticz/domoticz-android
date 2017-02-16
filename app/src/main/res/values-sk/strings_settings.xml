@@ -135,6 +135,7 @@
   <string name="suppress_notifications_title">Zakázať oznámenia</string>
   <string name="alarm_notifications_select">Vyberte upozornenia pre hlásenie</string>
   <string name="alarm_notifications">Zvukové hlásenie pre osobitné upozornenia</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Hlásiť upozornenie</string>
   <string name="alarm">Hlásenia</string>
   <string name="alarmtimer_title">Časovač hlásení</string>

@@ -135,6 +135,7 @@
   <string name="suppress_notifications_title">Notificaties onderdrukken</string>
   <string name="alarm_notifications_select">Welke notificaties dienen als alarm?</string>
   <string name="alarm_notifications">Laat het alarm klinken voor specifieke notificaties</string>
+  <string name="clear_notifications">Verwijder oude notificaties</string>
   <string name="alarm_notifications_title">Alarm notificaties</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtijd</string>

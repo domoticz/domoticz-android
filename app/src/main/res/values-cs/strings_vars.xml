@@ -3,6 +3,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="title_vars">Uživatelské proměnné</string>
-  <string name="var_input">Input value is not valid</string>
-  <string name="var_input_error">Failed to update user variable</string>
+  <string name="var_input">Vstupní hodnota je neplatná</string>
+  <string name="var_input_error">Nepodařilo se aktualizovat uživatelskou proměnnou</string>
 </resources>

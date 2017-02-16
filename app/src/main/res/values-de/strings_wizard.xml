@@ -24,7 +24,7 @@
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="title_wizard">Willkommensassistent</string>
   <string name="wizard_welcome">Willkommen</string>
-  <string name="wizard_welcome_description">Domoticz ist eine kleines Hausautomationssystem, mit dem Sie ihr Haus überwachen können und verschiedene Geräte von ihrem Mobilgerät aus steuern können.</string>
+  <string name="wizard_welcome_description">Domoticz ist ein Hausautomationssystem, mit dem Du dein Haus überwachen und verschiedene Geräte von Deinem Mobilgerät aus steuern kannst.</string>
   <string name="wizard_favorites">Favoriten</string>
   <string name="wizard_favorites_description">Du kannst Geräte zum Dashboard hinzufügen indem du sie als Favoriten speicherst. Lange auf ein Element tippen, um es als Favorit zu speichern!</string>
   <string name="wizard_startup">Startbildschirm</string>

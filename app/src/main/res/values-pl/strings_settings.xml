@@ -135,6 +135,7 @@
   <string name="suppress_notifications_title">Pomijanie powiadomień</string>
   <string name="alarm_notifications_select">Wybierz powiadomienia dla alarmu</string>
   <string name="alarm_notifications">Dźwięk alarmu dla szczegółowych powiadomień</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Alarm powiadomień</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Budzik</string>
