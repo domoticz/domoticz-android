@@ -130,10 +130,12 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                     } else {
                         invalidateOptionsMenu();
                         oGeoUtils.enableGeoFenceService();
+                        invalidateOptionsMenu();
                     }
                 } else {
                     mSharedPrefs.setGeofenceEnabled(false);
                     oGeoUtils.disableGeoFenceService();
+                    invalidateOptionsMenu();
                 }
             }
         });
