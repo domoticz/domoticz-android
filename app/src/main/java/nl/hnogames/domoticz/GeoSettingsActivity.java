@@ -78,6 +78,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     private CoordinatorLayout coordinatorLayout;
     private int EditLocationID = 0;
     private PermissionHelper permissionHelper;
+    private Switch geoSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,15 +110,13 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         initSwitches();
     }
 
-    private Switch geoSwitch;
-
     private void initSwitches() {
         geoSwitch = (Switch) findViewById(R.id.switch_button);
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
         geoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
                             geoSwitch.setChecked(false);
@@ -132,8 +131,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                         invalidateOptionsMenu();
                         oGeoUtils.enableGeoFenceService();
                     }
-                }
-                else{
+                } else {
                     mSharedPrefs.setGeofenceEnabled(false);
                     oGeoUtils.disableGeoFenceService();
                 }
@@ -302,7 +300,8 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
 
             @Override
             @DebugLog
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
 
             @Override
             @DebugLog

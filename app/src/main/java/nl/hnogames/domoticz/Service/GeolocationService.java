@@ -21,11 +21,6 @@
 
 package nl.hnogames.domoticz.Service;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import android.Manifest;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -36,18 +31,14 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
@@ -57,7 +48,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import nl.hnogames.domoticz.MainActivity;
+import java.util.List;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -71,7 +63,22 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
 
     private SharedPrefUtil mSharedPrefUtil;
     private PendingIntent mPendingIntent;
+    private String TAG = this.getClass().getSimpleName();
 
+    public static String getErrorString(Context context, int errorCode) {
+        Resources mResources = context.getResources();
+        switch (errorCode) {
+            case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
+                return mResources.getString(R.string.geofence_not_available);
+            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES:
+                return mResources.getString(R.string.geofence_too_many_geofences);
+            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS:
+                return mResources
+                        .getString(R.string.geofence_too_many_pending_intents);
+            default:
+                return mResources.getString(R.string.unknown_geofence_error);
+        }
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -91,7 +98,6 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         }
     }
 
-    private String TAG = this.getClass().getSimpleName();
     protected void registerGeofences() {
         if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
@@ -132,7 +138,7 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
 
     protected void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           return;
+            return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
@@ -192,29 +198,13 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
     }
 
     public void onResult(Status status) {
-        if (!status.isSuccess()){
+        if (!status.isSuccess()) {
             GeoUtils.geofencesAlreadyRegistered = false;
             String errorMessage = getErrorString(this, status.getStatusCode());
             Toast.makeText(getApplicationContext(), errorMessage,
                     Toast.LENGTH_LONG).show();
-        }
-        else{
+        } else {
             GeoUtils.geofencesAlreadyRegistered = true;
-        }
-    }
-
-    public static String getErrorString(Context context, int errorCode) {
-        Resources mResources = context.getResources();
-        switch (errorCode) {
-            case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
-                return mResources.getString(R.string.geofence_not_available);
-            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES:
-                return mResources.getString(R.string.geofence_too_many_geofences);
-            case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS:
-                return mResources
-                        .getString(R.string.geofence_too_many_pending_intents);
-            default:
-                return mResources.getString(R.string.unknown_geofence_error);
         }
     }
 }

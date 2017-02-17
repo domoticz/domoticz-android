@@ -31,7 +31,6 @@ import android.os.Bundle;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -43,10 +42,10 @@ import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.Service.GeolocationService;
 
 public class GeoUtils {
+    public static boolean geofencesAlreadyRegistered = false;
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private GoogleApiClient mApiClient = null;
-    public static boolean geofencesAlreadyRegistered = false;
 
     public GeoUtils(Context mContext) {
         this.mContext = mContext;
