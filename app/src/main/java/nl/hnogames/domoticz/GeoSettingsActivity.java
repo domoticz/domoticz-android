@@ -128,8 +128,8 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                             invalidateOptionsMenu();
                         }
                     } else {
-                        invalidateOptionsMenu();
-                        oGeoUtils.enableGeoFenceService();
+                        mSharedPrefs.setGeofenceEnabled(false);
+                        oGeoUtils.disableGeoFenceService();
                         invalidateOptionsMenu();
                     }
                 } else {
@@ -415,8 +415,9 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
-            if (mSharedPrefs.isGeofenceEnabled())
+            if (mSharedPrefs.isGeofenceEnabled()) {
                 getMenuInflater().inflate(R.menu.menu_geo, menu);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -475,8 +476,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
-        if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this))
-            geoSwitch.setChecked(true);
-        invalidateOptionsMenu();
+        if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
+            mSharedPrefs.setGeofenceEnabled(false);
+            oGeoUtils.disableGeoFenceService();
+            invalidateOptionsMenu();
+        }
     }
 }
