@@ -98,6 +98,19 @@ public class GeofenceTransitionsIntentService extends IntentService
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue());
                         }
                     }
+                } else if (Geofence.GEOFENCE_TRANSITION_DWELL == transitionType) {
+                    for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
+                        LocationInfo locationFound =
+                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                        if(locationFound != null) {
+                            Log.d(TAG, "Triggered dwelling a geofence location: "
+                                    + locationFound.getName());
+                            //keep the switch on for dwelling, but don't send a notification
+                            if (locationFound.getSwitchIdx() > 0) {
+                                handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue());
+                            }
+                        }
+                    }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound

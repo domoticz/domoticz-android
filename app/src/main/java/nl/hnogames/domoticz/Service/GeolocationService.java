@@ -92,10 +92,10 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         super.onDestroy();
         Log.d(TAG, "Stopping Geofence Service");
 
-        if (mGoogleApiClient.isConnected()) {
-            stopLocationUpdates();
-            mGoogleApiClient.disconnect();
-        }
+        //if (mGoogleApiClient.isConnected()) {
+        //    stopLocationUpdates();
+        //    mGoogleApiClient.disconnect();
+        //}
     }
 
     protected void registerGeofences() {
@@ -123,7 +123,6 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
                     geofencingRequest, mPendingIntent).setResultCallback(this);
         } catch (Exception ignored) {
         }
-
     }
 
     private PendingIntent requestPendingIntent() {
