@@ -28,7 +28,7 @@
   <string name="wizard_favorites">Favoriten</string>
   <string name="wizard_favorites_description">Du kannst Geräte zum Dashboard hinzufügen indem du sie als Favoriten speicherst. Lange auf ein Element tippen, um es als Favorit zu speichern!</string>
   <string name="wizard_startup">Startbildschirm</string>
-  <string name="wizard_startup_description">Sie können Ihren Startbildschirm in den Einstellungen festlegen!</string>
+  <string name="wizard_startup_description">Du kannst deinen Startbildschirm in den Einstellungen festlegen!</string>
   <string name="wizard_notifications">Benachrichtigungen einrichten</string>
   <string name="wizard_notifications_description">Sie können nun Benachrichtigungen auf Ihrem Android Handy erhalten! Ändern Sie die Art, wie sich die Benachrichtigungen in den Einstellungen verhalten</string>
   <string name="wizard_multiserver">Verwende mehrere Server</string>

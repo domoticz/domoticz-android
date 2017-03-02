@@ -135,7 +135,7 @@
   <string name="suppress_notifications_title">Értesítések felfüggesztése</string>
   <string name="alarm_notifications_select">Válaszd ki mely értesítések aktiváljanak riasztást</string>
   <string name="alarm_notifications">Riasztás beállítása egyedi értesítésekhez</string>
-  <string name="clear_notifications">Clean notification logs</string>
+  <string name="clear_notifications">Értesítés napló törlése</string>
   <string name="alarm_notifications_title">Riasztási értesítések</string>
   <string name="alarm">Riasztás</string>
   <string name="alarmtimer_title">Riasztás időzítő</string>

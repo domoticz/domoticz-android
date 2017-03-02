@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Éléments spécifiques Android Wear activés</string>
   <string name="wear_custom_off">Éléments spécifique Android Wear désactivés</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Activer les notifications Android Auto</string>
+  <string name="auto_custom_off">Désactiver les notifications Android Auto</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Configurer le Géorepérage</string>
   <!--        Theming settings -->
@@ -133,12 +133,12 @@
   <string name="suppress_notifications_select">Sélectionnez les Notifications à supprimer</string>
   <string name="suppress_notifications">Supprimer les Notifications spécifiques sur ce dispositif</string>
   <string name="suppress_notifications_title">Supprimer les Notifications</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="clear_notifications">Clean notification logs</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
+  <string name="alarm_notifications_select">Choisir la notification pour les alarmes</string>
+  <string name="alarm_notifications">Jouer une alarme pour les notifications spécifiques</string>
+  <string name="clear_notifications">Effacer les logs de notification</string>
+  <string name="alarm_notifications_title">Notifications pour les alarmes</string>
+  <string name="alarm">Alarme</string>
+  <string name="alarmtimer_title">Minuteur pour alarme</string>
   <string name="alarmtimer">Number of seconds to time the alarm</string>
   <!--        Information category       -->
   <string name="info_version">Version</string>

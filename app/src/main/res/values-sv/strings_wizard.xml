@@ -38,7 +38,7 @@
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">Du kan ange vilka enheter som du vill kontrollera från din Android Wear-enhet!</string>
   <string name="wizard_auto">Android Auto</string>
-  <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+  <string name="wizard_auto_description">Få notifieringar från Domoticz direkt i din Android Auto-enhet!</string>
   <string name="wizard_graph">Grafer</string>
   <string name="wizard_graph_description">Du kan se historisk graf för en enhet, väder eller temperatur!</string>
   <string name="wizard_filter">Filter</string>
@@ -57,6 +57,6 @@
   <string name="wizard_button_switches">Brytare</string>
   <string name="wizard_button_settings">Inställningar</string>
   <string name="wizard_button_wizard">Ta bort</string>
-  <string name="wizard_button_utilities">Mätare</string>
+  <string name="wizard_button_utilities">Verktyg</string>
   <string name="wizard_button_done">Klar</string>
 </resources>

@@ -28,6 +28,6 @@
   <string name="security_arm_away">Aseta poissa</string>
   <string name="security_wrong_code">Väärä koodi!</string>
   <string name="security_generic_error">Tilaa ei voitu muuttaa</string>
-  <string name="security_wrong_password_fingerprint">Wrong password entered, your domoticz account password is the failover for your fingerprint...!</string>
+  <string name="security_wrong_password_fingerprint">Väärä salasana syötetty, sinun Domoticz-tilisi salasana on sormenjälkitunnistuksen varasalasana...!</string>
   <string name="show_password">Näytä salasana</string>
 </resources>

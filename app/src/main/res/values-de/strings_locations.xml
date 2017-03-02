@@ -61,5 +61,5 @@
   <string name="geofence_not_available">Geofence service is not available now</string>
   <string name="geofence_too_many_geofences">App registered too many geofences</string>
   <string name="geofence_too_many_pending_intents">Too many PendingIntents provided</string>
-  <string name="unknown_geofence_error">Unknown error</string>
+  <string name="unknown_geofence_error">Unbekannter Fehler</string>
 </resources>
