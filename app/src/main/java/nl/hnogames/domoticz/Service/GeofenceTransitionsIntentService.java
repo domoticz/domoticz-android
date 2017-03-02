@@ -102,7 +102,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
                                 mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
-                        if(locationFound != null) {
+                        if (locationFound != null) {
                             Log.d(TAG, "Triggered dwelling a geofence location: "
                                     + locationFound.getName());
                             //keep the switch on for dwelling, but don't send a notification

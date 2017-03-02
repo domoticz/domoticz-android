@@ -106,7 +106,7 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
 
         Log.d(TAG, "Registering Geofences");
         List<Geofence> geoFences = mSharedPrefUtil.getEnabledGeofences();
-        if(geoFences!=null && geoFences.size()>0) {
+        if (geoFences != null && geoFences.size() > 0) {
             GeofencingRequest.Builder geofencingRequestBuilder = new GeofencingRequest.Builder();
             for (Geofence item : geoFences) {
                 geofencingRequestBuilder.addGeofence(item);
@@ -120,7 +120,8 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
                         mPendingIntent);
                 LocationServices.GeofencingApi.addGeofences(mGoogleApiClient,
                         geofencingRequest, mPendingIntent).setResultCallback(this);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -138,8 +139,9 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+
+        if (mGoogleApiClient.isConnected())
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     protected void stopLocationUpdates() {
