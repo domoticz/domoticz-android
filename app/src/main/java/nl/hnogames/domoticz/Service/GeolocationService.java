@@ -99,29 +99,28 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
     }
 
     protected void registerGeofences() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
         if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         Log.d(TAG, "Registering Geofences");
         List<Geofence> geoFences = mSharedPrefUtil.getEnabledGeofences();
-        GeofencingRequest.Builder geofencingRequestBuilder = new GeofencingRequest.Builder();
-        for (Geofence item : geoFences) {
-            geofencingRequestBuilder.addGeofence(item);
-        }
+        if(geoFences!=null && geoFences.size()>0) {
+            GeofencingRequest.Builder geofencingRequestBuilder = new GeofencingRequest.Builder();
+            for (Geofence item : geoFences) {
+                geofencingRequestBuilder.addGeofence(item);
+            }
 
-        GeofencingRequest geofencingRequest = geofencingRequestBuilder.build();
-        mPendingIntent = requestPendingIntent();
+            GeofencingRequest geofencingRequest = geofencingRequestBuilder.build();
+            mPendingIntent = requestPendingIntent();
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        try {
-            LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient,
-                    mPendingIntent);
-            LocationServices.GeofencingApi.addGeofences(mGoogleApiClient,
-                    geofencingRequest, mPendingIntent).setResultCallback(this);
-        } catch (Exception ignored) {
+            try {
+                LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient,
+                        mPendingIntent);
+                LocationServices.GeofencingApi.addGeofences(mGoogleApiClient,
+                        geofencingRequest, mPendingIntent).setResultCallback(this);
+            } catch (Exception ignored) {}
         }
     }
 
