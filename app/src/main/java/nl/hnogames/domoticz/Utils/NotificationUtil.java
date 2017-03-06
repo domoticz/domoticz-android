@@ -134,7 +134,7 @@ public class NotificationUtil {
                         if (alert == null)
                             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
                     }
-                    
+
                     if (alert != null) {
                         Intent ringtoneServiceStartIntent = new Intent(context, RingtonePlayingService.class);
                         ringtoneServiceStartIntent.putExtra("ringtone-uri", alert.toString());

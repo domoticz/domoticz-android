@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.util.List;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
-import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.Service.GeolocationService;
 
 public class GeoUtils {
@@ -215,7 +214,7 @@ public class GeoUtils {
      * @return Intent which will be called
      */
     public PendingIntent getGeofenceTransitionPendingIntent() {
-        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
-        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent("nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE");
+        return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

@@ -323,7 +323,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                     case DomoticzValues.Scene.Type.GROUP:
                         return true;
                 }
-            }else if (s.getSwitchTypeVal() == 0 &&
+            } else if (s.getSwitchTypeVal() == 0 &&
                     (s.getSwitchType().equals(DomoticzValues.Device.Type.Name.SECURITY))) {
                 return false; //security panel is not supported for small widgets
             } else {

@@ -91,11 +91,6 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Stopping Geofence Service");
-
-        //if (mGoogleApiClient.isConnected()) {
-        //    stopLocationUpdates();
-        //    mGoogleApiClient.disconnect();
-        //}
     }
 
     protected void registerGeofences() {
@@ -129,9 +124,8 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         if (null != mPendingIntent) {
             return mPendingIntent;
         } else {
-            Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-            return PendingIntent.getService(this, 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intent = new Intent("nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE");
+            return PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 
@@ -139,7 +133,6 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
         if (mGoogleApiClient.isConnected())
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
@@ -152,14 +145,13 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.i(TAG, "Connected to GoogleApiClient");
+
+        registerGeofences();
         startLocationUpdates();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if (!GeoUtils.geofencesAlreadyRegistered) {
-            registerGeofences();
-        }
     }
 
     @Override

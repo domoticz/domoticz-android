@@ -48,7 +48,7 @@ public class LocationInfo {
     }
 
     public String getName() {
-        if(UsefulBits.isEmpty(name))
+        if (UsefulBits.isEmpty(name))
             return "";
         else
             return name;
@@ -124,7 +124,7 @@ public class LocationInfo {
             return new Geofence.Builder()
                     .setRequestId(String.valueOf(id))
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT|
+                            Geofence.GEOFENCE_TRANSITION_EXIT |
                             Geofence.GEOFENCE_TRANSITION_DWELL)
                     .setCircularRegion(latLng.latitude, latLng.longitude, radius)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)

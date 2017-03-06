@@ -1,27 +1,7 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.Service;
 
-import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -47,36 +27,35 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-/**
- * Listens for geofence transition changes.
- */
-public class GeofenceTransitionsIntentService extends IntentService
+public class GeofenceReceiver extends BroadcastReceiver
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private final String TAG = "GEOFENCE";
+    Intent broadcastIntent = new Intent();
+    private Context context;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
 
-    public GeofenceTransitionsIntentService() {
-        super(GeofenceTransitionsIntentService.class.getSimpleName());
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        this.context = context;
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(context);
+
+        GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
+        if (geoFenceEvent.hasError()) {
+            handleError(intent, geoFenceEvent);
+        } else {
+            handleEnterExit(geoFenceEvent);
+        }
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mSharedPrefs = new SharedPrefUtil(this);
+    private void handleError(Intent intent, GeofencingEvent event) {
+        //TODO: Implement error handler
     }
 
-    /**
-     * Handles incoming intents.
-     *
-     * @param intent The Intent sent by Location Services. This Intent is provided to Location
-     *               Services (inside a PendingIntent) when addGeofences() is called.
-     */
-    @Override
-    protected void onHandleIntent(Intent intent) {
+    private void handleEnterExit(GeofencingEvent geoFenceEvent) {
         try {
-            GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
             if (geoFenceEvent.hasError()) {
                 int errorCode = geoFenceEvent.getErrorCode();
                 Log.e(TAG, "Location Services error: " + errorCode);
@@ -89,10 +68,10 @@ public class GeofenceTransitionsIntentService extends IntentService
                         Log.d(TAG, "Triggered entering a geofence location: "
                                 + locationFound.getName());
                         String text = String.format(
-                                getString(R.string.geofence_location_entering),
+                                context.getString(R.string.geofence_location_entering),
                                 locationFound.getName());
                         NotificationUtil.sendSimpleNotification(text,
-                                getString(R.string.geofence_location_entering_text), 0, this);
+                                context.getString(R.string.geofence_location_entering_text), 0, context);
 
                         if (locationFound.getSwitchIdx() > 0) {
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue());
@@ -119,10 +98,10 @@ public class GeofenceTransitionsIntentService extends IntentService
                                 + locationFound.getName());
 
                         String text = String.format(
-                                getString(R.string.geofence_location_leaving),
+                                context.getString(R.string.geofence_location_leaving),
                                 locationFound.getName());
                         NotificationUtil.sendSimpleNotification(text,
-                                getString(R.string.geofence_location_leaving_text), 0, this);
+                                context.getString(R.string.geofence_location_leaving_text), 0, context);
 
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false, locationFound.getValue());
@@ -136,7 +115,7 @@ public class GeofenceTransitionsIntentService extends IntentService
 
     private void handleSwitch(final int idx, final String password, final boolean checked, final String value) {
         if (domoticz == null)
-            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
+            domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         domoticz.getDevice(new DevicesReceiver() {
             @Override
@@ -196,16 +175,15 @@ public class GeofenceTransitionsIntentService extends IntentService
     private void onErrorHandling(Exception error) {
         if (error != null) {
             Toast.makeText(
-                    GeofenceTransitionsIntentService.this,
+                    context,
                     "Domoticz: " +
-                            getString(R.string.unable_to_get_switches),
+                            context.getString(R.string.unable_to_get_switches),
                     Toast.LENGTH_SHORT).show();
 
             if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
                 Log.e(TAG, domoticz.getErrorMessage(error));
         }
     }
-
 
     @Override
     public void onConnected(Bundle connectionHint) {
