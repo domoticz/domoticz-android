@@ -421,19 +421,23 @@ public class SharedPrefUtil {
         if (UsefulBits.isEmpty(notification))
             return;
 
-        Set<String> notifications;
-        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) {
-            notifications = new HashSet<>();
-            notifications.add(notification);
-            editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
-        } else {
-            notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS, null);
-            if (notifications == null)
+        try {
+            Set<String> notifications;
+            if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS)) {
                 notifications = new HashSet<>();
-            if (!notifications.contains(notification)) {
                 notifications.add(notification);
                 editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+            } else {
+                notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS, null);
+                if (notifications == null)
+                    notifications = new HashSet<>();
+                if (!notifications.contains(notification)) {
+                    notifications.add(notification);
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, notifications).apply();
+                }
             }
+        } catch (Exception ex) {
+            Log.e(TAG, "Failed to save new type of notification: " + ex.getMessage());
         }
     }
 
