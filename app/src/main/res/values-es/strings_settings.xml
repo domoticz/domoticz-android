@@ -135,6 +135,7 @@
   <string name="suppress_notifications_title">No mostrar notificaciones</string>
   <string name="alarm_notifications_select">Seleccionar Notificaciones a Alarma</string>
   <string name="alarm_notifications">Reproducir una Alarma para determinadas Notificaciones</string>
+  <string name="clear_notifications">Borrar el registro de notificaciones</string>
   <string name="alarm_notifications_title">Notificaciones de Alarma</string>
   <string name="alarm">Alarma</string>
   <string name="alarmtimer_title">Temporizador de alarma</string>

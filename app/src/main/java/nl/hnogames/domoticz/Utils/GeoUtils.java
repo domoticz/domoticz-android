@@ -31,7 +31,6 @@ import android.os.Bundle;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -39,14 +38,13 @@ import java.io.IOException;
 import java.util.List;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
-import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 import nl.hnogames.domoticz.Service.GeolocationService;
 
 public class GeoUtils {
+    public static boolean geofencesAlreadyRegistered = false;
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private GoogleApiClient mApiClient = null;
-    public static boolean geofencesAlreadyRegistered = false;
 
     public GeoUtils(Context mContext) {
         this.mContext = mContext;
@@ -173,9 +171,6 @@ public class GeoUtils {
                 final List<Geofence> mGeofenceList = this.mSharedPrefs.getEnabledGeofences();
                 if (mGeofenceList != null && mGeofenceList.size() > 0) {
                     mContext.startService(new Intent(mContext, GeolocationService.class));
-                } else {
-                    // No enabled geofences, disabling
-                    mSharedPrefs.setGeofenceEnabled(false);
                 }
             }
         }
@@ -219,7 +214,7 @@ public class GeoUtils {
      * @return Intent which will be called
      */
     public PendingIntent getGeofenceTransitionPendingIntent() {
-        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
-        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent("nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE");
+        return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

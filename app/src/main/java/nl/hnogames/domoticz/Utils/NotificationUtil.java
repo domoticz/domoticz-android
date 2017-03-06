@@ -92,8 +92,8 @@ public class NotificationUtil {
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.domoticz_white)
                                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
-                                .setContentTitle(alarmNot != null && alarmNot.contains(text) ? context.getString(R.string.alarm) + ": " + title : title)
-                                .setContentText(alarmNot != null && alarmNot.contains(text) ? context.getString(R.string.alarm) + ": " + text : text)
+                                .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
+                                .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                                 .setGroupSummary(true)
                                 .setGroup(GROUP_KEY_NOTIFICATIONS)
@@ -115,7 +115,7 @@ public class NotificationUtil {
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
 
-                if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(text)) {
+                if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(loggedNotification)) {
                     Intent stopAlarmIntent = new Intent(context, StopAlarmButtonListener.class);
                     PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     builder.addAction(android.R.drawable.ic_delete, "Stop", pendingAlarmIntent);
@@ -127,13 +127,14 @@ public class NotificationUtil {
                 }
 
                 NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build());
-                if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(text)) {
+                if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(loggedNotification)) {
                     Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                     if (alert == null) {
                         alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                         if (alert == null)
                             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
                     }
+
                     if (alert != null) {
                         Intent ringtoneServiceStartIntent = new Intent(context, RingtonePlayingService.class);
                         ringtoneServiceStartIntent.putExtra("ringtone-uri", alert.toString());

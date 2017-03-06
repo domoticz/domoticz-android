@@ -71,8 +71,8 @@
   <string name="add">Dodaj</string>
   <string name="cancel">Anuluj</string>
   <string name="ok">OK</string>
-  <string name="request_again">Żądanie ponowne</string>
-  <string name="upgrade">UAKTUALNIENIE</string>
+  <string name="request_again">Wyślij żądanie ponownie</string>
+  <string name="upgrade">Aktualizacja</string>
   <string name="something_went_wrong">Coś poszło nie tak</string>
   <string name="no_network_available">Błąd: Brak dostępnego połączenia sieciowego</string>
   <string name="oops">UPS!</string>
@@ -104,5 +104,5 @@
   <string name="this_take_minutes">Może to potrwać kilka minut.</string>
   <string name="continue_question">Kontynuować?</string>
   <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
-  <string name="restart_required_msg">Dla ustawień języka aby uzyskać efekt wymagane jest ponowne uruchomienie aplikacji</string>
+  <string name="restart_required_msg">Aby zmiany ustawień języka zadziałały wymagane jest ponowne uruchomienie aplikacji</string>
 </resources>

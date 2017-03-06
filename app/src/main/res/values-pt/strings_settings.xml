@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Ativar os itens personalizados no Android Wear</string>
   <string name="wear_custom_off">Desativar itens personalizados no Android Wear</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Activar notificações Android Auto</string>
+  <string name="auto_custom_off">Desactivar notificações Android Auto</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Configurar localização</string>
   <!--        Theming settings -->
@@ -135,10 +135,11 @@
   <string name="suppress_notifications_title">Suprimir as notificações</string>
   <string name="alarm_notifications_select">Selecione as notificações para alarme</string>
   <string name="alarm_notifications">Soar um alarme para notificações específicas</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Notificações de alarme</string>
   <string name="alarm">Alarme</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="alarmtimer_title">Temporizador de alarme</string>
+  <string name="alarmtimer">Número de segundos até a hora do alarme</string>
   <!--        Information category       -->
   <string name="info_version">Versão</string>
   <string name="info_domoticz_version">Versão Domoticz</string>

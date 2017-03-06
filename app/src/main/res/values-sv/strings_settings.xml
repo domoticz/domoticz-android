@@ -135,6 +135,7 @@
   <string name="suppress_notifications_title">Hindra notifieringar</string>
   <string name="alarm_notifications_select">Select Notifications to Alarm</string>
   <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Alarm Notifications</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtimer</string>

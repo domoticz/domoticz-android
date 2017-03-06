@@ -135,6 +135,7 @@
   <string name="suppress_notifications_title">Cancella le Notifiche</string>
   <string name="alarm_notifications_select">Selezionare notifiche di allarme</string>
   <string name="alarm_notifications">Allarme sonoro per notifiche specifiche</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Notifiche di Allarme</string>
   <string name="alarm">Allarme</string>
   <string name="alarmtimer_title">Tempo di Allarme</string>

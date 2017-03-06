@@ -61,7 +61,7 @@
   <string name="day_off">Ledig dag</string>
   <string name="custom">Anpassad</string>
   <string name="heating_off">Uppvärmning av</string>
-  <string name="selector_value">Selector values</string>
+  <string name="selector_value">Väljarvärden</string>
   <string name="debug_textview_title">Felsökningsinformation</string>
   <string name="msg_copiedToClipboard">Texten kopierad till urklipp</string>
   <string name="favorite">Favorit</string>
@@ -73,13 +73,13 @@
   <string name="ok">Ok</string>
   <string name="request_again">Begär igen</string>
   <string name="upgrade">UPPGRADERA</string>
-  <string name="something_went_wrong">Något gick fel</string>
+  <string name="something_went_wrong">Någonting gick fel</string>
   <string name="no_network_available">Fel: Ingen nätversanslutning tillgänglig</string>
   <string name="oops">HOPPSAN!</string>
   <string name="to">"till"</string>
   <string name="retry">Försök igen</string>
   <string name="undo">Ångra</string>
-  <string name="something_deleted">%1$s borttagen</string>
+  <string name="something_deleted">%1$s togs bort</string>
   <string name="switch_on">Slår på brytare</string>
   <string name="switch_off">Slår av brytare</string>
   <string name="blind_up">Rullar upp rullgardinen</string>
@@ -96,13 +96,13 @@
   <string name="choose_color">Välj färg</string>
   <string name="no_data_on_domoticz">Ingen data på Domoticz-server</string>
   <string name="row_icon_description">rad-ikon</string>
-  <string name="error_image_description">Fel bild</string>
-  <string name="device_image_description">Enhetens bild</string>
+  <string name="error_image_description">Felbild</string>
+  <string name="device_image_description">Enhetsbild</string>
   <string name="white">Vit</string>
   <string name="refresh">Uppdatera</string>
   <string name="domoticz_logo">Domoticz logotyp</string>
   <string name="this_take_minutes">Detta kan ta flera minuter.</string>
-  <string name="continue_question">Fortsätta?</string>
+  <string name="continue_question">Vill du fortsätta?</string>
   <string name="cant_remove_default_server">Kan inte ta bort standardserver</string>
   <string name="restart_required_msg">För att verkställa språkändring krävs det att programmet startas om</string>
 </resources>
