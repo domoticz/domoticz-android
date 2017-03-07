@@ -45,14 +45,6 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int minCelsiusTemp = 10;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int maxCelsiusTemp = 30;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int minFahrenheitTemp = 50;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int maxFahrenheitTemp = 90;
     private final int maxTemp;
     private int minTemp;
 
@@ -63,11 +55,14 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     private TextView temperatureText;
     private String tempSign = UsefulBits.getDegreeSymbol() + "C";
     private boolean isFahrenheit = false;
+    private SharedPrefUtil mSharedPrefUtil;
 
     public TemperatureDialog(Context mContext, double temp) {
         this.mContext = mContext;
+        if(mSharedPrefUtil == null)
+            mSharedPrefUtil = new SharedPrefUtil(mContext);
 
-        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+        if (mSharedPrefUtil.darkThemeEnabled()) {
             mdb = new MaterialDialog.Builder(mContext)
                     .titleColorRes(R.color.white)
                     .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
@@ -82,7 +77,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
                 .negativeText(android.R.string.cancel)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok)
                 .onAny(this);
 
@@ -96,19 +91,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             Toast.makeText(mContext,
                     "Unable to get the server configuration info!", Toast.LENGTH_LONG).show();
 
-        if (isFahrenheit) {
-            minTemp = minFahrenheitTemp;
-            maxTemp = maxFahrenheitTemp;
-            if (temp < minFahrenheitTemp)
-                temp = minFahrenheitTemp;     // Fahrenheit min = 50 (10 degrees Celsius)
-            if (temp > maxFahrenheitTemp)
-                temp = maxFahrenheitTemp;     // Fahrenheit max = 90 (32 degrees Celsius)
-        } else {
-            minTemp = minCelsiusTemp;
-            maxTemp = maxCelsiusTemp;
-            if (temp < minCelsiusTemp) temp = minCelsiusTemp;           // Celsius min = 10
-            if (temp > maxCelsiusTemp) temp = maxCelsiusTemp;           // Celsius max = 30
-        }
+        minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo.getTempSign());
+        maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo.getTempSign());
         currentTemperature = temp;
     }
 
@@ -125,25 +109,17 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         Button bntPlus = (Button) view.findViewById(R.id.plus);
         Button btnMin = (Button) view.findViewById(R.id.min);
 
-        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
+        if (mSharedPrefUtil.darkThemeEnabled()) {
             bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
             btnMin.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
         }
 
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);
-
-        if (!isFahrenheit) temperatureControl.setMax((maxCelsiusTemp - minCelsiusTemp) * 2);
-        else temperatureControl.setMax((maxFahrenheitTemp - minFahrenheitTemp) * 2);
+        temperatureControl.setMax((maxTemp - minTemp) * 2);
 
         int arcProgress = tempToProgress(currentTemperature);
         temperatureControl.setProgress(arcProgress);
-        /*
-        ObjectAnimator animation = ObjectAnimator.ofInt(temperatureControl, "progress", arcProgress);
-        animation.setDuration(1000);                            // 1 second
-        animation.setInterpolator(new DecelerateInterpolator());
-        animation.start();
-        */
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override

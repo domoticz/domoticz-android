@@ -55,7 +55,13 @@
     <string name="hardware">Hardware</string>
     <string name="temperature">Temperature</string>
     <string name="status">Status</string>
+
     <string name="set_point">Set point</string>
+    <string name="set_point_min">Set point min value</string>
+    <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+    <string name="set_point_max">Set point max value</string>
+    <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
+
     <string name="action_success">Action successful</string>
     <string name="action_failed">Action failed</string>
     <string name="action_unknown">Action result unknown</string>

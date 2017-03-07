@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -92,6 +93,8 @@ public class Preference extends PreferenceFragment {
     private File SettingsFile;
     private Context mContext;
     private Domoticz mDomoticz;
+    private ConfigInfo mConfigInfo;
+    private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
 
     @Override
@@ -103,8 +106,11 @@ public class Preference extends PreferenceFragment {
         permissionHelper = PermissionHelper.getInstance(getActivity());
 
         mContext = getActivity();
+
+        mServerUtil = new ServerUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
         mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
+        mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(mContext);
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
@@ -144,6 +150,36 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
+
+        nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMin = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMinValue");
+        nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMax = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMaxValue");
+        oTemperatureMin.setText(mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign())+"");
+        oTemperatureMax.setText(mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign())+"");
+        oTemperatureMax.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                int newMaxValue = Integer.valueOf(o+"");
+                int existingMinValue = mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign());
+
+                if(newMaxValue > existingMinValue)
+                    return true;
+                else
+                    Toast.makeText(mContext, mContext.getString(R.string.default_values_max_error), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        oTemperatureMin.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                int newMinValue = Integer.valueOf(o+"");
+                int existingMaxValue = mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign());
+                if(newMinValue < existingMaxValue)
+                    return true;
+                else
+                    Toast.makeText(mContext, mContext.getString(R.string.default_values_min_error), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         if (!BuildConfig.DEBUG) {
             PreferenceCategory oAndroidAutoCategory = (android.preference.PreferenceCategory) findPreference("androidautocategory");
