@@ -51,6 +51,10 @@
   <string name="temperature">Temperatura</string>
   <string name="status">Estat</string>
   <string name="set_point">Set point</string>
+  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">L\'acció ha acabat amb éxit</string>
   <string name="action_failed">L\'acció ha fallat</string>
   <string name="action_unknown">Resultat de l\'acció desconegut</string>

@@ -140,6 +140,9 @@
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtijd</string>
   <string name="alarmtimer">Aantal seconden voor het alarm automatisch stopt</string>
+  <string name="default_values">Standaardwaarden</string>
+  <string name="default_values_min_error">Maximale waarde moet hoger zijn dan minimale waarde</string>
+  <string name="default_values_max_error">Minimale waarde moet lager zijn dan maximale waarde</string>
   <!--        Information category       -->
   <string name="info_version">Versie</string>
   <string name="info_domoticz_version">Domoticz versie</string>

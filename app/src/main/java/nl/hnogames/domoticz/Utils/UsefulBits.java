@@ -199,7 +199,13 @@ public class UsefulBits {
      */
     @DebugLog
     public static void setDisplayLanguage(Context context, String lang) {
-        Locale myLocale = new Locale(lang);
+        Locale myLocale;
+        if(lang.equals("zh_CN"))
+            myLocale = Locale.SIMPLIFIED_CHINESE;
+        else if(lang.equals("zh_TW"))
+            myLocale = Locale.TRADITIONAL_CHINESE;
+        else
+            myLocale = new Locale(lang);
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();

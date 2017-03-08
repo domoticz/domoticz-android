@@ -51,6 +51,10 @@
   <string name="temperature">Lämpötila</string>
   <string name="status">Tila</string>
   <string name="set_point">Asetusarvo</string>
+  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">Toiminto onnistui</string>
   <string name="action_failed">Toiminto epäonnistui</string>
   <string name="action_unknown">Toiminnan tulos tuntematon</string>

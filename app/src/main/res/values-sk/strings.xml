@@ -51,6 +51,10 @@
   <string name="temperature">Teplota</string>
   <string name="status">Stav</string>
   <string name="set_point">Nastaviť bod</string>
+  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">Akcia úspešná</string>
   <string name="action_failed">Akcia Neúspešná</string>
   <string name="action_unknown">Neznámy výsledok akcie</string>

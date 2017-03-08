@@ -51,6 +51,10 @@
   <string name="temperature">Температура</string>
   <string name="status">Състояние</string>
   <string name="set_point">Set point</string>
+  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">Действието беше успешно</string>
   <string name="action_failed">Неуспешно действие</string>
   <string name="action_unknown">Резултатът от действието е неизвестен</string>
