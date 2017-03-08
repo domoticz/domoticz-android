@@ -59,6 +59,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
@@ -121,6 +122,39 @@ public class Preference extends PreferenceFragment {
         handleInfoAndAbout();
     }
 
+    private void setupDefaultValues()
+    {
+        nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMin = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMinValue");
+        nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMax = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMaxValue");
+        oTemperatureMin.setText(mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign())+"");
+        oTemperatureMax.setText(mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign())+"");
+        oTemperatureMax.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                int newMaxValue = Integer.valueOf(o+"");
+                int existingMinValue = mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign());
+
+                if(newMaxValue > existingMinValue)
+                    return true;
+                else
+                    Toast.makeText(mContext, mContext.getString(R.string.default_values_max_error), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        oTemperatureMin.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
+                int newMinValue = Integer.valueOf(o+"");
+                int existingMaxValue = mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign());
+                if(newMinValue < existingMaxValue)
+                    return true;
+                else
+                    Toast.makeText(mContext, mContext.getString(R.string.default_values_min_error), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+    }
+
     private void setPreferences() {
         final android.preference.SwitchPreference MultiServerPreference = (android.preference.SwitchPreference) findPreference("enableMultiServers");
         android.preference.Preference ServerSettings = findPreference("server_settings");
@@ -151,35 +185,25 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
 
-        nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMin = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMinValue");
-        nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMax = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMaxValue");
-        oTemperatureMin.setText(mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign())+"");
-        oTemperatureMax.setText(mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign())+"");
-        oTemperatureMax.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
-                int newMaxValue = Integer.valueOf(o+"");
-                int existingMinValue = mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign());
+        if(mConfigInfo == null)
+        {
+            UsefulBits.getServerConfigForActiveServer(mContext, false, new ConfigReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveConfig(ConfigInfo settings) {
+                    mConfigInfo = settings;
+                    setupDefaultValues();
+                }
 
-                if(newMaxValue > existingMinValue)
-                    return true;
-                else
-                    Toast.makeText(mContext, mContext.getString(R.string.default_values_max_error), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-        oTemperatureMin.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
-                int newMinValue = Integer.valueOf(o+"");
-                int existingMaxValue = mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign());
-                if(newMinValue < existingMaxValue)
-                    return true;
-                else
-                    Toast.makeText(mContext, mContext.getString(R.string.default_values_min_error), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                }
+            }, mServerUtil.getActiveServer().getConfigInfo(mContext));
+        }
+        else{
+            setupDefaultValues();
+        }
 
         if (!BuildConfig.DEBUG) {
             PreferenceCategory oAndroidAutoCategory = (android.preference.PreferenceCategory) findPreference("androidautocategory");
