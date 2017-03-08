@@ -1761,17 +1761,14 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SET:
-
                 if (holder.buttonSet != null)
                     holder.buttonSet.setVisibility(View.VISIBLE);
                 break;
             case Buttons.MODAL:
-
                 if (holder.buttonSetStatus != null)
                     holder.buttonSetStatus.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BUTTON_ON:
-
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 break;
@@ -1891,6 +1888,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
             buttonOn = (Button) itemView.findViewById(R.id.on_button);
             buttonOff = (Button) itemView.findViewById(R.id.off_button);
+            buttonSetStatus= (Button) itemView.findViewById(R.id.set_button);
+
             onOffSwitch = (Switch) itemView.findViewById(R.id.switch_button);
             signal_level = (TextView) itemView.findViewById(R.id.switch_signal_level);
             iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
