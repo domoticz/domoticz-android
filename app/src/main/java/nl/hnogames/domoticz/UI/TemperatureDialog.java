@@ -59,7 +59,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     public TemperatureDialog(Context mContext, double temp) {
         this.mContext = mContext;
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(mContext);
 
         if (mSharedPrefUtil.darkThemeEnabled()) {

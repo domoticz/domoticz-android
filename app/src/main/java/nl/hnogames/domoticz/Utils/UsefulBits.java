@@ -200,9 +200,9 @@ public class UsefulBits {
     @DebugLog
     public static void setDisplayLanguage(Context context, String lang) {
         Locale myLocale;
-        if(lang.equals("zh_CN"))
+        if (lang.equals("zh_CN"))
             myLocale = Locale.SIMPLIFIED_CHINESE;
-        else if(lang.equals("zh_TW"))
+        else if (lang.equals("zh_TW"))
             myLocale = Locale.TRADITIONAL_CHINESE;
         else
             myLocale = new Locale(lang);

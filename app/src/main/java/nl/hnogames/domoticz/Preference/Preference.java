@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -122,19 +121,18 @@ public class Preference extends PreferenceFragment {
         handleInfoAndAbout();
     }
 
-    private void setupDefaultValues()
-    {
+    private void setupDefaultValues() {
         nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMin = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMinValue");
         nl.hnogames.domoticz.Preference.EditTextIntegerPreference oTemperatureMax = (nl.hnogames.domoticz.Preference.EditTextIntegerPreference) findPreference("tempMaxValue");
-        oTemperatureMin.setText(mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign())+"");
-        oTemperatureMax.setText(mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign())+"");
+        oTemperatureMin.setText(mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign()) + "");
+        oTemperatureMax.setText(mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign()) + "");
         oTemperatureMax.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
-                int newMaxValue = Integer.valueOf(o+"");
+                int newMaxValue = Integer.valueOf(o + "");
                 int existingMinValue = mSharedPrefs.getTemperatureSetMin(mConfigInfo.getTempSign());
 
-                if(newMaxValue > existingMinValue)
+                if (newMaxValue > existingMinValue)
                     return true;
                 else
                     Toast.makeText(mContext, mContext.getString(R.string.default_values_max_error), Toast.LENGTH_SHORT).show();
@@ -144,9 +142,9 @@ public class Preference extends PreferenceFragment {
         oTemperatureMin.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object o) {
-                int newMinValue = Integer.valueOf(o+"");
+                int newMinValue = Integer.valueOf(o + "");
                 int existingMaxValue = mSharedPrefs.getTemperatureSetMax(mConfigInfo.getTempSign());
-                if(newMinValue < existingMaxValue)
+                if (newMinValue < existingMaxValue)
                     return true;
                 else
                     Toast.makeText(mContext, mContext.getString(R.string.default_values_min_error), Toast.LENGTH_SHORT).show();
@@ -185,8 +183,7 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
 
-        if(mConfigInfo == null)
-        {
+        if (mConfigInfo == null) {
             UsefulBits.getServerConfigForActiveServer(mContext, false, new ConfigReceiver() {
                 @Override
                 @DebugLog
@@ -200,8 +197,7 @@ public class Preference extends PreferenceFragment {
                 public void onError(Exception error) {
                 }
             }, mServerUtil.getActiveServer().getConfigInfo(mContext));
-        }
-        else{
+        } else {
             setupDefaultValues();
         }
 
@@ -511,7 +507,7 @@ public class Preference extends PreferenceFragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     new MaterialDialog.Builder(mContext)
                             .title(R.string.category_Reset)
-                            .content(R.string.are_you_sure)
+                            .content(R.string.are_you_sure_clear_settings)
                             .positiveText(R.string.ok)
                             .negativeText(R.string.cancel)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {

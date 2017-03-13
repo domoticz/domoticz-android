@@ -1888,7 +1888,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
             buttonOn = (Button) itemView.findViewById(R.id.on_button);
             buttonOff = (Button) itemView.findViewById(R.id.off_button);
-            buttonSetStatus= (Button) itemView.findViewById(R.id.set_button);
+            buttonSetStatus = (Button) itemView.findViewById(R.id.set_button);
 
             onOffSwitch = (Switch) itemView.findViewById(R.id.switch_button);
             signal_level = (TextView) itemView.findViewById(R.id.switch_signal_level);

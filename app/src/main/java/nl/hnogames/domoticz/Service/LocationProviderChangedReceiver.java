@@ -19,14 +19,13 @@ public class LocationProviderChangedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED"))
-        {
+        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
             Log.i(TAG, "Location Providers changed");
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if(BuildConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Toast.makeText(context, "GPS Enabled: " + isGpsEnabled + " Network Location Enabled: " + isNetworkEnabled, Toast.LENGTH_LONG).show();
             startGeofenceService(context);
         }

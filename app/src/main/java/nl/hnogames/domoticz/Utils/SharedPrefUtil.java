@@ -186,10 +186,10 @@ public class SharedPrefUtil {
     }
 
     public int getTemperatureSetMin(String tempType) {
-        if(tempType.equals("C")) {
+        if (tempType.equals("C")) {
             try {
-                int value =  Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "10"));
-                if(value == -1) {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "10"));
+                if (value == -1) {
                     editor.putString(PREF_TEMP_MIN, "10").apply();
                     return 10;
                 }
@@ -198,10 +198,10 @@ public class SharedPrefUtil {
                 editor.putString(PREF_TEMP_MIN, "10").apply();
                 return 10;
             }
-        }else{
+        } else {
             try {
-                int value =  Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "60"));
-                if(value == -1) {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "60"));
+                if (value == -1) {
                     editor.putString(PREF_TEMP_MIN, "60").apply();
                     return 60;
                 }
@@ -214,10 +214,10 @@ public class SharedPrefUtil {
     }
 
     public int getTemperatureSetMax(String tempType) {
-        if(tempType.equals("C")) {
+        if (tempType.equals("C")) {
             try {
-                int value =  Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "30"));
-                if(value == -1) {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "30"));
+                if (value == -1) {
                     editor.putString(PREF_TEMP_MAX, "30").apply();
                     return 30;
                 }
@@ -226,10 +226,10 @@ public class SharedPrefUtil {
                 editor.putString(PREF_TEMP_MAX, "30").apply();
                 return 30;
             }
-        }else{
+        } else {
             try {
-                int value =  Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "90"));
-                if(value == -1) {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "90"));
+                if (value == -1) {
                     editor.putString(PREF_TEMP_MAX, "90").apply();
                     return 90;
                 }
