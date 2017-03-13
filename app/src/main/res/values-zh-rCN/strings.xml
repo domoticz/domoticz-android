@@ -72,6 +72,7 @@
   <string name="yes">是</string>
   <string name="no">否</string>
   <string name="are_you_sure">你确定吗？</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">添加</string>
   <string name="cancel">取消</string>
   <string name="ok">确定</string>

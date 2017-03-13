@@ -72,6 +72,7 @@
   <string name="yes">Kyllä</string>
   <string name="no">Ei</string>
   <string name="are_you_sure">Oletko varma?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Lisää</string>
   <string name="cancel">Peruuta</string>
   <string name="ok">OK</string>

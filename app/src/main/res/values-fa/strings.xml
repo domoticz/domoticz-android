@@ -22,9 +22,9 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="premium_category">Buy premium!</string>
-  <string name="premium_title">Get the premium version!</string>
-  <string name="premium_feature">is a premium feature, please buy the paid version to support the developers!</string>
+  <string name="premium_category">خرید نسخه کامل!</string>
+  <string name="premium_title">دریافت نسخه کامل!</string>
+  <string name="premium_feature">یکی از ویژگی های نسخه کامل،با خرید نسخه پولی از توسعه دهندگان حمایت کنید!</string>
   <string name="drawer_open">Open navigation drawer</string>
   <string name="drawer_close">Close navigation drawer</string>
   <string name="msg_please_wait">Please wait&#8230;</string>
@@ -72,6 +72,7 @@
   <string name="yes">Yes</string>
   <string name="no">No</string>
   <string name="are_you_sure">Are you sure?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Add</string>
   <string name="cancel">Cancel</string>
   <string name="ok">OK</string>

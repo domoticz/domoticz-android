@@ -72,6 +72,7 @@
   <string name="yes">Sí</string>
   <string name="no">No 	</string>
   <string name="are_you_sure">¿Estás seguro?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Añadir</string>
   <string name="cancel">Cancelar</string>
   <string name="ok">Aceptar</string>

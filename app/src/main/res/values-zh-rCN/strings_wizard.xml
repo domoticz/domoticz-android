@@ -53,7 +53,7 @@
   <string name="wizard_qrcode_description">通过扫描二维码(或条形码)切换开关 ！</string>
   <string name="wizard_speech">语音指令</string>
   <string name="wizard_speech_description">用你的声音切换开关！通过设置界面及连接的开关配置语音指令。</string>
-  <string name="wizard_button_nice">很好</string>
+  <string name="wizard_button_nice">好的</string>
   <string name="wizard_button_switches">开关</string>
   <string name="wizard_button_settings">设置</string>
   <string name="wizard_button_wizard">移除</string>

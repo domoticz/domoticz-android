@@ -72,6 +72,7 @@
   <string name="yes">Ja</string>
   <string name="no">Nee</string>
   <string name="are_you_sure">Weet u dit zeker?</string>
+  <string name="are_you_sure_clear_settings">Weet je het zeker?? Dit wist ook alle homescreen widget instellingen, dus u moet ze daarna opnieuw toevoegen...</string>
   <string name="add">Toevoegen</string>
   <string name="cancel">Annuleren</string>
   <string name="ok">Ok</string>

@@ -72,6 +72,7 @@
   <string name="yes">Да</string>
   <string name="no">Не</string>
   <string name="are_you_sure">Сигурни ли сте?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Добави</string>
   <string name="cancel">Откажи</string>
   <string name="ok">ОК</string>

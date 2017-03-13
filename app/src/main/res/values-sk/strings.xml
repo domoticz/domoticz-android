@@ -72,6 +72,7 @@
   <string name="yes">Áno</string>
   <string name="no">Nie</string>
   <string name="are_you_sure">Ste si istý?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Pridať</string>
   <string name="cancel">Zrušiť</string>
   <string name="ok">OK</string>
