@@ -91,8 +91,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             Toast.makeText(mContext,
                     "Unable to get the server configuration info!", Toast.LENGTH_LONG).show();
 
-        minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo.getTempSign());
-        maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo.getTempSign());
+        minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");
+        maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo != null ? configInfo.getTempSign() : "C");
         currentTemperature = temp;
     }
 
