@@ -187,6 +187,7 @@ public class DomoticzValues {
                 String MEDIAPLAYER = "Media Player";
                 String DUSKSENSOR = "Dusk Sensor";
                 String DOORLOCK = "Door Lock";
+                String DOORCONTACT = "Door Contact";
                 String BLINDPERCENTAGE = "Blinds Percentage";
                 String BLINDVENETIAN = "Venetian Blinds EU";
                 String BLINDVENETIANUS = "Venetian Blinds US";
