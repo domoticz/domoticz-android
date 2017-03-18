@@ -133,12 +133,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:support-v13:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:cardview-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:support-v13:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:cardview-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
 
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.7'
@@ -176,7 +176,7 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.schibstedspain.android:leku:3.0.0'
+    compile 'com.schibstedspain.android:leku:3.1.0'
 
     compile 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
