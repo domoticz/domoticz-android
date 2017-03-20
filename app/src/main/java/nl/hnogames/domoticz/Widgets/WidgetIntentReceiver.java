@@ -221,9 +221,8 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
 
                 @Override
                 public void onReceiveScene(final SceneInfo scene) {
-                    Log.i("SCENE TOGGLE", "Device: " + scene.getName());
-
                     if (scene != null) {
+                        Log.i("SCENE TOGGLE", "Device: " + scene.getName());
                         if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
                             onButtonClick(scene, true, domoticz, context);//push on scene
                         } else {//switch
