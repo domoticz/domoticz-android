@@ -51,6 +51,10 @@
   <string name="temperature">Temperatuur</string>
   <string name="status">Status</string>
   <string name="set_point">Gewenste waarde</string>
+  <string name="set_point_min">Instel minimale waarde in</string>
+  <string name="set_point_min_description">Minimale temperatuur die u voor uw thermostaat kunt instellen</string>
+  <string name="set_point_max">Instel maximale waarde in</string>
+  <string name="set_point_max_description">Maximale temperatuur die u voor uw thermostaat kunt instellen</string>
   <string name="action_success">Actie succesvol</string>
   <string name="action_failed">Actie mislukt</string>
   <string name="action_unknown">Actie resultaat onbekend</string>
@@ -68,6 +72,7 @@
   <string name="yes">Ja</string>
   <string name="no">Nee</string>
   <string name="are_you_sure">Weet u dit zeker?</string>
+  <string name="are_you_sure_clear_settings">Weet je het zeker?? Dit wist ook alle homescreen widget instellingen, dus u moet ze daarna opnieuw toevoegen...</string>
   <string name="add">Toevoegen</string>
   <string name="cancel">Annuleren</string>
   <string name="ok">Ok</string>

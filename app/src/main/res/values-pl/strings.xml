@@ -51,6 +51,10 @@
   <string name="temperature">Temperatura</string>
   <string name="status">Status</string>
   <string name="set_point">Ustaw punkt</string>
+  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">Akcja zakończona skucesem</string>
   <string name="action_failed">Akcja nie powiodła się</string>
   <string name="action_unknown">Nieznany rezultat akcji</string>
@@ -68,6 +72,7 @@
   <string name="yes">Tak</string>
   <string name="no">Nie</string>
   <string name="are_you_sure">Jesteś pewny?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Dodaj</string>
   <string name="cancel">Anuluj</string>
   <string name="ok">OK</string>

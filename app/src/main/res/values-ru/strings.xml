@@ -51,6 +51,10 @@
   <string name="temperature">Температура</string>
   <string name="status">Статус</string>
   <string name="set_point">Уставка</string>
+  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
+  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">Операция выполнена</string>
   <string name="action_failed">Операция не выполнена</string>
   <string name="action_unknown">Результат действия неизвестен</string>
@@ -68,6 +72,7 @@
   <string name="yes">Да</string>
   <string name="no">Heт</string>
   <string name="are_you_sure">Вы уверены?</string>
+  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
   <string name="add">Добавить</string>
   <string name="cancel">Отмена</string>
   <string name="ok">Ok</string>

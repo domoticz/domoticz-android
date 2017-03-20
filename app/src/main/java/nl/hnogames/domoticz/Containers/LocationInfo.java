@@ -118,14 +118,13 @@ public class LocationInfo {
     public Geofence toGeofence() {
         if (radius <= 0)
             radius = 400;//default
-
         try {
             // Build a new Geofence object.
             return new Geofence.Builder()
                     .setRequestId(String.valueOf(id))
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT |
-                            Geofence.GEOFENCE_TRANSITION_DWELL)
+                            //Geofence.GEOFENCE_TRANSITION_DWELL |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
                     .setCircularRegion(latLng.latitude, latLng.longitude, radius)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setLoiteringDelay(30000)

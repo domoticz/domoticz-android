@@ -127,40 +127,45 @@ public class GeofenceReceiver extends BroadcastReceiver
                 if (mDevicesInfo == null)
                     return;
 
-                int jsonAction;
-                int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
-                int jsonValue = 0;
+                if(mDevicesInfo.getStatusBoolean() != checked) {
+                    int jsonAction;
+                    int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+                    int jsonValue = 0;
 
-                if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                    if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                    else jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                } else {
-                    if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                    else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                }
-
-                switch (mDevicesInfo.getSwitchTypeVal()) {
-                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                        break;
-                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                        break;
-                }
-
-                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
-                    @Override
-                    public void onReceiveResult(String result) {
-                        Log.d(TAG, result);
+                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        else jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                    } else {
+                        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                        else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                     }
 
-                    @Override
-                    public void onError(Exception error) {
-                        if (error != null)
-                            onErrorHandling(error);
+                    switch (mDevicesInfo.getSwitchTypeVal()) {
+                        case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            break;
+                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            break;
                     }
-                });
+
+                    domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            Log.d(TAG, result);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            if (error != null)
+                                onErrorHandling(error);
+                        }
+                    });
+                }
+                else{
+                    Log.i("GEOFENCE", "Switch was already turned " + (checked ? "on": "off"));
+                }
             }
 
             @Override

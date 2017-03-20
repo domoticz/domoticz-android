@@ -140,6 +140,9 @@
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Budzik</string>
   <string name="alarmtimer">Liczba sekund do czasu alarmu</string>
+  <string name="default_values">Default values</string>
+  <string name="default_values_min_error">Max value should be higher than Min value</string>
+  <string name="default_values_max_error">Max value should be higher than Min value</string>
   <!--        Information category       -->
   <string name="info_version">Wersja</string>
   <string name="info_domoticz_version">Wersja Domoticz</string>

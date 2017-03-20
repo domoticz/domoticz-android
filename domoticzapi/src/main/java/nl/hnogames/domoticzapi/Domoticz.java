@@ -305,6 +305,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.X10SIREN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SECURITY);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SELECTOR);

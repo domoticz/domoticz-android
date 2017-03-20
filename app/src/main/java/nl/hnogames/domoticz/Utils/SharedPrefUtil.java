@@ -107,6 +107,8 @@ public class SharedPrefUtil {
     private static final String PREF_APK_VALIDATED = "apkvalidated";
     private static final String PREF_TALK_BACK = "talkBack";
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
+    private static final String PREF_TEMP_MIN = "tempMinValue";
+    private static final String PREF_TEMP_MAX = "tempMaxValue";
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -180,6 +182,62 @@ public class SharedPrefUtil {
         } catch (Exception ex) {
             editor.putString(PREF_ALARM_TIMER, "5").apply();
             return 5;
+        }
+    }
+
+    public int getTemperatureSetMin(String tempType) {
+        if (tempType.equals("C")) {
+            try {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "10"));
+                if (value == -1) {
+                    editor.putString(PREF_TEMP_MIN, "10").apply();
+                    return 10;
+                }
+                return value;
+            } catch (Exception ex) {
+                editor.putString(PREF_TEMP_MIN, "10").apply();
+                return 10;
+            }
+        } else {
+            try {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "60"));
+                if (value == -1) {
+                    editor.putString(PREF_TEMP_MIN, "60").apply();
+                    return 60;
+                }
+                return value;
+            } catch (Exception ex) {
+                editor.putString(PREF_TEMP_MIN, "60").apply();
+                return 60;
+            }
+        }
+    }
+
+    public int getTemperatureSetMax(String tempType) {
+        if (tempType.equals("C")) {
+            try {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "30"));
+                if (value == -1) {
+                    editor.putString(PREF_TEMP_MAX, "30").apply();
+                    return 30;
+                }
+                return value;
+            } catch (Exception ex) {
+                editor.putString(PREF_TEMP_MAX, "30").apply();
+                return 30;
+            }
+        } else {
+            try {
+                int value = Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "90"));
+                if (value == -1) {
+                    editor.putString(PREF_TEMP_MAX, "90").apply();
+                    return 90;
+                }
+                return value;
+            } catch (Exception ex) {
+                editor.putString(PREF_TEMP_MAX, "90").apply();
+                return 90;
+            }
         }
     }
 
