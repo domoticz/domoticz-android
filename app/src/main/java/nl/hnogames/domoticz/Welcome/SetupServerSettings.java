@@ -437,15 +437,15 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         newServer = new ServerInfo();
         newServer.setRemoteServerUsername(
-                remote_username_input.getInputWidgetText().toString());
+                remote_username_input.getInputWidgetText().toString().trim());
         newServer.setRemoteServerPassword(
-                remote_password_input.getInputWidgetText().toString());
+                remote_password_input.getInputWidgetText().toString().trim());
         newServer.setRemoteServerUrl(
-                remote_server_input.getInputWidgetText().toString());
+                remote_server_input.getInputWidgetText().toString().trim());
         newServer.setRemoteServerPort(
-                remote_port_input.getInputWidgetText().toString());
+                remote_port_input.getInputWidgetText().toString().trim());
         newServer.setRemoteServerDirectory(
-                remote_directory_input.getInputWidgetText().toString());
+                remote_directory_input.getInputWidgetText().toString().trim());
         newServer.setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         newServer.setEnabled(false);
@@ -455,15 +455,15 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             newServer.setIsLocalServerAddressDifferent(false);
         } else {
             newServer.setLocalServerUsername(
-                    local_username_input.getInputWidgetText().toString());
+                    local_username_input.getInputWidgetText().toString().trim());
             newServer.setLocalServerPassword(
-                    local_password_input.getInputWidgetText().toString());
+                    local_password_input.getInputWidgetText().toString().trim());
             newServer.setLocalServerUrl(
-                    local_server_input.getInputWidgetText().toString());
+                    local_server_input.getInputWidgetText().toString().trim());
             newServer.setLocalServerPort(
-                    local_port_input.getInputWidgetText().toString());
+                    local_port_input.getInputWidgetText().toString().trim());
             newServer.setLocalServerDirectory(
-                    local_directory_input.getInputWidgetText().toString());
+                    local_directory_input.getInputWidgetText().toString().trim());
             newServer.setLocalServerSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
             newServer.setIsLocalServerAddressDifferent(true);
