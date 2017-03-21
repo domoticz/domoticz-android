@@ -172,7 +172,7 @@ dependencies {
     compile 'com.github.javiersantos:PiracyChecker:0.0.3'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
 
-    compile('com.mikepenz:materialdrawer:5.7.0@aar') {
+    compile('com.mikepenz:materialdrawer:5.8.2@aar') {
         transitive = true
     }
 
