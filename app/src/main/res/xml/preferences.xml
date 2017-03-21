@@ -76,6 +76,20 @@
             android:title="@string/always_on_title" />
     </PreferenceCategory>
 
+    <PreferenceScreen android:title="@string/default_values"
+        android:key="defaultValues">
+        <PreferenceCategory android:title="@string/temperature">
+            <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+                android:summary="@string/set_point_min_description"
+                android:title="@string/set_point_min"
+                android:key="tempMinValue" />
+            <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+                android:summary="@string/set_point_max_description"
+                android:title="@string/set_point_max"
+                android:key="tempMaxValue"/>
+        </PreferenceCategory>
+    </PreferenceScreen>
+
     <PreferenceCategory android:title="@string/category_wear">
         <SwitchPreference
             android:defaultValue="false"

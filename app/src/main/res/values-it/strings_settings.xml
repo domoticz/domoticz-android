@@ -135,10 +135,14 @@
   <string name="suppress_notifications_title">Cancella le Notifiche</string>
   <string name="alarm_notifications_select">Selezionare notifiche di allarme</string>
   <string name="alarm_notifications">Allarme sonoro per notifiche specifiche</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Notifiche di Allarme</string>
   <string name="alarm">Allarme</string>
   <string name="alarmtimer_title">Tempo di Allarme</string>
   <string name="alarmtimer">Durata dell\'allarme in secondi</string>
+  <string name="default_values">Default values</string>
+  <string name="default_values_min_error">Max value should be higher than Min value</string>
+  <string name="default_values_max_error">Max value should be higher than Min value</string>
   <!--        Information category       -->
   <string name="info_version">Versione</string>
   <string name="info_domoticz_version">Versione Domoticz</string>

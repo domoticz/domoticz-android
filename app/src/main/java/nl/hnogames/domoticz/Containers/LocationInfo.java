@@ -26,6 +26,8 @@ import android.location.Address;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
+import nl.hnogames.domoticz.Utils.UsefulBits;
+
 public class LocationInfo {
     private String name;
     private LatLng latLng;
@@ -46,7 +48,10 @@ public class LocationInfo {
     }
 
     public String getName() {
-        return name;
+        if (UsefulBits.isEmpty(name))
+            return "";
+        else
+            return name;
     }
 
     public void setName(String name) {
@@ -113,15 +118,16 @@ public class LocationInfo {
     public Geofence toGeofence() {
         if (radius <= 0)
             radius = 400;//default
-
         try {
             // Build a new Geofence object.
             return new Geofence.Builder()
                     .setRequestId(String.valueOf(id))
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            //Geofence.GEOFENCE_TRANSITION_DWELL |
                             Geofence.GEOFENCE_TRANSITION_EXIT)
                     .setCircularRegion(latLng.latitude, latLng.longitude, radius)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setLoiteringDelay(30000)
                     .build();
         } catch (Exception ex) {
             // Wrong LocationInfo data detected

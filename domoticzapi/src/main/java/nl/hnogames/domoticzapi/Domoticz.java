@@ -305,6 +305,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.X10SIREN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SECURITY);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SELECTOR);
@@ -829,6 +830,7 @@ public class Domoticz {
         DevicesParser parser = new DevicesParser(receiver, idx, scene_or_group);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES);
 
+        Log.i("DEVICE", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -838,6 +840,7 @@ public class Domoticz {
     public void getLogs(LogsReceiver receiver) {
         LogsParser parser = new LogsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG);
+        Log.i("Logs", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -847,6 +850,7 @@ public class Domoticz {
     public void getUserVariables(UserVariablesReceiver receiver) {
         UserVariablesParser parser = new UserVariablesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERVARIABLES);
+        Log.i("USERVARIABLES", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -856,6 +860,7 @@ public class Domoticz {
     public void getUsers(UsersReceiver receiver) {
         UsersParser parser = new UsersParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERS);
+        Log.i("USERS", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -864,6 +869,7 @@ public class Domoticz {
 
     public void LogOff() {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF);
+        Log.i("LOGOFF", "url: " + url);
         RequestUtil.makeJsonGetRequest(new LogOffParser(),
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -873,6 +879,8 @@ public class Domoticz {
     public void getEvents(EventReceiver receiver) {
         EventsParser parser = new EventsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.EVENTS);
+
+        Log.i("EVENTS", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),

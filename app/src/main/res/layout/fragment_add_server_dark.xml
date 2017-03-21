@@ -39,7 +39,7 @@
             android:id="@+id/server_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions"
+            android:inputType="text|textEmailAddress"
             app:flw_inputWidgetTextColor="@color/white"
             app:flw_inputWidgetTextSize="@dimen/text_size_large"
             app:flw_labelText="@string/servername"

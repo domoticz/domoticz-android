@@ -102,13 +102,21 @@
 
         <service android:name=".Service.RingtonePlayingService" />
 
-        <service android:name=".Service.GeofenceTransitionsIntentService" />
-
         <service
             android:name=".Service.GeolocationService"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name_domoticz" >
         </service>
+
+        <receiver
+            android:name="nl.hnogames.domoticz.Service.LocationProviderChangedReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <action android:name="android.location.MODE_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <service android:name=".Service.WearMessageListenerService" >
             <intent-filter>
@@ -206,7 +214,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Widgets.SecurityWidgetProvider">
+        <receiver android:name=".Widgets.SecurityWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -233,6 +241,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="nl.hnogames.domoticz.Service.GeofenceReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE" />
             </intent-filter>
         </receiver>
 

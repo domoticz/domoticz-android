@@ -22,12 +22,12 @@
   -->
 <resources>
   <string name="title_security_panel">Painel de Segurança</string>
-  <string name="security_pin">Pin Code</string>
+  <string name="security_pin">Código PIN</string>
   <string name="security_disarm">Desarmar</string>
-  <string name="security_arm_home">Arm Home</string>
+  <string name="security_arm_home">Armar Casa</string>
   <string name="security_arm_away">Arm Away</string>
   <string name="security_wrong_code">Codigo errado!</string>
-  <string name="security_generic_error">Could not change status of Security Panel</string>
-  <string name="security_wrong_password_fingerprint">Wrong password entered, your domoticz account password is the failover for your fingerprint...!</string>
-  <string name="show_password">Mostrar palavra-passe</string>
+  <string name="security_generic_error">Não foi possível alterar o estado de segurança</string>
+  <string name="security_wrong_password_fingerprint">Palavra passe errada, a Palavra passe da sua conta domoticz é a alternativa á sua impressão digital no caso de algum problema...!</string>
+  <string name="show_password">Mostrar password</string>
 </resources>

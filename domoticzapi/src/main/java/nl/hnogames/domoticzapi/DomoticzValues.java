@@ -187,6 +187,7 @@ public class DomoticzValues {
                 String MEDIAPLAYER = "Media Player";
                 String DUSKSENSOR = "Dusk Sensor";
                 String DOORLOCK = "Door Lock";
+                String DOORCONTACT = "Door Contact";
                 String BLINDPERCENTAGE = "Blinds Percentage";
                 String BLINDVENETIAN = "Venetian Blinds EU";
                 String BLINDVENETIANUS = "Venetian Blinds US";
@@ -252,7 +253,6 @@ public class DomoticzValues {
                 int UPDATE = 16;
                 int USERVARIABLES = 17;
                 int EVENTS = 18;
-                int EVENTXML = 19;
                 int GRAPH = 20;
                 int SETTINGS = 22;
                 int SETSECURITY = 23;
@@ -283,6 +283,7 @@ public class DomoticzValues {
                 int EVENT = 105;
                 int RGBCOLOR = 107;
                 int MODAL_SWITCHES = 108;
+                int EVENTS_UPDATE_STATUS = 109;
             }
         }
 
@@ -468,9 +469,7 @@ public class DomoticzValues {
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
             String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
             String EVENTS = "/json.htm?type=events&param=list";
-            String EVENTXML = "/json.htm?type=events&param=load&event=%id%";
-            String EVENTACTION = "/json.htm?type=events&param=create&name=LichtenAan&eventid=";
-            String EVENTSTATUS = "&eventstatus=";
+            String EVENTS_UPDATE_STATUS = "/json.htm?type=events&param=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
             String SETTINGS = "/json.htm?type=settings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
@@ -483,6 +482,11 @@ public class DomoticzValues {
             String USERS = "/json.htm?type=users";
             String AUTH = "/json.htm?type=command&param=getauth";
             String LOGOFF = "/json.htm?type=command&param=dologout";
+        }
+
+        interface Event {
+            String ON = "&eventstatus=1";
+            String OFF = "&eventstatus=0";
         }
     }
 

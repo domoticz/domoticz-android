@@ -38,7 +38,7 @@
   <string name="wizard_wear">Android Wear</string>
   <string name="wizard_wear_description">Voit määrittää ohjattavat kytkimet Android wear-laitteestasi!</string>
   <string name="wizard_auto">Android Auto</string>
-  <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+  <string name="wizard_auto_description">Vastaanota Domoticz-ilmoitukset suoraan Android Auto-laitteeseesi!</string>
   <string name="wizard_graph">Kuvaajat</string>
   <string name="wizard_graph_description">Voit katsoa kuvaajia mittareista, säästä tai lämpötilasta!</string>
   <string name="wizard_filter">Suodattimet</string>

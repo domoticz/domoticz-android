@@ -135,10 +135,14 @@
   <string name="suppress_notifications_title">Benachrichtigungen unterdrücken</string>
   <string name="alarm_notifications_select">Wählen Sie Benachrichtigungen für Alarm</string>
   <string name="alarm_notifications">Alarmton für bestimmte Benachrichtigungen erklingen lassen</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Alarmbenachrichtigungen</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtimer</string>
   <string name="alarmtimer">Sekunden bis zum Alarm</string>
+  <string name="default_values">Default values</string>
+  <string name="default_values_min_error">Max value should be higher than Min value</string>
+  <string name="default_values_max_error">Max value should be higher than Min value</string>
   <!--        Information category       -->
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Domoticz version</string>

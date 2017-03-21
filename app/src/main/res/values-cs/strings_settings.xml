@@ -31,7 +31,7 @@
   <string name="category_server">Server</string>
   <string name="category_geofencing">Geofencing</string>
   <string name="category_info">Informace</string>
-  <string name="category_advanced">Advanced</string>
+  <string name="category_advanced">Pokročilá nastavení</string>
   <string name="category_language">Jazyk</string>
   <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Oznámení</string>
@@ -39,11 +39,11 @@
   <string name="category_export">Export/Import nastavení</string>
   <string name="category_theme">Téma</string>
   <string name="category_nfc">NFC připojení</string>
-  <string name="category_startup_security">Security</string>
-  <string name="category_account">Accounts</string>
+  <string name="category_startup_security">Zabezpečení</string>
+  <string name="category_account">Účty</string>
   <string name="category_QRCode">QR kód</string>
   <string name="category_Speech">Řeč</string>
-  <string name="category_Reset">Reset</string>
+  <string name="category_Reset">Obnovit</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Úvodní obrazovka</string>
   <string name="enable_items">Povolit/zakázat položky</string>
@@ -95,7 +95,7 @@
   <string name="enable_nfc">Povolit NFC</string>
   <string name="enable_speech">Povolit rozpoznávání řeči</string>
   <string name="export_settings">Nastavení exportu</string>
-  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+  <string name="reset_settings">Obnovit všechna nastavení aplikace (pozor!!)</string>
   <string name="import_settings">Nastavení importu</string>
   <string name="multi_server_settings">Povolit podporu více serverů</string>
   <string name="nfc_enable_settings">Povolit NFC spojení</string>
@@ -105,7 +105,7 @@
   <string name="enable_qrcode">Povolit QR kódy</string>
   <string name="qrcode_enable_settings">Povolit funkce QR kódů</string>
   <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
+  <string name="enable_security">Povolit ochranu otisk při startu</string>
   <string name="disable_security">Disable fingerprint protection on startup</string>
   <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
   <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
@@ -116,8 +116,8 @@
   <string name="notification_settings_push">Poslat vaše registrační ID do Domoticz</string>
   <string name="notification_settings_pushed">Vaše registrační id je nyní uloženo v Domoticz</string>
   <string name="notification_settings_push_failed">Nelze uložit registrační id do Domoticz, opakujte akci později.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
+  <string name="notification_show_title">Nedávná upozornění</string>
+  <string name="notification_show_nothing">Nebyla nalezena žádná oznámení</string>
   <string name="notification_show">Show last couple of Notifications</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Přepsat oznámení</string>
@@ -135,10 +135,14 @@
   <string name="suppress_notifications_title">Potlačit upozornění</string>
   <string name="alarm_notifications_select">Select Notifications to Alarm</string>
   <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+  <string name="clear_notifications">Clean notification logs</string>
   <string name="alarm_notifications_title">Alarm Notifications</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarm Timer</string>
   <string name="alarmtimer">Number of seconds to time the alarm</string>
+  <string name="default_values">Default values</string>
+  <string name="default_values_min_error">Max value should be higher than Min value</string>
+  <string name="default_values_max_error">Max value should be higher than Min value</string>
   <!--        Information category       -->
   <string name="info_version">Verze</string>
   <string name="info_domoticz_version">verze Domoticz</string>
