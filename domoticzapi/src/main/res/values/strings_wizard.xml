@@ -45,6 +45,9 @@
     <string name="wizard_wear">Android Wear</string>
     <string name="wizard_wear_description">You can specify which switches you would like to control from your Android wear device!</string>
 
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+
     <string name="wizard_graph">Graphs</string>
     <string name="wizard_graph_description">You can see the history graph of an Utility, Weather or Temperature!</string>
 

@@ -363,15 +363,15 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
     private void writePreferenceValues() {
         mServerUtil.getActiveServer().setRemoteServerUsername(
-                remote_username_input.getInputWidgetText().toString());
+                remote_username_input.getInputWidgetText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerPassword(
-                remote_password_input.getInputWidgetText().toString());
+                remote_password_input.getInputWidgetText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerUrl(
-                remote_server_input.getInputWidgetText().toString());
+                remote_server_input.getInputWidgetText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerPort(
-                remote_port_input.getInputWidgetText().toString());
+                remote_port_input.getInputWidgetText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerDirectory(
-                remote_directory_input.getInputWidgetText().toString());
+                remote_directory_input.getInputWidgetText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         if (callingInstance == WELCOME_WIZARD)
@@ -383,15 +383,15 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
         } else {
             mServerUtil.getActiveServer().setLocalServerUsername(
-                    local_username_input.getInputWidgetText().toString());
+                    local_username_input.getInputWidgetText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerPassword(
-                    local_password_input.getInputWidgetText().toString());
+                    local_password_input.getInputWidgetText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerUrl(
-                    local_server_input.getInputWidgetText().toString());
+                    local_server_input.getInputWidgetText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerPort(
-                    local_port_input.getInputWidgetText().toString());
+                    local_port_input.getInputWidgetText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerDirectory(
-                    local_directory_input.getInputWidgetText().toString());
+                    local_directory_input.getInputWidgetText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);

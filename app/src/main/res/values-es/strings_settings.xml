@@ -140,9 +140,9 @@
   <string name="alarm">Alarma</string>
   <string name="alarmtimer_title">Temporizador de alarma</string>
   <string name="alarmtimer">Número de segundos que dura la alarma</string>
-  <string name="default_values">Default values</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
-  <string name="default_values_max_error">Max value should be higher than Min value</string>
+  <string name="default_values">Valores predeterminados</string>
+  <string name="default_values_min_error">El valor Máx debe ser mayor que el valor Mín</string>
+  <string name="default_values_max_error">El valor Máx debe ser mayor que el valor Mín</string>
   <!--        Information category       -->
   <string name="info_version">Versión</string>
   <string name="info_domoticz_version">Versión de Domoticz</string>

@@ -21,7 +21,6 @@
   -->
 
 <resources>
-
     <string-array name="domoticz_language_entryValues" translatable="false">
         <item>EN</item>
         <item>CA</item>
@@ -40,6 +39,7 @@
         <item>RU</item>
         <item>SK</item>
         <item>SV</item>
+        <item>zh_CN</item>
     </string-array>
 
     <string-array name="domoticz_language_entries">
@@ -60,6 +60,7 @@
         <item>Russian</item>
         <item>Slovak</item>
         <item>Swedish</item>
+        <item>Chinese Simplified</item>
     </string-array>
 
 </resources>

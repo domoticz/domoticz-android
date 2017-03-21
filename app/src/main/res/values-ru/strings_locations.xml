@@ -58,8 +58,8 @@
   <string name="noSwitchSelected_explanation">Чтобы GeoFencing функционировал необходимо подключение к GeoFence</string>
   <string name="noSwitchSelected_connectOneNow">Подключить?</string>
   <string name="geofencing_disabled_no_enabled_fences">Geofencing отключено</string>
-  <string name="geofence_not_available">Geofence service is not available now</string>
-  <string name="geofence_too_many_geofences">App registered too many geofences</string>
-  <string name="geofence_too_many_pending_intents">Too many PendingIntents provided</string>
-  <string name="unknown_geofence_error">Unknown error</string>
+  <string name="geofence_not_available">Услуга геозонирования сейчас не доступна</string>
+  <string name="geofence_too_many_geofences">Приложение зарегистрировало слишком много геозон</string>
+  <string name="geofence_too_many_pending_intents">Получено слишком много PendingIntents</string>
+  <string name="unknown_geofence_error">Неизвестная ошибка</string>
 </resources>
