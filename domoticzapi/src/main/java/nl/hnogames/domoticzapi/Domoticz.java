@@ -26,8 +26,6 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -235,7 +233,7 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.ON_OFF:
             case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
             case DomoticzValues.Device.Type.Value.X10SIREN:
-            case DomoticzValues.Device.Type.Value.DOORLOCK:
+            case DomoticzValues.Device.Type.Value.DOORCONTACT:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
             case DomoticzValues.Device.Type.Value.BLINDINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
@@ -279,6 +277,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.SMOKE_DETECTOR);
         switchesSupported.add(DomoticzValues.Device.Type.Value.X10SIREN);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DUSKSENSOR);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCK);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SECURITY);

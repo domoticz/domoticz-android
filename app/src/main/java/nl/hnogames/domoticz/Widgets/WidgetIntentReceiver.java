@@ -112,7 +112,7 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                 case DomoticzValues.Device.Type.Value.X10SIREN:
                 case DomoticzValues.Device.Type.Value.DIMMER:
-                case DomoticzValues.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.DOORCONTACT:
                 case DomoticzValues.Device.Type.Value.SELECTOR:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
