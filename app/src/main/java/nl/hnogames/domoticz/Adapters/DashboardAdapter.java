@@ -220,27 +220,33 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            switch (mDeviceInfo.getType()) {
-                case DomoticzValues.Scene.Type.GROUP:
-                    setButtons(holder, Buttons.BUTTONS);
-                    setOnOffButtonRowData(mDeviceInfo, holder);
-                    break;
-                case DomoticzValues.Scene.Type.SCENE:
-                    setButtons(holder, Buttons.BUTTON_ON);
-                    setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
-                    break;
-                case DomoticzValues.Device.Utility.Type.THERMOSTAT:
-                    setButtons(holder, Buttons.BUTTON_ON);
-                    setThermostatRowData(mDeviceInfo, holder);
-                    break;
-                case DomoticzValues.Device.Utility.Type.HEATING:
-                    setButtons(holder, Buttons.SET);
-                    setTemperatureRowData(mDeviceInfo, holder);
-                    break;
-                default:
-                    setButtons(holder, Buttons.NOTHING);
-                    setDefaultRowData(mDeviceInfo, holder);
-                    break;
+            if(mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+                setButtons(holder, Buttons.BUTTON_ON);
+                setThermostatRowData(mDeviceInfo, holder);
+            }
+            else {
+                switch (mDeviceInfo.getType()) {
+                    case DomoticzValues.Scene.Type.GROUP:
+                        setButtons(holder, Buttons.BUTTONS);
+                        setOnOffButtonRowData(mDeviceInfo, holder);
+                        break;
+                    case DomoticzValues.Scene.Type.SCENE:
+                        setButtons(holder, Buttons.BUTTON_ON);
+                        setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
+                        break;
+                    case DomoticzValues.Device.Utility.Type.THERMOSTAT:
+                        setButtons(holder, Buttons.BUTTON_ON);
+                        setThermostatRowData(mDeviceInfo, holder);
+                        break;
+                    case DomoticzValues.Device.Utility.Type.HEATING:
+                        setButtons(holder, Buttons.SET);
+                        setTemperatureRowData(mDeviceInfo, holder);
+                        break;
+                    default:
+                        setButtons(holder, Buttons.NOTHING);
+                        setDefaultRowData(mDeviceInfo, holder);
+                        break;
+                }
             }
         } else if ((mDeviceInfo.getSwitchType() == null)) {
             setButtons(holder, Buttons.NOTHING);
@@ -1762,7 +1768,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 break;
             case Buttons.SET:
-
                 if (holder.buttonSet != null)
                     holder.buttonSet.setVisibility(View.VISIBLE);
                 break;

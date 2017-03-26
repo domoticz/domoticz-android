@@ -98,7 +98,6 @@ public class DomoticzValues {
 
             interface SubType {
                 String TEXT = "Text";
-
                 String PERCENTAGE = "Percentage";
                 String ENERGY = "Energy";
                 String KWH = "kWh";
@@ -107,6 +106,7 @@ public class DomoticzValues {
                 String VOLTCRAFT = "Voltcraft";
                 String SETPOINT = "SetPoint";
                 String YOULESS = "YouLess";
+                String SMARTWARES = "Smartwares";
             }
         }
 
