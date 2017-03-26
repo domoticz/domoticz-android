@@ -28,7 +28,8 @@ import nl.hnogames.domoticz.R;
 
 public class Domoticz {
 
-    public int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
+    @SuppressWarnings("SpellCheckingInspection")
+    public static int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
 
         if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
@@ -44,6 +45,8 @@ public class Domoticz {
                     return R.drawable.cooling;
                 case "ChristmasTree":
                     return R.drawable.christmastree;
+                case "Door":
+                    return R.drawable.door;
                 case "Fan":
                     return R.drawable.wind;
                 case "Fireplace":
@@ -76,7 +79,8 @@ public class Domoticz {
         return standardImage;
     }
 
-    private int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
+    @SuppressWarnings("SpellCheckingInspection")
+    public static int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
             case "scene":
@@ -90,7 +94,7 @@ public class Domoticz {
             case "door":
                 return R.drawable.door;
             case "lightbulb":
-                if (switchType != null && switchType.length() > 0 && switchType.equals("Dusk Sensor"))
+                if (switchType != null && switchType.length() > 0 && switchType.equals(Device.Type.Value.DUSKSENSOR))
                     if (State)
                         return R.drawable.uvdark;
                     else
@@ -116,7 +120,7 @@ public class Domoticz {
             case "blinds":
                 return R.drawable.down;
             case "dimmer":
-                if (switchType != null && switchType.length() > 0 && switchType.startsWith("RGB"))
+                if (switchType != null && switchType.length() > 0 && switchType.startsWith(Device.SubType.Name.RGB))
                     return R.drawable.rgb;
                 else
                     return R.drawable.dimmer;
@@ -125,6 +129,7 @@ public class Domoticz {
             case "security":
                 return R.drawable.security;
             case "temperature":
+            case "Freezing":
                 if (State)
                     return R.drawable.heating;
                 else
@@ -164,24 +169,25 @@ public class Domoticz {
             case "utility":
                 return R.drawable.scale;
         }
-
         switch (Type.toLowerCase()) {
+            case "heating":
+                return R.drawable.heating;
             case "thermostat":
                 return R.drawable.flame;
         }
-
         return test;
     }
 
     public List<Integer> getWearSupportedSwitchesValues() {
         List<Integer> switchesSupported = new ArrayList<>();
         switchesSupported.add(Device.Type.Value.ON_OFF);
-        switchesSupported.add(Device.Type.Value.PUSH_ON_BUTTON);
         switchesSupported.add(Device.Type.Value.DIMMER);
+        switchesSupported.add(Device.Type.Value.PUSH_ON_BUTTON);
         switchesSupported.add(Device.Type.Value.PUSH_OFF_BUTTON);
         switchesSupported.add(Device.Type.Value.MEDIAPLAYER);
         switchesSupported.add(Device.Type.Value.SMOKE_DETECTOR);
         switchesSupported.add(Device.Type.Value.X10SIREN);
+        switchesSupported.add(Device.Type.Value.DOORCONTACT);
         switchesSupported.add(Device.Type.Value.DOORLOCK);
         switchesSupported.add(Device.Type.Value.DOORBELL);
         switchesSupported.add(Device.Type.Value.BLINDINVERTED);
@@ -189,6 +195,10 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(Device.Type.Value.BLINDS);
         switchesSupported.add(Device.Type.Value.BLINDVENETIAN);
+        switchesSupported.add(Device.Type.Value.BLINDVENETIANUS);
+        switchesSupported.add(Device.Type.Value.MOTION);
+        switchesSupported.add(Device.Type.Value.CONTACT);
+        switchesSupported.add(Device.Type.Value.DUSKSENSOR);
         return switchesSupported;
     }
 
@@ -202,12 +212,17 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.SMOKE_DETECTOR);
         switchesSupported.add(Device.Type.Name.X10SIREN);
         switchesSupported.add(Device.Type.Name.DOORLOCK);
+        switchesSupported.add(Device.Type.Name.DOORCONTACT);
         switchesSupported.add(Device.Type.Name.DOORBELL);
         switchesSupported.add(Device.Type.Name.BLINDINVERTED);
         switchesSupported.add(Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(Device.Type.Name.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(Device.Type.Name.BLINDS);
         switchesSupported.add(Device.Type.Name.BLINDVENETIAN);
+        switchesSupported.add(Device.Type.Name.BLINDVENETIANUS);
+        switchesSupported.add(Device.Type.Name.MOTION);
+        switchesSupported.add(Device.Type.Name.CONTACT);
+        switchesSupported.add(Device.Type.Name.DUSKSENSOR);
         return switchesSupported;
     }
 
@@ -282,12 +297,14 @@ public class Domoticz {
                 int X10SIREN = 4;
                 int MEDIAPLAYER = 17;
                 int DUSKSENSOR = 12;
-                int DOORLOCK = 11;
+                int DOORCONTACT = 11;
                 int BLINDPERCENTAGE = 13;
                 int BLINDVENETIAN = 15;
+                int BLINDVENETIANUS = 14;
                 int BLINDINVERTED = 6;
                 int BLINDPERCENTAGEINVERTED = 16;
                 int SELECTOR = 18;
+                int DOORLOCK = 19;
             }
 
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -306,8 +323,10 @@ public class Domoticz {
                 String MEDIAPLAYER = "Media Player";
                 String DUSKSENSOR = "Dusk Sensor";
                 String DOORLOCK = "Door Lock";
+                String DOORCONTACT = "Door Contact";
                 String BLINDPERCENTAGE = "Blinds Percentage";
                 String BLINDVENETIAN = "Venetian Blinds EU";
+                String BLINDVENETIANUS = "Venetian Blinds US";
                 String BLINDINVERTED = "Blinds Inverted";
                 String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
