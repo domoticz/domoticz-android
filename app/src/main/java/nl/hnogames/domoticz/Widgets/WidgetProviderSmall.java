@@ -268,7 +268,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                     switch (s.getSwitchTypeVal()) {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                        case DomoticzValues.Device.Type.Value.DOORLOCK:
+                        case DomoticzValues.Device.Type.Value.DOORCONTACT:
                             if (mSharedPrefs.showSwitchesAsButtons())
                                 withButton = WITHBUTTON;
                             else

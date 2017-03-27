@@ -129,6 +129,7 @@ public class DomoticzIcons {
             case "security":
                 return R.drawable.security;
             case "temperature":
+            case "override_mini":
                 if (State)
                     return R.drawable.heating;
                 else

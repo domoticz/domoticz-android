@@ -113,6 +113,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                             case DomoticzValues.Device.Type.Value.ON_OFF:
                             case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                             case DomoticzValues.Device.Type.Value.X10SIREN:
+                            case DomoticzValues.Device.Type.Value.DOORCONTACT:
                             case DomoticzValues.Device.Type.Value.DOORLOCK:
                             case DomoticzValues.Device.Type.Value.DIMMER:
                             case DomoticzValues.Device.Type.Value.BLINDS:

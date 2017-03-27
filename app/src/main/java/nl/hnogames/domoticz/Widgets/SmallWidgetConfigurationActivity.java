@@ -330,7 +330,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                 switch (s.getSwitchTypeVal()) {
                     case DomoticzValues.Device.Type.Value.ON_OFF:
                     case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                    case DomoticzValues.Device.Type.Value.DOORLOCK:
+                    case DomoticzValues.Device.Type.Value.DOORCONTACT:
                     case DomoticzValues.Device.Type.Value.X10SIREN:
                     case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                     case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:

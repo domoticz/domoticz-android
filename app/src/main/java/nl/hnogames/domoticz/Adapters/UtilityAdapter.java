@@ -120,7 +120,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final UtilitiesInfo mUtilitiesInfo = filteredData.get(position);
             final double setPoint = mUtilitiesInfo.getSetPoint();
 
-            if (DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) {
+            if (DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType()) ||
+                    DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
                 setButtons(holder, Buttons.THERMOSTAT);
                 CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
             } else {

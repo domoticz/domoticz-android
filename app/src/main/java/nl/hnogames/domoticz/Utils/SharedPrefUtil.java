@@ -186,7 +186,7 @@ public class SharedPrefUtil {
     }
 
     public int getTemperatureSetMin(String tempType) {
-        if (tempType.equals("C")) {
+        if (UsefulBits.isEmpty(tempType) || tempType.equals("C")) {
             try {
                 int value = Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "10"));
                 if (value == -1) {
@@ -214,7 +214,7 @@ public class SharedPrefUtil {
     }
 
     public int getTemperatureSetMax(String tempType) {
-        if (tempType.equals("C")) {
+        if (UsefulBits.isEmpty(tempType) || tempType.equals("C")) {
             try {
                 int value = Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "30"));
                 if (value == -1) {

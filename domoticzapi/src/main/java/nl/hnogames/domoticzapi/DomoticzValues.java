@@ -98,7 +98,6 @@ public class DomoticzValues {
 
             interface SubType {
                 String TEXT = "Text";
-
                 String PERCENTAGE = "Percentage";
                 String ENERGY = "Energy";
                 String KWH = "kWh";
@@ -107,6 +106,7 @@ public class DomoticzValues {
                 String VOLTCRAFT = "Voltcraft";
                 String SETPOINT = "SetPoint";
                 String YOULESS = "YouLess";
+                String SMARTWARES = "Smartwares";
             }
         }
 
@@ -162,13 +162,14 @@ public class DomoticzValues {
                 int X10SIREN = 4;
                 int MEDIAPLAYER = 17;
                 int DUSKSENSOR = 12;
-                int DOORLOCK = 11;
+                int DOORCONTACT = 11;
                 int BLINDPERCENTAGE = 13;
                 int BLINDVENETIAN = 15;
                 int BLINDVENETIANUS = 14;
                 int BLINDINVERTED = 6;
                 int BLINDPERCENTAGEINVERTED = 16;
                 int SELECTOR = 18;
+                int DOORLOCK = 19;
             }
 
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
