@@ -1082,80 +1082,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = (mDeviceInfo.getLevel() - 1) / 10;
-        final String[] levelNames = mDeviceInfo.getLevelNames();
-        String statusText = context.getString(R.string.unknown);
-        if (levelNames != null && levelNames.length > loadLevel)
-            statusText = levelNames[loadLevel];
+        int loadLevel = !mDeviceInfo.isLevelOffHidden() ? mDeviceInfo.getLevel() / 10 : (mDeviceInfo.getLevel()-1) / 10;
+        final ArrayList<String> levelNames = mDeviceInfo.getLevelNames();
+        if(mDeviceInfo.isLevelOffHidden())
+            levelNames.remove(0);
 
         holder.spSelector.setTag(mDeviceInfo.getIdx());
-
-        if (levelNames != null && levelNames.length > loadLevel) {
+        if (levelNames != null && levelNames.size() > loadLevel) {
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
-                    android.R.layout.simple_spinner_item, new ArrayList<String>(Arrays.asList(levelNames)));
+                    android.R.layout.simple_spinner_item, levelNames);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             holder.spSelector.setAdapter(dataAdapter);
             holder.spSelector.setSelection(loadLevel);
         }
-
-        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-        holder.switch_dimmer_level.setText(statusText);
-        if (holder.dimmerOnOffSwitch != null) {
-            holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
-            holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
-            holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
-            holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    handleOnOffSwitchClick(compoundButton.getId(), checked);
-                    mDeviceInfo.setStatusBoolean(checked);
-                    if (checked) {
-                        holder.spSelector.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.spSelector.setVisibility(View.GONE);
-                    }
-
-                    if (!checked)
-                        holder.iconRow.setAlpha(0.5f);
-                    else
-                        holder.iconRow.setAlpha(1f);
-                }
-            });
-        }
-
-        if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDeviceInfo.getIdx());
-            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.iconRow.setAlpha(1f);
-                    holder.spSelector.setVisibility(View.VISIBLE);
-                    holder.spSelector.setSelection(0);
-                    listener.onSelectorChange(mDeviceInfo.getIdx(), 0);
-                }
-            });
-        }
-
-        if (holder.buttonOff != null) {
-            holder.buttonOff.setId(mDeviceInfo.getIdx());
-            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleOnOffSwitchClick(v.getId(), false);
-                    holder.spSelector.setVisibility(View.GONE);
-                    holder.iconRow.setAlpha(0.5f);
-                }
-            });
-        }
-
-        if (mDeviceInfo.isLevelOffHidden()) {
-            if (holder.buttonOff != null)
-                holder.buttonOff.setVisibility(View.GONE);
-            if (holder.buttonOn != null)
-                holder.buttonOn.setVisibility(View.GONE);
-            holder.spSelector.setVisibility(View.VISIBLE);
-            holder.iconRow.setAlpha(1f);
-        }
+        holder.spSelector.setVisibility(View.VISIBLE);
 
         holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1165,7 +1105,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.spSelector.setTag(mDeviceInfo.getIdx() * 3);
                 } else {
                     String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
-                    handleSelectorChange(mDeviceInfo.getIdx(), selValue, levelNames);
+                    handleSelectorChange(mDeviceInfo, selValue, levelNames);
                 }
             }
 
@@ -1173,12 +1113,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
-        if (!mDeviceInfo.getStatusBoolean()) {
-            holder.spSelector.setVisibility(View.GONE);
-        } else {
-            holder.spSelector.setVisibility(View.VISIBLE);
-        }
 
         Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -1633,24 +1567,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
     /**
      * Handles the selector dimmer click
-     *
-     * @param idx        IDX of the device to change
-     * @param levelNames Names om the levels
      */
-    private void handleSelectorDimmerClick(int idx, String[] levelNames) {
-        listener.onSelectorDimmerClick(idx, levelNames);
-    }
-
-    /**
-     * Handles the selector dimmer click
-     *
-     * @param idx        IDX of the device to change
-     * @param levelNames Names om the levels
-     */
-    private void handleSelectorChange(int idx, String levelName, String[] levelNames) {
-        for (int i = 0; i < levelNames.length; i++) {
-            if (levelNames[i].equals(levelName)) {
-                listener.onSelectorChange(idx, i * 10);
+    private void handleSelectorChange(DevicesInfo device, String levelName, ArrayList<String> levelNames) {
+        for (int i = 0; i < levelNames.size(); i++) {
+            if (levelNames.get(i).equals(levelName)) {
+                listener.onSelectorChange(device.getIdx(), device.isLevelOffHidden() ? (i * 10) : (i * 10) - 10);
             }
         }
     }
@@ -1777,7 +1698,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonSetStatus.setVisibility(View.VISIBLE);
                 break;
             case Buttons.BUTTON_ON:
-
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 break;
@@ -1831,13 +1751,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
-                    holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
+                    holder.dimmerOnOffSwitch.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR_BUTTONS:
                 if (holder.buttonOn != null)
-                    holder.buttonOn.setVisibility(View.VISIBLE);
+                    holder.buttonOn.setVisibility(View.GONE);
                 if (holder.buttonOff != null)
-                    holder.buttonOff.setVisibility(View.VISIBLE);
+                    holder.buttonOff.setVisibility(View.GONE);
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
                 break;

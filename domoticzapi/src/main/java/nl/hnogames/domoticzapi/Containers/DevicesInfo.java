@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -302,13 +303,13 @@ public class DevicesInfo implements Comparable, Serializable {
         this.status = status;
     }
 
-    public String[] getLevelNames() {
+    public ArrayList<String> getLevelNames() {
         if (UsefulBits.isEmpty(LevelNames))
             return null;
         String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
-        String[] newNames = new String[names.length - 1];
-        for (int i = 1; i < names.length; i++) {
-            newNames[i - 1] = names[i];
+        ArrayList<String> newNames = new ArrayList<String>();
+        for (int i = 0; i < names.length; i++) {
+            newNames.add(names[i]);
         }
         return newNames;
     }
