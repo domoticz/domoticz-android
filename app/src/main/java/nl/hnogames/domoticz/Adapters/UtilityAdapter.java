@@ -120,7 +120,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final UtilitiesInfo mUtilitiesInfo = filteredData.get(position);
             final double setPoint = mUtilitiesInfo.getSetPoint();
 
-            if (DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) {
+            if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
+                    (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                 setButtons(holder, Buttons.THERMOSTAT);
                 CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
             } else {
@@ -132,7 +133,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     setButtons(holder, Buttons.DEFAULT);
                 }
             }
-
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -140,7 +140,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     return true;
                 }
             });
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

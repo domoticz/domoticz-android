@@ -186,7 +186,7 @@ public class SharedPrefUtil {
     }
 
     public int getTemperatureSetMin(String tempType) {
-        if (tempType.equals("C")) {
+        if (UsefulBits.isEmpty(tempType) || tempType.equals("C")) {
             try {
                 int value = Integer.valueOf(prefs.getString(PREF_TEMP_MIN, "10"));
                 if (value == -1) {
@@ -214,7 +214,7 @@ public class SharedPrefUtil {
     }
 
     public int getTemperatureSetMax(String tempType) {
-        if (tempType.equals("C")) {
+        if (UsefulBits.isEmpty(tempType) || tempType.equals("C")) {
             try {
                 int value = Integer.valueOf(prefs.getString(PREF_TEMP_MAX, "30"));
                 if (value == -1) {
@@ -957,60 +957,61 @@ public class SharedPrefUtil {
     }
 
     public boolean saveSharedPreferencesToFile(File dst) {
-        boolean isServerUpdateAvailableValue = false;
+        try {
+            boolean isServerUpdateAvailableValue = false;
+            ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
 
-        ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
-
-        // Before saving to file set server update available preference to false
-        if (isServerUpdateAvailable()) {
-            isServerUpdateAvailableValue = true;
-            mServerUpdateInfo.setUpdateAvailable(false);
-        }
-
-        Map<String, ?> oAllPrefs = this.prefs.getAll();
-        HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
-        for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
-            //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-            if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
-                Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
-            else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
-                Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
-            else {
-                Log.i("PREFS", "Exported: " + entry.getKey() + ": " + entry.getValue().toString());
-                oSavePrefs.put(entry.getKey(), entry.getValue());
+            // Before saving to file set server update available preference to false
+            if (isServerUpdateAvailable()) {
+                isServerUpdateAvailableValue = true;
+                mServerUpdateInfo.setUpdateAvailable(false);
             }
-        }
 
-        boolean result = true;
-        if (dst.exists())
-            result = dst.delete();
-
-        if (result) {
-            ObjectOutputStream output = null;
-
-            //noinspection TryWithIdenticalCatches
-            try {
-                output = new ObjectOutputStream(new FileOutputStream(dst));
-                output.writeObject(oSavePrefs);
-                result = true;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (output != null) {
-                        output.flush();
-                        output.close();
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+            Map<String, ?> oAllPrefs = this.prefs.getAll();
+            HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
+            for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
+                //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                    Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+                else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
+                    Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+                else {
+                    Log.i("PREFS", "Exported: " + entry.getKey() + ": " + entry.getValue().toString());
+                    oSavePrefs.put(entry.getKey(), entry.getValue());
                 }
             }
-        }
-        // Write original settings to preferences
-        if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
-        return result;
+
+            boolean result = true;
+            if (dst.exists())
+                result = dst.delete();
+
+            if (result) {
+                ObjectOutputStream output = null;
+
+                //noinspection TryWithIdenticalCatches
+                try {
+                    output = new ObjectOutputStream(new FileOutputStream(dst));
+                    output.writeObject(oSavePrefs);
+                    result = true;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (output != null) {
+                            output.flush();
+                            output.close();
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+            // Write original settings to preferences
+            if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
+            return result;
+        }catch(Exception ex){return false;}
     }
 
     @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})

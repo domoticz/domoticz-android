@@ -347,7 +347,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 switch (s.getSwitchTypeVal()) {
                     case DomoticzValues.Device.Type.Value.ON_OFF:
                     case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                    case DomoticzValues.Device.Type.Value.DOORLOCK:
+                    case DomoticzValues.Device.Type.Value.DOORCONTACT:
                         if (mSharedPrefs.showSwitchesAsButtons())
                             withButton = BUTTON_ONOFF;
                         else
