@@ -48,7 +48,6 @@ import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -1078,9 +1077,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = !mDeviceInfo.isLevelOffHidden() ? mDeviceInfo.getLevel() / 10 : (mDeviceInfo.getLevel()-1) / 10;
+        int loadLevel = !mDeviceInfo.isLevelOffHidden() ? mDeviceInfo.getLevel() / 10 : (mDeviceInfo.getLevel() - 1) / 10;
         final ArrayList<String> levelNames = mDeviceInfo.getLevelNames();
-        if(mDeviceInfo.isLevelOffHidden())
+        if (mDeviceInfo.isLevelOffHidden())
             levelNames.remove(0);
 
         holder.spSelector.setTag(mDeviceInfo.getIdx());

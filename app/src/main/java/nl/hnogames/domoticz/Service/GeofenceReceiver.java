@@ -127,7 +127,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                 if (mDevicesInfo == null)
                     return;
 
-                if(mDevicesInfo.getStatusBoolean() != checked) {
+                if (mDevicesInfo.getStatusBoolean() != checked) {
                     int jsonAction;
                     int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                     int jsonValue = 0;
@@ -162,9 +162,8 @@ public class GeofenceReceiver extends BroadcastReceiver
                                 onErrorHandling(error);
                         }
                     });
-                }
-                else{
-                    Log.i("GEOFENCE", "Switch was already turned " + (checked ? "on": "off"));
+                } else {
+                    Log.i("GEOFENCE", "Switch was already turned " + (checked ? "on" : "off"));
                 }
             }
 

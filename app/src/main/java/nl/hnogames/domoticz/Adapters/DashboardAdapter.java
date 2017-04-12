@@ -46,7 +46,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -220,11 +219,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            if(mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
-            }
-            else {
+            } else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
                         setButtons(holder, Buttons.BUTTONS);
@@ -1082,9 +1080,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
         }
 
-        int loadLevel = !mDeviceInfo.isLevelOffHidden() ? mDeviceInfo.getLevel() / 10 : (mDeviceInfo.getLevel()-1) / 10;
+        int loadLevel = !mDeviceInfo.isLevelOffHidden() ? mDeviceInfo.getLevel() / 10 : (mDeviceInfo.getLevel() - 1) / 10;
         final ArrayList<String> levelNames = mDeviceInfo.getLevelNames();
-        if(mDeviceInfo.isLevelOffHidden())
+        if (mDeviceInfo.isLevelOffHidden())
             levelNames.remove(0);
 
         holder.spSelector.setTag(mDeviceInfo.getIdx());

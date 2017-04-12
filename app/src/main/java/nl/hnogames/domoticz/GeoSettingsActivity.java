@@ -48,7 +48,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.schibstedspain.leku.LocationPickerActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
