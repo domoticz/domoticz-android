@@ -140,7 +140,7 @@
   <string name="alarm">Hälytykset</string>
   <string name="alarmtimer_title">Hälytysajastin</string>
   <string name="alarmtimer">Hälytyksen kesto sekunteina</string>
-  <string name="default_values">Default values</string>
+  <string name="default_values">Oletusarvo</string>
   <string name="default_values_min_error">Max value should be higher than Min value</string>
   <string name="default_values_max_error">Max value should be higher than Min value</string>
   <!--        Information category       -->

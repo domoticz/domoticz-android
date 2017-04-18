@@ -64,7 +64,7 @@
   <string name="away">离开</string>
   <string name="day_off">休息日</string>
   <string name="custom">自定义</string>
-  <string name="heating_off">Heating off</string>
+  <string name="heating_off">关闭加热</string>
   <string name="selector_value">选择器值</string>
   <string name="debug_textview_title">调试信息</string>
   <string name="msg_copiedToClipboard">文本已复制到剪贴板</string>
@@ -72,7 +72,7 @@
   <string name="yes">是</string>
   <string name="no">否</string>
   <string name="are_you_sure">你确定吗？</string>
-  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
+  <string name="are_you_sure_clear_settings">是否确定？？这还会清除桌面小部件中的设置，因此你可能需要重新添他们</string>
   <string name="add">添加</string>
   <string name="cancel">取消</string>
   <string name="ok">确定</string>
@@ -81,7 +81,7 @@
   <string name="something_went_wrong">发生了一些错误</string>
   <string name="no_network_available">错误︰ 无网络连接</string>
   <string name="oops">哎呀 ！</string>
-  <string name="to">"to"</string>
+  <string name="to">"到"</string>
   <string name="retry">重试</string>
   <string name="undo">撤消</string>
   <string name="something_deleted">%1$s 已刪除</string>
