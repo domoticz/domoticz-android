@@ -133,26 +133,28 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:support-v13:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
-    compile 'com.android.support:cardview-v7:25.3.0'
-    compile 'com.android.support:design:25.3.0'
+    def supportVersion = '25.3.1'
+    def playServicesVersion = '10.2.1'
+
+    compile "com.android.support:support-v4:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:support-v13:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+
+    compile "com.google.firebase:firebase-core:$playServicesVersion"
+    compile "com.google.firebase:firebase-crash:$playServicesVersion"
+
+    compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
+    compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
+    compile "com.google.android.gms:play-services-maps:$playServicesVersion"
+    compile "com.google.android.gms:play-services-gcm:$playServicesVersion"
+    compile "com.google.android.gms:play-services-location:$playServicesVersion"
+    compile "com.google.android.gms:play-services-places:$playServicesVersion"
 
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.7'
-
-    compile 'com.google.firebase:firebase-core:10.2.0'
-    compile 'com.google.firebase:firebase-crash:10.2.0'
-
-    compile 'com.google.android.gms:play-services-analytics:10.2.0'
-    compile 'com.google.android.gms:play-services-wearable:10.2.0'
-    compile 'com.google.android.gms:play-services-maps:10.2.0'
-    compile 'com.google.android.gms:play-services-gcm:10.2.0'
-    compile 'com.google.android.gms:play-services-location:10.2.0'
-    compile 'com.google.android.gms:play-services-places:10.2.0'
-
     compile 'com.android.volley:volley:1.0.0'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
