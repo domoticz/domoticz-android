@@ -71,6 +71,7 @@ public class DevicesInfo implements Comparable, Serializable {
     private String Counter;
     private String LevelNames;
     private String Usage;
+    private String UsageDeliv;
     private String Image;
     private String Data;
     private String Timers;
@@ -138,6 +139,8 @@ public class DevicesInfo implements Comparable, Serializable {
 
         if (row.has("Usage"))
             Usage = row.getString("Usage");
+        if (row.has("UsageDeliv"))
+            UsageDeliv = row.getString("UsageDeliv");
 
         try {
             if (row.has("Status"))
@@ -281,6 +284,9 @@ public class DevicesInfo implements Comparable, Serializable {
 
     public String getUsage() {
         return Usage;
+    }
+    public String getUsageDeliv() {
+        return UsageDeliv;
     }
 
     public String getTimers() {

@@ -158,6 +158,26 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
             holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
+
+        String text = "";
+        if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0) {
+            try {
+                int usage = Integer.parseInt(mUtilitiesInfo.getUsage().replace("Watt", "").trim());
+                if (mUtilitiesInfo.getUsageDeliv() != null && mUtilitiesInfo.getUsageDeliv().length() > 0) {
+                    int usagedel = Integer.parseInt(mUtilitiesInfo.getUsageDeliv().replace("Watt", "").trim());
+                    text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
+                    holder.data.setText(text);
+                }
+                else {
+                    text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
+                    holder.data.setText(text);
+                }
+            }catch(Exception ex){
+                text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
+                holder.data.setText(text);
+            }
+        }
+
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
@@ -212,8 +232,24 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
         holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
 
-        if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
-            holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
+        String text = "";
+        if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0) {
+            try {
+                int usage = Integer.parseInt(mUtilitiesInfo.getUsage().replace("Watt", "").trim());
+                if (mUtilitiesInfo.getUsageDeliv() != null && mUtilitiesInfo.getUsageDeliv().length() > 0) {
+                    int usagedel = Integer.parseInt(mUtilitiesInfo.getUsageDeliv().replace("Watt", "").trim());
+                    text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
+                    holder.data.setText(text);
+                }
+                else {
+                    text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
+                    holder.data.setText(text);
+                }
+            }catch(Exception ex){
+                text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
+                holder.data.setText(text);
+            }
+        }
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&

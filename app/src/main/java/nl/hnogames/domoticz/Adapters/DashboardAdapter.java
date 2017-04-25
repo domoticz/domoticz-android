@@ -400,9 +400,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
 
             if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
-                text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
-                holder.switch_battery_level.setText(text);
+                try {
+                    int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
+                    if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
+                        int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
+                        text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
+                        holder.switch_battery_level.setText(text);
+                    }
+                    else {
+                        text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                        holder.switch_battery_level.setText(text);
+                    }
+                }catch(Exception ex){
+                    text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                    holder.switch_battery_level.setText(text);
+                }
             }
+
             if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
                 holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
             if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&

@@ -41,13 +41,12 @@ public class GraphPointInfo {
     private float tm = Float.NaN;
     boolean hasTemperatureRange = false;
 
-    private String eu;
-
     private String v;
     private String v2;
-
     private String r1;
     private String r2;
+    private String eg;//energie levering
+    private String eu;//energie usage
 
     private String vMin;
     private String vMax;
@@ -80,7 +79,6 @@ public class GraphPointInfo {
             se = (float) row.optDouble("se");
         if (row.has("d"))
             dateTime = row.getString("d");
-
         if (row.has("v"))
             v = row.getString("v");
         else if (row.has("v_avg")) {
@@ -89,13 +87,14 @@ public class GraphPointInfo {
             vMin = row.getString("v_min");
             vMax = row.getString("v_max");
         }
-
         if (row.has("v2"))
             v2 = row.getString("v2");
         if (row.has("r1"))
             r1 = row.getString("r1");
         if (row.has("r2"))
             r2 = row.getString("r2");
+        if (row.has("eg"))
+            eg = row.getString("eg");
         if (row.has("eu"))
             eu = row.getString("eu");
         if (row.has("c"))
@@ -153,6 +152,9 @@ public class GraphPointInfo {
 
     public String getPowerUsage() {
         return eu;
+    }
+    public String getPowerDelivery() {
+        return eg;
     }
 
     public String getValueMin() {

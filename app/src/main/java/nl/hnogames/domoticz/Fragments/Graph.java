@@ -287,6 +287,9 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             List<Entry> valuesvMin = new ArrayList<>();
             List<Entry> valuesvMax = new ArrayList<>();
 
+            List<Entry> valueeu = new ArrayList<>();
+            List<Entry> valueeg = new ArrayList<>();
+
             List<Entry> valuessp = new ArrayList<>();
             List<Entry> valuesdi = new ArrayList<>();
             List<Entry> valuesuv = new ArrayList<>();
@@ -317,6 +320,9 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addCO2Min = false;
             boolean addCO2Max = false;
             boolean addUsage = false;
+            boolean addPowerUsage = false;
+            boolean addPowerDelivery = false;
+
             Calendar mydate = Calendar.getInstance();
 
             int stepcounter = 0;
@@ -381,6 +387,16 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         if (g.getSecondValue() != null && g.getSecondValue().length() > 0) {
                             addSecondPercentage = true;
                             valuesv2.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getSecondValue())));
+                        }
+
+                        if (g.getPowerDelivery() != null && g.getPowerDelivery().length() > 0) {
+                            addPowerDelivery = true;
+                            valueeg.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPowerDelivery())));
+                        }
+
+                        if (g.getPowerUsage() != null && g.getPowerUsage().length() > 0) {
+                            addPowerUsage = true;
+                            valueeu.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getPowerUsage())));
                         }
 
                         if (g.getCounter() != null && g.getCounter().length() > 0) {
@@ -494,6 +510,23 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesc, ((TextView) view.findViewById(R.id.legend_counter)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_indigo_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
+            if ((addPowerUsage && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valueeu, ((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+            if ((addPowerDelivery && !enableFilters) ||
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valueeg, ((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -674,6 +707,18 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (view.findViewById(R.id.legend_usage))
                             .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_usage)).getText());
+                }
+
+                if (addPowerDelivery) {
+                    (view.findViewById(R.id.legend_powerdeliv))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_powerdeliv)).getText());
+                }
+
+                if (addPowerUsage) {
+                    (view.findViewById(R.id.legend_powerusage))
+                            .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_powerusage)).getText());
                 }
 
                 if (addRain) {
