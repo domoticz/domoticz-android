@@ -1011,7 +1011,9 @@ public class SharedPrefUtil {
             // Write original settings to preferences
             if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
             return result;
-        }catch(Exception ex){return false;}
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})

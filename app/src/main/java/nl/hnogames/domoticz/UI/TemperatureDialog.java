@@ -87,10 +87,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(DomoticzValues.Temperature.Sign.CELSIUS)) {
                 isFahrenheit = true;
             }
-        } else
-            Toast.makeText(mContext,
-                    "Unable to get the server configuration info!", Toast.LENGTH_LONG).show();
-
+        }
+        
         minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");
         maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo != null ? configInfo.getTempSign() : "C");
         currentTemperature = temp;

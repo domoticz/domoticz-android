@@ -58,8 +58,8 @@
   <string name="noSwitchSelected_explanation">Perché che la Localizzazione funzioni, un interruttore deve essergli abbinato</string>
   <string name="noSwitchSelected_connectOneNow">Collegarne uno ora?</string>
   <string name="geofencing_disabled_no_enabled_fences">Localizzazione disabilitata poiché nessuna località è abilitata</string>
-  <string name="geofence_not_available">Geofence service is not available now</string>
-  <string name="geofence_too_many_geofences">App registered too many geofences</string>
-  <string name="geofence_too_many_pending_intents">Too many PendingIntents provided</string>
-  <string name="unknown_geofence_error">Unknown error</string>
+  <string name="geofence_not_available">Il servizio di localizzazione non è disponibile</string>
+  <string name="geofence_too_many_geofences">L\'app ha registrato troppe localizzazioni</string>
+  <string name="geofence_too_many_pending_intents">Troppi PendingIntents forniti</string>
+  <string name="unknown_geofence_error">Errore sconosciuto</string>
 </resources>

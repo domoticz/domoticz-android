@@ -181,7 +181,7 @@ public class AutoMessageReplyReceiver extends BroadcastReceiver {
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
         int jsonValue = 0;
         if (!UsefulBits.isEmpty(value)) {
-            String[] levelNames = mDevicesInfo.getLevelNames();
+            ArrayList<String> levelNames = mDevicesInfo.getLevelNames();
             int counter = 10;
             for (String l : levelNames) {
                 if (l.equals(value))

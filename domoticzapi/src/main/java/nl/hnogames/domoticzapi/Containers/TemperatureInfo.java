@@ -27,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TemperatureInfo implements Comparable, Serializable {
 
@@ -199,6 +201,17 @@ public class TemperatureInfo implements Comparable, Serializable {
 
     public String getLastUpdate() {
         return LastUpdate;
+    }
+
+    public Date getLastUpdateDateTime() {
+        //Time format: 2016-01-30 12:48:37
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(LastUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setLastUpdate(String lastUpdate) {

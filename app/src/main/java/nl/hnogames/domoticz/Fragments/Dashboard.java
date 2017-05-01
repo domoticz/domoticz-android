@@ -950,19 +950,21 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         // Only when not showing the extra data on dashboard
         // When extra data is on, more info has to be changed other than the status
         if (!mSharedPrefs.showExtraData()) {
+            try {
+                // Let's find out where the clicked switch is in the list
+                int index = extendedStatusSwitches.indexOf(clickedSwitch);
 
-            // Let's find out where the clicked switch is in the list
-            int index = extendedStatusSwitches.indexOf(clickedSwitch);
+                // Add it back into the array list
+                extendedStatusSwitches.set(index, clickedSwitch);
 
-            // Add it back into the array list
-            extendedStatusSwitches.set(index, clickedSwitch);
+                // Clear the data in the adapter and add all switches back in
+                adapter.data.clear();
+                adapter.data.addAll(extendedStatusSwitches);
 
-            // Clear the data in the adapter and add all switches back in
-            adapter.data.clear();
-            adapter.data.addAll(extendedStatusSwitches);
-
-            // Notify the adapter the data has changed
-            adapter.notifyDataSetChanged();
+                // Notify the adapter the data has changed
+                adapter.notifyDataSetChanged();
+            } catch (Exception ex) {
+            }
         } else processDashboard();
     }
 

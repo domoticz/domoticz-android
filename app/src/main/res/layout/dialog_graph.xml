@@ -87,6 +87,22 @@
                 android:visibility="gone" />
 
             <TextView
+                android:id="@+id/legend_powerusage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Power Usage"
+                android:textColor="@color/material_yellow_600"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/legend_powerdeliv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Power Delivery"
+                android:textColor="@color/material_deep_purple_600"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/legend_percentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

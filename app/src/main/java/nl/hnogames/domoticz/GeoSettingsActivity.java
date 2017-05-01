@@ -123,9 +123,16 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                             permissionHelper
                                     .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
                         } else {
-                            mSharedPrefs.setGeofenceEnabled(isChecked);
-                            oGeoUtils.enableGeoFenceService();
-                            invalidateOptionsMenu();
+                            if (!PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
+                                geoSwitch.setChecked(false);
+                                permissionHelper
+                                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                            }else {
+                                //all settings are correct
+                                mSharedPrefs.setGeofenceEnabled(isChecked);
+                                oGeoUtils.enableGeoFenceService();
+                                invalidateOptionsMenu();
+                            }
                         }
                     } else {
                         mSharedPrefs.setGeofenceEnabled(isChecked);
@@ -182,10 +189,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     }
 
     private void showSelectorDialog(final LocationInfo selectedLocation, DevicesInfo selector) {
-        final String[] levelNames = selector.getLevelNames();
+        final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
-                .items((CharSequence[]) levelNames)
+                .items(levelNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -200,7 +207,6 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
 
     private void createListView() {
         locations = mSharedPrefs.getLocations();
-        boolean addressChanged = false;
         adapter = new LocationAdapter(this, locations, new LocationClickListener() {
             @Override
             public boolean onEnableClick(LocationInfo locationInfo, boolean checked) {
@@ -477,9 +483,14 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
         if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
-            mSharedPrefs.setGeofenceEnabled(true);
-            oGeoUtils.enableGeoFenceService();
-            invalidateOptionsMenu();
+            if (PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
+                mSharedPrefs.setGeofenceEnabled(true);
+                oGeoUtils.enableGeoFenceService();
+                invalidateOptionsMenu();
+            }else{
+                permissionHelper
+                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+            }
         }
     }
 }

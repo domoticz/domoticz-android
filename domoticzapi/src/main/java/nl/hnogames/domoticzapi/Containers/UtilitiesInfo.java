@@ -50,6 +50,7 @@ public class UtilitiesInfo implements Comparable, Serializable {
     private String CounterToday;
     private String Counter;
     private String Usage;
+    private String UsageDeliv;
     private int signalLevel;
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
@@ -83,8 +84,12 @@ public class UtilitiesInfo implements Comparable, Serializable {
             Counter = row.getString("Counter");
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
+
         if (row.has("Usage"))
             Usage = row.getString("Usage");
+        if (row.has("UsageDeliv"))
+            UsageDeliv = row.getString("UsageDeliv");
+
         if (row.has("SubType"))
             SubType = row.getString("SubType");
         idx = row.getInt("idx");
@@ -143,6 +148,10 @@ public class UtilitiesInfo implements Comparable, Serializable {
 
     public String getUsage() {
         return Usage;
+    }
+
+    public String getUsageDeliv() {
+        return UsageDeliv;
     }
 
     public String getCounterToday() {
