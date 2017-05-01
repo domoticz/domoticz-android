@@ -202,7 +202,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
     }
 
     private void showSelectorDialog(final DevicesInfo selector, final String pass) {
-        final String[] levelNames = selector.getLevelNames();
+        final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
                 .items(levelNames)

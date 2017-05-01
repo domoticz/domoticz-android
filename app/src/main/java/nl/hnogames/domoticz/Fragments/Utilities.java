@@ -274,7 +274,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @Override
     @DebugLog
     public void onLogClick(final UtilitiesInfo utility, final String range) {
-        int steps = 3;
+        int steps = 2;
         /*
             Replace so we get the right log
          */
@@ -289,7 +289,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
         if (graphType.contains("counter"))
             graphType = "counter";
-
         if (utility.getSubType().equals("Gas"))
             steps = 1;
 

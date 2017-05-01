@@ -198,10 +198,10 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void showSelectorDialog(final QRCodeInfo qrcodeInfo, DevicesInfo selector) {
-        final String[] levelNames = selector.getLevelNames();
+        final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
-                .items((CharSequence[]) levelNames)
+                .items(levelNames)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {

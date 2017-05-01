@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -70,6 +71,7 @@ public class DevicesInfo implements Comparable, Serializable {
     private String Counter;
     private String LevelNames;
     private String Usage;
+    private String UsageDeliv;
     private String Image;
     private String Data;
     private String Timers;
@@ -137,6 +139,8 @@ public class DevicesInfo implements Comparable, Serializable {
 
         if (row.has("Usage"))
             Usage = row.getString("Usage");
+        if (row.has("UsageDeliv"))
+            UsageDeliv = row.getString("UsageDeliv");
 
         try {
             if (row.has("Status"))
@@ -281,6 +285,9 @@ public class DevicesInfo implements Comparable, Serializable {
     public String getUsage() {
         return Usage;
     }
+    public String getUsageDeliv() {
+        return UsageDeliv;
+    }
 
     public String getTimers() {
         return Timers;
@@ -302,13 +309,13 @@ public class DevicesInfo implements Comparable, Serializable {
         this.status = status;
     }
 
-    public String[] getLevelNames() {
+    public ArrayList<String> getLevelNames() {
         if (UsefulBits.isEmpty(LevelNames))
             return null;
         String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
-        String[] newNames = new String[names.length - 1];
-        for (int i = 1; i < names.length; i++) {
-            newNames[i - 1] = names[i];
+        ArrayList<String> newNames = new ArrayList<String>();
+        for (int i = 0; i < names.length; i++) {
+            newNames.add(names[i]);
         }
         return newNames;
     }
