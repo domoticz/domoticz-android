@@ -134,7 +134,7 @@ dependencies {
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     def supportVersion = '25.3.1'
-    def playServicesVersion = '10.2.1'
+    def playServicesVersion = '10.2.4'
 
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
@@ -173,6 +173,7 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
     compile 'com.github.javiersantos:PiracyChecker:1.1'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    compile 'com.github.michelelacorte:AndroidAppShortcuts:2.0.0'
 
     compile('com.mikepenz:materialdrawer:5.8.2@aar') {
         transitive = true
