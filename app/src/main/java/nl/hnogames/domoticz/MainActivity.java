@@ -1504,22 +1504,22 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         super.onPermissionGranted(permissionName);
     }
 
-    @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 4, activity = MainActivity.class)
+    @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard(){
         fromShortcut=true;
         changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
     }
-    @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 3, activity = MainActivity.class)
+    @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch(){
         fromShortcut=true;
         changeFragment("nl.hnogames.domoticz.Fragments.Switches");
     }
-    @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 2, activity = MainActivity.class)
+    @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities(){
         fromShortcut=true;
         changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
     }
-    @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 1, activity = MainActivity.class)
+    @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
     public void OpenTemperature(){
         fromShortcut=true;
         changeFragment("nl.hnogames.domoticz.Fragments.Temperature");
