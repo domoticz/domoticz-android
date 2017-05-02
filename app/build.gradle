@@ -173,11 +173,13 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
     compile 'com.github.javiersantos:PiracyChecker:1.1'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-    compile 'com.github.michelelacorte:AndroidAppShortcuts:2.0.0'
 
     compile('com.mikepenz:materialdrawer:5.8.2@aar') {
         transitive = true
     }
+
+    compile 'com.github.matthiasrobbers:shortbread:1.0.1'
+    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
 
     compile 'com.schibstedspain.android:leku:3.1.0'
 

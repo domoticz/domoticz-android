@@ -115,6 +115,7 @@ import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
+import shortbread.Shortcut;
 
 @DebugLog
 public class MainActivity extends AppCompatPermissionsActivity implements DigitusCallback, FingerprintDialog.Callback {
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private MenuItem speechMenuItem;
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
+    private boolean fromShortcut = false;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -264,18 +266,18 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
-                            addFragment();
+                            if(!fromShortcut)addFragment();
                         }
 
                         @Override
                         @DebugLog
                         public void onError(Exception error) {
                             //drawNavigationMenu(null);
-                            addFragment();
+                            if(!fromShortcut)addFragment();
                         }
                     }, mServerUtil.getActiveServer().getConfigInfo(this));
                 } else {
-                    addFragment();
+                    if(!fromShortcut)addFragment();
                 }
             }
         } else {
@@ -1499,7 +1501,27 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 startRecognition();
             }
         }
-
         super.onPermissionGranted(permissionName);
+    }
+
+    @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 4, activity = MainActivity.class)
+    public void OpenDashBoard(){
+        fromShortcut=true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+    }
+    @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 3, activity = MainActivity.class)
+    public void OpenSwitch(){
+        fromShortcut=true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+    }
+    @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 2, activity = MainActivity.class)
+    public void OpenUtilities(){
+        fromShortcut=true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
+    }
+    @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 1, activity = MainActivity.class)
+    public void OpenTemperature(){
+        fromShortcut=true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Temperature");
     }
 }

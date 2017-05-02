@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
+import shortbread.Shortbread;
 
 import static android.text.TextUtils.isDigitsOnly;
 
@@ -73,6 +74,7 @@ public class AppController extends MultiDexApplication implements GcmListener {
     @Override
     public void onCreate() {
         super.onCreate();
+        Shortbread.create(this);
         if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
         mInstance = this;
