@@ -406,12 +406,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
                         text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
                         holder.switch_battery_level.setText(text);
-                    }
-                    else {
+                    } else {
                         text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
                         holder.switch_battery_level.setText(text);
                     }
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
                     holder.switch_battery_level.setText(text);
                 }

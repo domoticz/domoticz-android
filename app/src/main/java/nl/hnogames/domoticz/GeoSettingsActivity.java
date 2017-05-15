@@ -127,7 +127,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                 geoSwitch.setChecked(false);
                                 permissionHelper
                                         .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                            }else {
+                            } else {
                                 //all settings are correct
                                 mSharedPrefs.setGeofenceEnabled(isChecked);
                                 oGeoUtils.enableGeoFenceService();
@@ -487,7 +487,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                 mSharedPrefs.setGeofenceEnabled(true);
                 oGeoUtils.enableGeoFenceService();
                 invalidateOptionsMenu();
-            }else{
+            } else {
                 permissionHelper
                         .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
             }

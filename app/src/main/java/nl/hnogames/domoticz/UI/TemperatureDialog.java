@@ -28,7 +28,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -88,7 +87,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 isFahrenheit = true;
             }
         }
-        
+
         minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");
         maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo != null ? configInfo.getTempSign() : "C");
         currentTemperature = temp;

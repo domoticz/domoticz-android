@@ -167,12 +167,11 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     int usagedel = Integer.parseInt(mUtilitiesInfo.getUsageDeliv().replace("Watt", "").trim());
                     text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
                     holder.data.setText(text);
-                }
-                else {
+                } else {
                     text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
                     holder.data.setText(text);
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
                 holder.data.setText(text);
             }
@@ -240,12 +239,11 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     int usagedel = Integer.parseInt(mUtilitiesInfo.getUsageDeliv().replace("Watt", "").trim());
                     text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
                     holder.data.setText(text);
-                }
-                else {
+                } else {
                     text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
                     holder.data.setText(text);
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 text = context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage();
                 holder.data.setText(text);
             }

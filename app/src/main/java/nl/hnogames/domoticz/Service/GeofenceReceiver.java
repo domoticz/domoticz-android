@@ -46,7 +46,7 @@ public class GeofenceReceiver extends BroadcastReceiver
 
         GeofencingEvent geoFenceEvent = GeofencingEvent.fromIntent(intent);
         if (geoFenceEvent.hasError()) {
-            Log.e(TAG, "Error: "+geoFenceEvent.getErrorCode());
+            Log.e(TAG, "Error: " + geoFenceEvent.getErrorCode());
         } else {
             handleEnterExit(geoFenceEvent);
         }
