@@ -150,6 +150,12 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
             this.finish();
         }
 
+        if(!mSharedPrefs.IsWidgetsEnabled())
+        {
+            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.widget_disabled), Toast.LENGTH_LONG).show();
+            this.finish();
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(false);

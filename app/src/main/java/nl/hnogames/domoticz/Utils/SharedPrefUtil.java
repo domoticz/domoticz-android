@@ -109,6 +109,8 @@ public class SharedPrefUtil {
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
     private static final String PREF_TEMP_MIN = "tempMinValue";
     private static final String PREF_TEMP_MAX = "tempMaxValue";
+    private static final String PREF_WIDGET_ENABLED = "enableWidgets";
+
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -144,6 +146,15 @@ public class SharedPrefUtil {
 
     public boolean checkForUpdatesEnabled() {
         return prefs.getBoolean(PREF_CHECK_UPDATES, false);
+    }
+
+    public boolean IsWidgetsEnabled() {
+        return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
+    }
+
+    public void SetWidgetsEnabled(Boolean set) {
+        editor.putBoolean(PREF_WIDGET_ENABLED, set).apply();
+        editor.commit();
     }
 
     public boolean isMultiServerEnabled() {

@@ -165,6 +165,7 @@ public class Preference extends PreferenceFragment {
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
         android.preference.Preference GeoSettings = findPreference("geo_settings");
         android.preference.SwitchPreference WearPreference = (android.preference.SwitchPreference) findPreference("enableWearItems");
+        android.preference.SwitchPreference WidgetsEnablePreference = (android.preference.SwitchPreference) findPreference("enableWidgets");
         android.preference.Preference NFCPreference = findPreference("nfc_settings");
         android.preference.Preference QRCodePreference = findPreference("qrcode_settings");
         android.preference.Preference SpeechPreference = findPreference("speech_settings");
@@ -439,6 +440,44 @@ public class Preference extends PreferenceFragment {
                     Intent intent = new Intent(mContext, SpeechSettingsActivity.class);
                     startActivity(intent);
                     return true;
+                }
+            }
+        });
+
+        WidgetsEnablePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_widgets));
+                    return false;
+                }
+                else{
+                    if((boolean)newValue)
+                    {
+                        new MaterialDialog.Builder(mContext)
+                                .title(R.string.wizard_widgets)
+                                .content(R.string.widget_warning)
+                                .positiveText(R.string.ok)
+                                .negativeText(R.string.cancel)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        mSharedPrefs.SetWidgetsEnabled(true);
+                                        ((SettingsActivity) getActivity()).reloadSettings();
+                                    }
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        mSharedPrefs.SetWidgetsEnabled(false);
+                                    }
+                                })
+                                .show();
+                            return false;
+                    }
+                    else{
+                        return true;
+                    }
                 }
             }
         });
