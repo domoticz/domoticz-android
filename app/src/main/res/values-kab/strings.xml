@@ -23,16 +23,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="premium_category">Aɣ premium</string>
-  <string name="premium_title">Ḥelit-ed lqem premium </string>
+  <string name="premium_title">Ḥelid lqem premium </string>
   <string name="premium_feature">Ed tamesɣant premium,aɣet-ed lqem uɣrad iw snil n isneflayen</string>
   <string name="drawer_open">Ldi leqjeṛ n iminig</string>
   <string name="drawer_close">Mdel leqjeṛ n iminig</string>
   <string name="msg_please_wait">Tixilek aṛǧǧu</string>
-  <string name="changelog">Bedel aseɣẓan</string>
+  <string name="changelog">Beddel aseɣẓan</string>
   <string name="button_state_on">ssaɣ</string>
   <string name="button_state_off">ssens</string>
   <string name="button_state_closed">Imdel</string>
-  <string name="button_state_open">Ildi</string>
+  <string name="button_state_open">ldi</string>
   <string name="button_status_log">Taqejmuṛt</string>
   <string name="button_status_day">ass</string>
   <string name="button_status_week">imalas</string>
@@ -42,7 +42,7 @@
   <string name="button_status_notifications">Asmaru</string>
   <string name="button_color">Ini</string>
   <string name="button_arm">Ḥarj</string>
-  <string name="button_disarm">werḤarj</string>
+  <string name="button_disarm">Senqer</string>
   <string name="last_update">Tamuɣli taneggarut</string>
   <string name="signal_level">Tamuli n aswir</string>
   <string name="battery_level">Tamuli n aẓru</string>
