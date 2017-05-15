@@ -54,7 +54,7 @@ public class CameraActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 camera).commit();
-        camera.setImage(imageUrl);
+        camera.setImage(title);
     }
 
 

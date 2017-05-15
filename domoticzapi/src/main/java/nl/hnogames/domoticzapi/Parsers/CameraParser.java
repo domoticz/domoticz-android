@@ -35,7 +35,6 @@ import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 
 public class CameraParser implements JSONParserInterface {
-
     private static final String TAG = CameraParser.class.getSimpleName();
     private CameraReceiver receiver;
     private Domoticz domoticz;

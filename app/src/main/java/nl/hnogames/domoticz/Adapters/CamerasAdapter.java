@@ -29,16 +29,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Utils.RequestUtil;
-import nl.hnogames.domoticzapi.Utils.SessionUtil;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
@@ -83,17 +79,13 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
             String address = cameraInfo.getAddress();
-            String imageUrl = cameraInfo.getSnapShotURL();
+            String imageUrl = cameraInfo.getTotalImageURL();
 
             int numberOfDevices = cameraInfo.getDevices();
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
-            holder.camera.setImageUrl(imageUrl, imageLoader);
-
-            if (!refreshTimer)
-                holder.camera.setDefaultImageResId(R.drawable.placeholder);
+            holder.camera.Start(imageUrl);
         }
     }
 
@@ -109,12 +101,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView name;
-        com.android.volley.toolbox.NetworkImageView camera;
+        nl.hnogames.domoticz.UI.MjpegViewer.MjpegView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
-            camera = (com.android.volley.toolbox.NetworkImageView) itemView.findViewById(R.id.image);
+            camera = (nl.hnogames.domoticz.UI.MjpegViewer.MjpegView) itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
 

@@ -33,6 +33,10 @@ import com.android.volley.VolleyError;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -381,11 +385,6 @@ public class Domoticz {
         }
     }
 
-    public String getSnapshotUrl(CameraInfo camera) {
-        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + camera.getIdx();
-    }
-
-
     /**
      * Register you device on Domoticz
      *
@@ -436,6 +435,9 @@ public class Domoticz {
                 url, getSessionUtil(), true, 3, queue);
     }
 
+    public String getSnapshotUrl(CameraInfo camera) {
+        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA, true, getUserCredentials(Authentication.USERNAME), getUserCredentials(Authentication.PASSWORD)) + camera.getIdx();
+    }
 
     /**
      * Get's the version of the update (if available)

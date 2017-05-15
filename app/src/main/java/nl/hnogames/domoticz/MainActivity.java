@@ -76,8 +76,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
@@ -132,7 +130,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
-    private Timer cameraRefreshTimer = null;
     private Fragment latestFragment = null;
     private Drawer drawer;
     private SpeechRecognizer speechRecognizer;
@@ -266,18 +263,18 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
-                            if(!fromShortcut)addFragment();
+                            if (!fromShortcut) addFragment();
                         }
 
                         @Override
                         @DebugLog
                         public void onError(Exception error) {
                             //drawNavigationMenu(null);
-                            if(!fromShortcut)addFragment();
+                            if (!fromShortcut) addFragment();
                         }
                     }, mServerUtil.getActiveServer().getConfigInfo(this));
                 } else {
-                    if(!fromShortcut)addFragment();
+                    if (!fromShortcut) addFragment();
                 }
             }
         } else {
@@ -742,11 +739,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             }
 
                             if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
-                                stopCameraTimer();
                                 startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
                             } else if (drawerItem.getTag() != null) {
                                 changeFragment(String.valueOf(drawerItem.getTag()));
-                                stopCameraTimer();
 
                                 invalidateOptionsMenu();
                                 if (onPhone)
@@ -916,10 +911,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
         if (!fromVoiceWidget && !fromQRCodeWidget) {
             if ((f instanceof Cameras)) {
-                if (cameraRefreshTimer != null)
-                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
-                else
-                    getMenuInflater().inflate(R.menu.menu_camera, menu);
+                getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
                 if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
@@ -1046,33 +1038,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     }, 50);
 
                     return true;
-                case R.id.action_camera_play:
-                    if (cameraRefreshTimer == null) {
-                        cameraRefreshTimer = new Timer("camera", true);
-                        cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            @DebugLog
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    @DebugLog
-                                    public void run() {
-                                        //call refresh fragment
-                                        Fragment f = latestFragment;
-                                        if (f instanceof Cameras) {
-                                            ((Cameras) f).refreshFragment();
-                                        } else {
-                                            //we're not at the camera fragment? stop timer!
-                                            stopCameraTimer();
-                                            invalidateOptionsMenu();
-                                        }
-                                    }
-                                });
-                            }
-                        }, 0, 5000);//schedule in 5 seconds
-                    }
-                    invalidateOptionsMenu();//set pause button
-                    return true;
                 case R.id.action_scan_qrcode:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (PermissionsUtil.canAccessCamera(this)) {
@@ -1085,10 +1050,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                         startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
                     }
-                    return true;
-                case R.id.action_camera_pause:
-                    stopCameraTimer();
-                    invalidateOptionsMenu();//set pause button
                     return true;
                 case R.id.action_sort:
                     SortDialog infoDialog = new SortDialog(
@@ -1296,14 +1257,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         return layout;
     }
 
-    private void stopCameraTimer() {
-        if (cameraRefreshTimer != null) {
-            cameraRefreshTimer.cancel();
-            cameraRefreshTimer.purge();
-            cameraRefreshTimer = null;
-        }
-    }
-
     @Override
     @DebugLog
     public void onResume() {
@@ -1322,7 +1275,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             oTalkBackUtil = null;
         }
 
-        stopCameraTimer();
         Digitus.deinit();
         super.onDestroy();
     }
@@ -1365,7 +1317,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     stackFragments.remove(currentFragment);
                 }
 
-                stopCameraTimer();
                 invalidateOptionsMenu();
             }
         }
@@ -1505,23 +1456,26 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
-    public void OpenDashBoard(){
-        fromShortcut=true;
+    public void OpenDashBoard() {
+        fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
     }
+
     @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
-    public void OpenSwitch(){
-        fromShortcut=true;
+    public void OpenSwitch() {
+        fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.Fragments.Switches");
     }
+
     @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
-    public void OpenUtilities(){
-        fromShortcut=true;
+    public void OpenUtilities() {
+        fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
     }
+
     @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
-    public void OpenTemperature(){
-        fromShortcut=true;
+    public void OpenTemperature() {
+        fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.Fragments.Temperature");
     }
 }
