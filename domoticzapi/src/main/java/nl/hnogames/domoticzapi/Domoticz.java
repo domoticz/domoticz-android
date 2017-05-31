@@ -623,10 +623,7 @@ public class Domoticz {
                           setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
         String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);
-
-        if (!UsefulBits.isEmpty(password)) {
-            url += "&passcode=" + password;
-        }
+        url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
 
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonPutRequest(parser,

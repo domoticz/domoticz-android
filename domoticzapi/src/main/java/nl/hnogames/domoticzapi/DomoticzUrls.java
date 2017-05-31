@@ -212,8 +212,8 @@ public class DomoticzUrls {
         }
 
         String fullString = buildUrl.append(protocol)
-                .append(baseUrl).append(":")
-                .append(port)
+                .append(baseUrl)
+                .append(!port.equals("80") ? ":" + port: "")
                 .append(directory.isEmpty() ? "" : "/" + directory)
                 .append(jsonUrl).toString();
 
@@ -248,21 +248,20 @@ public class DomoticzUrls {
             port = mServerUtil.getActiveServer().getRemoteServerPort();
             directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
         }
-
         jsonUrl = getJsonGetUrl(jsonGetUrl);
 
         if(!withPass) {
             return buildUrl.append(protocol)
-                    .append(url).append(":")
-                    .append(port)
+                    .append(url)
+                    .append(!port.equals("80") ? ":" + port: "")
                     .append(directory.isEmpty() ? "" : "/" + directory)
                     .append(jsonUrl).toString();
         }
         else{
             return buildUrl.append(protocol)
                     .append(username).append(":").append(password).append("@")
-                    .append(url).append(":")
-                    .append(port)
+                    .append(url)
+                    .append(!port.equals("80") ? ":" + port: "")
                     .append(directory.isEmpty() ? "" : "/" + directory)
                     .append(jsonUrl).toString();
         }
