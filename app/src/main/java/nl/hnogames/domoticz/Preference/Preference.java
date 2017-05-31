@@ -450,10 +450,8 @@ public class Preference extends PreferenceFragment {
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_widgets));
                     return false;
-                }
-                else{
-                    if((boolean)newValue)
-                    {
+                } else {
+                    if ((boolean) newValue) {
                         new MaterialDialog.Builder(mContext)
                                 .title(R.string.wizard_widgets)
                                 .content(R.string.widget_warning)
@@ -473,9 +471,8 @@ public class Preference extends PreferenceFragment {
                                     }
                                 })
                                 .show();
-                            return false;
-                    }
-                    else{
+                        return false;
+                    } else {
                         return true;
                     }
                 }

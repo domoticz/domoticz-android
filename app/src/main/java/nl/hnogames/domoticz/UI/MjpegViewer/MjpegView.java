@@ -29,6 +29,7 @@ public class MjpegView extends SurfaceView implements SurfaceHolder.Callback {
     private MjpegInputStream mIn = null;
     private DoRead StreamReader = null;
     private boolean suspending = false;
+
     public MjpegView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mHolder = getHolder();

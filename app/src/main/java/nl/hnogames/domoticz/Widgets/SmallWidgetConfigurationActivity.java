@@ -88,8 +88,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
             this.finish();
         }
 
-        if(!mSharedPrefs.IsWidgetsEnabled())
-        {
+        if (!mSharedPrefs.IsWidgetsEnabled()) {
             Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.widget_disabled), Toast.LENGTH_LONG).show();
             this.finish();
         }
