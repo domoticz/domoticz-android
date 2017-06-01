@@ -475,7 +475,7 @@ public class Domoticz {
     public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {
         UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
@@ -590,7 +590,7 @@ public class Domoticz {
         url += "&seccode=" + seccode;
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
@@ -608,7 +608,7 @@ public class Domoticz {
         url += "&vvalue=" + newValue;
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
@@ -626,7 +626,7 @@ public class Domoticz {
         url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
@@ -652,7 +652,7 @@ public class Domoticz {
             url += "&passcode=" + password;
         }
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
@@ -672,7 +672,7 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         setCommandParser parser = new setCommandParser(receiver);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
@@ -714,7 +714,7 @@ public class Domoticz {
         url += "&used=true";
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonPutRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, mSessionUtil, true, 3, queue);
