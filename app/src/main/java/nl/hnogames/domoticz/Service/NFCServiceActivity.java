@@ -154,14 +154,16 @@ public class NFCServiceActivity extends AppCompatActivity {
                     @Override
                     @DebugLog
                     public void onReceiveResult(String result) {
-                        Log.d(TAG, result);
+                        if(!UsefulBits.isEmpty(result))
+                            Log.d(TAG, result);
                         finish();
                     }
 
                     @Override
                     @DebugLog
                     public void onError(Exception error) {
-                        Log.d(TAG, error.getMessage());
+                        if(error != null && !UsefulBits.isEmpty(error.getMessage()))
+                            Log.d(TAG, error.getMessage());
                         finish();
                     }
                 });
@@ -169,7 +171,8 @@ public class NFCServiceActivity extends AppCompatActivity {
 
             @Override
             public void onError(Exception error) {
-                Log.d(TAG, error.getMessage());
+                if(error != null && !UsefulBits.isEmpty(error.getMessage()))
+                    Log.d(TAG, error.getMessage());
                 finish();
             }
 
