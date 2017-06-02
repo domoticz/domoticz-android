@@ -108,7 +108,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
                     else
                         onSwitchToggle(selectedSwitch);
                 } else {
-                    if (selectedSwitch != null) {
                         switch (selectedSwitch.getSwitchTypeVal()) {
                             case DomoticzValues.Device.Type.Value.ON_OFF:
                             case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
@@ -135,7 +134,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
                                 throw new NullPointerException(
                                         "Toggle event received from wear device for unsupported switch type: " + selectedSwitch.getSwitchTypeVal());
                         }
-                    }
                     //now send latest status
                     getSwitches();
                 }
