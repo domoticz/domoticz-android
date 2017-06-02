@@ -133,7 +133,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
                             default:
                                 throw new NullPointerException(
-                                        "Toggle event received from wear device for unsupported switch type.");
+                                        "Toggle event received from wear device for unsupported switch type: " + selectedSwitch.getSwitchTypeVal());
                         }
                     }
                     //now send latest status
