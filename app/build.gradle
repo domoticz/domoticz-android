@@ -145,6 +145,7 @@ dependencies {
 
     compile "com.google.firebase:firebase-core:$playServicesVersion"
     compile "com.google.firebase:firebase-crash:$playServicesVersion"
+    compile "com.google.firebase:firebase-perf:$playServicesVersion"
 
     compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
     compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
@@ -204,7 +205,9 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
+
 apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 apply plugin: 'com.google.gms.google-services'
 
