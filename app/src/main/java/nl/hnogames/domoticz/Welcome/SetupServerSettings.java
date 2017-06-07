@@ -503,6 +503,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
     private int getPrefsDomoticzRemoteSecureIndex() {
         boolean isSecure = false;
+        if(newServer != null)
+            isSecure = newServer.getRemoteServerSecure();
+
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
@@ -519,6 +522,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
     private int getPrefsDomoticzLocalSecureIndex() {
         boolean isSecure = false;
+        if(newServer != null)
+            isSecure = newServer.getLocalServerSecure();
+
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
