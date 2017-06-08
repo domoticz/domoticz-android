@@ -189,10 +189,11 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup) {
                 SpeechInfo.setSwitchIdx(selectedSwitchIDX);
                 SpeechInfo.setSwitchPassword(selectedSwitchPassword);
                 SpeechInfo.setSwitchName(selectedSwitchName);
+                SpeechInfo.setSceneOrGroup(isSceneOrGroup);
 
                 for (DevicesInfo s : switches) {
                     if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)

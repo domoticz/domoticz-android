@@ -169,10 +169,12 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup) {
                 selectedLocation.setSwitchIdx(selectedSwitchIDX);
                 selectedLocation.setSwitchPassword(selectedSwitchPassword);
                 selectedLocation.setSwitchName(selectedSwitchName);
+                selectedLocation.setSceneOrGroup(isSceneOrGroup);
+
                 for (DevicesInfo s : switches) {
                     if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                         showSelectorDialog(selectedLocation, s);

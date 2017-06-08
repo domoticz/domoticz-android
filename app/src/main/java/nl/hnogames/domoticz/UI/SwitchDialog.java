@@ -96,14 +96,14 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                     public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
                         if (!extendedStatusInfo.isProtected()) {
                             if (dismissListener != null)
-                                dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName());
+                                dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
                         } else {
                             PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
                                 public void onDismiss(String password) {
-                                    dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName());
+                                    dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName(), info.get(position).isSceneOrGroup());
                                 }
 
                                 @Override
@@ -117,7 +117,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                     public void onError(Exception error) {
                     }
                 });
-
 
                 md.dismiss();
             }
@@ -143,6 +142,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     }
 
     public interface DismissListener {
-        void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName);
+        void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup);
     }
 }

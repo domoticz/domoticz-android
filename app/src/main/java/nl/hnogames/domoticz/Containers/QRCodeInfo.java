@@ -31,6 +31,15 @@ public class QRCodeInfo {
     private String switchName;
     private String value;
 
+    private boolean isSceneOrGroup = false;
+
+    public boolean isSceneOrGroup() {
+        return isSceneOrGroup;
+    }
+
+    public void setSceneOrGroup(boolean sceneOrGroup) {
+        isSceneOrGroup = sceneOrGroup;
+    }
     public String getId() {
         return id;
     }
