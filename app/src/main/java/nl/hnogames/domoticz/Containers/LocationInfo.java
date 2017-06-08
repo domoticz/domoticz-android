@@ -42,18 +42,19 @@ public class LocationInfo {
 
     private boolean isSceneOrGroup = false;
 
+    public LocationInfo(int id, String name, LatLng latLng, int radius) {
+        this.name = name;
+        this.latLng = latLng;
+        this.id = id;
+        this.radius = radius;
+    }
+
     public boolean isSceneOrGroup() {
         return isSceneOrGroup;
     }
 
     public void setSceneOrGroup(boolean sceneOrGroup) {
         isSceneOrGroup = sceneOrGroup;
-    }
-    public LocationInfo(int id, String name, LatLng latLng, int radius) {
-        this.name = name;
-        this.latLng = latLng;
-        this.id = id;
-        this.radius = radius;
     }
 
     public String getName() {

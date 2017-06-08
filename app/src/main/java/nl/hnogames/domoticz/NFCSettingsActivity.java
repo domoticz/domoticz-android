@@ -277,8 +277,8 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
-        for(DevicesInfo d : switches){
-            if(DeviceUtils.isAutomatedToggableDevice(d))
+        for (DevicesInfo d : switches) {
+            if (DeviceUtils.isAutomatedToggableDevice(d))
                 supportedSwitches.add(d);
         }
 

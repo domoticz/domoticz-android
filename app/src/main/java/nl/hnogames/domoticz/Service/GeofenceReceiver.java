@@ -105,7 +105,8 @@ public class GeofenceReceiver extends BroadcastReceiver
 
         domoticz.getDevice(new DevicesReceiver() {
             @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
@@ -168,9 +169,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             break;
                     }
-                }
-                else
-                {
+                } else {
                     jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
                     if (inputJSONAction < 0) {
                         if (!mDevicesInfo.getStatusBoolean()) {

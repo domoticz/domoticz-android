@@ -40,6 +40,7 @@ public class QRCodeInfo {
     public void setSceneOrGroup(boolean sceneOrGroup) {
         isSceneOrGroup = sceneOrGroup;
     }
+
     public String getId() {
         return id;
     }

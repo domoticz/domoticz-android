@@ -174,8 +174,8 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
         final ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
-        for(DevicesInfo d : switches){
-            if(DeviceUtils.isAutomatedToggableDevice(d))
+        for (DevicesInfo d : switches) {
+            if (DeviceUtils.isAutomatedToggableDevice(d))
                 supportedSwitches.add(d);
         }
 

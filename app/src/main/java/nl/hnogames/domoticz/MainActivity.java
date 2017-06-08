@@ -424,9 +424,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             break;
                     }
-                }
-                else
-                {
+                } else {
                     jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
                     if (inputJSONAction < 0) {
                         if (!mDevicesInfo.getStatusBoolean()) {

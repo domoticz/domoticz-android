@@ -32,8 +32,8 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 public class DeviceUtils {
 
     //Check is a Domoticz Device is toggable by NFC, Geofences or QRCodes
-    public static boolean isAutomatedToggableDevice(DevicesInfo mDeviceInfo){
-        if(mDeviceInfo.equals(null))
+    public static boolean isAutomatedToggableDevice(DevicesInfo mDeviceInfo) {
+        if (mDeviceInfo.equals(null))
             return false;
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
             (mDeviceInfo.getSwitchType() == null)) {

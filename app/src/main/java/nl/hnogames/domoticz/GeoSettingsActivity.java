@@ -164,8 +164,8 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         final ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
-        for(DevicesInfo d : switches){
-            if(DeviceUtils.isAutomatedToggableDevice(d))
+        for (DevicesInfo d : switches) {
+            if (DeviceUtils.isAutomatedToggableDevice(d))
                 supportedSwitches.add(d);
         }
 

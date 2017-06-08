@@ -150,9 +150,7 @@ public class NFCServiceActivity extends AppCompatActivity {
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             break;
                     }
-                }
-                else
-                {
+                } else {
                     jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
                     if (inputJSONAction < 0) {
                         if (!mDevicesInfo.getStatusBoolean()) {
