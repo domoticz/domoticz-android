@@ -57,6 +57,7 @@ import nl.hnogames.domoticz.Adapters.LocationAdapter;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Interfaces.LocationClickListener;
 import nl.hnogames.domoticz.UI.SwitchDialog;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -162,8 +163,14 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         final LocationInfo selectedLocation,
         final ArrayList<DevicesInfo> switches) {
 
+        final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
+        for(DevicesInfo d : switches){
+            if(DeviceUtils.isAutomatedToggableDevice(d))
+                supportedSwitches.add(d);
+        }
+
         SwitchDialog infoDialog = new SwitchDialog(
-            GeoSettingsActivity.this, switches,
+            GeoSettingsActivity.this, supportedSwitches,
             R.layout.dialog_switch_logs,
             domoticz);
 
@@ -175,7 +182,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                 selectedLocation.setSwitchName(selectedSwitchName);
                 selectedLocation.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : switches) {
+                for (DevicesInfo s : supportedSwitches) {
                     if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                         showSelectorDialog(selectedLocation, s);
                     else {
@@ -324,7 +331,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                         }
                     }, GeoSettingsActivity.this.getString(R.string.retry));
             }
-        }, 0, "light");
+        }, 0, "all");
     }
 
     private boolean showNoDeviceAttachedDialog(final LocationInfo locationInfo) {

@@ -15,6 +15,7 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
@@ -73,9 +74,8 @@ public class GeofenceReceiver extends BroadcastReceiver
                         NotificationUtil.sendSimpleNotification(notificationTitle,
                             notificationDescription, 0, context);
 
-                        if (locationFound.getSwitchIdx() > 0) {
-                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true);
-                        }
+                        if (locationFound.getSwitchIdx() > 0)
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), 1, locationFound.getValue(), locationFound.isSceneOrGroup());
                     }
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
@@ -90,7 +90,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                         notificationDescription = context.getString(R.string.geofence_location_leaving_text);
 
                         if (locationFound.getSwitchIdx() > 0)
-                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false);
+                            handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), 0, locationFound.getValue(), locationFound.isSceneOrGroup());
                     }
                 }
             }
@@ -99,37 +99,65 @@ public class GeofenceReceiver extends BroadcastReceiver
         }
     }
 
-    private void handleSwitch(final int idx, final String password, final boolean checked) {
+    private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {
         if (domoticz == null)
             domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         domoticz.getDevice(new DevicesReceiver() {
             @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-            }
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                if (mDevicesInfo == null)
-                    return;
+                int jsonAction;
+                int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
+                int jsonValue = 0;
 
-                if (mDevicesInfo.getStatusBoolean() != checked) {
-                    if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(notificationTitle)) {
-                        NotificationUtil.sendSimpleNotification(notificationTitle,
-                            notificationDescription, 0, context);
-                    }
-
-                    int jsonAction;
-                    int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
-                    int jsonValue = 0;
-
-                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                        else jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                if (!isSceneOrGroup) {
+                    if (inputJSONAction < 0) {
+                        if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            if (!mDevicesInfo.getStatusBoolean())
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            else {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
+                            }
+                        } else {
+                            if (!mDevicesInfo.getStatusBoolean()) {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
+                            } else
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        }
                     } else {
-                        if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                        else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            if (inputJSONAction == 1)
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            else {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
+                            }
+                        } else {
+                            if (inputJSONAction == 1) {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
+                            } else
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        }
                     }
 
                     switch (mDevicesInfo.getSwitchTypeVal()) {
@@ -140,31 +168,66 @@ public class GeofenceReceiver extends BroadcastReceiver
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             break;
                     }
-
-                    domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
-                        @Override
-                        public void onReceiveResult(String result) {
-                            Log.d(TAG, result);
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            if (error != null)
-                                onErrorHandling(error);
-                        }
-                    });
-                } else {
-                    Log.i("GEOFENCE", "Switch was already turned " + (checked ? "on" : "off"));
                 }
+                else
+                {
+                    jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+                    if (inputJSONAction < 0) {
+                        if (!mDevicesInfo.getStatusBoolean()) {
+                            jsonAction = DomoticzValues.Scene.Action.ON;
+                        } else
+                            jsonAction = DomoticzValues.Scene.Action.OFF;
+                    } else {
+                        if (inputJSONAction == 1) {
+                            jsonAction = DomoticzValues.Scene.Action.ON;
+                        } else
+                            jsonAction = DomoticzValues.Scene.Action.OFF;
+                    }
+
+                    if (mDevicesInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
+                        jsonAction = DomoticzValues.Scene.Action.ON;
+                }
+
+                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        if (!UsefulBits.isEmpty(result))
+                            Log.d(TAG, result);
+                    }
+
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        if (error != null && !UsefulBits.isEmpty(error.getMessage()))
+                            Log.d(TAG, error.getMessage());
+                    }
+                });
             }
 
             @Override
             public void onError(Exception error) {
-                if (error != null)
-                    onErrorHandling(error);
+                if (error != null && !UsefulBits.isEmpty(error.getMessage()))
+                    Log.d(TAG, error.getMessage());
             }
 
-        }, idx, false);
+        }, idx, isSceneOrGroup);
+    }
+
+    private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        int jsonValue = 0;
+        if (!UsefulBits.isEmpty(value)) {
+            ArrayList<String> levelNames = mDevicesInfo.getLevelNames();
+            int counter = 0;
+            for (String l : levelNames) {
+                if (l.equals(value))
+                    break;
+                else
+                    counter += 10;
+            }
+            jsonValue = counter;
+        }
+        return jsonValue;
     }
 
     private void onErrorHandling(Exception error) {
