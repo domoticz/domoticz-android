@@ -448,26 +448,24 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     @Override
                     @DebugLog
                     public void onReceiveResult(String result) {
-                        if (!UsefulBits.isEmpty(result))
-                            Log.d(TAG, result);
-                        finish();
+                        Log.d(TAG, result);
+                        if (fromQRCodeWidget)
+                            MainActivity.this.finish();
                     }
 
                     @Override
                     @DebugLog
                     public void onError(Exception error) {
-                        if (error != null && !UsefulBits.isEmpty(error.getMessage()))
-                            Log.d(TAG, error.getMessage());
-                        finish();
+                        if (fromQRCodeWidget)
+                            MainActivity.this.finish();
                     }
                 });
             }
 
             @Override
             public void onError(Exception error) {
-                if (error != null && !UsefulBits.isEmpty(error.getMessage()))
-                    Log.d(TAG, error.getMessage());
-                finish();
+                if (fromQRCodeWidget)
+                    MainActivity.this.finish();
             }
 
         }, idx, isSceneOrGroup);
