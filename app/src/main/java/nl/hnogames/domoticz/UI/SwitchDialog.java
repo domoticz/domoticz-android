@@ -59,20 +59,20 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
 
         if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
             mdb = new MaterialDialog.Builder(mContext)
-                    .titleColorRes(R.color.white)
-                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                    .dividerColorRes(R.color.white)
-                    .backgroundColorRes(R.color.primary)
-                    .positiveColorRes(R.color.white)
-                    .neutralColorRes(R.color.white)
-                    .negativeColorRes(R.color.white)
-                    .widgetColorRes(R.color.white)
-                    .buttonRippleColorRes(R.color.white);
+                .titleColorRes(R.color.white)
+                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                .dividerColorRes(R.color.white)
+                .backgroundColorRes(R.color.primary)
+                .positiveColorRes(R.color.white)
+                .neutralColorRes(R.color.white)
+                .negativeColorRes(R.color.white)
+                .widgetColorRes(R.color.white)
+                .buttonRippleColorRes(R.color.white);
         } else
             mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .negativeText(android.R.string.cancel);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }
 
@@ -87,7 +87,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
         ListView listView = (ListView) view.findViewById(R.id.list);
         String[] listData = processSwitches();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+            android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -96,14 +96,14 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                     public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
                         if (!extendedStatusInfo.isProtected()) {
                             if (dismissListener != null)
-                                dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName());
+                                dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
                         } else {
                             PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
                                 public void onDismiss(String password) {
-                                    dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName());
+                                    dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName(), info.get(position).isSceneOrGroup());
                                 }
 
                                 @Override
@@ -117,7 +117,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                     public void onError(Exception error) {
                     }
                 });
-
 
                 md.dismiss();
             }
@@ -143,6 +142,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
     }
 
     public interface DismissListener {
-        void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName);
+        void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup);
     }
 }

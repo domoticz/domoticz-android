@@ -105,8 +105,6 @@ public class LocationAdapter extends BaseAdapter {
         holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
         holder.name = (TextView) convertView.findViewById(R.id.location_name);
         holder.radius = (TextView) convertView.findViewById(R.id.location_radius);
-        holder.country = (TextView) convertView.findViewById(R.id.location_country);
-        holder.address = (TextView) convertView.findViewById(R.id.location_address);
         holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
 
@@ -123,7 +121,6 @@ public class LocationAdapter extends BaseAdapter {
                 addressString = context.getString(R.string.unknown);
                 countryString = context.getString(R.string.unknown);
             }
-            holder.address.setText(addressString);
             holder.country.setText(countryString);
         }
 
@@ -136,7 +133,7 @@ public class LocationAdapter extends BaseAdapter {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx());
         } else {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available));
+                + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mLocationInfo.getValue()))

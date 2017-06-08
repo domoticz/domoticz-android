@@ -134,7 +134,7 @@ dependencies {
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     def supportVersion = '25.3.1'
-    def playServicesVersion = '10.2.1'
+    def playServicesVersion = '10.2.6'
 
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
@@ -145,6 +145,7 @@ dependencies {
 
     compile "com.google.firebase:firebase-core:$playServicesVersion"
     compile "com.google.firebase:firebase-crash:$playServicesVersion"
+    compile "com.google.firebase:firebase-perf:$playServicesVersion"
 
     compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
     compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
@@ -161,7 +162,7 @@ dependencies {
     compile 'com.larswerkman:lobsterpicker:1.0.1'
 
     compile 'com.github.zurche:plain-pie:v0.2.2'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
     compile 'com.github.dexafree:MaterialList:v3.2.2'
     compile 'com.github.hotchemi:android-rate:1.0.1'
@@ -178,7 +179,10 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.schibstedspain.android:leku:3.1.0'
+    compile 'com.github.matthiasrobbers:shortbread:1.0.1'
+    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
+
+    compile 'com.schibstedspain.android:leku:3.3.0'
 
     compile 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
@@ -202,6 +206,5 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
-
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'com.google.gms.google-services'
-

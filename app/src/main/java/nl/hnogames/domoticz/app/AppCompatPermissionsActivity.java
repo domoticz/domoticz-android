@@ -58,7 +58,7 @@ public class AppCompatPermissionsActivity extends AppCompatActivity implements O
 
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                    this.getString(R.string.permission_desc_phone), permissionName);
+                this.getString(R.string.permission_desc_phone), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -66,7 +66,7 @@ public class AppCompatPermissionsActivity extends AppCompatActivity implements O
 
         if (builder.toString().contains("android.permission.READ_EXTERNAL_STORAGE") || builder.toString().contains("android.permission.WRITE_EXTERNAL_STORAGE")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                    this.getString(R.string.permission_desc_storage), permissionName);
+                this.getString(R.string.permission_desc_storage), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -74,7 +74,7 @@ public class AppCompatPermissionsActivity extends AppCompatActivity implements O
 
         if (builder.toString().contains("android.permission.CAMERA")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                    this.getString(R.string.permission_desc_camera), permissionName);
+                this.getString(R.string.permission_desc_camera), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -82,7 +82,7 @@ public class AppCompatPermissionsActivity extends AppCompatActivity implements O
 
         if (builder.toString().contains("android.permission.RECORD_AUDIO")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                    this.getString(R.string.permission_desc_audio), permissionName);
+                this.getString(R.string.permission_desc_audio), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -90,7 +90,7 @@ public class AppCompatPermissionsActivity extends AppCompatActivity implements O
 
         if (builder.toString().contains("android.permission.USE_FINGERPRINT")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                    this.getString(R.string.permission_desc_finger), permissionName);
+                this.getString(R.string.permission_desc_finger), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }

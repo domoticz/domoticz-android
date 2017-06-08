@@ -28,7 +28,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -64,22 +63,22 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         if (mSharedPrefUtil.darkThemeEnabled()) {
             mdb = new MaterialDialog.Builder(mContext)
-                    .titleColorRes(R.color.white)
-                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                    .dividerColorRes(R.color.white)
-                    .backgroundColorRes(R.color.primary)
-                    .positiveColorRes(R.color.white)
-                    .neutralColorRes(R.color.white)
-                    .negativeColorRes(R.color.white)
-                    .widgetColorRes(R.color.white)
-                    .buttonRippleColorRes(R.color.white);
+                .titleColorRes(R.color.white)
+                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                .dividerColorRes(R.color.white)
+                .backgroundColorRes(R.color.primary)
+                .positiveColorRes(R.color.white)
+                .neutralColorRes(R.color.white)
+                .negativeColorRes(R.color.white)
+                .widgetColorRes(R.color.white)
+                .buttonRippleColorRes(R.color.white);
         } else
             mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
-                .negativeText(android.R.string.cancel)
-                .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok)
-                .onAny(this);
+            .negativeText(android.R.string.cancel)
+            .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok)
+            .onAny(this);
 
         ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
@@ -88,7 +87,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 isFahrenheit = true;
             }
         }
-        
+
         minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");
         maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo != null ? configInfo.getTempSign() : "C");
         currentTemperature = temp;

@@ -26,8 +26,69 @@ import android.telephony.TelephonyManager;
 
 import java.util.UUID;
 
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
+
 public class DeviceUtils {
 
+    //Check is a Domoticz Device is toggable by NFC, Geofences or QRCodes
+    public static boolean isAutomatedToggableDevice(DevicesInfo mDeviceInfo) {
+        if (mDeviceInfo.equals(null))
+            return false;
+        if (mDeviceInfo.getSwitchTypeVal() == 0 &&
+            (mDeviceInfo.getSwitchType() == null)) {
+            if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+                return true;
+            } else {
+                switch (mDeviceInfo.getType()) {
+                    case DomoticzValues.Scene.Type.GROUP:
+                        return true;
+                    case DomoticzValues.Scene.Type.SCENE:
+                        return true;
+                    case DomoticzValues.Device.Utility.Type.THERMOSTAT:
+                        return false;
+                    case DomoticzValues.Device.Utility.Type.HEATING:
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+        } else if ((mDeviceInfo.getSwitchType() == null)) {
+            return false;
+        } else {
+            switch (mDeviceInfo.getSwitchTypeVal()) {
+                case DomoticzValues.Device.Type.Value.ON_OFF:
+                case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                case DomoticzValues.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.DOORCONTACT:
+                    switch (mDeviceInfo.getSwitchType()) {
+                        case DomoticzValues.Device.Type.Name.SECURITY:
+                            return false;
+                        default:
+                            return true;
+                    }
+                case DomoticzValues.Device.Type.Value.X10SIREN:
+                case DomoticzValues.Device.Type.Value.MOTION:
+                case DomoticzValues.Device.Type.Value.CONTACT:
+                case DomoticzValues.Device.Type.Value.DUSKSENSOR:
+                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                case DomoticzValues.Device.Type.Value.DOORBELL:
+                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                case DomoticzValues.Device.Type.Value.DIMMER:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                case DomoticzValues.Device.Type.Value.SELECTOR:
+                case DomoticzValues.Device.Type.Value.BLINDS:
+                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
+                case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
+                case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
 
     /**
      * get Unique ID for this device

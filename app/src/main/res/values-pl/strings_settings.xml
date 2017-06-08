@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Zabezpieczenie odciskiem palca nie jest obsługiwane na tym urządzeniu</string>
   <string name="fingerprint_not_setup_in_android">Po raz pierwszy skonfiguruj/połącz odcisk palca dla tego urządzenia</string>
   <string name="fingerprint_sure">Czy jesteś pewny? Hasłem awaryjnym jest hasło do Twojego konta Domoticz.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widżety (BETA)</string>
+  <string name="widget_description">Włącz lub wyłącz widżety na tym urządzeniu</string>
+  <string name="widget_disabled">Widżety nie są włączone na tym urządzeniu, proszę sprawdzić ustawienia Domoticz</string>
+  <string name="widget_warning">Używasz widżetów na własne ryzyko !! Widżety są obecnie w fazie beta i prawdopodobnie zawierają określone błędy. Może to powodować duże zużycie danych / baterii ...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID Google Cloud Messaging</string>
   <string name="notification_settings_push">Podaj Twój identyfikator rejestracji w Domoticz</string>

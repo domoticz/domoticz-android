@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Fingerabdruck-Sicherheit wird auf diesem Gerät nicht unterstützt</string>
   <string name="fingerprint_not_setup_in_android">Konfigurieren/schließen Sie zuerst einen Fingerabdrucksensor an dieses Gerät an</string>
   <string name="fingerprint_sure">Sind Sie sicher? Das Sicherheitskennwort ist das Passwort deines Domoticz Kontos.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widgets (BETA)</string>
+  <string name="widget_description">Enable or Disable Widget on this device</string>
+  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud Messaging ID</string>
   <string name="notification_settings_push">Schicke Registrierungs-ID an Domoticz</string>

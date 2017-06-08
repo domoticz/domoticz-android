@@ -71,7 +71,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                     NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
                     for (Node node : nodes.getNodes()) {
                         MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                                mApiClient, node.getId(), path, text.getBytes()).await();
+                            mApiClient, node.getId(), path, text.getBytes()).await();
 
                         if (result.getStatus().isSuccess()) {
                             Log.v("WEAR", "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
@@ -108,33 +108,31 @@ public class WearMessageListenerService extends WearableListenerService implemen
                     else
                         onSwitchToggle(selectedSwitch);
                 } else {
-                    if (selectedSwitch != null) {
-                        switch (selectedSwitch.getSwitchTypeVal()) {
-                            case DomoticzValues.Device.Type.Value.ON_OFF:
-                            case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                            case DomoticzValues.Device.Type.Value.X10SIREN:
-                            case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                            case DomoticzValues.Device.Type.Value.DOORLOCK:
-                            case DomoticzValues.Device.Type.Value.DIMMER:
-                            case DomoticzValues.Device.Type.Value.BLINDS:
-                            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                                onSwitchToggle(selectedSwitch);
-                                break;
+                    switch (selectedSwitch.getSwitchTypeVal()) {
+                        case DomoticzValues.Device.Type.Value.ON_OFF:
+                        case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                        case DomoticzValues.Device.Type.Value.X10SIREN:
+                        case DomoticzValues.Device.Type.Value.DOORCONTACT:
+                        case DomoticzValues.Device.Type.Value.DOORLOCK:
+                        case DomoticzValues.Device.Type.Value.DIMMER:
+                        case DomoticzValues.Device.Type.Value.BLINDS:
+                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                            onSwitchToggle(selectedSwitch);
+                            break;
 
-                            case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                            case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
-                            case DomoticzValues.Device.Type.Value.DOORBELL:
-                                onButtonClick(selectedSwitch, true);
-                                break;
+                        case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                        case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                        case DomoticzValues.Device.Type.Value.DOORBELL:
+                            onButtonClick(selectedSwitch, true);
+                            break;
 
-                            case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                                onButtonClick(selectedSwitch, false);
-                                break;
+                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                            onButtonClick(selectedSwitch, false);
+                            break;
 
-                            default:
-                                throw new NullPointerException(
-                                        "Toggle event received from wear device for unsupported switch type.");
-                        }
+                        default:
+                            throw new NullPointerException(
+                                "Toggle event received from wear device for unsupported switch type: " + selectedSwitch.getSwitchTypeVal());
                     }
                     //now send latest status
                     getSwitches();
@@ -184,7 +182,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                 String name = mDevicesInfo.getName();
 
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                        mDevicesInfo.getFavoriteBoolean()) {//only dashboard switches..
+                    mDevicesInfo.getFavoriteBoolean()) {//only dashboard switches..
                     supportedSwitches.add(mDevicesInfo);
                 }
             }
@@ -223,9 +221,9 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     private void initGoogleApiClient() {
         mApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .build();
+            .addApi(Wearable.API)
+            .addConnectionCallbacks(this)
+            .build();
 
         mApiClient.connect();
     }
@@ -246,7 +244,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
         boolean checked = !toggledDevice.getStatusBoolean();
         if (toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+            toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
             if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             else jsonAction = DomoticzValues.Device.Switch.Action.ON;
         } else {

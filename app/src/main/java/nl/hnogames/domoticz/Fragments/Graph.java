@@ -452,7 +452,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addTemperature && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuest, ((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
                 dataSet.setDrawCircles(false);
@@ -460,7 +460,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 entries.add(dataSet);
 
                 if ((addSetpoint && !enableFilters) ||
-                        (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()))) {
+                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()))) {
                     dataSet = new LineDataSet(valuesse, ((TextView) view.findViewById(R.id.legend_set_point)).getText().toString()); // add entries to dataset
                     dataSet.setColor(ContextCompat.getColor(context, R.color.material_pink_600));
                     dataSet.setDrawCircles(false);
@@ -489,7 +489,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addHumidity && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valueshu, ((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
                 dataSet.setDrawCircles(false);
@@ -498,7 +498,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addBarometer && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesba, ((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
                 dataSet.setDrawCircles(false);
@@ -507,7 +507,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addCounter && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesc, ((TextView) view.findViewById(R.id.legend_counter)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_indigo_600));
                 dataSet.setDrawCircles(false);
@@ -516,7 +516,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addPowerUsage && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valueeu, ((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
                 dataSet.setDrawCircles(false);
@@ -524,7 +524,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 entries.add(dataSet);
             }
             if ((addPowerDelivery && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valueeg, ((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
                 dataSet.setDrawCircles(false);
@@ -533,7 +533,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addPercentage && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesv, ((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
                 dataSet.setDrawCircles(false);
@@ -561,7 +561,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addSecondPercentage && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesv2, ((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
                 dataSet.setDrawCircles(false);
@@ -570,7 +570,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addDirection && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesdi, ((TextView) view.findViewById(R.id.legend_direction)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
                 dataSet.setDrawCircles(false);
@@ -579,7 +579,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addSunPower && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesuv, ((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
                 dataSet.setDrawCircles(false);
@@ -588,7 +588,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addSpeed && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuessp, ((TextView) view.findViewById(R.id.legend_speed)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_amber_600));
                 dataSet.setDrawCircles(false);
@@ -597,7 +597,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addUsage && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesu, ((TextView) view.findViewById(R.id.legend_usage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
                 dataSet.setDrawCircles(false);
@@ -606,7 +606,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addRain && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesmm, ((TextView) view.findViewById(R.id.legend_rain)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
                 dataSet.setDrawCircles(false);
@@ -615,7 +615,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addCO2 && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2, ((TextView) view.findViewById(R.id.legend_co2)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
                 dataSet.setDrawCircles(false);
@@ -624,7 +624,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addCO2Min && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2min, ((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
                 dataSet.setDrawCircles(false);
@@ -633,7 +633,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             }
 
             if ((addCO2Max && !enableFilters) ||
-                    (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()))) {
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2max, ((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
                 dataSet.setDrawCircles(false);
@@ -644,10 +644,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             if (entries.size() > 1) {
                 if (addTemperature) {
                     (view.findViewById(R.id.legend_temperature))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     if (addSetpoint) {
                         (view.findViewById(R.id.legend_set_point))
-                                .setVisibility(View.VISIBLE);
+                            .setVisibility(View.VISIBLE);
                     }
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_temperature)).getText());
 
@@ -656,92 +656,92 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 if (addHumidity) {
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_humidity)).getText());
                     (view.findViewById(R.id.legend_humidity))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                 }
 
                 if (addBarometer) {
                     (view.findViewById(R.id.legend_barometer))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_barometer)).getText());
                 }
 
                 if (addCounter) {
                     (view.findViewById(R.id.legend_counter))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     ((TextView) view.findViewById(R.id.legend_counter))
-                            .setText(axisYLabel);
+                        .setText(axisYLabel);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_counter)).getText());
                 }
 
                 if (addPercentage) {
                     (view.findViewById(R.id.legend_percentage))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage)).getText());
                 }
 
                 if (addSecondPercentage) {
                     (view.findViewById(R.id.legend_percentage2))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_percentage2)).getText());
                 }
 
                 if (addDirection) {
                     (view.findViewById(R.id.legend_direction))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_direction)).getText());
                 }
 
                 if (addSunPower) {
                     (view.findViewById(R.id.legend_sunpower))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_sunpower)).getText());
                 }
 
                 if (addSpeed) {
                     (view.findViewById(R.id.legend_speed))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_speed)).getText());
                 }
 
                 if (addUsage) {
                     (view.findViewById(R.id.legend_usage))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_usage)).getText());
                 }
 
                 if (addPowerDelivery) {
                     (view.findViewById(R.id.legend_powerdeliv))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_powerdeliv)).getText());
                 }
 
                 if (addPowerUsage) {
                     (view.findViewById(R.id.legend_powerusage))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_powerusage)).getText());
                 }
 
                 if (addRain) {
                     (view.findViewById(R.id.legend_rain))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_rain)).getText());
                 }
 
                 if (addCO2) {
                     (view.findViewById(R.id.legend_co2))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2)).getText());
                 }
 
                 if (addCO2Min) {
                     (view.findViewById(R.id.legend_co2min))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2min)).getText());
                 }
 
                 if (addCO2Max) {
                     (view.findViewById(R.id.legend_co2max))
-                            .setVisibility(View.VISIBLE);
+                        .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2max)).getText());
                 }
             }
@@ -789,44 +789,44 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 lineLabels.toArray(items);
 
                 new MaterialDialog.Builder(context)
-                        .title(context.getString(R.string.filter))
-                        .items(items)
-                        .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            @DebugLog
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                selectedFilters = which;
-                                enableFilters = true;
+                    .title(context.getString(R.string.filter))
+                    .items(items)
+                    .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
+                        @Override
+                        @DebugLog
+                        public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                            selectedFilters = which;
+                            enableFilters = true;
 
-                                if (text != null && text.length > 0) {
-                                    filterLabels = new ArrayList<>();
+                            if (text != null && text.length > 0) {
+                                filterLabels = new ArrayList<>();
 
-                                    //set filters
-                                    for (CharSequence c : text)
-                                        filterLabels.add((String) c);
+                                //set filters
+                                for (CharSequence c : text)
+                                    filterLabels.add((String) c);
 
-                                    LineData columnData = generateData(root);
-                                    if (columnData == null)
-                                        finish();
-                                    else {
-                                        chart.setData(columnData);
-                                        chart.invalidate(); // refresh
-                                        chart.setVisibility(View.VISIBLE);
-                                        chart.animateX(1000);
+                                LineData columnData = generateData(root);
+                                if (columnData == null)
+                                    finish();
+                                else {
+                                    chart.setData(columnData);
+                                    chart.invalidate(); // refresh
+                                    chart.setVisibility(View.VISIBLE);
+                                    chart.animateX(1000);
 
-                                        if (getActivity() != null)
-                                            getActivity().invalidateOptionsMenu();
-                                    }
-                                } else {
-                                    enableFilters = false;
-                                    Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
+                                    if (getActivity() != null)
+                                        getActivity().invalidateOptionsMenu();
                                 }
-                                return true;
+                            } else {
+                                enableFilters = false;
+                                Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
                             }
-                        })
-                        .positiveText(R.string.ok)
-                        .negativeText(R.string.cancel)
-                        .show();
+                            return true;
+                        }
+                    })
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .show();
                 return true;
             default:
                 break;

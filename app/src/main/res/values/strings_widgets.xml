@@ -35,4 +35,5 @@
     <string name="widget_light">Light</string>
     <string name="widget_transparent_dark">Dark Transparent</string>
     <string name="widget_transparent_light">Light Transparent</string>
+
 </resources>

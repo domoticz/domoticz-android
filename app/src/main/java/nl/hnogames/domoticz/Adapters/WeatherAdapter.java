@@ -106,7 +106,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.weather_row_default, parent, false);
+            .inflate(R.layout.weather_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));

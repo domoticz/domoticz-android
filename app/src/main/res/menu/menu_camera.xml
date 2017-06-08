@@ -25,13 +25,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_camera_play"
-        android:icon="@drawable/ic_play"
-        android:orderInCategory="100"
-        android:title="@string/action_camera_play"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_speech"
         android:icon="@drawable/ic_microphone"
         android:orderInCategory="99"

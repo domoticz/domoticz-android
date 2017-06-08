@@ -212,16 +212,19 @@ public class DomoticzUrls {
         }
 
         String fullString = buildUrl.append(protocol)
-                .append(baseUrl).append(":")
-                .append(port)
+                .append(baseUrl)
+                .append(!port.equals("80") ? ":" + port: "")
                 .append(directory.isEmpty() ? "" : "/" + directory)
                 .append(jsonUrl).toString();
 
         return fullString;
     }
 
-
     public String constructGetUrl(int jsonGetUrl) {
+        return constructGetUrl(jsonGetUrl, false, null, null);
+    }
+
+    public String constructGetUrl(int jsonGetUrl, boolean withPass, String username, String password) {
         if (domoticz == null)
             return null;
 
@@ -236,7 +239,6 @@ public class DomoticzUrls {
             url = mServerUtil.getActiveServer().getLocalServerUrl();
             port = mServerUtil.getActiveServer().getLocalServerPort();
             directory = mServerUtil.getActiveServer().getLocalServerDirectory();
-
         } else {
             if (mServerUtil.getActiveServer().getRemoteServerSecure())
                 protocol = DomoticzValues.Url.Protocol.HTTPS;
@@ -245,17 +247,24 @@ public class DomoticzUrls {
             url = mServerUtil.getActiveServer().getRemoteServerUrl();
             port = mServerUtil.getActiveServer().getRemoteServerPort();
             directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
-
         }
         jsonUrl = getJsonGetUrl(jsonGetUrl);
 
-        String fullString = buildUrl.append(protocol)
-                .append(url).append(":")
-                .append(port)
-                .append(directory.isEmpty() ? "" : "/" + directory)
-                .append(jsonUrl).toString();
-
-        return fullString;
+        if(!withPass) {
+            return buildUrl.append(protocol)
+                    .append(url)
+                    .append(!port.equals("80") ? ":" + port: "")
+                    .append(directory.isEmpty() ? "" : "/" + directory)
+                    .append(jsonUrl).toString();
+        }
+        else{
+            return buildUrl.append(protocol)
+                    .append(username).append(":").append(password).append("@")
+                    .append(url)
+                    .append(!port.equals("80") ? ":" + port: "")
+                    .append(directory.isEmpty() ? "" : "/" + directory)
+                    .append(jsonUrl).toString();
+        }
     }
 
     public String getJsonGetUrl(int jsonGetUrl) {

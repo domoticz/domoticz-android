@@ -71,6 +71,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                <RelativeLayout
+                    android:id="@+id/RelativeLayoutContentWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -261,13 +266,14 @@
                             android:text="@string/button_color"
                             android:textSize="10dp" />
                     </LinearLayout>
+                </RelativeLayout>
 
                     <SeekBar
                         android:id="@+id/switch_dimmer"
                         android:layout_width="129dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_below="@+id/linearLayout7864"
+                        android:layout_below="@+id/RelativeLayoutContentWrapper"
                         android:paddingTop="15dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
