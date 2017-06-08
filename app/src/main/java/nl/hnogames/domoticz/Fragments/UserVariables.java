@@ -47,187 +47,187 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener, UserVariablesClickListener {
 
-  private ArrayList<UserVariableInfo> mUserVariableInfos;
-  private UserVariablesAdapter adapter;
-  private Context mContext;
-  private String filter = "";
-  private SlideInBottomAnimationAdapter alphaSlideIn;
+    private ArrayList<UserVariableInfo> mUserVariableInfos;
+    private UserVariablesAdapter adapter;
+    private Context mContext;
+    private String filter = "";
+    private SlideInBottomAnimationAdapter alphaSlideIn;
 
-  @Override
-  public void onConnectionFailed() {
-    new GetCachedDataTask().execute();
-  }
-
-  @Override
-  @DebugLog
-  public void refreshFragment() {
-    if (mSwipeRefreshLayout != null)
-      mSwipeRefreshLayout.setRefreshing(true);
-    processUserVariables();
-  }
-
-  @Override
-  @DebugLog
-  public void onAttach(Context context) {
-    super.onAttach(context);
-    mContext = context;
-    if (getActionBar() != null)
-      getActionBar().setTitle(R.string.title_vars);
-  }
-
-  @Override
-  @DebugLog
-  public void Filter(String text) {
-    filter = text;
-    try {
-      if (adapter != null)
-        adapter.getFilter().filter(text);
-      super.Filter(text);
-    } catch (Exception ex) {
-      ex.printStackTrace();
+    @Override
+    public void onConnectionFailed() {
+        new GetCachedDataTask().execute();
     }
-  }
 
-  @Override
-  @DebugLog
-  public void onConnectionOk() {
-    super.showSpinner(true);
-    processUserVariables();
-  }
-
-  private void processUserVariables() {
-    if (mSwipeRefreshLayout != null)
-      mSwipeRefreshLayout.setRefreshing(true);
-    new GetCachedDataTask().execute();
-  }
-
-  private void createListView() {
-    if (getView() != null) {
-      if (adapter == null) {
-        adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos, this);
-        alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-        gridView.setAdapter(alphaSlideIn);
-      } else {
-        adapter.setData(mUserVariableInfos);
-        adapter.notifyDataSetChanged();
-        alphaSlideIn.notifyDataSetChanged();
-      }
-      mSwipeRefreshLayout.setRefreshing(false);
-      mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        @DebugLog
-        public void onRefresh() {
-          processUserVariables();
-        }
-      });
-      super.showSpinner(false);
-      this.Filter(filter);
-    }
-  }
-
-  @Override
-  @DebugLog
-  public void errorHandling(Exception error) {
-    if (error != null) {
-      // Let's check if were still attached to an activity
-      if (isAdded()) {
+    @Override
+    @DebugLog
+    public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
-          mSwipeRefreshLayout.setRefreshing(false);
-
-        super.errorHandling(error);
-      }
-    }
-  }
-
-  @Override
-  public void onUserVariableClick(final UserVariableInfo clickedVar) {
-    new MaterialDialog.Builder(mContext)
-        .title(R.string.title_vars)
-        .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
-        .inputType(InputType.TYPE_CLASS_TEXT)
-        .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
-          @Override
-          public void onInput(MaterialDialog dialog, CharSequence input) {
-            if (validateInput(String.valueOf(input), clickedVar.getType())) {
-              updateUserVariable(String.valueOf(input), clickedVar);
-            } else {
-              UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
-            }
-          }
-        }).show();
-  }
-
-  private boolean validateInput(String input, String type) {
-    try {
-      switch (type) {
-        case "0":
-          Integer.parseInt(input);
-          break;
-        case "1":
-          Float.parseFloat(input);
-          break;
-        case "3":
-          new SimpleDateFormat("dd/MM/yyyy").parse(input);
-          break;
-        case "4":
-          new SimpleDateFormat("HH:mm").parse(input);
-          break;
-      }
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
-  }
-
-  private boolean updateUserVariable(String input, UserVariableInfo clickedVar) {
-    mDomoticz.setUserVariableValue(input, clickedVar, new setCommandReceiver() {
-      @Override
-      public void onReceiveResult(String result) {
+            mSwipeRefreshLayout.setRefreshing(true);
         processUserVariables();
-      }
+    }
 
-      @Override
-      public void onError(Exception error) {
-        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input_error), Snackbar.LENGTH_SHORT);
-      }
-    });
-    return true;
-  }
+    @Override
+    @DebugLog
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_vars);
+    }
 
-  private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-    ArrayList<UserVariableInfo> cacheUserVariables = null;
-
-    protected Boolean doInBackground(Boolean... geto) {
-      if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+    @Override
+    @DebugLog
+    public void Filter(String text) {
+        filter = text;
         try {
-          cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
-          UserVariables.this.mUserVariableInfos = cacheUserVariables;
+            if (adapter != null)
+                adapter.getFilter().filter(text);
+            super.Filter(text);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
-      }
-      return true;
     }
 
-    protected void onPostExecute(Boolean result) {
-      if (cacheUserVariables != null)
-        createListView();
-
-      mDomoticz.getUserVariables(new UserVariablesReceiver() {
-        @Override
-        @DebugLog
-        public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
-          UserVariables.this.mUserVariableInfos = mVarInfos;
-          SerializableManager.saveSerializable(mContext, mVarInfos, "UserVariables");
-          successHandling(mUserVariableInfos.toString(), false);
-          createListView();
-        }
-
-        @Override
-        @DebugLog
-        public void onError(Exception error) {
-          errorHandling(error);
-        }
-      });
+    @Override
+    @DebugLog
+    public void onConnectionOk() {
+        super.showSpinner(true);
+        processUserVariables();
     }
-  }
+
+    private void processUserVariables() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
+        new GetCachedDataTask().execute();
+    }
+
+    private void createListView() {
+        if (getView() != null) {
+            if (adapter == null) {
+                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos, this);
+                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
+                gridView.setAdapter(alphaSlideIn);
+            } else {
+                adapter.setData(mUserVariableInfos);
+                adapter.notifyDataSetChanged();
+                alphaSlideIn.notifyDataSetChanged();
+            }
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                @DebugLog
+                public void onRefresh() {
+                    processUserVariables();
+                }
+            });
+            super.showSpinner(false);
+            this.Filter(filter);
+        }
+    }
+
+    @Override
+    @DebugLog
+    public void errorHandling(Exception error) {
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                if (mSwipeRefreshLayout != null)
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                super.errorHandling(error);
+            }
+        }
+    }
+
+    @Override
+    public void onUserVariableClick(final UserVariableInfo clickedVar) {
+        new MaterialDialog.Builder(mContext)
+            .title(R.string.title_vars)
+            .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+            .inputType(InputType.TYPE_CLASS_TEXT)
+            .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                @Override
+                public void onInput(MaterialDialog dialog, CharSequence input) {
+                    if (validateInput(String.valueOf(input), clickedVar.getType())) {
+                        updateUserVariable(String.valueOf(input), clickedVar);
+                    } else {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                    }
+                }
+            }).show();
+    }
+
+    private boolean validateInput(String input, String type) {
+        try {
+            switch (type) {
+                case "0":
+                    Integer.parseInt(input);
+                    break;
+                case "1":
+                    Float.parseFloat(input);
+                    break;
+                case "3":
+                    new SimpleDateFormat("dd/MM/yyyy").parse(input);
+                    break;
+                case "4":
+                    new SimpleDateFormat("HH:mm").parse(input);
+                    break;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean updateUserVariable(String input, UserVariableInfo clickedVar) {
+        mDomoticz.setUserVariableValue(input, clickedVar, new setCommandReceiver() {
+            @Override
+            public void onReceiveResult(String result) {
+                processUserVariables();
+            }
+
+            @Override
+            public void onError(Exception error) {
+                UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input_error), Snackbar.LENGTH_SHORT);
+            }
+        });
+        return true;
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<UserVariableInfo> cacheUserVariables = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
+                    UserVariables.this.mUserVariableInfos = cacheUserVariables;
+                } catch (Exception ex) {
+                }
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (cacheUserVariables != null)
+                createListView();
+
+            mDomoticz.getUserVariables(new UserVariablesReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
+                    UserVariables.this.mUserVariableInfos = mVarInfos;
+                    SerializableManager.saveSerializable(mContext, mVarInfos, "UserVariables");
+                    successHandling(mUserVariableInfos.toString(), false);
+                    createListView();
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
+        }
+    }
 }

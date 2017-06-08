@@ -24,8 +24,8 @@ package nl.hnogames.domoticz.Interfaces;
 @SuppressWarnings("unused")
 public interface DomoticzFragmentListener {
 
-  void onConnectionOk();
+    void onConnectionOk();
 
-  void onConnectionFailed();
+    void onConnectionFailed();
 
 }

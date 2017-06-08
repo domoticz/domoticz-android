@@ -23,67 +23,67 @@ package nl.hnogames.domoticz.Containers;
 
 public class NFCInfo {
 
-  private boolean enabled = false;
-  private String id;
-  private String name;
-  private int switchIdx;
-  private String switchName;
-  private String switchPassword = "";
-  private String value;
+    private boolean enabled = false;
+    private String id;
+    private String name;
+    private int switchIdx;
+    private String switchName;
+    private String switchPassword = "";
+    private String value;
 
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public int getSwitchIdx() {
-    return switchIdx;
-  }
+    public int getSwitchIdx() {
+        return switchIdx;
+    }
 
-  public void setSwitchIdx(int switchIdx) {
-    this.switchIdx = switchIdx;
-  }
+    public void setSwitchIdx(int switchIdx) {
+        this.switchIdx = switchIdx;
+    }
 
-  public boolean isEnabled() {
-    return enabled;
-  }
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-  public String getSwitchPassword() {
-    return switchPassword;
-  }
+    public String getSwitchPassword() {
+        return switchPassword;
+    }
 
-  public void setSwitchPassword(String switchPassword) {
-    this.switchPassword = switchPassword;
-  }
+    public void setSwitchPassword(String switchPassword) {
+        this.switchPassword = switchPassword;
+    }
 
-  public String getSwitchName() {
-    return switchName;
-  }
+    public String getSwitchName() {
+        return switchName;
+    }
 
-  public void setSwitchName(String switchName) {
-    this.switchName = switchName;
-  }
+    public void setSwitchName(String switchName) {
+        this.switchName = switchName;
+    }
 
-  public String getValue() {
-    return value;
-  }
+    public String getValue() {
+        return value;
+    }
 
-  public void setValue(String value) {
-    this.value = value;
-  }
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

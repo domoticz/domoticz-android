@@ -62,219 +62,219 @@ import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener, OnPermissionCallback {
 
-  @SuppressWarnings("unused")
-  private static final String TAG = Cameras.class.getSimpleName();
+    @SuppressWarnings("unused")
+    private static final String TAG = Cameras.class.getSimpleName();
 
-  private Context context;
-  private RecyclerView mRecyclerView;
-  private CamerasAdapter mAdapter;
-  private boolean refreshTimer = false;
-  private SharedPrefUtil mSharedPrefs;
-  private SlideInBottomAnimationAdapter alphaSlideIn;
-  private PermissionFragmentHelper permissionFragmentHelper;
+    private Context context;
+    private RecyclerView mRecyclerView;
+    private CamerasAdapter mAdapter;
+    private boolean refreshTimer = false;
+    private SharedPrefUtil mSharedPrefs;
+    private SlideInBottomAnimationAdapter alphaSlideIn;
+    private PermissionFragmentHelper permissionFragmentHelper;
 
-  @Override
-  public View onCreateView(LayoutInflater inflater,
-                           ViewGroup container,
-                           Bundle savedInstanceState) {
-    return super.onCreateView(inflater, container, savedInstanceState);
-  }
-
-  @Override
-  public void refreshFragment() {
-    refreshTimer = true;
-
-    getCameras();
-  }
-
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-  }
-
-  public void getCameras() {
-    permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
-    new GetCachedDataTask().execute();
-  }
-
-  private void ImageSelected(CameraInfo camera) {
-    Intent intent = new Intent(context, CameraActivity.class);
-    intent.putExtra("IMAGETITLE", camera.getName());
-    intent.putExtra("IMAGEURL", camera.getSnapShotURL());
-    startActivity(intent);
-  }
-
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-    this.context = context;
-    mSharedPrefs = new SharedPrefUtil(context);
-    if (getActionBar() != null)
-      getActionBar().setTitle(R.string.title_cameras);
-  }
-
-  @Override
-  public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
-    if (error != null) {
-      // Let's check if were still attached to an activity
-      if (isAdded()) {
-        super.errorHandling(error, coordinatorLayout);
-      }
-    }
-  }
-
-  public ActionBar getActionBar() {
-    return ((AppCompatActivity) context).getSupportActionBar();
-  }
-
-  @Override
-  public void onConnectionOk() {
-    if (getView() != null) {
-      getCameras();
-    }
-  }
-
-  @Override
-  public void onConnectionFailed() {
-    getCameras();
-  }
-
-  private void createListView(final ArrayList<CameraInfo> Cameras) {
-    if (getView() == null)
-      return;
-
-    if (mRecyclerView == null) {
-      mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
-      mRecyclerView.setHasFixedSize(true);
-      GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
-      mRecyclerView.setLayoutManager(mLayoutManager);
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    if (mAdapter == null) {
-      mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
-      mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
-        @Override
-        public void onItemClick(int position, View v) {
-          if (mPhoneConnectionUtil.isNetworkAvailable()) {
-            try {
-              TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+    @Override
+    public void refreshFragment() {
+        refreshTimer = true;
 
-              for (CameraInfo c : Cameras) {
-                if (c.getName().equals(cameraTitle.getText())) {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(context)) {
-                      permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                    } else
-                      ImageSelected(c);
-                  } else {
-                    ImageSelected(c);
-                  }
+        getCameras();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    public void getCameras() {
+        permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
+        new GetCachedDataTask().execute();
+    }
+
+    private void ImageSelected(CameraInfo camera) {
+        Intent intent = new Intent(context, CameraActivity.class);
+        intent.putExtra("IMAGETITLE", camera.getName());
+        intent.putExtra("IMAGEURL", camera.getSnapShotURL());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+        mSharedPrefs = new SharedPrefUtil(context);
+        if (getActionBar() != null)
+            getActionBar().setTitle(R.string.title_cameras);
+    }
+
+    @Override
+    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
+        if (error != null) {
+            // Let's check if were still attached to an activity
+            if (isAdded()) {
+                super.errorHandling(error, coordinatorLayout);
+            }
+        }
+    }
+
+    public ActionBar getActionBar() {
+        return ((AppCompatActivity) context).getSupportActionBar();
+    }
+
+    @Override
+    public void onConnectionOk() {
+        if (getView() != null) {
+            getCameras();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed() {
+        getCameras();
+    }
+
+    private void createListView(final ArrayList<CameraInfo> Cameras) {
+        if (getView() == null)
+            return;
+
+        if (mRecyclerView == null) {
+            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+            mRecyclerView.setHasFixedSize(true);
+            GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+        }
+
+        if (mAdapter == null) {
+            mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
+            mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
+                @Override
+                public void onItemClick(int position, View v) {
+                    if (mPhoneConnectionUtil.isNetworkAvailable()) {
+                        try {
+                            TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+
+                            for (CameraInfo c : Cameras) {
+                                if (c.getName().equals(cameraTitle.getText())) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        if (!PermissionsUtil.canAccessStorage(context)) {
+                                            permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                        } else
+                                            ImageSelected(c);
+                                    } else {
+                                        ImageSelected(c);
+                                    }
+                                }
+                            }
+                        } catch (Exception ex) {
+                            errorHandling(ex, coordinatorLayout);
+                        }
+                    } else {
+                        if (coordinatorLayout != null) {
+                            UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                        }
+                    }
                 }
-              }
-            } catch (Exception ex) {
-              errorHandling(ex, coordinatorLayout);
+            });
+
+            alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
+            mRecyclerView.setAdapter(alphaSlideIn);
+        } else {
+            mAdapter.setData(Cameras);
+            mAdapter.notifyDataSetChanged();
+            alphaSlideIn.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
+        StringBuilder builder = new StringBuilder(neededPermission.length);
+        if (neededPermission.length > 0) {
+            for (String permission : neededPermission) {
+                builder.append(permission).append("\n");
             }
-          } else {
-            if (coordinatorLayout != null) {
-              UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-              if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+        }
+        AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
+            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+        if (!alert.isShowing()) {
+            alert.show();
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionFragmentHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionFragmentHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        ArrayList<CameraInfo> cacheCameras = null;
+
+        protected Boolean doInBackground(Boolean... geto) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+                try {
+                    cacheCameras = (ArrayList<CameraInfo>) SerializableManager.readSerializedObject(context, "Cameras");
+                } catch (Exception ex) {
+                }
             }
-          }
-        }
-      });
-
-      alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
-      mRecyclerView.setAdapter(alphaSlideIn);
-    } else {
-      mAdapter.setData(Cameras);
-      mAdapter.notifyDataSetChanged();
-      alphaSlideIn.notifyDataSetChanged();
-    }
-  }
-
-  @Override
-  public void onPermissionDeclined(@NonNull String[] permissionName) {
-    Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
-    String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
-    StringBuilder builder = new StringBuilder(neededPermission.length);
-    if (neededPermission.length > 0) {
-      for (String permission : neededPermission) {
-        builder.append(permission).append("\n");
-      }
-    }
-    AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-        getActivity().getString(R.string.permission_desc_storage), neededPermission);
-    if (!alert.isShowing()) {
-      alert.show();
-    }
-  }
-
-  @Override
-  public void onPermissionPreGranted(@NonNull String permissionsName) {
-    Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
-  }
-
-  @Override
-  public void onPermissionNeedExplanation(@NonNull String permissionName) {
-    Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
-  }
-
-  @Override
-  public void onPermissionReallyDeclined(@NonNull String permissionName) {
-    Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
-  }
-
-  @Override
-  public void onNoPermissionNeeded() {
-    Log.i("onNoPermissionNeeded", "Permission(s) not needed");
-  }
-
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    permissionFragmentHelper.onActivityForResult(requestCode);
-  }
-
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    permissionFragmentHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-  }
-
-  @Override
-  public void onPermissionGranted(@NonNull String[] permissionName) {
-    Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
-  }
-
-  private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-    ArrayList<CameraInfo> cacheCameras = null;
-
-    protected Boolean doInBackground(Boolean... geto) {
-      if (!mPhoneConnectionUtil.isNetworkAvailable()) {
-        try {
-          cacheCameras = (ArrayList<CameraInfo>) SerializableManager.readSerializedObject(context, "Cameras");
-        } catch (Exception ex) {
-        }
-      }
-      return true;
-    }
-
-    protected void onPostExecute(Boolean result) {
-      if (cacheCameras != null)
-        createListView(cacheCameras);
-
-      mDomoticz.getCameras(new CameraReceiver() {
-        @Override
-        public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
-          successHandling(Cameras.toString(), false);
-          SerializableManager.saveSerializable(context, Cameras, "Cameras");
-          createListView(Cameras);
+            return true;
         }
 
-        @Override
-        public void onError(Exception error) {
-          errorHandling(error, coordinatorLayout);
+        protected void onPostExecute(Boolean result) {
+            if (cacheCameras != null)
+                createListView(cacheCameras);
+
+            mDomoticz.getCameras(new CameraReceiver() {
+                @Override
+                public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
+                    successHandling(Cameras.toString(), false);
+                    SerializableManager.saveSerializable(context, Cameras, "Cameras");
+                    createListView(Cameras);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error, coordinatorLayout);
+                }
+            });
         }
-      });
     }
-  }
 }
