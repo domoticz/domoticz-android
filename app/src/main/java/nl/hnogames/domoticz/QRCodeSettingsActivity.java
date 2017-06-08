@@ -49,6 +49,7 @@ import nl.hnogames.domoticz.Adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.UI.SwitchDialog;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -165,15 +166,21 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
                         }
                     }, QRCodeSettingsActivity.this.getString(R.string.retry));
             }
-        }, 0, "light");
+        }, 0, "all");
     }
 
     private void showSwitchesDialog(
         final QRCodeInfo qrcodeInfo,
         final ArrayList<DevicesInfo> switches) {
 
+        final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
+        for(DevicesInfo d : switches){
+            if(DeviceUtils.isAutomatedToggableDevice(d))
+                supportedSwitches.add(d);
+        }
+
         SwitchDialog infoDialog = new SwitchDialog(
-            QRCodeSettingsActivity.this, switches,
+            QRCodeSettingsActivity.this, supportedSwitches,
             R.layout.dialog_switch_logs,
             domoticz);
 
@@ -185,7 +192,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
                 qrcodeInfo.setSwitchName(selectedSwitchName);
                 qrcodeInfo.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : switches) {
+                for (DevicesInfo s : supportedSwitches) {
                     if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                         showSelectorDialog(qrcodeInfo, s);
                     else

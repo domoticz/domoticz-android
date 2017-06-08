@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.Adapters.SpeechAdapter;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Interfaces.SpeechClickListener;
 import nl.hnogames.domoticz.UI.SwitchDialog;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -175,15 +176,21 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                         }
                     }, SpeechSettingsActivity.this.getString(R.string.retry));
             }
-        }, 0, "light");
+        }, 0, "all");
     }
 
     private void showSwitchesDialog(
         final SpeechInfo SpeechInfo,
         final ArrayList<DevicesInfo> switches) {
 
+        final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
+        for(DevicesInfo d : switches){
+            if(DeviceUtils.isAutomatedToggableDevice(d))
+                supportedSwitches.add(d);
+        }
+
         SwitchDialog infoDialog = new SwitchDialog(
-            SpeechSettingsActivity.this, switches,
+            SpeechSettingsActivity.this, supportedSwitches,
             R.layout.dialog_switch_logs,
             domoticz);
 
@@ -195,7 +202,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                 SpeechInfo.setSwitchName(selectedSwitchName);
                 SpeechInfo.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : switches) {
+                for (DevicesInfo s : supportedSwitches) {
                     if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                         showSelectorDialog(SpeechInfo, s);
                     else
