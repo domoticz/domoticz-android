@@ -97,7 +97,7 @@ public class NFCServiceActivity extends AppCompatActivity {
 
                 if (inputJSONAction < 0) {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                         if (!mDevicesInfo.getStatusBoolean())
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else {
@@ -119,7 +119,7 @@ public class NFCServiceActivity extends AppCompatActivity {
                     }
                 } else {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                         if (inputJSONAction == 1)
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else {
@@ -154,7 +154,7 @@ public class NFCServiceActivity extends AppCompatActivity {
                     @Override
                     @DebugLog
                     public void onReceiveResult(String result) {
-                        if(!UsefulBits.isEmpty(result))
+                        if (!UsefulBits.isEmpty(result))
                             Log.d(TAG, result);
                         finish();
                     }
@@ -162,7 +162,7 @@ public class NFCServiceActivity extends AppCompatActivity {
                     @Override
                     @DebugLog
                     public void onError(Exception error) {
-                        if(error != null && !UsefulBits.isEmpty(error.getMessage()))
+                        if (error != null && !UsefulBits.isEmpty(error.getMessage()))
                             Log.d(TAG, error.getMessage());
                         finish();
                     }
@@ -171,7 +171,7 @@ public class NFCServiceActivity extends AppCompatActivity {
 
             @Override
             public void onError(Exception error) {
-                if(error != null && !UsefulBits.isEmpty(error.getMessage()))
+                if (error != null && !UsefulBits.isEmpty(error.getMessage()))
                     Log.d(TAG, error.getMessage());
                 finish();
             }
@@ -198,10 +198,10 @@ public class NFCServiceActivity extends AppCompatActivity {
     private void onErrorHandling(Exception error) {
         if (error != null) {
             Toast.makeText(
-                    this,
-                    "Domoticz: " +
-                            getString(R.string.unable_to_get_switches),
-                    Toast.LENGTH_SHORT).show();
+                this,
+                "Domoticz: " +
+                    getString(R.string.unable_to_get_switches),
+                Toast.LENGTH_SHORT).show();
 
             if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
                 Log.e(TAG, domoticz.getErrorMessage(error));

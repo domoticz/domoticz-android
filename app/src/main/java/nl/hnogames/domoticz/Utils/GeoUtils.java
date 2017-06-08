@@ -90,7 +90,7 @@ public class GeoUtils {
 
         try {
             addressList = mGeocoder.getFromLocation(mLocation.getLatitude(),
-                    mLocation.getLongitude(), 5);
+                mLocation.getLongitude(), 5);
 
             if (addressList == null) {
                 return null;
@@ -116,9 +116,9 @@ public class GeoUtils {
 
         try {
             addressList =
-                    mGeocoder.getFromLocation(
-                            locationInfo.getLocation().latitude,
-                            locationInfo.getLocation().longitude, 5);
+                mGeocoder.getFromLocation(
+                    locationInfo.getLocation().latitude,
+                    locationInfo.getLocation().longitude, 5);
 
             if (addressList == null) {
                 return null;
@@ -184,25 +184,25 @@ public class GeoUtils {
             LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
         } else {
             mApiClient = new GoogleApiClient.Builder(mContext)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle bundle) {
-                            PendingIntent mGeofenceRequestIntent =
-                                    getGeofenceTransitionPendingIntent();
-                            // First remove all GeoFences
-                            try {
-                                LocationServices.GeofencingApi.removeGeofences(mApiClient,
-                                        mGeofenceRequestIntent);
-                            } catch (Exception ignored) {
-                            }
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
+                        PendingIntent mGeofenceRequestIntent =
+                            getGeofenceTransitionPendingIntent();
+                        // First remove all GeoFences
+                        try {
+                            LocationServices.GeofencingApi.removeGeofences(mApiClient,
+                                mGeofenceRequestIntent);
+                        } catch (Exception ignored) {
                         }
+                    }
 
-                        @Override
-                        public void onConnectionSuspended(int i) {
-                        }
-                    })
-                    .build();
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                    }
+                })
+                .build();
             mApiClient.connect();
         }
     }

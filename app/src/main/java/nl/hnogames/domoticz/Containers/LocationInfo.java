@@ -29,125 +29,125 @@ import com.google.android.gms.maps.model.LatLng;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
 public class LocationInfo {
-    private String name;
-    private LatLng latLng;
-    private int id = 0;
-    private int switchIdx = 0;
-    private String switchPassword = "";
-    private int radius = 400;           //meters
-    private boolean enabled = false;
-    private Address address;
-    private String switchName;
-    private String value;
+  private String name;
+  private LatLng latLng;
+  private int id = 0;
+  private int switchIdx = 0;
+  private String switchPassword = "";
+  private int radius = 400;           //meters
+  private boolean enabled = false;
+  private Address address;
+  private String switchName;
+  private String value;
 
-    public LocationInfo(int id, String name, LatLng latLng, int radius) {
-        this.name = name;
-        this.latLng = latLng;
-        this.id = id;
-        this.radius = radius;
-    }
+  public LocationInfo(int id, String name, LatLng latLng, int radius) {
+    this.name = name;
+    this.latLng = latLng;
+    this.id = id;
+    this.radius = radius;
+  }
 
-    public String getName() {
-        if (UsefulBits.isEmpty(name))
-            return "";
-        else
-            return name;
-    }
+  public String getName() {
+    if (UsefulBits.isEmpty(name))
+      return "";
+    else
+      return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public boolean getEnabled() {
-        return enabled;
-    }
+  public boolean getEnabled() {
+    return enabled;
+  }
 
-    public void setEnabled(boolean e) {
-        enabled = e;
-    }
+  public void setEnabled(boolean e) {
+    enabled = e;
+  }
 
-    public int getID() {
-        return id;
-    }
+  public int getID() {
+    return id;
+  }
 
-    public int getSwitchIdx() {
-        return switchIdx;
-    }
+  public int getSwitchIdx() {
+    return switchIdx;
+  }
 
-    public void setSwitchIdx(int idx) {
-        switchIdx = idx;
-    }
+  public void setSwitchIdx(int idx) {
+    switchIdx = idx;
+  }
 
-    public int getRadius() {
-        return radius;
-    }
+  public int getRadius() {
+    return radius;
+  }
 
-    public void setRadius(int e) {
-        radius = e;
-    }
+  public void setRadius(int e) {
+    radius = e;
+  }
 
-    public LatLng getLocation() {
-        return latLng;
-    }
+  public LatLng getLocation() {
+    return latLng;
+  }
 
-    public void setLocation(LatLng latLng) {
-        this.latLng = latLng;
-    }
+  public void setLocation(LatLng latLng) {
+    this.latLng = latLng;
+  }
 
-    public Address getAddress() {
-        return address;
-    }
+  public Address getAddress() {
+    return address;
+  }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
-    public String getSwitchPassword() {
-        return switchPassword;
-    }
+  public String getSwitchPassword() {
+    return switchPassword;
+  }
 
-    public void setSwitchPassword(String switchPassword) {
-        this.switchPassword = switchPassword;
-    }
+  public void setSwitchPassword(String switchPassword) {
+    this.switchPassword = switchPassword;
+  }
 
-    /**
-     * Creates a Location Services Geofence object from a SimpleGeofence.
-     *
-     * @return A Geofence object.
-     */
-    public Geofence toGeofence() {
-        if (radius <= 0)
-            radius = 400;//default
-        try {
-            // Build a new Geofence object.
-            return new Geofence.Builder()
-                    .setRequestId(String.valueOf(id))
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            //Geofence.GEOFENCE_TRANSITION_DWELL |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .setCircularRegion(latLng.latitude, latLng.longitude, radius)
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    .setLoiteringDelay(30000)
-                    .build();
-        } catch (Exception ex) {
-            // Wrong LocationInfo data detected
-            return null;
-        }
+  /**
+   * Creates a Location Services Geofence object from a SimpleGeofence.
+   *
+   * @return A Geofence object.
+   */
+  public Geofence toGeofence() {
+    if (radius <= 0)
+      radius = 400;//default
+    try {
+      // Build a new Geofence object.
+      return new Geofence.Builder()
+          .setRequestId(String.valueOf(id))
+          .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+              //Geofence.GEOFENCE_TRANSITION_DWELL |
+              Geofence.GEOFENCE_TRANSITION_EXIT)
+          .setCircularRegion(latLng.latitude, latLng.longitude, radius)
+          .setExpirationDuration(Geofence.NEVER_EXPIRE)
+          .setLoiteringDelay(30000)
+          .build();
+    } catch (Exception ex) {
+      // Wrong LocationInfo data detected
+      return null;
     }
+  }
 
-    public String getValue() {
-        return value;
-    }
+  public String getValue() {
+    return value;
+  }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public String getSwitchName() {
-        return switchName;
-    }
+  public String getSwitchName() {
+    return switchName;
+  }
 
-    public void setSwitchName(String switchName) {
-        this.switchName = switchName;
-    }
+  public void setSwitchName(String switchName) {
+    this.switchName = switchName;
+  }
 }

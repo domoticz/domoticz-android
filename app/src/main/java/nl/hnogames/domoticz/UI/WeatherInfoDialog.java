@@ -50,22 +50,22 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         this.info = info;
         if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
             mdb = new MaterialDialog.Builder(mContext)
-                    .titleColorRes(R.color.white)
-                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                    .dividerColorRes(R.color.white)
-                    .backgroundColorRes(R.color.primary)
-                    .positiveColorRes(R.color.white)
-                    .neutralColorRes(R.color.white)
-                    .negativeColorRes(R.color.white)
-                    .widgetColorRes(R.color.white)
-                    .buttonRippleColorRes(R.color.white);
+                .titleColorRes(R.color.white)
+                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                .dividerColorRes(R.color.white)
+                .backgroundColorRes(R.color.primary)
+                .positiveColorRes(R.color.white)
+                .neutralColorRes(R.color.white)
+                .negativeColorRes(R.color.white)
+                .widgetColorRes(R.color.white)
+                .buttonRippleColorRes(R.color.white);
         } else
             mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 

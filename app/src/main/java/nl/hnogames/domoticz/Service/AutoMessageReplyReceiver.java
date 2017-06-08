@@ -104,7 +104,7 @@ public class AutoMessageReplyReceiver extends BroadcastReceiver {
 
                 if (inputJSONAction < 0) {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                         if (!mDevicesInfo.getStatusBoolean())
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else {
@@ -126,7 +126,7 @@ public class AutoMessageReplyReceiver extends BroadcastReceiver {
                     }
                 } else {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                         if (inputJSONAction == 1)
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else {

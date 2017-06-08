@@ -28,7 +28,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class GeofenceReceiver extends BroadcastReceiver
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private final String TAG = "GEOFENCE";
     Intent broadcastIntent = new Intent();
@@ -62,16 +62,16 @@ public class GeofenceReceiver extends BroadcastReceiver
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
-                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                            mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
-                                + locationFound.getName());
+                            + locationFound.getName());
 
                         notificationTitle = String.format(
-                                context.getString(R.string.geofence_location_entering),
-                                locationFound.getName());
+                            context.getString(R.string.geofence_location_entering),
+                            locationFound.getName());
                         notificationDescription = context.getString(R.string.geofence_location_entering_text);
                         NotificationUtil.sendSimpleNotification(notificationTitle,
-                                notificationDescription, 0, context);
+                            notificationDescription, 0, context);
 
                         if (locationFound.getSwitchIdx() > 0) {
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true);
@@ -80,13 +80,13 @@ public class GeofenceReceiver extends BroadcastReceiver
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound
-                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                            = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered leaving a geofence location: "
-                                + locationFound.getName());
+                            + locationFound.getName());
 
                         notificationTitle = String.format(
-                                context.getString(R.string.geofence_location_leaving),
-                                locationFound.getName());
+                            context.getString(R.string.geofence_location_leaving),
+                            locationFound.getName());
                         notificationDescription = context.getString(R.string.geofence_location_leaving_text);
 
                         if (locationFound.getSwitchIdx() > 0)
@@ -116,7 +116,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                 if (mDevicesInfo.getStatusBoolean() != checked) {
                     if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(notificationTitle)) {
                         NotificationUtil.sendSimpleNotification(notificationTitle,
-                                notificationDescription, 0, context);
+                            notificationDescription, 0, context);
                     }
 
                     int jsonAction;
@@ -124,7 +124,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                     int jsonValue = 0;
 
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                         if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else jsonAction = DomoticzValues.Device.Switch.Action.ON;
                     } else {
@@ -170,10 +170,10 @@ public class GeofenceReceiver extends BroadcastReceiver
     private void onErrorHandling(Exception error) {
         if (error != null) {
             Toast.makeText(
-                    context,
-                    "Domoticz: " +
-                            context.getString(R.string.unable_to_get_switches),
-                    Toast.LENGTH_SHORT).show();
+                context,
+                "Domoticz: " +
+                    context.getString(R.string.unable_to_get_switches),
+                Toast.LENGTH_SHORT).show();
 
             if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
                 Log.e(TAG, domoticz.getErrorMessage(error));
