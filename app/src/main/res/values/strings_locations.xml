@@ -49,6 +49,8 @@
     <string name="description_geofence">Enable and config geofences</string>
     <string name="title_geofence_notifications">Enable notifications</string>
     <string name="description_geofence_notifications">Enable notifications for triggering events</string>
+    <string name="title_notification_geofence">Enable Notifications for Geofences</string>
+    <string name="description_notification_geofence">Show notifications when you enter and leave a location.</string>
 
     <string name="geofence_place">Place: %s</string>
     <string name="geofence_location_entering">"Entering %1$s"</string>

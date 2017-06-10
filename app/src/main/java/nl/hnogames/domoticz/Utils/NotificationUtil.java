@@ -89,16 +89,16 @@ public class NotificationUtil {
         try {
             if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(text)) {
                 NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.domoticz_white)
-                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
-                        .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
-                        .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                        .setGroupSummary(true)
-                        .setGroup(GROUP_KEY_NOTIFICATIONS)
-                        .setPriority(prio)
-                        .setAutoCancel(true);
+                        new NotificationCompat.Builder(context)
+                                .setSmallIcon(R.drawable.domoticz_white)
+                                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+                                .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
+                                .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
+                                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                                .setGroupSummary(true)
+                                .setGroup(GROUP_KEY_NOTIFICATIONS)
+                                .setPriority(prio)
+                                .setAutoCancel(true);
 
                 if (!prefUtil.OverWriteNotifications())
                     NOTIFICATION_ID = text.hashCode();
@@ -123,7 +123,7 @@ public class NotificationUtil {
 
                 if (prefUtil.showAutoNotifications()) {
                     builder.extend(new NotificationCompat.CarExtender()
-                        .setUnreadConversation(getUnreadConversation(context, text)));
+                            .setUnreadConversation(getUnreadConversation(context, text)));
                 }
 
                 NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build());
@@ -159,41 +159,41 @@ public class NotificationUtil {
 
     private static Intent getMessageReadIntent() {
         return new Intent()
-            .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-            .setAction(MESSAGE_READ_ACTION)
-            .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
+                .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+                .setAction(MESSAGE_READ_ACTION)
+                .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
     }
 
     private static PendingIntent getMessageReadPendingIntent(Context context) {
         return PendingIntent.getBroadcast(context,
-            NOTIFICATION_ID,
-            getMessageReadIntent(),
-            PendingIntent.FLAG_UPDATE_CURRENT);
+                NOTIFICATION_ID,
+                getMessageReadIntent(),
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static Intent getMessageReplyIntent() {
         return new Intent()
-            .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-            .setAction(MESSAGE_REPLY_ACTION)
-            .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
+                .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+                .setAction(MESSAGE_REPLY_ACTION)
+                .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
     }
 
     private static PendingIntent getMessageReplyPendingIntent(Context context) {
         return PendingIntent.getBroadcast(context,
-            NOTIFICATION_ID,
-            getMessageReplyIntent(),
-            PendingIntent.FLAG_UPDATE_CURRENT);
+                NOTIFICATION_ID,
+                getMessageReplyIntent(),
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static RemoteInput getVoiceReplyRemoteInput() {
         return new RemoteInput.Builder(VOICE_REPLY_KEY)
-            .setLabel("Reply")
-            .build();
+                .setLabel("Reply")
+                .build();
     }
 
     private static NotificationCompat.CarExtender.UnreadConversation getUnreadConversation(Context context, String text) {
         NotificationCompat.CarExtender.UnreadConversation.Builder unreadConversationBuilder =
-            new NotificationCompat.CarExtender.UnreadConversation.Builder(UNREAD_CONVERSATION_BUILDER_NAME + text);
+                new NotificationCompat.CarExtender.UnreadConversation.Builder(UNREAD_CONVERSATION_BUILDER_NAME + text);
         unreadConversationBuilder.setReadPendingIntent(getMessageReadPendingIntent(context));
         unreadConversationBuilder.setReplyAction(getMessageReplyPendingIntent(context), getVoiceReplyRemoteInput());
         unreadConversationBuilder.addMessage(text);

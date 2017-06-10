@@ -42,7 +42,7 @@ public class QRCodeCaptureActivity extends AppCompatActivity implements ZXingSca
     public void onCreate(Bundle state) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
             setFullscreenFlags(true);
         }
 
@@ -64,7 +64,7 @@ public class QRCodeCaptureActivity extends AppCompatActivity implements ZXingSca
     private void setFullscreenFlags(boolean fullscreen) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int fullscreenFlags = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN;
+                    View.SYSTEM_UI_FLAG_FULLSCREEN;
 
             setSystemUiFlags(fullscreenFlags, fullscreen);
         }

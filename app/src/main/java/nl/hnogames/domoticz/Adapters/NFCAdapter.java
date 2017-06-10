@@ -118,7 +118,7 @@ public class NFCAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mNFCInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mNFCInfo.getValue()))

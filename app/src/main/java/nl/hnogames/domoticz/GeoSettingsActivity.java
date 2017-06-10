@@ -80,6 +80,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     private int EditLocationID = 0;
     private PermissionHelper permissionHelper;
     private Switch geoSwitch;
+    private Switch geoNotificationSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     private void initSwitches() {
         geoSwitch = (Switch) findViewById(R.id.switch_button);
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
+
+        geoNotificationSwitch = (Switch) findViewById(R.id.switch_notifications_button);
+        geoNotificationSwitch.setChecked(mSharedPrefs.isGeofenceNotificationsEnabled());
+
         geoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -121,16 +126,19 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
                             geoSwitch.setChecked(false);
+                            geoNotificationSwitch.setEnabled(false);
                             permissionHelper
-                                .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+                                    .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
                         } else {
                             if (!PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
                                 geoSwitch.setChecked(false);
+                                geoNotificationSwitch.setEnabled(false);
                                 permissionHelper
-                                    .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                             } else {
                                 //all settings are correct
                                 mSharedPrefs.setGeofenceEnabled(isChecked);
+                                geoNotificationSwitch.setEnabled(true);
                                 oGeoUtils.enableGeoFenceService();
                                 invalidateOptionsMenu();
                             }
@@ -142,9 +150,17 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                     }
                 } else {
                     mSharedPrefs.setGeofenceEnabled(false);
+                    geoNotificationSwitch.setEnabled(false);
                     oGeoUtils.disableGeoFenceService();
                     invalidateOptionsMenu();
                 }
+            }
+        });
+
+        geoNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mSharedPrefs.setGeofenceNotificationsEnabled(isChecked);
             }
         });
     }
@@ -160,8 +176,8 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     }
 
     private void showSwitchesDialog(
-        final LocationInfo selectedLocation,
-        final ArrayList<DevicesInfo> switches) {
+            final LocationInfo selectedLocation,
+            final ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
         for (DevicesInfo d : switches) {
@@ -170,9 +186,9 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         }
 
         SwitchDialog infoDialog = new SwitchDialog(
-            GeoSettingsActivity.this, supportedSwitches,
-            R.layout.dialog_switch_logs,
-            domoticz);
+                GeoSettingsActivity.this, supportedSwitches,
+                R.layout.dialog_switch_logs,
+                domoticz);
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
@@ -200,18 +216,18 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     private void showSelectorDialog(final LocationInfo selectedLocation, DevicesInfo selector) {
         final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
-            .title(R.string.selector_value)
-            .items(levelNames)
-            .itemsCallback(new MaterialDialog.ListCallback() {
-                @Override
-                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    selectedLocation.setValue(String.valueOf(text));
-                    mSharedPrefs.updateLocation(selectedLocation);
-                    adapter.data = mSharedPrefs.getLocations();
-                    adapter.notifyDataSetChanged();
-                }
-            })
-            .show();
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        selectedLocation.setValue(String.valueOf(text));
+                        mSharedPrefs.updateLocation(selectedLocation);
+                        adapter.data = mSharedPrefs.getLocations();
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .show();
     }
 
     private void createListView() {
@@ -267,7 +283,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
 
         // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
-            getString(R.string.geofence));
+                getString(R.string.geofence));
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
@@ -324,33 +340,33 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
             @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(GeoSettingsActivity.this, coordinatorLayout, GeoSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
-                    null, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getSwitchesAndShowSwitchesDialog(locationInfo);
-                        }
-                    }, GeoSettingsActivity.this.getString(R.string.retry));
+                        null, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getSwitchesAndShowSwitchesDialog(locationInfo);
+                            }
+                        }, GeoSettingsActivity.this.getString(R.string.retry));
             }
         }, 0, "all");
     }
 
     private boolean showNoDeviceAttachedDialog(final LocationInfo locationInfo) {
         new MaterialDialog.Builder(this)
-            .title(R.string.noSwitchSelected_title)
-            .content(getString(R.string.noSwitchSelected_explanation)
-                + UsefulBits.newLine()
-                + UsefulBits.newLine()
-                + getString(R.string.noSwitchSelected_connectOneNow))
-            .positiveText(R.string.yes)
-            .negativeText(R.string.no)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    getSwitchesAndShowSwitchesDialog(locationInfo);
-                    result = true;
-                }
-            })
-            .show();
+                .title(R.string.noSwitchSelected_title)
+                .content(getString(R.string.noSwitchSelected_explanation)
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + getString(R.string.noSwitchSelected_connectOneNow))
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        getSwitchesAndShowSwitchesDialog(locationInfo);
+                        result = true;
+                    }
+                })
+                .show();
         return result;
     }
 
@@ -466,7 +482,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionHelper.declinedPermissions(GeoSettingsActivity.this, PermissionsUtil.INITIAL_LOCATION_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(GeoSettingsActivity.this, permissionHelper, GeoSettingsActivity.this.getString(R.string.permission_title),
-            GeoSettingsActivity.this.getString(R.string.permission_desc_location), neededPermission);
+                GeoSettingsActivity.this.getString(R.string.permission_desc_location), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }
@@ -507,7 +523,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                 invalidateOptionsMenu();
             } else {
                 permissionHelper
-                    .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
             }
         }
     }

@@ -104,7 +104,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.temperature_row_default, parent, false);
+                .inflate(R.layout.temperature_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -138,20 +138,20 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
 
             int modeIconRes = 0;
             if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
-                (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
+                    (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                    mTemperatureInfo.getType(),
-                    null,
-                    (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
-                    true,
-                    "Freezing")).into(holder.iconRow);
+                        mTemperatureInfo.getType(),
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        true,
+                        "Freezing")).into(holder.iconRow);
             } else {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                    mTemperatureInfo.getType(),
-                    null,
-                    (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
-                    false,
-                    null)).into(holder.iconRow);
+                        mTemperatureInfo.getType(),
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        false,
+                        null)).into(holder.iconRow);
             }
 
             if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
@@ -260,9 +260,9 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 holder.data.setText(R.string.wind);
                 holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
                 holder.data2.setText(context.getString(R.string.last_update)
-                    + ": "
-                    + UsefulBits.getFormattedDate(context,
-                    mTemperatureInfo.getLastUpdateDateTime().getTime()));
+                        + ": "
+                        + UsefulBits.getFormattedDate(context,
+                        mTemperatureInfo.getLastUpdateDateTime().getTime()));
                 holder.data2.setVisibility(View.VISIBLE);
             } else {
                 double temperature = mTemperatureInfo.getTemperature();
@@ -270,9 +270,9 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 if (temperature <= 0 || setPoint <= 0) {
                     holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
                     holder.data2.setText(context.getString(R.string.last_update)
-                        + ": "
-                        + UsefulBits.getFormattedDate(context,
-                        mTemperatureInfo.getLastUpdateDateTime().getTime()));
+                            + ": "
+                            + UsefulBits.getFormattedDate(context,
+                            mTemperatureInfo.getLastUpdateDateTime().getTime()));
                     holder.data2.setVisibility(View.VISIBLE);
                 } else {
                     holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " " + sign);

@@ -87,6 +87,7 @@ public class SharedPrefUtil {
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    private static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     private static final String PREF_SPEECH_ENABLED = "enableSpeech";
     private static final String PREF_QRCODE_ENABLED = "enableQRCode";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
@@ -581,7 +582,7 @@ public class SharedPrefUtil {
         if (startupScreenSelectedValue == null) return 0;
         else {
             String[] startupScreenValues =
-                mContext.getResources().getStringArray(R.array.drawer_actions);
+                    mContext.getResources().getStringArray(R.array.drawer_actions);
             int i = 0;
 
             for (String screen : startupScreenValues) {
@@ -599,7 +600,7 @@ public class SharedPrefUtil {
 
     public void setStartupScreenIndex(int position) {
         String[] startupScreenValues =
-            mContext.getResources().getStringArray(R.array.drawer_actions);
+                mContext.getResources().getStringArray(R.array.drawer_actions);
         String startupScreenValue;
 
         try {
@@ -788,6 +789,15 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public boolean isGeofenceNotificationsEnabled() {
+        return prefs.getBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, false);
+    }
+
+    public void setGeofenceNotificationsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
+        editor.commit();
+    }
+
     public boolean isTalkBackEnabled() {
         return prefs.getBoolean(PREF_TALK_BACK, false);
     }
@@ -821,7 +831,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
             Gson gson = new Gson();
             NFCInfo[] item = gson.fromJson(jsonNFCs,
-                NFCInfo[].class);
+                    NFCInfo[].class);
             nfcs = Arrays.asList(item);
             for (NFCInfo n : nfcs) {
                 oReturnValue.add(n);
@@ -845,7 +855,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_QR_CODES, null);
             Gson gson = new Gson();
             QRCodeInfo[] item = gson.fromJson(jsonNFCs,
-                QRCodeInfo[].class);
+                    QRCodeInfo[].class);
             qrs = Arrays.asList(item);
             for (QRCodeInfo n : qrs) {
                 oReturnValue.add(n);
@@ -869,7 +879,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_SPEECH_COMMANDS, null);
             Gson gson = new Gson();
             SpeechInfo[] item = gson.fromJson(jsonNFCs,
-                SpeechInfo[].class);
+                    SpeechInfo[].class);
             qrs = Arrays.asList(item);
             for (SpeechInfo n : qrs) {
                 oReturnValue.add(n);
@@ -896,7 +906,7 @@ public class SharedPrefUtil {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
             Gson gson = new Gson();
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
-                LocationInfo[].class);
+                    LocationInfo[].class);
             locations = Arrays.asList(locationItem);
 
             for (LocationInfo l : locations) {
@@ -909,8 +919,8 @@ public class SharedPrefUtil {
             if (incorrectDetected) {
                 saveLocations(returnValue);
                 Toast.makeText(mContext,
-                    R.string.geofence_error_recreateLocations,
-                    Toast.LENGTH_LONG).show();
+                        R.string.geofence_error_recreateLocations,
+                        Toast.LENGTH_LONG).show();
             }
         } else
             return null;
