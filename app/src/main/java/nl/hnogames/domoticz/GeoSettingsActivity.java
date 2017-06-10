@@ -361,11 +361,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                String name = data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS);
-                if (nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
-                    new MaterialDialog.Builder(this)
+        if (resultCode == RESULT_OK) {
+            String name = data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS);
+            if (nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
+                new MaterialDialog.Builder(this)
                         .title(R.string.title_edit_location)
                         .content(R.string.Location_name)
                         .inputType(InputType.TYPE_CLASS_TEXT)
@@ -375,36 +374,36 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                 String name = String.valueOf(input);
                                 if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
                                     final LocationInfo location = new LocationInfo(new Random().nextInt(999999), name,
-                                        new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
-                                        500);
+                                            new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
+                                            500);
                                     new MaterialDialog.Builder(GeoSettingsActivity.this)
-                                        .title(R.string.radius)
-                                        .content(R.string.radius)
-                                        .inputType(InputType.TYPE_CLASS_NUMBER)
-                                        .input("500", "500", new MaterialDialog.InputCallback() {
-                                            @Override
-                                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                                try {
-                                                    location.setRadius(Integer.parseInt(String.valueOf(input)));
-                                                } catch (Exception ex) {
+                                            .title(R.string.radius)
+                                            .content(R.string.radius)
+                                            .inputType(InputType.TYPE_CLASS_NUMBER)
+                                            .input("500", "500", new MaterialDialog.InputCallback() {
+                                                @Override
+                                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                                    try {
+                                                        location.setRadius(Integer.parseInt(String.valueOf(input)));
+                                                    } catch (Exception ex) {
+                                                    }
+                                                    mSharedPrefs.addLocation(location);
+                                                    locations = mSharedPrefs.getLocations();
+
+                                                    GeoUtils.geofencesAlreadyRegistered = false;
+                                                    oGeoUtils.enableGeoFenceService();
+
+                                                    createListView();
                                                 }
-                                                mSharedPrefs.addLocation(location);
-                                                locations = mSharedPrefs.getLocations();
-
-                                                GeoUtils.geofencesAlreadyRegistered = false;
-                                                oGeoUtils.enableGeoFenceService();
-
-                                                createListView();
-                                            }
-                                        }).show();
+                                            }).show();
                                 }
                             }
                         }).show();
-                } else {
-                    final LocationInfo location = new LocationInfo(new Random().nextInt(999999), "",
+            } else {
+                final LocationInfo location = new LocationInfo(new Random().nextInt(999999), name,
                         new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
                         500);
-                    new MaterialDialog.Builder(this)
+                new MaterialDialog.Builder(this)
                         .title(R.string.radius)
                         .content(R.string.radius)
                         .inputType(InputType.TYPE_CLASS_NUMBER)
@@ -424,36 +423,9 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                 createListView();
                             }
                         }).show();
-                }
             }
-        } else if (requestCode == 2) {
-            if (resultCode == RESULT_OK) {
-                final LocationInfo location = mSharedPrefs.getLocation(EditLocationID);
-                location.setLocation(new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)));
-
-                new MaterialDialog.Builder(this)
-                    .title(R.string.radius)
-                    .content(R.string.radius)
-                    .inputType(InputType.TYPE_CLASS_NUMBER)
-                    .input(String.valueOf(location.getRadius()), String.valueOf(location.getRadius()), new MaterialDialog.InputCallback() {
-                        @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
-                            try {
-                                location.setRadius(Integer.parseInt(String.valueOf(input)));
-                            } catch (Exception ex) {
-                            }
-                            mSharedPrefs.updateLocation(location);
-                            locations = mSharedPrefs.getLocations();
-                            GeoUtils.geofencesAlreadyRegistered = false;
-                            oGeoUtils.enableGeoFenceService();
-                            createListView();
-                        }
-                    }).show();
-
-            }
-        }
-
-        permissionHelper.onActivityForResult(requestCode);
+        } else
+            permissionHelper.onActivityForResult(requestCode);
     }
 
     private void showEditLocationDialog(LocationInfo location) {
