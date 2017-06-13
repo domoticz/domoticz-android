@@ -70,7 +70,6 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class SetupServerSettings extends Fragment implements OnPermissionCallback {
 
     private static final String INSTANCE = "INSTANCE";
-    private static final int ADDSERVER = 22;
     boolean activeServerChanged = false;
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
@@ -86,16 +85,10 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private View v;
     private boolean hasBeenVisibleToUser = false;
     private MultiSelectionSpinner local_wifi_spinner;
-    private int callingInstance;
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Switch advancedSettings_switch;
-    private CheckBox cbShowPassword, cbShowPasswordLocal;
-    private Button saveButton;
-    private Switch useSameAddress;
     private ServerInfo newServer;
     private boolean isUpdateRequest = false;
-    private Context mContext;
-    private Button btnManualSSID;
 
     private PermissionFragmentHelper permissionFragmentHelper;
 
@@ -112,10 +105,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext = context;
         if (mServerUtil == null)
-            mServerUtil = new ServerUtil(mContext);
-        mSharedPrefs = new SharedPrefUtil(mContext);
+            mServerUtil = new ServerUtil(context);
+        mSharedPrefs = new SharedPrefUtil(context);
 
         Bundle extras = getArguments();
         if (extras != null) {
@@ -131,7 +123,6 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        callingInstance = getArguments().getInt(INSTANCE);
         if (mSharedPrefs.darkThemeEnabled())
             v = inflater.inflate(R.layout.fragment_add_server_dark, container, false);
         else
@@ -153,8 +144,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     }
 
     private void getLayoutReferences() {
-        useSameAddress = (Switch) v.findViewById(R.id.localServer_switch);
-        saveButton = (Button) v.findViewById(R.id.save_server);
+        Button saveButton = (Button) v.findViewById(R.id.save_server);
         server_name_input = (FloatingLabelEditText) v.findViewById(R.id.server_name_input);
         remote_server_input = (FloatingLabelEditText) v.findViewById(R.id.remote_server_input);
         remote_port_input = (FloatingLabelEditText) v.findViewById(R.id.remote_port_input);
@@ -169,12 +159,12 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
         local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
-        cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
-        cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
+        CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
+        CheckBox cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
 
-        btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
+        Button btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
         btnManualSSID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,7 +174,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                     .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
                     .input(null, null, new MaterialDialog.InputCallback() {
                         @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
                             final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
                             if (ssidFromPrefs != null) {
@@ -194,9 +184,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                                     }
                                 }
                             }
+
                             ssidListFromPrefs.add(String.valueOf(input));
                             mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
-
                             setSsid_spinner();
                         }
                     }).show();
@@ -207,7 +197,6 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
         v.findViewById(R.id.startScreen_title).setVisibility(View.GONE);
         v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
 
-        useSameAddress.setChecked(false);
         final LinearLayout localServerSettingsLayout = (LinearLayout)
             v.findViewById(R.id.local_server_settings);
         localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
@@ -347,6 +336,11 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                     ssids.add(wifi);
                     ssidListFromPrefs.add(wifi);
                 }
+
+                //quickly set the values
+                local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                local_wifi_spinner.setItems(ssids);
+                local_wifi_spinner.setSelection(ssidListFromPrefs);
             }
         }
 
@@ -354,14 +348,17 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             @Override
             public void ReceiveSSIDs(CharSequence[] ssidFound) {
                 if (ssidFound == null || ssidFound.length < 1) {
-                    // No wifi ssid nearby found!
-                    local_wifi_spinner.setEnabled(false);                       // Disable spinner
-                    ssids.add(getString(R.string.welcome_msg_no_ssid_found));
-                    // Set selection to the 'no ssids found' message to inform user
-                    local_wifi_spinner.setItems(ssids);
-                    local_wifi_spinner.setSelection(0);
+                    if (ssidListFromPrefs.size() <= 0) {
+                        // No wifi ssid nearby found!
+                        local_wifi_spinner.setEnabled(false);                       // Disable spinner
+                        ssids.add(getString(R.string.welcome_msg_no_ssid_found));
+                        // Set selection to the 'no ssids found' message to inform user
+                        local_wifi_spinner.setItems(ssids);
+                        local_wifi_spinner.setSelection(0);
+                    }
                 } else {
                     for (CharSequence ssid : ssidFound) {
+                        //noinspection SuspiciousMethodCalls
                         if (!UsefulBits.isEmpty(ssid) && !ssids.contains(ssid))
                             ssids.add(ssid.toString());  // Prevent double SSID's
                     }
@@ -450,7 +447,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             getSpinnerDomoticzRemoteSecureBoolean());
         newServer.setEnabled(false);
 
-        if (!useSameAddress.isChecked()) {
+        if (!localServer_switch.isChecked()) {
             newServer.setLocalSameAddressAsRemote();
             newServer.setIsLocalServerAddressDifferent(false);
         } else {

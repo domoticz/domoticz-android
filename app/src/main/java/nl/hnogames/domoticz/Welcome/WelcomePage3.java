@@ -84,9 +84,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
     private PhoneConnectionUtil mPhoneConnectionUtil;
-    private Switch advancedSettings_switch;
-    private CheckBox cbShowPassword, cbShowPasswordLocal;
-    private Button btnManualSSID;
 
     private PermissionFragmentHelper permissionFragmentHelper;
 
@@ -148,11 +145,11 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
-        cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
-        cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
+        CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
+        CheckBox cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
 
         startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
-        btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
+        Button btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
         btnManualSSID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +159,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
                     .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
                     .input(null, null, new MaterialDialog.InputCallback() {
                         @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
                             final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
                             if (ssidFromPrefs != null) {
@@ -190,9 +187,9 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
         final LinearLayout localServerSettingsLayout = (LinearLayout)
             v.findViewById(R.id.local_server_settings);
+
         localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
         localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
-
         localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -200,12 +197,14 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
                 else localServerSettingsLayout.setVisibility(View.GONE);
             }
         });
+        localServerSettingsLayout.setVisibility(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
 
         final LinearLayout advancedSettings_layout = (LinearLayout)
             v.findViewById(R.id.advancedSettings_layout);
 
-        advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
+        Switch advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
         advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
+        advancedSettings_layout.setVisibility(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
 
         if (mSharedPrefs.isAdvancedSettingsEnabled())
             advancedSettings_layout.setVisibility(View.VISIBLE);
@@ -273,13 +272,17 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
         //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
-
         if (ssidFromPrefs != null) {
             if (ssidFromPrefs.size() > 0) {
                 for (String wifi : ssidFromPrefs) {
                     ssids.add(wifi);
                     ssidListFromPrefs.add(wifi);
                 }
+
+                //quickly set the values
+                local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                local_wifi_spinner.setItems(ssids);
+                local_wifi_spinner.setSelection(ssidListFromPrefs);
             }
         }
 
@@ -287,14 +290,17 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             @Override
             public void ReceiveSSIDs(CharSequence[] ssidFound) {
                 if (ssidFound == null || ssidFound.length < 1) {
-                    // No wifi ssid nearby found!
-                    local_wifi_spinner.setEnabled(false);                       // Disable spinner
-                    ssids.add(getString(R.string.welcome_msg_no_ssid_found));
-                    // Set selection to the 'no ssids found' message to inform user
-                    local_wifi_spinner.setItems(ssids);
-                    local_wifi_spinner.setSelection(0);
+                    if (ssidListFromPrefs.size() <= 0) {
+                        // No wifi ssid nearby found!
+                        local_wifi_spinner.setEnabled(false);                       // Disable spinner
+                        ssids.add(getString(R.string.welcome_msg_no_ssid_found));
+                        // Set selection to the 'no ssids found' message to inform user
+                        local_wifi_spinner.setItems(ssids);
+                        local_wifi_spinner.setSelection(0);
+                    }
                 } else {
                     for (CharSequence ssid : ssidFound) {
+                        //noinspection SuspiciousMethodCalls
                         if (!UsefulBits.isEmpty(ssid) && !ssids.contains(ssid))
                             ssids.add(ssid.toString());  // Prevent double SSID's
                     }

@@ -82,7 +82,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.event_row_default, parent, false);
+                .inflate(R.layout.event_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -147,7 +147,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView message;
         Switch buttonON;

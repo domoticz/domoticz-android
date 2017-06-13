@@ -55,7 +55,7 @@ import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class GeolocationService extends Service implements ConnectionCallbacks,
-    OnConnectionFailedListener, LocationListener, ResultCallback<Status> {
+        OnConnectionFailedListener, LocationListener, ResultCallback<Status> {
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 5;
     protected GoogleApiClient mGoogleApiClient;
@@ -74,7 +74,7 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
                 return mResources.getString(R.string.geofence_too_many_geofences);
             case GeofenceStatusCodes.GEOFENCE_TOO_MANY_PENDING_INTENTS:
                 return mResources
-                    .getString(R.string.geofence_too_many_pending_intents);
+                        .getString(R.string.geofence_too_many_pending_intents);
             default:
                 return mResources.getString(R.string.unknown_geofence_error);
         }
@@ -112,9 +112,9 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
 
             try {
                 LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient,
-                    mPendingIntent);
+                        mPendingIntent);
                 LocationServices.GeofencingApi.addGeofences(mGoogleApiClient,
-                    geofencingRequest, mPendingIntent).setResultCallback(this);
+                        geofencingRequest, mPendingIntent).setResultCallback(this);
             } catch (Exception ignored) {
             }
         }
@@ -139,7 +139,7 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
 
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
-            mGoogleApiClient, this);
+                mGoogleApiClient, this);
     }
 
     @Override
@@ -163,16 +163,16 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.i(TAG,
-            "Connection failed: ConnectionResult.getErrorCode() = "
-                + result.getErrorCode());
+                "Connection failed: ConnectionResult.getErrorCode() = "
+                        + result.getErrorCode());
     }
 
     protected synchronized void buildGoogleApiClient() {
         Log.i(TAG, "Building GoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .addApi(LocationServices.API).build();
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
         createLocationRequest();
     }
 
@@ -180,7 +180,7 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest
-            .setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+                .setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -194,7 +194,7 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
             GeoUtils.geofencesAlreadyRegistered = false;
             String errorMessage = getErrorString(this, status.getStatusCode());
             Toast.makeText(getApplicationContext(), errorMessage,
-                Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
         } else {
             GeoUtils.geofencesAlreadyRegistered = true;
         }
