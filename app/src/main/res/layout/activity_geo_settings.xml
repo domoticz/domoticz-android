@@ -92,7 +92,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/switch_button"
+                    android:layout_toLeftOf="@+id/switch_notifications_button"
                     android:text="@string/title_notification_geofence" />
 
                 <TextView
