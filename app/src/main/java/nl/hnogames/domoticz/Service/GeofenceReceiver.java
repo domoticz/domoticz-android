@@ -114,10 +114,12 @@ public class GeofenceReceiver extends BroadcastReceiver
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                if (mDevicesInfo == null)
+                    return;
+
                 int jsonAction;
                 int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                 int jsonValue = 0;
-
                 if (!isSceneOrGroup) {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||

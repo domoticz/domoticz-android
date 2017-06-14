@@ -365,6 +365,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                if (mDevicesInfo == null)
+                    return;
+
                 int jsonAction;
                 int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                 int jsonValue = 0;
