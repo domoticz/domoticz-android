@@ -201,6 +201,9 @@ public class NFCServiceActivity extends AppCompatActivity {
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+            return 0;
+
         int jsonValue = 0;
         if (!UsefulBits.isEmpty(value)) {
             ArrayList<String> levelNames = mDevicesInfo.getLevelNames();
