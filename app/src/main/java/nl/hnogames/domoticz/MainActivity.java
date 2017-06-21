@@ -57,6 +57,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -142,6 +145,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
     private boolean fromShortcut = false;
+    private AdView mAdView;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -157,11 +161,21 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             setTheme(R.style.AppThemeDarkMain);
         else
             setTheme(R.style.AppThemeMain);
+         permissionHelper = PermissionHelper.getInstance(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newmain);
+
         UsefulBits.checkAPK(this, mSharedPrefs);
-        permissionHelper = PermissionHelper.getInstance(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
+            mAdView.loadAd(adRequest);
+        }
+        else{
+            mAdView.setVisibility(View.GONE);
+        }
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
