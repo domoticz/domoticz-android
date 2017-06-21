@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDarkMain);
@@ -163,17 +165,17 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             setTheme(R.style.AppThemeMain);
          permissionHelper = PermissionHelper.getInstance(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newmain);
-
         UsefulBits.checkAPK(this, mSharedPrefs);
-        mAdView = (AdView) findViewById(R.id.adView);
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            setContentView(R.layout.activity_newmain_free);
+            mAdView = (AdView) findViewById(R.id.adView);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
             mAdView.loadAd(adRequest);
         }
         else{
+            setContentView(R.layout.activity_newmain_paid);
+            mAdView = (AdView) findViewById(R.id.adView);
             mAdView.setVisibility(View.GONE);
         }
 
