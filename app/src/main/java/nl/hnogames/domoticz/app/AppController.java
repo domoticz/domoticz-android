@@ -210,7 +210,6 @@ public class AppController extends MultiDexApplication implements GcmListener {
     }
 
     private void registerMobileForGCM(String UUID, String senderid) {
-
         final Domoticz mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
             @Override
