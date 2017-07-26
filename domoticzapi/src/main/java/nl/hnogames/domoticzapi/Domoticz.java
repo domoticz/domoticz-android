@@ -23,6 +23,7 @@ package nl.hnogames.domoticzapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -397,6 +398,8 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE);
         url += "&uuid=" + DeviceId;
         url += "&senderid=" + SenderId;
+        url += "&name=" + Build.MODEL;
+        url += "&devicetype=Android " + Build.VERSION.SDK_INT;
 
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
