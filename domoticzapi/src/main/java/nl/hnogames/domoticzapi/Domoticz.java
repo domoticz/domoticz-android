@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -35,9 +36,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -398,8 +401,8 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE);
         url += "&uuid=" + DeviceId;
         url += "&senderid=" + SenderId;
-        url += "&name=" + Build.MODEL;
-        url += "&devicetype=Android " + Build.VERSION.SDK_INT;
+        url += "&name=" + Build.MODEL.replace(" ","");
+        url += "&devicetype=Android" + Build.VERSION.SDK_INT;
 
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
