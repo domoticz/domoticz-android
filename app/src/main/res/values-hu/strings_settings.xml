@@ -112,10 +112,10 @@
   <string name="fingerprint_not_setup_in_android">Először állíts be egy ujjlenyomatot a készülékedhez</string>
   <string name="fingerprint_sure">Biztos vagy benne? A másodlagos jelszó a Domoticz felhasználói jelszavad.</string>
   <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+  <string name="category_widgets">Widgetek (béta)</string>
+  <string name="widget_description">Widgetek be- és kikapcsolása ezen az eszközön</string>
+  <string name="widget_disabled">Widgetek használata ezen az eszközön nem engedélyezett, kérlek ellenőrizd a Domoticz app beállításait</string>
+  <string name="widget_warning">Saját felelősségre használd a Widgeteket!! Jelenleg Béta fázisban vannak és nagy valószínűséggel tartalmaznak programhibákat, továbbá magas adathasználatot és/vagy akkumulátorhasználatot eredményezhet...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud üzenetküldő ID</string>
   <string name="notification_settings_push">Regisztrációs azonosító továbbítása a Domoticz-nak</string>
@@ -145,9 +145,9 @@
   <string name="alarm">Riasztás</string>
   <string name="alarmtimer_title">Riasztás időzítő</string>
   <string name="alarmtimer">A riasztás ideje másodpercben</string>
-  <string name="default_values">Default values</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
-  <string name="default_values_max_error">Max value should be higher than Min value</string>
+  <string name="default_values">Alap értékek</string>
+  <string name="default_values_min_error">A Maximális értéknek nagyobbnak kell lennie a Minimumnál</string>
+  <string name="default_values_max_error">A Maximális értéknek nagyobbnak kell lennie a Minimumnál</string>
   <!--        Information category       -->
   <string name="info_version">Verzió</string>
   <string name="info_domoticz_version">Domoticz verzió</string>

@@ -51,10 +51,10 @@
   <string name="temperature">Temperatur</string>
   <string name="status">Status</string>
   <string name="set_point">Börvärde</string>
-  <string name="set_point_min">Set point min value</string>
-  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
-  <string name="set_point_max">Set point max value</string>
-  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
+  <string name="set_point_min">Sätt punkt för minsta värde</string>
+  <string name="set_point_min_description">Min temperatur du kan sätta för termostaten</string>
+  <string name="set_point_max">Sätt punkt för max värde</string>
+  <string name="set_point_max_description">Max temperatur du kan sätta för termostaten</string>
   <string name="action_success">Åtgärden lyckades</string>
   <string name="action_failed">Åtgärden misslyckades</string>
   <string name="action_unknown">Okänt resultat av åtgärden</string>
@@ -72,7 +72,7 @@
   <string name="yes">Ja</string>
   <string name="no">Nej</string>
   <string name="are_you_sure">Är du säker?</string>
-  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
+  <string name="are_you_sure_clear_settings">Är du säker?? Detta rennsar även all hemskärms widget inställningar, du för lägga till dom på nytt efteråt..</string>
   <string name="add">Lägg till</string>
   <string name="cancel">Avbryt</string>
   <string name="ok">Ok</string>

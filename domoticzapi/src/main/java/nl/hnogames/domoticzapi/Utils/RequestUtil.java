@@ -65,69 +65,69 @@ public class RequestUtil {
                                               final int retryCounter,
                                               final RequestQueue queue) {
         JsonObjectRequest jsonObjReq =
-                new JsonObjectRequest(Request.Method.GET,
-                        url, null, new Response.Listener<JSONObject>() {
+            new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                        String jsonString;
+                    String jsonString;
 
-                        try {
-                            jsonString = response.getString(DomoticzValues.Json.Field.VERSION);
-                            if (parser != null)
-                                parser.parseResult(jsonString);
-                        } catch (JSONException e) {
-                            jsonErrorHandling(response, e, parser);
-                        }
+                    try {
+                        jsonString = response.getString(DomoticzValues.Json.Field.VERSION);
+                        if (parser != null)
+                            parser.parseResult(jsonString);
+                    } catch (JSONException e) {
+                        jsonErrorHandling(response, e, parser);
                     }
-                }, new Response.ErrorListener() {
+                }
+            }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter - 1;
-                        if (counter <= 0) {
-                            errorHandling(volleyError);
-                            Log.d(TAG, "No retries left");
-                            if (parser != null) parser.onError(volleyError);
-                        } else {
-                            //try again without session id
-                            Log.d(TAG, "Trying again without session ID. Retries left: "
-                                    + String.valueOf(counter));
-                            makeJsonVersionRequest(parser,
-                                    username,
-                                    password,
-                                    url,
-                                    sessionUtil,
-                                    false,
-                                    counter,
-                                    queue);
-                        }
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    int counter = retryCounter - 1;
+                    if (counter <= 0) {
+                        errorHandling(volleyError);
+                        Log.d(TAG, "No retries left");
+                        if (parser != null) parser.onError(volleyError);
+                    } else {
+                        //try again without session id
+                        Log.d(TAG, "Trying again without session ID. Retries left: "
+                            + String.valueOf(counter));
+                        makeJsonVersionRequest(parser,
+                            username,
+                            password,
+                            url,
+                            sessionUtil,
+                            false,
+                            counter,
+                            queue);
                     }
-                }) {
+                }
+            }) {
 
-                    @Override
-                    // HTTP basic authentication
-                    // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> headers = super.getHeaders();
+                @Override
+                // HTTP basic authentication
+                // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = super.getHeaders();
 
-                        if (headers == null
-                                || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<>();
-                        }
-
-                        if (usePreviousSession)
-                            sessionUtil.addSessionCookie(headers);
-                        return createBasicAuthHeader(username, password, headers);
+                    if (headers == null
+                        || headers.equals(Collections.emptyMap())) {
+                        headers = new HashMap<>();
                     }
 
-                    @Override
-                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                        sessionUtil.checkSessionCookie(response.headers);           //save cookie
-                        return super.parseNetworkResponse(response);
-                    }
-                };
+                    if (usePreviousSession)
+                        sessionUtil.addSessionCookie(headers);
+                    return createBasicAuthHeader(username, password, headers);
+                }
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    sessionUtil.checkSessionCookie(response.headers);           //save cookie
+                    return super.parseNetworkResponse(response);
+                }
+            };
 
         // Adding request to request queue
         addToRequestQueue(jsonObjReq, queue);
@@ -143,61 +143,61 @@ public class RequestUtil {
                                           final RequestQueue queue) {
 
         JsonObjectRequest jsonObjReq =
-                new JsonObjectRequest(Request.Method.GET,
-                        url, null, new Response.Listener<JSONObject>() {
+            new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (parser != null)
-                            parser.parseResult(response.toString());
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter - 1;
-                        if (counter <= 0) {
-                            errorHandling(volleyError);
-                            if (parser != null) parser.onError(volleyError);
-                        } else {
-                            //try again without session id
-                            Log.d(TAG, "Trying again without session ID. Retries left: "
-                                    + String.valueOf(counter));
-                            makeJsonGetRequest(parser,
-                                    username,
-                                    password,
-                                    url,
-                                    sessionUtil,
-                                    false,
-                                    counter,
+                @Override
+                public void onResponse(JSONObject response) {
+                    if (parser != null)
+                        parser.parseResult(response.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    int counter = retryCounter - 1;
+                    if (counter <= 0) {
+                        errorHandling(volleyError);
+                        if (parser != null) parser.onError(volleyError);
+                    } else {
+                        //try again without session id
+                        Log.d(TAG, "Trying again without session ID. Retries left: "
+                            + String.valueOf(counter));
+                        makeJsonGetRequest(parser,
+                            username,
+                            password,
+                            url,
+                            sessionUtil,
+                            false,
+                            counter,
                             queue);
-                        }
                     }
-                }) {
+                }
+            }) {
 
-                    @Override
-                    // HTTP basic authentication
-                    // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> headers = super.getHeaders();
+                @Override
+                // HTTP basic authentication
+                // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = super.getHeaders();
 
-                        if (headers == null
-                                || headers.equals(Collections.emptyMap())) {
-                            headers = new HashMap<>();
-                        }
-
-                        if (usePreviousSession)
-                            sessionUtil.addSessionCookie(headers);
-                        return createBasicAuthHeader(username, password, headers);
+                    if (headers == null
+                        || headers.equals(Collections.emptyMap())) {
+                        headers = new HashMap<>();
                     }
 
-                    @Override
-                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                        // since we don't know which of the two underlying network vehicles
-                        // will Volley use, we have to handle and store session cookies manually
-                        sessionUtil.checkSessionCookie(response.headers);
-                        return super.parseNetworkResponse(response);
-                    }
-                };
+                    if (usePreviousSession)
+                        sessionUtil.addSessionCookie(headers);
+                    return createBasicAuthHeader(username, password, headers);
+                }
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    // since we don't know which of the two underlying network vehicles
+                    // will Volley use, we have to handle and store session cookies manually
+                    sessionUtil.checkSessionCookie(response.headers);
+                    return super.parseNetworkResponse(response);
+                }
+            };
 
         // Adding request to request queue
         addToRequestQueue(jsonObjReq, queue);
@@ -216,8 +216,90 @@ public class RequestUtil {
                                                 final RequestQueue queue) {
 
         JsonObjectRequest jsonObjReq =
-                new JsonObjectRequest(Request.Method.GET,
-                        url, null, new Response.Listener<JSONObject>() {
+            new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    String jsonString;
+
+                    try {
+                        jsonString = response.getString(DomoticzValues.Json.Field.RESULT);
+                        if (parser != null)
+                            parser.parseResult(jsonString);
+                    } catch (JSONException e) {
+                        jsonErrorHandling(response, e, parser);
+                    }
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    int counter = retryCounter - 1;
+                    if (counter <= 0) {
+                        errorHandling(volleyError);
+                        if (parser != null) parser.onError(volleyError);
+                    } else {
+                        //try again without session id
+                        Log.d(TAG, "Trying again without session ID. Retries left: "
+                            + String.valueOf(counter));
+                        makeJsonGetResultRequest(parser,
+                            username,
+                            password,
+                            url,
+                            sessionUtil,
+                            false,
+                            counter,
+                            queue);
+                    }
+                }
+            }) {
+
+                @Override
+                // HTTP basic authentication
+                // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = super.getHeaders();
+
+                    if (headers == null
+                        || headers.equals(Collections.emptyMap())) {
+                        headers = new HashMap<>();
+                    }
+
+                    if (usePreviousSession)
+                        sessionUtil.addSessionCookie(headers);
+                    return createBasicAuthHeader(username, password, headers);
+                }
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    // since we don't know which of the two underlying network vehicles
+                    // will Volley use, we have to handle and store session cookies manually
+                    sessionUtil.checkSessionCookie(response.headers);
+                    return super.parseNetworkResponse(response);
+                }
+            };
+
+        // Adding request to request queue
+        addToRequestQueue(jsonObjReq, queue);
+    }
+
+    /**
+     * Method to put a JSON object to a url
+     */
+    public static void makeJsonPutRequest(@Nullable final JSONParserInterface parser,
+                                          final String username,
+                                          final String password,
+                                          final String url,
+                                          final SessionUtil sessionUtil,
+                                          final boolean usePreviousSession,
+                                          final int retryCounter,
+                                          final RequestQueue queue) {
+
+        JsonObjectRequest jsonObjReq =
+            new JsonObjectRequest(Request.Method.PUT, url, null,
+                new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -225,64 +307,117 @@ public class RequestUtil {
                         String jsonString;
 
                         try {
-                            jsonString = response.getString(DomoticzValues.Json.Field.RESULT);
-                            if (parser != null)
-                                parser.parseResult(jsonString);
+                            jsonString = response.getString(DomoticzValues.Json.Field.STATUS);
+                            if (jsonString.equals(DomoticzValues.Json.Field.ERROR)) {
+                                jsonErrorHandling(response, null, parser);
+                            } else {
+                                if (parser != null)
+                                    parser.parseResult(jsonString);
+                            }
                         } catch (JSONException e) {
-                            jsonErrorHandling(response, e, parser);
+
                         }
                     }
                 }, new Response.ErrorListener() {
 
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    int counter = retryCounter - 1;
+                    if (counter <= 0) {
+                        errorHandling(volleyError);
+                        if (parser != null) parser.onError(volleyError);
+                    } else {
+                        //try again without session id
+                        Log.d(TAG, "Trying again without session ID. Retries left: "
+                            + String.valueOf(counter));
+                        makeJsonPutRequest(parser,
+                            username,
+                            password,
+                            url,
+                            sessionUtil,
+                            false,
+                            counter,
+                            queue);
+                    }
+                }
+            }) {
+
+                @Override
+                // HTTP basic authentication
+                // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = super.getHeaders();
+
+                    if (headers == null
+                        || headers.equals(Collections.emptyMap())) {
+                        headers = new HashMap<>();
+                    }
+
+                    if (usePreviousSession)
+                        sessionUtil.addSessionCookie(headers);
+                    return createBasicAuthHeader(username, password, headers);
+                }
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    // since we don't know which of the two underlying network vehicles
+                    // will Volley use, we have to handle and store session cookies manually
+                    sessionUtil.checkSessionCookie(response.headers);
+                    return super.parseNetworkResponse(response);
+                }
+            };
+
+        // Adding request to request queue
+        addToRequestQueue(jsonObjReq, queue);
+    }
+
+    public static ImageLoader getImageLoader(final Domoticz domoticz, final SessionUtil sessionUtil, Context context) {
+        if (domoticz == null)
+            return null;
+
+        ImageLoader.ImageCache imageCache = new BitmapLruCache();
+        return new ImageLoader(Volley.newRequestQueue(context), imageCache) {
+            @SuppressWarnings("deprecation")
+            @Override
+            protected com.android.volley.Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
+                                                                          ImageView.ScaleType scaleType, final String cacheKey) {
+                return new ImageRequest(requestUrl, new Response.Listener<Bitmap>() {
                     @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        int counter = retryCounter - 1;
-                        if (counter <= 0) {
-                            errorHandling(volleyError);
-                            if (parser != null) parser.onError(volleyError);
-                        } else {
-                            //try again without session id
-                            Log.d(TAG, "Trying again without session ID. Retries left: "
-                                    + String.valueOf(counter));
-                            makeJsonGetResultRequest(parser,
-                                    username,
-                                    password,
-                                    url,
-                                    sessionUtil,
-                                    false,
-                                    counter,
-                                    queue);
-                        }
+                    public void onResponse(Bitmap response) {
+                        onGetImageSuccess(cacheKey, response);
+                    }
+                }, maxWidth, maxHeight,
+                    Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onGetImageError(cacheKey, error);
                     }
                 }) {
 
                     @Override
-                    // HTTP basic authentication
-                    // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = super.getHeaders();
 
                         if (headers == null
-                                || headers.equals(Collections.emptyMap())) {
+                            || headers.equals(Collections.emptyMap())) {
                             headers = new HashMap<>();
                         }
 
-                        if (usePreviousSession)
-                            sessionUtil.addSessionCookie(headers);
-                        return createBasicAuthHeader(username, password, headers);
-                    }
+                        String credentials = domoticz.getUserCredentials(Domoticz.Authentication.USERNAME) + ":" + domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);
+                        String base64EncodedCredentials =
+                            Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
-                    @Override
-                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                        // since we don't know which of the two underlying network vehicles
-                        // will Volley use, we have to handle and store session cookies manually
-                        sessionUtil.checkSessionCookie(response.headers);
-                        return super.parseNetworkResponse(response);
+                        headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                        headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                        headers.put("Accept-Language", "en-US,en;q=0.7,nl;q=0.3");
+                        headers.put("Accept-Encoding", "gzip, deflate");
+
+                        sessionUtil.addSessionCookie(headers);
+                        return headers;
                     }
                 };
-
-        // Adding request to request queue
-        addToRequestQueue(jsonObjReq, queue);
+            }
+        };
     }
 
     /**
@@ -299,7 +434,7 @@ public class RequestUtil {
 
         String credentials = username + ":" + password;
         String base64EncodedCredentials =
-                Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
 
         return headerMap;
@@ -354,8 +489,8 @@ public class RequestUtil {
         req.setTag(TAG);
 
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         req.setRetryPolicy(retryPolicy);
         queue.add(req);
