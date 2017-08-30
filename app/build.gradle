@@ -141,7 +141,7 @@ dependencies {
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     def supportVersion = '25.3.1'
-    def playServicesVersion = '11.0.1'
+    def playServicesVersion = '11.0.4'
 
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
