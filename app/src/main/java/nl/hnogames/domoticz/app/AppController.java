@@ -255,11 +255,10 @@ public class AppController extends MultiDexApplication implements GcmListener {
         if (str != null) {
             try {
                 return URLDecoder.decode(str, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.i("GCM", "text not decoded: " + str);
             }
         }
         return str;
     }
-
 }
