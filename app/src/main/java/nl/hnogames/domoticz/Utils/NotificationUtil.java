@@ -21,12 +21,14 @@
 
 package nl.hnogames.domoticz.Utils;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -80,6 +82,14 @@ public class NotificationUtil {
                     NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                             context.getString(R.string.category_notification),
                             GetPriority(priority));
+                    channel.setShowBadge(true);
+                    channel.enableLights(true);
+                    channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                    channel.setLightColor(Color.BLUE);
+                    if (prefUtil.getNotificationVibrate()) {
+                        channel.enableVibration(true);
+                        channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                    }
                     mNotificationManager.createNotificationChannel(channel);
                 }
 
@@ -91,6 +101,7 @@ public class NotificationUtil {
                                 .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
                                 .setChannelId(CHANNEL_ID)
                                 .setGroupSummary(true)
+                                .setNumber(3)
                                 .setGroup(GROUP_KEY_NOTIFICATIONS)
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                                 .setAutoCancel(true);
