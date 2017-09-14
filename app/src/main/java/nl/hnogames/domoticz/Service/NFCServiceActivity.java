@@ -91,6 +91,9 @@ public class NFCServiceActivity extends AppCompatActivity {
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                if (mDevicesInfo == null)
+                    return;
+
                 int jsonAction;
                 int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                 int jsonValue = 0;
@@ -198,6 +201,9 @@ public class NFCServiceActivity extends AppCompatActivity {
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+            return 0;
+
         int jsonValue = 0;
         if (!UsefulBits.isEmpty(value)) {
             ArrayList<String> levelNames = mDevicesInfo.getLevelNames();

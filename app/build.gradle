@@ -65,6 +65,9 @@ android {
             resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
 
+            resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
+            resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
+
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
@@ -76,6 +79,9 @@ android {
             resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
             resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
+
+            resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
+            resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
@@ -99,6 +105,7 @@ android {
     //noinspection GroovyAssignabilityCheck
     dexOptions {
         preDexLibraries false
+        javaMaxHeapSize "4g"
     }
 }
 repositories {
@@ -134,7 +141,7 @@ dependencies {
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     def supportVersion = '25.3.1'
-    def playServicesVersion = '10.2.6'
+    def playServicesVersion = '11.0.4'
 
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
@@ -153,6 +160,7 @@ dependencies {
     compile "com.google.android.gms:play-services-gcm:$playServicesVersion"
     compile "com.google.android.gms:play-services-location:$playServicesVersion"
     compile "com.google.android.gms:play-services-places:$playServicesVersion"
+    compile "com.google.android.gms:play-services-ads:$playServicesVersion"
 
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.7'

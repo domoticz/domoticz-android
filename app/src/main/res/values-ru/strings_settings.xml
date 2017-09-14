@@ -112,9 +112,9 @@
   <string name="fingerprint_not_setup_in_android">Сначала настройте/подключите распознавание отпечатков пальцев для этого устройства</string>
   <string name="fingerprint_sure">Вы уверены? Пароль вашей учетной записи Domoticz это пароль отказа.</string>
   <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+  <string name="category_widgets">Виджеты не включены на этом предмете, пожалуйста, проверьте свои настройки Domoticz</string>
+  <string name="widget_description">Включить или отключить виджет на этом устройстве</string>
+  <string name="widget_disabled">Виджеты не включены на этом предмете, пожалуйста, проверьте свои настройки Domoticz6</string>
   <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID сообщений Google Cloud</string>

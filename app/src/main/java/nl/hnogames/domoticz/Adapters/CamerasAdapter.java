@@ -29,12 +29,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Utils.RequestUtil;
+import nl.hnogames.domoticzapi.Utils.SessionUtil;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
@@ -64,7 +68,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.camera_row, parent, false);
+            .inflate(R.layout.camera_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.row_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -79,13 +83,17 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
             String address = cameraInfo.getAddress();
-            String imageUrl = cameraInfo.getTotalImageURL();
+            String imageUrl = cameraInfo.getSnapShotURL();
 
             int numberOfDevices = cameraInfo.getDevices();
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            holder.camera.Start(imageUrl);
+            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
+            holder.camera.setImageUrl(imageUrl, imageLoader);
+
+            if (!refreshTimer)
+                holder.camera.setDefaultImageResId(R.drawable.placeholder);
         }
     }
 
@@ -99,14 +107,14 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+        implements View.OnClickListener {
         TextView name;
-        nl.hnogames.domoticz.UI.MjpegViewer.MjpegView camera;
+        com.android.volley.toolbox.NetworkImageView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
-            camera = (nl.hnogames.domoticz.UI.MjpegViewer.MjpegView) itemView.findViewById(R.id.image);
+            camera = (com.android.volley.toolbox.NetworkImageView) itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
 

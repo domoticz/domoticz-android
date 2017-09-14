@@ -63,6 +63,11 @@ public class GraphPointInfo {
     private String co2_max;
     private String co2;
 
+    private String lux;
+    private String lux_min;
+    private String lux_max;
+    private String lux_avg;
+
     public GraphPointInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
 
@@ -87,6 +92,16 @@ public class GraphPointInfo {
             vMin = row.getString("v_min");
             vMax = row.getString("v_max");
         }
+
+        if (row.has("lux"))
+            lux = row.getString("lux");
+        if (row.has("lux_min"))
+            lux_min = row.getString("lux_min");
+        if (row.has("lux_max"))
+            lux_max = row.getString("lux_max");
+        if (row.has("lux_avg"))
+            lux_avg = row.getString("lux_avg");
+
         if (row.has("v2"))
             v2 = row.getString("v2");
         if (row.has("r1"))
@@ -134,6 +149,19 @@ public class GraphPointInfo {
                         .create()
                         .toJson(this) +
                 '}';
+    }
+
+    public String getLux() {
+        return lux;
+    }
+    public String getLuxMin() {
+        return lux_min;
+    }
+    public String getLuxMax() {
+        return lux_max;
+    }
+    public String getLuxAvg() {
+        return lux_avg;
     }
 
     public String getValue() {

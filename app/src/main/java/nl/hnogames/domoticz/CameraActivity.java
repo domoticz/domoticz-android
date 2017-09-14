@@ -53,10 +53,9 @@ public class CameraActivity extends AppCompatActivity {
         Camera camera = new Camera();
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-                camera).commit();
-        camera.setImage(title);
+            camera).commit();
+        camera.setImage(imageUrl);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -65,7 +64,6 @@ public class CameraActivity extends AppCompatActivity {
                 this.finish();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

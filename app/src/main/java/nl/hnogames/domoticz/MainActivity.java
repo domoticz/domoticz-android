@@ -57,6 +57,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -76,6 +79,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
@@ -130,6 +135,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
+    private Timer cameraRefreshTimer = null;
     private Fragment latestFragment = null;
     private Drawer drawer;
     private SpeechRecognizer speechRecognizer;
@@ -142,6 +148,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
     private boolean fromShortcut = false;
+    private AdView mAdView;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -152,16 +159,28 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDarkMain);
         else
             setTheme(R.style.AppThemeMain);
+         permissionHelper = PermissionHelper.getInstance(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newmain);
         UsefulBits.checkAPK(this, mSharedPrefs);
-        permissionHelper = PermissionHelper.getInstance(this);
+        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            setContentView(R.layout.activity_newmain_free);
+            mAdView = (AdView) findViewById(R.id.adView);
+            MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
+            mAdView.loadAd(adRequest);
+        }
+        else{
+            setContentView(R.layout.activity_newmain_paid);
+            mAdView = (AdView) findViewById(R.id.adView);
+            mAdView.setVisibility(View.GONE);
+        }
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -365,6 +384,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                if (mDevicesInfo == null)
+                    return;
+
                 int jsonAction;
                 int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                 int jsonValue = 0;
@@ -470,6 +492,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+            return 0;
+
         int jsonValue = 0;
         if (!UsefulBits.isEmpty(value)) {
             ArrayList<String> levelNames = mDevicesInfo.getLevelNames();
@@ -754,9 +779,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             }
 
                             if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
+                                stopCameraTimer();
                                 startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
                             } else if (drawerItem.getTag() != null) {
                                 changeFragment(String.valueOf(drawerItem.getTag()));
+                                stopCameraTimer();
 
                                 invalidateOptionsMenu();
                                 if (onPhone)
@@ -926,7 +953,10 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
         if (!fromVoiceWidget && !fromQRCodeWidget) {
             if ((f instanceof Cameras)) {
-                getMenuInflater().inflate(R.menu.menu_camera, menu);
+                if (cameraRefreshTimer != null)
+                    getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
+                else
+                    getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
                 if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
@@ -1053,6 +1083,33 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     }, 50);
 
                     return true;
+                case R.id.action_camera_play:
+                    if (cameraRefreshTimer == null) {
+                        cameraRefreshTimer = new Timer("camera", true);
+                        cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            @DebugLog
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    @DebugLog
+                                    public void run() {
+                                        //call refresh fragment
+                                        Fragment f = latestFragment;
+                                        if (f instanceof Cameras) {
+                                            ((Cameras) f).refreshFragment();
+                                        } else {
+                                            //we're not at the camera fragment? stop timer!
+                                            stopCameraTimer();
+                                            invalidateOptionsMenu();
+                                        }
+                                    }
+                                });
+                            }
+                        }, 0, 5000);//schedule in 5 seconds
+                    }
+                    invalidateOptionsMenu();//set pause button
+                    return true;
                 case R.id.action_scan_qrcode:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (PermissionsUtil.canAccessCamera(this)) {
@@ -1065,6 +1122,10 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                         startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
                     }
+                    return true;
+                case R.id.action_camera_pause:
+                    stopCameraTimer();
+                    invalidateOptionsMenu();//set pause button
                     return true;
                 case R.id.action_sort:
                     SortDialog infoDialog = new SortDialog(
@@ -1272,6 +1333,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         return layout;
     }
 
+    private void stopCameraTimer() {
+        if (cameraRefreshTimer != null) {
+            cameraRefreshTimer.cancel();
+            cameraRefreshTimer.purge();
+            cameraRefreshTimer = null;
+        }
+    }
+
     @Override
     @DebugLog
     public void onResume() {
@@ -1290,6 +1359,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             oTalkBackUtil = null;
         }
 
+        stopCameraTimer();
         Digitus.deinit();
         super.onDestroy();
     }
@@ -1332,6 +1402,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     stackFragments.remove(currentFragment);
                 }
 
+                stopCameraTimer();
                 invalidateOptionsMenu();
             }
         }

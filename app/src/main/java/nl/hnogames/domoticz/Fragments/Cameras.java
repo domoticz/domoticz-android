@@ -23,12 +23,15 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,11 +41,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -68,6 +73,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private Context context;
     private RecyclerView mRecyclerView;
     private CamerasAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private boolean refreshTimer = false;
     private SharedPrefUtil mSharedPrefs;
     private SlideInBottomAnimationAdapter alphaSlideIn;
@@ -83,6 +89,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     @Override
     public void refreshFragment() {
         refreshTimer = true;
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
 
         getCameras();
     }
@@ -93,15 +101,22 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     public void getCameras() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         new GetCachedDataTask().execute();
     }
 
-    private void ImageSelected(CameraInfo camera) {
-        Intent intent = new Intent(context, CameraActivity.class);
-        intent.putExtra("IMAGETITLE", camera.getName());
-        intent.putExtra("IMAGEURL", camera.getSnapShotURL());
-        startActivity(intent);
+    private void processImage(Bitmap savePic, String title) {
+        File dir = mDomoticz.saveSnapShot(savePic, title);
+        if (dir != null) {
+            Intent intent = new Intent(context, CameraActivity.class);
+            //noinspection SpellCheckingInspection
+            intent.putExtra("IMAGETITLE", title);
+            //noinspection SpellCheckingInspection
+            intent.putExtra("IMAGEURL", dir.getPath());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -139,12 +154,13 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getCameras();
     }
 
-    private void createListView(final ArrayList<CameraInfo> Cameras) {
+    private void createListView(ArrayList<CameraInfo> Cameras) {
         if (getView() == null)
             return;
 
         if (mRecyclerView == null) {
             mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -157,19 +173,17 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 public void onItemClick(int position, View v) {
                     if (mPhoneConnectionUtil.isNetworkAvailable()) {
                         try {
+                            ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
                             TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                            Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
-                            for (CameraInfo c : Cameras) {
-                                if (c.getName().equals(cameraTitle.getText())) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        if (!PermissionsUtil.canAccessStorage(context)) {
-                                            permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                                        } else
-                                            ImageSelected(c);
-                                    } else {
-                                        ImageSelected(c);
-                                    }
-                                }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (!PermissionsUtil.canAccessStorage(context)) {
+                                    permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                } else
+                                    processImage(savePic, cameraTitle.getText().toString());
+                            } else {
+                                processImage(savePic, cameraTitle.getText().toString());
                             }
                         } catch (Exception ex) {
                             errorHandling(ex, coordinatorLayout);
@@ -183,7 +197,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                     }
                 }
             });
-
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
@@ -191,6 +204,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
+
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -204,7 +219,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             }
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-                getActivity().getString(R.string.permission_desc_storage), neededPermission);
+            getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }

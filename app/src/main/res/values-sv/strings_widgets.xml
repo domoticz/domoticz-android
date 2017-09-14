@@ -28,11 +28,11 @@
   <string name="failed_to_get_switches">Det gick inte att hämta enheter</string>
   <string name="failed_toggle_switch">Misslyckades att växla enhet</string>
   <string name="switch_toggled">"Byt enhet"</string>
-  <string name="text_loading">Loading...</string>
-  <string name="text_go">GO</string>
-  <string name="widget_background">Background</string>
-  <string name="widget_dark">Dark</string>
-  <string name="widget_light">Light</string>
-  <string name="widget_transparent_dark">Dark Transparent</string>
-  <string name="widget_transparent_light">Light Transparent</string>
+  <string name="text_loading">Laddar...</string>
+  <string name="text_go">KÖR</string>
+  <string name="widget_background">Bakgrund</string>
+  <string name="widget_dark">Mörk</string>
+  <string name="widget_light">Ljus</string>
+  <string name="widget_transparent_dark">Mörk transparent</string>
+  <string name="widget_transparent_light">Ljus transparent</string>
 </resources>
