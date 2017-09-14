@@ -98,7 +98,8 @@ public class TemperatureInfoDialog implements DialogInterface.OnDismissListener 
         favorite_switch.setChecked(isFavorite);
         favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {}
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            }
         });
 
         md.show();

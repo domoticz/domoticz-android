@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Este dispositivo no soporta Seguridad por Huella Dactilar</string>
   <string name="fingerprint_not_setup_in_android">Configurar primero una Huella Dactilar en este dispositivo</string>
   <string name="fingerprint_sure">¿Estás seguro? La contraseña alternativa es la contraseña de tu cuenta de Domoticz.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widgets (BETA)</string>
+  <string name="widget_description">Habilitar o deshabilitar Widget en este dispositivo</string>
+  <string name="widget_disabled">Los widgets no están habilitados en este dispositivo, por favor revisa tu configuración de Domoticz</string>
+  <string name="widget_warning">¡¡Por favor use los widgets bajo su responsabilidad!! Los widgets están actualmente en Beta y probablemente contengan errores. Pueden causar elevado uso de datos/batería...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de mensajería de Google Cloud</string>
   <string name="notification_settings_push">Enviar su id de registro a Domoticz</string>

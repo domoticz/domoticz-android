@@ -87,6 +87,7 @@ public class SharedPrefUtil {
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
+    private static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
     private static final String PREF_SPEECH_ENABLED = "enableSpeech";
     private static final String PREF_QRCODE_ENABLED = "enableQRCode";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
@@ -109,6 +110,8 @@ public class SharedPrefUtil {
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
     private static final String PREF_TEMP_MIN = "tempMinValue";
     private static final String PREF_TEMP_MAX = "tempMaxValue";
+    private static final String PREF_WIDGET_ENABLED = "enableWidgets";
+
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -144,6 +147,15 @@ public class SharedPrefUtil {
 
     public boolean checkForUpdatesEnabled() {
         return prefs.getBoolean(PREF_CHECK_UPDATES, false);
+    }
+
+    public boolean IsWidgetsEnabled() {
+        return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
+    }
+
+    public void SetWidgetsEnabled(Boolean set) {
+        editor.putBoolean(PREF_WIDGET_ENABLED, set).apply();
+        editor.commit();
     }
 
     public boolean isMultiServerEnabled() {
@@ -774,6 +786,15 @@ public class SharedPrefUtil {
 
     public void setGeofenceEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_ENABLED, enabled).apply();
+        editor.commit();
+    }
+
+    public boolean isGeofenceNotificationsEnabled() {
+        return prefs.getBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, false);
+    }
+
+    public void setGeofenceNotificationsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
         editor.commit();
     }
 

@@ -21,20 +21,20 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/row_global_wrapper"
-    style="@style/background_listview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+                android:id="@+id/row_global_wrapper"
+                style="@style/background_listview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+               android:id="@+id/image"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:adjustViewBounds="true"
+               android:scaleType="centerCrop" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

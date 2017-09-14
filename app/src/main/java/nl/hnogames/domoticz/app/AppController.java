@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
+import shortbread.Shortbread;
 
 import static android.text.TextUtils.isDigitsOnly;
 
@@ -73,6 +74,7 @@ public class AppController extends MultiDexApplication implements GcmListener {
     @Override
     public void onCreate() {
         super.onCreate();
+        Shortbread.create(this);
         if (PermissionsUtil.canAccessDeviceState(this))
             StartEasyGCM();
         mInstance = this;
@@ -170,6 +172,32 @@ public class AppController extends MultiDexApplication implements GcmListener {
                 NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
             }
         }
+        else{
+            if(bundle.containsKey("notification")){
+                Bundle notification = bundle.getBundle("notification");
+                if (notification.containsKey("message")) {
+                    String message = decode(notification.getString("message"));
+                    String subject = decode(notification.getString("subject"));
+                    String body = decode(notification.getString("body"));
+
+                    int prio = 0; //default
+                    String priority = decode(notification.getString("priority"));
+                    if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
+                        prio = Integer.valueOf(priority);
+
+                    if (subject != null && !body.equals(subject)) {
+                        //String extradata = decode(notification.getString("extradata"));
+                        String deviceid = decode(notification.getString("deviceid"));
+                        if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
+                            NotificationUtil.sendSimpleNotification(subject, body, prio, this);
+                        else
+                            NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
+                    } else {
+                        NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
+                    }
+                }
+            }
+        }
     }
 
     public void resendRegistrationIdToBackend() {
@@ -208,7 +236,6 @@ public class AppController extends MultiDexApplication implements GcmListener {
     }
 
     private void registerMobileForGCM(String UUID, String senderid) {
-
         final Domoticz mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
             @Override
@@ -228,11 +255,10 @@ public class AppController extends MultiDexApplication implements GcmListener {
         if (str != null) {
             try {
                 return URLDecoder.decode(str, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.i("GCM", "text not decoded: " + str);
             }
         }
         return str;
     }
-
 }

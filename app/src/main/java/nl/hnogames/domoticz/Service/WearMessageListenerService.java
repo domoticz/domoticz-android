@@ -108,33 +108,31 @@ public class WearMessageListenerService extends WearableListenerService implemen
                     else
                         onSwitchToggle(selectedSwitch);
                 } else {
-                    if (selectedSwitch != null) {
-                        switch (selectedSwitch.getSwitchTypeVal()) {
-                            case DomoticzValues.Device.Type.Value.ON_OFF:
-                            case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                            case DomoticzValues.Device.Type.Value.X10SIREN:
-                            case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                            case DomoticzValues.Device.Type.Value.DOORLOCK:
-                            case DomoticzValues.Device.Type.Value.DIMMER:
-                            case DomoticzValues.Device.Type.Value.BLINDS:
-                            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                                onSwitchToggle(selectedSwitch);
-                                break;
+                    switch (selectedSwitch.getSwitchTypeVal()) {
+                        case DomoticzValues.Device.Type.Value.ON_OFF:
+                        case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
+                        case DomoticzValues.Device.Type.Value.X10SIREN:
+                        case DomoticzValues.Device.Type.Value.DOORCONTACT:
+                        case DomoticzValues.Device.Type.Value.DOORLOCK:
+                        case DomoticzValues.Device.Type.Value.DIMMER:
+                        case DomoticzValues.Device.Type.Value.BLINDS:
+                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                            onSwitchToggle(selectedSwitch);
+                            break;
 
-                            case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                            case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
-                            case DomoticzValues.Device.Type.Value.DOORBELL:
-                                onButtonClick(selectedSwitch, true);
-                                break;
+                        case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                        case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
+                        case DomoticzValues.Device.Type.Value.DOORBELL:
+                            onButtonClick(selectedSwitch, true);
+                            break;
 
-                            case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                                onButtonClick(selectedSwitch, false);
-                                break;
+                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
+                            onButtonClick(selectedSwitch, false);
+                            break;
 
-                            default:
-                                throw new NullPointerException(
-                                        "Toggle event received from wear device for unsupported switch type.");
-                        }
+                        default:
+                            throw new NullPointerException(
+                                    "Toggle event received from wear device for unsupported switch type: " + selectedSwitch.getSwitchTypeVal());
                     }
                     //now send latest status
                     getSwitches();

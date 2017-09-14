@@ -51,10 +51,10 @@
   <string name="temperature">Hőmérséklet</string>
   <string name="status">Állapot</string>
   <string name="set_point">Munkapont</string>
-  <string name="set_point_min">Set point min value</string>
-  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
-  <string name="set_point_max">Set point max value</string>
-  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
+  <string name="set_point_min">Setpoint minimum értéke</string>
+  <string name="set_point_min_description">Minimum hőmérséklet, amit beállíthatsz a termosztáton</string>
+  <string name="set_point_max">Setpoint maximum értéke</string>
+  <string name="set_point_max_description">Maximum hőmérséklet, amit beállíthatsz a termosztáton</string>
   <string name="action_success">Sikeres művelet</string>
   <string name="action_failed">Sikertelen művelet</string>
   <string name="action_unknown">A művelet eredménye nem ismert</string>
@@ -72,7 +72,7 @@
   <string name="yes">Igen</string>
   <string name="no">Nem</string>
   <string name="are_you_sure">Biztos vagy benne?</string>
-  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
+  <string name="are_you_sure_clear_settings">Biztos vagy benne?? Ez a Widget beállításokat is törli..</string>
   <string name="add">Hozzáadás</string>
   <string name="cancel">Mégse</string>
   <string name="ok">OK</string>

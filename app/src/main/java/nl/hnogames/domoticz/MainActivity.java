@@ -57,6 +57,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -115,6 +118,7 @@ import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
+import shortbread.Shortcut;
 
 @DebugLog
 public class MainActivity extends AppCompatPermissionsActivity implements DigitusCallback, FingerprintDialog.Callback {
@@ -143,6 +147,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private MenuItem speechMenuItem;
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
+    private boolean fromShortcut = false;
+    private AdView mAdView;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -153,16 +159,28 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDarkMain);
         else
             setTheme(R.style.AppThemeMain);
+         permissionHelper = PermissionHelper.getInstance(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newmain);
         UsefulBits.checkAPK(this, mSharedPrefs);
-        permissionHelper = PermissionHelper.getInstance(this);
+        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            setContentView(R.layout.activity_newmain_free);
+            mAdView = (AdView) findViewById(R.id.adView);
+            MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
+            mAdView.loadAd(adRequest);
+        }
+        else{
+            setContentView(R.layout.activity_newmain_paid);
+            mAdView = (AdView) findViewById(R.id.adView);
+            mAdView.setVisibility(View.GONE);
+        }
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -264,18 +282,18 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
-                            addFragment();
+                            if (!fromShortcut) addFragment();
                         }
 
                         @Override
                         @DebugLog
                         public void onError(Exception error) {
                             //drawNavigationMenu(null);
-                            addFragment();
+                            if (!fromShortcut) addFragment();
                         }
                     }, mServerUtil.getActiveServer().getConfigInfo(this));
                 } else {
-                    addFragment();
+                    if (!fromShortcut) addFragment();
                 }
             }
         } else {
@@ -327,7 +345,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         }
 
                         if (foundQRCode != null && foundQRCode.isEnabled()) {
-                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1, foundQRCode.getValue());
+                            handleSwitch(foundQRCode.getSwitchIdx(), foundQRCode.getSwitchPassword(), -1, foundQRCode.getValue(), foundQRCode.isSceneOrGroup());
                             Toast.makeText(MainActivity.this, getString(R.string.qrcode) + " " + foundQRCode.getName(), Toast.LENGTH_SHORT).show();
                         } else {
                             if (foundQRCode == null)
@@ -355,7 +373,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         permissionHelper.onActivityForResult(requestCode);
     }
 
-    private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value) {
+    private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {
         if (domoticz == null)
             domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
@@ -366,66 +384,84 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                if (mDevicesInfo == null)
+                    return;
+
                 int jsonAction;
                 int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
                 int jsonValue = 0;
 
-                if (mDevicesInfo == null)
-                    return;
-
-                if (inputJSONAction < 0) {
-                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                        if (!mDevicesInfo.getStatusBoolean())
-                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                        else {
-                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                            if (!UsefulBits.isEmpty(value)) {
-                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                if (!isSceneOrGroup) {
+                    if (inputJSONAction < 0) {
+                        if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            if (!mDevicesInfo.getStatusBoolean())
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            else {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
                             }
+                        } else {
+                            if (!mDevicesInfo.getStatusBoolean()) {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
+                            } else
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         }
                     } else {
-                        if (!mDevicesInfo.getStatusBoolean()) {
-                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                            if (!UsefulBits.isEmpty(value)) {
-                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                        if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            if (inputJSONAction == 1)
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            else {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
                             }
-                        } else
+                        } else {
+                            if (inputJSONAction == 1) {
+                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = getSelectorValue(mDevicesInfo, value);
+                                }
+                            } else
+                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                        }
+                    }
+
+                    switch (mDevicesInfo.getSwitchTypeVal()) {
+                        case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            break;
+                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            break;
                     }
                 } else {
-                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                        if (inputJSONAction == 1)
-                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                        else {
-                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                            if (!UsefulBits.isEmpty(value)) {
-                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                jsonValue = getSelectorValue(mDevicesInfo, value);
-                            }
-                        }
+                    jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+                    if (inputJSONAction < 0) {
+                        if (!mDevicesInfo.getStatusBoolean()) {
+                            jsonAction = DomoticzValues.Scene.Action.ON;
+                        } else
+                            jsonAction = DomoticzValues.Scene.Action.OFF;
                     } else {
                         if (inputJSONAction == 1) {
-                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                            if (!UsefulBits.isEmpty(value)) {
-                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                jsonValue = getSelectorValue(mDevicesInfo, value);
-                            }
+                            jsonAction = DomoticzValues.Scene.Action.ON;
                         } else
-                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            jsonAction = DomoticzValues.Scene.Action.OFF;
                     }
-                }
 
-                switch (mDevicesInfo.getSwitchTypeVal()) {
-                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                        jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                        break;
-                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                        jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                        break;
+                    if (mDevicesInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
+                        jsonAction = DomoticzValues.Scene.Action.ON;
                 }
 
                 domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
@@ -452,10 +488,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     MainActivity.this.finish();
             }
 
-        }, idx, false);
+        }, idx, isSceneOrGroup);
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
+        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+            return 0;
+
         int jsonValue = 0;
         if (!UsefulBits.isEmpty(value)) {
             ArrayList<String> levelNames = mDevicesInfo.getLevelNames();
@@ -1168,7 +1207,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             }
 
             if (foundSPEECH != null && foundSPEECH.isEnabled()) {
-                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction, foundSPEECH.getValue());
+                handleSwitch(foundSPEECH.getSwitchIdx(), foundSPEECH.getSwitchPassword(), jsonAction, foundSPEECH.getValue(), foundSPEECH.isSceneOrGroup());
                 Toast.makeText(MainActivity.this, getString(R.string.Speech) + ": " + SPEECH_ID + " - " + actionFound, Toast.LENGTH_SHORT).show();
             } else {
                 if (foundSPEECH == null)
@@ -1499,7 +1538,30 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 startRecognition();
             }
         }
-
         super.onPermissionGranted(permissionName);
+    }
+
+    @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
+    public void OpenDashBoard() {
+        fromShortcut = true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+    }
+
+    @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
+    public void OpenSwitch() {
+        fromShortcut = true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+    }
+
+    @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
+    public void OpenUtilities() {
+        fromShortcut = true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
+    }
+
+    @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
+    public void OpenTemperature() {
+        fromShortcut = true;
+        changeFragment("nl.hnogames.domoticz.Fragments.Temperature");
     }
 }

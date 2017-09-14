@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Toto zariadenie nepodporuje zabezpečenie odtlačkom prsta</string>
   <string name="fingerprint_not_setup_in_android">Najprv nakonfigurujte/pripojte odtlačok prsta na tomto zariadení</string>
   <string name="fingerprint_sure">Ste si istý? Záložné heslo je heslo konta Domoticz.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widgets (BETA)</string>
+  <string name="widget_description">Enable or Disable Widget on this device</string>
+  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID správy Google Cloud</string>
   <string name="notification_settings_push">Poslať vaše registračné ID do Domoticz</string>

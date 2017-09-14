@@ -300,6 +300,11 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             List<Entry> valuesco2min = new ArrayList<>();
             List<Entry> valuesco2max = new ArrayList<>();
 
+            List<Entry> valuesLux = new ArrayList<>();
+            List<Entry> valuesLuxmin = new ArrayList<>();
+            List<Entry> valuesLuxmax = new ArrayList<>();
+            List<Entry> valuesLuxAvg = new ArrayList<>();
+
             ArrayList<String> axisValueX = new ArrayList<>();
 
             int counter = 0;
@@ -322,6 +327,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             boolean addUsage = false;
             boolean addPowerUsage = false;
             boolean addPowerDelivery = false;
+            boolean addLux = false;
+            boolean addLuxMin = false;
+            boolean addLuxMax = false;
+            boolean addLuxAvg = false;
 
             Calendar mydate = Calendar.getInstance();
 
@@ -444,6 +453,25 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             valuesco2max.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getCo2Max())));
                         }
 
+                        if (g.getLux() != null && g.getLux().length() > 0) {
+                            addLux = true;
+                            valuesLux.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getLux())));
+                        }
+
+                        if (g.getLuxMin() != null && g.getLuxMin().length() > 0) {
+                            addLuxMin = true;
+                            valuesLuxmin.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getLuxMin())));
+                        }
+
+                        if (g.getLuxMax() != null && g.getLuxMax().length() > 0) {
+                            addLuxMax = true;
+                            valuesLuxmax.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getLuxMax())));
+                        }
+
+                        if (g.getLuxAvg() != null && g.getLuxAvg().length() > 0) {
+                            addLuxAvg = true;
+                            valuesLuxAvg.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getLuxAvg())));
+                        }
                         counter++;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -641,6 +669,42 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 entries.add(dataSet);
             }
 
+            if ((addLux && !enableFilters) ||
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Lux)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesLux, ((TextView) view.findViewById(R.id.legend_Lux)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
+            if ((addLuxMin && !enableFilters) ||
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Luxmin)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesLuxmin, ((TextView) view.findViewById(R.id.legend_Luxmin)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
+            if ((addLuxMax && !enableFilters) ||
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Luxmax)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesLuxmax, ((TextView) view.findViewById(R.id.legend_Luxmax)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
+            if ((addLuxAvg && !enableFilters) ||
+                (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_LuxAvg)).getText().toString()))) {
+                LineDataSet dataSet = new LineDataSet(valuesLuxAvg, ((TextView) view.findViewById(R.id.legend_LuxAvg)).getText().toString()); // add entries to dataset
+                dataSet.setColor(ContextCompat.getColor(context, R.color.md_yellow_400));
+                dataSet.setDrawCircles(false);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                entries.add(dataSet);
+            }
+
             if (entries.size() > 1) {
                 if (addTemperature) {
                     (view.findViewById(R.id.legend_temperature))
@@ -743,6 +807,30 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (view.findViewById(R.id.legend_co2max))
                             .setVisibility(View.VISIBLE);
                     addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_co2max)).getText());
+                }
+
+                if (addLux) {
+                    (view.findViewById(R.id.legend_Lux))
+                        .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_Lux)).getText());
+                }
+
+                if (addLuxMin) {
+                    (view.findViewById(R.id.legend_Luxmin))
+                        .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_Luxmin)).getText());
+                }
+
+                if (addLuxMax) {
+                    (view.findViewById(R.id.legend_Luxmax))
+                        .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_Luxmax)).getText());
+                }
+
+                if (addLuxAvg) {
+                    (view.findViewById(R.id.legend_LuxAvg))
+                        .setVisibility(View.VISIBLE);
+                    addLabelFilters((String) ((TextView) view.findViewById(R.id.legend_LuxAvg)).getText());
                 }
             }
 

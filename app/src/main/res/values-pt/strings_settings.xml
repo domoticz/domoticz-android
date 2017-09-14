@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Segurança por impressão digital não é suportada neste dispositivo</string>
   <string name="fingerprint_not_setup_in_android">Primeiro configure/conectar uma impressão digital para este dispositivo</string>
   <string name="fingerprint_sure">Tem certeza? A failover de senha é a senha da conta do Domoticz.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widgets (BETA)</string>
+  <string name="widget_description">Enable or Disable Widget on this device</string>
+  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de mensagens do Google Cloud</string>
   <string name="notification_settings_push">Coloque o seu id de registo no Domoticz</string>

@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Lecteur d’empreintes digitales n’est pas pris en charge sur cet appareil</string>
   <string name="fingerprint_not_setup_in_android">Configurer / connecter une empreinte digitale à ce dispositif</string>
   <string name="fingerprint_sure">Le mot de passe est le mot de passe de votre compte de Domoticz.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widgets (BETA)</string>
+  <string name="widget_description">Activer ou désactiver le Widget sur ce dispositif</string>
+  <string name="widget_disabled">Les Widgets ne sont pas activés sur cet appareil, Veuillez vérifier vos paramètres Domoticz</string>
+  <string name="widget_warning">Utilisez les widgets à vos risques et périls ! Les widgets sont actuellement en phase bêta et probablement avec quelques bugs. Il peuvent causer une surconsommation de la batterie / des données plus volumineuses...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de messagerie Google Cloud</string>
   <string name="notification_settings_push">Envoyer votre id d\'enregistrement à Domoticz</string>

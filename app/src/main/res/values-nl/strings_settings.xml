@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">Beveiliging met vingerafdruk is niet mogelijk op dit toestel</string>
   <string name="fingerprint_not_setup_in_android">Eerst een vingerafdruk instellen via systeem instellingen menu</string>
   <string name="fingerprint_sure">Weet u dit zeker? Mocht uw vingerafdruk niet worden herkend dan kunt u altijd nog inloggen met het wachtwoord van uw Domoticz account.</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">Widgets (BETA)</string>
+  <string name="widget_description">Zet de widget functionaliteit aan of uit op dit toestel</string>
+  <string name="widget_disabled">Widgets zijn qua functionaliteit nog niet aangezet op dit toestel, bekijk de settings in de Domoticz app</string>
+  <string name="widget_warning">De Widgets zijn op dit moment nog niet 100% werkend en kunnen leiden tot ongewenst gedrag. Denk aan mogelijk meer data of batterij gebruik!!</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud Messaging-ID</string>
   <string name="notification_settings_push">Uw registratienummer naar Domoticz versturen</string>

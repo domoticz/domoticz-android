@@ -40,11 +40,21 @@ public class LocationInfo {
     private String switchName;
     private String value;
 
+    private boolean isSceneOrGroup = false;
+
     public LocationInfo(int id, String name, LatLng latLng, int radius) {
         this.name = name;
         this.latLng = latLng;
         this.id = id;
         this.radius = radius;
+    }
+
+    public boolean isSceneOrGroup() {
+        return isSceneOrGroup;
+    }
+
+    public void setSceneOrGroup(boolean sceneOrGroup) {
+        isSceneOrGroup = sceneOrGroup;
     }
 
     public String getName() {

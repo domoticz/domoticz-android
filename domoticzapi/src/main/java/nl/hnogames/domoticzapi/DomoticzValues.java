@@ -272,6 +272,7 @@ public class DomoticzValues {
                 int AUTH = 36;
                 int FAVORITES = 37;
                 int UPDATEVAR = 40;
+                int IMAGE = 41;
             }
 
             @SuppressWarnings("SpellCheckingInspection")

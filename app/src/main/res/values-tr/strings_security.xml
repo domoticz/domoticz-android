@@ -21,13 +21,14 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Security Panel</string>
-  <string name="security_pin">Pin code</string>
-  <string name="security_disarm">Disarm</string>
-  <string name="security_arm_home">Arm home</string>
-  <string name="security_arm_away">Arm away</string>
-  <string name="security_wrong_code">Wrong code entered!</string>
-  <string name="security_generic_error">Could not change security status</string>
-  <string name="security_wrong_password_fingerprint">Wrong password entered, your domoticz account password is the failover for your fingerprint...!</string>
-  <string name="show_password">Show password</string>
+  <string name="title_security_panel">Güvenlik paneli</string>
+  <string name="security_pin">Şifre</string>
+  <string name="security_disarm">Devredışı</string>
+  <string name="security_arm_home">Kur Evde</string>
+  <string name="security_arm_away">Kur Uzakta</string>
+  <string name="security_wrong_code">Yanlış kod girildi!</string>
+  <string name="security_generic_error">Güvenlik durumu değiştirilemedi</string>
+  <string name="security_wrong_password_fingerprint">Yanlış şifre girildiğinde, domoticz hesap şifresi parmak izinin yerine oturması!
+</string>
+  <string name="show_password">Şifreyi göster</string>
 </resources>

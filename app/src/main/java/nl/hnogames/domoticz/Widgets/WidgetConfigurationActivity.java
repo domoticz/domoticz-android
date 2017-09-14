@@ -87,6 +87,10 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
             this.finish();
         }
 
+        if (!mSharedPrefs.IsWidgetsEnabled()) {
+            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.widget_disabled), Toast.LENGTH_LONG).show();
+            this.finish();
+        }
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {

@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.location.Address;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,14 +84,12 @@ public class LocationAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
-        int layoutResourceId;
 
         final LocationInfo mLocationInfo = data.get(position);
         holder = new ViewHolder();
 
-        layoutResourceId = R.layout.geo_row_location;
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, parent, false);
+        convertView = inflater.inflate(R.layout.geo_row_location, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
@@ -105,28 +102,8 @@ public class LocationAdapter extends BaseAdapter {
         holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
         holder.name = (TextView) convertView.findViewById(R.id.location_name);
         holder.radius = (TextView) convertView.findViewById(R.id.location_radius);
-        holder.country = (TextView) convertView.findViewById(R.id.location_country);
-        holder.address = (TextView) convertView.findViewById(R.id.location_address);
         holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
         holder.remove = (Button) convertView.findViewById(R.id.remove_button);
-
-        if (mLocationInfo.getAddress() != null) {
-            Address address = mLocationInfo.getAddress();
-
-            String addressString;
-            String countryString;
-
-            if (address != null) {
-                addressString = address.getAddressLine(0) + ", " + address.getLocality();
-                countryString = address.getCountryName();
-            } else {
-                addressString = context.getString(R.string.unknown);
-                countryString = context.getString(R.string.unknown);
-            }
-            holder.address.setText(addressString);
-            holder.country.setText(countryString);
-        }
-
         holder.name.setText(mLocationInfo.getName());
         holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRadius());
 
@@ -141,7 +118,6 @@ public class LocationAdapter extends BaseAdapter {
 
         if (!UsefulBits.isEmpty(mLocationInfo.getValue()))
             holder.connectedSwitch.setText(holder.connectedSwitch.getText() + " - " + mLocationInfo.getValue());
-
         holder.remove.setId(mLocationInfo.getID());
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,7 +150,6 @@ public class LocationAdapter extends BaseAdapter {
                 }
             }
         });
-
         convertView.setTag(holder);
         return convertView;
     }
@@ -189,9 +164,7 @@ public class LocationAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView name;
-        TextView address;
         TextView radius;
-        TextView country;
         TextView connectedSwitch;
         CheckBox enable;
         Button remove;

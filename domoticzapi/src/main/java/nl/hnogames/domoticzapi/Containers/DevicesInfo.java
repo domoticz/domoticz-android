@@ -425,6 +425,13 @@ public class DevicesInfo implements Comparable, Serializable {
         return Data;
     }
 
+    public boolean isSceneOrGroup() {
+        if (getType().equals(DomoticzValues.Scene.Type.GROUP) || getType().equals(DomoticzValues.Scene.Type.SCENE))
+            return true;
+        else
+            return false;
+    }
+
     public String getLastUpdate() {
         return LastUpdate;
     }

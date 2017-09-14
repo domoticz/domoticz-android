@@ -284,7 +284,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 .replace("Gas", "counter")
                 .replace("Energy", "counter")
                 .replace("Voltcraft", "counter")
+                .replace("Voltage", "counter")
                 .replace("SetPoint", "temp")
+                .replace("Lux", "counter")
                 .replace("YouLess counter", "counter");
 
         if (graphType.contains("counter"))

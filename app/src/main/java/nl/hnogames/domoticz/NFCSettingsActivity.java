@@ -57,6 +57,7 @@ import nl.hnogames.domoticz.Adapters.NFCAdapter;
 import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
 import nl.hnogames.domoticz.UI.SwitchDialog;
+import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
@@ -66,7 +67,6 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class NFCSettingsActivity extends AppCompatActivity implements NFCClickListener {
-
     // list of NFC technologies detected:
     private final String[][] techList = new String[][]{
             new String[]{
@@ -269,25 +269,33 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                             }
                         }, NFCSettingsActivity.this.getString(R.string.retry));
             }
-        }, 0, "light");
+        }, 0, "all");
     }
 
     private void showSwitchesDialog(
             final NFCInfo nfcInfo,
-            final ArrayList<DevicesInfo> switches) {
+            ArrayList<DevicesInfo> switches) {
+
+        final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
+        for (DevicesInfo d : switches) {
+            if (DeviceUtils.isAutomatedToggableDevice(d))
+                supportedSwitches.add(d);
+        }
 
         SwitchDialog infoDialog = new SwitchDialog(
-                NFCSettingsActivity.this, switches,
+                NFCSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
                 domoticz);
+
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName) {
+            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup) {
                 nfcInfo.setSwitchIdx(selectedSwitchIDX);
                 nfcInfo.setSwitchPassword(selectedSwitchPassword);
                 nfcInfo.setSwitchName(selectedSwitchName);
+                nfcInfo.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : switches) {
+                for (DevicesInfo s : supportedSwitches) {
                     if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
                         showSelectorDialog(nfcInfo, s);
                     else

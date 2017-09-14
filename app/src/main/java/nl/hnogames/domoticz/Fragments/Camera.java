@@ -102,10 +102,10 @@ public class Camera extends Fragment {
             File file = new File(url);
             Uri uri = Uri.fromFile(file);
             Picasso.with(getActivity())
-                    .load(uri)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(root);
+                .load(uri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .into(root);
         }
     }
 }

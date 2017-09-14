@@ -27,7 +27,7 @@
   <!--        Categories             -->
   <string name="category_generic">通用</string>
   <string name="category_wear">Android Wear手表</string>
-  <string name="category_auto">Android Auto汽车</string>
+  <string name="category_auto">Android Auto车载互联系统</string>
   <string name="category_server">服务器</string>
   <string name="category_geofencing">地理围栏</string>
   <string name="category_info">信息</string>
@@ -111,6 +111,11 @@
   <string name="fingerprint_not_supported">此设备不支持指纹验证</string>
   <string name="fingerprint_not_setup_in_android">先在设备上设置指纹</string>
   <string name="fingerprint_sure">是否确定？备用密码是你的Domoticz帐户密码。</string>
+  <!--        Widgets     -->
+  <string name="category_widgets">窗口小部件 （测试版）</string>
+  <string name="widget_description">启用或禁用该设备上的小部件</string>
+  <string name="widget_disabled">小部件未在此设备上启用，请检查您的Domoticz设置</string>
+  <string name="widget_warning">使用窗口小部件您将自己承担风险！！小部件目前处于 Beta 阶段，并可能包含某些 bug。它可以导致大量的内存和电池的消耗...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">谷歌云消息ID</string>
   <string name="notification_settings_push">将注册ID发送到Domoticz</string>
