@@ -1,6 +1,6 @@
 package nl.hnogames.domoticz.Service;
 
-import android.content.BroadcastReceiver;
+import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,20 +28,22 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class GeofenceReceiver extends BroadcastReceiver
+public class GeofenceReceiver extends IntentService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
     private final String TAG = "GEOFENCE";
-    Intent broadcastIntent = new Intent();
     private Context context;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private String notificationTitle = "";
     private String notificationDescription = "";
 
+    public GeofenceReceiver() {
+        super("Geofence");
+    }
+
     @Override
-    public void onReceive(Context context, Intent intent) {
-        this.context = context;
+    protected void onHandleIntent(Intent intent) {
+        this.context = getApplicationContext();
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
 

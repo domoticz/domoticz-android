@@ -53,6 +53,7 @@ import java.util.List;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Widgets.WidgetProviderLarge;
 
 public class GeolocationService extends Service implements ConnectionCallbacks,
         OnConnectionFailedListener, LocationListener, ResultCallback<Status> {
@@ -124,8 +125,8 @@ public class GeolocationService extends Service implements ConnectionCallbacks,
         if (null != mPendingIntent) {
             return mPendingIntent;
         } else {
-            Intent intent = new Intent("nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE");
-            return PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intent = new Intent(this, GeofenceReceiver.class);
+            return PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 

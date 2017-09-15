@@ -246,13 +246,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name="nl.hnogames.domoticz.Service.GeofenceReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE" />
-            </intent-filter>
-        </receiver>
+        <service android:name="nl.hnogames.domoticz.Service.GeofenceReceiver" />
 
         <activity
             android:name=".MainActivity"
