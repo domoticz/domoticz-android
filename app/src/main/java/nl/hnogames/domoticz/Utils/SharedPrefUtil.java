@@ -1076,7 +1076,7 @@ public class SharedPrefUtil {
             res = true;
 
             if (isGeofenceEnabled())
-                new GeoUtils(mContext).enableGeoFenceService();
+                new GeoUtils(mContext).AddGeofences();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

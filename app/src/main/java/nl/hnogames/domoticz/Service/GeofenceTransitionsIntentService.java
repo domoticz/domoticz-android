@@ -28,7 +28,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class GeofenceService extends IntentService
+public class GeofenceTransitionsIntentService extends IntentService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private final String TAG = "GEOFENCE";
     private Context context;
@@ -37,7 +37,7 @@ public class GeofenceService extends IntentService
     private String notificationTitle = "";
     private String notificationDescription = "";
 
-    public GeofenceService() {
+    public GeofenceTransitionsIntentService() {
         super("Geofence");
     }
 
@@ -71,8 +71,7 @@ public class GeofenceService extends IntentService
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                    context.getString(R.string.geofence_location_entering),
-                                    locationFound.getName());
+                                    context.getString(R.string.geofence_location_entering),                                    locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_entering_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
                                     notificationDescription, 0, context);

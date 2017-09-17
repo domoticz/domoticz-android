@@ -225,7 +225,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="nl.hnogames.domoticz.Service.GeofenceService" />
+        <service android:name="nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService" />
 
         <activity
             android:name=".MainActivity"
