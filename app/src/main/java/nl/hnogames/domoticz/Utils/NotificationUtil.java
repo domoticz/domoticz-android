@@ -43,7 +43,6 @@ import java.util.List;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Service.GeofenceService;
 import nl.hnogames.domoticz.Service.RingtonePlayingService;
 import nl.hnogames.domoticz.Service.StopAlarmButtonListener;
 

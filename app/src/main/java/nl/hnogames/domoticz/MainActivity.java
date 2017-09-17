@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             setTheme(R.style.AppThemeDarkMain);
         else
             setTheme(R.style.AppThemeMain);
-         permissionHelper = PermissionHelper.getInstance(this);
+        permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
@@ -175,8 +175,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
             mAdView.loadAd(adRequest);
-        }
-        else{
+        } else {
             setContentView(R.layout.activity_newmain_paid);
             mAdView = (AdView) findViewById(R.id.adView);
             mAdView.setVisibility(View.GONE);
@@ -492,7 +491,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
-        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+        if (mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
             return 0;
 
         int jsonValue = 0;

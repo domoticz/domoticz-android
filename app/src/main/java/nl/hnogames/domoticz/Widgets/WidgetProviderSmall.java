@@ -33,7 +33,6 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Service.GeofenceService;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
@@ -235,7 +234,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
         }
 
         public PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, boolean action, boolean toggle) {
-            Intent intent = new Intent(this, WidgetIntentReceiver.class);
+            Intent intent = new Intent(this, WidgetIntentService.class);
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widget_id);

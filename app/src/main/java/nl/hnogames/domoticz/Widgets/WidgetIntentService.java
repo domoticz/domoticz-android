@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Widgets;
 
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -45,7 +44,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class WidgetIntentReceiver extends IntentService {
+public class WidgetIntentService extends IntentService {
 
     private final int iVoiceAction = -55;
     private final int iQRCodeAction = -66;
@@ -58,8 +57,8 @@ public class WidgetIntentReceiver extends IntentService {
     private int blind_action = -1;
     private boolean smallWidget = false;
 
-    public WidgetIntentReceiver() {
-        super("WidgetIntentReceiver");
+    public WidgetIntentService() {
+        super("WidgetIntentService");
     }
 
     @Override

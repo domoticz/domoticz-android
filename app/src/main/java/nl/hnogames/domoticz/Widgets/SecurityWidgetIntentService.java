@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Widgets;
 
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -37,7 +36,7 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class SecurityWidgetIntentReceiver extends IntentService {
+public class SecurityWidgetIntentService extends IntentService {
 
     private int widgetID = 0;
     private String password = null;
@@ -47,8 +46,8 @@ public class SecurityWidgetIntentReceiver extends IntentService {
     private Context mContext;
     private Domoticz domoticz;
 
-    public SecurityWidgetIntentReceiver() {
-        super("SecurityWidgetIntentReceiver");
+    public SecurityWidgetIntentService() {
+        super("SecurityWidgetIntentService");
     }
 
     @Override

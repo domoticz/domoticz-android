@@ -315,7 +315,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
         }
 
         public PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, boolean action, boolean toggle) {
-            Intent intent = new Intent(this, WidgetIntentReceiver.class);
+            Intent intent = new Intent(this, WidgetIntentService.class);
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widget_id);
@@ -331,7 +331,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
         }
 
         public PendingIntent buildBlindPendingIntent(Context context, int widget_id, int idx, int action) {
-            Intent intent = new Intent(this, WidgetIntentReceiver.class);
+            Intent intent = new Intent(this, WidgetIntentService.class);
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widget_id);

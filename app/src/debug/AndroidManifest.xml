@@ -140,7 +140,7 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <service android:name=".Widgets.WidgetIntentReceiver" >
+        <service android:name=".Widgets.WidgetIntentService" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
@@ -209,7 +209,7 @@
                 android:resource="@xml/securitywidgetprovider" />
         </receiver>
 
-        <service android:name=".Widgets.SecurityWidgetIntentReceiver" >
+        <service android:name=".Widgets.SecurityWidgetIntentService" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/securitywidgetprovider" />
