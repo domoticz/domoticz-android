@@ -140,15 +140,11 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <receiver android:name=".Widgets.WidgetIntentReceiver" >
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION" />
-            </intent-filter>
+        <service android:name=".Widgets.WidgetIntentReceiver" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
-        </receiver>
+        </service>
 
         <activity
             android:name=".Widgets.WidgetConfigurationActivity"
@@ -213,16 +209,11 @@
                 android:resource="@xml/securitywidgetprovider" />
         </receiver>
 
-        <receiver android:name=".Widgets.SecurityWidgetIntentReceiver" >
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMAWAY" />
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMHOME" />
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.DISCARD" />
-            </intent-filter>
+        <service android:name=".Widgets.SecurityWidgetIntentReceiver" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/securitywidgetprovider" />
-        </receiver>
+        </service>
 
         <service android:name=".Widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
 

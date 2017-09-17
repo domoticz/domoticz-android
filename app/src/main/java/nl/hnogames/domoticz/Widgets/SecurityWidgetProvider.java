@@ -56,12 +56,12 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
     private static Context context;
 
     public static PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, String action, String password) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(context, SecurityWidgetIntentReceiver.class);
         intent.setAction(action);
         intent.putExtra("IDX", idx);
         intent.putExtra("WIDGETID", widget_id);
         intent.putExtra("WIDGETPASSWORD", password);
-        return PendingIntent.getBroadcast(context, widget_id, intent, 0);
+        return PendingIntent.getService(context, widget_id, intent, 0);
     }
 
     @Override

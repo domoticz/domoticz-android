@@ -21,9 +21,11 @@
 
 package nl.hnogames.domoticz.Widgets;
 
+import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class SecurityWidgetIntentReceiver extends BroadcastReceiver {
+public class SecurityWidgetIntentReceiver extends IntentService {
 
     private int widgetID = 0;
     private String password = null;
@@ -45,15 +47,19 @@ public class SecurityWidgetIntentReceiver extends BroadcastReceiver {
     private Context mContext;
     private Domoticz domoticz;
 
+    public SecurityWidgetIntentReceiver() {
+        super("SecurityWidgetIntentReceiver");
+    }
+
     @Override
-    public void onReceive(final Context context, Intent intent) {
-        mSharedPrefs = new SharedPrefUtil(context);
+    protected void onHandleIntent(@Nullable Intent intent) {
+        mSharedPrefs = new SharedPrefUtil(this);
 
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         idx = intent.getIntExtra("IDX", 999999);
         action = intent.getIntExtra("WIDGETACTION", 999999);
         password = intent.getStringExtra("WIDGETPASSWORD");
-        mContext = context;
+        mContext = this;
 
         if (intent.getAction().equals(SecurityWidgetProvider.ACTION_WIDGET_ARMAWAY)) {
             Log.i("onReceive", SecurityWidgetProvider.ACTION_WIDGET_ARMAWAY);
@@ -68,6 +74,7 @@ public class SecurityWidgetIntentReceiver extends BroadcastReceiver {
 
         processRequest(idx, action, password);
     }
+
 
     private void processRequest(final int idx, final int status, final String password) {
         if (domoticz == null)

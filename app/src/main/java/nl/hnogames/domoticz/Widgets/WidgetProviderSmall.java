@@ -33,6 +33,7 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Service.GeofenceService;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
@@ -55,7 +56,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
     private static SharedPrefUtil mSharedPrefs;
     private static String packageName;
     private static Domoticz domoticz;
-
     private static Context context;
 
     @Override
@@ -235,7 +235,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
         }
 
         public PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, boolean action, boolean toggle) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(this, WidgetIntentReceiver.class);
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widget_id);
@@ -244,11 +244,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             intent.putExtra("WIDGETSMALL", true);
 
             if (toggle)
-                return PendingIntent.getBroadcast(context, widget_id, intent, 0);
+                return PendingIntent.getService(context, widget_id, intent, 0);
             else if (action)
-                return PendingIntent.getBroadcast(context, widget_id + 8888, intent, 0);
+                return PendingIntent.getService(context, widget_id + 8888, intent, 0);
             else
-                return PendingIntent.getBroadcast(context, widget_id + 9999, intent, 0);
+                return PendingIntent.getService(context, widget_id + 9999, intent, 0);
         }
 
         private int withButtons(DevicesInfo s) {

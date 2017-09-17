@@ -315,7 +315,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
         }
 
         public PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, boolean action, boolean toggle) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(this, WidgetIntentReceiver.class);
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widget_id);
@@ -323,15 +323,15 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             intent.putExtra("WIDGETTOGGLE", toggle);
 
             if (toggle)
-                return PendingIntent.getBroadcast(context, widget_id, intent, 0);
+                return PendingIntent.getService(context, widget_id, intent, 0);
             else if (action)
-                return PendingIntent.getBroadcast(context, widget_id + 8888, intent, 0);
+                return PendingIntent.getService(context, widget_id + 8888, intent, 0);
             else
-                return PendingIntent.getBroadcast(context, widget_id + 9999, intent, 0);
+                return PendingIntent.getService(context, widget_id + 9999, intent, 0);
         }
 
         public PendingIntent buildBlindPendingIntent(Context context, int widget_id, int idx, int action) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(this, WidgetIntentReceiver.class);
             intent.setAction("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
             intent.putExtra("IDX", idx);
             intent.putExtra("WIDGETID", widget_id);
@@ -353,7 +353,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                     requestCode = widget_id + 9999;
             }
 
-            return PendingIntent.getBroadcast(context, requestCode, intent, 0);
+            return PendingIntent.getService(context, requestCode, intent, 0);
         }
 
         private int withButtons(DevicesInfo s) {
