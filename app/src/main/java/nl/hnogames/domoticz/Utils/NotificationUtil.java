@@ -43,6 +43,7 @@ import java.util.List;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Service.GeofenceService;
 import nl.hnogames.domoticz.Service.RingtonePlayingService;
 import nl.hnogames.domoticz.Service.StopAlarmButtonListener;
 
@@ -123,10 +124,9 @@ public class NotificationUtil {
 
                 if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(loggedNotification)) {
                     Intent stopAlarmIntent = new Intent(context, StopAlarmButtonListener.class);
-                    PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingAlarmIntent = PendingIntent.getService(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     builder.addAction(android.R.drawable.ic_delete, "Stop", pendingAlarmIntent);
                 }
-
                 if (prefUtil.showAutoNotifications()) {
                     builder.extend(new NotificationCompat.CarExtender()
                             .setUnreadConversation(getUnreadConversation(context, text)));

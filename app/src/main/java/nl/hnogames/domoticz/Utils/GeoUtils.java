@@ -214,7 +214,7 @@ public class GeoUtils {
      * @return Intent which will be called
      */
     public PendingIntent getGeofenceTransitionPendingIntent() {
-        Intent intent = new Intent("nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE");
+        Intent intent = new Intent("nl.hnogames.domoticz.Service.GeofenceService.ACTION_RECEIVE_GEOFENCE");
         return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

@@ -28,7 +28,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class GeofenceReceiver extends IntentService
+public class GeofenceService extends IntentService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private final String TAG = "GEOFENCE";
     private Context context;
@@ -37,7 +37,7 @@ public class GeofenceReceiver extends IntentService
     private String notificationTitle = "";
     private String notificationDescription = "";
 
-    public GeofenceReceiver() {
+    public GeofenceService() {
         super("Geofence");
     }
 

@@ -21,6 +21,7 @@ public class LocationProviderChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
             Log.i(TAG, "Location Providers changed");
+
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
