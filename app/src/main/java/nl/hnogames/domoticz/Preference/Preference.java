@@ -202,12 +202,6 @@ public class Preference extends PreferenceFragment {
             setupDefaultValues();
         }
 
-        if (!BuildConfig.DEBUG) {
-            PreferenceCategory oAndroidAutoCategory = (android.preference.PreferenceCategory) findPreference("androidautocategory");
-            PreferenceScreen oNotificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
-            oNotificationScreen.removePreference(oAndroidAutoCategory);
-        }
-
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
         if (notifications == null || notifications.size() <= 0) {
             notificationsMultiSelectListPreference.setEnabled(false);
