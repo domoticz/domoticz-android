@@ -26,21 +26,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 
-import java.io.IOException;
 import java.util.List;
 
-import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
 public class GeoUtils {
@@ -54,119 +49,22 @@ public class GeoUtils {
     public GeoUtils(Context mContext) {
         this.mContext = mContext;
         this.mSharedPrefs = new SharedPrefUtil(mContext);
+
         mGeofencePendingIntent = null;
         mGeofencingClient = LocationServices.getGeofencingClient(mContext);
     }
 
     /**
-     * Gets an address from string
-     *
-     * @param strAddress String address
-     * @return Address
+     * Remove the active Geofences from the client
      */
-    public Address getAddressFromString(String strAddress) {
-        Geocoder mGeocoder;
-        mGeocoder = new Geocoder(mContext);
-        List<Address> addressList;
-        Address mAddress = null;
-
-        try {
-            addressList = mGeocoder.getFromLocationName(strAddress, 5);
-            if (addressList == null) {
-                return null;
-            }
-            if (addressList.size() >= 1) mAddress = addressList.get(0);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return mAddress;
-    }
-
-    /**
-     * Gets an address from location
-     *
-     * @param mLocation Location
-     * @return Address
-     */
-    public Address getAddressFromLocation(Location mLocation) {
-        Geocoder mGeocoder;
-        mGeocoder = new Geocoder(mContext);
-        List<Address> addressList;
-        Address mAddress = null;
-
-        try {
-            addressList = mGeocoder.getFromLocation(mLocation.getLatitude(),
-                    mLocation.getLongitude(), 5);
-
-            if (addressList == null) {
-                return null;
-            }
-            mAddress = addressList.get(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return mAddress;
-    }
-
-    /**
-     * @param locationInfo The location information
-     * @return first address which matches latitude and longitude in the given location info
-     */
-    public Address getAddressFromLocationInfo(LocationInfo locationInfo) {
-        Geocoder mGeocoder;
-        mGeocoder = new Geocoder(mContext);
-        List<Address> addressList;
-        Address mAddress = null;
-
-        try {
-            addressList =
-                    mGeocoder.getFromLocation(
-                            locationInfo.getLocation().latitude,
-                            locationInfo.getLocation().longitude, 5);
-
-            if (addressList == null) {
-                return null;
-            }
-            mAddress = addressList.get(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return mAddress;
-    }
-
-    /**
-     * Gets an address from latitude and longitude
-     *
-     * @param mLatLong LatLong
-     * @return Address
-     */
-    public Address getAddressFromLatLng(LatLng mLatLong) {
-        Geocoder mGeocoder;
-        mGeocoder = new Geocoder(mContext);
-        List<Address> addressList;
-        Address mAddress = null;
-
-        try {
-            addressList = mGeocoder.getFromLocation(mLatLong.latitude, mLatLong.longitude, 5);
-            if (addressList == null || addressList.size() <= 0) {
-                return null;
-            }
-            mAddress = addressList.get(0);//get first
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return mAddress;
-    }
-
     public void RemoveGeofences() {
-        mGeofencingClient.removeGeofences(getGeofencePendingIntent());
+        if(mGeofencingClient != null)
+            mGeofencingClient.removeGeofences(getGeofencePendingIntent());
     }
 
+    /**
+     * Add the Geofences to the client
+     */
     public void AddGeofences() {
         if (this.mSharedPrefs.isGeofenceEnabled()) {
             //only continue when we have the correct permissions!
@@ -175,7 +73,12 @@ public class GeoUtils {
                 if (mGeofenceList != null && mGeofenceList.size() > 0) {
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                         return;
-                    mGeofencingClient.addGeofences(getGeofencingRequest(mGeofenceList), getGeofencePendingIntent());
+
+                    Log.i("GeoUtils", "Starting Geofences");
+                    if(mGeofencingClient != null) {
+                        RemoveGeofences();//clear existing ones
+                        mGeofencingClient.addGeofences(getGeofencingRequest(mGeofenceList), getGeofencePendingIntent());
+                    }
                 }
             }
         }
@@ -204,17 +107,8 @@ public class GeoUtils {
      */
     private GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
         builder.addGeofences(mGeofenceList);
         return builder.build();
-    }
-
-    public void enableGeoFenceService() {
-        AddGeofences();
-    }
-
-    public void disableGeoFenceService() {
-        RemoveGeofences();
     }
 }

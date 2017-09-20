@@ -51,6 +51,7 @@ public class GeofenceTransitionsIntentService extends IntentService
         if (geoFenceEvent.hasError()) {
             Log.e(TAG, "Error: " + geoFenceEvent.getErrorCode());
         } else {
+            Log.d(TAG, "Received geofence event.");
             handleEnterExit(geoFenceEvent);
         }
     }
@@ -237,19 +238,6 @@ public class GeofenceTransitionsIntentService extends IntentService
             jsonValue = counter;
         }
         return jsonValue;
-    }
-
-    private void onErrorHandling(Exception error) {
-        if (error != null) {
-            Toast.makeText(
-                    context,
-                    "Domoticz: " +
-                            context.getString(R.string.unable_to_get_switches),
-                    Toast.LENGTH_SHORT).show();
-
-            if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
-                Log.e(TAG, domoticz.getErrorMessage(error));
-        }
     }
 
     @Override
