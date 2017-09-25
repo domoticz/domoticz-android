@@ -21,12 +21,15 @@
 
 package nl.hnogames.domoticz.Widgets;
 
-import android.app.IntentService;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -54,24 +57,22 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
     private static SharedPrefUtil mSharedPrefs;
     private static String packageName;
-    private static Domoticz domoticz;
-    private static Context context;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        this.context = context;
 
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
-        if (domoticz == null)
-            domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         packageName = context.getPackageName();
-
-        if (appWidgetIds != null) {
-            for (int mAppWidgetId : appWidgetIds) {
+        // Get all ids
+        ComponentName thisWidget = new ComponentName(context,
+            WidgetProviderSmall.class);
+        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        if (allWidgetIds != null) {
+            for (int mAppWidgetId : allWidgetIds) {
                 Intent intent = new Intent(context, UpdateWidgetService.class);
                 intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
                 intent.setAction("FROM WIDGET PROVIDER");
@@ -80,29 +81,35 @@ public class WidgetProviderSmall extends AppWidgetProvider {
         }
     }
 
-    public static class UpdateWidgetService extends IntentService {
+    public static class UpdateWidgetService extends Service {
         private static final int WITHBUTTON = 1;
         private RemoteViews views;
+        private Domoticz domoticz;
 
-        public UpdateWidgetService() {
-            super("UpdateWidgetService");
+        @Nullable
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
         }
 
         @Override
-        protected void onHandleIntent(Intent intent) {
+        public int onStartCommand(Intent intent, int flags, int startId) {
             AppWidgetManager appWidgetManager = AppWidgetManager
-                    .getInstance(UpdateWidgetService.this);
+                .getInstance(UpdateWidgetService.this);
 
             int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                    INVALID_APPWIDGET_ID);
+                INVALID_APPWIDGET_ID);
             if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
                 try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
-                    if (e != null && !UsefulBits.isEmpty(e.getMessage()))
+                    if (!UsefulBits.isEmpty(e.getMessage()))
                         Log.e(WidgetProviderSmall.class.getSimpleName(), e.getMessage());
                 }
             }
+
+            stopSelf();
+            return START_NOT_STICKY;
         }
 
         public void updateAppWidget(final AppWidgetManager appWidgetManager,
@@ -111,32 +118,32 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 Log.i("WIDGET", "I am invalid");
                 return;
             }
+
+            if (domoticz == null)
+                domoticz = new Domoticz(this.getApplicationContext(), AppController.getInstance().getRequestQueue());
             final int idx = mSharedPrefs.getSmallWidgetIDX(appWidgetId);
             views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
-            if (views == null)
-                return;
-
             if (idx == iVoiceAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
                 views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                        UpdateWidgetService.this,
-                        appWidgetId,
-                        idx,
-                        false,
-                        true));
+                    UpdateWidgetService.this,
+                    appWidgetId,
+                    idx,
+                    false,
+                    true));
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else if (idx == iQRCodeAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
                 views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                        UpdateWidgetService.this,
-                        appWidgetId,
-                        idx,
-                        false,
-                        true));
+                    UpdateWidgetService.this,
+                    appWidgetId,
+                    idx,
+                    false,
+                    true));
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -151,9 +158,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         public void onReceiveDevice(DevicesInfo s) {
                             if (s != null) {
                                 views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
-                                if (views == null)
-                                    return;
-
                                 int withButtons = withButtons(s);
                                 String text = s.getData();
                                 views.setTextViewText(R.id.title, s.getName());
@@ -162,7 +166,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                 if (s.getCounterToday() != null && s.getCounterToday().length() > 0)
                                     text += " Today: " + s.getCounterToday();
                                 if (s.getCounter() != null && s.getCounter().length() > 0 &&
-                                        !s.getCounter().equals(s.getData()))
+                                    !s.getCounter().equals(s.getData()))
                                     text += " Total: " + s.getCounter();
 
                                 views.setTextViewText(R.id.desc, text);
@@ -170,11 +174,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                     boolean newStatus = !s.getStatusBoolean();//toggle
 
                                     views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                                            UpdateWidgetService.this,
-                                            appWidgetId,
-                                            s.getIdx(),
-                                            newStatus,
-                                            true));
+                                        UpdateWidgetService.this,
+                                        appWidgetId,
+                                        s.getIdx(),
+                                        newStatus,
+                                        true));
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
@@ -205,18 +209,15 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         public void onReceiveScene(SceneInfo s) {
                             if (s != null) {
                                 views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
-                                if (views == null)
-                                    return;
-
                                 if (s.getStatusInString() != null) {
                                     views.setTextViewText(R.id.title, s.getName());
                                     views.setTextViewText(R.id.desc, s.getStatusInString());
                                     views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                                            UpdateWidgetService.this,
-                                            appWidgetId,
-                                            idx,
-                                            !s.getStatusInBoolean(),
-                                            true));
+                                        UpdateWidgetService.this,
+                                        appWidgetId,
+                                        idx,
+                                        !s.getStatusInBoolean(),
+                                        true));
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getType(), null, null, false, false, null));
@@ -254,7 +255,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             int withButton = 0;
             if (s != null) {
                 if (s.getSwitchTypeVal() == 0 &&
-                        (UsefulBits.isEmpty(s.getSwitchType()))) {
+                    (UsefulBits.isEmpty(s.getSwitchType()))) {
                     switch (s.getType()) {
                         case DomoticzValues.Scene.Type.SCENE:
                             withButton = WITHBUTTON;
