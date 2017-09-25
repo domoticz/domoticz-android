@@ -96,8 +96,8 @@ public class GeoUtils {
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
         }
-        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
-        return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(mContext.getApplicationContext(), GeofenceTransitionsIntentService.class);
+        return PendingIntent.getService(mContext.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -107,7 +107,7 @@ public class GeoUtils {
      */
     private GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(mGeofenceList);
         return builder.build();
     }

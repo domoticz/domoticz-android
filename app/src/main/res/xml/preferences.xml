@@ -224,6 +224,10 @@
                 android:summaryOn="@string/enable_notifications"
                 android:title="@string/enable_notifications_title" />
 
+            <Preference
+                android:key="noticiationSettings"
+                android:title="@string/action_settings" />
+
             <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
                 android:defaultValue="@array/empty_array"
                 android:dependency="enableNotifications"
@@ -243,7 +247,7 @@
                 android:summaryOn="@string/overwrite_notifications"
                 android:title="@string/overwrite_notifications_title" />
 
-            <PreferenceCategory android:title="@string/notification_sound_title">
+            <PreferenceCategory android:title="@string/notification_sound_title" android:key="notificationSound">
                 <SwitchPreference
                     android:defaultValue="true"
                     android:dependency="enableNotifications"

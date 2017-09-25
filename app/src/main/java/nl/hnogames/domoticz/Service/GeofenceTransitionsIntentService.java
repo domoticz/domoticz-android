@@ -3,13 +3,8 @@ package nl.hnogames.domoticz.Service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -28,14 +23,11 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class GeofenceTransitionsIntentService extends IntentService
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GeofenceTransitionsIntentService extends IntentService {
     private final String TAG = "GEOFENCE";
     private Context context;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
-    private String notificationTitle = "";
-    private String notificationDescription = "";
 
     public GeofenceTransitionsIntentService() {
         super("Geofence");
@@ -63,19 +55,21 @@ public class GeofenceTransitionsIntentService extends IntentService
                 Log.e(TAG, "Location Services error: " + errorCode);
             } else {
                 int transitionType = geoFenceEvent.getGeofenceTransition();
+                String notificationTitle = "";
+                String notificationDescription = "";
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
-                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                            mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
-                                + locationFound.getName());
+                            + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                    context.getString(R.string.geofence_location_entering),                                    locationFound.getName());
+                                context.getString(R.string.geofence_location_entering), locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_entering_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                    notificationDescription, 0, context);
+                                notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), 1, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -83,17 +77,17 @@ public class GeofenceTransitionsIntentService extends IntentService
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound
-                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                            = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered leaving a geofence location: "
-                                + locationFound.getName());
+                            + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                    context.getString(R.string.geofence_location_leaving),
-                                    locationFound.getName());
+                                context.getString(R.string.geofence_location_leaving),
+                                locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_leaving_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                    notificationDescription, 0, context);
+                                notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), 0, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -125,7 +119,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                 if (!isSceneOrGroup) {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (!mDevicesInfo.getStatusBoolean())
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             else {
@@ -147,7 +141,7 @@ public class GeofenceTransitionsIntentService extends IntentService
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (inputJSONAction == 1)
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             else {
@@ -238,17 +232,5 @@ public class GeofenceTransitionsIntentService extends IntentService
             jsonValue = counter;
         }
         return jsonValue;
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
     }
 }

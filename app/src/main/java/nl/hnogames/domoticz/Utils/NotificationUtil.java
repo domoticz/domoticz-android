@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
@@ -55,6 +56,7 @@ public class NotificationUtil {
     private static final String MESSAGE_REPLY_ACTION = "nl.hnogames.domoticz.Service.ACTION_MESSAGE_REPLY";
     private static final String UNREAD_CONVERSATION_BUILDER_NAME = "Domoticz -";
 
+    public static String CHANNEL_ID = "domoticz_channel";
     private static SharedPrefUtil prefUtil;
     private static int NOTIFICATION_ID = 12345;
 
@@ -77,7 +79,7 @@ public class NotificationUtil {
         try {
             if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(text)) {
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                String CHANNEL_ID = "domoticz_channel";
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                             context.getString(R.string.category_notification),
@@ -100,11 +102,19 @@ public class NotificationUtil {
                                 .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
                                 .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
                                 .setChannelId(CHANNEL_ID)
-                                .setGroupSummary(true)
-                                .setNumber(3)
-                                .setGroup(GROUP_KEY_NOTIFICATIONS)
-                                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                                .setStyle(new NotificationCompat.BigTextStyle().setSummaryText(text))
+                                //.setGroupSummary(true)
+                                //.setGroup(GROUP_KEY_NOTIFICATIONS)
                                 .setAutoCancel(true);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    int nrOfNotifications = 1;
+                    StatusBarNotification[] activeNotifications = mNotificationManager.getActiveNotifications();
+                    if(activeNotifications!=null){
+                        nrOfNotifications = activeNotifications.length;
+                    }
+                    builder.setNumber(nrOfNotifications);
+                }
 
                 if (!prefUtil.OverWriteNotifications())
                     NOTIFICATION_ID = text.hashCode();

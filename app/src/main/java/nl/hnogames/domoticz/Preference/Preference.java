@@ -39,7 +39,9 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceFragment;
 import android.provider.Settings;
+import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -69,6 +71,7 @@ import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -181,6 +184,30 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
+        android.preference.PreferenceScreen notificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
+        android.preference.Preference noticiationSettings = findPreference("noticiationSettings");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //new style channel settings
+            android.preference.PreferenceCategory notificationSound = (android.preference.PreferenceCategory) findPreference("notificationSound");
+            notificationScreen.removePreference(notificationSound);
+        }
+        else{
+            //old style settings
+            notificationScreen.removePreference(noticiationSettings);
+        }
+
+        noticiationSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, mContext.getPackageName());
+                startActivity(intent);
+                return true;
+            }
+        });
 
         if (mConfigInfo == null) {
             UsefulBits.getServerConfigForActiveServer(mContext, false, new ConfigReceiver() {

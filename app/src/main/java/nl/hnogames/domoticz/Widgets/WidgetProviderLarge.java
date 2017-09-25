@@ -49,26 +49,21 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderLarge extends AppWidgetProvider {
-
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
 
     private static SharedPrefUtil mSharedPrefs;
     private static String packageName;
     private static Domoticz domoticz;
-
     private static Context context;
-
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         this.context = context;
-
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
-
         if (domoticz == null)
             domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         packageName = context.getPackageName();
@@ -119,7 +114,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(context);
-
 
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
             views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
