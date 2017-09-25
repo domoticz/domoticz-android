@@ -28,6 +28,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -62,7 +63,12 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
         intent.putExtra("IDX", idx);
         intent.putExtra("WIDGETID", widget_id);
         intent.putExtra("WIDGETPASSWORD", password);
-        return PendingIntent.getService(context, widget_id, intent, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return PendingIntent.getForegroundService(context, widget_id, intent, 0);
+        }
+        else {
+            return PendingIntent.getService(context, widget_id, intent, 0);
+        }
     }
 
     @Override

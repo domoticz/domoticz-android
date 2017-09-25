@@ -149,6 +149,17 @@ public class NotificationUtil {
         }
     }
 
+    public static Notification getForegroundServiceNotification(Context context){
+        Intent targetIntent = new Intent(context, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return new NotificationCompat.Builder(context)
+            .setSmallIcon(R.drawable.domoticz_white)
+            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+            .setContentTitle("Domoticz")
+            .setContentText("Processing widget request..")
+            .setContentIntent(contentIntent).build();
+    }
+
     private static int GetPriority(int priority) {
         int prio = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

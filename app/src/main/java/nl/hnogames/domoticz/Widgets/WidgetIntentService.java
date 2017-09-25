@@ -22,8 +22,11 @@
 package nl.hnogames.domoticz.Widgets;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
@@ -44,7 +48,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class WidgetIntentService extends IntentService {
+public class WidgetIntentService extends Service {
 
     private final int iVoiceAction = -55;
     private final int iQRCodeAction = -66;
@@ -57,14 +61,19 @@ public class WidgetIntentService extends IntentService {
     private int blind_action = -1;
     private boolean smallWidget = false;
 
-    public WidgetIntentService() {
-        super("WidgetIntentService");
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        mSharedPrefs = new SharedPrefUtil(this);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this));
+        }
 
+        mSharedPrefs = new SharedPrefUtil(this);
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         int idx = intent.getIntExtra("IDX", 999999);
         if (idx == iVoiceAction)//voice
@@ -96,6 +105,9 @@ public class WidgetIntentService extends IntentService {
                 processBlind(this, idx, blind_action);
             }
         }
+
+        stopSelf();
+        return START_NOT_STICKY;
     }
 
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {

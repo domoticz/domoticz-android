@@ -22,13 +22,17 @@
 package nl.hnogames.domoticz.Widgets;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
 import nl.hnogames.domoticz.app.AppController;
@@ -36,8 +40,7 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class SecurityWidgetIntentService extends IntentService {
-
+public class SecurityWidgetIntentService extends Service {
     private int widgetID = 0;
     private String password = null;
     private int action;
@@ -46,13 +49,13 @@ public class SecurityWidgetIntentService extends IntentService {
     private Context mContext;
     private Domoticz domoticz;
 
-    public SecurityWidgetIntentService() {
-        super("SecurityWidgetIntentService");
-    }
-
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         mSharedPrefs = new SharedPrefUtil(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this));
+        }
 
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         idx = intent.getIntExtra("IDX", 999999);
@@ -72,6 +75,8 @@ public class SecurityWidgetIntentService extends IntentService {
         }
 
         processRequest(idx, action, password);
+        stopSelf();
+        return START_NOT_STICKY;
     }
 
 
@@ -109,4 +114,9 @@ public class SecurityWidgetIntentService extends IntentService {
         });
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }
