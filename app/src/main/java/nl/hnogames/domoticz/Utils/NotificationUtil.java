@@ -58,7 +58,7 @@ public class NotificationUtil {
     private static final String MESSAGE_REPLY_ACTION = "nl.hnogames.domoticz.Service.ACTION_MESSAGE_REPLY";
     private static final String UNREAD_CONVERSATION_BUILDER_NAME = "Domoticz -";
 
-    public static String CHANNEL_ID = "domoticz_channel";
+    public static String CHANNEL_ID = "Domoticz";
     private static int NOTIFICATION_ID = 12345;
 
     public static void sendSimpleNotification(int idx, String title, String text, int priority, final Context context) {
@@ -141,8 +141,9 @@ public class NotificationUtil {
         SharedPrefUtil prefUtil = new SharedPrefUtil(context);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel = new NotificationChannel(channelid,
-            context.getString(R.string.category_notification),
+            channelid,
             GetPriority(priority));
+
         if (!backgroundProcess) {
             channel.setShowBadge(true);
             channel.enableLights(true);

@@ -60,12 +60,20 @@ public class WidgetProviderLarge extends AppWidgetProvider {
     private static String packageName;
 
     @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        for (int widgetId : appWidgetIds) {
+            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
+            mSharedPrefs.deleteWidget(widgetId, mSharedPrefs.getWidgetisScene(widgetId));
+        }
+    }
+
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         packageName = context.getPackageName();
 
-        // Get all ids
         ComponentName thisWidget = new ComponentName(context,
             WidgetProviderLarge.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
@@ -94,21 +102,17 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
-                .getApplicationContext());
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
+                .getApplicationContext());
+
             int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
                 INVALID_APPWIDGET_ID);
             if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
-                try {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
-                } catch (NullPointerException e) {
-                    if (!UsefulBits.isEmpty(e.getMessage()))
-                        Log.e(WidgetProviderLarge.class.getSimpleName(), e.getMessage());
-                }
             }
 
             stopSelf();
@@ -121,7 +125,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 Log.i("WIDGET", "I am invalid");
                 return;
             }
-
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
             if (domoticz == null)
@@ -241,7 +244,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
-
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
                         }
@@ -305,7 +307,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getType(), null, null, false, false, null));
-
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
                             }
                         }

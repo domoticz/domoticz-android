@@ -59,6 +59,15 @@ public class WidgetProviderSmall extends AppWidgetProvider {
     private static String packageName;
 
     @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        for (int widgetId : appWidgetIds) {
+            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
+            mSharedPrefs.deleteSmallWidget(widgetId, mSharedPrefs.getWidgetisScene(widgetId));
+        }
+    }
+
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
 
@@ -111,7 +120,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
                     if (!UsefulBits.isEmpty(e.getMessage()))
-                        Log.e(WidgetProviderSmall.class.getSimpleName(), e.getMessage());
+                        Log.e(WidgetProviderSmall.class.getSimpleName() + "@onStartCommand", e.getMessage());
                 }
             }
 

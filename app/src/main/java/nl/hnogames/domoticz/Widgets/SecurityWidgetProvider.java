@@ -57,6 +57,15 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
     public static String ACTION_WIDGET_DISARM = "nl.hnogames.domoticz.Service.WIDGET_SECURITY.DISCARD";
     private static String packageName;
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        for (int widgetId : appWidgetIds) {
+            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
+            mSharedPrefs.deleteSecurityWidget(widgetId);
+        }
+    }
+
     public static PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, String action, String password) {
         Intent intent = new Intent(context, SecurityWidgetIntentService.class);
         intent.setAction(action);
@@ -103,11 +112,11 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            AppWidgetManager appWidgetManager = AppWidgetManager
-                .getInstance(UpdateSecurityWidgetService.this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
+            AppWidgetManager appWidgetManager = AppWidgetManager
+                .getInstance(UpdateSecurityWidgetService.this);
 
             int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
                 INVALID_APPWIDGET_ID);
@@ -116,7 +125,7 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
                 } catch (NullPointerException e) {
                     if (!UsefulBits.isEmpty(e.getMessage()))
-                        Log.e(SecurityWidgetProvider.class.getSimpleName(), e.getMessage());
+                        Log.e(SecurityWidgetProvider.class.getSimpleName() + "@onStartCommand", e.getMessage());
                 }
             }
             stopSelf();
