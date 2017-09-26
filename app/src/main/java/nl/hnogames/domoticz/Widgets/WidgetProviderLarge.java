@@ -369,7 +369,13 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                     requestCode = widget_id + 9999;
             }
 
-            return PendingIntent.getService(context, requestCode, intent, 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return PendingIntent.getForegroundService(context, requestCode, intent, 0);
+            }
+            else {
+                return PendingIntent.getService(context, requestCode, intent, 0);
+            }
+
         }
 
         private int withButtons(DevicesInfo s) {
