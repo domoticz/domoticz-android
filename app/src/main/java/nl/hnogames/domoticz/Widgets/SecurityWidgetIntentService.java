@@ -54,7 +54,7 @@ public class SecurityWidgetIntentService extends Service {
         mSharedPrefs = new SharedPrefUtil(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this));
+            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
         }
 
         widgetID = intent.getIntExtra("WIDGETID", 999999);

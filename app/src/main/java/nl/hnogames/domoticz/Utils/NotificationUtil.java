@@ -31,8 +31,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
@@ -57,16 +59,13 @@ public class NotificationUtil {
     private static final String UNREAD_CONVERSATION_BUILDER_NAME = "Domoticz -";
 
     public static String CHANNEL_ID = "domoticz_channel";
-    private static SharedPrefUtil prefUtil;
     private static int NOTIFICATION_ID = 12345;
 
     public static void sendSimpleNotification(int idx, String title, String text, int priority, final Context context) {
         if (UsefulBits.isEmpty(title) || UsefulBits.isEmpty(text) || context == null)
             return;
 
-        if (prefUtil == null)
-            prefUtil = new SharedPrefUtil(context);
-
+        SharedPrefUtil prefUtil = new SharedPrefUtil(context);
         String loggedNotification = title;
         if (title.equals(context.getString(R.string.app_name_domoticz)))
             loggedNotification = text;
@@ -79,20 +78,8 @@ public class NotificationUtil {
         try {
             if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(text)) {
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                            context.getString(R.string.category_notification),
-                            GetPriority(priority));
-                    channel.setShowBadge(true);
-                    channel.enableLights(true);
-                    channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-                    channel.setLightColor(Color.BLUE);
-                    if (prefUtil.getNotificationVibrate()) {
-                        channel.enableVibration(true);
-                        channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-                    }
-                    mNotificationManager.createNotificationChannel(channel);
+                    CreateChannel(CHANNEL_ID, priority, false, context);
                 }
 
                 NotificationCompat.Builder builder =
@@ -119,8 +106,8 @@ public class NotificationUtil {
                 if (!prefUtil.OverWriteNotifications())
                     NOTIFICATION_ID = text.hashCode();
 
-                if (prefUtil.getNotificationVibrate())
-                    builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+                //if (prefUtil.getNotificationVibrate())
+                //   builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 
                 if (!UsefulBits.isEmpty(prefUtil.getNotificationSound()))
                     builder.setSound(Uri.parse(prefUtil.getNotificationSound()));
@@ -149,14 +136,39 @@ public class NotificationUtil {
         }
     }
 
-    public static Notification getForegroundServiceNotification(Context context){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void CreateChannel(String channelid, int priority, boolean backgroundProcess, Context context) {
+        SharedPrefUtil prefUtil = new SharedPrefUtil(context);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel(channelid,
+            context.getString(R.string.category_notification),
+            GetPriority(priority));
+        if (!backgroundProcess) {
+            channel.setShowBadge(true);
+            channel.enableLights(true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            channel.setLightColor(Color.BLUE);
+        }
+        if (!backgroundProcess && prefUtil.getNotificationVibrate()) {
+            channel.enableVibration(true);
+        }
+        mNotificationManager.createNotificationChannel(channel);
+    }
+
+    public static Notification getForegroundServiceNotification(Context context, String channelid){
         Intent targetIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CreateChannel(channelid, NotificationManager.IMPORTANCE_DEFAULT, true, context);
+        }
+
         return new NotificationCompat.Builder(context)
             .setSmallIcon(R.drawable.domoticz_white)
             .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
             .setContentTitle("Domoticz")
             .setContentText("Processing widget request..")
+            .setChannelId(channelid)
             .setContentIntent(contentIntent).build();
     }
 
@@ -183,6 +195,7 @@ public class NotificationUtil {
     }
 
     private static void HandleAlarmSounds(Context context, String loggedNotification, List<String> alarmNot) throws InterruptedException {
+        SharedPrefUtil prefUtil = new SharedPrefUtil(context);
         if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(loggedNotification)) {
             Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             if (alert == null) {

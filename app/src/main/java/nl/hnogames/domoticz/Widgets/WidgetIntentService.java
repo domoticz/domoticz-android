@@ -70,7 +70,7 @@ public class WidgetIntentService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this));
+            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
         }
 
         mSharedPrefs = new SharedPrefUtil(this);

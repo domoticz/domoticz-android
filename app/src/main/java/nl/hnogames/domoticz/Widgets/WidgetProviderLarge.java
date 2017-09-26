@@ -38,6 +38,7 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
@@ -56,15 +57,12 @@ public class WidgetProviderLarge extends AppWidgetProvider {
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
 
-    private static SharedPrefUtil mSharedPrefs;
     private static String packageName;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        if (mSharedPrefs == null)
-            mSharedPrefs = new SharedPrefUtil(context);
         packageName = context.getPackageName();
 
         // Get all ids
@@ -77,7 +75,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 Intent intent = new Intent(context, UpdateWidgetService.class);
                 intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
                 intent.setAction("FROM WIDGET PROVIDER");
-                context.startService(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent);
+                }
+                else
+                    context.startService(intent);
             }
         }
     }
@@ -88,12 +90,16 @@ public class WidgetProviderLarge extends AppWidgetProvider {
         private static final int BUTTON_3 = 3;
         private RemoteViews views;
         private Domoticz domoticz;
+        private SharedPrefUtil mSharedPrefs;
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
                 .getApplicationContext());
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
+            }
             int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
                 INVALID_APPWIDGET_ID);
             if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {

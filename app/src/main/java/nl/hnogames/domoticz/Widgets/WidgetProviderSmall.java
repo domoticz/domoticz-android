@@ -37,6 +37,7 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
@@ -55,8 +56,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
-
-    private static SharedPrefUtil mSharedPrefs;
     private static String packageName;
 
     @Override
@@ -65,8 +64,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        if (mSharedPrefs == null)
-            mSharedPrefs = new SharedPrefUtil(context);
         packageName = context.getPackageName();
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
@@ -77,7 +74,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 Intent intent = new Intent(context, UpdateWidgetService.class);
                 intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
                 intent.setAction("FROM WIDGET PROVIDER");
-                context.startService(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent);
+                }
+                else
+                    context.startService(intent);
             }
         }
     }
@@ -86,6 +87,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
         private static final int WITHBUTTON = 1;
         private RemoteViews views;
         private Domoticz domoticz;
+        private SharedPrefUtil mSharedPrefs;
 
         @Nullable
         @Override
@@ -95,6 +97,10 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
+            }
+
             AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(UpdateWidgetService.this);
 
@@ -120,8 +126,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 return;
             }
 
+            if (mSharedPrefs == null)
+                mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
             if (domoticz == null)
                 domoticz = new Domoticz(this.getApplicationContext(), AppController.getInstance().getRequestQueue());
+
             final int idx = mSharedPrefs.getSmallWidgetIDX(appWidgetId);
             views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
             if (idx == iVoiceAction) {
