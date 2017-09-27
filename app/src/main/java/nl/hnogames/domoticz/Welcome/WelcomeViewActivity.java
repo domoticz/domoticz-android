@@ -57,7 +57,7 @@ public class WelcomeViewActivity extends IntroActivity {
         UsefulBits.checkAPK(this, new SharedPrefUtil(this));
 
         addSlide(new SimpleSlide.Builder()
-                .image(R.drawable.ic_launcher)
+                .image(R.mipmap.ic_launcher)
                 .title(R.string.app_name_domoticz)
                 .description(R.string.welcome_info_domoticz)
                 .background(R.color.black)
