@@ -106,13 +106,17 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
 
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
-                .getApplicationContext());
+            try {
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
+                        .getApplicationContext());
 
-            int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                INVALID_APPWIDGET_ID);
-            if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
+                int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
+                        INVALID_APPWIDGET_ID);
+                if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
                     updateAppWidget(appWidgetManager, incomingAppWidgetId);
+                }
+            }catch(Exception ex){
+                Log.e("UpdateWidget", ex.toString());
             }
 
             stopSelf();

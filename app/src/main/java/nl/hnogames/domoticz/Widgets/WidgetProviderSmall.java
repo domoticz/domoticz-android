@@ -113,6 +113,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(UpdateWidgetService.this);
 
+            try {
             int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
                 INVALID_APPWIDGET_ID);
             if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
@@ -122,6 +123,10 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                     if (!UsefulBits.isEmpty(e.getMessage()))
                         Log.e(WidgetProviderSmall.class.getSimpleName() + "@onStartCommand", e.getMessage());
                 }
+            }
+
+            }catch(Exception ex){
+                Log.e("UpdateWidget", ex.toString());
             }
 
             stopSelf();

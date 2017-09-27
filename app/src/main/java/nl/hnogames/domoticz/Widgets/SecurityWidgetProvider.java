@@ -117,7 +117,7 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
             }
             AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(UpdateSecurityWidgetService.this);
-
+try{
             int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
                 INVALID_APPWIDGET_ID);
             if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
@@ -128,7 +128,12 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                         Log.e(SecurityWidgetProvider.class.getSimpleName() + "@onStartCommand", e.getMessage());
                 }
             }
-            stopSelf();
+
+        }catch(Exception ex){
+            Log.e("UpdateWidget", ex.toString());
+        }
+
+        stopSelf();
             return START_NOT_STICKY;
         }
 
