@@ -375,7 +375,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             } else {
                 return PendingIntent.getService(context, requestCode, intent, 0);
             }
-
         }
 
         private int withButtons(DevicesInfo s) {
@@ -396,19 +395,19 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                         case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                            if (mSharedPrefs.showSwitchesAsButtons())
-                                withButton = BUTTON_2;
-                            else
-                                withButton = BUTTON_1;
+                        case DomoticzValues.Device.Type.Value.DIMMER:
+                        case DomoticzValues.Device.Type.Value.SELECTOR:
+                            //if (mSharedPrefs.showSwitchesAsButtons())
+                            withButton = BUTTON_2;
+                            //else
+                            //    withButton = BUTTON_2;//BUTTON_1;
                             break;
 
                         case DomoticzValues.Device.Type.Value.X10SIREN:
                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
+                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                         case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
                         case DomoticzValues.Device.Type.Value.DOORBELL:
-                        case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                        case DomoticzValues.Device.Type.Value.DIMMER:
-                        case DomoticzValues.Device.Type.Value.SELECTOR:
                             withButton = BUTTON_1;
                             break;
 
