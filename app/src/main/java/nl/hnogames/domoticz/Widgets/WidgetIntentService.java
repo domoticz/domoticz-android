@@ -21,7 +21,6 @@
 
 package nl.hnogames.domoticz.Widgets;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -117,8 +116,8 @@ public class WidgetIntentService extends Service {
             return true;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-            (mExtendedStatusInfo.getSwitchType() == null ||
-                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.GROUP:
                     return true;
@@ -148,8 +147,8 @@ public class WidgetIntentService extends Service {
 
     private boolean isPushOnSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-            (mExtendedStatusInfo.getSwitchType() == null ||
-                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.SCENE:
                     return true;
@@ -168,8 +167,8 @@ public class WidgetIntentService extends Service {
 
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-            (mExtendedStatusInfo.getSwitchType() == null ||
-                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             return false;
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
@@ -344,7 +343,7 @@ public class WidgetIntentService extends Service {
 
             int jsonValue = 0;
             if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                 if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                 else {
                     jsonAction = DomoticzValues.Device.Switch.Action.ON;

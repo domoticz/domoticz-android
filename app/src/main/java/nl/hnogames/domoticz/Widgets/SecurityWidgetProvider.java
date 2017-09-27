@@ -57,15 +57,6 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
     public static String ACTION_WIDGET_DISARM = "nl.hnogames.domoticz.Service.WIDGET_SECURITY.DISCARD";
     private static String packageName;
 
-    @Override
-    public void onDeleted(Context context, int[] appWidgetIds) {
-        super.onDeleted(context, appWidgetIds);
-        for (int widgetId : appWidgetIds) {
-            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
-            mSharedPrefs.deleteSecurityWidget(widgetId);
-        }
-    }
-
     public static PendingIntent buildButtonPendingIntent(Context context, int widget_id, int idx, String action, String password) {
         Intent intent = new Intent(context, SecurityWidgetIntentService.class);
         intent.setAction(action);
@@ -74,9 +65,17 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
         intent.putExtra("WIDGETPASSWORD", password);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return PendingIntent.getForegroundService(context, widget_id, intent, 0);
-        }
-        else {
+        } else {
             return PendingIntent.getService(context, widget_id, intent, 0);
+        }
+    }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        for (int widgetId : appWidgetIds) {
+            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
+            mSharedPrefs.deleteSecurityWidget(widgetId);
         }
     }
 
@@ -88,7 +87,7 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
 
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
-            SecurityWidgetProvider.class);
+                SecurityWidgetProvider.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         if (allWidgetIds != null) {
             for (int mAppWidgetId : allWidgetIds) {
@@ -97,8 +96,7 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                 intent.setAction("FROM WIDGET PROVIDER");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startForegroundService(intent);
-                }
-                else
+                } else
                     context.startService(intent);
             }
         }
@@ -106,9 +104,9 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
 
     public static class UpdateSecurityWidgetService extends Service {
         private static final int INVALID_IDX = 999999;
+        private static SharedPrefUtil mSharedPrefs;
         private RemoteViews views;
         private Domoticz domoticz;
-        private static SharedPrefUtil mSharedPrefs;
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
@@ -116,24 +114,24 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
             AppWidgetManager appWidgetManager = AppWidgetManager
-                .getInstance(UpdateSecurityWidgetService.this);
-try{
-            int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                INVALID_APPWIDGET_ID);
-            if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
-                try {
-                    updateAppWidget(appWidgetManager, incomingAppWidgetId);
-                } catch (NullPointerException e) {
-                    if (!UsefulBits.isEmpty(e.getMessage()))
-                        Log.e(SecurityWidgetProvider.class.getSimpleName() + "@onStartCommand", e.getMessage());
+                    .getInstance(UpdateSecurityWidgetService.this);
+            try {
+                int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
+                        INVALID_APPWIDGET_ID);
+                if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
+                    try {
+                        updateAppWidget(appWidgetManager, incomingAppWidgetId);
+                    } catch (NullPointerException e) {
+                        if (!UsefulBits.isEmpty(e.getMessage()))
+                            Log.e(SecurityWidgetProvider.class.getSimpleName() + "@onStartCommand", e.getMessage());
+                    }
                 }
+
+            } catch (Exception ex) {
+                Log.e("UpdateWidget", ex.toString());
             }
 
-        }catch(Exception ex){
-            Log.e("UpdateWidget", ex.toString());
-        }
-
-        stopSelf();
+            stopSelf();
             return START_NOT_STICKY;
         }
 
@@ -168,24 +166,24 @@ try{
                         views = new RemoteViews(packageName, mSharedPrefs.getSecurityWidgetLayout(appWidgetId));
                         views.setTextViewText(R.id.title, s.getName());
                         views.setTextViewText(R.id.status, getApplicationContext().getString(R.string.status) + ": " +
-                            String.valueOf(s.getData()));
+                                String.valueOf(s.getData()));
 
                         views.setOnClickPendingIntent(R.id.armhome, buildButtonPendingIntent(
-                            UpdateSecurityWidgetService.this,
-                            appWidgetId,
-                            s.getIdx(), ACTION_WIDGET_ARMHOME, password));
+                                UpdateSecurityWidgetService.this,
+                                appWidgetId,
+                                s.getIdx(), ACTION_WIDGET_ARMHOME, password));
                         views.setViewVisibility(R.id.armhome, View.VISIBLE);
 
                         views.setOnClickPendingIntent(R.id.armaway, buildButtonPendingIntent(
-                            UpdateSecurityWidgetService.this,
-                            appWidgetId,
-                            s.getIdx(), ACTION_WIDGET_ARMAWAY, password));
+                                UpdateSecurityWidgetService.this,
+                                appWidgetId,
+                                s.getIdx(), ACTION_WIDGET_ARMAWAY, password));
                         views.setViewVisibility(R.id.armaway, View.VISIBLE);
 
                         views.setOnClickPendingIntent(R.id.disarm, buildButtonPendingIntent(
-                            UpdateSecurityWidgetService.this,
-                            appWidgetId,
-                            s.getIdx(), ACTION_WIDGET_DISARM, password));
+                                UpdateSecurityWidgetService.this,
+                                appWidgetId,
+                                s.getIdx(), ACTION_WIDGET_DISARM, password));
                         views.setViewVisibility(R.id.disarm, View.VISIBLE);
 
                         views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));

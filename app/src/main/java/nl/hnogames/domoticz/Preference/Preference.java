@@ -187,13 +187,11 @@ public class Preference extends PreferenceFragment {
         android.preference.PreferenceScreen notificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
         android.preference.Preference noticiationSettings = findPreference("noticiationSettings");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //new style channel settings
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             android.preference.PreferenceCategory notificationSound = (android.preference.PreferenceCategory) findPreference("notificationSound");
             notificationScreen.removePreference(notificationSound);
         }
         else{
-            //old style settings
             notificationScreen.removePreference(noticiationSettings);
         }
 
