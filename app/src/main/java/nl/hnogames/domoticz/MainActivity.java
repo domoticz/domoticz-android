@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         69,
                         this);
             } else {
-                new GeoUtils(this).AddGeofences();
+                new GeoUtils(this, this).AddGeofences();
                 buildScreen();
             }
         }
@@ -1449,7 +1449,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         validateOnce = false;
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
-            new GeoUtils(this).AddGeofences();
+            new GeoUtils(this, this).AddGeofences();
         }
         buildScreen();
     }
@@ -1469,7 +1469,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
-            new GeoUtils(this).AddGeofences();
+            new GeoUtils(this, this).AddGeofences();
         }
 
         buildScreen();
@@ -1488,7 +1488,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
             if (!mSharedPrefs.isGeofencingStarted()) {
                 mSharedPrefs.setGeofencingStarted(true);
-                new GeoUtils(this).AddGeofences();
+                new GeoUtils(this, this).AddGeofences();
             }
 
             buildScreen();

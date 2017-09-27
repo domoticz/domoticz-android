@@ -143,8 +143,9 @@ public class LocationInfo {
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 // Set the transition types of interest. Alerts are only generated for these
                 // transition. We track entry and exit transitions in this sample.
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL |
                     Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .setLoiteringDelay(3000)
                 // Create the geofence.
                 .build();
         } catch (Exception ex) {

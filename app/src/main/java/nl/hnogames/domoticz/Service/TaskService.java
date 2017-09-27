@@ -68,7 +68,7 @@ public class TaskService extends GcmTaskService {
     private void resetGeofenceService(Context context) {
         if (new SharedPrefUtil(context).isGeofenceEnabled()) {
             GeoUtils.geofencesAlreadyRegistered = false;
-            new GeoUtils(context).AddGeofences();
+            new GeoUtils(context, null).AddGeofences();
             Log.i("TASK", "Reset Geofences received, starting geofences");
         }
     }

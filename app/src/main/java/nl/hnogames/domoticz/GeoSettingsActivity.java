@@ -91,7 +91,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
-        oGeoUtils = new GeoUtils(this);
+        oGeoUtils = new GeoUtils(this, this);
 
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);

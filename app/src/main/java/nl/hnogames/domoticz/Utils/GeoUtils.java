@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.Utils;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -42,17 +43,20 @@ import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 public class GeoUtils {
     public static boolean geofencesAlreadyRegistered = false;
     private Context mContext;
+    private Activity mActivity;
 
     private SharedPrefUtil mSharedPrefs;
     private GeofencingClient mGeofencingClient;
     private PendingIntent mGeofencePendingIntent;
 
-    public GeoUtils(Context mContext) {
+    public GeoUtils(Context mContext, Activity activity) {
         this.mContext = mContext;
+        this.mActivity = activity;
+
         this.mSharedPrefs = new SharedPrefUtil(mContext);
 
         mGeofencePendingIntent = null;
-        mGeofencingClient = LocationServices.getGeofencingClient(mContext);
+        mGeofencingClient = LocationServices.getGeofencingClient(mActivity != null ? mActivity : mContext);
     }
 
     /**
@@ -98,23 +102,22 @@ public class GeoUtils {
             return mGeofencePendingIntent;
         }
 
-        Intent intent = new Intent(mContext.getApplicationContext(), GeofenceTransitionsIntentService.class);
+        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return PendingIntent.getForegroundService(mContext.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getForegroundService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
         else {
-            return PendingIntent.getService(mContext.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 
     /**
      * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
      * Also specifies how the geofence notifications are initially triggered.
-     * @param mGeofenceList
      */
     private GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
         builder.addGeofences(mGeofenceList);
         return builder.build();
     }

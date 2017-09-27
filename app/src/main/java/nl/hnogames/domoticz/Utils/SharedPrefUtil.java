@@ -1109,9 +1109,6 @@ public class SharedPrefUtil {
             }
             editor.commit();
             res = true;
-
-            if (isGeofenceEnabled())
-                new GeoUtils(mContext).AddGeofences();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

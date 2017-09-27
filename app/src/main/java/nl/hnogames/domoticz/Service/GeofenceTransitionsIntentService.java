@@ -70,7 +70,7 @@ public class GeofenceTransitionsIntentService extends Service {
                 int transitionType = geoFenceEvent.getGeofenceTransition();
                 String notificationTitle = "";
                 String notificationDescription = "";
-                if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
+                if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType || Geofence.GEOFENCE_TRANSITION_DWELL == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
                             mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
