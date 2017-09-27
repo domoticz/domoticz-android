@@ -85,7 +85,7 @@ public class NotificationUtil {
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.domoticz_white)
-                                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+                                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                                 .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
                                 .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
                                 .setChannelId(CHANNEL_ID)
@@ -166,7 +166,7 @@ public class NotificationUtil {
 
         return new NotificationCompat.Builder(context)
             .setSmallIcon(R.drawable.domoticz_white)
-            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
             .setContentTitle("Domoticz")
             .setContentText("Processing widget request..")
             .setChannelId(channelid)
