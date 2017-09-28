@@ -91,7 +91,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
             setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
-        oGeoUtils = new GeoUtils(this);
+        oGeoUtils = new GeoUtils(this, this);
 
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
@@ -107,7 +107,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
 
-        oGeoUtils.enableGeoFenceService();
+        oGeoUtils.AddGeofences();
         createListView();
         initSwitches();
     }
@@ -139,19 +139,19 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                 //all settings are correct
                                 mSharedPrefs.setGeofenceEnabled(isChecked);
                                 geoNotificationSwitch.setEnabled(true);
-                                oGeoUtils.enableGeoFenceService();
+                                oGeoUtils.AddGeofences();
                                 invalidateOptionsMenu();
                             }
                         }
                     } else {
                         mSharedPrefs.setGeofenceEnabled(isChecked);
-                        oGeoUtils.enableGeoFenceService();
+                        oGeoUtils.AddGeofences();
                         invalidateOptionsMenu();
                     }
                 } else {
                     mSharedPrefs.setGeofenceEnabled(false);
                     geoNotificationSwitch.setEnabled(false);
-                    oGeoUtils.disableGeoFenceService();
+                    oGeoUtils.RemoveGeofences();
                     invalidateOptionsMenu();
                 }
             }
@@ -242,7 +242,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                     locationInfo.setEnabled(checked);
                     mSharedPrefs.updateLocation(locationInfo);
                     GeoUtils.geofencesAlreadyRegistered = false;
-                    oGeoUtils.enableGeoFenceService();
+                    oGeoUtils.AddGeofences();
                     return checked;
                 }
             }
@@ -315,7 +315,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     private void removeLocationFromPreferences(LocationInfo locationInfo) {
         mSharedPrefs.removeLocation(locationInfo);
         GeoUtils.geofencesAlreadyRegistered = false;
-        oGeoUtils.enableGeoFenceService();
+        oGeoUtils.AddGeofences();
     }
 
     private void addLocationToListView(LocationInfo locationInfo) {
@@ -407,7 +407,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                                     locations = mSharedPrefs.getLocations();
 
                                                     GeoUtils.geofencesAlreadyRegistered = false;
-                                                    oGeoUtils.enableGeoFenceService();
+                                                    oGeoUtils.AddGeofences();
 
                                                     createListView();
                                                 }
@@ -434,7 +434,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                 locations = mSharedPrefs.getLocations();
 
                                 GeoUtils.geofencesAlreadyRegistered = false;
-                                oGeoUtils.enableGeoFenceService();
+                                oGeoUtils.AddGeofences();
 
                                 createListView();
                             }
@@ -519,7 +519,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
             if (PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
                 mSharedPrefs.setGeofenceEnabled(true);
-                oGeoUtils.enableGeoFenceService();
+                oGeoUtils.AddGeofences();
                 invalidateOptionsMenu();
             } else {
                 permissionHelper

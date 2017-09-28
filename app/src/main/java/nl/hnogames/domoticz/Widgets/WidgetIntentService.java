@@ -21,9 +21,12 @@
 
 package nl.hnogames.domoticz.Widgets;
 
-import android.content.BroadcastReceiver;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Utils.WidgetUtils;
@@ -43,7 +47,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class WidgetIntentReceiver extends BroadcastReceiver {
+public class WidgetIntentService extends Service {
 
     private final int iVoiceAction = -55;
     private final int iQRCodeAction = -66;
@@ -56,24 +60,33 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
     private int blind_action = -1;
     private boolean smallWidget = false;
 
+    @Nullable
     @Override
-    public void onReceive(final Context context, Intent intent) {
-        mSharedPrefs = new SharedPrefUtil(context);
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
+        }
+
+        mSharedPrefs = new SharedPrefUtil(this);
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         int idx = intent.getIntExtra("IDX", 999999);
         if (idx == iVoiceAction)//voice
         {
-            Intent iStart = new Intent(context, MainActivity.class);
+            Intent iStart = new Intent(this, MainActivity.class);
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("VOICE", true);
-            context.startActivity(iStart);
+            this.startActivity(iStart);
         } else if (idx == iQRCodeAction)//qrcode
         {
-            Intent iStart = new Intent(context, MainActivity.class);
+            Intent iStart = new Intent(this, MainActivity.class);
             iStart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             iStart.putExtra("QRCODE", true);
-            context.startActivity(iStart);
+            this.startActivity(iStart);
         } else {
             loadPasswordandValue();
 
@@ -83,14 +96,17 @@ public class WidgetIntentReceiver extends BroadcastReceiver {
                 action = intent.getBooleanExtra("WIDGETACTION", false);
                 toggle = intent.getBooleanExtra("WIDGETTOGGLE", true);
                 Log.i("SWITCH TOGGLE", "SWITCH TOGGLE:" + idx + " | " + action);
-                processSwitch(context, idx);
+                processSwitch(this, idx);
             } else if (intent.getAction().equals("nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION")) {
                 Log.i("onReceive", "nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION");
                 blind_action = intent.getIntExtra("WIDGETBLINDACTION", -1);
                 Log.i("BLIND TOGGLE", "BLIND TOGGLE:" + idx + " | " + blind_action);
-                processBlind(context, idx, blind_action);
+                processBlind(this, idx, blind_action);
             }
         }
+
+        stopSelf();
+        return START_NOT_STICKY;
     }
 
     private boolean isOnOffSwitch(DevicesInfo mExtendedStatusInfo) {

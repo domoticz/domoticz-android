@@ -91,6 +91,8 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
                 (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
                 (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+            if ((view.findViewById(R.id.set_uservar)) != null)
+                (view.findViewById(R.id.set_uservar)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
 
         return new DataObjectHolder(view);

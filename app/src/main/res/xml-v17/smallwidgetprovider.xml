@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
@@ -19,25 +20,12 @@
   ~  under the License.
   -->
 
-<android.support.wearable.view.BoxInsetLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/gray"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        app:layout_box="left|right">
-
-        <android.support.wearable.view.WearableListView
-            android:id="@+id/wearable_list"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
-        </android.support.wearable.view.WearableListView>
-
-    </FrameLayout>
-
-</android.support.wearable.view.BoxInsetLayout>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="nl.hnogames.domoticz.Widgets.SmallWidgetConfigurationActivity"
+    android:initialLayout="@layout/widget_small_layout"
+    android:previewImage="@drawable/lights"
+    android:minHeight="40dp"
+    android:minWidth="40dp"
+    android:resizeMode="horizontal|vertical"
+                    android:widgetCategory="keyguard|home_screen"
+    android:updatePeriodMillis="1000000" />

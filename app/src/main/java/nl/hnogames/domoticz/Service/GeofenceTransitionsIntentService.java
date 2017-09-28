@@ -1,15 +1,14 @@
 package nl.hnogames.domoticz.Service;
 
-import android.content.BroadcastReceiver;
+import android.app.IntentService;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Build;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -28,20 +27,25 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class GeofenceReceiver extends BroadcastReceiver
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+public class GeofenceTransitionsIntentService extends Service {
     private final String TAG = "GEOFENCE";
-    Intent broadcastIntent = new Intent();
     private Context context;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
-    private String notificationTitle = "";
-    private String notificationDescription = "";
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        this.context = context;
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        this.context = getApplicationContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Geofence"));
+        }
+
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
 
@@ -49,8 +53,12 @@ public class GeofenceReceiver extends BroadcastReceiver
         if (geoFenceEvent.hasError()) {
             Log.e(TAG, "Error: " + geoFenceEvent.getErrorCode());
         } else {
+            Log.d(TAG, "Received geofence event.");
             handleEnterExit(geoFenceEvent);
         }
+
+        stopSelf();
+        return START_NOT_STICKY;
     }
 
     private void handleEnterExit(GeofencingEvent geoFenceEvent) {
@@ -60,20 +68,21 @@ public class GeofenceReceiver extends BroadcastReceiver
                 Log.e(TAG, "Location Services error: " + errorCode);
             } else {
                 int transitionType = geoFenceEvent.getGeofenceTransition();
-                if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType) {
+                String notificationTitle = "";
+                String notificationDescription = "";
+                if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType || Geofence.GEOFENCE_TRANSITION_DWELL == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
-                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                            mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
-                                + locationFound.getName());
+                            + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                    context.getString(R.string.geofence_location_entering),
-                                    locationFound.getName());
+                                context.getString(R.string.geofence_location_entering), locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_entering_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                    notificationDescription, 0, context);
+                                notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), 1, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -81,17 +90,17 @@ public class GeofenceReceiver extends BroadcastReceiver
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound
-                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                            = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered leaving a geofence location: "
-                                + locationFound.getName());
+                            + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                    context.getString(R.string.geofence_location_leaving),
-                                    locationFound.getName());
+                                context.getString(R.string.geofence_location_leaving),
+                                locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_leaving_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                    notificationDescription, 0, context);
+                                notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), 0, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -123,7 +132,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                 if (!isSceneOrGroup) {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (!mDevicesInfo.getStatusBoolean())
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             else {
@@ -145,7 +154,7 @@ public class GeofenceReceiver extends BroadcastReceiver
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (inputJSONAction == 1)
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             else {
@@ -220,7 +229,7 @@ public class GeofenceReceiver extends BroadcastReceiver
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
-        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+        if (mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
             return 0;
 
         int jsonValue = 0;
@@ -236,30 +245,5 @@ public class GeofenceReceiver extends BroadcastReceiver
             jsonValue = counter;
         }
         return jsonValue;
-    }
-
-    private void onErrorHandling(Exception error) {
-        if (error != null) {
-            Toast.makeText(
-                    context,
-                    "Domoticz: " +
-                            context.getString(R.string.unable_to_get_switches),
-                    Toast.LENGTH_SHORT).show();
-
-            if (domoticz != null && UsefulBits.isEmpty(domoticz.getErrorMessage(error)))
-                Log.e(TAG, domoticz.getErrorMessage(error));
-        }
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
     }
 }

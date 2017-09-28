@@ -36,7 +36,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -171,9 +170,8 @@ public class AppController extends MultiDexApplication implements GcmListener {
             } else {
                 NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
             }
-        }
-        else{
-            if(bundle.containsKey("notification")){
+        } else {
+            if (bundle.containsKey("notification")) {
                 Bundle notification = bundle.getBundle("notification");
                 if (notification.containsKey("message")) {
                     String message = decode(notification.getString("message"));

@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             setTheme(R.style.AppThemeDarkMain);
         else
             setTheme(R.style.AppThemeMain);
-         permissionHelper = PermissionHelper.getInstance(this);
+        permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
@@ -175,8 +175,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
             mAdView.loadAd(adRequest);
-        }
-        else{
+        } else {
             setContentView(R.layout.activity_newmain_paid);
             mAdView = (AdView) findViewById(R.id.adView);
             mAdView.setVisibility(View.GONE);
@@ -208,7 +207,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         69,
                         this);
             } else {
-                new GeoUtils(this).enableGeoFenceService();
+                new GeoUtils(this, this).AddGeofences();
                 buildScreen();
             }
         }
@@ -492,7 +491,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
-        if(mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
+        if (mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
             return 0;
 
         int jsonValue = 0;
@@ -659,7 +658,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             config = mServerUtil.getActiveServer().getConfigInfo(this);
 
         ProfileDrawerItem loggedinAccount = new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
-                .withIcon(R.drawable.ic_launcher);
+                .withIcon(R.mipmap.ic_launcher);
         if (mSharedPrefs.darkThemeEnabled()) {
             loggedinAccount.withSelectedColorRes(R.color.material_indigo_600);
         }
@@ -1450,7 +1449,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         validateOnce = false;
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
-            new GeoUtils(this).enableGeoFenceService();
+            new GeoUtils(this, this).AddGeofences();
         }
         buildScreen();
     }
@@ -1470,7 +1469,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
-            new GeoUtils(this).enableGeoFenceService();
+            new GeoUtils(this, this).AddGeofences();
         }
 
         buildScreen();
@@ -1489,7 +1488,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
             if (!mSharedPrefs.isGeofencingStarted()) {
                 mSharedPrefs.setGeofencingStarted(true);
-                new GeoUtils(this).enableGeoFenceService();
+                new GeoUtils(this, this).AddGeofences();
             }
 
             buildScreen();

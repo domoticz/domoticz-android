@@ -284,6 +284,19 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public void deleteSmallWidget(int widgetID, boolean isScene) {
+        editor.remove("SMALLWIDGET" + widgetID);
+        if(!isScene)
+            editor.remove("SMALLWIDGETIDX" + widgetID);
+        else
+            editor.remove("WIDGETIDXSCENE" + widgetID);
+        editor.remove("SMALLWIDGETPASSWORD" + widgetID);
+        editor.remove("SMALLWIDGETLAYOUT" + widgetID);
+        editor.remove("SMALLWIDGETVALUE" + widgetID);
+        editor.remove("SMALLWIDGETSCENE" + widgetID);
+        editor.commit();
+    }
+
     public void setSmallWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
         editor.putInt("SMALLWIDGET" + widgetID, idx).apply();
         editor.putBoolean("SMALLWIDGETSCENE" + widgetID, isScene).apply();
@@ -311,6 +324,15 @@ public class SharedPrefUtil {
 
     public boolean getSmallWidgetisScene(int widgetID) {
         return prefs.getBoolean("SMALLWIDGETSCENE" + widgetID, false);
+    }
+
+    public void deleteSecurityWidget(int widgetID) {
+        editor.remove("WIDGETSECURITY" + widgetID);
+        editor.remove("SMALLWIDGETIDX" + widgetID);
+        editor.remove("WIDGETSECURITYPIN" + widgetID);
+        editor.remove("WIDGETSECURITYPINLAYOUT" + widgetID);
+        editor.remove("WIDGETSECURITYVALUE" + widgetID);
+        editor.commit();
     }
 
     public void setSecurityWidgetIDX(int widgetID, int idx, String value, String pin, int layout) {
@@ -343,6 +365,19 @@ public class SharedPrefUtil {
 
     public String getWidgetPassword(int widgetID) {
         return prefs.getString("WIDGETPASSWORD" + widgetID, null);
+    }
+
+    public void deleteWidget(int widgetID, boolean isScene) {
+        editor.remove("WIDGET" + widgetID);
+        if(!isScene)
+            editor.remove("WIDGETIDX" + widgetID);
+        else
+            editor.remove("WIDGETIDXSCENE" + widgetID);
+        editor.remove("WIDGETPASSWORD" + widgetID);
+        editor.remove("WIDGETLAYOUT" + widgetID);
+        editor.remove("WIDGETVALUE" + widgetID);
+        editor.remove("WIDGETSCENE" + widgetID);
+        editor.commit();
     }
 
     public int getWidgetLayout(int widgetID) {
@@ -1074,9 +1109,6 @@ public class SharedPrefUtil {
             }
             editor.commit();
             res = true;
-
-            if (isGeofenceEnabled())
-                new GeoUtils(mContext).enableGeoFenceService();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
