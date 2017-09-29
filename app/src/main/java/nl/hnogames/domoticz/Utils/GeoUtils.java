@@ -78,7 +78,6 @@ public class GeoUtils {
                 if (mGeofenceList != null && mGeofenceList.size() > 0) {
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                         return;
-
                     Log.i("GeoUtils", "Starting Geofences");
                     if(mGeofencingClient != null) {
                         RemoveGeofences();//clear existing ones
