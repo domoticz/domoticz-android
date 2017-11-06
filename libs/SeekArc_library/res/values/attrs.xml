@@ -26,29 +26,30 @@
     <declare-styleable name="SeekArc">
         <attr name="thumb" format="reference" />
         <attr name="thumbOffset" format="dimension" />
-        <attr name="max" format="integer" />
+        <attr name="progressMax" format="integer" />
         <attr name="progressWidth" format="dimension" />
         <attr name="arcWidth" format="dimension" />
         <attr name="progress" format="integer" />
+        <attr name="progressMin" format="integer" />
         <attr name="rotation" format="integer" />
         <attr name="startAngle" format="integer" />
         <attr name="sweepAngle" format="integer" />
         <attr name="arcColor" format="color" />
         <attr name="progressColor" format="color" />
         <attr name="roundEdges" format="boolean" />
+        <attr name="showClockface" format="boolean" />
+        <attr name="clockfacePadding" format="dimension" />
+        <attr name="clockfaceFontSize" format="dimension" />
+        <attr name="clockfaceFontColor" format="color" />
+        <attr name="clockfaceFontThickness" format="float" />
         <attr name="touchInside" format="boolean" />
         <attr name="clockwise" format="boolean" />
-        <attr name="isenabled" format="boolean" />
-        <attr name="markerEmpty" format="reference" />
-        <attr name="markerFill" format="reference" />
-        <attr name="markerTextEmptyColor" format="color" />
-        <attr name="markerTextFillColor" format="color" />
-        <attr name="markerTextSize" format="dimension" />
-        <attr name="markerTextRadius" format="dimension" />
+        <attr name="enabled" format="boolean" />
+        <attr name="clockStyle" format="reference" />
     </declare-styleable>
-
+    
     <declare-styleable name="SeekArcTheme">
-        <attr name="seekArcStyle" format="reference"></attr>
+        <attr name="seekArcStyle" format="reference"></attr>        
     </declare-styleable>
 
 </resources>
