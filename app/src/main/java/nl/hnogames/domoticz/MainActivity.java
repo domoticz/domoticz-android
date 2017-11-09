@@ -93,6 +93,7 @@ import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
+import nl.hnogames.domoticz.Utils.GCMUtils;
 import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -633,6 +634,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 try {
                     String refreshedToken = FirebaseInstanceId.getInstance().getToken();
                     Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+                    GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -642,6 +644,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             try {
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
                 Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+                GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
             } catch (Exception e) {
                 e.printStackTrace();
             }

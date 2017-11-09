@@ -48,9 +48,9 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
                 //String extradata = decode(bundle.getString("extradata"));
                 String deviceid = decode(String.valueOf(data.get(5)));
                 if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
-                    NotificationUtil.sendSimpleNotification(subject, body, prio, this);
-                else
                     NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
+                else
+                    NotificationUtil.sendSimpleNotification(subject, body, prio, this);
             } else {
                 NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
             }
