@@ -51,9 +51,9 @@
   <string name="temperature">Temperatur</string>
   <string name="status">Status</string>
   <string name="set_point">Settpunkt</string>
-  <string name="set_point_min">Set point min value</string>
+  <string name="set_point_min">Set punkt minimum</string>
   <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
-  <string name="set_point_max">Set point max value</string>
+  <string name="set_point_max">Set punkt maksimum</string>
   <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
   <string name="action_success">Handlingen vellykket</string>
   <string name="action_failed">Handling mislyktes</string>

@@ -5,7 +5,7 @@
   <string name="welcome_title_activity_welcome">Tervetuloa</string>
   <string name="welcome_info_domoticz">Domoticz on kotiautomaatiojärjestelmä jonka avulla voit ohjata erilaisia laitteita, kuten valoja ja kytkimiä. Lisäksi voit kytkeä järjestelmään erilaisia antureita esimerkiksi lämpötilan, sateen, tuulen, sähkön-, kaasun- tai vedenkulutuksen mittaamiseen. Järjestelmästä on mahdollista saada ilmoituksia ja hälytyksiä mobiililaitteisiin.</string>
   <string name="welcome_info_swipe">Pyyhkäise oikealle tai käytä siirtymispainikkeita alareunassa jatkaaksesi</string>
-  <string name="welcome_info_settings1">Seuraavalla sivulla määritetään sinun Domoticz-asetukset.</string>
+  <string name="welcome_info_settings1">Seuraavalla sivulla määritetään Domoticz-asetukset.</string>
   <string name="welcome_info_settings2">
 Voit määrittää paikallisen ja etäpalvelimen asetukset. Paikalliset asetukset ovat voimassa kun olet liittyneenä kotisi wifi-verkkoon. Etäpalvelinasetukset ovat käytössä kun et ole liittyneenä kotisi wifi-verkkoon tai käytät mobiilidataa (2G, 3G, 4G tmv.).</string>
   <string name="welcome_info_checkingConnection">Vahvistetaan yhteysasetukset</string>

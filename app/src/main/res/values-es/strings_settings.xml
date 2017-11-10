@@ -34,7 +34,7 @@
   <string name="category_advanced">Avanzada</string>
   <string name="category_language">Idioma</string>
   <string name="category_talk_back">Respuestas habladas</string>
-  <string name="category_notification">Notificaciones</string>
+  <string name="category_notification">Notifications</string>
   <string name="category_debug">Depuración</string>
   <string name="category_export">Exportar/importar preferencias</string>
   <string name="category_theme">Estilo</string>
@@ -43,28 +43,28 @@
   <string name="category_account">Cuentas</string>
   <string name="category_QRCode">Código QR</string>
   <string name="category_Speech">Discurso</string>
-  <string name="category_Reset">Reestablecer</string>
+  <string name="category_Reset">Restablecer</string>
   <!--        Generic settings       -->
   <string name="startup_screen">Pantalla de inicio</string>
   <string name="enable_items">Activar/desactivar elementos</string>
-  <string name="sort_dashboardLikeServer_title">Ordenacion del tablero</string>
+  <string name="sort_dashboardLikeServer_title">Ordenación del tablero</string>
   <string name="sort_dashboardLikeServer_on">Ordenar el tablero como el servidor</string>
   <string name="sort_dashboardLikeServer_off">Ordenar alfabéticamente el tablero</string>
   <string name="extra_data_title">Datos adicionales en el tablero</string>
   <string name="show_extra_data_on">Mostrar datos adicionales en el tablero</string>
   <string name="show_extra_data_off">Ocultar datos adicionales en el tablero</string>
-  <string name="always_on_title">Mantener Despierto</string>
+  <string name="always_on_title">Mantener activo</string>
   <string name="always_on_on">Bloquear la pantalla siempre Encendido</string>
   <string name="always_on_off">No bloquear la pantalla siempre Encendido</string>
   <string name="switch_buttons_title">Interruptores</string>
   <string name="switch_buttons_on">Mostrar los interruptores con interruptor encendido/apagado</string>
   <string name="switch_buttons_off">Mostrar los interruptores con botones de encendido/apagado</string>
-  <string name="dashboard_list_title">Cuadricula de tablero</string>
+  <string name="dashboard_list_title">Cuadrícula de tablero</string>
   <string name="show_dashboard_list_on">Mostrar tablero como lista</string>
-  <string name="show_dashboard_list_off">Mostrar tablero cuadriculado</string>
+  <string name="show_dashboard_list_off">Mostrar tablero en cuadrícula</string>
   <!--        Wear settings       -->
   <string name="enable_wear_select">Elementos específicos de Android Wear</string>
-  <string name="custom_wear_select">Select Wear interruptores</string>
+  <string name="custom_wear_select">Seleccionar interruptores Android Wear</string>
   <string name="custom_wear_select_desc">Seleccionar los interruptores que aparecen en tu dispositivo Android Wear</string>
   <string name="wear_custom_on">Habilitar elementos específicos de Android Wear</string>
   <string name="wear_custom_off">Deshabilitar elementos específicos de Android Wear</string>
@@ -75,23 +75,23 @@
   <string name="geofencing_configure">Configurar geocercas</string>
   <!--        Theming settings -->
   <string name="config_theme">Cambiar estilo</string>
-  <string name="set_dark_theme">Cambiar estilo de el app a oscuro</string>
-  <string name="set_light_theme">Cambiar estilo de el app a claro</string>
+  <string name="set_dark_theme">Cambiar estilo a oscuro</string>
+  <string name="set_light_theme">Cambiar estilo a claro</string>
   <!--        Talk Back Settings   -->
   <string name="set_talk_back_on">Permitir a Domoticz que te responda hablando</string>
   <string name="set_talk_back_off">Desactivar las respuestas habladas</string>
   <!--        Import/Export settings  -->
-  <string name="settings_imported">Configuración importada, por favor recomience Domoticz</string>
+  <string name="settings_imported">Configuración importada, por favor reinicie Domoticz</string>
   <string name="settings_import_failed">No se pudo importar la configuración</string>
   <string name="settings_exported">Configuración exportada, por favor reinicie Domoticz</string>
-  <string name="settings_export_failed">Fallo al exportar los ajustes</string>
+  <string name="settings_export_failed">Error al exportar los ajustes</string>
   <!--        Preference screens      -->
   <string name="server_settings">Ajustes de la conexión del servidor</string>
   <string name="server_force_fetch_config">Recuperar Configuración del servidor</string>
   <string name="nfc_settings">Configurar conexiones NFC</string>
   <string name="speech_settings">Configuración de Comandos de voz</string>
   <string name="title_activity_server_settings">Ajustes del Servidor</string>
-  <string name="multi_server">Servidor multi</string>
+  <string name="multi_server">Servidor múltiple</string>
   <string name="enable_nfc">Activar NFC</string>
   <string name="enable_speech">Habilitar reconocimiento de voz</string>
   <string name="export_settings">Exportar ajustes</string>
@@ -103,7 +103,7 @@
   <string name="server">Servidor</string>
   <string name="qrcode_settings">Configuración de códigos QR</string>
   <string name="enable_qrcode">Habilitar códigos QR</string>
-  <string name="qrcode_enable_settings">Habilitar la funcionalidad de los códigos QR</string>
+  <string name="qrcode_enable_settings">Habilitar la funcionalidad de Código QR</string>
   <string name="security_settings">Configuración de Seguridad</string>
   <string name="enable_security">Habilitar la protección por huella dactilar al inicio</string>
   <string name="disable_security">Desactivar la protección por huella dactilar en el inicio</string>
