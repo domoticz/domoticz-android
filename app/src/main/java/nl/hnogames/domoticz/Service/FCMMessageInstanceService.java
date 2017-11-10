@@ -29,24 +29,28 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){
-        String from = remoteMessage.getFrom();
+        if(remoteMessage == null || remoteMessage.getData() == null)
+            return;
+
         Map data = remoteMessage.getData();
         Log.d("GCM", "Message Received: " + data.toString());
-        Log.d("GCM", "Message From: " + from);
 
         if (data.containsKey("message")) {
-            String message = decode(data.get("message").toString());
-            String subject = decode(data.get("subject").toString());
-            String body = decode(data.get("body").toString());
+            String message = decode(data.containsKey("message") ? data.get("message").toString() : "");
+            String subject = decode(data.containsKey("subject") ? data.get("subject").toString() : "");
+            String body = decode(data.containsKey("body") ? data.get("body").toString() : "");
 
             int prio = 0; //default
-            String priority = decode(data.get("priority").toString());
-            if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
-                prio = Integer.valueOf(priority);
+            if(data.containsKey("priority")) {
+                String priority = decode(data.get("priority").toString());
+                if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
+                    prio = Integer.valueOf(priority);
+            }
 
-            if (subject != null && !body.equals(subject)) {
-                //String extradata = decode(bundle.getString("extradata"));
-                String deviceid = decode(String.valueOf(data.get(5)));
+            if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) &&
+                !body.equals(subject)) {
+
+                String deviceid = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
                 if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
                     NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
                 else
