@@ -178,7 +178,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     //int mYear = calendar.get(Calendar.YEAR);
                     int mMonth = calendar.get(Calendar.MONTH) + 1;
                     int mDay = calendar.get(Calendar.DAY_OF_MONTH) + 1;
-                    int mHours = calendar.get(Calendar.HOUR);
+                    int mHours = calendar.get(Calendar.HOUR_OF_DAY);
                     int mMinutes = calendar.get(Calendar.MINUTE);
 
                     String xValue = "";
