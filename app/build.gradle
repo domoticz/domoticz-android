@@ -2,23 +2,22 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.0"
 
     def versionPropsFile = file('version.properties')
 
     if (versionPropsFile.canRead()) {
-        def Properties versionProps = new Properties()
+        Properties versionProps = new Properties()
 
         versionProps.load(new FileInputStream(versionPropsFile))
         def value = 0
         def runTasks = gradle.startParameter.taskNames
+
         println "****************************"
         println "runTasks: ${gradle.startParameter.taskNames}"
-
         if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks) {
-            value = 1;
-
+            value = 1
             println "Build Version: +1"
         }
         println "****************************"
@@ -39,7 +38,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 16
-            targetSdkVersion 26
+            targetSdkVersion 27
             multiDexEnabled true
         }
     } else {
@@ -130,8 +129,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    def supportVersion = '26.1.0'
-    def playServicesVersion = '11.4.2'
+    def supportVersion = '27.0.2'
+    def playServicesVersion = '11.8.0'
 
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
