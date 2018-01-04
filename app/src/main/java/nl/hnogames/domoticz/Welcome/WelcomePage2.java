@@ -68,7 +68,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         permissionFragmentHelper
-                            .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else {
                         importSettings();
                     }
@@ -97,7 +97,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }

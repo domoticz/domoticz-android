@@ -4,10 +4,10 @@
   <string name="permission_title">Käyttöoikeudet evätty</string>
   <string name="permission_prefs_title">Käyttöoikeudet</string>
   <string name="permission_config">Määritä sovelluksen käyttöoikeudet</string>
-  <string name="permission_desc_storage">Näitä tallennustilan käyttöoikeuksia tarvitaan välimuistia, asetuksia ja kameran kuvia varten.</string>
-  <string name="permission_desc_location">Näitä sijaintikäyttöoikeuksia tarvitaan geoaitoja ja WLAN-verkkojen tunnistamista varten!</string>
-  <string name="permission_desc_phone">Näitä puhelimen käyttöoikeuksia tarvitaan ilmoitusten näyttämistä varten!</string>
-  <string name="permission_desc_camera">Näitä kameran käyttöoikeuksia tarvitaan QR-koodien skannaamista varten!</string>
-  <string name="permission_desc_audio">Näitä äänien käyttöoikeuksia tarvitaan puheentunnistusta varten!</string>
-  <string name="permission_desc_finger">Näitä sormenjälkilukijan käyttöoikeuksia tarvitaan sormenjälkitunnistusta varten!</string>
+  <string name="permission_desc_storage">Tallennustilan käyttöoikeuksia tarvitaan välimuistia, asetuksia ja kameran kuvia varten.</string>
+  <string name="permission_desc_location">Sijainnin käyttöoikeuksia tarvitaan geoaitoja ja WLAN-verkkojen tunnistamista varten!</string>
+  <string name="permission_desc_phone">Puhelimen käyttöoikeuksia tarvitaan ilmoitusten näyttämistä varten!</string>
+  <string name="permission_desc_camera">Kameran käyttöoikeuksia tarvitaan QR-koodien skannaamista varten!</string>
+  <string name="permission_desc_audio">Äänien käyttöoikeuksia tarvitaan puheentunnistusta varten!</string>
+  <string name="permission_desc_finger">Sormenjälkilukijan käyttöoikeuksia tarvitaan sormenjälkitunnistusta varten!</string>
 </resources>

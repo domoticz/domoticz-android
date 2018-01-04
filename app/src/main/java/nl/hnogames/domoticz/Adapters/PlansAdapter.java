@@ -70,15 +70,16 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
+        try {
+            if (mDataset != null && mDataset.size() > 0) {
+                String name = mDataset.get(position).getName();
+                holder.name.setText(name);
 
-        if (mDataset != null && mDataset.size() > 0) {
-            String name = mDataset.get(position).getName();
-            int numberOfDevices = mDataset.get(position).getDevices();
-            String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
-
-            holder.name.setText(name);
-            holder.devices.setText(String.valueOf(text));
-        }
+                int numberOfDevices = mDataset.get(position).getDevices();
+                String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
+                holder.devices.setText(String.valueOf(text));
+            }
+        }catch(Exception ex){}
     }
 
     @Override

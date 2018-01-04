@@ -24,42 +24,44 @@
     android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@color/white">
 
     <ImageView
         android:id="@+id/circle"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/defaultimage"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center_vertical|left"
+        android:gravity="center_vertical|start"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-light"
             android:lineSpacingExtra="-4sp"
-            android:text="Switch name"
+            android:text="@string/switchtemp"
             android:textColor="#000000"
             android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-light"
             android:lineSpacingExtra="-4sp"
             android:textColor="#808080"
-            android:text="Off"
-            android:textSize="9sp"/>
-
+            android:text="@string/off"
+            android:textSize="12sp"/>
     </LinearLayout>
+
 </nl.hnogames.domoticz.UI.WearableListItemLayout>

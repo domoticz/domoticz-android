@@ -90,25 +90,7 @@
                 android:resource="@xml/nfc_tech_list" />
         </activity>
 
-        <receiver android:name=".Service.AutoMessageHeardReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.ACTION_MESSAGE_READ"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".Service.AutoMessageReplyReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.ACTION_MESSAGE_REPLY"/>
-            </intent-filter>
-        </receiver>
-
         <service android:name=".Service.RingtonePlayingService" />
-
-        <service
-            android:name=".Service.GeolocationService"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name_domoticz" >
-        </service>
 
         <receiver
             android:name="nl.hnogames.domoticz.Service.LocationProviderChangedReceiver"
@@ -132,7 +114,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".Service.StopAlarmButtonListener" />
+        <service android:name=".Service.StopAlarmButtonListener" />
 
         <service
             android:name=".Service.TaskService"
@@ -152,15 +134,27 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <receiver android:name=".Widgets.WidgetIntentReceiver" >
+        <service
+            android:name=".Service.FCMInstanceService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_TOGGLE_ACTION" />
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_BLIND_ACTION" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
+        </service>
+
+        <service
+            android:name=".Service.FCMMessageInstanceService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".Widgets.WidgetIntentService" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
-        </receiver>
+        </service>
 
         <activity
             android:name=".Widgets.WidgetConfigurationActivity"
@@ -225,16 +219,11 @@
                 android:resource="@xml/securitywidgetprovider" />
         </receiver>
 
-        <receiver android:name=".Widgets.SecurityWidgetIntentReceiver" >
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMAWAY" />
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.ARMHOME" />
-                <action android:name="nl.hnogames.domoticz.Service.WIDGET_SECURITY.DISCARD" />
-            </intent-filter>
+        <service android:name=".Widgets.SecurityWidgetIntentService" >
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/securitywidgetprovider" />
-        </receiver>
+        </service>
 
         <service android:name=".Widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
 
@@ -246,13 +235,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name="nl.hnogames.domoticz.Service.GeofenceReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="nl.hnogames.domoticz.Service.GeofenceReceiver.ACTION_RECEIVE_GEOFENCE" />
-            </intent-filter>
-        </receiver>
+        <service android:name="nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService" />
 
         <activity
             android:name=".MainActivity"

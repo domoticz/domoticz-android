@@ -2,23 +2,21 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.0"
 
     def versionPropsFile = file('version.properties')
 
     if (versionPropsFile.canRead()) {
         def Properties versionProps = new Properties()
-
         versionProps.load(new FileInputStream(versionPropsFile))
         def value = 0
         def runTasks = gradle.startParameter.taskNames
+
         println "****************************"
         println "runTasks: ${gradle.startParameter.taskNames}"
-
-        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks) {
-            value = 1;
-
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks) {
+            value = 1
             println "Build Version: +1"
         }
         println "****************************"
@@ -39,7 +37,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 16
-            targetSdkVersion 25
+            targetSdkVersion 27
             multiDexEnabled true
         }
     } else {
@@ -108,40 +106,30 @@ android {
         javaMaxHeapSize "4g"
     }
 }
+
 repositories {
     maven {
         url "https://jitpack.io"
     }
 }
 
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
+
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+}
 
 //noinspection GroovyAssignabilityCheck
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    def supportVersion = '25.3.1'
-    def playServicesVersion = '11.0.4'
+    def supportVersion = '27.0.2'
+    def playServicesVersion = '11.8.0'
 
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
@@ -153,6 +141,7 @@ dependencies {
     compile "com.google.firebase:firebase-core:$playServicesVersion"
     compile "com.google.firebase:firebase-crash:$playServicesVersion"
     compile "com.google.firebase:firebase-perf:$playServicesVersion"
+    compile "com.google.firebase:firebase-messaging:$playServicesVersion"
 
     compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
     compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
@@ -163,7 +152,7 @@ dependencies {
     compile "com.google.android.gms:play-services-ads:$playServicesVersion"
 
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
@@ -176,7 +165,6 @@ dependencies {
     compile 'com.github.hotchemi:android-rate:1.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
-    compile 'eu.inloop:easygcm:1.6.2@aar'
     compile 'me.dm7.barcodescanner:zxing:1.9'
     compile 'com.github.jd-alexander:LikeButton:0.2.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.4'
@@ -198,6 +186,7 @@ dependencies {
 
     compile project(path: ':materialIntro_library')
     compile project(':libs:MemorizingTrustManager')
+
     compile project(path: ':SeekArc_library')
     compile project(path: ':domoticzapi')
 }

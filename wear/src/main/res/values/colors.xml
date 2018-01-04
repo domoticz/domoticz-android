@@ -22,7 +22,7 @@
 
 <resources>
     <color name="white">#ffffff</color>
-    <color name="gray">#898989</color>
+    <color name="gray">#EAEAEA</color>
     <color name="fade">#464646</color>
     <color name="blue_light">#5493fc</color>
     <color name="blue">#0a5ae1</color>

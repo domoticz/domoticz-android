@@ -37,4 +37,7 @@
     <string name="forecast">Forecast</string>
     <string name="rain">Rain</string>
     <string name="rainrate">Rain Rate</string>
+
+    <string name="off">Off</string>
+    <string name="switchtemp">Switch Name</string>
 </resources>

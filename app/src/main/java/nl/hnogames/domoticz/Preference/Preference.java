@@ -37,11 +37,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -52,6 +52,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
 import java.util.Collections;
@@ -71,6 +72,7 @@ import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
 import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
+import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -183,6 +185,28 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
+        android.preference.PreferenceScreen notificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
+        android.preference.Preference noticiationSettings = findPreference("noticiationSettings");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            android.preference.PreferenceCategory notificationSound = (android.preference.PreferenceCategory) findPreference("notificationSound");
+            notificationScreen.removePreference(notificationSound);
+        }
+        else{
+            notificationScreen.removePreference(noticiationSettings);
+        }
+
+        noticiationSettings.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, mContext.getPackageName());
+                startActivity(intent);
+                return true;
+            }
+        });
 
         if (mConfigInfo == null) {
             UsefulBits.getServerConfigForActiveServer(mContext, false, new ConfigReceiver() {
@@ -200,12 +224,6 @@ public class Preference extends PreferenceFragment {
             }, mServerUtil.getActiveServer().getConfigInfo(mContext));
         } else {
             setupDefaultValues();
-        }
-
-        if (!BuildConfig.DEBUG) {
-            PreferenceCategory oAndroidAutoCategory = (android.preference.PreferenceCategory) findPreference("androidautocategory");
-            PreferenceScreen oNotificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
-            oNotificationScreen.removePreference(oAndroidAutoCategory);
         }
 
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
@@ -616,7 +634,7 @@ public class Preference extends PreferenceFragment {
 
     private void pushGCMRegistrationIds() {
         final String UUID = DeviceUtils.getUniqueID(mContext);
-        final String senderId = AppController.getInstance().getGCMRegistrationId();
+        final String senderId = FirebaseInstanceId.getInstance().getToken();
         mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {

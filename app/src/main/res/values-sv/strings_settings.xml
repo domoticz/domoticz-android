@@ -33,7 +33,7 @@
   <string name="category_info">Information</string>
   <string name="category_advanced">Avancerat</string>
   <string name="category_language">Språk</string>
-  <string name="category_talk_back">Talk Back</string>
+  <string name="category_talk_back">Prata tillbaka</string>
   <string name="category_notification">Notifieringar</string>
   <string name="category_debug">Felsökning</string>
   <string name="category_export">Exportera/importera inställningar</string>
@@ -69,8 +69,8 @@
   <string name="wear_custom_on">Aktivera anpassade Android Wear-objekt</string>
   <string name="wear_custom_off">Inaktivera anpassade Android Wear-objekt</string>
   <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
+  <string name="auto_custom_on">Aktivera Android Auto meddelanden</string>
+  <string name="auto_custom_off">Inaktivera Android Auto meddelanden</string>
   <!--        Geofencing settings -->
   <string name="geofencing_configure">Konfigurera Geofencing</string>
   <!--        Theming settings -->
@@ -78,8 +78,8 @@
   <string name="set_dark_theme">Ändra till mörkt tema</string>
   <string name="set_light_theme">Ändra till ljust tema</string>
   <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Let Domoticz talk back to you</string>
-  <string name="set_talk_back_off">Turn talk back off</string>
+  <string name="set_talk_back_on">Låt Domoticz prata med dig</string>
+  <string name="set_talk_back_off">Inaktivera pratfunktionen</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Inställningarna importerade, vänligen starta om Domoticz</string>
   <string name="settings_import_failed">Det gick inte att importera inställningarna</string>
@@ -95,7 +95,7 @@
   <string name="enable_nfc">Aktivera NFC</string>
   <string name="enable_speech">Aktivera röstigenkänning</string>
   <string name="export_settings">Exportera inställningar</string>
-  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+  <string name="reset_settings">Återställ alla appinställningar (varning!)</string>
   <string name="import_settings">Importera inställningar</string>
   <string name="multi_server_settings">Aktivera stöd för flera servrar</string>
   <string name="nfc_enable_settings">Aktivera NFC-anslutningar</string>
@@ -104,26 +104,26 @@
   <string name="qrcode_settings">Ställ in QR-koder</string>
   <string name="enable_qrcode">Aktivera QR-koder</string>
   <string name="qrcode_enable_settings">Aktivera QR-kodsfunktionen</string>
-  <string name="security_settings">Setup Security</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
-  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+  <string name="security_settings">Konfigurera säkerhet</string>
+  <string name="enable_security">Aktivera fingeravtryckskydd vid start</string>
+  <string name="disable_security">Inaktivera fingeravtryck skydd vid start</string>
+  <string name="setup_fingerprints">Ställ in fingeravtryck via Android inställningarna</string>
+  <string name="fingerprint_not_supported">Fingeravtryckssäkerhet stöds inte av din enhet</string>
+  <string name="fingerprint_not_setup_in_android">Först måste du koppla in/konfigurera en fingeravtrycksläsare till enheten</string>
+  <string name="fingerprint_sure">Är du säker? Säkerhetslösenordet är samma som till ditt Domoticz konto.</string>
   <!--        Widgets     -->
   <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+  <string name="widget_description">Aktivera eller inaktivera Widgets på denna enhet</string>
+  <string name="widget_disabled">Widgets är inte aktiverade på den här enheten, kontrollera inställningarna i Domoticz</string>
+  <string name="widget_warning">Använd widgets på egen risk!! Widgets är för närvarande i Beta-stadiet och innehåller förmodligen lite buggar. Det kan orsaka stor data/batterianvändning...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud Messaging ID</string>
   <string name="notification_settings_push">Skicka ditt registrerings-id till Domoticz</string>
   <string name="notification_settings_pushed">Ditt registrerings-id är nu sparat i Domoticz</string>
   <string name="notification_settings_push_failed">Kunde inte spara ditt registrerings-id i Domoticz, försök igen senare.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
-  <string name="notification_show">Show last couple of Notifications</string>
+  <string name="notification_show_title">Senaste aviseringar</string>
+  <string name="notification_show_nothing">Inga aviseringar hittades</string>
+  <string name="notification_show">Visa några av de senaste aviseringarna</string>
   <!--        Notification settings      -->
   <string name="overwrite_notifications_title">Skriva över notifieringerna</string>
   <string name="overwrite_notifications">Skriva över tidigare notifieringar på den här enheten</string>
@@ -138,16 +138,16 @@
   <string name="suppress_notifications_select">Välj notifiering som ska hindras</string>
   <string name="suppress_notifications">Hindra särskilda notifieringar på den här enheten</string>
   <string name="suppress_notifications_title">Hindra notifieringar</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="clear_notifications">Clean notification logs</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
+  <string name="alarm_notifications_select">Välj aviseringar som skall larma</string>
+  <string name="alarm_notifications">Larma för specifika aviseringar</string>
+  <string name="clear_notifications">Rensa aviseringsloggar</string>
+  <string name="alarm_notifications_title">Larmaviseringar</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtimer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
-  <string name="default_values">Default values</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
-  <string name="default_values_max_error">Max value should be higher than Min value</string>
+  <string name="alarmtimer">Antal sekunder att larma</string>
+  <string name="default_values">Standardvärden</string>
+  <string name="default_values_min_error">Maxvärde bör vara högre än Min värde</string>
+  <string name="default_values_max_error">Maxvärde bör vara högre än Min värde</string>
   <!--        Information category       -->
   <string name="info_version">Version</string>
   <string name="info_domoticz_version">Domoticz-version</string>

@@ -68,7 +68,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.camera_row, parent, false);
+                .inflate(R.layout.camera_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.row_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -107,7 +107,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         com.android.volley.toolbox.NetworkImageView camera;
 
