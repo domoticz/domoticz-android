@@ -380,7 +380,9 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 .replace("kWh", "counter")
                 .replace("Gas", "counter")
                 .replace("Energy", "counter")
+                .replace("BWR102", "counter")
                 .replace("Voltcraft", "counter")
+                .replace("Sound Level", "counter")
                 .replace("SetPoint", "temp")
                 .replace("YouLess counter", "counter").contains("counter"))
             holder.weekButton.setVisibility(View.VISIBLE);
