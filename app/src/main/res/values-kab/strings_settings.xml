@@ -115,7 +115,7 @@
   <string name="category_widgets">Isfayluraren (BETA)</string>
   <string name="widget_description">Rmed neɣ Sens asfaylurar ɣef yibenl-agi</string>
   <string name="widget_disabled">Isfaylurarn ur rmiden ara ɣef yibenk-agi, senqed ma ulac aɣilif iɣewwaren n Domoticz</string>
-  <string name="widget_warning">Ma ulac aɣilif, aseqdec n isfayluraren d tamasit-ik!! Akka tura Isfayluraren llan deg uswir Beta, ihi zemren ad gebren kra n ibugen. Zemren ad d-glun s useqdec n sefka/aẓru s waṭas...</string>
+  <string name="widget_warning">Ma ulac aɣilif, aseqdec n isfayluraren d tamasit-ik!! Akka tura Isfayluraren llan deg uswir Beta, ihi zemren ad gebren kra n ibugen. Zemren ad d-glun s useqdec n sefka/aẓru s waṭas…</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID n tirawt n Google Cloud</string>
   <string name="notification_settings_push">Ssers amsulay n usekles ɣer domoticz</string>
@@ -163,7 +163,8 @@
   <!--        Server update category       -->
   <string name="title_activity_update">Update server</string>
   <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ:%1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac Domoticz:% 1 $ s"</string>
+  <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac Domoticz: %1$s"</string>
+  <string name="update_available_enhanced">Amucceḍ n uqeddac yella: %1$s ɣer lqem: %2$s</string>
   <string name="check_for_update_title">Selken amucceḍ</string>
   <string name="check_for_update">Tebɣam a neselken amucceḍ n unagraw Domoticz?</string>
   <string name="update_server_warning">Mara yemucceḍ uqeddac innek asnas agi ur iteddu yara akken iwata.</string>

@@ -3,8 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Bienvenue</string>
-  <string name="welcome_info_domoticz">Domoticz est un système d\'automatisation de la maison qui vous permet de contrôler et configurer de nombreux dispositifs tels que des lumières, interrupteurs, capteurs (température, humidité, vent, UV, …) et bien plus encore. Notifications et alertes peuvent aussi être envoyées sur mobile.</string>
-  <string name="welcome_info_swipe">Swipez vers la droite ou utilisez les boutons en bas de l\'écran pour continuer</string>
+  <string name="welcome_info_domoticz">Domoticz est un système de domotique qui vous permet de contrôler et configurer de nombreux dispositifs tels que des lumières, interrupteurs, capteurs (température, humidité, vent, UV, …) et bien plus encore. Notifications et alertes peuvent aussi être envoyées sur mobile.</string>
+  <string name="welcome_info_swipe">Glissez vers la droite, ou utilisez les boutons de navigation en bas pour continuer</string>
   <string name="welcome_info_settings1">La prochaine page est pour la configuration de Domoticz</string>
   <string name="welcome_info_settings2">
         \"Vous pouvez configurer des paramètres pour un serveur local et un serveur distant.\nLe serveur local est utilisé lorsque vous êtes connecté à votre wifi personnel.\nLe serveur distant est utilisé lorsque vous n\'êtes pas connecté à votre wifi personnel ou que vous êtes connecté à un réseau mobile (2G, 3G, 4G etc).\"</string>

@@ -52,6 +52,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
 import java.util.Collections;
@@ -633,7 +634,7 @@ public class Preference extends PreferenceFragment {
 
     private void pushGCMRegistrationIds() {
         final String UUID = DeviceUtils.getUniqueID(mContext);
-        final String senderId = AppController.getInstance().getGCMRegistrationId();
+        final String senderId = FirebaseInstanceId.getInstance().getToken();
         mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {

@@ -45,8 +45,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
-import eu.inloop.easygcm.EasyGcm;
-import eu.inloop.easygcm.GcmListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
@@ -58,8 +56,7 @@ import shortbread.Shortbread;
 
 import static android.text.TextUtils.isDigitsOnly;
 
-public class AppController extends MultiDexApplication implements GcmListener {
-
+public class AppController extends MultiDexApplication {
     public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
     int socketTimeout = 1000 * 5;               // 5 seconds
@@ -74,13 +71,7 @@ public class AppController extends MultiDexApplication implements GcmListener {
     public void onCreate() {
         super.onCreate();
         Shortbread.create(this);
-        if (PermissionsUtil.canAccessDeviceState(this))
-            StartEasyGCM();
         mInstance = this;
-    }
-
-    public void StartEasyGCM() {
-        EasyGcm.init(this);
     }
 
     @SuppressWarnings("TryWithIdenticalCatches")
@@ -148,115 +139,4 @@ public class AppController extends MultiDexApplication implements GcmListener {
         return mTracker;
     }
 
-    @Override
-    public void onMessage(String s, Bundle bundle) {
-        if (bundle.containsKey("message")) {
-            String message = decode(bundle.getString("message"));
-            String subject = decode(bundle.getString("subject"));
-            String body = decode(bundle.getString("body"));
-
-            int prio = 0; //default
-            String priority = decode(bundle.getString("priority"));
-            if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
-                prio = Integer.valueOf(priority);
-
-            if (subject != null && !body.equals(subject)) {
-                //String extradata = decode(bundle.getString("extradata"));
-                String deviceid = decode(bundle.getString("deviceid"));
-                if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
-                    NotificationUtil.sendSimpleNotification(subject, body, prio, this);
-                else
-                    NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
-            } else {
-                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
-            }
-        } else {
-            if (bundle.containsKey("notification")) {
-                Bundle notification = bundle.getBundle("notification");
-                if (notification.containsKey("message")) {
-                    String message = decode(notification.getString("message"));
-                    String subject = decode(notification.getString("subject"));
-                    String body = decode(notification.getString("body"));
-
-                    int prio = 0; //default
-                    String priority = decode(notification.getString("priority"));
-                    if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
-                        prio = Integer.valueOf(priority);
-
-                    if (subject != null && !body.equals(subject)) {
-                        //String extradata = decode(notification.getString("extradata"));
-                        String deviceid = decode(notification.getString("deviceid"));
-                        if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
-                            NotificationUtil.sendSimpleNotification(subject, body, prio, this);
-                        else
-                            NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
-                    } else {
-                        NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
-                    }
-                }
-            }
-        }
-    }
-
-    public void resendRegistrationIdToBackend() {
-        final String UUID = DeviceUtils.getUniqueID(this);
-        String sender_id = getGCMRegistrationId();
-        if (UsefulBits.isEmpty(sender_id) || UsefulBits.isEmpty(UUID))
-            return;
-
-        registerMobileForGCM(UUID, sender_id);
-    }
-
-    public String getGCMRegistrationId() {
-        return EasyGcm.getRegistrationId(this);
-    }
-
-    @Override
-    public void sendRegistrationIdToBackend(final String sender_id) {
-        final String UUID = DeviceUtils.getUniqueID(this);
-        if (UsefulBits.isEmpty(sender_id) || UsefulBits.isEmpty(UUID))
-            return;
-
-        final Domoticz mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
-            @Override
-            public void onSuccess() {
-                // Previous id cleaned
-                registerMobileForGCM(UUID, sender_id);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                // Nothing to clean
-                registerMobileForGCM(UUID, sender_id);
-            }
-        });
-    }
-
-    private void registerMobileForGCM(String UUID, String senderid) {
-        final Domoticz mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
-            @Override
-            public void onSuccess() {
-                Log.i("GCM", "Device registered on Domoticz");
-            }
-
-            @Override
-            public void onError(Exception error) {
-                if (error != null)
-                    Log.i("GCM", "Device not registered on Domoticz, " + error.getMessage());
-            }
-        });
-    }
-
-    private String decode(String str) {
-        if (str != null) {
-            try {
-                return URLDecoder.decode(str, "UTF-8");
-            } catch (Exception e) {
-                Log.i("GCM", "text not decoded: " + str);
-            }
-        }
-        return str;
-    }
 }

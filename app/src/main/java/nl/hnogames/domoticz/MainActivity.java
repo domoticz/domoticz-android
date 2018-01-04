@@ -62,6 +62,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -92,6 +93,7 @@ import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
+import nl.hnogames.domoticz.Utils.GCMUtils;
 import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -273,7 +275,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
                     WidgetUtils.RefreshWidgets(this);
                     UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-                    AppController.getInstance().resendRegistrationIdToBackend();
                     drawNavigationMenu(null);
 
                     UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
@@ -630,10 +631,23 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             if (!PermissionsUtil.canAccessDeviceState(this)) {
                 permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
             } else {
-                AppController.getInstance().StartEasyGCM();
+                try {
+                    String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+                    GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else {
-            AppController.getInstance().StartEasyGCM();
+
+            try {
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+                GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1521,8 +1535,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
 
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
-            if (PermissionsUtil.canAccessDeviceState(this))
-                AppController.getInstance().StartEasyGCM();
+            if (PermissionsUtil.canAccessDeviceState(this)){
+                setupMobileDevice();
+            }
         }
 
         if (builder.toString().contains("android.permission.CAMERA")) {

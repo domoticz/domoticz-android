@@ -113,9 +113,9 @@
   <string name="fingerprint_sure">Sei sicuro? La password di failover è la password del tuo account Domoticz.</string>
   <!--        Widgets     -->
   <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+  <string name="widget_description">Abilita o Disabilita Widget in questo dispositivo</string>
+  <string name="widget_disabled">I widget non sono abilitati in questo dispositivo, per favore controlla le impostazioni di Domoticz</string>
+  <string name="widget_warning">Usa i widget a tuo rischio!! I widget sono attualmente in fase Beta e possono contenere alcuni bug. possono causare un uso eccessivo di dati e batteria...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID di messaggistica Google Cloud</string>
   <string name="notification_settings_push">Invia il tuo ID di registrazione a Domoticz</string>

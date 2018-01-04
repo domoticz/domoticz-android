@@ -22,17 +22,17 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">选择设备</string>
-  <string name="choose_switch">选择设备</string>
-  <string name="failed_to_get_securitypanel">在你的开关中没有发现安全面板</string>
-  <string name="failed_to_get_switches">获取设备失败</string>
-  <string name="failed_toggle_switch">无法切换设备</string>
-  <string name="switch_toggled">"开关设备"</string>
-  <string name="text_loading">加载中...</string>
-  <string name="text_go">启动</string>
-  <string name="widget_background">背景</string>
-  <string name="widget_dark">暗色调</string>
-  <string name="widget_light">亮色调</string>
-  <string name="widget_transparent_dark">透明暗色调</string>
-  <string name="widget_transparent_light">透明亮色调</string>
+  <string name="pick_device_title">Pick a device</string>
+  <string name="choose_switch">Choose device</string>
+  <string name="failed_to_get_securitypanel">No security panel found under your switches</string>
+  <string name="failed_to_get_switches">Failed to get devices</string>
+  <string name="failed_toggle_switch">Failed to toggle device</string>
+  <string name="switch_toggled">"Switch device"</string>
+  <string name="text_loading">Loading...</string>
+  <string name="text_go">GO</string>
+  <string name="widget_background">Background</string>
+  <string name="widget_dark">Dark</string>
+  <string name="widget_light">Light</string>
+  <string name="widget_transparent_dark">Dark Transparent</string>
+  <string name="widget_transparent_light">Light Transparent</string>
 </resources>

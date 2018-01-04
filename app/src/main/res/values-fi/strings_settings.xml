@@ -30,10 +30,10 @@
   <string name="category_auto">Android Auto</string>
   <string name="category_server">Palvelin</string>
   <string name="category_geofencing">Geo-aidat</string>
-  <string name="category_info">Informaatio</string>
+  <string name="category_info">Lisätietoja</string>
   <string name="category_advanced">Lisäasetukset</string>
   <string name="category_language">Kieli</string>
-  <string name="category_talk_back">Takaisinpuhuminen</string>
+  <string name="category_talk_back">Talk Back</string>
   <string name="category_notification">Ilmoitukset</string>
   <string name="category_debug">Virheenkorjaus</string>
   <string name="category_export">Vie-/ tuo asetuksia</string>
@@ -79,7 +79,7 @@
   <string name="set_light_theme">Vaihda vaaleaan teemaan</string>
   <!--        Talk Back Settings   -->
   <string name="set_talk_back_on">Anna Domoticzin puhua sinulle takaisin</string>
-  <string name="set_talk_back_off">Kytke takaisinpuhuminen pois</string>
+  <string name="set_talk_back_off">Kytke Talk Back pois</string>
   <!--        Import/Export settings  -->
   <string name="settings_imported">Asetukset tuotu, käynnistä Domoticz uudelleen</string>
   <string name="settings_import_failed">Asetusten tuominen epäonnistui</string>
@@ -112,10 +112,10 @@
   <string name="fingerprint_not_setup_in_android">Määritä ensin sormenjäljet tähän laitteeseen</string>
   <string name="fingerprint_sure">Oletko varma? Varasalasana on Domoticz-tilisi salasana.</string>
   <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+  <string name="category_widgets">Widgetit (BETA)</string>
+  <string name="widget_description">Ota käyttöön tai poista käytöstä widgetit tässä laitteessa</string>
+  <string name="widget_disabled">Widgetit ei ole päällä tässä laitteessa, tarkista asetukset</string>
+  <string name="widget_warning">Widgettien käyttö omalla vastuulla! Widgetit ovat tällä hetkellä beta-vaiheessa ja ne todennäköisesti sisältävät bugeja. Bugit voivat aiheuttaa suurta datan / akun kulutusta...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">Google Cloud Messaging -tunnus</string>
   <string name="notification_settings_push">Lähetä rekisteröintitunnuksesi Domoticziin</string>
@@ -145,9 +145,9 @@
   <string name="alarm">Hälytykset</string>
   <string name="alarmtimer_title">Hälytysajastin</string>
   <string name="alarmtimer">Hälytyksen kesto sekunteina</string>
-  <string name="default_values">Oletusarvo</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
-  <string name="default_values_max_error">Max value should be higher than Min value</string>
+  <string name="default_values">Oletusarvot</string>
+  <string name="default_values_min_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
+  <string name="default_values_max_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
   <!--        Information category       -->
   <string name="info_version">Versio</string>
   <string name="info_domoticz_version">Domoticz versio</string>

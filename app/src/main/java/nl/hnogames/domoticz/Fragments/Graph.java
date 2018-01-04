@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticz.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.GraphActivity;
@@ -90,9 +93,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private Integer[] selectedFilters;
     private SharedPrefUtil mSharedPrefs;
 
-    private XAxis xAxis;
-    private YAxis yAxis;
-
     @Override
     public void onConnectionFailed() {
     }
@@ -119,15 +119,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             type = data.getString("TYPE");
             axisYLabel = data.getString("TITLE");
             steps = data.getInt("STEPS", 1);
-        } else {
-            finish();
         }
     }
 
-    public void finish() {
-        this.finish();
-    }
-
+    @SuppressLint("InflateParams")
     @Override
     @DebugLog
     public View onCreateView(LayoutInflater inflater,
@@ -135,18 +130,18 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_graph, null);
 
-        chart = (LineChart) root.findViewById(R.id.chart);
-        xAxis = chart.getXAxis();
-        yAxis = chart.getAxisLeft();
+        chart = root.findViewById(R.id.chart);
+        XAxis xAxis = chart.getXAxis();
+        YAxis yAxis = chart.getAxisLeft();
 
         if (mSharedPrefs.darkThemeEnabled()) {
             xAxis.setTextColor(Color.WHITE);
             yAxis.setTextColor(Color.WHITE);
             chart.getLegend().setTextColor(Color.WHITE);
-            chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+            //chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
             chart.setDrawGridBackground(true);
         } else {
-            chart.setBackgroundColor(Color.WHITE);
+            //chart.setBackgroundColor(Color.WHITE);
             chart.setDrawGridBackground(true);
         }
 
@@ -165,7 +160,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 public String getFormattedValue(float value, AxisBase axis) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis((long) value);
-                    return String.format("%02d", calendar.get(Calendar.HOUR)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+                    return String.format(Locale.getDefault(),"%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.getDefault(),"%02d", calendar.get(Calendar.MINUTE));
                 }
             });
         } else {
@@ -178,14 +173,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     //int mYear = calendar.get(Calendar.YEAR);
                     int mMonth = calendar.get(Calendar.MONTH) + 1;
                     int mDay = calendar.get(Calendar.DAY_OF_MONTH) + 1;
-                    int mHours = calendar.get(Calendar.HOUR);
+                    int mHours = calendar.get(Calendar.HOUR_OF_DAY);
                     int mMinutes = calendar.get(Calendar.MINUTE);
 
-                    String xValue = "";
+                    String xValue;
                     if (mHours <= 0 && mMinutes <= 0)
-                        xValue = String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                        xValue = String.format(Locale.getDefault(),"%02d", mHours) + ":" + String.format(Locale.getDefault(),"%02d", mMinutes);
                     else
-                        xValue = mDay + "/" + mMonth + " " + String.format("%02d", mHours) + ":" + String.format("%02d", mMinutes);
+                        xValue = mDay + "/" + mMonth + " " + String.format(Locale.getDefault(),"%02d", mHours) + ":" + String.format(Locale.getDefault(),"%02d", mMinutes);
                     return xValue;
                 }
             });
@@ -218,9 +213,8 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                         try {
                             mGraphList = grphPoints;
                             LineData columnData = generateData(root);
-                            if (columnData == null)
-                                finish();
-                            else {
+                            if (columnData != null)
+                            {
                                 chart.setData(columnData);
                                 chart.invalidate(); // refresh
 
@@ -236,6 +230,8 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                 });
                             }
                         } catch (Exception ex) {
+                            if(ex.getMessage() != null)
+                                Log.e(this.getClass().getSimpleName(), ex.getMessage());
                         }
                     }
 
@@ -271,7 +267,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     @SuppressWarnings("SpellCheckingInspection")
     private LineData generateData(View view) {
         try {
-            List<LineDataSet> entries = new ArrayList<LineDataSet>();
+            List<LineDataSet> entries = new ArrayList<>();
 
             List<Entry> valuest = new ArrayList<>();
             List<Entry> valuestMin = new ArrayList<>();
@@ -305,9 +301,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             List<Entry> valuesLuxmax = new ArrayList<>();
             List<Entry> valuesLuxAvg = new ArrayList<>();
 
-            ArrayList<String> axisValueX = new ArrayList<>();
-
-            int counter = 0;
             boolean addHumidity = false;
             boolean addBarometer = false;
             boolean addTemperature = false;
@@ -342,10 +335,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
                     try {
                         try {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                             mydate.setTime(sdf.parse(g.getDateTime()));
                         } catch (ParseException e) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                             mydate.setTime(sdf.parse(g.getDateTime()));
                         }
 
@@ -472,7 +465,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             addLuxAvg = true;
                             valuesLuxAvg.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getLuxAvg())));
                         }
-                        counter++;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -834,9 +826,8 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 }
             }
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            for (LineDataSet s : entries)
-                dataSets.add(s);
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.addAll(entries);
 
             LineData lineChartData = new LineData(dataSets);
             lineChartData.setHighlightEnabled(true);
@@ -894,14 +885,12 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                                         filterLabels.add((String) c);
 
                                     LineData columnData = generateData(root);
-                                    if (columnData == null)
-                                        finish();
-                                    else {
+                                    if (columnData != null)
+                                    {
                                         chart.setData(columnData);
                                         chart.invalidate(); // refresh
                                         chart.setVisibility(View.VISIBLE);
                                         chart.animateX(1000);
-
                                         if (getActivity() != null)
                                             getActivity().invalidateOptionsMenu();
                                     }

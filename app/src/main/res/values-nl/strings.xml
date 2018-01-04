@@ -51,7 +51,7 @@
   <string name="temperature">Temperatuur</string>
   <string name="status">Status</string>
   <string name="set_point">Gewenste waarde</string>
-  <string name="set_point_min">Instel minimale waarde in</string>
+  <string name="set_point_min">Instel minimumwaarde in</string>
   <string name="set_point_min_description">Minimale temperatuur die u voor uw thermostaat kunt instellen</string>
   <string name="set_point_max">Instel maximale waarde in</string>
   <string name="set_point_max_description">Maximale temperatuur die u voor uw thermostaat kunt instellen</string>

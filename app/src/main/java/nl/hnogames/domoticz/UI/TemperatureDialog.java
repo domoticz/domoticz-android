@@ -120,7 +120,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         temperatureControl.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
-            public void onProgressChanged(SeekArc seekArc, int progress, boolean byUser) {
+            public void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser) {
                 double temp = progressToTemp(progress);
                 temperatureText.setText(String.valueOf(temp));
                 currentTemperature = temp;
@@ -134,6 +134,11 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             @Override
             public void onStopTrackingTouch(SeekArc seekArc) {
                 temperatureText.setText(String.valueOf(progressToTemp(seekArc.getProgress())));
+            }
+
+            @Override
+            public boolean onTrackingLeap(SeekArc seekArc, boolean isRising) {
+                return false;
             }
         });
 

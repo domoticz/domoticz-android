@@ -23,23 +23,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="premium_category">Aɣ premium</string>
-  <string name="premium_title">Ḥelid lqem premium!</string>
+  <string name="premium_title">Awi lqem premium!</string>
   <string name="premium_feature">d tamahilt premium, Aɣ lqem unṣib akken ad tmuddeḍ afus i yineflayen!</string>
   <string name="drawer_open">Ldi leqjeṛ n iminig</string>
   <string name="drawer_close">Mdel leqjeṛ n iminig</string>
   <string name="msg_please_wait">Tixilek rǧu&#8230;</string>
-  <string name="changelog">Beddel aseɣẓan</string>
+  <string name="changelog">Amaynut</string>
   <string name="button_state_on">Irmed</string>
   <string name="button_state_off">Insa</string>
   <string name="button_state_closed">Imdel</string>
-  <string name="button_state_open">ldi</string>
+  <string name="button_state_open">Ldi</string>
   <string name="button_status_log">Aɣmis</string>
   <string name="button_status_day">Ass</string>
   <string name="button_status_week">Amalas</string>
-  <string name="button_status_month">Ayyur</string>
+  <string name="button_status_month">Aggur</string>
   <string name="button_status_year">Aseggas</string>
-  <string name="button_status_timer">Tamsdat</string>
-  <string name="button_status_notifications">Asmaru</string>
+  <string name="button_status_timer">Aɣawas</string>
+  <string name="button_status_notifications">Ilɣa</string>
   <string name="button_color">Ini</string>
   <string name="button_arm">Ḥarj</string>
   <string name="button_disarm">Senqer</string>
