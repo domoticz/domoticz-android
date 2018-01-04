@@ -168,8 +168,11 @@ public class DomoticzIcons {
                 return R.drawable.defaultimage;
             case "utility":
                 return R.drawable.scale;
+            case "scale":
+                return R.drawable.scale;
+            case "lux":
+                return R.drawable.uvsunny;
         }
-
         switch (Type.toLowerCase()) {
             case "heating":
                 return R.drawable.heating;
