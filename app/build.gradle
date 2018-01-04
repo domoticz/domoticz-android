@@ -8,15 +8,14 @@ android {
     def versionPropsFile = file('version.properties')
 
     if (versionPropsFile.canRead()) {
-        Properties versionProps = new Properties()
-
+        def Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionPropsFile))
         def value = 0
         def runTasks = gradle.startParameter.taskNames
 
         println "****************************"
         println "runTasks: ${gradle.startParameter.taskNames}"
-        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks) {
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks) {
             value = 1
             println "Build Version: +1"
         }
