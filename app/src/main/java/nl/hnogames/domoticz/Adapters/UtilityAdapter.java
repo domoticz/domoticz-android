@@ -125,7 +125,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 setButtons(holder, Buttons.THERMOSTAT);
                 CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
             } else {
-                if (DomoticzValues.Device.Utility.SubType.TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
+                if (DomoticzValues.Device.Utility.SubType.TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType()) || DomoticzValues.Device.Utility.SubType.ALERT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
                     CreateTextRow(holder, mUtilitiesInfo);
                     setButtons(holder, Buttons.TEXT);
                 } else {
@@ -155,7 +155,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
         holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
-
         if (mUtilitiesInfo.getUsage() != null && mUtilitiesInfo.getUsage().length() > 0)
             holder.data.setText(context.getString(R.string.usage) + ": " + mUtilitiesInfo.getUsage());
 
@@ -179,8 +178,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
-        if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
-                !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+        if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 && !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
         if (mSharedPrefs.darkThemeEnabled()) {
             holder.buttonLog.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
@@ -380,9 +378,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 .replace("kWh", "counter")
                 .replace("Gas", "counter")
                 .replace("Energy", "counter")
-                .replace("BWR102", "counter")
                 .replace("Voltcraft", "counter")
-                .replace("Sound Level", "counter")
                 .replace("SetPoint", "temp")
                 .replace("YouLess counter", "counter").contains("counter"))
             holder.weekButton.setVisibility(View.VISIBLE);

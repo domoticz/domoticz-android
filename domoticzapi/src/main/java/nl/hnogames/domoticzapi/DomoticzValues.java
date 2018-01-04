@@ -98,6 +98,7 @@ public class DomoticzValues {
 
             interface SubType {
                 String TEXT = "Text";
+                String ALERT = "Alert";
                 String PERCENTAGE = "Percentage";
                 String ENERGY = "Energy";
                 String KWH = "kWh";

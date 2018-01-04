@@ -288,6 +288,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             .replace("Voltage", "counter")
             .replace("SetPoint", "temp")
             .replace("Lux", "counter")
+            .replace("BWR102", "counter")
+            .replace("Sound Level", "counter")
             .replace("Pressure", "counter")
             .replace("YouLess counter", "counter");
 
