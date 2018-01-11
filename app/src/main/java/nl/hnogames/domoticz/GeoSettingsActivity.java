@@ -208,6 +208,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                             adapter.notifyDataSetChanged();
                         }
                     }
+                }  
                 else {   
                     mSharedPrefs.updateLocation(selectedLocation);
                     adapter.data = mSharedPrefs.getLocations();
