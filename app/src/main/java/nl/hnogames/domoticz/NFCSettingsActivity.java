@@ -302,9 +302,10 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                         else
                             updateNFC(nfcInfo);
                     }
-                 else {
-                     updateNFC(nfcInfo);
-                 }
+                }
+                else {
+                    updateNFC(nfcInfo);
+                }
             }
         });
 
