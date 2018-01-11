@@ -198,14 +198,21 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                 selectedLocation.setSwitchName(selectedSwitchName);
                 selectedLocation.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : supportedSwitches) {
-                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                        showSelectorDialog(selectedLocation, s);
-                    else {
-                        mSharedPrefs.updateLocation(selectedLocation);
-                        adapter.data = mSharedPrefs.getLocations();
-                        adapter.notifyDataSetChanged();
+                if (!isSceneOrGroup) {
+                    for (DevicesInfo s : supportedSwitches) {
+                        if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                            showSelectorDialog(selectedLocation, s);
+                        else {
+                            mSharedPrefs.updateLocation(selectedLocation);
+                            adapter.data = mSharedPrefs.getLocations();
+                            adapter.notifyDataSetChanged();
+                        }
                     }
+                }  
+                else {   
+                    mSharedPrefs.updateLocation(selectedLocation);
+                    adapter.data = mSharedPrefs.getLocations();
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
