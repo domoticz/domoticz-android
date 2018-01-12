@@ -202,13 +202,17 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                 SpeechInfo.setSwitchName(selectedSwitchName);
                 SpeechInfo.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : supportedSwitches) {
-                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                        showSelectorDialog(SpeechInfo, s);
-                    else
-                        updateSpeech(SpeechInfo);
+                if (!isSceneOrGroup) {
+                    for (DevicesInfo s : supportedSwitches) {
+                        if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                            showSelectorDialog(SpeechInfo, s);
+                        else
+                            updateSpeech(SpeechInfo);
+                    }
                 }
-
+                else {
+                    updateSpeech(SpeechInfo);
+                }
             }
         });
         infoDialog.show();
