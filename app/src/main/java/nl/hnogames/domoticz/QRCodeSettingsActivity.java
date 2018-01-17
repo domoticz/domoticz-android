@@ -192,12 +192,17 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
                 qrcodeInfo.setSwitchName(selectedSwitchName);
                 qrcodeInfo.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : supportedSwitches) {
-                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                        showSelectorDialog(qrcodeInfo, s);
-                    else
-                        updateQRCode(qrcodeInfo);
+                if (!isSceneOrGroup) {
+                    for (DevicesInfo s : supportedSwitches) {
+                        if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                            showSelectorDialog(qrcodeInfo, s);
+                        else
+                            updateQRCode(qrcodeInfo);
 
+                    }
+                }
+                else {
+                    updateQRCode(qrcodeInfo);
                 }
             }
         });

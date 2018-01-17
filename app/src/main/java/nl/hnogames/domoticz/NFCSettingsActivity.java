@@ -295,11 +295,16 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
                 nfcInfo.setSwitchName(selectedSwitchName);
                 nfcInfo.setSceneOrGroup(isSceneOrGroup);
 
-                for (DevicesInfo s : supportedSwitches) {
-                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                        showSelectorDialog(nfcInfo, s);
-                    else
-                        updateNFC(nfcInfo);
+                if (!isSceneOrGroup) {
+                    for (DevicesInfo s : supportedSwitches) {
+                        if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                            showSelectorDialog(nfcInfo, s);
+                        else
+                            updateNFC(nfcInfo);
+                    }
+                }
+                else {
+                    updateNFC(nfcInfo);
                 }
             }
         });
