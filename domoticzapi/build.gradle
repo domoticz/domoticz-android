@@ -36,9 +36,8 @@ android {
         println "****************************"
         println "runTasks: ${gradle.startParameter.taskNames}"
 
-        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks) {
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks) {
             value = 1;
-
             println "Build Version: +1"
         }
         println "****************************"
@@ -81,7 +80,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.android.support:appcompat-v7:25.3.1'
-
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.volley:volley:1.0.0'
 }
