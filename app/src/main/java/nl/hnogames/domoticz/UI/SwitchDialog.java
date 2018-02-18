@@ -91,6 +91,10 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                if (info.get(position).isSceneOrGroup()) {
+                    if (dismissListener != null)
+                        dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
+                } else
                 mDomoticz.getStatus(info.get(position).getIdx(), new StatusReceiver() {
                     @Override
                     public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
