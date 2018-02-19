@@ -56,6 +56,9 @@
   <string name="always_on_title">Tillåt ej viloläge</string>
   <string name="always_on_on">Lås skärmen till alltid på</string>
   <string name="always_on_off">Lås inte skärmen till alltid på</string>
+  <string name="always_auto_refresh">Auto Refresh</string>
+  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
   <string name="switch_buttons_title">Brytare</string>
   <string name="switch_buttons_on">Visa brytare med strömbrytare</string>
   <string name="switch_buttons_off">Visa brytare med knappbrytare</string>

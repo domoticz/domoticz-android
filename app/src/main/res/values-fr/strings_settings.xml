@@ -56,6 +56,9 @@
   <string name="always_on_title">Empêcher le réveil</string>
   <string name="always_on_on">Toujours verrouiller l\'écran</string>
   <string name="always_on_off">Ne jamais verrouiller l\'écran</string>
+  <string name="always_auto_refresh">Auto Refresh</string>
+  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
   <string name="switch_buttons_title">Interrupteurs</string>
   <string name="switch_buttons_on">Afficher les interrupteurs avec les interrupteurs On / Off</string>
   <string name="switch_buttons_off">Afficher les interrupteurs avec les boutons On / Off</string>

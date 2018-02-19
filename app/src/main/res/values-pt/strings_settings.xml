@@ -56,6 +56,9 @@
   <string name="always_on_title">Bloqueio de Ecrã</string>
   <string name="always_on_on">Suspensão de ecrã desativada</string>
   <string name="always_on_off">Suspensão de ecrã ativada</string>
+  <string name="always_auto_refresh">Auto Refresh</string>
+  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
   <string name="switch_buttons_title">Interruptor</string>
   <string name="switch_buttons_on">Mostrar interruptor com Botão alternado ligar/desligar</string>
   <string name="switch_buttons_off">Mostrar interruptores com botões de ligar/desligar</string>
@@ -113,9 +116,9 @@
   <string name="fingerprint_sure">Tem certeza? A failover de senha é a senha da conta do Domoticz.</string>
   <!--        Widgets     -->
   <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+  <string name="widget_description">Habilitar ou desabilitar o Widget neste dispositivo</string>
+  <string name="widget_disabled">Widgets não estão habilitados neste dispositivo, verifique as configurações do Domoticz</string>
+  <string name="widget_warning">Por favor, use widgets por sua conta e risco!!!! Widgets estão atualmente em fase Beta e provavelmente contêm certos erros. Isso pode consumir grandes dados / uso da bateria...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID de mensagens do Google Cloud</string>
   <string name="notification_settings_push">Coloque o seu id de registo no Domoticz</string>
@@ -140,13 +143,13 @@
   <string name="suppress_notifications_title">Suprimir as notificações</string>
   <string name="alarm_notifications_select">Selecione as notificações para alarme</string>
   <string name="alarm_notifications">Soar um alarme para notificações específicas</string>
-  <string name="clear_notifications">Clean notification logs</string>
+  <string name="clear_notifications">Logs de notificação limpos</string>
   <string name="alarm_notifications_title">Notificações de alarme</string>
   <string name="alarm">Alarme</string>
   <string name="alarmtimer_title">Temporizador de alarme</string>
   <string name="alarmtimer">Número de segundos até a hora do alarme</string>
-  <string name="default_values">Default values</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
+  <string name="default_values">Valores padrão</string>
+  <string name="default_values_min_error">O valor maximo deve ser maior que o minimo</string>
   <string name="default_values_max_error">Max value should be higher than Min value</string>
   <!--        Information category       -->
   <string name="info_version">Versão</string>
