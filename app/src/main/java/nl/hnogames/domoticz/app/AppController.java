@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
@@ -36,7 +35,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
-import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -46,15 +44,7 @@ import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.DeviceUtils;
-import nl.hnogames.domoticz.Utils.NotificationUtil;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import shortbread.Shortbread;
-
-import static android.text.TextUtils.isDigitsOnly;
 
 public class AppController extends MultiDexApplication {
     public static final String TAG = AppController.class.getSimpleName();
@@ -86,7 +76,7 @@ public class AppController extends MultiDexApplication {
 
                 HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 HttpsURLConnection.setDefaultHostnameVerifier(
-                        mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+                    mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -113,8 +103,8 @@ public class AppController extends MultiDexApplication {
         req.setTag(TAG);
 
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         req.setRetryPolicy(retryPolicy);
         getRequestQueue().add(req);
