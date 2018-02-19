@@ -284,8 +284,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
                             if (!fromShortcut) addFragment();
-                            setupAutoRefresh();
-
+                            //setupAutoRefresh();
                         }
 
                         @Override
@@ -1389,10 +1388,12 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     @DebugLog
     public void onResume() {
         super.onResume();
+
         setScreenAlwaysOn();
         if (listeningSpeechRecognition) {
             startRecognition();
         }
+        setupAutoRefresh();
     }
 
     @Override
@@ -1416,10 +1417,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (listeningSpeechRecognition) {
             stopRecognition();
         }
+
         if (oTalkBackUtil != null) {
             oTalkBackUtil.Stop();
             oTalkBackUtil = null;
         }
+
+        stopAutoRefreshTimer();
         super.onPause();
     }
 
