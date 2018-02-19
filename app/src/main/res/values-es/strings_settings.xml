@@ -56,6 +56,9 @@
   <string name="always_on_title">Mantener activo</string>
   <string name="always_on_on">Bloquear la pantalla siempre Encendido</string>
   <string name="always_on_off">No bloquear la pantalla siempre Encendido</string>
+  <string name="always_auto_refresh">Auto Refresh</string>
+  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
   <string name="switch_buttons_title">Interruptores</string>
   <string name="switch_buttons_on">Mostrar los interruptores con interruptor encendido/apagado</string>
   <string name="switch_buttons_off">Mostrar los interruptores con botones de encendido/apagado</string>

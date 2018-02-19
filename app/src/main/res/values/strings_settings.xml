@@ -59,6 +59,9 @@
     <string name="always_on_title">Wake Lock</string>
     <string name="always_on_on">Lock the screen always On</string>
     <string name="always_on_off">Don\'t lock the screen to always On</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
     <string name="switch_buttons_title">Switches</string>
     <string name="switch_buttons_on">Show switches with on/off switch</string>
     <string name="switch_buttons_off">Show switches with on/off buttons</string>

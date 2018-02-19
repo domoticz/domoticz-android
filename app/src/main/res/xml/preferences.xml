@@ -74,6 +74,12 @@
             android:summaryOff="@string/always_on_off"
             android:summaryOn="@string/always_on_on"
             android:title="@string/always_on_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="autorefresh"
+            android:summaryOff="@string/always_auto_refresh_off"
+            android:summaryOn="@string/always_auto_refresh_on"
+            android:title="@string/always_auto_refresh" />
     </PreferenceCategory>
 
     <PreferenceScreen android:title="@string/default_values"

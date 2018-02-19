@@ -52,7 +52,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
         super(context);
 
         simple_adapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item);
+            android.R.layout.simple_spinner_item);
         super.setAdapter(simple_adapter);
     }
 
@@ -69,7 +69,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
         this.mContext = context;
 
         simple_adapter = new ArrayAdapter<>(context,
-                android.R.layout.simple_spinner_item);
+            android.R.layout.simple_spinner_item);
         super.setAdapter(simple_adapter);
     }
 
@@ -81,7 +81,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
             simple_adapter.add(buildSelectedItemString());
         } else {
             throw new IllegalArgumentException(
-                    "Argument 'which' is out of bounds.");
+                "Argument 'which' is out of bounds.");
         }
     }
 
@@ -97,7 +97,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
     @Override
     public void setAdapter(SpinnerAdapter adapter) {
         throw new RuntimeException(
-                "setAdapter is not supported by MultiSelectSpinner.");
+            "setAdapter is not supported by MultiSelectSpinner.");
     }
 
     @SuppressWarnings("unused")
@@ -162,7 +162,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
             mSelection[index] = true;
         } else {
             throw new IllegalArgumentException("Index " + index
-                    + " is out of bounds.");
+                + " is out of bounds.");
         }
         simple_adapter.clear();
         simple_adapter.add(buildSelectedItemString());
@@ -178,7 +178,7 @@ public class MultiSelectionSpinner extends Spinner implements OnMultiChoiceClick
                 mSelection[index] = true;
             } else {
                 throw new IllegalArgumentException("Index " + index
-                        + " is out of bounds.");
+                    + " is out of bounds.");
             }
         }
         simple_adapter.clear();

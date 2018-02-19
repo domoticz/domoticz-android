@@ -3,9 +3,9 @@
 <resources>
   <string name="nfc_not_supported">Цей пристрій не підтримує NFC </string>
   <string name="nfc_register">Зареєструвати NFC тег</string>
-  <string name="nfc_tag_found">New NFC Tag found</string>
-  <string name="nfc_tag_edit">Edit NFC Tag</string>
-  <string name="nfc_tag_name">Give this NFC a proper name. </string>
+  <string name="nfc_tag_found">Знайдено новий тег NFC</string>
+  <string name="nfc_tag_edit">Редагувати NFC тег</string>
+  <string name="nfc_tag_name">Дати назву NFC </string>
   <string name="nfc_exists">NFC тег вже зареєстрований. </string>
   <string name="nfc_saved">Зберегти нову позначку NFC. </string>
   <string name="nfc">NFC</string>

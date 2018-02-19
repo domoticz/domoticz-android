@@ -22,12 +22,12 @@
   -->
 <resources>
   <string name="title_security_panel">Security Panel</string>
-  <string name="security_pin">Pin code</string>
-  <string name="security_disarm">Disarm</string>
-  <string name="security_arm_home">Arm home</string>
-  <string name="security_arm_away">Arm away</string>
-  <string name="security_wrong_code">Wrong code entered!</string>
-  <string name="security_generic_error">Could not change security status</string>
-  <string name="security_wrong_password_fingerprint">Wrong password entered, your domoticz account password is the failover for your fingerprint...!</string>
-  <string name="show_password">Show password</string>
+  <string name="security_pin">Pin Koda</string>
+  <string name="security_disarm">Izklop</string>
+  <string name="security_arm_home">Vklop prisoten</string>
+  <string name="security_arm_away">Vklop Odsoten</string>
+  <string name="security_wrong_code">Napačna koda!</string>
+  <string name="security_generic_error">Ne morem spremeniti stanja zaščite</string>
+  <string name="security_wrong_password_fingerprint">Vnesli ste napačno geslo, vaše domoticz geslo je nadomestno geslo, pri nedelovanju prstnega odtisa...!</string>
+  <string name="show_password">Pokaži geslo</string>
 </resources>
