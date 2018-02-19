@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
     private Timer cameraRefreshTimer = null;
+    private Timer autoRefreshTimer = null;
     private Fragment latestFragment = null;
     private Drawer drawer;
     private SpeechRecognizer speechRecognizer;
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         } else {
             if (mSharedPrefs.isStartupSecurityEnabled()) {
                 Digitus.init(this,
-                    getString(R.string.app_name),
+                    getString(R.string.app_name_domoticz),
                     69,
                     this);
             } else {
@@ -283,13 +284,16 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         public void onReceiveConfig(ConfigInfo settings) {
                             drawNavigationMenu(settings);
                             if (!fromShortcut) addFragment();
+                            setupAutoRefresh();
+
                         }
 
                         @Override
                         @DebugLog
                         public void onError(Exception error) {
                             //drawNavigationMenu(null);
-                            if (!fromShortcut) addFragment();
+                            if (!fromShortcut)
+                                addFragment();
                         }
                     }, mServerUtil.getActiveServer().getConfigInfo(this));
                 } else {
@@ -616,6 +620,25 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             mTracker.setScreenName(screen);
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         } catch (Exception ignored) {
+        }
+    }
+
+    private void setupAutoRefresh() {
+        if (mSharedPrefs.getAutoRefresh() && autoRefreshTimer == null) {
+            autoRefreshTimer = new Timer("autorefresh", true);
+            autoRefreshTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                @DebugLog
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        @DebugLog
+                        public void run() {
+                            refreshFragment();
+                        }
+                    });
+                }
+            }, 0, 5000);//schedule in 5 seconds
         }
     }
 
@@ -1354,6 +1377,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
     }
 
+    private void stopAutoRefreshTimer() {
+        if (autoRefreshTimer != null) {
+            autoRefreshTimer.cancel();
+            autoRefreshTimer.purge();
+            autoRefreshTimer = null;
+        }
+    }
+
     @Override
     @DebugLog
     public void onResume() {
@@ -1373,6 +1404,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
 
         stopCameraTimer();
+        stopAutoRefreshTimer();
+
         Digitus.deinit();
         super.onDestroy();
     }

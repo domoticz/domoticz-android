@@ -176,6 +176,7 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference EnableTalkBackPreference = (android.preference.SwitchPreference) findPreference("talkBack");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+        @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference RefreshScreenPreference = (android.preference.SwitchPreference) findPreference("autorefresh");
         @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
@@ -511,6 +512,17 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.always_on_title));
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        RefreshScreenPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.always_auto_refresh));
                     return false;
                 }
                 return true;

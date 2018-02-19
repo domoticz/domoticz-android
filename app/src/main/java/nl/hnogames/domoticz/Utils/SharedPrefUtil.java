@@ -71,6 +71,7 @@ public class SharedPrefUtil {
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
+    private static final String PREF_AUTO_REFRESH = "autorefresh";
     private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     private static final String PREF_NOTIFICATION_SOUND = "notification_sound";
     private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
@@ -186,6 +187,8 @@ public class SharedPrefUtil {
     public boolean getAlwaysOn() {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
     }
+
+    public boolean getAutoRefresh() { return prefs.getBoolean(PREF_AUTO_REFRESH, false); }
 
     public int getAlarmTimer() {
         try {
