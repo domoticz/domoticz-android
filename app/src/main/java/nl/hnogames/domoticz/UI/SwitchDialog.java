@@ -91,38 +91,27 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                if (info.get(position).isSceneOrGroup()) {
-                    if (dismissListener != null)
-                        dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
-                } else
-                mDomoticz.getStatus(info.get(position).getIdx(), new StatusReceiver() {
+            if (!info.get(position).isProtected()) {
+                if (dismissListener != null)
+                    dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
+            }
+            else {
+                PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
+                passwordDialog.show();
+                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                     @Override
-                    public void onReceiveStatus(ExtendedStatusInfo extendedStatusInfo) {
-                        if (!extendedStatusInfo.isProtected()) {
-                            if (dismissListener != null)
-                                dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
-                        } else {
-                            PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
-                            passwordDialog.show();
-                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                @Override
-                                public void onDismiss(String password) {
-                                    dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName(), info.get(position).isSceneOrGroup());
-                                }
-
-                                @Override
-                                public void onCancel() {
-                                }
-                            });
-                        }
+                    public void onDismiss(String password) {
+                        if (dismissListener != null)
+                            dismissListener.onDismiss(info.get(position).getIdx(), password, info.get(position).getName(), info.get(position).isSceneOrGroup());
                     }
 
                     @Override
-                    public void onError(Exception error) {
+                    public void onCancel() {
                     }
                 });
-
-                md.dismiss();
+            }
+            
+            md.dismiss();
             }
         });
 
