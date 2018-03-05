@@ -128,7 +128,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
-    def supportVersion = '27.0.2'
+    def supportVersion = '27.1.0'
     def playServicesVersion = '11.8.0'
 
     compile "com.android.support:support-v4:$supportVersion"

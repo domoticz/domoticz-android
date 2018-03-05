@@ -5,6 +5,10 @@ buildscript {
         maven { url "https://jitpack.io" };
         mavenCentral();
         jcenter()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     //noinspection GroovyAssignabilityCheck
     dependencies {
@@ -17,5 +21,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
