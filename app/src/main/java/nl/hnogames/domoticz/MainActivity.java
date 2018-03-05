@@ -655,7 +655,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             } else {
                 try {
                     String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                    Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+                    Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
                     GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
             try {
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+                Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
                 GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
             } catch (Exception e) {
                 e.printStackTrace();
