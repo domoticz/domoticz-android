@@ -56,6 +56,9 @@
   <string name="always_on_title">Scherm aanhouden</string>
   <string name="always_on_on">Houd het scherm altijd aan</string>
   <string name="always_on_off">Scherm gaat automatisch uit volgens systeem instelling</string>
+  <string name="always_auto_refresh">Automatisch verversen</string>
+  <string name="always_auto_refresh_on">Ververs de status van alle apparaten elke 5 seconden</string>
+  <string name="always_auto_refresh_off">Ververs de status van alle apparaten niet automatisch</string>
   <string name="switch_buttons_title">Schakelaar weergave</string>
   <string name="switch_buttons_on">Aan/uit knoppen weergeven</string>
   <string name="switch_buttons_off">Aan/uit schakelaar weergeven</string>

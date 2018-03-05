@@ -39,7 +39,6 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceFragment;
 import android.provider.Settings;
-import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
@@ -177,6 +176,7 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference EnableTalkBackPreference = (android.preference.SwitchPreference) findPreference("talkBack");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
+        @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference RefreshScreenPreference = (android.preference.SwitchPreference) findPreference("autorefresh");
         @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");
         android.preference.PreferenceCategory premiumCategory = (android.preference.PreferenceCategory) findPreference("premium_category");
         android.preference.Preference premiumPreference = findPreference("premium_settings");
@@ -191,8 +191,7 @@ public class Preference extends PreferenceFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             android.preference.PreferenceCategory notificationSound = (android.preference.PreferenceCategory) findPreference("notificationSound");
             notificationScreen.removePreference(notificationSound);
-        }
-        else{
+        } else {
             notificationScreen.removePreference(noticiationSettings);
         }
 
@@ -471,24 +470,24 @@ public class Preference extends PreferenceFragment {
                 } else {
                     if ((boolean) newValue) {
                         new MaterialDialog.Builder(mContext)
-                                .title(R.string.wizard_widgets)
-                                .content(R.string.widget_warning)
-                                .positiveText(R.string.ok)
-                                .negativeText(R.string.cancel)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        mSharedPrefs.SetWidgetsEnabled(true);
-                                        ((SettingsActivity) getActivity()).reloadSettings();
-                                    }
-                                })
-                                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        mSharedPrefs.SetWidgetsEnabled(false);
-                                    }
-                                })
-                                .show();
+                            .title(R.string.wizard_widgets)
+                            .content(R.string.widget_warning)
+                            .positiveText(R.string.ok)
+                            .negativeText(R.string.cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    mSharedPrefs.SetWidgetsEnabled(true);
+                                    ((SettingsActivity) getActivity()).reloadSettings();
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    mSharedPrefs.SetWidgetsEnabled(false);
+                                }
+                            })
+                            .show();
                         return false;
                     } else {
                         return true;
@@ -519,6 +518,17 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        RefreshScreenPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.always_auto_refresh));
+                    return false;
+                }
+                return true;
+            }
+        });
+
         NotificationLogged.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -527,9 +537,9 @@ public class Preference extends PreferenceFragment {
                 if (logs != null && logs.size() > 0) {
                     Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
-                            .title(mContext.getString(R.string.notification_show_title))
-                            .items((CharSequence[]) logs.toArray(new String[0]))
-                            .show();
+                        .title(mContext.getString(R.string.notification_show_title))
+                        .items((CharSequence[]) logs.toArray(new String[0]))
+                        .show();
                 } else
                     UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
                 return true;
@@ -560,19 +570,19 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     new MaterialDialog.Builder(mContext)
-                            .title(R.string.category_Reset)
-                            .content(R.string.are_you_sure_clear_settings)
-                            .positiveText(R.string.ok)
-                            .negativeText(R.string.cancel)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @SuppressLint("NewApi")
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
-                                            .clearApplicationUserData();
-                                }
-                            })
-                            .show();
+                        .title(R.string.category_Reset)
+                        .content(R.string.are_you_sure_clear_settings)
+                        .positiveText(R.string.ok)
+                        .negativeText(R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @SuppressLint("NewApi")
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
+                                    .clearApplicationUserData();
+                            }
+                        })
+                        .show();
                 } else {
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                 }
@@ -609,18 +619,18 @@ public class Preference extends PreferenceFragment {
                                 return false;
                             } else {
                                 new MaterialDialog.Builder(mContext)
-                                        .title(R.string.category_startup_security)
-                                        .content(R.string.fingerprint_sure)
-                                        .positiveText(R.string.ok)
-                                        .negativeText(R.string.cancel)
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                mSharedPrefs.setStartupSecurityEnabled(true);
-                                                ((SettingsActivity) getActivity()).reloadSettings();
-                                            }
-                                        })
-                                        .show();
+                                    .title(R.string.category_startup_security)
+                                    .content(R.string.fingerprint_sure)
+                                    .positiveText(R.string.ok)
+                                    .negativeText(R.string.cancel)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            mSharedPrefs.setStartupSecurityEnabled(true);
+                                            ((SettingsActivity) getActivity()).reloadSettings();
+                                        }
+                                    })
+                                    .show();
 
                                 return false;
                             }
@@ -676,20 +686,20 @@ public class Preference extends PreferenceFragment {
 
     private void showRestartMessage() {
         new MaterialDialog.Builder(mContext)
-                .title(R.string.restart_required_title)
-                .content(mContext.getString(R.string.restart_required_msg)
-                        + UsefulBits.newLine()
-                        + UsefulBits.newLine()
-                        + mContext.getString(R.string.restart_now))
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        UsefulBits.restartApplication(getActivity());
-                    }
-                })
-                .show();
+            .title(R.string.restart_required_title)
+            .content(mContext.getString(R.string.restart_required_msg)
+                + UsefulBits.newLine()
+                + UsefulBits.newLine()
+                + mContext.getString(R.string.restart_now))
+            .positiveText(R.string.yes)
+            .negativeText(R.string.no)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    UsefulBits.restartApplication(getActivity());
+                }
+            })
+            .show();
     }
 
     private void handleInfoAndAbout() {
@@ -722,29 +732,29 @@ public class Preference extends PreferenceFragment {
 
     private void handleImportExportButtons() {
         SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
+            "/Domoticz/DomoticzSettings.txt");
 
         final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+            substring(0, SettingsFile.getPath().lastIndexOf("/"));
         //noinspection unused
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
         android.preference.Preference exportButton = findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(
-                new android.preference.Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(android.preference.Preference preference) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!PermissionsUtil.canAccessStorage(mContext)) {
-                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                            } else
-                                exportSettings();
+            new android.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(mContext)) {
+                            permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                         } else
                             exportSettings();
+                    } else
+                        exportSettings();
 
-                        return false;
-                    }
-                });
+                    return false;
+                }
+            });
         android.preference.Preference importButton = findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
@@ -784,9 +794,9 @@ public class Preference extends PreferenceFragment {
         PackageInfo pInfo = null;
         try {
             pInfo = mContext
-                    .getPackageManager()
-                    .getPackageInfo(mContext
-                            .getPackageName(), 0);
+                .getPackageManager()
+                .getPackageInfo(mContext
+                    .getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -803,9 +813,9 @@ public class Preference extends PreferenceFragment {
 
             if (serverUtil.getActiveServer() != null) {
                 if ((serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null
-                        && serverUtil.getActiveServer().getServerUpdateInfo(mContext).isUpdateAvailable()
-                        && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion())) ||
-                        mSharedPrefs.isDebugEnabled()) {
+                    && serverUtil.getActiveServer().getServerUpdateInfo(mContext).isUpdateAvailable()
+                    && !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion())) ||
+                    mSharedPrefs.isDebugEnabled()) {
 
                     // Update is available or debugging is enabled
                     String version;
@@ -813,14 +823,14 @@ public class Preference extends PreferenceFragment {
                         version = mContext.getString(R.string.debug_test_text);
                     else
                         version = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null)
-                                ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
+                            ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
 
                     message = String.format(getString(R.string.update_available_enhanced),
-                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion(),
-                            version);
+                        serverUtil.getActiveServer().getServerUpdateInfo(mContext).getCurrentServerVersion(),
+                        version);
                     if (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName().equalsIgnoreCase("linux")) {
+                        serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName() != null &&
+                        serverUtil.getActiveServer().getServerUpdateInfo(mContext).getSystemName().equalsIgnoreCase("linux")) {
                         // Only offer remote/auto update on Linux systems
                         message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
                         domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
@@ -834,8 +844,8 @@ public class Preference extends PreferenceFragment {
                     }
                 } else {
                     message = (serverUtil.getActiveServer().getServerUpdateInfo(mContext) != null &&
-                            !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber()))
-                            ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
+                        !UsefulBits.isEmpty(serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber()))
+                        ? serverUtil.getActiveServer().getServerUpdateInfo(mContext).getUpdateRevisionNumber() : "";
                 }
                 domoticzVersion.setSummary(message);
             }
@@ -859,14 +869,14 @@ public class Preference extends PreferenceFragment {
                 public void run() {
                     if (getView() != null) {
                         Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                                .setAction(R.string.upgrade, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        UsefulBits.openPremiumAppStore(mContext);
-                                    }
-                                })
-                                .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
-                                .show();
+                            .setAction(R.string.upgrade, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    UsefulBits.openPremiumAppStore(mContext);
+                                }
+                            })
+                            .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
+                            .show();
                     }
                 }
             }, (300));

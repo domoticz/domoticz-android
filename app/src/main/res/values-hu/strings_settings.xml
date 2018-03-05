@@ -56,6 +56,9 @@
   <string name="always_on_title">Ébrentartás</string>
   <string name="always_on_on">A képernyő mindig bekapcsolva marad</string>
   <string name="always_on_off">A képernyő nem marad bekapcsolva</string>
+  <string name="always_auto_refresh">Auto Refresh</string>
+  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
   <string name="switch_buttons_title">Kapcsolók</string>
   <string name="switch_buttons_on">KI/BE kapcsolók mutatása</string>
   <string name="switch_buttons_off">KI/BE gombú kapcsolók mutatása</string>

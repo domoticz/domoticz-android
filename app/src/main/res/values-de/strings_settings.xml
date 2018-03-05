@@ -56,6 +56,9 @@
   <string name="always_on_title">Aufwachsperre</string>
   <string name="always_on_on">Bildschirmsperre immer An</string>
   <string name="always_on_off">Bildschirmsperre immer Aus</string>
+  <string name="always_auto_refresh">Auto Refresh</string>
+  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
   <string name="switch_buttons_title">Schalter</string>
   <string name="switch_buttons_on">Zeige Schalter mit Ein-/Ausschalter</string>
   <string name="switch_buttons_off">Zeige Schalter mit Ein-/Aus Taste</string>
@@ -140,7 +143,7 @@
   <string name="suppress_notifications_title">Benachrichtigungen unterdrücken</string>
   <string name="alarm_notifications_select">Wählen Sie Benachrichtigungen für Alarm</string>
   <string name="alarm_notifications">Alarmton für bestimmte Benachrichtigungen erklingen lassen</string>
-  <string name="clear_notifications">Clean notification logs</string>
+  <string name="clear_notifications">Säubere Benachrichtigung Protokolle</string>
   <string name="alarm_notifications_title">Alarmbenachrichtigungen</string>
   <string name="alarm">Alarm</string>
   <string name="alarmtimer_title">Alarmtimer</string>

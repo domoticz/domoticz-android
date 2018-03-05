@@ -1,10 +1,7 @@
 package nl.hnogames.domoticz.Service;
 
-import android.os.Bundle;
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -12,12 +9,8 @@ import java.net.URLDecoder;
 import java.util.Map;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 
 import static android.text.TextUtils.isDigitsOnly;
 
@@ -28,8 +21,8 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage){
-        if(remoteMessage == null || remoteMessage.getData() == null)
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        if (remoteMessage == null || remoteMessage.getData() == null)
             return;
 
         Map data = remoteMessage.getData();
@@ -41,7 +34,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             String body = decode(data.containsKey("body") ? data.get("body").toString() : "");
 
             int prio = 0; //default
-            if(data.containsKey("priority")) {
+            if (data.containsKey("priority")) {
                 String priority = decode(data.get("priority").toString());
                 if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
                     prio = Integer.valueOf(priority);

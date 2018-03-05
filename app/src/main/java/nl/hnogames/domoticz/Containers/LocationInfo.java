@@ -130,7 +130,7 @@ public class LocationInfo {
             radius = 400;//default
         try {
             // Build a new Geofence object.
-            return  new Geofence.Builder()
+            return new Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
                 .setRequestId(String.valueOf(id))
@@ -145,7 +145,7 @@ public class LocationInfo {
                 // transition. We track entry and exit transitions in this sample.
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL |
                     Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .setLoiteringDelay(3000)
+                .setLoiteringDelay(3000)
                 // Create the geofence.
                 .build();
         } catch (Exception ex) {

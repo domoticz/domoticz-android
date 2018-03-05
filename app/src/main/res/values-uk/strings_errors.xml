@@ -5,7 +5,7 @@
   <string name="error_authentication">Неприпустимі облікові дані</string>
   <string name="error_timeout">Перевищений час очікування або відсутнє підключення</string>
   <string name="error_server">Сервер помилок</string>
-  <string name="error_network">Network error, status code %1$d</string>
-  <string name="error_parse">Parse error</string>
+  <string name="error_network">Помилка мережі, код помилки %1$d</string>
+  <string name="error_parse">Аналіз помилки</string>
   <string name="error_notConnected">Помилка: не під\'єднані до жодної мережі</string>
 </resources>

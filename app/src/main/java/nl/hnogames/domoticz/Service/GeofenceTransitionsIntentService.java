@@ -1,6 +1,5 @@
 package nl.hnogames.domoticz.Service;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;

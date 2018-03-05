@@ -63,7 +63,7 @@ public class GeoUtils {
      * Remove the active Geofences from the client
      */
     public void RemoveGeofences() {
-        if(mGeofencingClient != null)
+        if (mGeofencingClient != null)
             mGeofencingClient.removeGeofences(getGeofencePendingIntent());
     }
 
@@ -79,7 +79,7 @@ public class GeoUtils {
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                         return;
                     Log.i("GeoUtils", "Starting Geofences");
-                    if(mGeofencingClient != null) {
+                    if (mGeofencingClient != null) {
                         RemoveGeofences();//clear existing ones
                         mGeofencingClient.addGeofences(getGeofencingRequest(mGeofenceList), getGeofencePendingIntent());
                     }
@@ -104,8 +104,7 @@ public class GeoUtils {
         Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return PendingIntent.getForegroundService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-        else {
+        } else {
             return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
