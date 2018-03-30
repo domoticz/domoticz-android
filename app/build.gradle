@@ -39,6 +39,7 @@ android {
             minSdkVersion 16
             targetSdkVersion 27
             multiDexEnabled true
+            wearAppUnbundled true
         }
     } else {
         throw new GradleException("Could not read version.properties!")
@@ -128,7 +129,6 @@ allprojects {
 //noinspection GroovyAssignabilityCheck
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     def supportVersion = '27.1.0'
     def playServicesVersion = '11.8.0'
