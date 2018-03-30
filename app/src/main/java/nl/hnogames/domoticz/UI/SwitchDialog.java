@@ -37,9 +37,7 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.ExtendedStatusInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
 
 public class SwitchDialog implements DialogInterface.OnDismissListener {
 
@@ -94,8 +92,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                 if (!info.get(position).isProtected()) {
                     if (dismissListener != null)
                         dismissListener.onDismiss(info.get(position).getIdx(), null, info.get(position).getName(), info.get(position).isSceneOrGroup());
-                }
-                else {
+                } else {
                     PasswordDialog passwordDialog = new PasswordDialog(mContext, mDomoticz);
                     passwordDialog.show();
                     passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
@@ -110,7 +107,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
                         }
                     });
                 }
-            
+
                 md.dismiss();
             }
         });
