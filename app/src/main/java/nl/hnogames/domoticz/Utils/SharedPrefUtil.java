@@ -188,7 +188,9 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ALWAYS_ON, false);
     }
 
-    public boolean getAutoRefresh() { return prefs.getBoolean(PREF_AUTO_REFRESH, false); }
+    public boolean getAutoRefresh() {
+        return prefs.getBoolean(PREF_AUTO_REFRESH, false);
+    }
 
     public int getAlarmTimer() {
         try {

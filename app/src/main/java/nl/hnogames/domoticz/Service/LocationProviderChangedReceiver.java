@@ -19,7 +19,7 @@ public class LocationProviderChangedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent!=null  && intent.getAction()!= null &&  intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
+        if (intent != null && intent.getAction() != null && intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
             Log.i(TAG, "Location Providers changed");
 
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
