@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.1"
+    buildToolsVersion '27.0.3'
 
     def versionPropsFile = file('version.properties')
 
@@ -55,10 +55,10 @@ android {
         }
     }
 
+    flavorDimensions "tier"
     productFlavors {
         free {
             applicationId 'nl.hnogames.domoticz'
-
             resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
             resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
@@ -70,6 +70,7 @@ android {
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
+            dimension "tier"
         }
         paid {
             applicationId 'nl.hnogames.domoticz.premium'
@@ -85,6 +86,7 @@ android {
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
+            dimension "tier"
         }
     }
 
@@ -125,70 +127,70 @@ allprojects {
 
 //noinspection GroovyAssignabilityCheck
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     paidWearApp project(path: ':wear', configuration: 'paidRelease')
 
     def supportVersion = '27.1.0'
     def playServicesVersion = '11.8.0'
 
-    compile "com.android.support:support-v4:$supportVersion"
-    compile "com.android.support:appcompat-v7:$supportVersion"
-    compile "com.android.support:support-v13:$supportVersion"
-    compile "com.android.support:recyclerview-v7:$supportVersion"
-    compile "com.android.support:cardview-v7:$supportVersion"
-    compile "com.android.support:design:$supportVersion"
+    implementation "com.android.support:support-v4:$supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:support-v13:$supportVersion"
+    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation "com.android.support:design:$supportVersion"
 
-    compile "com.google.firebase:firebase-core:$playServicesVersion"
-    compile "com.google.firebase:firebase-crash:$playServicesVersion"
-    compile "com.google.firebase:firebase-perf:$playServicesVersion"
-    compile "com.google.firebase:firebase-messaging:$playServicesVersion"
+    implementation "com.google.firebase:firebase-core:$playServicesVersion"
+    implementation "com.google.firebase:firebase-crash:$playServicesVersion"
+    implementation "com.google.firebase:firebase-perf:$playServicesVersion"
+    implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
 
-    compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
-    compile "com.google.android.gms:play-services-wearable:$playServicesVersion"
-    compile "com.google.android.gms:play-services-maps:$playServicesVersion"
-    compile "com.google.android.gms:play-services-gcm:$playServicesVersion"
-    compile "com.google.android.gms:play-services-location:$playServicesVersion"
-    compile "com.google.android.gms:play-services-places:$playServicesVersion"
-    compile "com.google.android.gms:play-services-ads:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-analytics:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-wearable:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-maps:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-gcm:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-location:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-places:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-ads:$playServicesVersion"
 
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
-    compile 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
-    compile 'com.larswerkman:lobsterpicker:1.0.1'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.android.volley:volley:1.0.0'
+    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
+    implementation 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
+    implementation 'com.larswerkman:lobsterpicker:1.0.1'
 
-    compile 'com.github.zurche:plain-pie:v0.2.2'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.github.zurche:plain-pie:v0.2.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
-    compile 'com.github.dexafree:MaterialList:v3.2.2'
-    compile 'com.github.hotchemi:android-rate:1.0.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
-    compile 'me.dm7.barcodescanner:zxing:1.9'
-    compile 'com.github.jd-alexander:LikeButton:0.2.0'
-    compile 'jp.wasabeef:recyclerview-animators:2.2.4'
-    compile 'com.github.javiersantos:PiracyChecker:1.1'
-    compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    implementation 'com.github.dexafree:MaterialList:v3.2.2'
+    implementation 'com.github.hotchemi:android-rate:1.0.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+    implementation 'jp.wasabeef:recyclerview-animators:2.2.4'
+    implementation 'com.github.javiersantos:PiracyChecker:1.1'
+    implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
 
-    compile('com.mikepenz:materialdrawer:5.8.2@aar') {
+    implementation('com.mikepenz:materialdrawer:5.8.2@aar') {
         transitive = true
     }
 
-    compile 'com.github.matthiasrobbers:shortbread:1.0.1'
+    implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
 
-    compile 'com.schibstedspain.android:leku:3.3.0'
+    implementation 'com.schibstedspain.android:leku:3.3.0'
 
-    compile 'com.github.k0shk0sh:PermissionHelper:1.1.0'
-    compile 'com.github.zagum:SpeechRecognitionView:1.0.2'
-    compile 'com.afollestad:digitus:0.3.0'
+    implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
+    implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
+    implementation 'com.afollestad:digitus:0.3.0'
 
-    compile project(path: ':materialIntro_library')
-    compile project(':libs:MemorizingTrustManager')
+    implementation project(path: ':materialIntro_library')
+    implementation project(':libs:MemorizingTrustManager')
 
-    compile project(path: ':SeekArc_library')
-    compile project(path: ':domoticzapi')
+    implementation project(path: ':SeekArc_library')
+    implementation project(path: ':domoticzapi')
 }
 
 buildscript {
