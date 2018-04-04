@@ -131,7 +131,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     def supportVersion = '27.1.0'
-    def playServicesVersion = '11.8.0'
+    def playServicesVersion = '12.0.1'
 
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"

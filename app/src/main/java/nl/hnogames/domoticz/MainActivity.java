@@ -206,9 +206,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         } else {
             if (mSharedPrefs.isStartupSecurityEnabled()) {
                 Digitus.init(this,
-                    getString(R.string.app_name_domoticz),
-                    69,
-                    this);
+                        getString(R.string.app_name_domoticz),
+                        69,
+                        this);
             } else {
                 new GeoUtils(this, this).AddGeofences();
                 buildScreen();
@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 if (!isSceneOrGroup) {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (!mDevicesInfo.getStatusBoolean())
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             else {
@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (inputJSONAction == 1)
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             else {
@@ -676,10 +676,10 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private void appRate() {
         if (!BuildConfig.DEBUG) {
             AppRate.with(this)
-                .setInstallDays(0) // default 10, 0 means install day.
-                .setLaunchTimes(3) // default 10
-                .setRemindInterval(2) // default 1
-                .monitor();
+                    .setInstallDays(0) // default 10, 0 means install day.
+                    .setLaunchTimes(3) // default 10
+                    .setRemindInterval(2) // default 1
+                    .monitor();
 
             // Show a dialog if meets conditions
             AppRate.showRateDialogIfMeetsConditions(this);
@@ -694,7 +694,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             config = mServerUtil.getActiveServer().getConfigInfo(this);
 
         ProfileDrawerItem loggedinAccount = new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
-            .withIcon(R.mipmap.ic_launcher);
+                .withIcon(R.mipmap.ic_launcher);
         if (mSharedPrefs.darkThemeEnabled()) {
             loggedinAccount.withSelectedColorRes(R.color.material_indigo_600);
         }
@@ -702,90 +702,90 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         // Create the AccountHeader
         final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
-            .withActivity(this)
-            .withHeaderBackground(R.drawable.darkheader)
-            .addProfiles(loggedinAccount)
-            .withOnlyMainProfileImageVisible(true)
-            .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                @Override
-                @DebugLog
-                public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
-                    if (!current) {
-                        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                            if (getFragmentCoordinatorLayout() != null) {
-                                Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                                    .setAction(R.string.upgrade, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            UsefulBits.openPremiumAppStore(MainActivity.this);
-                                        }
-                                    })
-                                    .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.material_blue_600))
-                                    .show();
-                            }
-                            return false;
-                        } else {
-                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
-                            passwordDialog.show();
-                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                @Override
-                                @DebugLog
-                                public void onDismiss(String password) {
-                                    if (UsefulBits.isEmpty(password)) {
-                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                        Talk(R.string.security_wrong_code);
-                                        drawNavigationMenu(finalConfig);
-                                    } else {
-                                        for (UserInfo user : finalConfig.getUsers()) {
-                                            if (user.getUsername() == profile.getEmail().getText()) {
-                                                String md5Pass = UsefulBits.getMd5String(password);
-                                                if (md5Pass.equals(user.getPassword())) {
-                                                    //if correct set credentials in activeserver and recreate drawer
-                                                    domoticz.setUserCredentials(user.getUsername(), password);
-                                                    domoticz.LogOff();
-                                                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onReceiveConfig(ConfigInfo settings) {
-                                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
-                                                            drawNavigationMenu(finalConfig);
-                                                        }
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.darkheader)
+                .addProfiles(loggedinAccount)
+                .withOnlyMainProfileImageVisible(true)
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    @DebugLog
+                    public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
+                        if (!current) {
+                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                                if (getFragmentCoordinatorLayout() != null) {
+                                    Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                            .setAction(R.string.upgrade, new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    UsefulBits.openPremiumAppStore(MainActivity.this);
+                                                }
+                                            })
+                                            .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.material_blue_600))
+                                            .show();
+                                }
+                                return false;
+                            } else {
+                                PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                                passwordDialog.show();
+                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onDismiss(String password) {
+                                        if (UsefulBits.isEmpty(password)) {
+                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            Talk(R.string.security_wrong_code);
+                                            drawNavigationMenu(finalConfig);
+                                        } else {
+                                            for (UserInfo user : finalConfig.getUsers()) {
+                                                if (user.getUsername() == profile.getEmail().getText()) {
+                                                    String md5Pass = UsefulBits.getMd5String(password);
+                                                    if (md5Pass.equals(user.getPassword())) {
+                                                        //if correct set credentials in activeserver and recreate drawer
+                                                        domoticz.setUserCredentials(user.getUsername(), password);
+                                                        domoticz.LogOff();
+                                                        UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
+                                                            @Override
+                                                            @DebugLog
+                                                            public void onReceiveConfig(ConfigInfo settings) {
+                                                                UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
+                                                                drawNavigationMenu(finalConfig);
+                                                            }
 
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onError(Exception error) {
-                                                        }
-                                                    }, finalConfig);
-                                                } else {
-                                                    UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                                    drawNavigationMenu(finalConfig);
+                                                            @Override
+                                                            @DebugLog
+                                                            public void onError(Exception error) {
+                                                            }
+                                                        }, finalConfig);
+                                                    } else {
+                                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        drawNavigationMenu(finalConfig);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
 
-                                @Override
-                                public void onCancel() {
-                                }
-                            });
+                                    @Override
+                                    public void onCancel() {
+                                    }
+                                });
+                            }
+
+                            drawNavigationMenu(finalConfig);
                         }
-
-                        drawNavigationMenu(finalConfig);
+                        return false;
                     }
-                    return false;
-                }
-            })
-            .build();
+                })
+                .build();
 
         if (config != null &&
-            config.getUsers() != null) {
+                config.getUsers() != null) {
             for (UserInfo user : config.getUsers()) {
 
                 ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
                 ).withEmail(user.getUsername())
-                    .withIcon(R.drawable.users)
-                    .withEnabled(user.isEnabled());
+                        .withIcon(R.drawable.users)
+                        .withEnabled(user.isEnabled());
 
                 if (mSharedPrefs.darkThemeEnabled()) {
                     profile.withSelectedColorRes(R.color.material_indigo_600);
@@ -796,39 +796,39 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
 
         drawer = new DrawerBuilder()
-            .withActivity(this)
-            .withTranslucentStatusBar(false)
-            .withActionBarDrawerToggle(true)
-            .withAccountHeader(headerResult)
-            .withToolbar(toolbar)
-            .withSelectedItem(-1)
-            .withDrawerItems(getDrawerItems())
-            .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                @Override
-                @DebugLog
-                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                    if (drawerItem != null) {
-                        if (searchViewAction != null) {
-                            searchViewAction.setQuery("", false);
-                            searchViewAction.clearFocus();
-                        }
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withActionBarDrawerToggle(true)
+                .withAccountHeader(headerResult)
+                .withToolbar(toolbar)
+                .withSelectedItem(-1)
+                .withDrawerItems(getDrawerItems())
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    @DebugLog
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem != null) {
+                            if (searchViewAction != null) {
+                                searchViewAction.setQuery("", false);
+                                searchViewAction.clearFocus();
+                            }
 
-                        if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
-                            stopCameraTimer();
-                            startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
-                        } else if (drawerItem.getTag() != null) {
-                            changeFragment(String.valueOf(drawerItem.getTag()));
-                            stopCameraTimer();
+                            if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
+                                stopCameraTimer();
+                                startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
+                            } else if (drawerItem.getTag() != null) {
+                                changeFragment(String.valueOf(drawerItem.getTag()));
+                                stopCameraTimer();
 
-                            invalidateOptionsMenu();
-                            if (onPhone)
-                                drawer.closeDrawer();
+                                invalidateOptionsMenu();
+                                if (onPhone)
+                                    drawer.closeDrawer();
+                            }
                         }
+                        return false;
                     }
-                    return false;
-                }
-            })
-            .build();
+                })
+                .build();
 
         drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), null, "gmd_settings", "Settings"));
     }
@@ -853,10 +853,10 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private SecondaryDrawerItem createSecondaryDrawerItem(String title, String badge, String icon, String fragmentID) {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
-            .withBadge(badge)
-            .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
-            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
-            .withTag(fragmentID);
+                .withBadge(badge)
+                .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+                .withTag(fragmentID);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
@@ -869,8 +869,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private PrimaryDrawerItem createPrimaryDrawerItem(String title, String badge, String icon, String fragmentID) {
         PrimaryDrawerItem item = new PrimaryDrawerItem();
         item.withName(title).withBadge(badge).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
-            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
-            .withTag(fragmentID);
+                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+                .withTag(fragmentID);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
@@ -911,8 +911,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 @DebugLog
                 public void onError(Exception error) {
                     String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        domoticz.getErrorMessage(error));
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            domoticz.getErrorMessage(error));
                     showSnackbar(message);
 
                     if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
@@ -932,27 +932,27 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 if (!UsefulBits.isEmpty(serverVersion)) {
 
                     if (mServerUtil.getActiveServer() != null &&
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
                         mServerUtil.getActiveServer()
-                            .getServerUpdateInfo(MainActivity.this)
-                            .setCurrentServerVersion(serverVersion);
+                                .getServerUpdateInfo(MainActivity.this)
+                                .setCurrentServerVersion(serverVersion);
                     }
 
                     String[] version
-                        = serverVersion.split("\\.");
+                            = serverVersion.split("\\.");
                     // Update version is only revision number
                     String updateVersion = (mServerUtil.getActiveServer() != null &&
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
-                        version[0] + "."
-                            + mServerUtil.getActiveServer()
-                            .getServerUpdateInfo(MainActivity.this)
-                            .getUpdateRevisionNumber() :
-                        version[0];
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
+                            version[0] + "."
+                                    + mServerUtil.getActiveServer()
+                                    .getServerUpdateInfo(MainActivity.this)
+                                    .getUpdateRevisionNumber() :
+                            version[0];
 
                     String message
-                        = String.format(getString(R.string.update_available_enhanced),
-                        serverVersion,
-                        updateVersion);
+                            = String.format(getString(R.string.update_available_enhanced),
+                            serverVersion,
+                            updateVersion);
                     showSnackBarToUpdateServer(message);
                 }
             }
@@ -961,8 +961,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             @DebugLog
             public void onError(Exception error) {
                 String message = String.format(
-                    getString(R.string.error_couldNotCheckForUpdates),
-                    domoticz.getErrorMessage(error));
+                        getString(R.string.error_couldNotCheckForUpdates),
+                        domoticz.getErrorMessage(error));
                 showSnackbar(message);
             }
         });
@@ -1000,7 +1000,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
                 searchViewAction = (SearchView) MenuItemCompat
-                    .getActionView(searchMenuItem);
+                        .getActionView(searchMenuItem);
                 searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     @DebugLog
@@ -1101,11 +1101,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             recognitionProgressView.setBackgroundColor(color);
                     }
                     int[] colors = {
-                        ContextCompat.getColor(this, R.color.material_amber_600),
-                        ContextCompat.getColor(this, R.color.material_blue_600),
-                        ContextCompat.getColor(this, R.color.material_deep_purple_600),
-                        ContextCompat.getColor(this, R.color.material_green_600),
-                        ContextCompat.getColor(this, R.color.material_orange_600)
+                            ContextCompat.getColor(this, R.color.material_amber_600),
+                            ContextCompat.getColor(this, R.color.material_blue_600),
+                            ContextCompat.getColor(this, R.color.material_deep_purple_600),
+                            ContextCompat.getColor(this, R.color.material_green_600),
+                            ContextCompat.getColor(this, R.color.material_orange_600)
                     };
                     recognitionProgressView.setColors(colors);
                     recognitionProgressView.setSpeechRecognizer(speechRecognizer);
@@ -1164,8 +1164,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     return true;
                 case R.id.action_sort:
                     SortDialog infoDialog = new SortDialog(
-                        this,
-                        R.layout.dialog_switch_logs);
+                            this,
+                            R.layout.dialog_switch_logs);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
                         @DebugLog
@@ -1206,7 +1206,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     @DebugLog
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
-            .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
         int jsonAction = -1;
         String actionFound = "Toggle";
@@ -1302,37 +1302,37 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
             serverNames[count] = s.getServerName();
             if (mServerUtil.getActiveServer() != null &&
-                mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
+                    mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
                 selectionId = count;
             count++;
         }
 
         //show dialog with servers
         new MaterialDialog.Builder(this)
-            .title(R.string.choose_server)
-            .items(serverNames)
-            .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                @DebugLog
-                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                    ServerInfo setNew = null;
-                    for (ServerInfo s : mServerUtil.getEnabledServerList()) {
-                        if (s.getServerName().equals(text)) {
-                            String message = String.format(
-                                getString(R.string.switch_to_server), s.getServerName());
-                            showSnackbar(message);
-                            setNew = s;
+                .title(R.string.choose_server)
+                .items(serverNames)
+                .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    @DebugLog
+                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        ServerInfo setNew = null;
+                        for (ServerInfo s : mServerUtil.getEnabledServerList()) {
+                            if (s.getServerName().equals(text)) {
+                                String message = String.format(
+                                        getString(R.string.switch_to_server), s.getServerName());
+                                showSnackbar(message);
+                                setNew = s;
+                            }
                         }
+                        if (setNew != null) {
+                            mServerUtil.setActiveServer(setNew);
+                            buildScreen();
+                            invalidateOptionsMenu();
+                        }
+                        return false;
                     }
-                    if (setNew != null) {
-                        mServerUtil.setActiveServer(setNew);
-                        buildScreen();
-                        invalidateOptionsMenu();
-                    }
-                    return false;
-                }
-            })
-            .show();
+                })
+                .show();
     }
 
     /**

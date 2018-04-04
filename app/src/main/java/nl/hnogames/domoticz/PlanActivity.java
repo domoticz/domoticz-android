@@ -29,9 +29,10 @@ import android.view.MenuItem;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class PlanActivity extends AppCompatActivity {
+public class PlanActivity extends AppCompatAssistActivity {
 
     private ServerUtil mServerUtil;
 

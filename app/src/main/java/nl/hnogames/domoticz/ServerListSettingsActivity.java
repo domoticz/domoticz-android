@@ -42,12 +42,13 @@ import nl.hnogames.domoticz.Adapters.ServerAdapter;
 import nl.hnogames.domoticz.Interfaces.ServerClickListener;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 
-public class ServerListSettingsActivity extends AppCompatActivity {
+public class ServerListSettingsActivity extends AppCompatAssistActivity {
 
     @SuppressWarnings("FieldCanBeLocal")
     private final int REQUEST_ADD_SERVER = 54;
@@ -157,7 +158,7 @@ public class ServerListSettingsActivity extends AppCompatActivity {
         removeServerFromListView(serverInfo);
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, String.format(getString(R.string.something_deleted),
-            getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+                getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
