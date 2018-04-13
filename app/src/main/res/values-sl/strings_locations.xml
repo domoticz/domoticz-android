@@ -60,6 +60,6 @@
   <string name="geofencing_disabled_no_enabled_fences">GeoFencing onemogočen, saj nobeno GeoFencing ni omogočene</string>
   <string name="geofence_not_available">Geofence strežnik ni na voljo</string>
   <string name="geofence_too_many_geofences">Preveč registracij Geofencing-a</string>
-  <string name="geofence_too_many_pending_intents">Too many PendingIntents provided</string>
+  <string name="geofence_too_many_pending_intents">Preveč vnesenih PendingIntent</string>
   <string name="unknown_geofence_error">Neznana napaka</string>
 </resources>

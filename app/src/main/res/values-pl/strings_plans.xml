@@ -6,6 +6,7 @@
   <plurals name="devices">
     <item quantity="one">%1d urządzenie</item>
     <item quantity="few">%1d urządzenia</item>
+    <item quantity="many">%1d urządzeń</item>
     <item quantity="other">%1d urządzeń</item>
   </plurals>
 </resources>

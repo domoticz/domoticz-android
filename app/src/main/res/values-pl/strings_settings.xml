@@ -56,9 +56,9 @@
   <string name="always_on_title">Blokada budzenia</string>
   <string name="always_on_on">Blokuj ekran aby był zawsze włączony</string>
   <string name="always_on_off">Nie blokuj ekranu aby był zawsze włączony</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh">Auto-odświeżanie</string>
+  <string name="always_auto_refresh_on">Odśwież stan urządzenia co 5 sekund</string>
+  <string name="always_auto_refresh_off">Nie odświeżaj stanu urządzenia co 5 sekund</string>
   <string name="switch_buttons_title">Przełączniki</string>
   <string name="switch_buttons_on">Pokaż przełączniki z jednym suwakiem włącz/wyłącz</string>
   <string name="switch_buttons_off">Pokaż przełączniki z przyciskami włącz i wyłącz</string>
