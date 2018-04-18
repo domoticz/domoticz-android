@@ -31,16 +31,16 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:id="@+id/input_securitypin"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/securitypin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/linearLayout5"
-                android:layout_toStartOf="@+id/linearLayout5"
+                android:layout_toStartOf="@+id/linearLayout5">
+            <EditText
+                android:id="@+id/securitypin"
                 android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textColor="@color/default_text_color_light"
                 android:hint="@string/security_pin" />
         </android.support.design.widget.TextInputLayout>

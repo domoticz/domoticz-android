@@ -27,17 +27,16 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -61,7 +60,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Domoticz domoticz;
     private SettingsInfo mSettings;
     private MaterialDialog md;
-    private FloatingLabelEditText editPinCode;
+    private EditText editPinCode;
     private TextView txtCountDown;
     private Button btnDisarm;
     private Button btnArmHome;
@@ -106,9 +105,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
 
         if (view != null) {
-            editPinCode = (FloatingLabelEditText) view.findViewById(R.id.securitypin);
-            editPinCode.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
-
+            editPinCode = (EditText) view.findViewById(R.id.securitypin);
             btnDisarm = (Button) view.findViewById(R.id.disarm);
             btnArmHome = (Button) view.findViewById(R.id.armhome);
             btnArmAway = (Button) view.findViewById(R.id.armaway);
@@ -118,11 +115,11 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                 btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
                 btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
                 btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-                editPinCode.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+                editPinCode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
                 int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
                 int[] colors = new int[]{Color.WHITE, Color.WHITE};
-                editPinCode.setLabelTextColor(new ColorStateList(states, colors));
+                editPinCode.setTextColor(new ColorStateList(states, colors));
             }
         }
         domoticz.getSettings(new SettingsReceiver() {
@@ -173,7 +170,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         imm.hideSoftInputFromWindow(editPinCode.getWindowToken(), 0);
 
         final String password =
-                UsefulBits.getMd5String(editPinCode.getInputWidgetText().toString());
+                UsefulBits.getMd5String(editPinCode.getText().toString());
 
         if (validatePassword(password)) {
             if (mSettings.getSecOnDelay() <= 0 || status == DomoticzValues.Security.Status.DISARM) {

@@ -153,7 +153,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-places:$playServicesVersion"
     implementation "com.google.android.gms:play-services-ads:$playServicesVersion"
 
-    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.android.volley:volley:1.0.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
@@ -178,9 +178,7 @@ dependencies {
 
     implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-
     implementation 'com.schibstedspain.android:leku:3.3.0'
-
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
     implementation 'com.afollestad:digitus:0.3.0'

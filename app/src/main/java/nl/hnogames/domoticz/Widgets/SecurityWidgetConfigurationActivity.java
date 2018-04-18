@@ -27,16 +27,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.ArrayList;
 
@@ -67,7 +66,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
     private TextView txtTitle;
     private TextView txtStatus;
     private Button btnConfig;
-    private FloatingLabelEditText editPin;
+    private EditText editPin;
 
     private SettingsInfo mSettings;
     private DevicesInfo sSecurityPanel;
@@ -91,12 +90,10 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         txtTitle = (TextView) this.findViewById(R.id.title);
         btnConfig = (Button) this.findViewById(R.id.checkpin);
 
-        editPin = (FloatingLabelEditText) this.findViewById(R.id.securitypin);
-        editPin.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
-
+        editPin = (EditText) this.findViewById(R.id.securitypin);
         if (mSharedPrefs.darkThemeEnabled()) {
             btnConfig.setBackground(ContextCompat.getDrawable(this, R.drawable.button_status_dark));
-            editPin.setInputWidgetTextColor(ContextCompat.getColor(this, R.color.white));
+            editPin.setTextColor(ContextCompat.getColor(this, R.color.white));
             txtStatus.setTextColor(ContextCompat.getColor(this, R.color.white));
             txtTitle.setTextColor(ContextCompat.getColor(this, R.color.white));
         }
@@ -108,7 +105,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                         (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(editPin.getWindowToken(), 0);
                 final String password =
-                        UsefulBits.getMd5String(editPin.getInputWidgetText().toString());
+                        UsefulBits.getMd5String(editPin.getText().toString());
                 if (UsefulBits.isEmpty(password)) {
                     Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
                     return;

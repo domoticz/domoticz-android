@@ -20,15 +20,15 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/welcome_top_margin"
-    android:windowSoftInputMode="adjustPan">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/welcome_top_margin"
+            android:windowSoftInputMode="adjustPan">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,6 +47,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/remote_server_input"
@@ -87,6 +88,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/remote_port_input"
@@ -107,14 +109,14 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minWidth="@dimen/width_min_welcomePage3_username_input">
                 <EditText
                     android:id="@+id/remote_username_input"
+                    android:inputType="textNoSuggestions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="textNoSuggestions"
-                    android:minWidth="@dimen/width_min_welcomePage3_username_input"
                     android:paddingRight="15dp"
                     android:textColor="@color/white"
                     android:hint="@string/welcome_remote_server_username" />
@@ -122,18 +124,17 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
                 <EditText
                     android:id="@+id/remote_password_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:inputType="textPassword"
                     android:paddingRight="15dp"
                     android:textColor="@color/white"
                     android:hint="@string/welcome_remote_server_password" />
             </android.support.design.widget.TextInputLayout>
-
         </LinearLayout>
 
         <CheckBox
@@ -279,6 +280,7 @@
                         android:hint="@string/welcome_local_server_address" />
                 </android.support.design.widget.TextInputLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -295,7 +297,6 @@
                             android:id="@+id/local_protocol_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="5dp"
                             android:text="@string/welcome_local_server_protocol"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_large" />
@@ -304,51 +305,59 @@
                             android:id="@+id/local_protocol_spinner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="5dp" />
+                            android:paddingTop="3dp"
+                            android:spinnerMode="dropdown" />
                     </LinearLayout>
-
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
+                        android:layout_marginTop="15dp"
                         android:layout_height="wrap_content">
                         <EditText
                             android:id="@+id/local_port_input"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:inputType="numberSigned"
                             android:textColor="@color/white"
                             android:hint="@string/welcome_local_server_port" />
                     </android.support.design.widget.TextInputLayout>
-
                 </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/local_username_input"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:inputType="textNoSuggestions"
+                        android:layout_height="wrap_content"
                         android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                        android:textColor="@color/white"
-                        android:hint="@string/welcome_local_server_username" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/local_username_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textNoSuggestions"
+                            android:minWidth="@dimen/width_min_welcomePage3_username_input"
+                            android:textColor="@color/white"
+                            android:hint="@string/welcome_local_server_username" />
+                    </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/local_password_input"
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:inputType="textPassword"
-                        android:textColor="@color/white"
-                        android:hint="@string/welcome_local_server_password" />
-                </android.support.design.widget.TextInputLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/local_password_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/white"
+                            android:hint="@string/welcome_local_server_password" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
                 <CheckBox
                     android:id="@+id/showpasswordlocal"
@@ -370,7 +379,7 @@
                         android:layout_marginTop="15dp"
                         android:inputType="textNoSuggestions"
                         android:textColor="@color/white"
-                        android:hint="@string/welcome_local_server_password" />
+                        android:hint="@string/welcome_local_server_directory" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
