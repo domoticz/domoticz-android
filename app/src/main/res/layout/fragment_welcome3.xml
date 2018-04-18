@@ -45,16 +45,17 @@
             android:textSize="@dimen/text_size_welcomePage3_serverSettings_title"
             android:textStyle="bold" />
 
-        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-            android:id="@+id/remote_server_input"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions"
-            app:flw_inputWidgetTextColor="@color/default_text_color_light"
-            app:flw_inputWidgetTextSize="@dimen/text_size_large"
-            app:flw_labelText="@string/welcome_remote_server_address"
-            app:flw_labelTextColor="@color/default_text_color_light"
-            app:flw_labelTextSize="@dimen/text_size_medium" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/remote_server_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                android:textColor="@color/default_text_color_light"
+                android:hint="@string/welcome_remote_server_address" />
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,17 +85,17 @@
                     android:spinnerMode="dropdown" />
             </LinearLayout>
 
-            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/remote_port_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="numberSigned"
-                app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_remote_server_port"
-                app:flw_labelTextColor="@color/default_text_color_light"
-                app:flw_labelTextSize="@dimen/text_size_medium" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/remote_port_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:textColor="@color/default_text_color_light"
+                    android:hint="@string/welcome_remote_server_port" />
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -104,31 +105,35 @@
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
-            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/remote_username_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="textNoSuggestions"
-                android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                android:paddingRight="15dp"
-                app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_remote_server_username"
-                app:flw_labelTextColor="@color/default_text_color_light"
-                app:flw_labelTextSize="@dimen/text_size_medium" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/remote_username_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="textNoSuggestions"
+                    android:minWidth="@dimen/width_min_welcomePage3_username_input"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/default_text_color_light"
+                    android:hint="@string/welcome_remote_server_username" />
+            </android.support.design.widget.TextInputLayout>
 
-            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/remote_password_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="textPassword"
-                app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_remote_server_password"
-                app:flw_labelTextColor="@color/default_text_color_light"
-                app:flw_labelTextSize="@dimen/text_size_medium" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/remote_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="textPassword"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/default_text_color_light"
+                    android:hint="@string/welcome_remote_server_password" />
+            </android.support.design.widget.TextInputLayout>
+
         </LinearLayout>
 
         <CheckBox
@@ -174,16 +179,17 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/remote_directory_input"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelText="@string/welcome_remote_server_directory"
-                app:flw_labelTextColor="@color/default_text_color_light"
-                app:flw_labelTextSize="@dimen/text_size_medium" />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/remote_directory_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/default_text_color_light"
+                    android:hint="@string/welcome_remote_server_directory" />
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/startScreen_title"
@@ -221,7 +227,6 @@
                 android:id="@+id/localServer_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="70dp"
                 android:layout_marginTop="2dp"
                 android:checked="false" />
 
@@ -257,21 +262,22 @@
                     android:layout_gravity="right"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_status"
+                    android:background="@drawable/button_status_dark"
                     android:text="@string/add"
                     android:textSize="10dp" />
 
-                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                    android:id="@+id/local_server_input"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textNoSuggestions"
-                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                    app:flw_labelText="@string/welcome_local_server_address"
-                    app:flw_labelTextColor="@color/default_text_color_light"
-                    app:flw_labelTextSize="@dimen/text_size_medium" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/local_server_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textNoSuggestions"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/default_text_color_light"
+                        android:hint="@string/welcome_local_server_address" />
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -301,43 +307,48 @@
                             android:paddingTop="5dp" />
                     </LinearLayout>
 
-                    <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                        android:id="@+id/local_port_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="numberSigned"
-                        app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                        app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                        app:flw_labelText="@string/welcome_local_server_port"
-                        app:flw_labelTextColor="@color/default_text_color_light"
-                        app:flw_labelTextSize="@dimen/text_size_medium" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/local_port_input"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:inputType="numberSigned"
+                            android:textColor="@color/default_text_color_light"
+                            android:hint="@string/welcome_local_server_port" />
+                    </android.support.design.widget.TextInputLayout>
+
                 </LinearLayout>
 
-                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                    android:id="@+id/local_username_input"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textNoSuggestions"
-                    android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                    app:flw_labelText="@string/welcome_local_server_username"
-                    app:flw_labelTextColor="@color/default_text_color_light"
-                    app:flw_labelTextSize="@dimen/text_size_medium" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/local_username_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:inputType="textNoSuggestions"
+                        android:minWidth="@dimen/width_min_welcomePage3_username_input"
+                        android:textColor="@color/default_text_color_light"
+                        android:hint="@string/welcome_local_server_username" />
+                </android.support.design.widget.TextInputLayout>
 
-                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                    android:id="@+id/local_password_input"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textPassword"
-                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                    app:flw_labelText="@string/welcome_local_server_password"
-                    app:flw_labelTextColor="@color/default_text_color_light"
-                    app:flw_labelTextSize="@dimen/text_size_medium" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/local_password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:inputType="textPassword"
+                        android:textColor="@color/default_text_color_light"
+                        android:hint="@string/welcome_local_server_password" />
+                </android.support.design.widget.TextInputLayout>
 
                 <CheckBox
                     android:id="@+id/showpasswordlocal"
@@ -349,17 +360,18 @@
                     android:textColor="@color/default_text_color_light"
                     android:textSize="@dimen/text_size_small" />
 
-                <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                    android:id="@+id/local_directory_input"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textNoSuggestions"
-                    app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                    app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                    app:flw_labelText="@string/welcome_local_server_directory"
-                    app:flw_labelTextColor="@color/default_text_color_light"
-                    app:flw_labelTextSize="@dimen/text_size_medium" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/local_directory_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:inputType="textNoSuggestions"
+                        android:textColor="@color/default_text_color_light"
+                        android:hint="@string/welcome_local_server_password" />
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

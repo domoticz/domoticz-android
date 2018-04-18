@@ -157,7 +157,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.android.volley:volley:1.0.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
-    implementation 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
     implementation 'com.larswerkman:lobsterpicker:1.0.1'
 
     implementation 'com.github.zurche:plain-pie:v0.2.2'

@@ -30,18 +30,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-            android:id="@+id/securitypin"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/linearLayout5"
-            android:layout_toStartOf="@+id/linearLayout5"
-            android:inputType="number"
-            app:flw_inputWidgetTextColor="@color/default_text_color_light"
-            app:flw_inputWidgetTextSize="@dimen/text_size_large"
-            app:flw_labelText="@string/security_pin"
-            app:flw_labelTextColor="@color/default_text_color_light"
-            app:flw_labelTextSize="@dimen/text_size_medium" />
+            android:id="@+id/input_securitypin"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/securitypin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/linearLayout5"
+                android:layout_toStartOf="@+id/linearLayout5"
+                android:inputType="number"
+                android:textColor="@color/default_text_color_light"
+                android:hint="@string/security_pin" />
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout5"
@@ -92,7 +94,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/securitypin"
+            android:layout_below="@+id/input_securitypin"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/linearLayout5"
             android:gravity="center_horizontal"

@@ -1,0 +1,261 @@
+---- AspectJ Properties ---
+AspectJ Compiler 1.8.5 built on Thursday Jan 29, 2015 at 01:03:58 GMT
+---- Dump Properties ---
+Dump file: ajcore.20180418.164049.450.txt
+Dump reason: java.lang.IllegalStateException
+Dump on exception: true
+Dump at exit condition: abort
+---- Exception Information ---
+java.lang.IllegalStateException: Expecting .,<, or ;, but found firebaseperf while unpacking <MessageType:Lcom/google/android/gms/internal/firebase-perf/zzak<TMessageType;TBuilderType;>;BuilderType:Lcom/google/android/gms/internal/firebase-perf/zzal<TMessageType;TBuilderType;>;>Ljava/lang/Object;Lcom/google/android/gms/internal/firebase-perf/zzde;
+	at org.aspectj.util.GenericSignatureParser.parseClassTypeSignature(GenericSignatureParser.java:221)
+	at org.aspectj.util.GenericSignatureParser.parseFieldTypeSignature(GenericSignatureParser.java:155)
+	at org.aspectj.util.GenericSignatureParser.parseFormalTypeParameter(GenericSignatureParser.java:130)
+	at org.aspectj.util.GenericSignatureParser.parseAsClassSignature(GenericSignatureParser.java:51)
+	at org.aspectj.weaver.UnresolvedType.forGenericTypeSignature(UnresolvedType.java:274)
+	at org.aspectj.weaver.bcel.BcelWorld.addSourceObjectType(BcelWorld.java:482)
+	at org.aspectj.weaver.bcel.BcelWorld.addSourceObjectType(BcelWorld.java:456)
+	at org.aspectj.weaver.bcel.BcelWeaver.addAspectsFromJarFile(BcelWeaver.java:263)
+	at org.aspectj.weaver.bcel.BcelWeaver.addLibraryJarFile(BcelWeaver.java:236)
+	at org.aspectj.ajdt.internal.core.builder.AjBuildManager.initBcelWorld(AjBuildManager.java:874)
+	at org.aspectj.ajdt.internal.core.builder.AjBuildManager.performBuild(AjBuildManager.java:249)
+	at org.aspectj.ajdt.internal.core.builder.AjBuildManager.batchBuild(AjBuildManager.java:185)
+	at org.aspectj.ajdt.ajc.AjdtCommand.doCommand(AjdtCommand.java:112)
+	at org.aspectj.ajdt.ajc.AjdtCommand.runCommand(AjdtCommand.java:60)
+	at org.aspectj.tools.ajc.Main.run(Main.java:371)
+	at org.aspectj.tools.ajc.Main$run.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:133)
+	at hugo.weaving.plugin.HugoPlugin$_apply_closure2_closure3.doCall(HugoPlugin.groovy:55)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1022)
+	at groovy.lang.Closure.call(Closure.java:414)
+	at groovy.lang.Closure.call(Closure.java:430)
+	at org.gradle.api.internal.AbstractTask$ClosureTaskAction.execute(AbstractTask.java:718)
+	at org.gradle.api.internal.AbstractTask$ClosureTaskAction.execute(AbstractTask.java:691)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter$1.run(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:336)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:328)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.execute(DefaultBuildOperationExecutor.java:199)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.run(DefaultBuildOperationExecutor.java:110)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeAction(ExecuteActionsTaskExecuter.java:110)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:92)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:70)
+	at org.gradle.api.internal.tasks.execution.OutputDirectoryCreatingTaskExecuter.execute(OutputDirectoryCreatingTaskExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipUpToDateTaskExecuter.execute(SkipUpToDateTaskExecuter.java:62)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskOutputCachingStateExecuter.execute(ResolveTaskOutputCachingStateExecuter.java:54)
+	at org.gradle.api.internal.tasks.execution.ValidatingTaskExecuter.execute(ValidatingTaskExecuter.java:60)
+	at org.gradle.api.internal.tasks.execution.SkipEmptySourceFilesTaskExecuter.execute(SkipEmptySourceFilesTaskExecuter.java:97)
+	at org.gradle.api.internal.tasks.execution.CleanupStaleOutputsExecuter.execute(CleanupStaleOutputsExecuter.java:87)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskArtifactStateTaskExecuter.execute(ResolveTaskArtifactStateTaskExecuter.java:52)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:52)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:54)
+	at org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter.execute(ExecuteAtMostOnceTaskExecuter.java:43)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:34)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter$EventFiringTaskWorker$1.run(DefaultTaskGraphExecuter.java:248)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:336)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:328)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.execute(DefaultBuildOperationExecutor.java:199)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.run(DefaultBuildOperationExecutor.java:110)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter$EventFiringTaskWorker.execute(DefaultTaskGraphExecuter.java:241)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter$EventFiringTaskWorker.execute(DefaultTaskGraphExecuter.java:230)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.processTask(DefaultTaskPlanExecutor.java:123)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.access$200(DefaultTaskPlanExecutor.java:79)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker$1.execute(DefaultTaskPlanExecutor.java:104)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker$1.execute(DefaultTaskPlanExecutor.java:98)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionPlan.execute(DefaultTaskExecutionPlan.java:626)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionPlan.executeWithTask(DefaultTaskExecutionPlan.java:581)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.run(DefaultTaskPlanExecutor.java:98)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
+	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
+	at java.lang.Thread.run(Thread.java:745)
+---- System Properties ---
+java.vendor=JetBrains s.r.o
+sun.java.launcher=SUN_STANDARD
+sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+idea.paths.selector=AndroidStudio3.1
+jnidispatch.path=C:\Users\m.heinis.JFHILLEBRAND\.AndroidStudio3.1\system\tmp\jna5276570961164636227.dll
+winp.unpack.dll.to.parent.dir=false
+os.name=Windows 10
+sun.boot.class.path=G:\Other\Android\Android Studio1\jre\jre\lib\resources.jar;G:\Other\Android\Android Studio1\jre\jre\lib\rt.jar;G:\Other\Android\Android Studio1\jre\jre\lib\sunrsasign.jar;G:\Other\Android\Android Studio1\jre\jre\lib\jsse.jar;G:\Other\Android\Android Studio1\jre\jre\lib\jce.jar;G:\Other\Android\Android Studio1\jre\jre\lib\charsets.jar;G:\Other\Android\Android Studio1\jre\jre\lib\jfr.jar;G:\Other\Android\Android Studio1\jre\jre\classes
+sun.desktop=windows
+java.vm.specification.vendor=Oracle Corporation
+java.runtime.version=1.8.0_152-release-1024-b02
+jna.loaded=true
+jb.vmOptionsFile=G:\Other\Android\Android Studio1\bin\studio64.exe.vmoptions
+io.netty.serviceThreadPrefix=Netty 
+user.name=m.heinis
+java.rmi.server.disableHttp=true
+user.language=en
+sun.boot.library.path=G:\Other\Android\Android Studio1\jre\jre\bin
+idea.fatal.error.notification=disabled
+jna.nosys=true
+java.version=1.8.0_152-release
+swing.bufferPerWindow=true
+user.timezone=Europe/Berlin
+java.net.preferIPv4Stack=true
+sun.arch.data.model=64
+java.util.concurrent.ForkJoinPool.common.threadFactory=com.intellij.concurrency.IdeaForkJoinWorkerThreadFactory
+jna.tmpdir=C:\Users\m.heinis.JFHILLEBRAND\.AndroidStudio3.1\system\tmp
+java.endorsed.dirs=G:\Other\Android\Android Studio1\jre\jre\lib\endorsed
+ide.native.launcher=true
+sun.cpu.isalist=amd64
+sun.jnu.encoding=Cp1252
+file.encoding.pkg=sun.io
+file.separator=\
+java.specification.name=Java Platform API Specification
+java.class.version=52.0
+user.country=US
+jna.boot.library.path=
+java.home=G:\Other\Android\Android Studio1\jre\jre
+java.vm.info=mixed mode
+os.version=10.0
+path.separator=;
+java.vm.version=25.152-b02
+idea.no.launcher=false
+user.variant=
+idea.max.content.load.filesize=20000
+java.awt.printerjob=sun.awt.windows.WPrinterJob
+javax.swing.rebaseCssSizeMap=true
+sun.io.unicode.encoding=UnicodeLittle
+awt.toolkit=sun.awt.windows.WToolkit
+idea.cycle.buffer.size=1024
+ide.new.welcome.screen.force=true
+io.netty.processId=50020
+log4j.defaultInitOverride=true
+user.script=
+idea.platform.prefix=AndroidStudio
+idea.dynamic.classpath=false
+user.home=C:\Users\m.heinis.JFHILLEBRAND
+__idea.mac.env.lock=unlocked
+java.specification.vendor=Oracle Corporation
+library.jansi.path=C:\Users\m.heinis.JFHILLEBRAND\.gradle\native\jansi\1.14\windows64
+java.library.path=G:\Other\Android\Android Studio1\jre\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files (x86)\Google\Google Apps Sync\;C:\Program Files\WIDCOMM\Bluetooth Software\;C:\Program Files\WIDCOMM\Bluetooth Software\syswow64;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Users\m.heinis.JFHILLEBRAND\AppData\Local\Microsoft\WindowsApps;C:\Users\m.heinis.JFHILLEBRAND\AppData\Local\Programs\Python\Python35-32;C:\Users\m.heinis.JFHILLEBRAND\AppData\Local\GitHubDesktop\bin;.
+java.vendor.url=https://www.jetbrains.com/
+java.vm.vendor=JetBrains s.r.o
+java.runtime.name=OpenJDK Runtime Environment
+sun.java.command=org.gradle.launcher.daemon.bootstrap.GradleDaemon 4.4
+java.class.path=C:\Users\m.heinis.JFHILLEBRAND\.gradle\wrapper\dists\gradle-4.4-all\9br9xq1tocpiv8o6njlyu5op1\gradle-4.4\lib\gradle-launcher-4.4.jar
+io.netty.machineId=28:f0:76:ff:fe:16:65:0e
+java.vm.specification.name=Java Virtual Machine Specification
+idea.xdebug.key=-Xdebug
+idea.popup.weight=heavy
+java.vm.specification.version=1.8
+sun.cpu.endian=little
+sun.os.patch.level=
+java.awt.headless=true
+java.io.tmpdir=C:\Users\MHEINI~1.JFH\AppData\Local\Temp\
+java.vendor.url.bug=https://youtrack.jetbrains.com
+java.rmi.server.hostname=localhost
+os.arch=amd64
+java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment
+idea.max.intellisense.filesize=2500
+java.ext.dirs=G:\Other\Android\Android Studio1\jre\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext
+idea.jre.check=true
+user.dir=C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android
+line.separator=
+
+java.vm.name=OpenJDK 64-Bit Server VM
+file.encoding=Cp1252
+studio.record.file=C:\Users\m.heinis.JFHILLEBRAND\.AndroidStudio3.1\system\tmp\AndroidStudio.f4e0b341-f08e-48b6-b72f-e0ede18b0906
+java.specification.version=1.8
+---- Command Line ---
+-showWeaveInfo
+-1.5
+-inpath
+C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\app\build\intermediates\classes\paid\debug
+-aspectpath
+C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\hugo-runtime-1.2.1.aar\7bb7e79bd6cc8c17012176dd5b5f7236\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.jakewharton.hugo\hugo-annotations\1.2.1\b01150795c5cdca1eb7e501bf00f105ff0e31501\hugo-annotations-1.2.1.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\org.aspectj\aspectjrt\1.8.5\39a8ff2d1f79267907f5573c090b342b040b9682\aspectjrt-1.8.5.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-crash-15.0.0.aar\f2f89cce0c6e66380f6dd02cb8df2709\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-perf-15.0.0.aar\de633146a816eecdf4195a862d05a30d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-messaging-15.0.0.aar\bfe877e165840ad9b36ad4ec756faf3d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-analytics-15.0.0.aar\cbc4d16e69707aad9dc63e157f994e18\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-wearable-15.0.0.aar\045a134d9a23810b148b650aa7de385c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-gcm-15.0.0.aar\6b1da1d2693dd89d2e43b66e2f7bc2a1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-15.0.0.aar\f6b3d008ae8e4e2732219275e974207c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-core-15.0.0.aar\104edf3328c02ed931c980e9bf2062bd\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-analytics-15.0.0.aar\09a868266680065c62b98172bf1713dc\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-flags-15.0.0.aar\cc026342af3674627d2e033f51c8cb6d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-15.0.0.aar\ac0809cbf5265d9c80e3fe32aad0a491\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-iid-15.0.0.aar\2d77e39fa56c4f855abe60399aee8dc2\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-common-15.0.0.aar\6682d0ad665fede62b767f9ad3da56be\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-clearcut-15.0.0.aar\9c7cbf5fe7a445cac923dbc764924f61\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-phenotype-15.0.0.aar\793260ad47bffacdfaafcb6dc70d9ff1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-analytics-impl-15.0.0.aar\ee56a1f30777f784cbe693113e3c8bc2\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-iid-15.0.0.aar\f17cf69ebb43274b81a8203edc9a9bba\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\leku-4.0.1.aar\8ad0d59553726fd2dd79ea80bdc53a7c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.0.aar\c7b4fbc9c0b77da317b22b63f949d7a7\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.0.aar\b72046114026c33b32c60da1da812c5d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.0.aar\2182e5d8cc668dcd25a94754551507bf\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.0.aar\6f83c9252d13051f6a99ddce00db3dc8\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.0.aar\7fbeca2f4eafb8353b5a7c88f25a7bf4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-stats-15.0.0.aar\7ce4d9217643b1fdba02db23cb06da18\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-identifier-15.0.0.aar\74208044582a2b3a139ccc800148e56d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-lite-15.0.0.aar\2b03ae0e10aa108c02f54f8a3c90274f\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-gass-15.0.0.aar\cb41a6a107a22f7411b5bc3c05492c80\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.0.aar\809239bf328c4a6a960241082c731c6c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.0.aar\3e3c6c2004a8b1d28abfbfa380ae085e\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\zxing-1.9.aar\23a6d108e7ab7a4a1e4e8a9dfa4cf1e2\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\core-1.9.aar\80ba350ad4915cd1522af8fea989b4f3\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\materialdrawer-5.8.2.aar\2b2299e5edf0a9e293d8356831da28af\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\09cfc8c23eaff426e0a80c44203ba5fe\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\digitus-0.3.0.aar\cd9c0dd7c6618cc80d2b6e3f856a97fa\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\core-0.9.1.0.aar\c1cd485b594a2cd5d208d72a23ce86f5\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-v13-27.1.1.aar\0c55a8361f92eabf7afc86ae436401a1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\ba7bdd0d09dc9f1bf0b60c01187bd224\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\MaterialList-v3.2.2.aar\116a5622de5aa9dca883bf7171c9486b\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\LikeButton-0.2.3.aar\5108778fce4139aa104de3d9d0b9b227\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\recyclerview-animators-2.2.4.aar\299920034624987c6c6bce8f9897e7e9\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\PiracyChecker-1.1.aar\49be575b67271faf42aca423a3fb24a7\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\PermissionHelper-1.1.0.aar\72b561802b861a091fc08a9795895766\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\SpeechRecognitionView-1.0.2.aar\77d37b4aa96f457d0a834b2d50adfdee\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\library-1.3.0.aar\ccb96cf1ef91099ccacde63d23b61451\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\c530c16c628dba7eabadcb57af5b98a8\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.1.aar\e4dd4e1f6bc886cbce591a221879045b\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\ff066216fb266b923be38329832f8a17\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\3d52248ac64957ce8b9f28815984e56c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\0c30a3da93e4e3c6bfccb75a10dc32bb\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\library-2.4.1.aar\4712875f898a088d3ef9c240f578aeaf\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\android-floatinglabel-widgets-1.6.1.aar\715a8d4a15f156e3f73cc4497852621d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\lobsterpicker-1.0.1.aar\3ab23bd0fdb041a6ca0bcb9558675447\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\plain-pie-v0.2.2.aar\cd44d45f65f04de4ac8e2f382c054f7c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.github.PhilJay\MPAndroidChart\v3.0.2\5d4eb08a326bdbd7fbbddc769666898c9936b282\MPAndroidChart-v3.0.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\android-rate-1.0.1.aar\75e011f763d64132e1e4d46f4e2ed721\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\lib-core-3.1.0.aar\34fbccd74d7702be724d8fdbd00f996f\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\google-material-typeface-2.2.0.3.original.aar\ca3dabcc32858b6d0a0882dee7e672c8\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\shortbread-1.0.2.aar\9f2d3b556433d3990b67e9f960a29ada\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\materialIntro_library\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\libs\MemorizingTrustManager\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\libs\SeekArc_library\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\domoticzapi\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\customtabs-26.1.0.aar\f8426635499b80967eb0f8b267874fc5\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\ed2696a7e99f849a9d0c70752870df30\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\71cbaec6d6b544221a3786c2bd76d344\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\8f21f4b7cc525f78ab6e260ab20d66d1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\890b2fef819d82962e56d69a3b3fd239\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\bcd2856fb297c2459a9a01efe9d33ddc\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\6d39d02919e5c2b3c92f38cce5abba0f\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\f3c56bc5bcfa9543f582c58b8f4d1435\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\a35e435bf3d272aa978506f076694349\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.github.matthiasrobbers\shortbread-annotations\1.0.2\5f58d1abe3454bd61a08df69ba0a5e64f40acfbc\shortbread-annotations-1.0.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\27.1.1\39ded76b5e1ce1c5b2688e1d25cdc20ecee32007\support-annotations-27.1.1.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-measurement-base-15.0.0.aar\2dedc5c0c0a81b6d234d8e821f02dd0e\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-base-15.0.0.aar\af335c054d3efaa98345d28a8516970d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.google.zxing\core\3.2.1\2287494d4f5f9f3a9a2bb6980e3f32053721b315\core-3.2.1.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\materialize-1.0.1.aar\477e85e8b2c50965f567ac93c97d9ad4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\iconics-core-2.8.0.aar\b02dd2fb34cd6ef80e2522615c51b8b4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\fastadapter-2.1.0.aar\8bb89f5cf04210d86d3a599fde9f43ca\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\android-reactive-location2-2.0.aar\6f2f0d124344b00d7e112976813dbf36\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\rxandroid-1.2.1.aar\557a694829a1d0f7fd1088c98a431087\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\rxandroid-2.0.2.aar\0d02838e8a949279b20fd5f0819932ad\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\io.reactivex.rxjava2\rxjava\2.1.9\afd2ab255e6b94b064ea87c2ccd84ac0d163a427\rxjava-2.1.9.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\rxlint-1.6.aar\048aeff77141ce666f99f2c3e5af620a\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\d8814fb8e8df6061f2c224d1de13e817\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\269056296d2e0c5eb5e1455d3d66e7a4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\b38154cf38ed3717ce4ba291363b0c78\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.1.6\2586312cd2b8a511e4c6236736f5a039fc0f2273\rxjava-1.1.6.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\org.reactivestreams\reactive-streams\1.0.2\323964c36556eb0e6209f65c1cef72b53b461ab8\reactive-streams-1.0.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.1.0\edf3f7bfb84a7521d0599efa3b0113a0ee90f85\common-1.1.0.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\f820815c98abc41e46498ad66eff3a4d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.1.0\8007981f7d7540d89cd18471b8e5dcd2b4f99167\common-1.1.0.jar
+-d
+C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\app\build\intermediates\classes\paid\debug
+-classpath
+C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\hugo-runtime-1.2.1.aar\7bb7e79bd6cc8c17012176dd5b5f7236\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.jakewharton.hugo\hugo-annotations\1.2.1\b01150795c5cdca1eb7e501bf00f105ff0e31501\hugo-annotations-1.2.1.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\org.aspectj\aspectjrt\1.8.5\39a8ff2d1f79267907f5573c090b342b040b9682\aspectjrt-1.8.5.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-crash-15.0.0.aar\f2f89cce0c6e66380f6dd02cb8df2709\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-perf-15.0.0.aar\de633146a816eecdf4195a862d05a30d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-messaging-15.0.0.aar\bfe877e165840ad9b36ad4ec756faf3d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-analytics-15.0.0.aar\cbc4d16e69707aad9dc63e157f994e18\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-wearable-15.0.0.aar\045a134d9a23810b148b650aa7de385c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-gcm-15.0.0.aar\6b1da1d2693dd89d2e43b66e2f7bc2a1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-15.0.0.aar\f6b3d008ae8e4e2732219275e974207c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-core-15.0.0.aar\104edf3328c02ed931c980e9bf2062bd\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-analytics-15.0.0.aar\09a868266680065c62b98172bf1713dc\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-flags-15.0.0.aar\cc026342af3674627d2e033f51c8cb6d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-15.0.0.aar\ac0809cbf5265d9c80e3fe32aad0a491\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-iid-15.0.0.aar\2d77e39fa56c4f855abe60399aee8dc2\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\firebase-common-15.0.0.aar\6682d0ad665fede62b767f9ad3da56be\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-clearcut-15.0.0.aar\9c7cbf5fe7a445cac923dbc764924f61\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-phenotype-15.0.0.aar\793260ad47bffacdfaafcb6dc70d9ff1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-analytics-impl-15.0.0.aar\ee56a1f30777f784cbe693113e3c8bc2\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-iid-15.0.0.aar\f17cf69ebb43274b81a8203edc9a9bba\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\leku-4.0.1.aar\8ad0d59553726fd2dd79ea80bdc53a7c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.0.aar\c7b4fbc9c0b77da317b22b63f949d7a7\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.0.aar\b72046114026c33b32c60da1da812c5d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.0.aar\2182e5d8cc668dcd25a94754551507bf\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.0.aar\6f83c9252d13051f6a99ddce00db3dc8\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.0.aar\7fbeca2f4eafb8353b5a7c88f25a7bf4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-stats-15.0.0.aar\7ce4d9217643b1fdba02db23cb06da18\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-identifier-15.0.0.aar\74208044582a2b3a139ccc800148e56d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-lite-15.0.0.aar\2b03ae0e10aa108c02f54f8a3c90274f\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-gass-15.0.0.aar\cb41a6a107a22f7411b5bc3c05492c80\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.0.aar\809239bf328c4a6a960241082c731c6c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.0.aar\3e3c6c2004a8b1d28abfbfa380ae085e\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\zxing-1.9.aar\23a6d108e7ab7a4a1e4e8a9dfa4cf1e2\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\core-1.9.aar\80ba350ad4915cd1522af8fea989b4f3\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\materialdrawer-5.8.2.aar\2b2299e5edf0a9e293d8356831da28af\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\09cfc8c23eaff426e0a80c44203ba5fe\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\digitus-0.3.0.aar\cd9c0dd7c6618cc80d2b6e3f856a97fa\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\core-0.9.1.0.aar\c1cd485b594a2cd5d208d72a23ce86f5\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-v13-27.1.1.aar\0c55a8361f92eabf7afc86ae436401a1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\ba7bdd0d09dc9f1bf0b60c01187bd224\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\MaterialList-v3.2.2.aar\116a5622de5aa9dca883bf7171c9486b\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\LikeButton-0.2.3.aar\5108778fce4139aa104de3d9d0b9b227\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\recyclerview-animators-2.2.4.aar\299920034624987c6c6bce8f9897e7e9\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\PiracyChecker-1.1.aar\49be575b67271faf42aca423a3fb24a7\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\PermissionHelper-1.1.0.aar\72b561802b861a091fc08a9795895766\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\SpeechRecognitionView-1.0.2.aar\77d37b4aa96f457d0a834b2d50adfdee\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\library-1.3.0.aar\ccb96cf1ef91099ccacde63d23b61451\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\c530c16c628dba7eabadcb57af5b98a8\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.1.aar\e4dd4e1f6bc886cbce591a221879045b\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\ff066216fb266b923be38329832f8a17\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\3d52248ac64957ce8b9f28815984e56c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\0c30a3da93e4e3c6bfccb75a10dc32bb\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\library-2.4.1.aar\4712875f898a088d3ef9c240f578aeaf\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\android-floatinglabel-widgets-1.6.1.aar\715a8d4a15f156e3f73cc4497852621d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\lobsterpicker-1.0.1.aar\3ab23bd0fdb041a6ca0bcb9558675447\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\plain-pie-v0.2.2.aar\cd44d45f65f04de4ac8e2f382c054f7c\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.github.PhilJay\MPAndroidChart\v3.0.2\5d4eb08a326bdbd7fbbddc769666898c9936b282\MPAndroidChart-v3.0.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\android-rate-1.0.1.aar\75e011f763d64132e1e4d46f4e2ed721\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\lib-core-3.1.0.aar\34fbccd74d7702be724d8fdbd00f996f\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\google-material-typeface-2.2.0.3.original.aar\ca3dabcc32858b6d0a0882dee7e672c8\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\shortbread-1.0.2.aar\9f2d3b556433d3990b67e9f960a29ada\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\materialIntro_library\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\libs\MemorizingTrustManager\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\libs\SeekArc_library\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\Documents\GitHub\domoticz-android\domoticzapi\build\intermediates\intermediate-jars\debug\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\customtabs-26.1.0.aar\f8426635499b80967eb0f8b267874fc5\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\ed2696a7e99f849a9d0c70752870df30\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\71cbaec6d6b544221a3786c2bd76d344\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\8f21f4b7cc525f78ab6e260ab20d66d1\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\890b2fef819d82962e56d69a3b3fd239\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\bcd2856fb297c2459a9a01efe9d33ddc\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\6d39d02919e5c2b3c92f38cce5abba0f\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\f3c56bc5bcfa9543f582c58b8f4d1435\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\a35e435bf3d272aa978506f076694349\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.github.matthiasrobbers\shortbread-annotations\1.0.2\5f58d1abe3454bd61a08df69ba0a5e64f40acfbc\shortbread-annotations-1.0.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\27.1.1\39ded76b5e1ce1c5b2688e1d25cdc20ecee32007\support-annotations-27.1.1.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-measurement-base-15.0.0.aar\2dedc5c0c0a81b6d234d8e821f02dd0e\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\play-services-ads-base-15.0.0.aar\af335c054d3efaa98345d28a8516970d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\com.google.zxing\core\3.2.1\2287494d4f5f9f3a9a2bb6980e3f32053721b315\core-3.2.1.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\materialize-1.0.1.aar\477e85e8b2c50965f567ac93c97d9ad4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\iconics-core-2.8.0.aar\b02dd2fb34cd6ef80e2522615c51b8b4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\fastadapter-2.1.0.aar\8bb89f5cf04210d86d3a599fde9f43ca\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\android-reactive-location2-2.0.aar\6f2f0d124344b00d7e112976813dbf36\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\rxandroid-1.2.1.aar\557a694829a1d0f7fd1088c98a431087\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\rxandroid-2.0.2.aar\0d02838e8a949279b20fd5f0819932ad\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\io.reactivex.rxjava2\rxjava\2.1.9\afd2ab255e6b94b064ea87c2ccd84ac0d163a427\rxjava-2.1.9.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\rxlint-1.6.aar\048aeff77141ce666f99f2c3e5af620a\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\d8814fb8e8df6061f2c224d1de13e817\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\269056296d2e0c5eb5e1455d3d66e7a4\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\b38154cf38ed3717ce4ba291363b0c78\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.1.6\2586312cd2b8a511e4c6236736f5a039fc0f2273\rxjava-1.1.6.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\org.reactivestreams\reactive-streams\1.0.2\323964c36556eb0e6209f65c1cef72b53b461ab8\reactive-streams-1.0.2.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.1.0\edf3f7bfb84a7521d0599efa3b0113a0ee90f85\common-1.1.0.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\f820815c98abc41e46498ad66eff3a4d\jars\classes.jar;C:\Users\m.heinis.JFHILLEBRAND\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.1.0\8007981f7d7540d89cd18471b8e5dcd2b4f99167\common-1.1.0.jar
+-bootclasspath
+G:\Other\Android\sdk\platforms\android-27\android.jar
+---- Full Classpath ---
+Empty
+---- Compiler Messages ---
+abort ABORT -- (IllegalStateException) Expecting .,<, or ;, but found firebaseperf while unpacking <MessageType:Lcom/google/android/gms/internal/firebase-perf/zzak<TMessageType;TBuilderType;>;BuilderType:Lcom/google/android/gms/internal/firebase-perf/zzal<TMessageType;TBuilderType;>;>Ljava/lang/Object;Lcom/google/android/gms/internal/firebase-perf/zzde;
+Expecting .,<, or ;, but found firebaseperf while unpacking <MessageType:Lcom/google/android/gms/internal/firebase-perf/zzak<TMessageType;TBuilderType;>;BuilderType:Lcom/google/android/gms/internal/firebase-perf/zzal<TMessageType;TBuilderType;>;>Ljava/lang/Object;Lcom/google/android/gms/internal/firebase-perf/zzde;
+java.lang.IllegalStateException: Expecting .,<, or ;, but found firebaseperf while unpacking <MessageType:Lcom/google/android/gms/internal/firebase-perf/zzak<TMessageType;TBuilderType;>;BuilderType:Lcom/google/android/gms/internal/firebase-perf/zzal<TMessageType;TBuilderType;>;>Ljava/lang/Object;Lcom/google/android/gms/internal/firebase-perf/zzde;
+	at org.aspectj.util.GenericSignatureParser.parseClassTypeSignature(GenericSignatureParser.java:221)
+	at org.aspectj.util.GenericSignatureParser.parseFieldTypeSignature(GenericSignatureParser.java:155)
+	at org.aspectj.util.GenericSignatureParser.parseFormalTypeParameter(GenericSignatureParser.java:130)
+	at org.aspectj.util.GenericSignatureParser.parseAsClassSignature(GenericSignatureParser.java:51)
+	at org.aspectj.weaver.UnresolvedType.forGenericTypeSignature(UnresolvedType.java:274)
+	at org.aspectj.weaver.bcel.BcelWorld.addSourceObjectType(BcelWorld.java:482)
+	at org.aspectj.weaver.bcel.BcelWorld.addSourceObjectType(BcelWorld.java:456)
+	at org.aspectj.weaver.bcel.BcelWeaver.addAspectsFromJarFile(BcelWeaver.java:263)
+	at org.aspectj.weaver.bcel.BcelWeaver.addLibraryJarFile(BcelWeaver.java:236)
+	at org.aspectj.ajdt.internal.core.builder.AjBuildManager.initBcelWorld(AjBuildManager.java:874)
+	at org.aspectj.ajdt.internal.core.builder.AjBuildManager.performBuild(AjBuildManager.java:249)
+	at org.aspectj.ajdt.internal.core.builder.AjBuildManager.batchBuild(AjBuildManager.java:185)
+	at org.aspectj.ajdt.ajc.AjdtCommand.doCommand(AjdtCommand.java:112)
+	at org.aspectj.ajdt.ajc.AjdtCommand.runCommand(AjdtCommand.java:60)
+	at org.aspectj.tools.ajc.Main.run(Main.java:371)
+	at org.aspectj.tools.ajc.Main$run.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:48)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:113)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:133)
+	at hugo.weaving.plugin.HugoPlugin$_apply_closure2_closure3.doCall(HugoPlugin.groovy:55)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:93)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:325)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:294)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1022)
+	at groovy.lang.Closure.call(Closure.java:414)
+	at groovy.lang.Closure.call(Closure.java:430)
+	at org.gradle.api.internal.AbstractTask$ClosureTaskAction.execute(AbstractTask.java:718)
+	at org.gradle.api.internal.AbstractTask$ClosureTaskAction.execute(AbstractTask.java:691)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter$1.run(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:336)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:328)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.execute(DefaultBuildOperationExecutor.java:199)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.run(DefaultBuildOperationExecutor.java:110)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeAction(ExecuteActionsTaskExecuter.java:110)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:92)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:70)
+	at org.gradle.api.internal.tasks.execution.OutputDirectoryCreatingTaskExecuter.execute(OutputDirectoryCreatingTaskExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipUpToDateTaskExecuter.execute(SkipUpToDateTaskExecuter.java:62)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskOutputCachingStateExecuter.execute(ResolveTaskOutputCachingStateExecuter.java:54)
+	at org.gradle.api.internal.tasks.execution.ValidatingTaskExecuter.execute(ValidatingTaskExecuter.java:60)
+	at org.gradle.api.internal.tasks.execution.SkipEmptySourceFilesTaskExecuter.execute(SkipEmptySourceFilesTaskExecuter.java:97)
+	at org.gradle.api.internal.tasks.execution.CleanupStaleOutputsExecuter.execute(CleanupStaleOutputsExecuter.java:87)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskArtifactStateTaskExecuter.execute(ResolveTaskArtifactStateTaskExecuter.java:52)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:52)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:54)
+	at org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter.execute(ExecuteAtMostOnceTaskExecuter.java:43)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:34)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter$EventFiringTaskWorker$1.run(DefaultTaskGraphExecuter.java:248)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:336)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor$RunnableBuildOperationWorker.execute(DefaultBuildOperationExecutor.java:328)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.execute(DefaultBuildOperationExecutor.java:199)
+	at org.gradle.internal.progress.DefaultBuildOperationExecutor.run(DefaultBuildOperationExecutor.java:110)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter$EventFiringTaskWorker.execute(DefaultTaskGraphExecuter.java:241)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter$EventFiringTaskWorker.execute(DefaultTaskGraphExecuter.java:230)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.processTask(DefaultTaskPlanExecutor.java:123)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.access$200(DefaultTaskPlanExecutor.java:79)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker$1.execute(DefaultTaskPlanExecutor.java:104)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker$1.execute(DefaultTaskPlanExecutor.java:98)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionPlan.execute(DefaultTaskExecutionPlan.java:626)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionPlan.executeWithTask(DefaultTaskExecutionPlan.java:581)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$TaskExecutorWorker.run(DefaultTaskPlanExecutor.java:98)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
+	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
+	at java.lang.Thread.run(Thread.java:745)
+

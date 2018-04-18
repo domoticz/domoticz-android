@@ -40,6 +40,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -47,7 +48,6 @@ import android.widget.Switch;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
-import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,7 +74,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
-    private FloatingLabelEditText remote_server_input, remote_port_input,
+    private EditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
             local_username_input, local_port_input, local_directory_input, server_name_input;
@@ -145,18 +145,18 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
     private void getLayoutReferences() {
         Button saveButton = (Button) v.findViewById(R.id.save_server);
-        server_name_input = (FloatingLabelEditText) v.findViewById(R.id.server_name_input);
-        remote_server_input = (FloatingLabelEditText) v.findViewById(R.id.remote_server_input);
-        remote_port_input = (FloatingLabelEditText) v.findViewById(R.id.remote_port_input);
-        remote_username_input = (FloatingLabelEditText) v.findViewById(R.id.remote_username_input);
-        remote_password_input = (FloatingLabelEditText) v.findViewById(R.id.remote_password_input);
-        remote_directory_input = (FloatingLabelEditText) v.findViewById(R.id.remote_directory_input);
+        server_name_input = (EditText) v.findViewById(R.id.server_name_input);
+        remote_server_input = (EditText) v.findViewById(R.id.remote_server_input);
+        remote_port_input = (EditText) v.findViewById(R.id.remote_port_input);
+        remote_username_input = (EditText) v.findViewById(R.id.remote_username_input);
+        remote_password_input = (EditText) v.findViewById(R.id.remote_password_input);
+        remote_directory_input = (EditText) v.findViewById(R.id.remote_directory_input);
         remote_protocol_spinner = (Spinner) v.findViewById(R.id.remote_protocol_spinner);
-        local_server_input = (FloatingLabelEditText) v.findViewById(R.id.local_server_input);
-        local_port_input = (FloatingLabelEditText) v.findViewById(R.id.local_port_input);
-        local_username_input = (FloatingLabelEditText) v.findViewById(R.id.local_username_input);
-        local_password_input = (FloatingLabelEditText) v.findViewById(R.id.local_password_input);
-        local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
+        local_server_input = (EditText) v.findViewById(R.id.local_server_input);
+        local_port_input = (EditText) v.findViewById(R.id.local_port_input);
+        local_username_input = (EditText) v.findViewById(R.id.local_username_input);
+        local_password_input = (EditText) v.findViewById(R.id.local_password_input);
+        local_directory_input = (EditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
         CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
@@ -228,9 +228,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    remote_password_input.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    remote_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
-                    remote_password_input.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
                 }
             }
         });
@@ -238,9 +238,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    local_password_input.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    local_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
-                    local_password_input.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    local_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
                 }
             }
         });
@@ -291,26 +291,24 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void setPreferenceValues() {
         if (newServer != null) {
             isUpdateRequest = true;
-            server_name_input.setInputWidgetText(newServer.getServerName());
-            server_name_input.getInputWidget().setEnabled(false);//we dont allow updates on the key
-            remote_username_input.setInputWidgetText(newServer.getRemoteServerUsername());
-            remote_password_input.setInputWidgetText(newServer.getRemoteServerPassword());
-            remote_server_input.setInputWidgetText(newServer.getRemoteServerUrl());
+            server_name_input.setText(newServer.getServerName());
+            remote_username_input.setText(newServer.getRemoteServerUsername());
+            remote_password_input.setText(newServer.getRemoteServerPassword());
+            remote_server_input.setText(newServer.getRemoteServerUrl());
             remote_server_input.requestFocus();
-            remote_port_input.setInputWidgetText(newServer.getRemoteServerPort());
-            remote_directory_input.setInputWidgetText(newServer.getRemoteServerDirectory());
+            remote_port_input.setText(newServer.getRemoteServerPort());
+            remote_directory_input.setText(newServer.getRemoteServerDirectory());
 
-            local_username_input.setInputWidgetText(newServer.getLocalServerUsername());
-            local_password_input.setInputWidgetText(newServer.getLocalServerPassword());
-            local_server_input.setInputWidgetText(newServer.getLocalServerUrl());
-            local_port_input.setInputWidgetText(newServer.getLocalServerPort());
-            local_directory_input.setInputWidgetText(newServer.getLocalServerDirectory());
+            local_username_input.setText(newServer.getLocalServerUsername());
+            local_password_input.setText(newServer.getLocalServerPassword());
+            local_server_input.setText(newServer.getLocalServerUrl());
+            local_port_input.setText(newServer.getLocalServerPort());
+            local_directory_input.setText(newServer.getLocalServerDirectory());
 
             localServer_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
             advancedSettings_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
         } else {
-            server_name_input.getInputWidget().setEnabled(true);
-            remote_username_input.setInputWidgetText("");
+            remote_username_input.setText("");
         }
 
         setProtocol_spinner();
@@ -434,15 +432,15 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         newServer = new ServerInfo();
         newServer.setRemoteServerUsername(
-                remote_username_input.getInputWidgetText().toString().trim());
+                remote_username_input.getText().toString().trim());
         newServer.setRemoteServerPassword(
-                remote_password_input.getInputWidgetText().toString().trim());
+                remote_password_input.getText().toString().trim());
         newServer.setRemoteServerUrl(
-                remote_server_input.getInputWidgetText().toString().trim());
+                remote_server_input.getText().toString().trim());
         newServer.setRemoteServerPort(
-                remote_port_input.getInputWidgetText().toString().trim());
+                remote_port_input.getText().toString().trim());
         newServer.setRemoteServerDirectory(
-                remote_directory_input.getInputWidgetText().toString().trim());
+                remote_directory_input.getText().toString().trim());
         newServer.setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         newServer.setEnabled(false);
@@ -452,22 +450,22 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             newServer.setIsLocalServerAddressDifferent(false);
         } else {
             newServer.setLocalServerUsername(
-                    local_username_input.getInputWidgetText().toString().trim());
+                    local_username_input.getText().toString().trim());
             newServer.setLocalServerPassword(
-                    local_password_input.getInputWidgetText().toString().trim());
+                    local_password_input.getText().toString().trim());
             newServer.setLocalServerUrl(
-                    local_server_input.getInputWidgetText().toString().trim());
+                    local_server_input.getText().toString().trim());
             newServer.setLocalServerPort(
-                    local_port_input.getInputWidgetText().toString().trim());
+                    local_port_input.getText().toString().trim());
             newServer.setLocalServerDirectory(
-                    local_directory_input.getInputWidgetText().toString().trim());
+                    local_directory_input.getText().toString().trim());
             newServer.setLocalServerSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
             newServer.setIsLocalServerAddressDifferent(true);
         }
 
         newServer.setEnabled(activeServerChanged);
-        newServer.setServerName(server_name_input.getInputWidgetText().toString());
+        newServer.setServerName(server_name_input.getText().toString());
         newServer.setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
     }
 
