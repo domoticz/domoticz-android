@@ -144,6 +144,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crash:$playServicesVersion"
     implementation "com.google.firebase:firebase-perf:$playServicesVersion"
     implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.1"
 
     implementation "com.google.android.gms:play-services-analytics:$playServicesVersion"
     implementation "com.google.android.gms:play-services-wearable:$playServicesVersion"
@@ -204,3 +205,4 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
