@@ -43,18 +43,21 @@ public class CameraActivity extends AppCompatAssistActivity {
         if (bundle == null)
             this.finish();
 
-        //noinspection SpellCheckingInspection
-        String imageUrl = bundle.getString("IMAGEURL");
+        if (bundle != null) {
+            //noinspection SpellCheckingInspection
+            String imageUrl = bundle.getString("IMAGEURL");
 
-        //noinspection SpellCheckingInspection
-        String title = bundle.getString("IMAGETITLE");
-        this.setTitle(title);
+            //noinspection SpellCheckingInspection
+            String title = bundle.getString("IMAGETITLE");
+            this.setTitle(title);
 
-        Camera camera = new Camera();
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
+            Camera camera = new Camera();
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 camera).commit();
-        camera.setImage(imageUrl);
+            camera.setImage(imageUrl);
+        }
     }
 
     @Override

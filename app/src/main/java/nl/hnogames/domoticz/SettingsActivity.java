@@ -47,14 +47,14 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction().replace(android.R.id.content,
-                new Preference()).commit();
+            new Preference()).commit();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finishWithResult(true);
+                finishWithResult();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -62,7 +62,7 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
 
     @Override
     public void onBackPressed() {
-        finishWithResult(true);
+        finishWithResult();
     }
 
     public void reloadSettings() {
@@ -73,9 +73,9 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
         super.finish();
     }
 
-    private void finishWithResult(boolean success) {
+    private void finishWithResult() {
         Bundle conData = new Bundle();
-        conData.putBoolean("RESULT", success);
+        conData.putBoolean("RESULT", true);
         Intent intent = new Intent();
         intent.putExtras(conData);
         setResult(RESULT_OK, intent);

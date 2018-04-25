@@ -75,7 +75,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.server_settings);
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -118,7 +118,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         if ((new SharedPrefUtil(this)).darkThemeEnabled()) {
             listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -157,7 +157,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         removeServerFromListView(serverInfo);
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, String.format(getString(R.string.something_deleted),
-                getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+            getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);

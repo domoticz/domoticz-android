@@ -42,8 +42,8 @@ public class QRCodeCaptureActivity extends AppCompatAssistActivity implements ZX
     public void onCreate(Bundle state) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
-            setFullscreenFlags(true);
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            setFullscreenFlags();
         }
 
         super.onCreate(state);
@@ -51,22 +51,18 @@ public class QRCodeCaptureActivity extends AppCompatAssistActivity implements ZX
         setContentView(mScannerView);                // Set the scanner view as the content view
     }
 
-    private void setSystemUiFlags(int flags, boolean value) {
+    private void setSystemUiFlags(int flags) {
         int systemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
-        if (value) {
-            systemUiVisibility |= flags;
-        } else {
-            systemUiVisibility &= ~flags;
-        }
+        systemUiVisibility |= flags;
         getWindow().getDecorView().setSystemUiVisibility(systemUiVisibility);
     }
 
-    private void setFullscreenFlags(boolean fullscreen) {
+    private void setFullscreenFlags() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int fullscreenFlags = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                    View.SYSTEM_UI_FLAG_FULLSCREEN;
+                View.SYSTEM_UI_FLAG_FULLSCREEN;
 
-            setSystemUiFlags(fullscreenFlags, fullscreen);
+            setSystemUiFlags(fullscreenFlags);
         }
     }
 

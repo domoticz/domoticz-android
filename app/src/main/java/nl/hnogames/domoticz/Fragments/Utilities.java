@@ -59,7 +59,7 @@ import nl.hnogames.domoticzapi.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-        UtilityClickListener {
+    UtilityClickListener {
 
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
     private double thermostatSetPointValue;
@@ -153,9 +153,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     private void showInfoDialog(final UtilitiesInfo mUtilitiesInfo) {
         UtilitiesInfoDialog infoDialog = new UtilitiesInfoDialog(
-                mContext,
-                mUtilitiesInfo,
-                R.layout.dialog_utilities_info);
+            mContext,
+            mUtilitiesInfo,
+            R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mUtilitiesInfo.getIdx()));
         infoDialog.setLastUpdate(mUtilitiesInfo.getLastUpdate());
         infoDialog.setIsFavorite(mUtilitiesInfo.getFavoriteBoolean());
@@ -190,24 +190,24 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mUtilitiesInfo.getIdx(),
-                jsonUrl,
-                jsonAction,
-                0,
-                null,
-                new setCommandReceiver() {
-                    @Override
-                    @DebugLog
-                    public void onReceiveResult(String result) {
-                        successHandling(result, false);
-                        mUtilitiesInfo.setFavoriteBoolean(isFavorite);
-                    }
+            jsonUrl,
+            jsonAction,
+            0,
+            null,
+            new setCommandReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveResult(String result) {
+                    successHandling(result, false);
+                    mUtilitiesInfo.setFavoriteBoolean(isFavorite);
+                }
 
-                    @Override
-                    @DebugLog
-                    public void onError(Exception error) {
-                        errorHandling(error);
-                    }
-                });
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
     }
 
     /**
@@ -280,18 +280,18 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             Replace so we get the right log
          */
         String graphType = utility.getSubType()
-                .replace("Electric", "counter")
-                .replace("kWh", "counter")
-                .replace("Gas", "counter")
-                .replace("Energy", "counter")
-                .replace("Voltcraft", "counter")
-                .replace("Voltage", "counter")
-                .replace("SetPoint", "temp")
-                .replace("Lux", "counter")
-                .replace("BWR102", "counter")
-                .replace("Sound Level", "counter")
-                .replace("Pressure", "counter")
-                .replace("YouLess counter", "counter");
+            .replace("Electric", "counter")
+            .replace("kWh", "counter")
+            .replace("Gas", "counter")
+            .replace("Energy", "counter")
+            .replace("Voltcraft", "counter")
+            .replace("Voltage", "counter")
+            .replace("SetPoint", "temp")
+            .replace("Lux", "counter")
+            .replace("BWR102", "counter")
+            .replace("Sound Level", "counter")
+            .replace("Pressure", "counter")
+            .replace("YouLess counter", "counter");
 
         if (graphType.contains("counter"))
             graphType = "counter";
@@ -314,8 +314,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         final UtilitiesInfo tempUtil = getUtility(idx);
 
         TemperatureDialog tempDialog = new TemperatureDialog(
-                mContext,
-                tempUtil.getSetPoint());
+            mContext,
+            tempUtil.getSetPoint());
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
             @Override
@@ -326,7 +326,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     if (tempUtil != null) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                    mContext, mDomoticz);
+                                mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
@@ -363,24 +363,24 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             action = DomoticzValues.Device.Thermostat.Action.MIN;
 
         mDomoticz.setAction(tempUtil.getIdx(),
-                jsonUrl,
-                action,
-                newSetPoint,
-                password,
-                new setCommandReceiver() {
-                    @Override
-                    @DebugLog
-                    public void onReceiveResult(String result) {
-                        updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
-                        successHandling(result, false);
-                    }
+            jsonUrl,
+            action,
+            newSetPoint,
+            password,
+            new setCommandReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveResult(String result) {
+                    updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
+                    successHandling(result, false);
+                }
 
-                    @Override
-                    @DebugLog
-                    public void onError(Exception error) {
-                        errorHandling(error);
-                    }
-                });
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
     }
 
 
@@ -448,9 +448,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             Toast.makeText(mContext, "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                    mContext,
-                    switchLogs,
-                    R.layout.dialog_switch_logs);
+                mContext,
+                switchLogs,
+                R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }

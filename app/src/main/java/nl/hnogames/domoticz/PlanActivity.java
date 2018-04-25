@@ -46,7 +46,6 @@ public class PlanActivity extends AppCompatAssistActivity {
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             //noinspection SpellCheckingInspection
