@@ -45,5 +45,7 @@ proguard/
 captures/
 libs/MemorizingTrustManager/build/outputs/aar/MemorizingTrustManager-release.aar
 libs/MemorizingTrustManager/build/
-ajcore.20180413.102734.648.txt
-ajcore.20180413.094953.665.txt
+
+
+# Android Studio build files
+ajcore.*
