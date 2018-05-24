@@ -165,9 +165,9 @@
   <string name="error_atLeastOneItemInDrawer">Teḥwaǧǧ-eḍ uma yiwen uferdis deg leqjeṛ</string>
   <!--        Server update category       -->
   <string name="title_activity_update">Update server</string>
-  <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ:%1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac Domoticz:%1$s"</string>
-  <string name="update_available_enhanced">Amucceḍ n uqeddac yella :%1$s ɣer lqem :%2$s</string>
+  <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ: %1$s"</string>
+  <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac Domoticz: %1$s"</string>
+  <string name="update_available_enhanced">Amucceḍ n uqeddac yella: %1$s ɣer lqem: %2$s</string>
   <string name="check_for_update_title">Selken amucceḍ</string>
   <string name="check_for_update">Tebɣam a neselken amucceḍ n unagraw Domoticz?</string>
   <string name="update_server_warning">Mara yemucceḍ uqeddac innek asnas agi ur iteddu yara akken iwata.</string>

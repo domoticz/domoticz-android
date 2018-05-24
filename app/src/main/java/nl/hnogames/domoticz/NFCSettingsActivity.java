@@ -38,7 +38,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -60,13 +59,14 @@ import nl.hnogames.domoticz.UI.SwitchDialog;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
-public class NFCSettingsActivity extends AppCompatActivity implements NFCClickListener {
+public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCClickListener {
     // list of NFC technologies detected:
     private final String[][] techList = new String[][]{
         new String[]{
@@ -102,7 +102,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_settings);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -121,7 +121,6 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         nfcList = mSharedPrefs.getNFCList();
         adapter = new NFCAdapter(this, nfcList, this);
-
         createListView();
     }
 
@@ -141,7 +140,6 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
             // enabling foreground dispatch for getting intent from NFC event:
             if (mNfcAdapter == null) {
                 mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
                 if (mNfcAdapter != null) {
                     UsefulBits.showSnackbar(this, coordinatorLayout, R.string.nfc_register, Snackbar.LENGTH_SHORT);
                 } else {
@@ -166,7 +164,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED) && !busyWithTag) {
+        if (intent != null && intent.getAction() != null && intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED) && !busyWithTag) {
             boolean newTagFound = true;
             busyWithTag = true;
             final String tagID = UsefulBits.ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
@@ -204,7 +202,7 @@ public class NFCSettingsActivity extends AppCompatActivity implements NFCClickLi
     }
 
     private void createListView() {
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         if (mSharedPrefs.darkThemeEnabled()) {
             listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }

@@ -25,9 +25,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.format.DateUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -164,6 +166,27 @@ public class UsefulBits {
         else {
             Log.d(TAG, "No valid language detected, using en");
             return "en";
+        }
+    }
+
+    /**
+     * @param text to be validated
+     * @return if the text is base 64 encoded or not
+     */
+    public static boolean isBase64Encoded(String text){
+        return text.matches("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$");
+    }
+
+    /**
+     * @param text input value
+     * @return decode base 64 text
+     */
+    public static String decodeBase64(String text){
+        byte[] data = Base64.decode(text, Base64.DEFAULT);
+        try {
+            return new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
         }
     }
 

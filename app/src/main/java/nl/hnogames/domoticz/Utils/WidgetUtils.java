@@ -25,6 +25,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import nl.hnogames.domoticz.Widgets.SecurityWidgetProvider;
 import nl.hnogames.domoticz.Widgets.WidgetProviderLarge;
@@ -33,35 +34,43 @@ import nl.hnogames.domoticz.Widgets.WidgetProviderSmall;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class WidgetUtils {
-
     public static void RefreshWidgets(Context context) {
         //refresh all widgets
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetComponent = new ComponentName(context, WidgetProviderLarge.class);
         int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
-        for (int i = 0; i < appWidgetIds.length; i++) {
+        for (int appWidgetId : appWidgetIds) {
             Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
             updateIntent.setAction("FROM WIDGET PROVIDER");
-            context.startService(updateIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.startForegroundService(updateIntent);
+            else
+                context.startService(updateIntent);
         }
 
         ComponentName widgetSecurityComponent = new ComponentName(context, SecurityWidgetProvider.class);
         int[] appSecurityWidgetIds = widgetManager.getAppWidgetIds(widgetSecurityComponent);
-        for (int i = 0; i < appSecurityWidgetIds.length; i++) {
+        for (int appSecurityWidgetId : appSecurityWidgetIds) {
             Intent updateIntent = new Intent(context, SecurityWidgetProvider.UpdateSecurityWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSecurityWidgetIds[i]);
+            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSecurityWidgetId);
             updateIntent.setAction("FROM WIDGET PROVIDER");
-            context.startService(updateIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.startForegroundService(updateIntent);
+            else
+                context.startService(updateIntent);
         }
 
         ComponentName smallwidgetComponent = new ComponentName(context, WidgetProviderSmall.class);
         int[] appSmallWidgetIds = widgetManager.getAppWidgetIds(smallwidgetComponent);
-        for (int i = 0; i < appSmallWidgetIds.length; i++) {
+        for (int appSmallWidgetId : appSmallWidgetIds) {
             Intent updateIntent = new Intent(context, WidgetProviderSmall.UpdateWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSmallWidgetIds[i]);
+            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSmallWidgetId);
             updateIntent.setAction("FROM WIDGET PROVIDER");
-            context.startService(updateIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.startForegroundService(updateIntent);
+            else
+                context.startService(updateIntent);
         }
     }
 }
