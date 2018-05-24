@@ -59,6 +59,7 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 @DebugLog
 public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
@@ -1055,12 +1056,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         ArrayList<DevicesInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
-                } catch (Exception ex) {
-                }
-            }//no network available, load cache
+                } catch (Exception ex) { }
+            }
             return true;
         }
 

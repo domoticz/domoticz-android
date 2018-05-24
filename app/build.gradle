@@ -131,8 +131,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     def supportVersion = '27.1.1'
-    def playServicesVersion = '15.0.0'
-
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:support-v13:$supportVersion"
@@ -140,19 +138,19 @@ dependencies {
     implementation "com.android.support:cardview-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
 
-    implementation "com.google.firebase:firebase-core:$playServicesVersion"
-    implementation "com.google.firebase:firebase-crash:$playServicesVersion"
-    implementation "com.google.firebase:firebase-perf:$playServicesVersion"
-    implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
-    implementation "com.crashlytics.sdk.android:crashlytics:2.9.1"
+    implementation "com.google.firebase:firebase-core:16.0.0"
+    implementation "com.google.firebase:firebase-crash:16.0.0"
+    implementation "com.google.firebase:firebase-perf:16.0.0"
+    implementation "com.google.firebase:firebase-messaging:17.0.0"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.2"
 
-    implementation "com.google.android.gms:play-services-analytics:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-wearable:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-maps:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-gcm:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-location:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-places:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-ads:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-analytics:16.0.0"
+    implementation "com.google.android.gms:play-services-wearable:15.0.1"
+    implementation "com.google.android.gms:play-services-maps:15.0.1"
+    implementation "com.google.android.gms:play-services-gcm:15.0.1"
+    implementation "com.google.android.gms:play-services-location:15.0.1"
+    implementation "com.google.android.gms:play-services-places:15.0.1"
+    implementation "com.google.android.gms:play-services-ads:15.0.1"
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.0'
@@ -172,7 +170,6 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:2.2.4'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-
     implementation('com.mikepenz:materialdrawer:5.8.2@aar') {
         transitive = true
     }
@@ -184,9 +181,9 @@ dependencies {
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
     implementation 'com.afollestad:digitus:0.3.0'
 
-    implementation project(path: ':materialIntro_library')
     implementation project(':libs:MemorizingTrustManager')
 
+    implementation project(path: ':materialIntro_library')
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
 }
