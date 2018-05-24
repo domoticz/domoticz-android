@@ -29,7 +29,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -62,13 +61,14 @@ import nl.hnogames.domoticz.Utils.GeoUtils;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
-public class GeoSettingsActivity extends AppCompatActivity implements OnPermissionCallback {
+public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPermissionCallback {
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
@@ -77,7 +77,6 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     private LocationAdapter adapter;
     private GeoUtils oGeoUtils;
     private CoordinatorLayout coordinatorLayout;
-    private int EditLocationID = 0;
     private PermissionHelper permissionHelper;
     private Switch geoSwitch;
     private Switch geoNotificationSwitch;
@@ -102,7 +101,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
         this.setTitle(R.string.geofence);
 
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -113,10 +112,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     }
 
     private void initSwitches() {
-        geoSwitch = (Switch) findViewById(R.id.switch_button);
+        geoSwitch = findViewById(R.id.switch_button);
         geoSwitch.setChecked(mSharedPrefs.isGeofenceEnabled());
 
-        geoNotificationSwitch = (Switch) findViewById(R.id.switch_notifications_button);
+        geoNotificationSwitch = findViewById(R.id.switch_notifications_button);
         geoNotificationSwitch.setChecked(mSharedPrefs.isGeofenceNotificationsEnabled());
 
         geoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -137,14 +136,14 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                     .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                             } else {
                                 //all settings are correct
-                                mSharedPrefs.setGeofenceEnabled(isChecked);
+                                mSharedPrefs.setGeofenceEnabled(true);
                                 geoNotificationSwitch.setEnabled(true);
                                 oGeoUtils.AddGeofences();
                                 invalidateOptionsMenu();
                             }
                         }
                     } else {
-                        mSharedPrefs.setGeofenceEnabled(isChecked);
+                        mSharedPrefs.setGeofenceEnabled(true);
                         oGeoUtils.AddGeofences();
                         invalidateOptionsMenu();
                     }
@@ -259,7 +258,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         if (mSharedPrefs.darkThemeEnabled()) {
             listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -392,7 +391,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                     .inputType(InputType.TYPE_CLASS_TEXT)
                     .input(null, null, new MaterialDialog.InputCallback() {
                         @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             String name = String.valueOf(input);
                             if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
                                 final LocationInfo location = new LocationInfo(new Random().nextInt(999999), name,
@@ -404,10 +403,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                                     .inputType(InputType.TYPE_CLASS_NUMBER)
                                     .input("500", "500", new MaterialDialog.InputCallback() {
                                         @Override
-                                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                             try {
                                                 location.setRadius(Integer.parseInt(String.valueOf(input)));
-                                            } catch (Exception ex) {
+                                            } catch (Exception ignored) {
                                             }
                                             mSharedPrefs.addLocation(location);
                                             locations = mSharedPrefs.getLocations();
@@ -431,10 +430,10 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .input("500", "500", new MaterialDialog.InputCallback() {
                         @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             try {
                                 location.setRadius(Integer.parseInt(String.valueOf(input)));
-                            } catch (Exception ex) {
+                            } catch (Exception ignored) {
                             }
                             mSharedPrefs.addLocation(location);
                             locations = mSharedPrefs.getLocations();
@@ -451,7 +450,7 @@ public class GeoSettingsActivity extends AppCompatActivity implements OnPermissi
     }
 
     private void showEditLocationDialog(LocationInfo location) {
-        EditLocationID = location.getID();
+        //int editLocationID = location.getID();
         Intent intent = new Intent(getApplicationContext(), LocationPickerActivity.class);
         intent.putExtra(LocationPickerActivity.LATITUDE, location.getLocation().latitude);
         intent.putExtra(LocationPickerActivity.LONGITUDE, location.getLocation().longitude);

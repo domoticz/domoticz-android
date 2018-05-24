@@ -41,7 +41,6 @@ public class BootUpReceiver extends BroadcastReceiver {
 
     private void startGeofenceService(Context context) {
         SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(context);
-
         if (mSharedPrefUtil.isGeofenceEnabled()) {
             GeoUtils.geofencesAlreadyRegistered = false;
             new GeoUtils(context, null).AddGeofences();

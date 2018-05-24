@@ -56,9 +56,9 @@
   <string name="always_on_title">屏幕锁定</string>
   <string name="always_on_on">保持屏幕开启</string>
   <string name="always_on_off">不保持屏幕开启</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh">自动刷新</string>
+  <string name="always_auto_refresh_on">每5秒刷新一次设备状态</string>
+  <string name="always_auto_refresh_off">不要每5秒刷新一次设备状态</string>
   <string name="switch_buttons_title">开关</string>
   <string name="switch_buttons_on">在开关上显示开/关文字</string>
   <string name="switch_buttons_off">在开关上显示开/关按钮</string>

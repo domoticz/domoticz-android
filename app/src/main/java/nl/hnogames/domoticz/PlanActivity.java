@@ -23,15 +23,15 @@ package nl.hnogames.domoticz;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class PlanActivity extends AppCompatActivity {
+public class PlanActivity extends AppCompatAssistActivity {
 
     private ServerUtil mServerUtil;
 
@@ -46,7 +46,6 @@ public class PlanActivity extends AppCompatActivity {
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             //noinspection SpellCheckingInspection

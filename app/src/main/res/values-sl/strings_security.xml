@@ -21,7 +21,7 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Security Panel</string>
+  <string name="title_security_panel">Varnostna plošča</string>
   <string name="security_pin">Pin Koda</string>
   <string name="security_disarm">Izklop</string>
   <string name="security_arm_home">Vklop prisoten</string>

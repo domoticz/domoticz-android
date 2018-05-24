@@ -51,10 +51,10 @@
   <string name="temperature">Teplota</string>
   <string name="status">Stav</string>
   <string name="set_point">Nastavit bod</string>
-  <string name="set_point_min">Set point min value</string>
-  <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
-  <string name="set_point_max">Set point max value</string>
-  <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
+  <string name="set_point_min">Nastavit minimální hodnotu</string>
+  <string name="set_point_min_description">Minimální teplota, kterou můžete nastavit na vašem termostatu</string>
+  <string name="set_point_max">Nastavit maximální hodnotu</string>
+  <string name="set_point_max_description">Maximální teplota, kterou můžete nastavit na vašem termostatu</string>
   <string name="action_success">Akce ukončena úspěšně</string>
   <string name="action_failed">Akce neúspěšná</string>
   <string name="action_unknown">Neznámý výsledek akce</string>
@@ -72,7 +72,7 @@
   <string name="yes">Ano</string>
   <string name="no">Ne</string>
   <string name="are_you_sure">Opravdu?</string>
-  <string name="are_you_sure_clear_settings">Are you sure?? This also clears all homescreen widget settings, so you should re-add them afterwards..</string>
+  <string name="are_you_sure_clear_settings">Opravdu chcete toto provést? Tímto odstraníte všechny widgety z homescreenu, takže je potom budete muset znovu přidat.</string>
   <string name="add">Přidat</string>
   <string name="cancel">Zrušit</string>
   <string name="ok">Ok</string>

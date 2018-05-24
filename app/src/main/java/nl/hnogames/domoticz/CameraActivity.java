@@ -22,13 +22,13 @@
 package nl.hnogames.domoticz;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import nl.hnogames.domoticz.Fragments.Camera;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
-public class CameraActivity extends AppCompatActivity {
+public class CameraActivity extends AppCompatAssistActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +43,21 @@ public class CameraActivity extends AppCompatActivity {
         if (bundle == null)
             this.finish();
 
-        //noinspection SpellCheckingInspection
-        String imageUrl = bundle.getString("IMAGEURL");
+        if (bundle != null) {
+            //noinspection SpellCheckingInspection
+            String imageUrl = bundle.getString("IMAGEURL");
 
-        //noinspection SpellCheckingInspection
-        String title = bundle.getString("IMAGETITLE");
-        this.setTitle(title);
+            //noinspection SpellCheckingInspection
+            String title = bundle.getString("IMAGETITLE");
+            this.setTitle(title);
 
-        Camera camera = new Camera();
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-            camera).commit();
-        camera.setImage(imageUrl);
+            Camera camera = new Camera();
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
+                camera).commit();
+            camera.setImage(imageUrl);
+        }
     }
 
     @Override

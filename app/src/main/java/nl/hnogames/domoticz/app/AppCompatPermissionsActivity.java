@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.fastaccess.permission.base.PermissionHelper;
@@ -36,8 +35,7 @@ import java.util.Arrays;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 
-public class AppCompatPermissionsActivity extends AppCompatActivity implements OnPermissionCallback {
-
+public class AppCompatPermissionsActivity extends AppCompatAssistActivity implements OnPermissionCallback {
     private PermissionHelper permissionHelper;
 
     @Override

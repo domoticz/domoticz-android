@@ -56,9 +56,9 @@
   <string name="always_on_title">Блокировка</string>
   <string name="always_on_on">Блокировка экрана всегда ВКЛ</string>
   <string name="always_on_off">Не блокировать экран всегда ВКЛ</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh">Авто-обновление</string>
+  <string name="always_auto_refresh_on">Обновлять состояние устройства каждые 5 секунд</string>
+  <string name="always_auto_refresh_off">Не обновлять состояние устройства каждые 5 секунд</string>
   <string name="switch_buttons_title">Переключатели</string>
   <string name="switch_buttons_on">Показать выключатели с вкл/выкл переключателем</string>
   <string name="switch_buttons_off">Показать выключатели с Вкл/Выкл кнопкой</string>
@@ -118,7 +118,7 @@
   <string name="category_widgets">Виджеты не включены на этом предмете, пожалуйста, проверьте свои настройки Domoticz</string>
   <string name="widget_description">Включить или отключить виджет на этом устройстве</string>
   <string name="widget_disabled">Виджеты не включены на этом предмете, пожалуйста, проверьте свои настройки Domoticz6</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+  <string name="widget_warning">Использование виджетов только на свой страх и риск! В настоящее время виджеты находятся в стадии бета-тестирования и могут содержать ошибки. Это может привести к чрезмерному использованию данных и быстрому разряду батареи...</string>
   <!--        GCM settings      -->
   <string name="notification_settings_id">ID сообщений Google Cloud</string>
   <string name="notification_settings_push">Использовать Ваш регистрационный идентификатор для Domoticz</string>

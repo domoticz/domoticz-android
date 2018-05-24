@@ -94,7 +94,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_settings);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (mSharedPrefs.darkThemeEnabled()) {
             coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -113,7 +113,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void createListView() {
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         if (mSharedPrefs.darkThemeEnabled()) {
             listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
         }
@@ -341,7 +341,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                 if (speechRecognizer == null)
                     speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
                 if (recognitionProgressView == null)
-                    recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
+                    recognitionProgressView = findViewById(R.id.recognition_view);
                 if (recognitionListener == null) {
                     recognitionListener = new RecognitionListenerAdapter() {
                         @Override
@@ -390,8 +390,8 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
             .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        //Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
-        processResult(matches.get(0).toLowerCase());
+        if (matches != null)
+            processResult(matches.get(0).toLowerCase());
     }
 
     private void startRecognition() {
