@@ -59,6 +59,12 @@ android {
             buildConfigField "boolean", "LITE_VERSION", "false"
             dimension "tier"
         }
+        oott {
+            applicationId 'nl.hnogames.oott'
+            resValue "string", "app_name_domoticz", 'OOTT'
+            buildConfigField "boolean", "LITE_VERSION", "false"
+            dimension "tier"
+        }
     }
 }
 
