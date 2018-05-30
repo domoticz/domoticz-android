@@ -29,8 +29,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +38,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -47,7 +46,6 @@ import android.widget.Switch;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
-import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +69,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
-    private FloatingLabelEditText remote_server_input, remote_port_input,
+    private EditText remote_server_input, remote_port_input,
         remote_username_input, remote_password_input,
         remote_directory_input, local_server_input, local_password_input,
         local_username_input, local_port_input, local_directory_input;
@@ -132,17 +130,17 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
     private void getLayoutReferences() {
 
-        remote_server_input = (FloatingLabelEditText) v.findViewById(R.id.remote_server_input);
-        remote_port_input = (FloatingLabelEditText) v.findViewById(R.id.remote_port_input);
-        remote_username_input = (FloatingLabelEditText) v.findViewById(R.id.remote_username_input);
-        remote_password_input = (FloatingLabelEditText) v.findViewById(R.id.remote_password_input);
-        remote_directory_input = (FloatingLabelEditText) v.findViewById(R.id.remote_directory_input);
+        remote_server_input = (EditText) v.findViewById(R.id.remote_server_input);
+        remote_port_input = (EditText) v.findViewById(R.id.remote_port_input);
+        remote_username_input = (EditText) v.findViewById(R.id.remote_username_input);
+        remote_password_input = (EditText) v.findViewById(R.id.remote_password_input);
+        remote_directory_input = (EditText) v.findViewById(R.id.remote_directory_input);
         remote_protocol_spinner = (Spinner) v.findViewById(R.id.remote_protocol_spinner);
-        local_server_input = (FloatingLabelEditText) v.findViewById(R.id.local_server_input);
-        local_port_input = (FloatingLabelEditText) v.findViewById(R.id.local_port_input);
-        local_username_input = (FloatingLabelEditText) v.findViewById(R.id.local_username_input);
-        local_password_input = (FloatingLabelEditText) v.findViewById(R.id.local_password_input);
-        local_directory_input = (FloatingLabelEditText) v.findViewById(R.id.local_directory_input);
+        local_server_input = (EditText) v.findViewById(R.id.local_server_input);
+        local_port_input = (EditText) v.findViewById(R.id.local_port_input);
+        local_username_input = (EditText) v.findViewById(R.id.local_username_input);
+        local_password_input = (EditText) v.findViewById(R.id.local_password_input);
+        local_directory_input = (EditText) v.findViewById(R.id.local_directory_input);
         local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
         local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
         CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
@@ -223,37 +221,36 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    remote_password_input.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    remote_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
-                    remote_password_input.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
                 }
             }
         });
-
         cbShowPasswordLocal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    local_password_input.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    local_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
-                    local_password_input.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    local_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
                 }
             }
         });
     }
 
     private void setPreferenceValues() {
-        remote_username_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUsername());
-        remote_password_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPassword());
-        remote_server_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerUrl());
-        remote_port_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerPort());
-        remote_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getRemoteServerDirectory());
+        remote_username_input.setText(mServerUtil.getActiveServer().getRemoteServerUsername());
+        remote_password_input.setText(mServerUtil.getActiveServer().getRemoteServerPassword());
+        remote_server_input.setText(mServerUtil.getActiveServer().getRemoteServerUrl());
+        remote_port_input.setText(mServerUtil.getActiveServer().getRemoteServerPort());
+        remote_directory_input.setText(mServerUtil.getActiveServer().getRemoteServerDirectory());
         localServer_switch.setChecked(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent());
-        local_username_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUsername());
-        local_password_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPassword());
-        local_server_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerUrl());
-        local_port_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerPort());
-        local_directory_input.setInputWidgetText(mServerUtil.getActiveServer().getLocalServerDirectory());
+        local_username_input.setText(mServerUtil.getActiveServer().getLocalServerUsername());
+        local_password_input.setText(mServerUtil.getActiveServer().getLocalServerPassword());
+        local_server_input.setText(mServerUtil.getActiveServer().getLocalServerUrl());
+        local_port_input.setText(mServerUtil.getActiveServer().getLocalServerPort());
+        local_directory_input.setText(mServerUtil.getActiveServer().getLocalServerDirectory());
 
         setProtocol_spinner();
         setStartScreen_spinner();
@@ -369,15 +366,15 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
     private void writePreferenceValues() {
         mServerUtil.getActiveServer().setRemoteServerUsername(
-            remote_username_input.getInputWidgetText().toString().trim());
+            remote_username_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerPassword(
-            remote_password_input.getInputWidgetText().toString().trim());
+            remote_password_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerUrl(
-            remote_server_input.getInputWidgetText().toString().trim());
+            remote_server_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerPort(
-            remote_port_input.getInputWidgetText().toString().trim());
+            remote_port_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerDirectory(
-            remote_directory_input.getInputWidgetText().toString().trim());
+            remote_directory_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerSecure(
             getSpinnerDomoticzRemoteSecureBoolean());
         if (callingInstance == WELCOME_WIZARD)
@@ -389,15 +386,15 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
         } else {
             mServerUtil.getActiveServer().setLocalServerUsername(
-                local_username_input.getInputWidgetText().toString().trim());
+                local_username_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerPassword(
-                local_password_input.getInputWidgetText().toString().trim());
+                local_password_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerUrl(
-                local_server_input.getInputWidgetText().toString().trim());
+                local_server_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerPort(
-                local_port_input.getInputWidgetText().toString().trim());
+                local_port_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerDirectory(
-                local_directory_input.getInputWidgetText().toString().trim());
+                local_directory_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerSecure(
                 getSpinnerDomoticzLocalSecureBoolean());
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);

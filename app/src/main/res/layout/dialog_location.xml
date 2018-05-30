@@ -27,28 +27,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-        android:id="@+id/name"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textNoSuggestions"
-        app:flw_inputWidgetTextColor="@color/default_text_color_light"
-        app:flw_inputWidgetTextSize="@dimen/text_size_large"
-        app:flw_labelText="@string/Location_name"
-        app:flw_labelTextColor="@color/default_text_color_light"
-        app:flw_labelTextSize="@dimen/text_size_medium" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
+            android:textColor="@color/default_text_color_light"
+            android:hint="@string/Location_name" />
+    </android.support.design.widget.TextInputLayout>
 
-    <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-        android:id="@+id/address"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:inputType="textNoSuggestions"
-        app:flw_inputWidgetTextColor="@color/default_text_color_light"
-        app:flw_inputWidgetTextSize="@dimen/text_size_large"
-        app:flw_labelText="@string/locationAddress"
-        app:flw_labelTextColor="@color/default_text_color_light"
-        app:flw_labelTextSize="@dimen/text_size_medium" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="textNoSuggestions"
+            android:textColor="@color/default_text_color_light"
+            android:hint="@string/locationAddress" />
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/layout_latLong"
@@ -57,29 +59,30 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-            android:id="@+id/latitude"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:inputType="textNoSuggestions|number"
-            app:flw_inputWidgetTextColor="@color/default_text_color_light"
-            app:flw_inputWidgetTextSize="@dimen/text_size_large"
-            app:flw_labelText="@string/latitude"
-            app:flw_labelTextColor="@color/default_text_color_light"
-            app:flw_labelTextSize="@dimen/text_size_medium" />
-
-        <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-            android:id="@+id/longitude"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:inputType="textNoSuggestions|number"
+                android:textColor="@color/default_text_color_light"
+                android:hint="@string/latitude" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:inputType="textNoSuggestions|number"
-            app:flw_inputWidgetTextColor="@color/default_text_color_light"
-            app:flw_inputWidgetTextSize="@dimen/text_size_large"
-            app:flw_labelText="@string/longitude"
-            app:flw_labelTextColor="@color/default_text_color_light"
-            app:flw_labelTextSize="@dimen/text_size_medium" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:inputType="textNoSuggestions|number"
+                android:textColor="@color/default_text_color_light"
+                android:hint="@string/longitude" />
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
@@ -131,15 +134,17 @@
                 android:text="@string/radius"
                 android:textSize="@dimen/text_size_large" />
 
-            <com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText
-                android:id="@+id/radius"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                app:flw_inputWidgetTextColor="@color/default_text_color_light"
-                app:flw_inputWidgetTextSize="@dimen/text_size_large"
-                app:flw_labelTextColor="@color/default_text_color_light"
-                app:flw_labelTextSize="@dimen/text_size_medium" />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textColor="@color/default_text_color_light"
+                    android:hint="@string/radius" />
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -174,8 +179,6 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 tools:text="America" />
-
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

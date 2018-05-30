@@ -147,9 +147,7 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    def supportVersion = '27.1.0'
-    def playServicesVersion = '11.8.0'
-
+    def supportVersion = '27.1.1'
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:support-v13:$supportVersion"
@@ -157,24 +155,24 @@ dependencies {
     implementation "com.android.support:cardview-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
 
-    implementation "com.google.firebase:firebase-core:$playServicesVersion"
-    implementation "com.google.firebase:firebase-crash:$playServicesVersion"
-    implementation "com.google.firebase:firebase-perf:$playServicesVersion"
-    implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
+    implementation "com.google.firebase:firebase-core:16.0.0"
+    implementation "com.google.firebase:firebase-crash:16.0.0"
+    implementation "com.google.firebase:firebase-perf:16.0.0"
+    implementation "com.google.firebase:firebase-messaging:17.0.0"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.2"
 
-    implementation "com.google.android.gms:play-services-analytics:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-wearable:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-maps:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-gcm:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-location:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-places:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-ads:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-analytics:16.0.0"
+    implementation "com.google.android.gms:play-services-wearable:15.0.1"
+    implementation "com.google.android.gms:play-services-maps:15.0.1"
+    implementation "com.google.android.gms:play-services-gcm:15.0.1"
+    implementation "com.google.android.gms:play-services-location:15.0.1"
+    implementation "com.google.android.gms:play-services-places:15.0.1"
+    implementation "com.google.android.gms:play-services-ads:15.0.1"
 
-    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.android.volley:volley:1.0.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
-    implementation 'com.marvinlabs:android-floatinglabel-widgets:1.6.1@aar'
     implementation 'com.larswerkman:lobsterpicker:1.0.1'
 
     implementation 'com.github.zurche:plain-pie:v0.2.2'
@@ -189,23 +187,20 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:2.2.4'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-
     implementation('com.mikepenz:materialdrawer:5.8.2@aar') {
         transitive = true
     }
 
-    implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
+    implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-
     implementation 'com.schibstedspain.android:leku:3.3.0'
-
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
     implementation 'com.afollestad:digitus:0.3.0'
 
-    implementation project(path: ':materialIntro_library')
     implementation project(':libs:MemorizingTrustManager')
 
+    implementation project(path: ':materialIntro_library')
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
 }
@@ -224,3 +219,4 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'

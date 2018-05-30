@@ -22,10 +22,7 @@
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -33,7 +30,6 @@ import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -45,7 +41,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +63,6 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
@@ -131,7 +125,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     public boolean onPhone;
     private SharedPrefUtil mSharedPrefs;
     private String TAG = MainActivity.class.getSimpleName();
-    private String[] fragments;
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
     private Toolbar toolbar;
@@ -147,11 +140,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private boolean listeningSpeechRecognition = false;
     private boolean fromVoiceWidget = false;
     private boolean fromQRCodeWidget = false;
-    private MenuItem speechMenuItem;
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
     private boolean fromShortcut = false;
-    private AdView mAdView;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -172,15 +163,16 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
+        AdView mAdView;
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
             setContentView(R.layout.activity_newmain_free);
-            mAdView = (AdView) findViewById(R.id.adView);
+            mAdView = findViewById(R.id.adView);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
             mAdView.loadAd(adRequest);
         } else {
             setContentView(R.layout.activity_newmain_paid);
-            mAdView = (AdView) findViewById(R.id.adView);
+            mAdView = findViewById(R.id.adView);
             mAdView.setVisibility(View.GONE);
         }
 
@@ -192,7 +184,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             }
         }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
@@ -248,7 +240,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
-            TextView usingTabletLayout = (TextView) findViewById(R.id.tabletLayout);
+            TextView usingTabletLayout = findViewById(R.id.tabletLayout);
 
             if (usingTabletLayout == null)
                 onPhone = true;
@@ -313,7 +305,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             switch (requestCode) {
                 case iWelcomeResultCode:
                     Bundle res = data.getExtras();
-                    if (!res.getBoolean("RESULT", false))
+                    if (res != null && !res.getBoolean("RESULT", false))
                         this.finish();
                     else {
                         if (mSharedPrefs.darkThemeEnabled())
@@ -565,7 +557,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         try {
             // Notify Digitus of the result
             Digitus.get().handleResult(requestCode, permissions, grantResults);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -607,7 +599,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 tx.commitAllowingStateLoss();
                 addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
                 saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }
@@ -737,7 +729,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                         drawNavigationMenu(finalConfig);
                                     } else {
                                         for (UserInfo user : finalConfig.getUsers()) {
-                                            if (user.getUsername() == profile.getEmail().getText()) {
+                                            if (user.getUsername().equals(profile.getEmail().getText())) {
                                                 String md5Pass = UsefulBits.getMd5String(password);
                                                 if (md5Pass.equals(user.getPassword())) {
                                                     //if correct set credentials in activeserver and recreate drawer
@@ -830,34 +822,31 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             })
             .build();
 
-        drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), null, "gmd_settings", "Settings"));
+        drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), "gmd_settings", "Settings"));
     }
 
     private List<IDrawerItem> getDrawerItems() {
         List<IDrawerItem> drawerItems = new ArrayList<>();
         String[] drawerActions = mSharedPrefs.getNavigationActions();
-        fragments = mSharedPrefs.getNavigationFragments();
+        String[] fragments = mSharedPrefs.getNavigationFragments();
         String ICONS[] = mSharedPrefs.getNavigationIcons();
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].indexOf("Wizard") >= 0 || fragments[i].indexOf("Dashboard") >= 0)
-                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], null, ICONS[i], fragments[i]));
+            if (fragments[i].contains("Wizard") || fragments[i].contains("Dashboard"))
+                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].indexOf("Wizard") < 0 && fragments[i].indexOf("Dashboard") < 0)
-                drawerItems.add(createSecondaryDrawerItem(drawerActions[i], null, ICONS[i], fragments[i]));
+            if (!fragments[i].contains("Wizard") && !fragments[i].contains("Dashboard"))
+                drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
         return drawerItems;
     }
 
-    private SecondaryDrawerItem createSecondaryDrawerItem(String title, String badge, String icon, String fragmentID) {
+    private SecondaryDrawerItem createSecondaryDrawerItem(String title, String icon, String fragmentID) {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
-            .withBadge(badge)
-            .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
             .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
             .withTag(fragmentID);
-
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.material_indigo_600);
@@ -866,12 +855,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         return item;
     }
 
-    private PrimaryDrawerItem createPrimaryDrawerItem(String title, String badge, String icon, String fragmentID) {
+    private PrimaryDrawerItem createPrimaryDrawerItem(String title, String icon, String fragmentID) {
         PrimaryDrawerItem item = new PrimaryDrawerItem();
-        item.withName(title).withBadge(badge).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+        item.withName(title)
             .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
             .withTag(fragmentID);
-
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.material_indigo_600);
@@ -986,6 +974,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
+        MenuItem speechMenuItem;
         if (!fromVoiceWidget && !fromQRCodeWidget) {
             if ((f instanceof Cameras)) {
                 if (cameraRefreshTimer != null)
@@ -999,8 +988,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     getMenuInflater().inflate(R.menu.menu_main, menu);
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
-                searchViewAction = (SearchView) MenuItemCompat
-                    .getActionView(searchMenuItem);
+                searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
                 searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     @DebugLog
@@ -1059,7 +1047,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     } else if (speechMenuItem != null)
                         speechMenuItem.setVisible(false);
                 }
-            } else if (fromQRCodeWidget) {
+            } else {
                 getMenuInflater().inflate(R.menu.menu_qrcode, menu);
                 if (mSharedPrefs.isQRCodeEnabled()) {
                     MenuItem qrcodeMenuItem = menu.findItem(R.id.action_scan_qrcode);
@@ -1085,7 +1073,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     if (speechRecognizer == null)
                         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
                     if (recognitionProgressView == null)
-                        recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
+                        recognitionProgressView = findViewById(R.id.recognition_view);
                     if (recognitionListener == null) {
                         recognitionListener = new RecognitionListenerAdapter() {
                             @Override
@@ -1192,13 +1180,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     private void playRecognitionAnimation() {
-        ((FrameLayout) findViewById(R.id.main)).setVisibility(View.GONE);
+        (findViewById(R.id.main)).setVisibility(View.GONE);
         recognitionProgressView.setVisibility(View.VISIBLE);
         recognitionProgressView.play();
     }
 
     private void stopRecognitionAnimation() {
-        ((FrameLayout) findViewById(R.id.main)).setVisibility(View.VISIBLE);
+        (findViewById(R.id.main)).setVisibility(View.VISIBLE);
         recognitionProgressView.setVisibility(View.GONE);
         recognitionProgressView.stop();
     }
@@ -1207,21 +1195,20 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
             .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
+        if (matches == null)
+            return;
         int jsonAction = -1;
         String actionFound = "Toggle";
         String SPEECH_ID = matches.get(0).toLowerCase().trim();
         if (mSharedPrefs.isSpeechEnabled()) {
             ArrayList<SpeechInfo> qrList = mSharedPrefs.getSpeechList();
             SpeechInfo foundSPEECH = null;
-
             if (qrList != null && qrList.size() > 0) {
                 for (SpeechInfo n : qrList) {
                     if (n.getId().equals(SPEECH_ID))
                         foundSPEECH = n;
                 }
             }
-
             if (foundSPEECH == null) {
                 if (SPEECH_ID.endsWith(getString(R.string.button_state_off).toLowerCase())) {
                     actionFound = getString(R.string.button_state_off);
@@ -1317,7 +1304,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                     ServerInfo setNew = null;
                     for (ServerInfo s : mServerUtil.getEnabledServerList()) {
-                        if (s.getServerName().equals(text)) {
+                        if (s.getServerName().contentEquals(text)) {
                             String message = String.format(
                                 getString(R.string.switch_to_server), s.getServerName());
                             showSnackbar(message);
@@ -1359,7 +1346,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             if (f != null) {
                 View v = f.getView();
                 if (v != null)
-                    layout = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
+                    layout = v.findViewById(R.id.coordinatorLayout);
             }
         } catch (Exception ex) {
             Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
@@ -1458,32 +1445,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
     }
 
-    /**
-     * Opens the dialog
-     *
-     * @param dialogStandardFragment
-     */
-    private void openDialogFragment(DialogFragment dialogStandardFragment) {
-        if (!isFinishing()) {
-            if (mSharedPrefs != null) {
-                PackageInfo pInfo = null;
-                try {
-                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    String version = pInfo.versionName;
-                    String preVersion = mSharedPrefs.getPreviousVersionNumber();
-                    if (!version.equals(preVersion)) {
-                        if (dialogStandardFragment != null) {
-                            getSupportFragmentManager().beginTransaction().add(dialogStandardFragment, "changelog_dialog").commitAllowingStateLoss();
-                        }
-                        mSharedPrefs.setVersionNumber(version);
-                    }
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     @Override
     public void onDigitusReady(Digitus digitus) {
         if (validateOnce)
@@ -1496,7 +1457,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @Override
     public void onDigitusAuthenticated(Digitus digitus) {
-        digitus.deinit();
+        Digitus.deinit();
         validateOnce = false;
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
@@ -1515,14 +1476,12 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         FingerprintDialog dialog = FingerprintDialog.getVisible(this);
         if (dialog != null)
             dialog.dismiss();
-        Digitus.get().deinit();
+        Digitus.deinit();
         validateOnce = false;
-
         if (!mSharedPrefs.isGeofencingStarted()) {
             mSharedPrefs.setGeofencingStarted(true);
             new GeoUtils(this, this).AddGeofences();
         }
-
         buildScreen();
     }
 
@@ -1534,7 +1493,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (pw.equals(password)) {
             if (dialog != null)
                 dialog.dismiss();
-            Digitus.get().deinit();
+            Digitus.deinit();
             validateOnce = false;
 
             if (!mSharedPrefs.isGeofencingStarted()) {
@@ -1570,20 +1529,17 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 builder.append(permission).append("\n");
             }
         }
-
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
             if (PermissionsUtil.canAccessDeviceState(this)) {
                 setupMobileDevice();
             }
         }
-
         if (builder.toString().contains("android.permission.CAMERA")) {
             if (PermissionsUtil.canAccessStorage(this)) {
                 Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                 startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
             }
         }
-
         if (builder.toString().contains("android.permission.RECORD_AUDIO")) {
             if (PermissionsUtil.canAccessAudioState(this)) {
                 startRecognition();

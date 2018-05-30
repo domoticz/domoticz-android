@@ -26,16 +26,15 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
+import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.marvinlabs.widget.floatinglabel.edittext.FloatingLabelEditText;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -51,7 +50,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private Domoticz domoticz;
     private MaterialDialog md;
     private SharedPrefUtil mSharedPrefs;
-    private FloatingLabelEditText editPassword;
+    private EditText editPassword;
     private CheckBox showPassword;
 
     public PasswordDialog(Context c, Domoticz mDomoticz) {
@@ -79,7 +78,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
                 @Override
                 public void onClick(MaterialDialog dialog, DialogAction which) {
                     if (dismissListener != null)
-                        dismissListener.onDismiss(editPassword.getInputWidgetText().toString());
+                        dismissListener.onDismiss(editPassword.getText().toString());
                 }
             })
             .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -97,15 +96,15 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         md = mdb.build();
         View view = md.getCustomView();
 
-        editPassword = (FloatingLabelEditText) view.findViewById(R.id.password);
+        editPassword = (EditText) view.findViewById(R.id.password);
         showPassword = (CheckBox) view.findViewById(R.id.showpassword);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             showPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            editPassword.setInputWidgetTextColor(ContextCompat.getColor(mContext, R.color.white));
+            editPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
             int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
             int[] colors = new int[]{Color.WHITE, Color.WHITE};
-            editPassword.setLabelTextColor(new ColorStateList(states, colors));
+            editPassword.setTextColor(new ColorStateList(states, colors));
         }
 
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -114,14 +113,13 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
                 // checkbox status is changed from uncheck to checked.
                 if (!isChecked) {
                     // show password
-                    editPassword.getInputWidget().setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
                     // hide password
-                    editPassword.getInputWidget().setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editPassword.setInputType(InputType.TYPE_CLASS_TEXT);
                 }
             }
         });
-
         md.show();
     }
 

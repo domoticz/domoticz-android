@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,8 +66,9 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         CamerasAdapter.onClickListener = onClickListener;
     }
 
+    @NonNull
     @Override
-    public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.camera_row, parent, false);
 
@@ -78,7 +80,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DataObjectHolder holder, int position) {
         if (mDataset != null && mDataset.size() > 0) {
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
@@ -113,8 +115,8 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            camera = (com.android.volley.toolbox.NetworkImageView) itemView.findViewById(R.id.image);
+            name = itemView.findViewById(R.id.name);
+            camera = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);
         }
 

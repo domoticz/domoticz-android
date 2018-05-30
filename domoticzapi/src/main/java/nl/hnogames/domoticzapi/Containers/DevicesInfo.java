@@ -22,6 +22,7 @@
 package nl.hnogames.domoticzapi.Containers;
 
 import android.support.annotation.NonNull;
+import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,9 +133,12 @@ public class DevicesInfo implements Comparable, Serializable {
             Counter = row.getString("Counter");
         if (row.has("Image"))
             Image = row.getString("Image");
-
-        if (row.has("LevelNames"))
+        if (row.has("LevelNames")) {
             LevelNames = row.getString("LevelNames");
+            if(UsefulBits.isBase64Encoded(LevelNames))
+                LevelNames = UsefulBits.decodeBase64(LevelNames);
+        }
+
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
 
