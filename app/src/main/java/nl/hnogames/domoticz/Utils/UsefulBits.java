@@ -596,12 +596,6 @@ public class UsefulBits {
         if (BuildConfig.LITE_VERSION)
             return; //only validate premium versions
 
-        if (BuildConfig.PAID_OOTT) {
-            //TODO: Implement correct piracychecker for this app!!
-            mSharedPrefs.setAPKValidated(true);
-            return;
-        }
-
         if (BuildConfig.DEBUG) {
             //check with debug key
             if (PiracyCheckerUtils.getAPKSignature(context).equals(context.getString(R.string.APK_VALIDATE_DEBUG)))
@@ -610,7 +604,12 @@ public class UsefulBits {
                 mSharedPrefs.setAPKValidated(false);
         }
 
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.PAID_OOTT) {
+            //TODO: Implement correct piracychecker for this app!!
+            mSharedPrefs.setAPKValidated(true);
+            return;
+        }
+        else {
             // release build
             PiracyChecker oPiracyChecker = new PiracyChecker(context);
             oPiracyChecker
