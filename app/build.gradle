@@ -15,7 +15,7 @@ android {
 
         println "****************************"
         println "runTasks: ${gradle.startParameter.taskNames}"
-        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks || ':app:assemblePaidRelease' in runTasks) {
+        if ('assembleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks || ':app:assemblePaidRelease' in runTasks || ':app:compileoottReleaseSources' in runTasks || ':app:generateoottReleaseSources' in runTasks || ':app:assembleoottRelease' in runTasks) {
             value = 1
             println "Build Version: +1"
         }
@@ -86,6 +86,23 @@ android {
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
+            buildConfigField "boolean", "LITE_VERSION", "false"
+            dimension "tier"
+        }
+        oott {
+            applicationId 'nl.hnogames.oott'
+
+            resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_OOTT_DEBUG"
+            resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_OOTT_PROD"
+            resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_OOTT"
+
+            resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
+            resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
+
+            resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
+            resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
+
+            resValue "string", "app_name_domoticz", 'OOTT'
             buildConfigField "boolean", "LITE_VERSION", "false"
             dimension "tier"
         }
