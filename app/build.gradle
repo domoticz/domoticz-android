@@ -64,6 +64,7 @@ android {
             resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
 
+            resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
             resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
@@ -71,6 +72,7 @@ android {
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
+            buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
         }
         paid {
@@ -80,6 +82,7 @@ android {
             resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
 
+            resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
             resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
@@ -87,6 +90,7 @@ android {
             resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
+            buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
         }
         oott {
@@ -96,6 +100,7 @@ android {
             resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_OOTT_PROD"
             resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_OOTT"
 
+            resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
             resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
@@ -104,6 +109,7 @@ android {
 
             resValue "string", "app_name_domoticz", 'OOTT'
             buildConfigField "boolean", "LITE_VERSION", "false"
+            buildConfigField "boolean", "PAID_OOTT", "true"
             dimension "tier"
         }
     }
@@ -160,6 +166,8 @@ dependencies {
     implementation "com.google.firebase:firebase-perf:16.0.0"
     implementation "com.google.firebase:firebase-messaging:17.0.0"
     implementation "com.crashlytics.sdk.android:crashlytics:2.9.2"
+
+    implementation 'com.google.android.ads.consent:consent-library:1.0.3'
 
     implementation "com.google.android.gms:play-services-analytics:16.0.0"
     implementation "com.google.android.gms:play-services-wearable:15.0.1"

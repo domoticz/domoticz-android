@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 OOTT - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
+    <string-array name="drawer_actions" translatable="false">
+        <item>@string/title_wizard</item>
+        <item>@string/title_dashboard</item>
+        <item>@string/title_scenes</item>
+        <item>@string/title_switches</item>
+        <item>@string/title_utilities</item>
+        <item>@string/title_temperature</item>
+        <item>@string/title_weather</item>
+        <item>@string/title_cameras</item>
+        <item>@string/title_plans</item>
+        <item>@string/title_logs</item>
+        <item>@string/title_events</item>
+        <item>@string/title_vars</item>
+    </string-array>
+
+    <!--suppress CheckTagEmptyBody -->
+    <string-array name="empty_array" translatable="false"></string-array>
+
+    <string-array name="drawer_fragments" translatable="false">
+        <item>nl.hnogames.OOTT.Fragments.Wizard</item>
+        <item>nl.hnogames.OOTT.Fragments.Dashboard</item>
+        <item>nl.hnogames.OOTT.Fragments.Scenes</item>
+        <item>nl.hnogames.OOTT.Fragments.Switches</item>
+        <item>nl.hnogames.OOTT.Fragments.Utilities</item>
+        <item>nl.hnogames.OOTT.Fragments.Temperature</item>
+        <item>nl.hnogames.OOTT.Fragments.Weather</item>
+        <item>nl.hnogames.OOTT.Fragments.Cameras</item>
+        <item>nl.hnogames.OOTT.Fragments.Plans</item>
+        <item>nl.hnogames.OOTT.Fragments.Logs</item>
+        <item>nl.hnogames.OOTT.Fragments.Events</item>
+        <item>nl.hnogames.OOTT.Fragments.UserVariables</item>
+    </string-array>
+
+    <array name="drawer_icons" translatable="false">
+        <item>gmd_build</item>
+        <item>gmd_dashboard</item>
+        <item>gmd_view_carousel</item>
+        <item>gmd_lightbulb_outline</item>
+        <item>gmd_dvr</item>
+        <item>gmd_opacity</item>
+        <item>gmd_wb_sunny</item>
+        <item>gmd_camera</item>
+        <item>gmd_location_city</item>
+        <item>gmd_bug_report</item>
+        <item>gmd_event</item>
+        <item>gmd_assignment</item>
+    </array>
+</resources>

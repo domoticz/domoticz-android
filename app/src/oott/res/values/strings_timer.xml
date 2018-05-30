@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 OOTT - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
+
+    <string name="command">Command</string>
+    <string name="type">Type</string>
+    <string name="notapplicable">N/A</string>
+
+    <string name="timer_before_sunset">Before sunset</string>
+    <string name="timer_after_sunset">After sunset</string>
+    <string name="timer_ontime">On time</string>
+    <string name="timer_before_sunrise">Before sunrise</string>
+    <string name="timer_after_sunrise">After sunrise</string>
+    <string name="timer_fixed">Fixed date/time</string>
+
+    <string name="odd_day_numbers">Odd Day Numbers</string>
+    <string name="even_day_numbers">Even Day Numbers</string>
+    <string name="odd_week_numbers">Odd Week Numbers</string>
+    <string name="even_week_numbers">Even Week Numbers</string>
+    <string name="monthly">Monthly</string>
+    <string name="monthly_weekday">Monthly (Weekday)</string>
+    <string name="yearly">Yearly</string>
+    <string name="yearly_weekday">Yearly (Weekday)</string>
+
+    <string name="timer_every_days">Every day</string>
+    <string name="timer_working_days">Working days</string>
+    <string name="timer_weekend">Weekend</string>
+    <string name="timer_other">Other</string>
+    <string name="timers">Timers</string>
+
+
+</resources>
