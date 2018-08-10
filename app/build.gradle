@@ -178,7 +178,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:15.0.1"
 
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.android.volley:volley:1.0.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     implementation 'com.larswerkman:lobsterpicker:1.0.1'
@@ -190,7 +190,7 @@ dependencies {
     implementation 'com.github.hotchemi:android-rate:1.0.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
-    implementation 'me.dm7.barcodescanner:zxing:1.9'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'jp.wasabeef:recyclerview-animators:2.2.4'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
