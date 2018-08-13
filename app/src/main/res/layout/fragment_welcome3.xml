@@ -71,6 +71,7 @@
                     <Spinner
                         android:id="@+id/remote_protocol_spinner"
                         android:layout_width="wrap_content"
+                        android:layout_gravity="bottom"
                         android:layout_height="wrap_content"
                         android:paddingTop="3dp"
                         android:spinnerMode="dropdown" />
@@ -284,6 +285,7 @@
                                 android:id="@+id/local_protocol_spinner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
                                 android:paddingTop="3dp"
                                 android:spinnerMode="dropdown" />
                         <android.support.design.widget.TextInputLayout
