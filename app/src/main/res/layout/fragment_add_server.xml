@@ -20,7 +20,6 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -79,25 +78,12 @@
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/remote_protocol_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/welcome_remote_server_protocol"
-                        android:textColor="@color/default_text_color_light"
-                        android:textSize="@dimen/text_size_large" />
                     <Spinner
                         android:id="@+id/remote_protocol_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="3dp"
                         android:spinnerMode="dropdown" />
-                </LinearLayout>
-
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="15dp"
@@ -119,7 +105,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -302,24 +287,13 @@
                     <TableRow
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/local_protocol_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/welcome_local_server_protocol"
-                                android:textColor="@color/default_text_color_light"
-                                android:textSize="@dimen/text_size_large" />
+
                             <Spinner
                                 android:id="@+id/local_protocol_spinner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="3dp"
                                 android:spinnerMode="dropdown" />
-                        </LinearLayout>
                         <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_marginTop="15dp"
