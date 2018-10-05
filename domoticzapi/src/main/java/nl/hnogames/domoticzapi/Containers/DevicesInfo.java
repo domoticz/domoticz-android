@@ -78,6 +78,8 @@ public class DevicesInfo implements Comparable, Serializable {
     private String Data;
     private String Timers;
 
+    private String Rain;
+    private String RainRate;
     private String ForecastStr;
     private String HumidityStatus;
     private String DirectionStr;
@@ -103,6 +105,8 @@ public class DevicesInfo implements Comparable, Serializable {
             level = 0;
         }
 
+        if (row.has("Rain")) Rain = row.getString("Rain");
+        if (row.has("RainRate")) RainRate = row.getString("RainRate");
         if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
         if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
         if (row.has("Direction")) Direction = row.getString("Direction");
@@ -543,6 +547,14 @@ public class DevicesInfo implements Comparable, Serializable {
 
     public long getTemp() {
         return Temp;
+    }
+
+    public String getRain() {
+        return Rain;
+    }
+
+    public String getRainRate() {
+        return RainRate;
     }
 
     public void setNotifications(boolean notifications) {

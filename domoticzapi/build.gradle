@@ -22,8 +22,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
 
     def versionPropsFile = file('version.properties')
 
@@ -58,7 +58,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 15
-            targetSdkVersion 27
+            targetSdkVersion 28
         }
     } else {
         throw new GradleException("Could not read version.properties!")

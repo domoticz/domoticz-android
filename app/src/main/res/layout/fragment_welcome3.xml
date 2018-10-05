@@ -58,48 +58,39 @@
                 android:hint="@string/welcome_remote_server_address" />
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal">
+            android:stretchColumns="1">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/remote_protocol_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/welcome_remote_server_protocol"
-                    android:textColor="@color/default_text_color_light"
-                    android:textSize="@dimen/text_size_large" />
-
-                <Spinner
-                    android:id="@+id/remote_protocol_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="3dp"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="15dp"
+            <TableRow
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/remote_port_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
-                    android:textColor="@color/default_text_color_light"
-                    android:hint="@string/welcome_remote_server_port" />
-            </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
+                    <Spinner
+                        android:id="@+id/remote_protocol_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:spinnerMode="dropdown" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="0"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/remote_port_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberSigned"
+                        android:textColor="@color/default_text_color_light"
+                        android:hint="@string/welcome_remote_server_port" />
+                </android.support.design.widget.TextInputLayout>
+            </TableRow>
+        </TableLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -280,48 +271,38 @@
                         android:hint="@string/welcome_local_server_address" />
                 </android.support.design.widget.TextInputLayout>
 
-
-                <LinearLayout
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:orientation="horizontal">
+                    android:stretchColumns="1">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/local_protocol_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/welcome_local_server_protocol"
-                            android:textColor="@color/default_text_color_light"
-                            android:textSize="@dimen/text_size_large" />
-
-                        <Spinner
-                            android:id="@+id/local_protocol_spinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="3dp"
-                            android:spinnerMode="dropdown" />
-                    </LinearLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="15dp"
+                    <TableRow
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
-                        <EditText
-                            android:id="@+id/local_port_input"
+
+                            <Spinner
+                                android:id="@+id/local_protocol_spinner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:paddingTop="3dp"
+                                android:spinnerMode="dropdown" />
+                        <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberSigned"
-                            android:textColor="@color/default_text_color_light"
-                            android:hint="@string/welcome_local_server_port" />
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
+                            android:layout_marginTop="15dp"
+                            android:layout_weight="0"
+                            android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/local_port_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:textColor="@color/default_text_color_light"
+                                android:hint="@string/welcome_local_server_port" />
+                        </android.support.design.widget.TextInputLayout>
+                    </TableRow>
+                </TableLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -23,6 +23,7 @@
 <resources>
     <string-array name="domoticz_language_entryValues" translatable="false">
         <item>EN</item>
+        <item>BS</item>
         <item>CA</item>
         <item>CS</item>
         <item>DA</item>
@@ -40,11 +41,14 @@
         <item>RU</item>
         <item>SK</item>
         <item>SV</item>
+        <item>TR</item>
+        <item>UK</item>
         <item>zh_CN</item>
     </string-array>
 
     <string-array name="domoticz_language_entries">
         <item>English</item>
+        <item>Bosnian</item>
         <item>Catalan</item>
         <item>Czech</item>
         <item>Danish</item>
@@ -62,7 +66,8 @@
         <item>Russian</item>
         <item>Slovak</item>
         <item>Swedish</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
         <item>Chinese Simplified</item>
     </string-array>
-
 </resources>
