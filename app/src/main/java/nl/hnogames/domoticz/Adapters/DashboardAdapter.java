@@ -426,6 +426,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
                 holder.switch_battery_level.setText(text);
             }
+            if (!UsefulBits.isEmpty(mDeviceInfo.getRain())) {
+                text = context.getString(R.string.rain) + ": " + mDeviceInfo.getRain();
+                holder.switch_battery_level.setText(text);
+            }
+            if (!UsefulBits.isEmpty(mDeviceInfo.getRainRate()))
+                holder.switch_battery_level.append(", " + context.getString(R.string.rainrate) + ": " + mDeviceInfo.getRainRate());
             if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
                 holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
             if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))

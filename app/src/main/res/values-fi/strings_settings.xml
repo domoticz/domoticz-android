@@ -48,7 +48,7 @@
   <string name="startup_screen">Aloitusnäyttö</string>
   <string name="enable_items">Ota käyttöön/poista kohteita</string>
   <string name="sort_dashboardLikeServer_title">Työpöydän lajittelu</string>
-  <string name="sort_dashboardLikeServer_on">Järjestä työpöydän kuvakkeet kuten serverillä</string>
+  <string name="sort_dashboardLikeServer_on">Järjestä työpöydän kuvakkeet kuten palvelimella</string>
   <string name="sort_dashboardLikeServer_off">Järjestä työpöydän kuvakkeet aakkosjärjestykseen</string>
   <string name="extra_data_title">Lisätiedot työpöydällä</string>
   <string name="show_extra_data_on">Näytä lisätiedot työpöydällä</string>
@@ -56,9 +56,9 @@
   <string name="always_on_title">Näyttölukko</string>
   <string name="always_on_on">Pakota näyttö päälle</string>
   <string name="always_on_off">Älä pakota näyttöä päälle</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+  <string name="always_auto_refresh">Automaattinen päivitys</string>
+  <string name="always_auto_refresh_on">Päivitä laitteen tila 5 sekunnin välein</string>
+  <string name="always_auto_refresh_off">Älä päivitä laitteen tilaa 5 sekunnin välein</string>
   <string name="switch_buttons_title">Kytkimet</string>
   <string name="switch_buttons_on">Näytä kytkimet on/off-tyyppisesti</string>
   <string name="switch_buttons_off">Näytä kytkimet painikkeina</string>
