@@ -63,10 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:paddingBottom="@dimen/row_space"
-                android:paddingLeft="@dimen/row_space"
-                android:paddingRight="@dimen/row_space"
-                android:paddingTop="@dimen/row_space"
                 android:scrollbars="vertical" />
 
         </android.support.v4.widget.SwipeRefreshLayout>

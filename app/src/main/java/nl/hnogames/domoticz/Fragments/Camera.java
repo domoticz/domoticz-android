@@ -80,6 +80,11 @@ public class Camera extends Fragment {
         super.onAttach(context);
         mSharedPrefs = new SharedPrefUtil(context);
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
     private void processImage() {
         // Get access to the URI for the bitmap
@@ -102,10 +107,10 @@ public class Camera extends Fragment {
             File file = new File(url);
             Uri uri = Uri.fromFile(file);
             Picasso.with(getActivity())
-                .load(uri)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .into(root);
+                    .load(uri)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(root);
         }
     }
 }

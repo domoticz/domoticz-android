@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -95,7 +96,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.utilities_row_default, parent, false);
+                .inflate(R.layout.utilities_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -121,7 +122,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final double setPoint = mUtilitiesInfo.getSetPoint();
 
             if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
-                (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
+                    (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                 setButtons(holder, Buttons.THERMOSTAT);
                 CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
             } else {
@@ -249,7 +250,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
-            !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+                !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
@@ -374,13 +375,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         });
 
         if (mUtilitiesInfo.getSubType()
-            .replace("Electric", "counter")
-            .replace("kWh", "counter")
-            .replace("Gas", "counter")
-            .replace("Energy", "counter")
-            .replace("Voltcraft", "counter")
-            .replace("SetPoint", "temp")
-            .replace("YouLess counter", "counter").contains("counter"))
+                .replace("Electric", "counter")
+                .replace("kWh", "counter")
+                .replace("Gas", "counter")
+                .replace("Energy", "counter")
+                .replace("Voltcraft", "counter")
+                .replace("SetPoint", "temp")
+                .replace("YouLess counter", "counter").contains("counter"))
             holder.weekButton.setVisibility(View.VISIBLE);
 
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
@@ -466,11 +467,11 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         ImageView iconRow;
         Boolean isProtected;
 
-        Button dayButton;
-        Button monthButton;
-        Button yearButton;
-        Button weekButton;
-        Button buttonLog;
+        Chip dayButton;
+        Chip monthButton;
+        Chip yearButton;
+        Chip weekButton;
+        Chip buttonLog;
         Button on_button;
 
         LikeButton likeButton;
@@ -479,20 +480,20 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            dayButton = (Button) itemView.findViewById(R.id.day_button);
-            monthButton = (Button) itemView.findViewById(R.id.month_button);
-            yearButton = (Button) itemView.findViewById(R.id.year_button);
-            weekButton = (Button) itemView.findViewById(R.id.week_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+            dayButton =  itemView.findViewById(R.id.day_button);
+            monthButton = itemView.findViewById(R.id.month_button);
+            yearButton = itemView.findViewById(R.id.year_button);
+            weekButton = itemView.findViewById(R.id.week_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
 
-            on_button = (Button) itemView.findViewById(R.id.on_button);
-            name = (TextView) itemView.findViewById(R.id.utilities_name);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            buttonLog = (Button) itemView.findViewById(R.id.log_button);
-            data = (TextView) itemView.findViewById(R.id.utilities_data);
-            hardware = (TextView) itemView.findViewById(R.id.utilities_hardware);
+            on_button = itemView.findViewById(R.id.on_button);
+            name = itemView.findViewById(R.id.utilities_name);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            buttonLog = itemView.findViewById(R.id.log_button);
+            data = itemView.findViewById(R.id.utilities_data);
+            hardware = itemView.findViewById(R.id.utilities_hardware);
 
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }

@@ -74,21 +74,21 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         mSharedPrefs = new SharedPrefUtil(c);
         if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
             mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
+                    .titleColorRes(R.color.white)
+                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                    .dividerColorRes(R.color.white)
+                    .backgroundColorRes(R.color.primary)
+                    .positiveColorRes(R.color.white)
+                    .neutralColorRes(R.color.white)
+                    .negativeColorRes(R.color.white)
+                    .widgetColorRes(R.color.white)
+                    .buttonRippleColorRes(R.color.white);
         } else
             mdb = new MaterialDialog.Builder(mContext);
 
         mdb.customView(R.layout.dialog_security, true)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .negativeText(android.R.string.cancel);
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .negativeText(android.R.string.cancel);
 
         mdb.dismissListener(this);
     }
@@ -166,11 +166,11 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private void processRequest(final int status) {
         setFields(false);
         InputMethodManager imm =
-            (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editPinCode.getWindowToken(), 0);
 
         final String password =
-            UsefulBits.getMd5String(editPinCode.getText().toString());
+                UsefulBits.getMd5String(editPinCode.getText().toString());
 
         if (validatePassword(password)) {
             if (mSettings.getSecOnDelay() <= 0 || status == DomoticzValues.Security.Status.DISARM) {
@@ -186,8 +186,8 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                     public void onError(Exception error) {
                         Log.e(TAG, domoticz.getErrorMessage(error));
                         Toast.makeText(mContext,
-                            mContext.getString(R.string.security_generic_error),
-                            Toast.LENGTH_SHORT).show();
+                                mContext.getString(R.string.security_generic_error),
+                                Toast.LENGTH_SHORT).show();
                         setFields(true);
                     }
                 });
@@ -209,8 +209,8 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                             @Override
                             public void onError(Exception error) {
                                 Toast.makeText(mContext,
-                                    mContext.getString(R.string.security_generic_error),
-                                    Toast.LENGTH_SHORT).show();
+                                        mContext.getString(R.string.security_generic_error),
+                                        Toast.LENGTH_SHORT).show();
                                 setFields(true);
                             }
                         });

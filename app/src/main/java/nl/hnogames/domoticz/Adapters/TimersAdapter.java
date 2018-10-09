@@ -91,9 +91,9 @@ public class TimersAdapter extends BaseAdapter {
                         (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
                 }
 
-                holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
-                holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);
-                holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
+                holder.switch_name = convertView.findViewById(R.id.switch_name);
+                holder.switch_status = convertView.findViewById(R.id.switch_battery_level);
+                holder.signal_level = convertView.findViewById(R.id.switch_signal_level);
                 holder.switch_name.setText(mSwitchTimerInfo.getActive());
                 String commando = "";
                 if (mSwitchTimerInfo.getCmd() == 0)

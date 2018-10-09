@@ -21,26 +21,48 @@
 
 <resources>
     <!-- Base application theme. -->
-    <style name="AppThemeMain" parent="MaterialDrawerTheme.Light.DarkToolbar">
+    <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
         <item name="dialogTheme">@style/MyDialogTheme</item>
         <item name="alertDialogTheme">@style/MyDialogTheme</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item> <!-- Material 2 defines 12% alpha, primary color -->
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
     </style>
 
-    <style name="AppThemeDarkMain" parent="MaterialDrawerTheme">
+    <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/secondary</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
         <item name="dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="alertDialogTheme">@style/MyDarkDialogTheme</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item> <!-- Material 2 defines 12% alpha, primary color -->
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
@@ -49,7 +71,7 @@
         <item name="alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
-    <style name="AppThemeDark" parent="Theme.AppCompat">
+    <style name="AppThemeDark" parent="ThemeOverlay.MaterialComponents">
         <item name="colorPrimary">@color/secondary</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
@@ -62,11 +84,11 @@
     <style name="background_listview">
         <item name="android:paddingLeft">@dimen/row_space</item>
         <item name="android:paddingRight">@dimen/row_space</item>
-        <item name="android:background">@color/material_grey_300_</item>
+        <item name="android:background">@color/background_grey</item>
     </style>
 
     <style name="background_recyclerview">
-        <item name="android:background">@color/material_grey_300_</item>
+        <item name="android:background">@color/background_grey</item>
     </style>
 
     <style name="listview_row">

@@ -82,11 +82,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         processPlans();
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     public void processPlans() {
         new GetCachedDataTask().execute();
     }
@@ -94,10 +89,17 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         mSharedPrefs = new SharedPrefUtil(mContext);
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_plans);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

@@ -25,6 +25,7 @@
         <item>@string/title_wizard</item>
         <item>@string/title_dashboard</item>
         <item>@string/title_plans</item>
+        <item>@string/title_utilities</item>
         <item>@string/title_cameras</item>
         <item>@string/title_logs</item>
         <item>@string/title_events</item>
@@ -38,6 +39,7 @@
         <item>nl.hnogames.domoticz.Fragments.Wizard</item>
         <item>nl.hnogames.domoticz.Fragments.MainPager</item>
         <item>nl.hnogames.domoticz.Fragments.Plans</item>
+        <item>nl.hnogames.domoticz.Fragments.Utilities</item>
         <item>nl.hnogames.domoticz.Fragments.Cameras</item>
         <item>nl.hnogames.domoticz.Fragments.Logs</item>
         <item>nl.hnogames.domoticz.Fragments.Events</item>
@@ -48,6 +50,7 @@
         <item>gmd_build</item>
         <item>gmd_dashboard</item>
         <item>gmd_location_city</item>
+        <item>gmd_dvr</item>
         <item>gmd_camera</item>
         <item>gmd_bug_report</item>
         <item>gmd_event</item>

@@ -54,7 +54,7 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <Button
+            <android.support.design.button.MaterialButton
                 android:id="@+id/armhome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                 android:text="@string/security_arm_home"
                 android:textSize="12dp" />
 
-            <Button
+            <android.support.design.button.MaterialButton
                 android:id="@+id/armaway"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:text="@string/security_arm_away"
                 android:textSize="12dp" />
 
-            <Button
+            <android.support.design.button.MaterialButton
                 android:id="@+id/disarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

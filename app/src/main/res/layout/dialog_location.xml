@@ -93,7 +93,7 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/get_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
             android:background="@drawable/button_status"
             android:text="@string/getLocation" />
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/edit_mode_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

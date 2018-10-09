@@ -22,58 +22,30 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.fastaccess.permission.base.PermissionFragmentHelper;
-import com.fastaccess.permission.base.callback.OnPermissionCallback;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.Adapters.CamerasAdapter;
-import nl.hnogames.domoticz.CameraActivity;
+import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.app.DomoticzCardFragment;
-import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
-import nl.hnogames.domoticzapi.Containers.CameraInfo;
-import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 
 public class MainPager extends Fragment implements DomoticzFragmentListener {
-
-    @SuppressWarnings("unused")
     private static final String TAG = MainPager.class.getSimpleName();
     private Context context;
+    private FragmentStatePagerAdapter adapterViewPager;
+    private BottomNavigation bottomNavigation;
+    private ViewPager vpPager;
+    private SharedPrefUtil mSharedPrefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +56,43 @@ public class MainPager extends Fragment implements DomoticzFragmentListener {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mSharedPrefs == null)
+            mSharedPrefs = new SharedPrefUtil(getActivity());
         RelativeLayout group = (RelativeLayout) inflater.inflate(R.layout.mainpager, null);
+
+        vpPager = group.findViewById(R.id.vpPager);
+        bottomNavigation = group.findViewById(R.id.BottomNavigation);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            bottomNavigation.setBackgroundColor(getResources().getColor(R.color.background_dark));
+        }
+        adapterViewPager = new MainPagerAdapter(((AppCompatActivity) context), 5);
+        vpPager.setAdapter(adapterViewPager);
+        vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                // bottomNavigation.setSelectedIndex(i, false);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                bottomNavigation.setSelectedIndex(position, false);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+        bottomNavigation.setOnMenuItemClickListener(new BottomNavigation.OnMenuItemSelectionListener() {
+            @Override
+            public void onMenuItemSelect(int itemId, int position, boolean fromUser) {
+                if (fromUser) vpPager.setCurrentItem(position);
+            }
+            @Override
+            public void onMenuItemReselect(int itemId, int position, boolean fromUser) {
+                if (fromUser) vpPager.setCurrentItem(position);
+            }
+        });
+
         return group;
     }
 
@@ -92,8 +100,18 @@ public class MainPager extends Fragment implements DomoticzFragmentListener {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+        SetTitle(R.string.title_dashboard);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    private void SetTitle(int title) {
         if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_dashboard);
+            getActionBar().setTitle(title);
     }
 
     public ActionBar getActionBar() {
@@ -101,8 +119,52 @@ public class MainPager extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-    public void onConnectionOk() { }
+    public void onConnectionOk() {
+        Log.i(TAG,"Connection OK MainPager");
+    }
 
     @Override
-    public void onConnectionFailed() { }
+    public void onConnectionFailed() {
+        Log.i(TAG, "Connection Failed MainPager");
+    }
+
+    public static class MainPagerAdapter extends FragmentStatePagerAdapter {
+        private final int mCount;
+
+        public MainPagerAdapter(final AppCompatActivity activity, int count) {
+            super(activity.getSupportFragmentManager());
+            this.mCount = count;
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return mCount;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return new Dashboard();
+                case 1:
+                    return new Switches();
+                case 2:
+                    return new Scenes();
+                case 3:
+                    return new Temperature();
+                case 4:
+                    return new Weather();
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+    }
 }

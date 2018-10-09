@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -84,10 +85,17 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
+        initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_weather);
-        initAnimation();
     }
 
     @Override
@@ -147,9 +155,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     private void showInfoDialog(final WeatherInfo mWeatherInfo) {
         WeatherInfoDialog infoDialog = new WeatherInfoDialog(
-            mContext,
-            mWeatherInfo,
-            R.layout.dialog_weather);
+                mContext,
+                mWeatherInfo,
+                R.layout.dialog_weather);
         infoDialog.setWeatherInfo(mWeatherInfo);
         infoDialog.show();
         infoDialog.onDismissListener(new WeatherInfoDialog.DismissListener() {
@@ -183,24 +191,24 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mWeatherInfo.getIdx(),
-            jsonUrl,
-            jsonAction,
-            0,
-            null,
-            new setCommandReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    mWeatherInfo.setFavoriteBoolean(isFavorite);
-                }
+                jsonUrl,
+                jsonAction,
+                0,
+                null,
+                new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        mWeatherInfo.setFavoriteBoolean(isFavorite);
+                    }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
     @Override
@@ -227,9 +235,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     @DebugLog
     public void onLogClick(final WeatherInfo weather, final String range) {
         final String graphType = weather.getTypeImg()
-            .toLowerCase()
-            .replace("temperature", "temp")
-            .replace("visibility", "counter");
+                .toLowerCase()
+                .replace("temperature", "temp")
+                .replace("visibility", "counter");
 
         JSONObject language = null;
         Language languageObj = new SharedPrefUtil(mContext).getSavedLanguage();

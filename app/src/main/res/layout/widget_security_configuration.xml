@@ -67,7 +67,7 @@
             android:hint="@string/security_pin" />
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/checkpin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

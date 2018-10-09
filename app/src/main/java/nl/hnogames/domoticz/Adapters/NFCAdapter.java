@@ -103,11 +103,11 @@ public class NFCAdapter extends BaseAdapter {
                 (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableNFC);
-        holder.nfc_name = (TextView) convertView.findViewById(R.id.nfc_name);
-        holder.nfc_tag_id = (TextView) convertView.findViewById(R.id.nfc_tag_id);
-        holder.nfc_switch_idx = (TextView) convertView.findViewById(R.id.nfc_switchidx);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable =  convertView.findViewById(R.id.enableNFC);
+        holder.nfc_name =  convertView.findViewById(R.id.nfc_name);
+        holder.nfc_tag_id =  convertView.findViewById(R.id.nfc_tag_id);
+        holder.nfc_switch_idx =  convertView.findViewById(R.id.nfc_switchidx);
+        holder.remove =  convertView.findViewById(R.id.remove_button);
 
         holder.nfc_name.setText(mNFCInfo.getName());
         holder.nfc_tag_id.setText(mNFCInfo.getId());
@@ -118,7 +118,7 @@ public class NFCAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mNFCInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mNFCInfo.getValue()))

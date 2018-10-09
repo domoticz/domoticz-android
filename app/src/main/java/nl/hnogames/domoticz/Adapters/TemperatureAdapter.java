@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -104,7 +105,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.temperature_row_default, parent, false);
+                .inflate(R.layout.temperature_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -124,10 +125,20 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             final TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                   /* if ((row.findViewById(R.id.day_button)) != null)
+                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.year_button)) != null)
+                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.month_button)) != null)
+                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.week_button)) != null)
+                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.log_button)) != null)
+                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.timer_button)) != null)
+                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.notifications_button)) != null)
+                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status)); */
 
                 if (holder.setButton != null)
                     holder.setButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
@@ -138,20 +149,20 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
 
             int modeIconRes = 0;
             if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
-                (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
+                    (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                    mTemperatureInfo.getType(),
-                    null,
-                    (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
-                    true,
-                    "Freezing")).into(holder.iconRow);
+                        mTemperatureInfo.getType(),
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        true,
+                        "Freezing")).into(holder.iconRow);
             } else {
                 Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                    mTemperatureInfo.getType(),
-                    null,
-                    (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
-                    false,
-                    null)).into(holder.iconRow);
+                        mTemperatureInfo.getType(),
+                        null,
+                        (mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                        false,
+                        null)).into(holder.iconRow);
             }
 
             if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
@@ -260,9 +271,9 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 holder.data.setText(R.string.wind);
                 holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
                 holder.data2.setText(context.getString(R.string.last_update)
-                    + ": "
-                    + UsefulBits.getFormattedDate(context,
-                    mTemperatureInfo.getLastUpdateDateTime().getTime()));
+                        + ": "
+                        + UsefulBits.getFormattedDate(context,
+                        mTemperatureInfo.getLastUpdateDateTime().getTime()));
                 holder.data2.setVisibility(View.VISIBLE);
             } else {
                 double temperature = mTemperatureInfo.getTemperature();
@@ -270,9 +281,9 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 if (temperature <= 0 || setPoint <= 0) {
                     holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getData());
                     holder.data2.setText(context.getString(R.string.last_update)
-                        + ": "
-                        + UsefulBits.getFormattedDate(context,
-                        mTemperatureInfo.getLastUpdateDateTime().getTime()));
+                            + ": "
+                            + UsefulBits.getFormattedDate(context,
+                            mTemperatureInfo.getLastUpdateDateTime().getTime()));
                     holder.data2.setVisibility(View.VISIBLE);
                 } else {
                     holder.data.setText(context.getString(R.string.temperature) + ": " + mTemperatureInfo.getTemperature() + " " + sign);
@@ -341,10 +352,10 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         ImageView iconRow;
         ImageView iconMode;
         Button setButton;
-        Button dayButton;
-        Button monthButton;
-        Button weekButton;
-        Button yearButton;
+        Chip dayButton;
+        Chip monthButton;
+        Chip weekButton;
+        Chip yearButton;
         Boolean isProtected;
         LikeButton likeButton;
         LinearLayout extraPanel;
@@ -353,21 +364,21 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            name = (TextView) itemView.findViewById(R.id.temperature_name);
-            data = (TextView) itemView.findViewById(R.id.temperature_data);
-            data2 = (TextView) itemView.findViewById(R.id.temperature_data2);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            iconMode = (ImageView) itemView.findViewById(R.id.mode_icon);
-            pieView = (PieView) itemView.findViewById(R.id.pieView);
+            name =  itemView.findViewById(R.id.temperature_name);
+            data =  itemView.findViewById(R.id.temperature_data);
+            data2 = itemView.findViewById(R.id.temperature_data2);
+            iconRow =  itemView.findViewById(R.id.rowIcon);
+            iconMode =  itemView.findViewById(R.id.mode_icon);
+            pieView =  itemView.findViewById(R.id.pieView);
 
-            dayButton = (Button) itemView.findViewById(R.id.day_button);
-            monthButton = (Button) itemView.findViewById(R.id.month_button);
-            yearButton = (Button) itemView.findViewById(R.id.year_button);
-            weekButton = (Button) itemView.findViewById(R.id.week_button);
-            setButton = (Button) itemView.findViewById(R.id.set_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+            dayButton = itemView.findViewById(R.id.day_button);
+            monthButton = itemView.findViewById(R.id.month_button);
+            yearButton = itemView.findViewById(R.id.year_button);
+            weekButton =  itemView.findViewById(R.id.week_button);
+            setButton =  itemView.findViewById(R.id.set_button);
+            likeButton =  itemView.findViewById(R.id.fav_button);
 
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            extraPanel =  itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }

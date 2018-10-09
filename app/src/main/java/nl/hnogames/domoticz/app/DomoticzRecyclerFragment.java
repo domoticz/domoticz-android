@@ -61,7 +61,6 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class DomoticzRecyclerFragment extends Fragment {
 
     public RecyclerView gridView;
-
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
@@ -74,8 +73,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
 
-    public DomoticzRecyclerFragment() {
-    }
+    public DomoticzRecyclerFragment() {}
 
     public void setTheme() {
         if (mSharedPrefs == null)
@@ -92,9 +90,9 @@ public class DomoticzRecyclerFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
 
             mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.secondary,
-                R.color.secondary_dark,
-                R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -117,29 +115,25 @@ public class DomoticzRecyclerFragment extends Fragment {
     }
 
     public void initViews(View root) {
-
-        gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+        gridView = root.findViewById(R.id.my_recycler_view);
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getContext());
-
         setGridViewLayout();
-        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
     }
 
     public void setGridViewLayout() {
         try {
             boolean isTablet = false;
-            float screenWidth = 0;
             boolean isPortrait = false;
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
             if (getActivity() instanceof MainActivity) {
                 isTablet = !
-                    ((MainActivity) getActivity()).onPhone;
+                        ((MainActivity) getActivity()).onPhone;
             }
-
             gridView.setHasFixedSize(true);
 
             if (isTablet) {
@@ -192,14 +186,13 @@ public class DomoticzRecyclerFragment extends Fragment {
      * @param fragment fragment to cast the DomoticzFragmentListener to
      */
     public void onAttachFragment(Fragment fragment) {
-
         fragmentName = fragment.toString();
 
         try {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -217,9 +210,11 @@ public class DomoticzRecyclerFragment extends Fragment {
      * Checks for a active connection
      */
     public void checkConnection() {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
-
+        if(listener==null) {
+            //Get listener
+            List<Fragment> fragments = getFragmentManager().getFragments();
+            onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        }
         mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
@@ -303,7 +298,7 @@ public class DomoticzRecyclerFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                        "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -311,49 +306,49 @@ public class DomoticzRecyclerFragment extends Fragment {
     private void setErrorLayoutMessage(String message) {
         hideListView();
 
-        RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+        RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
-            TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+            TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
-        RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+        RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
 
-            ImageView errorImage = (ImageView) root.findViewById(R.id.errorImage);
+            ImageView errorImage = root.findViewById(R.id.errorImage);
             errorImage.setImageResource(R.drawable.empty);
             errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
-            TextView errorTextWrong = (TextView) root.findViewById(R.id.errorTextWrong);
+            TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);
             errorTextWrong.setVisibility(View.GONE);
 
-            TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+            TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-            "Layout should have a ListView defined with the ID of listView");
+                "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {
         try {
             if (root != null) {
-                LinearLayout debugLayout = (LinearLayout) root.findViewById(R.id.debugLayout);
+                LinearLayout debugLayout = root.findViewById(R.id.debugLayout);
                 if (debugLayout != null) {
                     debugLayout.setVisibility(View.VISIBLE);
 
-                    debugText = (TextView) root.findViewById(R.id.debugText);
+                    debugText = root.findViewById(R.id.debugText);
                     if (debugText != null) {
                         debugText.setMovementMethod(new ScrollingMovementMethod());
                     }

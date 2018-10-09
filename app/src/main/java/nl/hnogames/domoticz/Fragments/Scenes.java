@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -56,7 +57,7 @@ import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-    ScenesClickListener {
+        ScenesClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
@@ -78,10 +79,17 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
+        initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_scenes);
-        initAnimation();
     }
 
     @Override
@@ -192,9 +200,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void showInfoDialog(final SceneInfo mSceneInfo) {
         SceneInfoDialog infoDialog = new SceneInfoDialog(
-            getActivity(),
-            mSceneInfo,
-            R.layout.dialog_scene_info);
+                getActivity(),
+                mSceneInfo,
+                R.layout.dialog_scene_info);
         infoDialog.setIdx(String.valueOf(mSceneInfo.getIdx()));
         infoDialog.setLastUpdate(mSceneInfo.getLastUpdate());
         infoDialog.setIsFavorite(mSceneInfo.getFavoriteBoolean());
@@ -255,7 +263,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                getActivity(), mDomoticz);
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -337,9 +345,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                getActivity(),
-                switchLogs,
-                R.layout.dialog_switch_logs);
+                    getActivity(),
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }

@@ -99,11 +99,11 @@ public class LocationAdapter extends BaseAdapter {
                 (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableSwitch);
-        holder.name = (TextView) convertView.findViewById(R.id.location_name);
-        holder.radius = (TextView) convertView.findViewById(R.id.location_radius);
-        holder.connectedSwitch = (TextView) convertView.findViewById(R.id.location_connectedSwitch);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable = convertView.findViewById(R.id.enableSwitch);
+        holder.name = convertView.findViewById(R.id.location_name);
+        holder.radius = convertView.findViewById(R.id.location_radius);
+        holder.connectedSwitch = convertView.findViewById(R.id.location_connectedSwitch);
+        holder.remove = convertView.findViewById(R.id.remove_button);
         holder.name.setText(mLocationInfo.getName());
         holder.radius.setText(context.getString(R.string.radius) + ": " + mLocationInfo.getRadius());
 
@@ -113,7 +113,7 @@ public class LocationAdapter extends BaseAdapter {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx());
         } else {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mLocationInfo.getValue()))

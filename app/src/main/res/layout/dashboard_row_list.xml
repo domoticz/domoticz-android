@@ -19,24 +19,21 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.design.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_grey_300_"
-    android:clickable="true"
-    android:descendantFocusability="blocksDescendants"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginBottom="16dp"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    card_view:cardCornerRadius="0dp"
-    card_view:cardUseCompatPadding="true">
+    android:padding="16dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/row_global_wrapper"
@@ -133,7 +130,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true" />
 
-                        <Button
+                        <android.support.design.button.MaterialButton
                             android:id="@+id/set_button"
                             android:layout_width="56dp"
                             android:layout_height="wrap_content"
@@ -226,7 +223,7 @@
                                 plainpie:percentage_size="15"
                                 plainpie:inner_text_visibility="true"/>
 
-                            <Button
+                            <android.support.design.button.MaterialButton
                                 android:id="@+id/on_button"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
@@ -236,7 +233,7 @@
                                 android:text="@string/button_state_on"
                                 android:textSize="10dp" />
 
-                            <Button
+                            <android.support.design.button.MaterialButton
                                 android:id="@+id/off_button"
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
@@ -253,7 +250,7 @@
                                 android:layout_gravity="right" />
                         </LinearLayout>
 
-                        <Button
+                        <android.support.design.button.MaterialButton
                             android:id="@+id/color_button"
                             android:layout_width="wrap_content"
                             android:layout_height="25dp"
@@ -286,4 +283,4 @@
         <include layout="@layout/log_timer_button_row_default" />
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+</android.support.design.card.MaterialCardView>

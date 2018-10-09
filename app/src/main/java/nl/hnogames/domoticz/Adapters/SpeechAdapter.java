@@ -103,11 +103,11 @@ public class SpeechAdapter extends BaseAdapter {
                 (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableSpeech);
-        holder.Speech_name = (TextView) convertView.findViewById(R.id.speech_name);
-        holder.Speech_tag_id = (TextView) convertView.findViewById(R.id.speech_tag_id);
-        holder.Speech_switch_idx = (TextView) convertView.findViewById(R.id.speech_switchidx);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable = convertView.findViewById(R.id.enableSpeech);
+        holder.Speech_name = convertView.findViewById(R.id.speech_name);
+        holder.Speech_tag_id = convertView.findViewById(R.id.speech_tag_id);
+        holder.Speech_switch_idx = convertView.findViewById(R.id.speech_switchidx);
+        holder.remove = convertView.findViewById(R.id.remove_button);
 
         holder.Speech_name.setText(mSpeechInfo.getName());
         if (!UsefulBits.isEmpty(mSpeechInfo.getSwitchName())) {
@@ -116,14 +116,14 @@ public class SpeechAdapter extends BaseAdapter {
             holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch) + ": " + mSpeechInfo.getSwitchIdx());
         } else {
             holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mSpeechInfo.getValue()))
             holder.Speech_tag_id.setText(holder.Speech_tag_id.getText() + " - " + mSpeechInfo.getValue());
 
         holder.Speech_switch_idx.setText("Commando's: \r\n" + "'" + mSpeechInfo.getName() + "' " + "\r\n'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_on).toLowerCase() + "'\r\n" +
-            "'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_off).toLowerCase() + "'");
+                "'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_off).toLowerCase() + "'");
 
         holder.remove.setId(position);
         holder.remove.setOnClickListener(new View.OnClickListener() {

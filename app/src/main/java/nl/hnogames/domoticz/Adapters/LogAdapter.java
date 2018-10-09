@@ -77,7 +77,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.logs_row_default, parent, false);
+                .inflate(R.layout.logs_row_default, parent, false);
 
 
         if (mSharedPrefs.darkThemeEnabled()) {
@@ -132,7 +132,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
 
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;
@@ -141,11 +141,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            name = (TextView) itemView.findViewById(R.id.logs_name);
-            datetime = (TextView) itemView.findViewById(R.id.logs_datetime);
-            message = (TextView) itemView.findViewById(R.id.logs_message);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-
+            name = itemView.findViewById(R.id.logs_name);
+            datetime = itemView.findViewById(R.id.logs_datetime);
+            message = itemView.findViewById(R.id.logs_message);
+            iconRow = itemView.findViewById(R.id.rowIcon);
             itemView.setOnClickListener(this);
         }
 

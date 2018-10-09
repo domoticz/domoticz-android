@@ -97,6 +97,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -122,6 +123,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         if (getActionBar() != null)
@@ -219,7 +221,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             }
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }

@@ -82,7 +82,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.event_row_default, parent, false);
+                .inflate(R.layout.event_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -147,7 +147,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView message;
         Switch buttonON;
@@ -155,11 +155,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.logs_name);
-            message = (TextView) itemView.findViewById(R.id.logs_message);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            buttonON = (Switch) itemView.findViewById(R.id.switch_button);
-
+            name = itemView.findViewById(R.id.logs_name);
+            message = itemView.findViewById(R.id.logs_message);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            buttonON = itemView.findViewById(R.id.switch_button);
             itemView.setOnClickListener(this);
         }
 

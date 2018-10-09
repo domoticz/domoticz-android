@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -106,7 +107,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.weather_row_default, parent, false);
+                .inflate(R.layout.weather_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
@@ -136,12 +137,22 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 windSign = mConfigInfo.getWindSign();
             }
 
-            if (mSharedPrefs.darkThemeEnabled()) {
-                holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            }
+            //if (mSharedPrefs.darkThemeEnabled()) {
+                   /* if ((row.findViewById(R.id.day_button)) != null)
+                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.year_button)) != null)
+                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.month_button)) != null)
+                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.week_button)) != null)
+                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.log_button)) != null)
+                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.timer_button)) != null)
+                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            if ((row.findViewById(R.id.notifications_button)) != null)
+                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status)); */
+           // }
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
@@ -298,10 +309,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         TextView hardware;
         ImageView iconRow;
         Boolean isProtected;
-        Button dayButton;
-        Button monthButton;
-        Button yearButton;
-        Button weekButton;
+        Chip dayButton;
+        Chip monthButton;
+        Chip yearButton;
+        Chip weekButton;
         LikeButton likeButton;
         LinearLayout extraPanel;
         PieView pieView;
@@ -312,10 +323,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             pieView = (PieView) itemView.findViewById(R.id.pieView);
             pieView.setVisibility(View.GONE);
 
-            dayButton = (Button) itemView.findViewById(R.id.day_button);
-            monthButton = (Button) itemView.findViewById(R.id.month_button);
-            yearButton = (Button) itemView.findViewById(R.id.year_button);
-            weekButton = (Button) itemView.findViewById(R.id.week_button);
+            dayButton = (Chip) itemView.findViewById(R.id.day_button);
+            monthButton = (Chip) itemView.findViewById(R.id.month_button);
+            yearButton = (Chip) itemView.findViewById(R.id.year_button);
+            weekButton = (Chip) itemView.findViewById(R.id.week_button);
             likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
             name = (TextView) itemView.findViewById(R.id.weather_name);
             iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);

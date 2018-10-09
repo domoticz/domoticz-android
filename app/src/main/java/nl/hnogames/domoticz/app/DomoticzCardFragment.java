@@ -128,7 +128,7 @@ public class DomoticzCardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -136,8 +136,10 @@ public class DomoticzCardFragment extends Fragment {
      * Checks for a active connection
      */
     public void checkConnection() {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        if(listener == null) {
+            List<Fragment> fragments = getFragmentManager().getFragments();
+            onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        }
 
         mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -220,7 +222,7 @@ public class DomoticzCardFragment extends Fragment {
                     debugText.setText(temp);
                 }
             } else throw new RuntimeException(
-                "Layout should have a TextView defined with the ID \"debugText\"");
+                    "Layout should have a TextView defined with the ID \"debugText\"");
         }
     }
 
@@ -232,7 +234,7 @@ public class DomoticzCardFragment extends Fragment {
                 TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
                 errorTextMessage.setText(message);
             } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                    "Layout should have a RelativeLayout defined with the ID of errorLayout");
         }
     }
 
@@ -252,7 +254,7 @@ public class DomoticzCardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideRecyclerView() {

@@ -45,6 +45,12 @@ android {
         throw new GradleException("Could not read version.properties!")
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+        incremental = false;
+    }
+
     //noinspection GroovyAssignabilityCheck
     buildTypes {
         release {
@@ -192,12 +198,14 @@ dependencies {
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
-    implementation 'jp.wasabeef:recyclerview-animators:2.2.4'
+    implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+
     implementation("com.mikepenz:materialdrawer:6.0.9@aar") {
         transitive = true
     }
+
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -80,7 +81,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processTemperature();
     }
 
@@ -88,10 +88,17 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
+        initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_temperature);
-        initAnimation();
     }
 
     @Override
@@ -153,9 +160,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
         TemperatureInfoDialog infoDialog = new TemperatureInfoDialog(
-            mContext,
-            mTemperatureInfo,
-            R.layout.dialog_utilities_info);
+                mContext,
+                mTemperatureInfo,
+                R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mTemperatureInfo.getIdx()));
         infoDialog.setLastUpdate(mTemperatureInfo.getLastUpdate());
         infoDialog.setIsFavorite(mTemperatureInfo.getFavoriteBoolean());
@@ -263,13 +270,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
-                mContext,
-                t.getSetPoint(),
-                !"auto".equalsIgnoreCase(t.getStatus()));
+                    mContext,
+                    t.getSetPoint(),
+                    !"auto".equalsIgnoreCase(t.getStatus()));
         } else {
             tempDialog = new TemperatureDialog(
-                mContext,
-                t.getSetPoint());
+                    mContext,
+                    t.getSetPoint());
         }
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
@@ -280,7 +287,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                        "&mode=" + PERMANENT_OVERRIDE;
+                            "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
@@ -288,7 +295,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     addDebugText("Set idx " + idx + " to Auto");
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                        "&mode=" + AUTO;
+                            "&mode=" + AUTO;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
