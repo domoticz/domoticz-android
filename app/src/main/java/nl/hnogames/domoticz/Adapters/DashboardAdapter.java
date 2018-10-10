@@ -152,31 +152,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) row.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
             if ((row.findViewById(R.id.row_wrapper)) != null)
-                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.background_dark));
             if ((row.findViewById(R.id.row_global_wrapper)) != null)
                 (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-           /* if ((row.findViewById(R.id.day_button)) != null)
-                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.year_button)) != null)
-                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.month_button)) != null)
-                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.week_button)) != null)
-                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.log_button)) != null)
-                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.timer_button)) != null)
-                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.notifications_button)) != null)
-                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status)); */
             if ((row.findViewById(R.id.on_button)) != null)
-                (row.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (row.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((row.findViewById(R.id.off_button)) != null)
-                (row.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (row.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((row.findViewById(R.id.color_button)) != null)
-                (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                (row.findViewById(R.id.color_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
         }
-
         return new DataObjectHolder(row);
     }
 
@@ -508,7 +493,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
             if (mSharedPrefs.darkThemeEnabled())
-                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                holder.buttonOn.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             else
                 holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
 

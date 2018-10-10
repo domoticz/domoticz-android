@@ -112,9 +112,9 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
             txtCountDown = (TextView) view.findViewById(R.id.countdown);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-                btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-                btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+                btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+                btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+                btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
                 editPinCode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
                 int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};

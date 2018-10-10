@@ -104,7 +104,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
                 (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
         }
@@ -124,9 +124,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 setButtons(holder, Buttons.SCENE);
                 if (mSharedPrefs.darkThemeEnabled()) {
                     if ((holder.itemView.findViewById(R.id.on_button)) != null)
-                        (holder.itemView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                        (holder.itemView.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                     if ((holder.itemView.findViewById(R.id.off_button)) != null)
-                        (holder.itemView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                        (holder.itemView.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                 }
                 if (holder.buttonTimer != null)
                     holder.buttonTimer.setVisibility(View.GONE);
@@ -193,9 +193,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 setButtons(holder, Buttons.GROUP);
                 if (mSharedPrefs.darkThemeEnabled()) {
                     if ((holder.itemView.findViewById(R.id.on_button)) != null)
-                        (holder.itemView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                        (holder.itemView.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                     if ((holder.itemView.findViewById(R.id.off_button)) != null)
-                        (holder.itemView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                        (holder.itemView.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                 }
 
                 if (holder.buttonTimer != null)

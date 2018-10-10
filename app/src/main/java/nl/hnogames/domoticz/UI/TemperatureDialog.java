@@ -107,8 +107,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         Button btnMin = (Button) view.findViewById(R.id.min);
 
         if (mSharedPrefUtil.darkThemeEnabled()) {
-            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
         }
 
         final String text = String.valueOf(currentTemperature);

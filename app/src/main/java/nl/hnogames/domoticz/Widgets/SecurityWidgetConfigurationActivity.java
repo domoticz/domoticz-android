@@ -92,7 +92,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
         editPin = (EditText) this.findViewById(R.id.securitypin);
         if (mSharedPrefs.darkThemeEnabled()) {
-            btnConfig.setBackground(ContextCompat.getDrawable(this, R.drawable.button_status_dark));
+            btnConfig.setBackground(ContextCompat.getDrawable(this, R.color.button_dark));
             editPin.setTextColor(ContextCompat.getColor(this, R.color.white));
             txtStatus.setTextColor(ContextCompat.getColor(this, R.color.white));
             txtTitle.setTextColor(ContextCompat.getColor(this, R.color.white));

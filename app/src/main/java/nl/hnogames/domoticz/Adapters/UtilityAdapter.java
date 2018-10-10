@@ -101,15 +101,15 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (mSharedPrefs.darkThemeEnabled()) {
             ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
                 (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
             if ((view.findViewById(R.id.on_button)) != null)
-                (view.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (view.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((view.findViewById(R.id.off_button)) != null)
-                (view.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (view.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((view.findViewById(R.id.set_button)) != null)
-                (view.findViewById(R.id.set_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (view.findViewById(R.id.set_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
         }
 
         return new DataObjectHolder(view);
@@ -182,7 +182,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 && !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.buttonLog.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.buttonLog.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
         }
 
         if (holder.likeButton != null) {
@@ -220,10 +220,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.isProtected = mUtilitiesInfo.isProtected();
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.dayButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+            holder.monthButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+            holder.yearButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+            holder.weekButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
         }
 
         holder.name.setText(mUtilitiesInfo.getName());
@@ -323,10 +323,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             holder.on_button.setEnabled(false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+            holder.dayButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+            holder.monthButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+            holder.yearButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+            holder.weekButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
         }
 
         holder.on_button.setText(context.getString(R.string.set_temperature));
@@ -338,7 +338,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             }
         });
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.on_button.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            holder.on_button.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
         }
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
