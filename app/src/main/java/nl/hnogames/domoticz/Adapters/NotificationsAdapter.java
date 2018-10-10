@@ -81,9 +81,9 @@ public class NotificationsAdapter extends BaseAdapter {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
 
-                holder.switch_name = (TextView) convertView.findViewById(R.id.switch_name);
-                holder.switch_status = (TextView) convertView.findViewById(R.id.switch_battery_level);
-                holder.signal_level = (TextView) convertView.findViewById(R.id.switch_signal_level);
+                holder.switch_name = convertView.findViewById(R.id.switch_name);
+                holder.switch_status = convertView.findViewById(R.id.switch_battery_level);
+                holder.signal_level = convertView.findViewById(R.id.switch_signal_level);
 
                 holder.switch_name.setText(mNotificationInfo.getCustomMessage());
                 String priority = "";

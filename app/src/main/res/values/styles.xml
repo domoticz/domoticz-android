@@ -23,7 +23,7 @@
     <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/primary</item>
 
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
@@ -43,9 +43,9 @@
     </style>
 
     <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/secondary</item>
+        <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/primary</item>
 
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
@@ -68,7 +68,8 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/primary</item>
+
         <item name="android:dialogTheme">@style/MyDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
         <item name="dialogTheme">@style/MyDialogTheme</item>
@@ -76,9 +77,10 @@
     </style>
 
     <style name="AppThemeDark" parent="Theme.MaterialComponents">
-        <item name="colorPrimary">@color/secondary</item>
+        <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/primary</item>
+
         <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
         <item name="dialogTheme">@style/MyDarkDialogTheme</item>
@@ -212,7 +214,7 @@
     </style>
 
     <style name="MyDarkDialogTheme" parent="Theme.MaterialComponents.Dialog">
-        <item name="colorAccent">@color/primary_dark</item>
+        <item name="colorAccent">@color/primary</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:background">@color/background_dark</item>

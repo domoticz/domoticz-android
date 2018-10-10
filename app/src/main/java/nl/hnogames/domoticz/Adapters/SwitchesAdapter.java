@@ -155,25 +155,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 .inflate(R.layout.dashboard_row_list, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) row.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((row.findViewById(R.id.card_global_wrapper)) != null)
+                row.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.row_wrapper)) != null)
-                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.background_dark));
+                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.row_global_wrapper)) != null)
-                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-               /* if ((row.findViewById(R.id.day_button)) != null)
-                (row.findViewById(R.id.day_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.year_button)) != null)
-                (row.findViewById(R.id.year_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.month_button)) != null)
-                (row.findViewById(R.id.month_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.week_button)) != null)
-                (row.findViewById(R.id.week_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.log_button)) != null)
-                (row.findViewById(R.id.log_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.timer_button)) != null)
-                (row.findViewById(R.id.timer_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.notifications_button)) != null)
-                (row.findViewById(R.id.notifications_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status)); */
+                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.on_button)) != null)
                 (row.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((row.findViewById(R.id.off_button)) != null)
