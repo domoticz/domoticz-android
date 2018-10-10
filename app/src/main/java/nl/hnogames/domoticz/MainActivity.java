@@ -186,6 +186,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
 
         toolbar = findViewById(R.id.toolbar);
+        if (mSharedPrefs.darkThemeEnabled())
+            toolbar.setBackgroundColor(getResources().getColor(R.color.secondary));
+
         setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
