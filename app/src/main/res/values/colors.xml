@@ -23,16 +23,16 @@
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#2196F3</color>
 
-    <color name="secondary">@color/button_dark_status</color>
-    <color name="secondary_dark">#2A292F</color>
+    <color name="secondary">#1F3C53</color>
+    <color name="secondary_dark">#142A3B</color>
 
     <color name="background_grey">#EDEDED</color>
     <color name="accent">@color/button_dark_status</color>
 
     <color name="background_dark">#2A292F</color>
-    <color name="card_background_dark">#48474D</color>
-    <color name="button_dark">#2196F3</color>
-    <color name="button_dark_status">#2196F3</color>
+    <color name="card_background_dark">#1F3C53</color>
+    <color name="button_dark">#284B6B</color>
+    <color name="button_dark_status">#284B6B</color>
 
     <color name="welcome1_background">@color/black</color>
     <color name="welcome2_background">@color/default_background_color_light</color>
