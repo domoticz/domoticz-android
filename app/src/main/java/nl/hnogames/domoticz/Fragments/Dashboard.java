@@ -1066,7 +1066,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         protected Boolean doInBackground(Boolean... geto) {
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
                 } catch (Exception ex) {

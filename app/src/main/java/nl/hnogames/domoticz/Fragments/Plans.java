@@ -51,6 +51,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
 
@@ -171,7 +172,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         ArrayList<PlanInfo> cachePlans = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cachePlans = (ArrayList<PlanInfo>) SerializableManager.readSerializedObject(mContext, "Plans");
                     Plans.this.mPlans = cachePlans;

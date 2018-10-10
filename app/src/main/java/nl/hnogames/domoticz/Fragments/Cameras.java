@@ -64,6 +64,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener, OnPermissionCallback {
 
@@ -266,7 +267,9 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         ArrayList<CameraInfo> cacheCameras = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(context);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheCameras = (ArrayList<CameraInfo>) SerializableManager.readSerializedObject(context, "Cameras");
                 } catch (Exception ex) {

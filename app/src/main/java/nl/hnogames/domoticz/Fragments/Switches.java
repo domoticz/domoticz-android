@@ -69,6 +69,7 @@ import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Switches extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         switchesClickListener {
@@ -942,7 +943,9 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         ArrayList<DevicesInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
                     extendedStatusSwitches = cacheSwitches;
