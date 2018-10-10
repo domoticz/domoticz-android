@@ -1054,7 +1054,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (isAdded()) {
                 if (mSwipeRefreshLayout != null)
                     mSwipeRefreshLayout.setRefreshing(false);
-
                 super.errorHandling(error, this.coordinatorLayout);
             }
         }
