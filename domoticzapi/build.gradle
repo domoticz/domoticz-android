@@ -28,8 +28,7 @@ android {
     def versionPropsFile = file('version.properties')
 
     if (versionPropsFile.canRead()) {
-        def Properties versionProps = new Properties()
-
+        Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionPropsFile))
         def value = 0
         def runTasks = gradle.startParameter.taskNames
@@ -45,18 +44,16 @@ android {
         def versionMajor = 0
         def versionMinor = 1
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
-        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
         def version_Code = versionProps['VERSION_CODE'].toInteger() + value
 
         versionProps['VERSION_PATCH'] = versionPatch.toString()
-        versionProps['VERSION_BUILD'] = versionBuild.toString()
         versionProps['VERSION_CODE'] = version_Code.toString()
 
         versionProps.store(versionPropsFile.newWriter(), null)
 
         defaultConfig {
             versionCode version_Code
-            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
+            versionName "${versionMajor}.${versionMinor}.${versionPatch}"
             minSdkVersion 15
             targetSdkVersion 28
         }
