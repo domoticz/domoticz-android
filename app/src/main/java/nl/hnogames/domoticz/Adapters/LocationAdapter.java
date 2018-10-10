@@ -117,7 +117,7 @@ public class LocationAdapter extends BaseAdapter {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx());
         } else {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available));
+                + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mLocationInfo.getValue()))

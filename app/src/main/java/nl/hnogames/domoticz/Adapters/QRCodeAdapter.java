@@ -122,7 +122,7 @@ public class QRCodeAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available));
+                + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mQRCodeInfo.getValue()))

@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -71,7 +70,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.camera_row, parent, false);
+            .inflate(R.layout.camera_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -114,7 +113,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+        implements View.OnClickListener {
         TextView name;
         com.android.volley.toolbox.NetworkImageView camera;
 

@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -96,7 +95,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.utilities_row_default, parent, false);
+            .inflate(R.layout.utilities_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -123,7 +122,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final double setPoint = mUtilitiesInfo.getSetPoint();
 
             if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
-                    (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
+                (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                 setButtons(holder, Buttons.THERMOSTAT);
                 CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
             } else {
@@ -251,7 +250,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
-                !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+            !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
@@ -376,13 +375,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         });
 
         if (mUtilitiesInfo.getSubType()
-                .replace("Electric", "counter")
-                .replace("kWh", "counter")
-                .replace("Gas", "counter")
-                .replace("Energy", "counter")
-                .replace("Voltcraft", "counter")
-                .replace("SetPoint", "temp")
-                .replace("YouLess counter", "counter").contains("counter"))
+            .replace("Electric", "counter")
+            .replace("kWh", "counter")
+            .replace("Gas", "counter")
+            .replace("Energy", "counter")
+            .replace("Voltcraft", "counter")
+            .replace("SetPoint", "temp")
+            .replace("YouLess counter", "counter").contains("counter"))
             holder.weekButton.setVisibility(View.VISIBLE);
 
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
@@ -481,7 +480,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            dayButton =  itemView.findViewById(R.id.day_button);
+            dayButton = itemView.findViewById(R.id.day_button);
             monthButton = itemView.findViewById(R.id.month_button);
             yearButton = itemView.findViewById(R.id.year_button);
             weekButton = itemView.findViewById(R.id.week_button);

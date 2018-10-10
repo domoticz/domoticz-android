@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +29,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,7 +105,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.weather_row_default, parent, false);
+            .inflate(R.layout.weather_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -153,7 +151,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 (row.findViewById(R.id.timer_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
             if ((row.findViewById(R.id.notifications_button)) != null)
                 (row.findViewById(R.id.notifications_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status)); */
-           // }
+            // }
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());

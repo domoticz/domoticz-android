@@ -24,9 +24,12 @@ package nl.hnogames.domoticz.app;
 import android.support.v4.app.Fragment;
 
 public class RefreshFragment extends Fragment {
-    public void RefreshFragment() {}
+    public void RefreshFragment() {
+    }
 
-    public void Filter(String newText) {}
+    public void Filter(String newText) {
+    }
 
-    public void sortFragment(String selectedSort) {}
+    public void sortFragment(String selectedSort) {
+    }
 }

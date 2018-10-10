@@ -34,7 +34,7 @@
     android:padding="8dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
-	
+
     <LinearLayout
         android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"

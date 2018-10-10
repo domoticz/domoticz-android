@@ -21,6 +21,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/button_status_dark_pressed" android:state_pressed="true" />
-    <item android:drawable="@drawable/button_status_dark_normal" android:state_focused="false" />
+    <item android:drawable="@drawable/button_status_dark_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/button_status_dark_normal" android:state_focused="false"/>
 </selector>

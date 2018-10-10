@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -82,7 +81,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.event_row_default, parent, false);
+            .inflate(R.layout.event_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -148,7 +147,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+        implements View.OnClickListener {
         TextView name;
         TextView message;
         Switch buttonON;

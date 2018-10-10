@@ -21,13 +21,13 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Pannello di sicurezza</string>
-  <string name="security_pin">Codice Pin</string>
-  <string name="security_disarm">Disarma</string>
-  <string name="security_arm_home">Arma in casa</string>
-  <string name="security_arm_away">Arma fuori casa</string>
-  <string name="security_wrong_code">Codice errato inserito!</string>
-  <string name="security_generic_error">Non posso cambiare la modalità di sicurezza</string>
-  <string name="security_wrong_password_fingerprint">La password inserita non è corretta, la password dell\'account domoticz è l\'alternativa alle impronte digitali nel caso ci siano problemi...!</string>
-  <string name="show_password">Mostra Password</string>
+    <string name="title_security_panel">Pannello di sicurezza</string>
+    <string name="security_pin">Codice Pin</string>
+    <string name="security_disarm">Disarma</string>
+    <string name="security_arm_home">Arma in casa</string>
+    <string name="security_arm_away">Arma fuori casa</string>
+    <string name="security_wrong_code">Codice errato inserito!</string>
+    <string name="security_generic_error">Non posso cambiare la modalità di sicurezza</string>
+    <string name="security_wrong_password_fingerprint">La password inserita non è corretta, la password dell\'account domoticz è l\'alternativa alle impronte digitali nel caso ci siano problemi...!</string>
+    <string name="show_password">Mostra Password</string>
 </resources>

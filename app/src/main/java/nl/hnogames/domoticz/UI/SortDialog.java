@@ -48,19 +48,19 @@ public class SortDialog implements DialogInterface.OnDismissListener {
         names = new String[]{mContext.getString(R.string.filterOn_on), mContext.getString(R.string.filterOn_off), mContext.getString(R.string.filterOn_static), mContext.getString(R.string.filterOn_all)};
         if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
             mdb = new MaterialDialog.Builder(mContext)
-                    .titleColorRes(R.color.white)
-                    .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                    .dividerColorRes(R.color.white)
-                    .backgroundColorRes(R.color.primary)
-                    .positiveColorRes(R.color.white)
-                    .neutralColorRes(R.color.white)
-                    .negativeColorRes(R.color.white)
-                    .widgetColorRes(R.color.white)
-                    .buttonRippleColorRes(R.color.white);
+                .titleColorRes(R.color.white)
+                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
+                .dividerColorRes(R.color.white)
+                .backgroundColorRes(R.color.primary)
+                .positiveColorRes(R.color.white)
+                .neutralColorRes(R.color.white)
+                .negativeColorRes(R.color.white)
+                .widgetColorRes(R.color.white)
+                .buttonRippleColorRes(R.color.white);
         } else
             mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .negativeText(android.R.string.cancel);
+            .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }
 
@@ -74,7 +74,7 @@ public class SortDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
         ListView listView = (ListView) view.findViewById(R.id.list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_list_item_1, android.R.id.text1, names);
+            android.R.layout.simple_list_item_1, android.R.id.text1, names);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,7 +59,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.plan_row, parent, false);
+            .inflate(R.layout.plan_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -99,14 +98,14 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+        implements View.OnClickListener {
         TextView name;
         TextView devices;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            name =  itemView.findViewById(R.id.name);
-            devices =  itemView.findViewById(R.id.devices);
+            name = itemView.findViewById(R.id.name);
+            devices = itemView.findViewById(R.id.devices);
             itemView.setOnClickListener(this);
         }
 
