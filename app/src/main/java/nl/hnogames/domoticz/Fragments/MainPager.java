@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -38,18 +39,66 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.app.DomoticzCardFragment;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.app.RefreshFragment;
 
-public class MainPager extends Fragment implements DomoticzFragmentListener {
+public class MainPager extends RefreshFragment implements DomoticzFragmentListener {
     private static final String TAG = MainPager.class.getSimpleName();
     private Context context;
     private FragmentStatePagerAdapter adapterViewPager;
     private BottomNavigation bottomNavigation;
     private ViewPager vpPager;
     private SharedPrefUtil mSharedPrefs;
+    private RelativeLayout root;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void RefreshFragment() {
+        Fragment f = (Fragment) vpPager
+                .getAdapter()
+                .instantiateItem(vpPager, vpPager.getCurrentItem());
+        if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).refreshFragment();
+        } else if (f instanceof DomoticzCardFragment)
+            ((DomoticzCardFragment) f).refreshFragment();
+        else if (f instanceof DomoticzDashboardFragment)
+            ((DomoticzDashboardFragment) f).refreshFragment();
+        else if (f instanceof RefreshFragment)
+            ((RefreshFragment) f).RefreshFragment();
+    }
+
+    @Override
+    public void Filter(String newText) {
+        Fragment n = (Fragment) vpPager
+                .getAdapter()
+                .instantiateItem(vpPager, vpPager.getCurrentItem());
+        if (n instanceof DomoticzDashboardFragment) {
+            ((DomoticzDashboardFragment) n).Filter(newText);
+        } else if (n instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) n).Filter(newText);
+        } else if (n instanceof RefreshFragment) {
+            ((RefreshFragment) n).Filter(newText);
+        }
+    }
+
+    @Override
+    public void sortFragment(String selectedSort) {
+        Fragment f = (Fragment) vpPager
+                .getAdapter()
+                .instantiateItem(vpPager, vpPager.getCurrentItem());
+        if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
+        } else if (f instanceof DomoticzDashboardFragment) {
+            ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
+        }else if (f instanceof RefreshFragment) {
+            ((RefreshFragment) f).sortFragment(selectedSort);
+        }
     }
 
     @Override
@@ -58,10 +107,15 @@ public class MainPager extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-        RelativeLayout group = (RelativeLayout) inflater.inflate(R.layout.mainpager, null);
+        root = (RelativeLayout) inflater.inflate(R.layout.mainpager, null);
+        initViews();
+        return root;
+    }
 
-        vpPager = group.findViewById(R.id.vpPager);
-        bottomNavigation = group.findViewById(R.id.BottomNavigation);
+    @NonNull
+    private void initViews() {
+        vpPager = root.findViewById(R.id.vpPager);
+        bottomNavigation = root.findViewById(R.id.BottomNavigation);
         if (mSharedPrefs.darkThemeEnabled()) {
             bottomNavigation.setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
@@ -69,13 +123,14 @@ public class MainPager extends Fragment implements DomoticzFragmentListener {
         vpPager.setAdapter(adapterViewPager);
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                // bottomNavigation.setSelectedIndex(i, false);
+            public void onPageScrolled(int position, float v, int i1) {
+                // bottomNavigation.setSelectedIndex(position, false);
             }
 
             @Override
             public void onPageSelected(int position) {
                 bottomNavigation.setSelectedIndex(position, false);
+                SetTitle(GetTitle(position));
             }
 
             @Override
@@ -85,16 +140,39 @@ public class MainPager extends Fragment implements DomoticzFragmentListener {
         bottomNavigation.setOnMenuItemClickListener(new BottomNavigation.OnMenuItemSelectionListener() {
             @Override
             public void onMenuItemSelect(int itemId, int position, boolean fromUser) {
-                if (fromUser) vpPager.setCurrentItem(position);
+                if (fromUser) {
+                    vpPager.setCurrentItem(position);
+                    SetTitle(GetTitle(position));
+                }
             }
             @Override
             public void onMenuItemReselect(int itemId, int position, boolean fromUser) {
-                if (fromUser) vpPager.setCurrentItem(position);
+                if (fromUser) {
+                    vpPager.setCurrentItem(position);
+                    SetTitle(GetTitle(position));
+                }
             }
         });
-
-        return group;
     }
+
+    public int GetTitle(int position)
+    {
+        switch (position) {
+            case 0:
+                return R.string.title_dashboard;
+            case 1:
+                return R.string.title_switches;
+            case 2:
+                return R.string.title_scenes;
+            case 3:
+                return R.string.title_temperature;
+            case 4:
+                return R.string.title_weather;
+            default:
+                return R.string.title_dashboard;
+        }
+    }
+
 
     @Override
     public void onAttach(Context context) {

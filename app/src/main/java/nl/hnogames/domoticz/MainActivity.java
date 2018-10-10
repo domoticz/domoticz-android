@@ -83,6 +83,7 @@ import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Dashboard;
+import nl.hnogames.domoticz.Fragments.MainPager;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.UI.PasswordDialog;
@@ -101,6 +102,7 @@ import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.app.RefreshFragment;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
@@ -505,7 +507,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         return jsonValue;
     }
 
-
     @DebugLog
     public void refreshFragment() {
         Fragment f = latestFragment;
@@ -515,6 +516,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             ((DomoticzCardFragment) f).refreshFragment();
         else if (f instanceof DomoticzDashboardFragment)
             ((DomoticzDashboardFragment) f).refreshFragment();
+        else if (f instanceof RefreshFragment)
+            ((RefreshFragment) f).RefreshFragment();
     }
 
     @DebugLog
@@ -832,11 +835,19 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         String ICONS[] = mSharedPrefs.getNavigationIcons();
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Wizard") || fragments[i].contains("Dashboard"))
+            if (fragments[i].contains("Wizard") || fragments[i].contains("MainPager"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+
         drawerItems.add(new DividerDrawerItem());
+
         for (int i = 0; i < drawerActions.length; i++)
-            if (!fragments[i].contains("Wizard") && !fragments[i].contains("Dashboard"))
+            if ((!fragments[i].contains("Wizard") && !fragments[i].contains("MainPager")) && fragments[i].contains("Utilities") || fragments[i].contains("Plans")|| fragments[i].contains("Camera"))
+                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+
+        drawerItems.add(new DividerDrawerItem());
+
+        for (int i = 0; i < drawerActions.length; i++)
+            if (!fragments[i].contains("Wizard") && !fragments[i].contains("MainPager")&& !fragments[i].contains("Utilities")&& !fragments[i].contains("Plans")&& !fragments[i].contains("Camera"))
                 drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
         return drawerItems;
@@ -851,7 +862,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.material_indigo_600);
         }
-
         return item;
     }
 
@@ -864,7 +874,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.material_indigo_600);
         }
-
         return item;
     }
 
@@ -981,8 +990,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
-                if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
+            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)|| (f instanceof RefreshFragment)) {
+                if ((f instanceof MainPager) || (f instanceof Scenes) || (f instanceof Switches))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -1004,6 +1013,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             ((DomoticzDashboardFragment) n).Filter(newText);
                         } else if (n instanceof DomoticzRecyclerFragment) {
                             ((DomoticzRecyclerFragment) n).Filter(newText);
+                        } else if (n instanceof RefreshFragment) {
+                            ((RefreshFragment) n).Filter(newText);
                         }
                         return false;
                     }
@@ -1164,6 +1175,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                 ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
                             } else if (f instanceof DomoticzDashboardFragment) {
                                 ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
+                            }else if (f instanceof RefreshFragment) {
+                                ((RefreshFragment) f).sortFragment(selectedSort);
                             }
                         }
                     });

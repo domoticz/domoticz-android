@@ -21,15 +21,16 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/appwidget_dark_bg_clickable"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/appwidget_dark_bg_clickable"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/rowIcon"
             android:layout_width="50dp"
@@ -37,18 +38,18 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:src="@drawable/defaultimage" />
+            android:src="@drawable/defaultimage"/>
 
         <TextView
             android:id="@+id/title"
+            style="@style/row_name_small"
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Security Panel"
-            style="@style/row_name_small"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <TextView
@@ -57,58 +58,58 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="10dp"
-        android:textColor="@color/white"
         android:text="Status: Armed"
-        android:textSize="@dimen/text_size_small" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_small"/>
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="73dp"
-        android:orientation="horizontal"
         android:layout_alignTop="@+id/securitypin"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
 
         <android.support.design.button.MaterialButton
             android:id="@+id/armhome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_home"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
 
         <android.support.design.button.MaterialButton
             android:id="@+id/armaway"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_away"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
 
         <android.support.design.button.MaterialButton
             android:id="@+id/disarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/button_status_dark"
             android:text="@string/security_disarm"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
     </LinearLayout>
 
 

@@ -21,10 +21,10 @@
   -->
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:id="@+id/coordinatorLayout"
+                                                 android:layout_width="fill_parent"
+                                                 android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -42,13 +42,13 @@
                 style="@style/debug_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/debug_textview_title" />
+                android:text="@string/debug_textview_title"/>
 
             <TextView
                 android:id="@+id/debugText"
                 style="@style/debug_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"/>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/error_image_description"
-                android:src="@drawable/sad_smiley" />
+                android:src="@drawable/sad_smiley"/>
 
             <TextView
                 android:id="@+id/errorTextOops"
@@ -90,7 +90,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:text="@string/oops"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"/>
 
             <TextView
                 android:id="@+id/errorTextWrong"
@@ -100,7 +100,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:text="@string/something_went_wrong"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_medium"/>
 
             <TextView
                 android:id="@+id/errorTextMessage"
@@ -111,7 +111,7 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/light_gray"
                 android:textSize="@dimen/text_size_small"
-                tools:text="Error: No network connection available" />
+                tools:text="Error: No network connection available"/>
 
         </RelativeLayout>
 

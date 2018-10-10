@@ -23,7 +23,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
     <string-array name="drawer_actions" translatable="false">
         <item>@string/title_wizard</item>
-        <item>@string/title_dashboard</item>
+        <item>@string/title_switches</item>
         <item>@string/title_plans</item>
         <item>@string/title_utilities</item>
         <item>@string/title_cameras</item>

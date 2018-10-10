@@ -111,8 +111,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_switches);
+        //if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_switches);
     }
 
     @Override

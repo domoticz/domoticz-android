@@ -21,11 +21,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/row_global_wrapper"
-    style="@style/background_listview"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/row_global_wrapper"
+              style="@style/background_listview"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/row_wrapper"
@@ -35,10 +35,10 @@
         android:longClickable="true"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -47,7 +47,7 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/error_image_description"
             android:paddingRight="5dp"
-            android:src="@drawable/clock48" />
+            android:src="@drawable/clock48"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,17 +59,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                tools:text="Switch name" />
+                tools:text="Switch name"/>
 
             <TextView
                 android:id="@+id/switch_battery_level"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/switch_name"
-                android:text="@string/battery_level" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/battery_level"/>
 
             <TextView
                 android:id="@+id/switch_signal_level"
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/switch_battery_level"
-                android:text="@string/signal_level" />
+                android:text="@string/signal_level"/>
 
         </RelativeLayout>
     </LinearLayout>

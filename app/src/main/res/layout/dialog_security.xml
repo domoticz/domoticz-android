@@ -21,10 +21,9 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,17 +31,18 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_securitypin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/linearLayout5"
-                android:layout_toStartOf="@+id/linearLayout5">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/linearLayout5"
+            android:layout_toLeftOf="@+id/linearLayout5">
+
             <EditText
                 android:id="@+id/securitypin"
-                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/default_text_color_light"
-                android:hint="@string/security_pin" />
+                android:hint="@string/security_pin"
+                android:inputType="number"
+                android:textColor="@color/default_text_color_light"/>
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -50,45 +50,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/armhome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="@string/security_arm_home"
-                android:textSize="12dp" />
+                android:textSize="12dp"/>
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/armaway"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="@string/security_arm_away"
-                android:textSize="12dp" />
+                android:textSize="12dp"/>
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/disarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_status"
                 android:text="@string/security_disarm"
-                android:textSize="12dp" />
+                android:textSize="12dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -108,7 +108,7 @@
                 android:paddingBottom="20dp"
                 android:text=""
                 android:textColor="@color/material_red_400"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_medium"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

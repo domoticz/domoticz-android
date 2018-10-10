@@ -22,11 +22,13 @@
 
 <resources>
     <color name="primary">#2196F3</color>
-    <color name="primary_dark">#22272B</color>
-    <color name="secondary">#1E88E5</color>
+    <color name="primary_dark">#2196F3</color>
+    <color name="secondary">#1D7DD1</color>
     <color name="secondary_dark">#1D7DD1</color>
+
     <color name="background_grey">#EDEDED</color>
-    <color name="accent">#22272B</color>
+    <color name="accent">#43A047</color>
+
     <color name="background_dark">#303030</color>
     <color name="button_dark">#50BDBDBD</color>
 

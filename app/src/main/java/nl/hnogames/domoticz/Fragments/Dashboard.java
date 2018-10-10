@@ -86,8 +86,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_dashboard);
+        // if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_dashboard);
     }
 
     @Override

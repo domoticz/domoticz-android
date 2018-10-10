@@ -19,23 +19,22 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <android.support.design.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:plainpie="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_global_wrapper"
-    app:cardElevation="2dp"
-    app:cardCornerRadius="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
 
     <LinearLayout
         android:id="@+id/row_global_wrapper"
@@ -60,13 +59,13 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/row_icon_description"
-                tools:src="@drawable/clock48" />
+                tools:src="@drawable/clock48"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginBottom="10dp"
+                          android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -75,8 +74,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/linearLayout4"
                         android:layout_toStartOf="@+id/linearLayout4"
+                        android:layout_toLeftOf="@+id/linearLayout4"
                         android:orientation="vertical">
 
                         <TextView
@@ -85,17 +84,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            tools:text="Utility name" />
+                            tools:text="Utility name"/>
 
                         <TextView
                             android:id="@+id/temperature_data"
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
                             android:layout_below="@+id/temperature_name"
-                            android:text="@string/temperature" />
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:text="@string/temperature"/>
 
                         <LinearLayout
                             android:layout_width="175dp"
@@ -107,17 +106,17 @@
                                 style="@style/row_body2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_below="@+id/temperature_data"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentLeft="true"
-                                android:layout_below="@+id/temperature_data"
-                                android:text="@string/temperature" />
+                                android:text="@string/temperature"/>
 
                             <ImageView
                                 android:id="@+id/mode_icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="5dp"
-                                android:src="@drawable/ic_schedule_black_18dp" />
+                                android:src="@drawable/ic_schedule_black_18dp"/>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -129,18 +128,18 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <az.plainpie.PieView
                             android:id="@+id/pieView"
                             android:layout_width="72dp"
                             android:layout_height="73dp"
-                            plainpie:inner_pie_padding="10"
-                            plainpie:percentage="75"
                             android:visibility="gone"
-                            plainpie:percentage_size="15"
-                            plainpie:inner_text_visibility="true"/>
+                            plainpie:inner_pie_padding="10"
+                            plainpie:inner_text_visibility="true"
+                            plainpie:percentage="75"
+                            plainpie:percentage_size="15"/>
 
                         <android.support.design.button.MaterialButton
                             android:id="@+id/set_button"
@@ -151,14 +150,14 @@
                             android:layout_gravity="right"
                             android:background="@drawable/button_status"
                             android:text="@string/set_temperature"
-                            android:textSize="10dp" />
+                            android:textSize="10dp"/>
 
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_graph_buttons_row_default" />
+        <include layout="@layout/log_graph_buttons_row_default"/>
 
     </LinearLayout>
 </android.support.design.card.MaterialCardView>

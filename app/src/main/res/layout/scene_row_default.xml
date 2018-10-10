@@ -19,21 +19,21 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<android.support.design.card.MaterialCardView
+  <android.support.design.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_global_wrapper"
-    app:cardElevation="2dp"
-    app:cardCornerRadius="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
 
     <LinearLayout
         android:id="@+id/row_global_wrapper"
@@ -58,7 +58,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="5dp"
-                android:src="@drawable/clock48" />
+                android:src="@drawable/clock48"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -72,8 +72,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/linearLayout4"
                         android:layout_toStartOf="@+id/linearLayout4"
+                        android:layout_toLeftOf="@+id/linearLayout4"
                         android:orientation="vertical">
 
                         <TextView
@@ -83,20 +83,20 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_marginRight="35dp"
-                            android:text="Switch" />
+                            android:text="Switch"/>
 
                         <TextView
                             android:id="@+id/switch_battery_level"
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
                             android:layout_below="@+id/switch_name"
-                            android:layout_toLeftOf="@+id/linearLayout4"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
                             android:layout_toStartOf="@+id/linearLayout4"
+                            android:layout_toLeftOf="@+id/linearLayout4"
                             android:gravity="center_vertical"
-                            android:text="@string/battery_level" />
+                            android:text="@string/battery_level"/>
 
                         <TextView
                             android:id="@+id/switch_signal_level"
@@ -104,7 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/switch_battery_level"
-                            android:text="@string/signal_level" />
+                            android:text="@string/signal_level"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -125,7 +125,7 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/button_status"
                             android:text="@string/button_state_on"
-                            android:textSize="10dp" />
+                            android:textSize="10dp"/>
 
                         <android.support.design.button.MaterialButton
                             android:id="@+id/off_button"
@@ -135,13 +135,13 @@
                             android:layout_weight="1"
                             android:background="@drawable/button_status"
                             android:text="@string/button_state_off"
-                            android:textSize="10dp" />
+                            android:textSize="10dp"/>
                     </LinearLayout>
                 </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_timer_button_row_default" />
+        <include layout="@layout/log_timer_button_row_default"/>
     </LinearLayout>
 </android.support.design.card.MaterialCardView>

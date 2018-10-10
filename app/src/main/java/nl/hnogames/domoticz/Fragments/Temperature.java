@@ -97,8 +97,8 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_temperature);
+        //if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_temperature);
     }
 
     @Override

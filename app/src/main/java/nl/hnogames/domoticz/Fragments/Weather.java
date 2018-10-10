@@ -94,8 +94,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_weather);
+        //if (getActionBar() != null)
+        //   getActionBar().setTitle(R.string.title_weather);
     }
 
     @Override

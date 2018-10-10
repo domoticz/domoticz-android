@@ -88,8 +88,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_scenes);
+        //if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_scenes);
     }
 
     @Override
