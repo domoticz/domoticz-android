@@ -1,38 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:background="@android:color/white"
-      app:bbn_badgeColor="@color/material_red_400"
-      app:bbn_itemColorActive="@color/material_blue_600"
-      app:bbn_rippleColor="#33ffffff">
+      android:background="@android:color/white">
 
     <item
         android:id="@+id/bbn_dashboard"
         android:icon="@drawable/baseline_dashboard_black_24"
-        android:iconTint="@color/material_grey_300_"
         android:title="@string/title_dashboard"/>
 
     <item
         android:id="@+id/bbn_switches"
         android:icon="@drawable/baseline_highlight_black_24"
-        android:iconTint="@color/material_grey_300_"
         android:title="@string/title_switches"/>
 
     <item
         android:id="@+id/bbn_scenes"
         android:icon="@drawable/baseline_view_carousel_black_24"
-        android:iconTint="@color/material_grey_300_"
         android:title="@string/title_scenes"/>
 
     <item
         android:id="@+id/bbn_temperature"
         android:icon="@drawable/baseline_opacity_black_24"
-        android:iconTint="@color/material_grey_300_"
         android:title="@string/title_temperature"/>
 
     <item
         android:id="@+id/bbn_weather"
         android:icon="@drawable/baseline_wb_sunny_black_24"
-        android:iconTint="@color/material_grey_300_"
         android:title="@string/title_weather"/>
 </menu>

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -31,11 +32,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -48,7 +49,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     private static final String TAG = MainPager.class.getSimpleName();
     private Context context;
     private FragmentStatePagerAdapter adapterViewPager;
-    private BottomNavigation bottomNavigation;
+    private BottomNavigationView bottomNavigation;
     private ViewPager vpPager;
     private SharedPrefUtil mSharedPrefs;
     private RelativeLayout root;
@@ -124,12 +125,11 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float v, int i1) {
-                // bottomNavigation.setSelectedIndex(position, false);
             }
 
             @Override
             public void onPageSelected(int position) {
-                bottomNavigation.setSelectedIndex(position, false);
+                bottomNavigation.getMenu().getItem(position).setChecked(true);
                 SetTitle(GetTitle(position));
             }
 
@@ -137,21 +137,33 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
             public void onPageScrollStateChanged(int i) {
             }
         });
-        bottomNavigation.setOnMenuItemClickListener(new BottomNavigation.OnMenuItemSelectionListener() {
-            @Override
-            public void onMenuItemSelect(int itemId, int position, boolean fromUser) {
-                if (fromUser) {
-                    vpPager.setCurrentItem(position);
-                    SetTitle(GetTitle(position));
-                }
-            }
 
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onMenuItemReselect(int itemId, int position, boolean fromUser) {
-                if (fromUser) {
-                    vpPager.setCurrentItem(position);
-                    SetTitle(GetTitle(position));
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.bbn_dashboard:
+                        vpPager.setCurrentItem(0);
+                        SetTitle(GetTitle(0));
+                        break;
+                    case R.id.bbn_switches:
+                        vpPager.setCurrentItem(1);
+                        SetTitle(GetTitle(1));
+                        break;
+                    case R.id.bbn_scenes:
+                        vpPager.setCurrentItem(2);
+                        SetTitle(GetTitle(2));
+                        break;
+                    case R.id.bbn_temperature:
+                        vpPager.setCurrentItem(3);
+                        SetTitle(GetTitle(3));
+                        break;
+                    case R.id.bbn_weather:
+                        vpPager.setCurrentItem(4);
+                        SetTitle(GetTitle(4));
+                        break;
                 }
+                return false;
             }
         });
     }

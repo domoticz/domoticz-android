@@ -206,7 +206,6 @@ dependencies {
         transitive = true
     }
 
-    implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     implementation 'com.schibstedspain.android:leku:3.3.0'
