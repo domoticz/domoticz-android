@@ -114,7 +114,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
-
+        holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemLongClicked(position);
+            }
+        });
         if (filteredData != null && filteredData.size() > 0) {
             final SceneInfo mSceneInfo = filteredData.get(position);
 
@@ -346,6 +351,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         LinearLayout extraPanel;
         Button buttonOn, buttonOff;
         Chip buttonLog, buttonTimer, buttonNotifications;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -355,7 +361,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             iconRow = itemView.findViewById(R.id.rowIcon);
             switch_name = itemView.findViewById(R.id.switch_name);
             switch_battery_level = itemView.findViewById(R.id.switch_battery_level);
-
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             buttonLog = itemView.findViewById(R.id.log_button);
             buttonTimer = itemView.findViewById(R.id.timer_button);
             buttonNotifications = itemView.findViewById(R.id.notifications_button);
@@ -398,10 +404,8 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     sceneInfos.add(filterableObject);
                 }
             }
-
             results.values = sceneInfos;
             results.count = sceneInfos.size();
-
             return results;
         }
 

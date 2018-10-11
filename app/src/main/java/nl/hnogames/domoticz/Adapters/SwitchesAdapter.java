@@ -184,7 +184,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     handleLogButtonClick(v.getId());
                 }
             });
-
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
             if (holder.likeButton != null) {
                 holder.likeButton.setId(extendedStatusInfo.getIdx());
                 holder.likeButton.setLiked(extendedStatusInfo.getFavoriteBoolean());
@@ -1792,6 +1797,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         SeekBar dimmer;
         Spinner spSelector;
         LinearLayout extraPanel;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -1818,7 +1824,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             buttonStop = itemView.findViewById(R.id.switch_button_stop);
             buttonDown = itemView.findViewById(R.id.switch_button_down);
             buttonSet = itemView.findViewById(R.id.set_button);
-
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             likeButton = itemView.findViewById(R.id.fav_button);
             if (buttonLog != null)
                 buttonLog.setVisibility(View.GONE);

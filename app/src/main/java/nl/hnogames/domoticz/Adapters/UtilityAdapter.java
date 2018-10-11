@@ -147,6 +147,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     listener.onItemClicked(v, position);
                 }
             });
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
         }
     }
 
@@ -473,7 +479,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         Chip weekButton;
         Chip buttonLog;
         Button on_button;
-
+        ImageView infoIcon;
         LikeButton likeButton;
         LinearLayout extraPanel;
 
@@ -486,6 +492,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             weekButton = itemView.findViewById(R.id.week_button);
             likeButton = itemView.findViewById(R.id.fav_button);
 
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             on_button = itemView.findViewById(R.id.on_button);
             name = itemView.findViewById(R.id.utilities_name);
             iconRow = itemView.findViewById(R.id.rowIcon);

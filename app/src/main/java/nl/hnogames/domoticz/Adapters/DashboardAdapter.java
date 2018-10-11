@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.media.Image;
 import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -188,6 +189,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 public boolean onLongClick(View v) {
                     listener.onItemLongClicked(position);
                     return true;
+                }
+            });
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
                 }
             });
         }
@@ -1805,6 +1812,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         Spinner spSelector;
         LinearLayout extraPanel;
         PieView pieView;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -1818,7 +1826,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             iconRow = itemView.findViewById(R.id.rowIcon);
             switch_name = itemView.findViewById(R.id.switch_name);
             switch_battery_level = itemView.findViewById(R.id.switch_battery_level);
-
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             switch_dimmer_level = itemView.findViewById(R.id.switch_dimmer_level);
             dimmerOnOffSwitch = itemView.findViewById(R.id.switch_dimmer_switch);
             dimmer = itemView.findViewById(R.id.switch_dimmer);

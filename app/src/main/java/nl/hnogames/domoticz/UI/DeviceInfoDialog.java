@@ -60,19 +60,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         this.mSwitch = mSwitch;
         this.mSharedPrefs = new SharedPrefUtil(mContext);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
@@ -108,10 +96,10 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        TextView IDX_value = (TextView) view.findViewById(R.id.IDX_value);
+        TextView IDX_value = view.findViewById(R.id.IDX_value);
         IDX_value.setText(idx);
 
-        TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
+        TextView LastUpdate_value = view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(lastUpdate);
 
         int signalLevelVal;
@@ -122,7 +110,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             signalLevelVal = 0;
         }
 
-        SeekBar signalLevelIndicator = (SeekBar) view.findViewById(R.id.SignalLevel_indicator);
+        SeekBar signalLevelIndicator = view.findViewById(R.id.SignalLevel_indicator);
         signalLevelIndicator.setVisibility(View.VISIBLE);
         signalLevelIndicator.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -137,7 +125,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         signalLevelIndicator.startAnimation(anim);
 
 
-        TextView BatteryLevel_value = (TextView) view.findViewById(R.id.BatteryLevel_value);
+        TextView BatteryLevel_value = view.findViewById(R.id.BatteryLevel_value);
         int batteryLevelVal;
         try {
             batteryLevelVal = Integer.valueOf(batteryLevel);
@@ -150,7 +138,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             BatteryLevel_value.setText(batteryLevel);
         } else {
             BatteryLevel_value.setVisibility(View.GONE);
-            SeekBar batteryLevelIndicator = (SeekBar) view.findViewById(R.id.BatteryLevel_indicator);
+            SeekBar batteryLevelIndicator = view.findViewById(R.id.BatteryLevel_indicator);
             batteryLevelIndicator.setVisibility(View.VISIBLE);
             batteryLevelIndicator.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -164,16 +152,8 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             batteryLevelIndicator.startAnimation(anim);
         }
 
-
-        favorite_switch = (Switch) view.findViewById(R.id.favorite_switch);
+        favorite_switch = view.findViewById(R.id.favorite_switch);
         favorite_switch.setChecked(isFavorite);
-        favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-
-            }
-        });
-
         md.show();
     }
 

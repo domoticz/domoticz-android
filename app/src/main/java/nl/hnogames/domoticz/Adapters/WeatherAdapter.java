@@ -136,22 +136,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 windSign = mConfigInfo.getWindSign();
             }
 
-            //if (mSharedPrefs.darkThemeEnabled()) {
-                   /* if ((row.findViewById(R.id.day_button)) != null)
-                (row.findViewById(R.id.day_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.year_button)) != null)
-                (row.findViewById(R.id.year_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.month_button)) != null)
-                (row.findViewById(R.id.month_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.week_button)) != null)
-                (row.findViewById(R.id.week_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.log_button)) != null)
-                (row.findViewById(R.id.log_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.timer_button)) != null)
-                (row.findViewById(R.id.timer_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.notifications_button)) != null)
-                (row.findViewById(R.id.notifications_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status)); */
-            // }
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
@@ -316,10 +306,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         LikeButton likeButton;
         LinearLayout extraPanel;
         PieView pieView;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             pieView = itemView.findViewById(R.id.pieView);
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             pieView.setVisibility(View.GONE);
             dayButton = itemView.findViewById(R.id.day_button);
             monthButton = itemView.findViewById(R.id.month_button);

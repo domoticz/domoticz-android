@@ -21,6 +21,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/row_global_wrapper"
               style="@style/background_listview"
@@ -41,8 +42,17 @@
         android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
         <ImageView
+            android:id="@+id/widget_info_icon"
+            android:src="@drawable/outline_info_black_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/md_grey_400"
+            android:layout_gravity="bottom|start" />
+
+        <ImageView
             android:id="@+id/rowIcon"
             android:layout_width="40dp"
+            android:layout_marginLeft="-15dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/error_image_description"

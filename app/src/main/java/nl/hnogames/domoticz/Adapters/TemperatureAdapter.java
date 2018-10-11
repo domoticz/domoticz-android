@@ -125,25 +125,15 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             final TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                   /* if ((row.findViewById(R.id.day_button)) != null)
-                (row.findViewById(R.id.day_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.year_button)) != null)
-                (row.findViewById(R.id.year_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.month_button)) != null)
-                (row.findViewById(R.id.month_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.week_button)) != null)
-                (row.findViewById(R.id.week_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.log_button)) != null)
-                (row.findViewById(R.id.log_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.timer_button)) != null)
-                (row.findViewById(R.id.timer_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            if ((row.findViewById(R.id.notifications_button)) != null)
-                (row.findViewById(R.id.notifications_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status)); */
-
                 if (holder.setButton != null)
                     holder.setButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             }
-
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
             holder.isProtected = mTemperatureInfo.isProtected();
             String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
 
@@ -359,10 +349,11 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         LikeButton likeButton;
         LinearLayout extraPanel;
         PieView pieView;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             name = itemView.findViewById(R.id.temperature_name);
             data = itemView.findViewById(R.id.temperature_data);
             data2 = itemView.findViewById(R.id.temperature_data2);

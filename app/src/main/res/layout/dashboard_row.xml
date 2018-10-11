@@ -19,15 +19,14 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <android.support.design.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
     android:layout_marginBottom="8dp"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
@@ -66,16 +65,26 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/widget_info_icon"
+                            android:paddingTop="5dp"
+                            android:paddingLeft="5dp"
+                            android:src="@drawable/outline_info_black_18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:tint="@color/md_grey_400"
+                            android:layout_gravity="top|start" />
+
+                        <ImageView
                             android:id="@+id/rowIcon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center_horizontal"
-                            android:paddingTop="10dp"
+                            android:paddingTop="-10dp"
                             android:src="@drawable/clock48"/>
 
                         <TextView
                             android:id="@+id/switch_name"
-                            style="@style/row_dash_name"
+                            style="@style/row_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -87,7 +96,7 @@
 
                         <TextView
                             android:id="@+id/switch_battery_level"
-                            style="@style/row_dash_body1"
+                            style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -97,7 +106,7 @@
 
                         <TextView
                             android:id="@+id/switch_signal_level"
-                            style="@style/row_dash_body2"
+                            style="@style/row_body2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
