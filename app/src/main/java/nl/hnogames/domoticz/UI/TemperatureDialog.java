@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -61,24 +60,12 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(mContext);
 
-        if (mSharedPrefUtil.darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
-            .negativeText(android.R.string.cancel)
-            .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok)
-            .onAny(this);
+                .negativeText(android.R.string.cancel)
+                .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok)
+                .onAny(this);
 
         ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {

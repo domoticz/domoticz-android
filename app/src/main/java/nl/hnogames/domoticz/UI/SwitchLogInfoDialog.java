@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -48,22 +47,10 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
                                int layout) {
         this.info = _info;
         this.mContext = c;
-        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -79,7 +66,7 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
 
         String[] listData = processLogs();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-            android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+                android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setAdapter(adapter);
 
         md.show();

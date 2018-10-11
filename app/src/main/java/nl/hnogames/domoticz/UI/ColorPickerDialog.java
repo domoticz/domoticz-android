@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.view.View;
 
@@ -51,22 +50,11 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.idx = idx;
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+
+        mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_color, true)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
 
         mdb.dismissListener(this);
     }

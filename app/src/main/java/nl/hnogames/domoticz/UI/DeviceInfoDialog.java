@@ -23,10 +23,8 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -60,12 +58,12 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         this.mSwitch = mSwitch;
         this.mSharedPrefs = new SharedPrefUtil(mContext);
 
-         mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -120,7 +118,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         });
         signalLevelIndicator.setMax(Domoticz.signalLevelMax * 100);
         ProgressBarAnimation anim =
-            new ProgressBarAnimation(signalLevelIndicator, 5, signalLevelVal * 100);
+                new ProgressBarAnimation(signalLevelIndicator, 5, signalLevelVal * 100);
         anim.setDuration(1000);
         signalLevelIndicator.startAnimation(anim);
 
