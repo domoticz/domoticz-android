@@ -117,6 +117,8 @@ public class DevicesInfo implements Comparable, Serializable {
         if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("Barometer")) Barometer = row.getInt("Barometer");
 
+        if (row.has("Description")) Description = row.getString("Description");
+
         try {
             if (row.has("MaxDimLevel"))
                 maxDimLevel = row.getInt("MaxDimLevel");
