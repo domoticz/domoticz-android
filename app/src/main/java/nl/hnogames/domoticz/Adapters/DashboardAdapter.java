@@ -172,8 +172,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (!this.mSharedPrefs.darkThemeEnabled()) {
                 holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                 holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                holder.pieView.setPercentageTextSize(17);
             }
+            holder.pieView.setPercentageTextSize(16);
+            holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
             setSwitchRowData(extendedStatusInfo, holder);
             holder.itemView.setOnClickListener(new View.OnClickListener() {

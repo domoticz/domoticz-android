@@ -189,7 +189,7 @@ dependencies {
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
     implementation 'com.larswerkman:lobsterpicker:1.0.1'
 
-    implementation 'com.github.zurche:plain-pie:v0.2.2'
+    implementation 'com.github.zurche:plain-pie:v0.2.9'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
     implementation 'com.github.dexafree:MaterialList:v3.2.2'

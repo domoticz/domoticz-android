@@ -175,13 +175,12 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     holder.pieView.setVisibility(View.GONE);
                 } else {
                     holder.pieView.setVisibility(View.VISIBLE);
-
                     if (!this.mSharedPrefs.darkThemeEnabled()) {
                         holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                         holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                        holder.pieView.setPercentageTextSize(17);
                     }
-
+                    holder.pieView.setPercentageTextSize(16);
+                    holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
                     double temp = mTemperatureInfo.getTemperature();
                     if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
                         temp = temp / 2;

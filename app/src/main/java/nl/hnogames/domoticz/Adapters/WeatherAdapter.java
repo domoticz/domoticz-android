@@ -191,8 +191,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 if (!this.mSharedPrefs.darkThemeEnabled()) {
                     holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    holder.pieView.setPercentageTextSize(17);
                 }
+                holder.pieView.setPercentageTextSize(16);
+                holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
                 double temp = mWeatherInfo.getTemp();
                 if (!tempSign.equals("C"))
@@ -318,21 +319,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-
-            pieView = (PieView) itemView.findViewById(R.id.pieView);
+            pieView = itemView.findViewById(R.id.pieView);
             pieView.setVisibility(View.GONE);
-
-            dayButton = (Chip) itemView.findViewById(R.id.day_button);
-            monthButton = (Chip) itemView.findViewById(R.id.month_button);
-            yearButton = (Chip) itemView.findViewById(R.id.year_button);
-            weekButton = (Chip) itemView.findViewById(R.id.week_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
-            name = (TextView) itemView.findViewById(R.id.weather_name);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            data = (TextView) itemView.findViewById(R.id.weather_data);
-            hardware = (TextView) itemView.findViewById(R.id.weather_hardware);
-
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            dayButton = itemView.findViewById(R.id.day_button);
+            monthButton = itemView.findViewById(R.id.month_button);
+            yearButton = itemView.findViewById(R.id.year_button);
+            weekButton = itemView.findViewById(R.id.week_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
+            name = itemView.findViewById(R.id.weather_name);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            data = itemView.findViewById(R.id.weather_data);
+            hardware = itemView.findViewById(R.id.weather_hardware);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
@@ -341,18 +339,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-
             String filterString = constraint.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
-
             final ArrayList<WeatherInfo> list = data;
 
             int count = list.size();
             final ArrayList<WeatherInfo> weatherInfos = new ArrayList<>(count);
 
             WeatherInfo filterableObject;
-
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {
