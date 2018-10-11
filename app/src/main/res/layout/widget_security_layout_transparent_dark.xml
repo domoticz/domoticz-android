@@ -73,7 +73,7 @@
         android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
-        <android.support.design.button.MaterialButton
+        <Button
             android:id="@+id/armhome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             android:textColor="@color/white"
             android:textSize="12dp"/>
 
-        <android.support.design.button.MaterialButton
+        <Button
             android:id="@+id/armaway"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             android:textColor="@color/white"
             android:textSize="12dp"/>
 
-        <android.support.design.button.MaterialButton
+        <Button
             android:id="@+id/disarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
