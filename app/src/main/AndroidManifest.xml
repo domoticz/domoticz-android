@@ -411,7 +411,7 @@
             android:name=".Welcome.WelcomeViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/welcome_title_activity_welcome"
-            android:theme="@style/Theme.Intro"/>
+            android:theme="@style/AppThemeIntro"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
