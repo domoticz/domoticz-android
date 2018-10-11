@@ -50,19 +50,10 @@
             android:padding="10dp">
 
             <ImageView
-                android:id="@+id/widget_info_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300"/>
-
-            <ImageView
                 android:id="@+id/rowIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
                 android:paddingRight="5dp"
                 android:src="@drawable/clock48"/>

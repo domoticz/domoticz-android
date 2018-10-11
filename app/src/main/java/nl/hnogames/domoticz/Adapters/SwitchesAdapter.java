@@ -151,7 +151,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row = null;
         row = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.dashboard_row_list, parent, false);
+            .inflate(R.layout.switch_row_list, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((row.findViewById(R.id.card_global_wrapper)) != null)

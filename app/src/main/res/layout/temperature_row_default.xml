@@ -53,26 +53,13 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-
-            <ImageView
-                android:id="@+id/widget_info_icon"
-                android:src="@drawable/outline_info_black_18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:tint="@color/md_grey_400"
-                android:layout_gravity="bottom|start" />
-
             <ImageView
                 android:id="@+id/rowIcon"
                 android:layout_width="40dp"
-                android:layout_marginLeft="-15dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:contentDescription="@string/error_image_description"
-                android:paddingRight="5dp"
-                android:src="@drawable/clock48"/>
-
-
+                android:contentDescription="@string/row_icon_description"
+                tools:src="@drawable/clock48"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                           android:layout_width="wrap_content"
@@ -154,8 +141,9 @@
                             plainpie:percentage="75"
                             plainpie:percentage_size="15"/>
 
-                        <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        <android.support.design.button.MaterialButton
                             android:id="@+id/set_button"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="56dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"

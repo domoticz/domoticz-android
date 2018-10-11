@@ -93,8 +93,9 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <android.support.design.button.MaterialButton
             android:id="@+id/remove_button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
