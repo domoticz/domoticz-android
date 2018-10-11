@@ -141,7 +141,7 @@
                             plainpie:percentage="75"
                             plainpie:percentage_size="15"/>
 
-                        <android.support.design.button.MaterialButton
+                        <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:id="@+id/set_button"
                             android:layout_width="56dp"
                             android:layout_height="wrap_content"

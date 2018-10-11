@@ -129,7 +129,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"/>
 
-                            <android.support.design.button.MaterialButton
+                            <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:id="@+id/set_button"
                                 android:layout_width="56dp"
                                 android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                                     plainpie:percentage="75"
                                     plainpie:percentage_size="15"/>
 
-                                <android.support.design.button.MaterialButton
+                                <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:id="@+id/on_button"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                                     android:text="@string/button_state_on"
                                     android:textSize="10dp"/>
 
-                                <android.support.design.button.MaterialButton
+                                <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:id="@+id/off_button"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                                     android:layout_gravity="right"/>
                             </LinearLayout>
 
-                            <android.support.design.button.MaterialButton
+                            <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:id="@+id/color_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="25dp"

@@ -102,7 +102,7 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <android.support.design.button.MaterialButton
+                <android.support.design.button.MaterialButton style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:id="@+id/on_button"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
