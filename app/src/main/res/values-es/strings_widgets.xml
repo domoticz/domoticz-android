@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="pick_device_title">Selecciona un dispositivo</string>
-    <string name="choose_switch">Elige un dispositivo</string>
-    <string name="failed_to_get_securitypanel">No se ha encontrado un panel de seguridad bajo sus interruptores</string>
-    <string name="failed_to_get_switches">Error al obtener los dispositivos</string>
-    <string name="failed_toggle_switch">Error al conmutar el dispositivo</string>
-    <string name="switch_toggled">"Conmutar dispositivo"</string>
-    <string name="text_loading">Cargando...</string>
-    <string name="text_go">ADELANTE</string>
-    <string name="widget_background">Fondo</string>
-    <string name="widget_dark">Oscuro</string>
-    <string name="widget_light">Claro</string>
-    <string name="widget_transparent_dark">Transparente oscuro</string>
-    <string name="widget_transparent_light">Transparente claro</string>
+  <!-- only temporarily to suppress the missing translations errors for now!! -->
+  <string name="pick_device_title">Selecciona un dispositivo</string>
+  <string name="choose_switch">Elige un dispositivo</string>
+  <string name="failed_to_get_securitypanel">No se ha encontrado un panel de seguridad bajo sus interruptores</string>
+  <string name="failed_to_get_switches">Error al obtener los dispositivos</string>
+  <string name="failed_toggle_switch">Error al conmutar el dispositivo</string>
+  <string name="switch_toggled">"Conmutar dispositivo"</string>
+  <string name="text_loading">Cargando...</string>
+  <string name="text_go">ADELANTE</string>
+  <string name="widget_background">Fondo</string>
+  <string name="widget_dark">Oscuro</string>
+  <string name="widget_light">Claro</string>
+  <string name="widget_transparent_dark">Transparente oscuro</string>
+  <string name="widget_transparent_light">Transparente claro</string>
 </resources>

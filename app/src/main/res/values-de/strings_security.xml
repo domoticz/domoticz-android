@@ -21,13 +21,13 @@
   ~  under the License.
   -->
 <resources>
-    <string name="title_security_panel">Sicherheitstafel</string>
-    <string name="security_pin">PIN</string>
-    <string name="security_disarm">Entschärfen</string>
-    <string name="security_arm_home">Zuhause scharfstellen</string>
-    <string name="security_arm_away">Abwesend scharfstellen</string>
-    <string name="security_wrong_code">Falschen Code eingegeben!</string>
-    <string name="security_generic_error">Status der Security Panel konnte nicht geändert werden.</string>
-    <string name="security_wrong_password_fingerprint">Falsches Passwort eingegeben, dein domoticz Account Passwort ist der Ersatz für deinen Fingerabdruck...!</string>
-    <string name="show_password">Passwort anzeigen</string>
+  <string name="title_security_panel">Sicherheitstafel</string>
+  <string name="security_pin">PIN</string>
+  <string name="security_disarm">Entschärfen</string>
+  <string name="security_arm_home">Zuhause scharfstellen</string>
+  <string name="security_arm_away">Abwesend scharfstellen</string>
+  <string name="security_wrong_code">Falschen Code eingegeben!</string>
+  <string name="security_generic_error">Status der Security Panel konnte nicht geändert werden.</string>
+  <string name="security_wrong_password_fingerprint">Falsches Passwort eingegeben, dein domoticz Account Passwort ist der Ersatz für deinen Fingerabdruck...!</string>
+  <string name="show_password">Passwort anzeigen</string>
 </resources>

@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="pick_device_title">Escolha um dispositivo</string>
-    <string name="choose_switch">Escolha um dispositivo</string>
-    <string name="failed_to_get_securitypanel">Painel de segurança não encontrado nos seus interruptores</string>
-    <string name="failed_to_get_switches">Falha ao obter dispositivos</string>
-    <string name="failed_toggle_switch">Falha ao despoletar dispositivo</string>
-    <string name="switch_toggled">"Alterar Dispositivo"</string>
-    <string name="text_loading">A carregar...</string>
-    <string name="text_go">IR</string>
-    <string name="widget_background">Segundo plano</string>
-    <string name="widget_dark">Escuro</string>
-    <string name="widget_light">Claro</string>
-    <string name="widget_transparent_dark">Escuro transparente</string>
-    <string name="widget_transparent_light">Claro transparente</string>
+  <!-- only temporarily to suppress the missing translations errors for now!! -->
+  <string name="pick_device_title">Escolha um dispositivo</string>
+  <string name="choose_switch">Escolha um dispositivo</string>
+  <string name="failed_to_get_securitypanel">Painel de segurança não encontrado nos seus interruptores</string>
+  <string name="failed_to_get_switches">Falha ao obter dispositivos</string>
+  <string name="failed_toggle_switch">Falha ao despoletar dispositivo</string>
+  <string name="switch_toggled">"Alterar Dispositivo"</string>
+  <string name="text_loading">A carregar...</string>
+  <string name="text_go">IR</string>
+  <string name="widget_background">Segundo plano</string>
+  <string name="widget_dark">Escuro</string>
+  <string name="widget_light">Claro</string>
+  <string name="widget_transparent_dark">Escuro transparente</string>
+  <string name="widget_transparent_light">Claro transparente</string>
 </resources>

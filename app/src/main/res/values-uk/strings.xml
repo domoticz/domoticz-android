@@ -33,6 +33,8 @@
   <string name="button_state_off">Вимк.</string>
   <string name="button_state_closed">Закрито</string>
   <string name="button_state_open">Відчинити</string>
+  <string name="button_state_lock">Lock</string>
+  <string name="button_state_unlock">Unlock</string>
   <string name="button_status_log">Журнал</string>
   <string name="button_status_day">День</string>
   <string name="button_status_week">Тиждень</string>

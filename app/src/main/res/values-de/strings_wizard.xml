@@ -21,43 +21,43 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="title_wizard">Willkommensassistent</string>
-    <string name="wizard_welcome">Willkommen</string>
-    <string name="wizard_welcome_description">Domoticz ist ein Hausautomationssystem, mit dem Du dein Haus überwachen und verschiedene Geräte von Deinem Mobilgerät aus steuern kannst.</string>
-    <string name="wizard_favorites">Favoriten</string>
-    <string name="wizard_favorites_description">Du kannst Geräte zum Dashboard hinzufügen indem du sie als Favoriten speicherst. Lange auf ein Element tippen, um es als Favorit zu speichern!</string>
-    <string name="wizard_startup">Startbildschirm</string>
-    <string name="wizard_startup_description">Du kannst deinen Startbildschirm in den Einstellungen festlegen!</string>
-    <string name="wizard_notifications">Benachrichtigungen einrichten</string>
-    <string name="wizard_notifications_description">Sie können nun Benachrichtigungen auf Ihrem Android Handy erhalten! Ändern Sie die Art, wie sich die Benachrichtigungen in den Einstellungen verhalten</string>
-    <string name="wizard_multiserver">Verwende mehrere Server</string>
-    <string name="wizard_multiserver_description">Sie können mehrere Domoticz-Server in den Einstellungen konfigurieren.</string>
-    <string name="wizard_geo">Ortung</string>
-    <string name="wizard_geo_description">Du kannst deinen Startbildschirm in den Einstellungen festlegen!</string>
-    <string name="wizard_wear">Android Wear</string>
-    <string name="wizard_wear_description">Sie können angeben, welche Schalter Sie gerne von Ihrem Android-Gerät steuern möchten!</string>
-    <string name="wizard_auto">Android Auto</string>
-    <string name="wizard_auto_description">Erhalte die Domoticz Benachrichtigungen direkt auf dein Android Auto Gerät!</string>
-    <string name="wizard_graph">Grafik</string>
-    <string name="wizard_graph_description">Du kannst die Historiengrafik sehen von einem Utility, zum Beispiel vom Wetter oder der Temperatur!</string>
-    <string name="wizard_filter">Filter</string>
-    <string name="wizard_filter_description">Du kannst Geräte nach dem Status filtern (on/off). Tippe dazu auf das Menüsymbol am rechten oberen Bildschirmrand!</string>
-    <string name="wizard_widgets">Widgets!!</string>
-    <string name="wizard_widgets_description">Du kannst einige Widgets auf deinem Home Screen platzieren!</string>
-    <string name="wizard_menuitem">Assistent auschalten</string>
-    <string name="wizard_menuitem_description">Du kannst den Wizard nun von dem Navigationsmenü entfernen!</string>
-    <string name="wizard_nfc">NFC</string>
-    <string name="wizard_nfc_description">Sie können die Switches über NFC wechseln!</string>
-    <string name="wizard_qrcode">QR-Code</string>
-    <string name="wizard_qrcode_description">Schalter durch einen QR-Code zu scannen (oder Barcode) bedienen!</string>
-    <string name="wizard_speech">Sprachkommando</string>
-    <string name="wizard_speech_description">Schalte mit hilfe der Spracherkennung deine Schalter!
+  <!-- only temporarily to suppress the missing translations errors for now!! -->
+  <string name="title_wizard">Willkommensassistent</string>
+  <string name="wizard_welcome">Willkommen</string>
+  <string name="wizard_welcome_description">Domoticz ist ein Hausautomationssystem, mit dem Du dein Haus überwachen und verschiedene Geräte von Deinem Mobilgerät aus steuern kannst.</string>
+  <string name="wizard_favorites">Favoriten</string>
+  <string name="wizard_favorites_description">Du kannst Geräte zum Dashboard hinzufügen indem du sie als Favoriten speicherst. Lange auf ein Element tippen, um es als Favorit zu speichern!</string>
+  <string name="wizard_startup">Startbildschirm</string>
+  <string name="wizard_startup_description">Du kannst deinen Startbildschirm in den Einstellungen festlegen!</string>
+  <string name="wizard_notifications">Benachrichtigungen einrichten</string>
+  <string name="wizard_notifications_description">Sie können nun Benachrichtigungen auf Ihrem Android Handy erhalten! Ändern Sie die Art, wie sich die Benachrichtigungen in den Einstellungen verhalten</string>
+  <string name="wizard_multiserver">Verwende mehrere Server</string>
+  <string name="wizard_multiserver_description">Sie können mehrere Domoticz-Server in den Einstellungen konfigurieren.</string>
+  <string name="wizard_geo">Ortung</string>
+  <string name="wizard_geo_description">Du kannst deinen Startbildschirm in den Einstellungen festlegen!</string>
+  <string name="wizard_wear">Android Wear</string>
+  <string name="wizard_wear_description">Sie können angeben, welche Schalter Sie gerne von Ihrem Android-Gerät steuern möchten!</string>
+  <string name="wizard_auto">Android Auto</string>
+  <string name="wizard_auto_description">Erhalte die Domoticz Benachrichtigungen direkt auf dein Android Auto Gerät!</string>
+  <string name="wizard_graph">Grafik</string>
+  <string name="wizard_graph_description">Du kannst die Historiengrafik sehen von einem Utility, zum Beispiel vom Wetter oder der Temperatur!</string>
+  <string name="wizard_filter">Filter</string>
+  <string name="wizard_filter_description">Du kannst Geräte nach dem Status filtern (on/off). Tippe dazu auf das Menüsymbol am rechten oberen Bildschirmrand!</string>
+  <string name="wizard_widgets">Widgets!!</string>
+  <string name="wizard_widgets_description">Du kannst einige Widgets auf deinem Home Screen platzieren!</string>
+  <string name="wizard_menuitem">Assistent auschalten</string>
+  <string name="wizard_menuitem_description">Du kannst den Wizard nun von dem Navigationsmenü entfernen!</string>
+  <string name="wizard_nfc">NFC</string>
+  <string name="wizard_nfc_description">Sie können die Switches über NFC wechseln!</string>
+  <string name="wizard_qrcode">QR-Code</string>
+  <string name="wizard_qrcode_description">Schalter durch einen QR-Code zu scannen (oder Barcode) bedienen!</string>
+  <string name="wizard_speech">Sprachkommando</string>
+  <string name="wizard_speech_description">Schalte mit hilfe der Spracherkennung deine Schalter!
 Konfiguriere Sprachbefehele über die Einstellungen und verbinde ihn mit den Schaltern.</string>
-    <string name="wizard_button_nice">Schön</string>
-    <string name="wizard_button_switches">Schalter</string>
-    <string name="wizard_button_settings">Einstellungen</string>
-    <string name="wizard_button_wizard">Entferne</string>
-    <string name="wizard_button_utilities">Werkzeuge</string>
-    <string name="wizard_button_done">Erfolgreich abgeschlossen</string>
+  <string name="wizard_button_nice">Schön</string>
+  <string name="wizard_button_switches">Schalter</string>
+  <string name="wizard_button_settings">Einstellungen</string>
+  <string name="wizard_button_wizard">Entferne</string>
+  <string name="wizard_button_utilities">Werkzeuge</string>
+  <string name="wizard_button_done">Erfolgreich abgeschlossen</string>
 </resources>

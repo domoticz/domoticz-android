@@ -33,6 +33,8 @@
   <string name="button_state_off">关</string>
   <string name="button_state_closed">已关闭</string>
   <string name="button_state_open">已开启</string>
+  <string name="button_state_lock">Lock</string>
+  <string name="button_state_unlock">Unlock</string>
   <string name="button_status_log">日志</string>
   <string name="button_status_day">日</string>
   <string name="button_status_week">周</string>
