@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
             android:src="@drawable/outline_info_black_18"
-            android:tint="@color/md_grey_400"/>
+            android:tint="@color/md_grey_300"/>
 
         <ImageView
             android:id="@+id/rowIcon"

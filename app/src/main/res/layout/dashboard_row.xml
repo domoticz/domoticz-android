@@ -68,18 +68,18 @@
                             android:id="@+id/widget_info_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="top|start"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="5dp"
+                            android:layout_gravity="bottom|start"
                             android:src="@drawable/outline_info_black_18"
-                            android:tint="@color/md_grey_400"/>
+                            android:tint="@color/md_grey_300"/>
 
                         <ImageView
                             android:id="@+id/rowIcon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_gravity="center_horizontal"
-                            android:paddingTop="-10dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="-15dp"
+                            android:contentDescription="@string/error_image_description"
+                            android:paddingRight="5dp"
                             android:src="@drawable/clock48"/>
 
                         <TextView
@@ -193,7 +193,6 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_arrow_down"
                             android:textSize="10dp"/>
-
                     </LinearLayout>
 
                     <LinearLayout
