@@ -187,9 +187,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 && !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
-        if (mSharedPrefs.darkThemeEnabled()) {
-            holder.buttonLog.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-        }
 
         if (holder.likeButton != null) {
             holder.likeButton.setId(mUtilitiesInfo.getIdx());
@@ -224,13 +221,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     private void CreateDefaultRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
         holder.isProtected = mUtilitiesInfo.isProtected();
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            holder.monthButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            holder.yearButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            holder.weekButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-        }
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
@@ -327,13 +317,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.isProtected = mUtilitiesInfo.isProtected();
         if (holder.isProtected)
             holder.on_button.setEnabled(false);
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            holder.monthButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            holder.yearButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-            holder.weekButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
-        }
 
         holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
