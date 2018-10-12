@@ -21,13 +21,16 @@
 
 package nl.hnogames.domoticz.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
@@ -35,6 +38,11 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorPickerView;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+import com.skydoves.colorpickerview.listeners.ColorListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +54,6 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.UI.ColorPickerDialog;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
@@ -515,13 +522,11 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     @Override
     @DebugLog
     public void onColorButtonClick(final int idx) {
-        ColorPickerDialog colorDialog = new ColorPickerDialog(
-            mContext, idx);
-        colorDialog.show();
-        colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
+        ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.button_color));
+        builder.setPositiveButton(getString(R.string.ok), new ColorEnvelopeListener() {
             @Override
-            @DebugLog
-            public void onDismiss(final int selectedColor) {
+            public void onColorSelected(final ColorEnvelope envelope, boolean fromUser) {
                 if (getDevice(idx).isProtected()) {
                     PasswordDialog passwordDialog = new PasswordDialog(
                         mContext, mDomoticz);
@@ -530,34 +535,47 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         @Override
                         @DebugLog
                         public void onDismiss(String password) {
-                            setColor(selectedColor, idx, password);
+                            setColor(envelope.getColor(), idx, password, true);
                         }
-
                         @Override
-                        public void onCancel() {
-                        }
+                        public void onCancel() {}
                     });
                 } else
-                    setColor(selectedColor, idx, null);
+                    setColor(envelope.getColor(), idx, null, true);
             }
-
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
-            @DebugLog
-            public void onChangeColor(final int selectedColor) {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setOnColorListener(new ColorListener() {
+            @Override
+            public void onColorSelected(int color, boolean fromUser) {
                 if (!getDevice(idx).isProtected()) {
-                    setColor(selectedColor, idx, null);
+                   setColor(color, idx, null, false);
                 }
             }
         });
+        //builder.attachAlphaSlideBar(); // attach AlphaSlideBar
+        builder.attachBrightnessSlideBar(); // attach BrightnessSlideBar
+        if(getDevice(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
+            ColorPickerView colorPickerView = builder.getColorPickerView();
+            colorPickerView.setPaletteDrawable(ContextCompat.getDrawable(getContext(), R.drawable.wwpalette));
+        }
+        builder.show(); // show dialog
     }
 
-    private void setColor(int selectedColor, final int idx, final String password) {
+    private void setColor(int selectedColor, final int idx, final String password, final boolean selected) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
         if (hsv == null || hsv.length <= 0)
             return;
 
-        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
-        addDebugText("Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+        if(selected) {
+            Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+            addDebugText("Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+        }
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
@@ -574,22 +592,26 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onReceiveResult(String result) {
-                    UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT);
-                    if (getActivity() instanceof MainActivity)
-                        ((MainActivity) getActivity()).Talk(R.string.color_set);
+                    if(selected) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.color_set);
+                    }
                 }
 
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
-                    if (!UsefulBits.isEmpty(password)) {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                        if (getActivity() instanceof MainActivity)
-                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    } else {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_color, Snackbar.LENGTH_SHORT);
-                        if (getActivity() instanceof MainActivity)
-                            ((MainActivity) getActivity()).Talk(R.string.error_color);
+                    if(selected) {
+                        if (!UsefulBits.isEmpty(password)) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        } else {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_color, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.error_color);
+                        }
                     }
                 }
             });

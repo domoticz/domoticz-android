@@ -212,9 +212,9 @@ dependencies {
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
     implementation 'com.afollestad:digitus:0.3.0'
+    implementation "com.github.skydoves:colorpickerview:2.0.1"
 
     implementation project(':libs:MemorizingTrustManager')
-
     implementation project(path: ':materialIntro_library')
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')

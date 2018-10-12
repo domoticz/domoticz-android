@@ -22,11 +22,13 @@
 package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerView;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+import com.skydoves.colorpickerview.listeners.ColorListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -356,14 +362,11 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     @Override
     @DebugLog
     public void onColorButtonClick(final int idx) {
-        ColorPickerDialog colorDialog = new ColorPickerDialog(
-            mContext, idx);
-        colorDialog.show();
-
-        colorDialog.onDismissListener(new ColorPickerDialog.DismissListener() {
+        com.skydoves.colorpickerview.ColorPickerDialog.Builder builder = new com.skydoves.colorpickerview.ColorPickerDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.button_color));
+        builder.setPositiveButton(getString(R.string.ok), new ColorEnvelopeListener() {
             @Override
-            @DebugLog
-            public void onDismiss(final int selectedColor) {
+            public void onColorSelected(final ColorEnvelope envelope, boolean fromUser) {
                 if (getSwitch(idx).isProtected()) {
                     PasswordDialog passwordDialog = new PasswordDialog(
                         mContext, mDomoticz);
@@ -372,39 +375,53 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                         @Override
                         @DebugLog
                         public void onDismiss(String password) {
-                            setColor(selectedColor, idx, password);
+                            setColor(envelope.getColor(), idx, password, true);
                         }
-
                         @Override
-                        public void onCancel() {
-                        }
+                        public void onCancel() {}
                     });
                 } else
-                    setColor(selectedColor, idx, null);
+                    setColor(envelope.getColor(), idx, null, true);
             }
-
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
-            @DebugLog
-            public void onChangeColor(final int selectedColor) {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setOnColorListener(new ColorListener() {
+            @Override
+            public void onColorSelected(int color, boolean fromUser) {
                 if (!getSwitch(idx).isProtected()) {
-                    setColor(selectedColor, idx, null);
+                    setColor(color, idx, null, false);
                 }
             }
         });
+        //builder.attachAlphaSlideBar(); // attach AlphaSlideBar
+        builder.attachBrightnessSlideBar(); // attach BrightnessSlideBar
+        if(getSwitch(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
+            ColorPickerView colorPickerView = builder.getColorPickerView();
+            colorPickerView.setPaletteDrawable(ContextCompat.getDrawable(getContext(), R.drawable.wwpalette));
+        }
+        builder.show(); // show dialog
     }
 
-    private void setColor(int selectedColor, final int idx, final String password) {
+    private void setColor(int selectedColor, final int idx, final String password, final boolean selected) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-        Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
-        if (hsv.length <= 0)
+        if (hsv == null || hsv.length <= 0)
             return;
+
+        if(selected) {
+            Log.v(TAG, "Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+            addDebugText("Selected HVS Color: h:" + hsv[0] + " v:" + hsv[1] + " s:" + hsv[2] + " color: " + selectedColor);
+        }
 
         boolean isWhite = false;
         long hue = Math.round(hsv[0]);
         if (selectedColor == -1) {
             isWhite = true;
         }
-
         mDomoticz.setRGBColorAction(idx,
             DomoticzValues.Json.Url.Set.RGBCOLOR,
             hue,
@@ -415,22 +432,26 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 @Override
                 @DebugLog
                 public void onReceiveResult(String result) {
-                    UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT);
-                    if (getActivity() instanceof MainActivity)
-                        ((MainActivity) getActivity()).Talk(R.string.color_set);
+                    if(selected) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.color_set);
+                    }
                 }
 
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
-                    if (!UsefulBits.isEmpty(password)) {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                        if (getActivity() instanceof MainActivity)
-                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    } else {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_color, Snackbar.LENGTH_SHORT);
-                        if (getActivity() instanceof MainActivity)
-                            ((MainActivity) getActivity()).Talk(R.string.error_color);
+                    if(selected) {
+                        if (!UsefulBits.isEmpty(password)) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        } else {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_color, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.error_color);
+                        }
                     }
                 }
             });

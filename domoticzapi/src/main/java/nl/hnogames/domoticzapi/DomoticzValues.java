@@ -213,6 +213,7 @@ public class DomoticzValues {
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Name {
                 String RGB = "RGB";
+                String WW = "WW";
                 String SECURITYPANEL = "Security Panel";
                 String EVOHOME = "Evohome";
             }

@@ -301,7 +301,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB)) {
+                    if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
+                        mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW))
+                    {
                         if (mSharedPrefs.showSwitchesAsButtons()) {
                             setButtons(holder, Buttons.DIMMER_BUTTONS);
                             setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
