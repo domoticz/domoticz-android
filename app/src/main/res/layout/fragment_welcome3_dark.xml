@@ -150,39 +150,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"/>
 
-        <TextView
-            android:id="@+id/advancedSettings_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/welcome_advancedSettings"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large"/>
-
-        <TextView
-            android:id="@+id/advancedSettings_summary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/welcome_advancedSettings_summary"
-            android:textColor="@color/white"/>
-
-        <Switch
-            android:id="@+id/advancedSettings_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:checked="false"/>
-
-        <LinearLayout
-            android:id="@+id/advancedSettings_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
-
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
@@ -197,23 +164,6 @@
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/white"/>
             </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:id="@+id/startScreen_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/welcome_server_startScreen"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_large"/>
-
-            <Spinner
-                android:id="@+id/startScreen_spinner"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
-        </LinearLayout>
-
 
         <TextView
             android:id="@+id/local_server_label"
