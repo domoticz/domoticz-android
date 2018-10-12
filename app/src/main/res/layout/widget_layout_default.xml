@@ -56,7 +56,7 @@
                 android:layout_marginBottom="0dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
-                android:textColor="@color/primary_dark"
+                android:textColor="@color/secondary_dark"
                 tools:text="Switch name"/>
 
             <TextView
@@ -68,7 +68,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:text="@string/battery_level"
-                android:textColor="@color/primary_dark"/>
+                android:textColor="@color/secondary_dark"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

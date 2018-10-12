@@ -35,7 +35,7 @@
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/primary_dark"/>
+                android:textColor="@color/secondary_dark"/>
 
             <TextView
                 android:id="@+id/desc"
@@ -47,7 +47,7 @@
                 android:layout_alignParentLeft="true"
                 android:paddingLeft="5dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/primary_dark"/>
+                android:textColor="@color/secondary_dark"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout4"

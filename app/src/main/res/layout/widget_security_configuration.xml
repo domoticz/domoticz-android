@@ -36,7 +36,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="@string/title_security_panel"
-        android:textColor="@color/primary_dark"/>
+        android:textColor="@color/secondary_dark"/>
 
     <TextView
         android:id="@+id/status"
