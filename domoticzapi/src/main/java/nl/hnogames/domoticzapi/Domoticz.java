@@ -287,6 +287,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCKINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SECURITY);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SELECTOR);
@@ -312,6 +313,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.X10SIREN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCKINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SECURITY);

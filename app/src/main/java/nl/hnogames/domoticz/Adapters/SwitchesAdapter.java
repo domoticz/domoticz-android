@@ -284,6 +284,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.ON_OFF:
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.DOORLOCKINVERTED:
                 case DomoticzValues.Device.Type.Value.DOORCONTACT:
                     switch (mDeviceInfo.getSwitchType()) {
                         case DomoticzValues.Device.Type.Name.SECURITY:

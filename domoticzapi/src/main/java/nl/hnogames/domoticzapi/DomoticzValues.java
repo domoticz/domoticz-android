@@ -111,6 +111,15 @@ public class DomoticzValues {
             }
         }
 
+        interface Door {
+            interface State {
+                String UNLOCKED = "Unlocked";
+                String LOCKED = "Locked";
+                String OPEN = "Open";
+                String CLOSED = "Closed";
+            }
+        }
+
         interface Blind {
             interface State {
                 String CLOSED = "Closed";
@@ -171,6 +180,7 @@ public class DomoticzValues {
                 int BLINDPERCENTAGEINVERTED = 16;
                 int SELECTOR = 18;
                 int DOORLOCK = 19;
+                int DOORLOCKINVERTED = 20;
             }
 
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -189,6 +199,7 @@ public class DomoticzValues {
                 String MEDIAPLAYER = "Media Player";
                 String DUSKSENSOR = "Dusk Sensor";
                 String DOORLOCK = "Door Lock";
+                String DOORLOCKINVERTED = "Door Lock Inverted";
                 String DOORCONTACT = "Door Contact";
                 String BLINDPERCENTAGE = "Blinds Percentage";
                 String BLINDVENETIAN = "Venetian Blinds EU";

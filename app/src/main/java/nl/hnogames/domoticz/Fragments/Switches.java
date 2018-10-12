@@ -156,13 +156,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         WidgetUtils.RefreshWidgets(mContext);
-
         new GetCachedDataTask().execute();
-
     }
 
     // add dynamic list view
-    // https://github.com/nhaarman/ListViewAnimations
     private void createListView(ArrayList<DevicesInfo> switches) {
         if (getView() != null) {
             try {
