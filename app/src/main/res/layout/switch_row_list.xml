@@ -137,7 +137,6 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="right"
-                                android:background="@drawable/button_status"
                                 android:text="@string/set_temperature"
                                 android:textSize="10dp"/>
                         </LinearLayout>
@@ -230,10 +229,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:background="@drawable/button_status"
                                     android:text="@string/button_state_on"
                                     android:textSize="10dp"/>
-
                                 <android.support.design.button.MaterialButton
                                     android:id="@+id/off_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -241,10 +238,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="7dp"
                                     android:layout_weight="1"
-                                    android:background="@drawable/button_status"
                                     android:text="@string/button_state_off"
                                     android:textSize="10dp"/>
-
                                 <Switch
                                     android:id="@+id/switch_dimmer_switch"
                                     android:layout_width="wrap_content"
@@ -261,6 +256,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="right"
                                 android:layout_marginTop="5dp"
+                                android:textSize="10dp"
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/button_color"/>
                         </LinearLayout>
