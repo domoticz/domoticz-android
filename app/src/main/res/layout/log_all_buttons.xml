@@ -65,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_day"/>
 
             <android.support.design.chip.Chip
@@ -72,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_week"/>
 
             <android.support.design.chip.Chip
@@ -79,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_month"/>
 
             <android.support.design.chip.Chip
@@ -86,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_year"/>
 
             <android.support.design.chip.Chip
@@ -94,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_log"/>
 
             <android.support.design.chip.Chip
@@ -102,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_timer"/>
 
             <android.support.design.chip.Chip
@@ -110,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:text="@string/button_status_notifications"/>
         </LinearLayout>
     </HorizontalScrollView>
