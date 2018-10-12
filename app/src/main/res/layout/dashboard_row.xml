@@ -175,26 +175,32 @@
                             android:text="@string/set_temperature"
                             android:textSize="10dp"/>
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/switch_button_up"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_arrow_up"
-                            android:textSize="10dp"/>
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:tint="@color/primary"
+                            android:layout_margin="7dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/baseline_keyboard_arrow_up_black_24"/>
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/switch_button_stop"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_stop"
-                            android:textSize="10dp"/>
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:tint="@color/primary"
+                            android:layout_margin="7dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/baseline_stop_black_24"/>
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/switch_button_down"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_arrow_down"
-                            android:textSize="10dp"/>
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:tint="@color/primary"
+                            android:layout_margin="7dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/baseline_keyboard_arrow_down_black_24"/>
                     </LinearLayout>
 
                     <LinearLayout

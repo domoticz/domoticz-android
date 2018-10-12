@@ -1789,7 +1789,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
-        ImageButton buttonUp, buttonDown, buttonStop;
+        ImageView buttonUp, buttonDown, buttonStop;
         Button buttonOn, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Chip buttonLog, buttonTimer, buttonNotifications;
         Boolean isProtected;
