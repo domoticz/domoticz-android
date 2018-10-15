@@ -198,8 +198,20 @@ public class DomoticzUrls {
             case DomoticzValues.Json.Url.Set.RGBCOLOR:
                 url = DomoticzValues.Url.System.RGBCOLOR;
                 jsonUrl = url
-                        + String.valueOf(idx)
-                        + actionUrl;
+                    + String.valueOf(idx)
+                    + actionUrl;
+                break;
+
+            case DomoticzValues.Json.Url.Set.NIGHTLIGHT:
+                url = DomoticzValues.Url.System.NIGHTLIGHT;
+                jsonUrl = url
+                    + String.valueOf(idx);
+                break;
+
+            case DomoticzValues.Json.Url.Set.FULLLIGHT:
+                url = DomoticzValues.Url.System.FULLLIGHT;
+                jsonUrl = url
+                    + String.valueOf(idx);
                 break;
 
             case DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS:

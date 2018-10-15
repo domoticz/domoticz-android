@@ -65,32 +65,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_day"/>
+                android:text="@string/button_status_day"
+                android:visibility="gone"/>
 
             <android.support.design.chip.Chip
                 android:id="@+id/week_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_week"/>
+                android:text="@string/button_status_week"
+                android:visibility="gone"/>
 
             <android.support.design.chip.Chip
                 android:id="@+id/month_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_month"/>
+                android:text="@string/button_status_month"
+                android:visibility="gone"/>
 
             <android.support.design.chip.Chip
                 android:id="@+id/year_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_year"/>
+                android:text="@string/button_status_year"
+                android:visibility="gone"/>
 
             <android.support.design.chip.Chip
                 android:id="@+id/log_button"
@@ -98,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_log"/>
+                android:text="@string/button_status_log"
+                android:visibility="gone"/>
 
             <android.support.design.chip.Chip
                 android:id="@+id/timer_button"
@@ -107,8 +107,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_timer"/>
+                android:text="@string/button_status_timer"
+                android:visibility="gone"/>
 
             <android.support.design.chip.Chip
                 android:id="@+id/notifications_button"
@@ -116,8 +116,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:text="@string/button_status_notifications"/>
+                android:text="@string/button_status_notifications"
+                android:visibility="gone"/>
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>

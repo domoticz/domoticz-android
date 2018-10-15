@@ -175,28 +175,28 @@
                                     android:id="@+id/switch_button_up"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:tint="@color/primary"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
-                                    android:src="@drawable/baseline_keyboard_arrow_up_black_24"/>
+                                    android:src="@drawable/baseline_keyboard_arrow_up_black_24"
+                                    android:tint="@color/primary"/>
 
                                 <ImageView
                                     android:id="@+id/switch_button_stop"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:tint="@color/primary"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
-                                    android:src="@drawable/baseline_stop_black_24"/>
+                                    android:src="@drawable/baseline_stop_black_24"
+                                    android:tint="@color/primary"/>
 
                                 <ImageView
                                     android:id="@+id/switch_button_down"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:tint="@color/primary"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
-                                    android:src="@drawable/baseline_keyboard_arrow_down_black_24"/>
+                                    android:src="@drawable/baseline_keyboard_arrow_down_black_24"
+                                    android:tint="@color/primary"/>
 
                             </LinearLayout>
 
@@ -247,6 +247,7 @@
                                     android:layout_centerVertical="true"
                                     android:text="@string/button_state_on"
                                     android:textSize="10dp"/>
+
                                 <android.support.design.button.MaterialButton
                                     android:id="@+id/off_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -256,6 +257,7 @@
                                     android:layout_weight="1"
                                     android:text="@string/button_state_off"
                                     android:textSize="10dp"/>
+
                                 <Switch
                                     android:id="@+id/switch_dimmer_switch"
                                     android:layout_width="wrap_content"
@@ -272,9 +274,9 @@
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="right"
                                 android:layout_marginTop="5dp"
-                                android:textSize="10dp"
                                 android:layout_marginBottom="5dp"
-                                android:text="@string/button_color"/>
+                                android:text="@string/button_color"
+                                android:textSize="10dp"/>
                         </LinearLayout>
                     </RelativeLayout>
 

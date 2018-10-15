@@ -28,12 +28,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_securitypin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/linearLayout5"
             android:layout_toLeftOf="@+id/linearLayout5">
+
             <EditText
                 android:id="@+id/securitypin"
                 android:layout_width="match_parent"
@@ -61,6 +63,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:text="@string/security_arm_home"/>
+
             <android.support.design.button.MaterialButton
                 android:id="@+id/armaway"
                 android:layout_width="wrap_content"
@@ -70,6 +73,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:text="@string/security_arm_away"/>
+
             <android.support.design.button.MaterialButton
                 android:id="@+id/disarm"
                 android:layout_width="wrap_content"
@@ -89,6 +93,7 @@
             android:layout_toLeftOf="@+id/linearLayout5"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/countdown"
                 android:layout_width="match_parent"

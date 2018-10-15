@@ -299,6 +299,8 @@ public class DomoticzValues {
                 int RGBCOLOR = 107;
                 int MODAL_SWITCHES = 108;
                 int EVENTS_UPDATE_STATUS = 109;
+                int FULLLIGHT = 110;
+                int NIGHTLIGHT = 111;
             }
         }
 
@@ -486,6 +488,8 @@ public class DomoticzValues {
             String EVENTS = "/json.htm?type=events&param=list";
             String EVENTS_UPDATE_STATUS = "/json.htm?type=events&param=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
+            String FULLLIGHT = "/json.htm?param=fulllight&type=command&idx=";
+            String NIGHTLIGHT = "/json.htm?param=nightlight&type=command&idx=";
             String SETTINGS = "/json.htm?type=settings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";

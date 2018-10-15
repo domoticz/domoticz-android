@@ -20,7 +20,6 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -150,20 +149,20 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"/>
 
-            <android.support.design.widget.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/remote_directory_input"
-                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/welcome_remote_server_directory"
-                    android:inputType="textNoSuggestions"
-                    android:textColor="@color/white"/>
-            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/remote_directory_input"
+                style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/welcome_remote_server_directory"
+                android:inputType="textNoSuggestions"
+                android:textColor="@color/white"/>
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/local_server_label"

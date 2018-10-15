@@ -268,10 +268,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private void showInfoDialog(final DevicesInfo mSwitch) {
         DeviceInfoDialog infoDialog = new DeviceInfoDialog(
             mContext,
+            mDomoticz,
             mSwitch,
             R.layout.dialog_switch_info);
 
         infoDialog.setIdx(String.valueOf(mSwitch.getIdx()));
+        infoDialog.setColorLight(mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) || mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW));
         infoDialog.setLastUpdate(mSwitch.getLastUpdate());
         infoDialog.setSignalLevel(String.valueOf(mSwitch.getSignalLevel()));
         infoDialog.setBatteryLevel(String.valueOf(mSwitch.getBatteryLevel()));
