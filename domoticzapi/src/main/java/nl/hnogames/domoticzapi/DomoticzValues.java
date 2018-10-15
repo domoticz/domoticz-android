@@ -88,6 +88,7 @@ public class DomoticzValues {
                 int DIM_LEVEL = 20;
                 int COLOR = 21;
                 int WWCOLOR = 22;
+                int KELVIN = 23;
             }
         }
 
@@ -303,6 +304,7 @@ public class DomoticzValues {
                 int FULLLIGHT = 110;
                 int NIGHTLIGHT = 111;
                 int WWCOLOR = 112;
+                int KELVIN = 113;
             }
         }
 
@@ -407,6 +409,7 @@ public class DomoticzValues {
         interface Switch {
             String DIM_LEVEL = "Set%20Level&level=";
             String COLOR = "&hue=%hue%&brightness=%bright%&iswhite=false";
+            String KELVIN = "&kelvin=";
             String WWCOLOR = "&brightness=%bright%&color={\"m\":2,\"t\":%ww%,\"r\":0,\"g\":0,\"b\":0,\"cw\":%cw%,\"ww\":%ww%}";
             String GET = "/json.htm?type=command&param=switchlight&idx=";
             String CMD = "&switchcmd=";
@@ -491,6 +494,7 @@ public class DomoticzValues {
             String EVENTS = "/json.htm?type=events&param=list";
             String EVENTS_UPDATE_STATUS = "/json.htm?type=events&param=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
+            String KELVIN = "/json.htm?type=command&param=setkelvinlevel&idx=";
             String FULLLIGHT = "/json.htm?param=fulllight&type=command&idx=";
             String NIGHTLIGHT = "/json.htm?param=nightlight&type=command&idx=";
             String SETTINGS = "/json.htm?type=settings";

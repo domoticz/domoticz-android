@@ -116,6 +116,10 @@ public class DomoticzUrls {
                 actionUrl = DomoticzValues.Url.Switch.COLOR;
                 break;
 
+            case DomoticzValues.Device.Dimmer.Action.KELVIN:
+                actionUrl = DomoticzValues.Url.Switch.KELVIN + String.valueOf(value);
+                break;
+
             case DomoticzValues.Device.Dimmer.Action.WWCOLOR:
                 actionUrl = DomoticzValues.Url.Switch.WWCOLOR;
                 break;
@@ -202,8 +206,15 @@ public class DomoticzUrls {
             case DomoticzValues.Json.Url.Set.RGBCOLOR:
                 url = DomoticzValues.Url.System.RGBCOLOR;
                 jsonUrl = url
-                    + String.valueOf(idx)
-                    + actionUrl;
+                        + String.valueOf(idx)
+                        + actionUrl;
+                break;
+
+            case DomoticzValues.Json.Url.Set.KELVIN:
+                url = DomoticzValues.Url.System.KELVIN;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + actionUrl;
                 break;
 
             case DomoticzValues.Json.Url.Set.WWCOLOR:
@@ -231,7 +242,6 @@ public class DomoticzUrls {
                         + String.valueOf(idx)
                         + actionUrl;
                 break;
-
         }
 
         String fullString = buildUrl.append(protocol)

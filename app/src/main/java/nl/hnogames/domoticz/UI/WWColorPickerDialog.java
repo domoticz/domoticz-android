@@ -23,39 +23,31 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.ColorInt;
 import android.view.View;
+import android.widget.SeekBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.larswerkman.lobsterpicker.LobsterPicker;
-import com.larswerkman.lobsterpicker.OnColorListener;
-import com.larswerkman.lobsterpicker.sliders.LobsterShadeSlider;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
-public class ColorPickerDialog implements DialogInterface.OnDismissListener {
-
+public class WWColorPickerDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private Context mContext;
-    private LobsterPicker lobsterPicker;
-    private LobsterShadeSlider shadeSlider;
     private SharedPrefUtil mSharedPrefs;
     private int idx;
+    private SeekBar kelvinBar;
 
-    public ColorPickerDialog(Context mContext, int idx) {
+    public WWColorPickerDialog(Context mContext, int idx) {
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.idx = idx;
-
-
         mdb = new MaterialDialog.Builder(mContext);
-        mdb.customView(R.layout.dialog_color, true)
+        mdb.customView(R.layout.dialog_wwcolor, true)
                 .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
-
         mdb.dismissListener(this);
     }
 
@@ -65,34 +57,19 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
 
         if (view != null) {
-            lobsterPicker = (LobsterPicker) view.findViewById(R.id.lobsterpicker);
-            shadeSlider = (LobsterShadeSlider) view.findViewById(R.id.shadeslider);
-            lobsterPicker.addDecorator(shadeSlider);
-            lobsterPicker.setColorHistoryEnabled(true);
-            lobsterPicker.setHistory(mSharedPrefs.getPreviousColor(idx));
-            lobsterPicker.setColorPosition(mSharedPrefs.getPreviousColorPosition(idx));
-
-            shadeSlider.addOnColorListener(new OnColorListener() {
+            kelvinBar = view.findViewById(R.id.kelvinBar);
+            kelvinBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onColorChanged(@ColorInt int color) {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (dismissListener != null) dismissListener.onChangeColor(kelvinBar.getProgress());
                 }
 
                 @Override
-                public void onColorSelected(@ColorInt int color) {
-                    mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
-                    dismissListener.onChangeColor(color);
-                }
-            });
-
-            lobsterPicker.addOnColorListener(new OnColorListener() {
-                @Override
-                public void onColorChanged(@ColorInt int color) {
+                public void onStartTrackingTouch(SeekBar seekBar) {
                 }
 
                 @Override
-                public void onColorSelected(@ColorInt int color) {
-                    mSharedPrefs.savePreviousColor(idx, color, lobsterPicker.getColorPosition());
-                    dismissListener.onChangeColor(color);
+                public void onStopTrackingTouch(SeekBar seekBar) {
                 }
             });
         }
@@ -103,7 +80,7 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         if (dismissListener != null)
-            dismissListener.onDismiss(shadeSlider.getColor());
+            dismissListener.onDismiss(kelvinBar.getProgress());
     }
 
     public void onDismissListener(DismissListener dismissListener) {
@@ -112,7 +89,6 @@ public class ColorPickerDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(int color);
-
         void onChangeColor(int color);
     }
 }
