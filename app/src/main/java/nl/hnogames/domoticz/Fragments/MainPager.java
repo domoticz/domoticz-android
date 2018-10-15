@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -131,6 +132,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
             public void onPageSelected(int position) {
                 bottomNavigation.getMenu().getItem(position).setChecked(true);
                 SetTitle(GetTitle(position));
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity)getActivity()).clearSearch();
             }
 
             @Override
@@ -163,6 +166,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                         SetTitle(GetTitle(4));
                         break;
                 }
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity)getActivity()).clearSearch();
                 return false;
             }
         });

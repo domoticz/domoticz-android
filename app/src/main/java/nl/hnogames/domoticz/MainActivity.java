@@ -1413,6 +1413,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         super.onDestroy();
     }
 
+    public void clearSearch()
+    {
+        if (searchViewAction != null) {
+            searchViewAction.setQuery("", false);
+            searchViewAction.clearFocus();
+        }
+    }
+
     @Override
     @DebugLog
     public void onPause() {
