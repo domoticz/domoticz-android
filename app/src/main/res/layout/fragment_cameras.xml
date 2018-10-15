@@ -51,22 +51,6 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
-                style="@style/background_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scrollbars="vertical"/>
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
         <RelativeLayout
             android:id="@+id/errorLayout"
             android:layout_width="match_parent"
@@ -114,6 +98,23 @@
                 tools:text="Error: No network connection available"/>
 
         </RelativeLayout>
+
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                style="@style/background_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="vertical"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 
