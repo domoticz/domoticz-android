@@ -538,13 +538,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         @Override
                         @DebugLog
                         public void onDismiss(String password) {
-                            setColor(envelope.getColor(), idx, password, true);
+                            setRGBColor(envelope.getColor(), idx, password, true);
                         }
                         @Override
                         public void onCancel() {}
                     });
                 } else
-                    setColor(envelope.getColor(), idx, null, true);
+                    setRGBColor(envelope.getColor(), idx, null, true);
             }
         });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -557,11 +557,10 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             public void onColorSelected(int color, boolean fromUser) {
                 if (!getDevice(idx).isProtected()) {
-                   setColor(color, idx, null, false);
+                    setRGBColor(color, idx, null, false);
                 }
             }
         });
-        //builder.attachAlphaSlideBar(); // attach AlphaSlideBar
         builder.attachBrightnessSlideBar(); // attach BrightnessSlideBar
         if(getDevice(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
             ColorPickerView colorPickerView = builder.getColorPickerView();
@@ -570,7 +569,44 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         builder.show(); // show dialog
     }
 
-    private void setColor(int selectedColor, final int idx, final String password, final boolean selected) {
+    private void setWWColor(int selectedColor, final int idx, final String password, final boolean selected) {
+
+
+        mDomoticz.setWWColorAction(idx,
+            cw,
+            ww,
+            getDevice(idx).getLevel(),
+            password,
+            new setCommandReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveResult(String result) {
+                    if(selected) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.color_set);
+                    }
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    if(selected) {
+                        if (!UsefulBits.isEmpty(password)) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        } else {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.error_color, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.error_color);
+                        }
+                    }
+                }
+            });
+    }
+
+    private void setRGBColor(int selectedColor, final int idx, final String password, final boolean selected) {
         double[] hsv = UsefulBits.rgb2hsv(Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
         if (hsv == null || hsv.length <= 0)
             return;

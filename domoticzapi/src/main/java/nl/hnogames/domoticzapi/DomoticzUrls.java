@@ -116,6 +116,10 @@ public class DomoticzUrls {
                 actionUrl = DomoticzValues.Url.Switch.COLOR;
                 break;
 
+            case DomoticzValues.Device.Dimmer.Action.WWCOLOR:
+                actionUrl = DomoticzValues.Url.Switch.WWCOLOR;
+                break;
+
             case DomoticzValues.Device.ModalSwitch.Action.AUTO:
                 actionUrl = DomoticzValues.Url.ModalAction.AUTO;
                 break;
@@ -196,6 +200,13 @@ public class DomoticzUrls {
                 break;
 
             case DomoticzValues.Json.Url.Set.RGBCOLOR:
+                url = DomoticzValues.Url.System.RGBCOLOR;
+                jsonUrl = url
+                    + String.valueOf(idx)
+                    + actionUrl;
+                break;
+
+            case DomoticzValues.Json.Url.Set.WWCOLOR:
                 url = DomoticzValues.Url.System.RGBCOLOR;
                 jsonUrl = url
                     + String.valueOf(idx)

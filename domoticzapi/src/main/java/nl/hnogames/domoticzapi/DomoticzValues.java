@@ -87,6 +87,7 @@ public class DomoticzValues {
             interface Action {
                 int DIM_LEVEL = 20;
                 int COLOR = 21;
+                int WWCOLOR = 22;
             }
         }
 
@@ -301,6 +302,7 @@ public class DomoticzValues {
                 int EVENTS_UPDATE_STATUS = 109;
                 int FULLLIGHT = 110;
                 int NIGHTLIGHT = 111;
+                int WWCOLOR = 112;
             }
         }
 
@@ -405,6 +407,7 @@ public class DomoticzValues {
         interface Switch {
             String DIM_LEVEL = "Set%20Level&level=";
             String COLOR = "&hue=%hue%&brightness=%bright%&iswhite=false";
+            String WWCOLOR = "&brightness=%bright%&color={\"m\":2,\"t\":%ww%,\"r\":0,\"g\":0,\"b\":0,\"cw\":%cw%,\"ww\":%ww%}";
             String GET = "/json.htm?type=command&param=switchlight&idx=";
             String CMD = "&switchcmd=";
             String LEVEL = "&level=";

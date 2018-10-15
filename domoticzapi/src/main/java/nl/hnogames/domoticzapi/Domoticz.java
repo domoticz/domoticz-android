@@ -661,9 +661,33 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public void setWWColorAction(int idx,
+                                 int cw,
+                                 int ww,
+                                  int brightness,
+                                  String password,
+                                  setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+
+        String url = mDomoticzUrls.constructSetUrl(DomoticzValues.Json.Url.Set.WWCOLOR, idx, DomoticzValues.Device.Dimmer.Action.WWCOLOR, 0);
+        url = url.replace("%ww%", String.valueOf(ww))
+            .replace("%cw%", String.valueOf(cw))
+            .replace("%bright%", String.valueOf(brightness));
+
+        if (!UsefulBits.isEmpty(password)) {
+            url += "&passcode=" + password;
+        }
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonGetRequest(parser,
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
