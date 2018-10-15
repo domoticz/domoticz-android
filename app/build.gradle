@@ -187,7 +187,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
-    implementation 'com.larswerkman:lobsterpicker:1.0.1'
 
     implementation 'com.github.zurche:plain-pie:v0.2.9'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
