@@ -57,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/import_settings"/>
-
     </LinearLayout>
 
     <TextView
@@ -68,5 +67,4 @@
         android:textColor="@color/default_text_color_light"
         android:textSize="@dimen/text_size_welcomePage2_swipeInfo"
         android:visibility="gone"/>
-
 </RelativeLayout>

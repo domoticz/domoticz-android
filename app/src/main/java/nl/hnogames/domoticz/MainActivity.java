@@ -164,17 +164,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
-        AdView mAdView;
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
             setContentView(R.layout.activity_newmain_free);
-            mAdView = findViewById(R.id.adView);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
-            mAdView.loadAd(adRequest);
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4").build();
+            ((AdView)findViewById(R.id.adView)).loadAd(adRequest);
         } else {
             setContentView(R.layout.activity_newmain_paid);
-            mAdView = findViewById(R.id.adView);
-            mAdView.setVisibility(View.GONE);
+            (findViewById(R.id.adView)).setVisibility(View.GONE);
         }
 
         if (savedInstanceState == null) {
