@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.media.Image;
+import android.os.Build;
 import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -1687,6 +1688,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (!mSharedPrefs.showExtraData()) {
             holder.signal_level.setVisibility(View.GONE);
             holder.switch_battery_level.setVisibility(View.GONE);
+        }
+        if (!mSharedPrefs.showExtraData()) {
+            holder.infoIcon.setVisibility(View.GONE);
+        }
+        else{
+            if (showAsList)
+            {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
+                p.leftMargin = -15;
+            }
         }
 
         switch (button) {
