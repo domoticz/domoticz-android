@@ -21,18 +21,18 @@
   -->
 
 <resources>
-    <attr name="lockedValues" format="reference" />
-    <attr name="lockedValuesDependencyKeys" format="reference" />
-    <attr name="dynamicEntriesProvider" format="string" />
-    <attr name="dynamicEntryValuesProvider" format="string" />
-    <attr name="selectAllValuesByDefault" format="boolean" />
+    <attr name="lockedValues" format="reference"/>
+    <attr name="lockedValuesDependencyKeys" format="reference"/>
+    <attr name="dynamicEntriesProvider" format="string"/>
+    <attr name="dynamicEntryValuesProvider" format="string"/>
+    <attr name="selectAllValuesByDefault" format="boolean"/>
 
     <declare-styleable name="CustomListPreference">
-        <attr name="lockedValues" />
-        <attr name="lockedValuesDependencyKeys" />
-        <attr name="selectAllValuesByDefault" />
-        <attr name="dynamicEntriesProvider" />
-        <attr name="dynamicEntryValuesProvider" />
+        <attr name="lockedValues"/>
+        <attr name="lockedValuesDependencyKeys"/>
+        <attr name="selectAllValuesByDefault"/>
+        <attr name="dynamicEntriesProvider"/>
+        <attr name="dynamicEntryValuesProvider"/>
     </declare-styleable>
 
 

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -57,6 +58,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
     UtilityClickListener {
@@ -87,10 +89,17 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_utilities);
         initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -459,7 +468,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         ArrayList<UtilitiesInfo> cacheUtilities = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheUtilities = (ArrayList<UtilitiesInfo>) SerializableManager.readSerializedObject(mContext, "Utilities");
                     Utilities.this.mUtilitiesInfos = cacheUtilities;

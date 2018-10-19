@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -38,7 +39,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -69,14 +69,14 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
-    private EditText remote_server_input, remote_port_input,
+    private TextInputEditText remote_server_input, remote_port_input,
         remote_username_input, remote_password_input,
         remote_directory_input, local_server_input, local_password_input,
         local_username_input, local_port_input, local_directory_input;
 
-    private Spinner remote_protocol_spinner, local_protocol_spinner, startScreen_spinner;
+    private Spinner remote_protocol_spinner, local_protocol_spinner;
     private Switch localServer_switch;
-    private int remoteProtocolSelectedPosition, localProtocolSelectedPosition, startScreenSelectedPosition;
+    private int remoteProtocolSelectedPosition, localProtocolSelectedPosition;
     private View v;
     private boolean hasBeenVisibleToUser = false;
     private MultiSelectionSpinner local_wifi_spinner;
@@ -87,11 +87,9 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
     public static WelcomePage3 newInstance(int instance) {
         WelcomePage3 f = new WelcomePage3();
-
         Bundle bdl = new Bundle(1);
         bdl.putInt(INSTANCE, instance);
         f.setArguments(bdl);
-
         return f;
     }
 
@@ -129,25 +127,23 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private void getLayoutReferences() {
+        remote_server_input = v.findViewById(R.id.remote_server_input);
+        remote_port_input = v.findViewById(R.id.remote_port_input);
+        remote_username_input = v.findViewById(R.id.remote_username_input);
+        remote_password_input = v.findViewById(R.id.remote_password_input);
+        remote_directory_input = v.findViewById(R.id.remote_directory_input);
+        remote_protocol_spinner = v.findViewById(R.id.remote_protocol_spinner);
+        local_server_input = v.findViewById(R.id.local_server_input);
+        local_port_input = v.findViewById(R.id.local_port_input);
+        local_username_input = v.findViewById(R.id.local_username_input);
+        local_password_input = v.findViewById(R.id.local_password_input);
+        local_directory_input = v.findViewById(R.id.local_directory_input);
+        local_protocol_spinner = v.findViewById(R.id.local_protocol_spinner);
+        local_wifi_spinner = v.findViewById(R.id.local_wifi);
+        CheckBox cbShowPassword = v.findViewById(R.id.showpassword);
+        CheckBox cbShowPasswordLocal = v.findViewById(R.id.showpasswordlocal);
+        Button btnManualSSID = v.findViewById(R.id.set_ssid);
 
-        remote_server_input = (EditText) v.findViewById(R.id.remote_server_input);
-        remote_port_input = (EditText) v.findViewById(R.id.remote_port_input);
-        remote_username_input = (EditText) v.findViewById(R.id.remote_username_input);
-        remote_password_input = (EditText) v.findViewById(R.id.remote_password_input);
-        remote_directory_input = (EditText) v.findViewById(R.id.remote_directory_input);
-        remote_protocol_spinner = (Spinner) v.findViewById(R.id.remote_protocol_spinner);
-        local_server_input = (EditText) v.findViewById(R.id.local_server_input);
-        local_port_input = (EditText) v.findViewById(R.id.local_port_input);
-        local_username_input = (EditText) v.findViewById(R.id.local_username_input);
-        local_password_input = (EditText) v.findViewById(R.id.local_password_input);
-        local_directory_input = (EditText) v.findViewById(R.id.local_directory_input);
-        local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
-        local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
-        CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
-        CheckBox cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
-
-        startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
-        Button btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
         btnManualSSID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,16 +173,11 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         });
 
         if (callingInstance == SETTINGS) {
-            // Hide these settings if being called by settings (instead of welcome wizard)
-            startScreen_spinner.setVisibility(View.GONE);
-            v.findViewById(R.id.startScreen_title).setVisibility(View.GONE);
             v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
         }
 
-        final LinearLayout localServerSettingsLayout = (LinearLayout)
-            v.findViewById(R.id.local_server_settings);
-
-        localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
+        final LinearLayout localServerSettingsLayout = v.findViewById(R.id.local_server_settings);
+        localServer_switch = v.findViewById(R.id.localServer_switch);
         localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
         localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -196,34 +187,15 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             }
         });
         localServerSettingsLayout.setVisibility(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
-
-        final LinearLayout advancedSettings_layout = (LinearLayout)
-            v.findViewById(R.id.advancedSettings_layout);
-
-        Switch advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
-        advancedSettings_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
-        advancedSettings_layout.setVisibility(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
-
-        if (mSharedPrefs.isAdvancedSettingsEnabled())
-            advancedSettings_layout.setVisibility(View.VISIBLE);
-
-        advancedSettings_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSharedPrefs.setAdvancedSettingsEnabled(isChecked);
-
-                if (isChecked) advancedSettings_layout.setVisibility(View.VISIBLE);
-                else advancedSettings_layout.setVisibility(View.GONE);
-            }
-        });
-
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    remote_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    remote_password_input.setSelection(remote_password_input.getText().length());
                 } else {
                     remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    remote_password_input.setSelection(remote_password_input.getText().length());
                 }
             }
         });
@@ -231,9 +203,11 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    local_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    local_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    local_password_input.setSelection(local_password_input.getText().length());
                 } else {
                     local_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    local_password_input.setSelection(local_password_input.getText().length());
                 }
             }
         });
@@ -253,7 +227,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         local_directory_input.setText(mServerUtil.getActiveServer().getLocalServerDirectory());
 
         setProtocol_spinner();
-        setStartScreen_spinner();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessLocation(getActivity())) {
@@ -345,25 +318,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         });
     }
 
-    private void setStartScreen_spinner() {
-        String[] startScreens = getResources().getStringArray(R.array.drawer_actions);
-        ArrayAdapter<String> startScreenAdapter
-            = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, startScreens);
-        startScreen_spinner.setAdapter(startScreenAdapter);
-        startScreen_spinner.setSelection(mSharedPrefs.getStartupScreenIndex());
-        startScreen_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView,
-                                       View view, int position, long id) {
-                startScreenSelectedPosition = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
     private void writePreferenceValues() {
         mServerUtil.getActiveServer().setRemoteServerUsername(
             remote_username_input.getText().toString().trim());
@@ -377,10 +331,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             remote_directory_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerSecure(
             getSpinnerDomoticzRemoteSecureBoolean());
-        if (callingInstance == WELCOME_WIZARD)
-            mSharedPrefs.setStartupScreenIndex(startScreenSelectedPosition);
-
-        Switch useSameAddress = (Switch) v.findViewById(R.id.localServer_switch);
+        Switch useSameAddress = v.findViewById(R.id.localServer_switch);
         if (!useSameAddress.isChecked()) {
             mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);

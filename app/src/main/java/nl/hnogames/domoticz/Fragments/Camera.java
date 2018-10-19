@@ -81,6 +81,12 @@ public class Camera extends Fragment {
         mSharedPrefs = new SharedPrefUtil(context);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
     private void processImage() {
         // Get access to the URI for the bitmap
         File file = new File(url);

@@ -93,18 +93,21 @@ public class ServerAdapter extends BaseAdapter {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-
+            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
+                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_wrapper)) != null)
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (convertView.findViewById(R.id.remove_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableServer);
-        holder.server_name = (TextView) convertView.findViewById(R.id.server_name);
-        holder.server_remote_url = (TextView) convertView.findViewById(R.id.server_remote_ip);
-        holder.server_local_url = (TextView) convertView.findViewById(R.id.server_local_ip);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable = convertView.findViewById(R.id.enableServer);
+        holder.server_name = convertView.findViewById(R.id.server_name);
+        holder.server_remote_url = convertView.findViewById(R.id.server_remote_ip);
+        holder.server_local_url = convertView.findViewById(R.id.server_local_ip);
+        holder.remove = convertView.findViewById(R.id.remove_button);
 
         holder.server_local_url.setText(context.getString(R.string.local) + ": " + mServerInfo.getLocalServerUrl());
         holder.server_remote_url.setText(context.getString(R.string.remote) + ": " + mServerInfo.getRemoteServerUrl());

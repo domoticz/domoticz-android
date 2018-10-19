@@ -61,7 +61,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
 
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
-        Button importButton = (Button) v.findViewById(R.id.import_settings);
+        Button importButton = v.findViewById(R.id.import_settings);
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

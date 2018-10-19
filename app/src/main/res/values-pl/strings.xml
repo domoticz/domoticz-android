@@ -33,6 +33,8 @@
   <string name="button_state_off">Wył.</string>
   <string name="button_state_closed">Zamknięte</string>
   <string name="button_state_open">Otwarte</string>
+  <string name="button_state_lock">Lock</string>
+  <string name="button_state_unlock">Unlock</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dzień</string>
   <string name="button_status_week">Tydzień</string>

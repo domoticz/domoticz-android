@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -54,6 +55,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
     ScenesClickListener {
@@ -78,10 +80,17 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_scenes);
         initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+        //if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_scenes);
     }
 
     @Override
@@ -401,7 +410,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         ArrayList<SceneInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<SceneInfo>) SerializableManager.readSerializedObject(mContext, "Scenes");
                 } catch (Exception ex) {

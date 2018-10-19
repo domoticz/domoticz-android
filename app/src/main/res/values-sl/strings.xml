@@ -33,6 +33,8 @@
   <string name="button_state_off">Izklopljeno</string>
   <string name="button_state_closed">Zaprto</string>
   <string name="button_state_open">Odprto</string>
+  <string name="button_state_lock">Lock</string>
+  <string name="button_state_unlock">Unlock</string>
   <string name="button_status_log">Dnevnik</string>
   <string name="button_status_day">Dan</string>
   <string name="button_status_week">Teden</string>

@@ -19,41 +19,53 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/extra_panel"
-    android:layout_width="wrap_content"
-    android:layout_height="25dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
-    android:animateLayoutChanges="true"
-    android:orientation="horizontal"
-    android:visibility="gone"
-    tools:visibility="visible">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/extra_panel"
+              android:layout_width="wrap_content"
+              android:layout_height="25dp"
+              android:layout_marginLeft="10dp"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginBottom="10dp"
+              android:animateLayoutChanges="true"
+              android:orientation="horizontal"
+              android:visibility="gone"
+              tools:visibility="visible">
 
-    <com.like.LikeButton
-        android:id="@+id/fav_button"
-        android:layout_width="0dp"
+    <HorizontalScrollView
+        android:id="@+id/hsv"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rowIcon"
-        android:layout_weight=".20"
-        android:paddingBottom="-25dp"
-        android:paddingTop="-17dp"
-        app:icon_size="20dp"
-        app:icon_type="star" />
+        android:fillViewport="true"
+        android:measureAllChildren="false"
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/log_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_weight=".25"
-        android:background="@drawable/button_white_status"
-        android:text="@string/button_status_log"
-        android:textSize="10dp" />
+        <LinearLayout
+            android:id="@+id/innerLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.like.LikeButton
+                android:id="@+id/fav_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rowIcon"
+                android:layout_weight=".20"
+                android:paddingTop="-17dp"
+                android:paddingBottom="-25dp"
+                app:icon_size="20dp"
+                app:icon_type="star"/>
+
+            <android.support.design.chip.Chip
+                android:id="@+id/log_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/button_status_log"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

@@ -21,23 +21,22 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:foreground="?android:attr/selectableItemBackground"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:foreground="?android:attr/selectableItemBackground"
+              android:minHeight="?android:attr/listPreferredItemHeight"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
+        style="@style/row_name_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/title_security_panel"
-        style="@style/row_name_small"
-        android:textColor="@color/primary_dark" />
+        android:textColor="@color/secondary_dark"/>
 
     <TextView
         android:id="@+id/status"
@@ -46,37 +45,38 @@
         android:gravity="center_horizontal"
         android:paddingBottom="20dp"
         android:text="Status: Armed"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_small"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_securitypin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/securitypin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/linearLayout5"
-            android:layout_toStartOf="@+id/linearLayout5"
-            android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toStartOf="@+id/linearLayout5"
+            android:layout_toLeftOf="@+id/linearLayout5"
+            android:hint="@string/security_pin"
             android:inputType="number"
-            android:textColor="@color/white"
-            android:hint="@string/security_pin" />
+            android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/checkpin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/button_status"
         android:text="@string/ok"
-        android:textSize="12dp" />
+        android:textSize="12dp"/>
 
 </LinearLayout>

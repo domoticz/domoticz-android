@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -36,14 +37,13 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
-
     private LogAdapter adapter;
     private Context mContext;
     private String filter = "";
     private SlideInBottomAnimationAdapter alphaSlideIn;
-
 
     @Override
     public void onConnectionFailed() {
@@ -62,9 +62,16 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_logs);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -143,7 +150,9 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         ArrayList<LogInfo> cacheLogs = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheLogs = (ArrayList<LogInfo>) SerializableManager.readSerializedObject(mContext, "Logs");
                 } catch (Exception ex) {

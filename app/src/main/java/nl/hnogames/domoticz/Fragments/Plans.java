@@ -51,6 +51,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
 
@@ -82,11 +83,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         processPlans();
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     public void processPlans() {
         new GetCachedDataTask().execute();
     }
@@ -94,10 +90,17 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         mSharedPrefs = new SharedPrefUtil(mContext);
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_plans);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -169,7 +172,9 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         ArrayList<PlanInfo> cachePlans = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cachePlans = (ArrayList<PlanInfo>) SerializableManager.readSerializedObject(mContext, "Plans");
                     Plans.this.mPlans = cachePlans;

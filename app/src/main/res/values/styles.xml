@@ -18,55 +18,70 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <resources>
     <!-- Base application theme. -->
-    <style name="AppThemeMain" parent="MaterialDrawerTheme.Light.DarkToolbar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:dialogTheme">@style/MyDialogTheme</item>
-        <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
-        <item name="dialogTheme">@style/MyDialogTheme</item>
-        <item name="alertDialogTheme">@style/MyDialogTheme</item>
-    </style>
-
-    <style name="AppThemeDarkMain" parent="MaterialDrawerTheme">
-        <item name="colorPrimary">@color/secondary</item>
-        <item name="colorPrimaryDark">@color/secondary_dark</item>
-        <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
-        <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
-        <item name="dialogTheme">@style/MyDarkDialogTheme</item>
-        <item name="alertDialogTheme">@style/MyDarkDialogTheme</item>
+    <style name="AppThemeIntro" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:dialogTheme">@style/MyDialogTheme</item>
-        <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
-        <item name="dialogTheme">@style/MyDialogTheme</item>
-        <item name="alertDialogTheme">@style/MyDialogTheme</item>
+        <item name="colorAccent">@color/primary</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
     </style>
 
-    <style name="AppThemeDark" parent="Theme.AppCompat">
+    <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/secondary</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
-        <item name="android:dialogTheme">@style/MyDarkDialogTheme</item>
-        <item name="android:alertDialogTheme">@style/MyDarkDialogTheme</item>
-        <item name="dialogTheme">@style/MyDarkDialogTheme</item>
-        <item name="alertDialogTheme">@style/MyDarkDialogTheme</item>
+        <item name="colorAccent">@color/primary</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/card_background_dark</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_dark_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_dark_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_dark_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_dark_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_dark_divider</item>
+        <item name="material_drawer_selected">@color/button_dark</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/primary</item>
+    </style>
+
+    <style name="AppThemeDark" parent="Theme.MaterialComponents.Bridge">
+        <item name="colorPrimary">@color/secondary</item>
+        <item name="colorPrimaryDark">@color/secondary_dark</item>
+        <item name="colorAccent">@color/primary</item>
     </style>
 
     <!--        Styles Light     -->
     <style name="background_listview">
         <item name="android:paddingLeft">@dimen/row_space</item>
         <item name="android:paddingRight">@dimen/row_space</item>
-        <item name="android:background">@color/material_grey_300_</item>
+        <item name="android:background">@color/background_grey</item>
     </style>
 
     <style name="background_recyclerview">
-        <item name="android:background">@color/material_grey_300_</item>
+        <item name="android:background">@color/background_grey</item>
     </style>
 
     <style name="listview_row">
@@ -93,7 +108,7 @@
     <style name="nav_name" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
@@ -101,33 +116,33 @@
     <style name="row_name" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="row_dash_name" parent="@style/TextAppearance.AppCompat.Title">
+    <style name="row_dash_name" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:paddingTop">10dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="row_name_micro" parent="@style/TextAppearance.AppCompat.Title">
+    <style name="row_name_micro" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="row_name_small" parent="@style/TextAppearance.AppCompat.Title">
+    <style name="row_name_small" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="row_body1" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
@@ -146,9 +161,9 @@
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
-    <style name="row_dash_body2" parent="@style/TextAppearance.AppCompat.Body2">
+    <style name="row_dash_body2" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">8sp</item>
         <item name="android:textStyle">italic</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
@@ -157,7 +172,6 @@
     <style name="listView">
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
-
 
     <!--        Debugging        -->
     <style name="debug_layout">
@@ -180,31 +194,12 @@
         <item name="android:scrollbars">vertical</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowCloseOnTouchOutside">false</item>
-    </style>
-
-    <style name="MyDarkDialogTheme" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowCloseOnTouchOutside">false</item>
-        <item name="colorAccent">#FFFFFF</item>
-        <item name="android:textColorPrimary">#FFFFFF</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:background">@color/primary_dark</item>
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.Light.Bridge"/>
 </resources>

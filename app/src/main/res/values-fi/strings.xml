@@ -33,6 +33,8 @@
   <string name="button_state_off">Pois</string>
   <string name="button_state_closed">Kiinni</string>
   <string name="button_state_open">Auki</string>
+  <string name="button_state_lock">Lock</string>
+  <string name="button_state_unlock">Unlock</string>
   <string name="button_status_log">Loki</string>
   <string name="button_status_day">Päivä</string>
   <string name="button_status_week">Viikko</string>

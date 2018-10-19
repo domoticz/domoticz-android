@@ -22,7 +22,7 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -101,11 +101,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             .inflate(R.layout.scene_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.card_global_wrapper)) != null)
+                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
         }
 
         return new DataObjectHolder(view);
@@ -113,7 +114,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
-
+        holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemLongClicked(position);
+            }
+        });
         if (filteredData != null && filteredData.size() > 0) {
             final SceneInfo mSceneInfo = filteredData.get(position);
 
@@ -123,17 +129,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 setButtons(holder, Buttons.SCENE);
                 if (mSharedPrefs.darkThemeEnabled()) {
                     if ((holder.itemView.findViewById(R.id.on_button)) != null)
-                        (holder.itemView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                        (holder.itemView.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                     if ((holder.itemView.findViewById(R.id.off_button)) != null)
-                        (holder.itemView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-                    if ((holder.itemView.findViewById(R.id.log_button)) != null)
-                        (holder.itemView.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-                    if ((holder.itemView.findViewById(R.id.notifications_button)) != null)
-                        (holder.itemView.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-                    if ((holder.itemView.findViewById(R.id.timer_button)) != null)
-                        (holder.itemView.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                        (holder.itemView.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                 }
-
                 if (holder.buttonTimer != null)
                     holder.buttonTimer.setVisibility(View.GONE);
                 if (holder.buttonNotifications != null)
@@ -199,15 +198,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 setButtons(holder, Buttons.GROUP);
                 if (mSharedPrefs.darkThemeEnabled()) {
                     if ((holder.itemView.findViewById(R.id.on_button)) != null)
-                        (holder.itemView.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                        (holder.itemView.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                     if ((holder.itemView.findViewById(R.id.off_button)) != null)
-                        (holder.itemView.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-                    if ((holder.itemView.findViewById(R.id.log_button)) != null)
-                        (holder.itemView.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-                    if ((holder.itemView.findViewById(R.id.notifications_button)) != null)
-                        (holder.itemView.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
-                    if ((holder.itemView.findViewById(R.id.timer_button)) != null)
-                        (holder.itemView.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                        (holder.itemView.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
                 }
 
                 if (holder.buttonTimer != null)
@@ -356,33 +349,35 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         ImageView iconRow;
         LikeButton likeButton;
         LinearLayout extraPanel;
-        Button buttonOn, buttonLog, buttonTimer, buttonNotifications, buttonOff;
+        Button buttonOn, buttonOff;
+        Chip buttonLog, buttonTimer, buttonNotifications;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            buttonOn = (Button) itemView.findViewById(R.id.on_button);
-            signal_level = (TextView) itemView.findViewById(R.id.switch_signal_level);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            switch_name = (TextView) itemView.findViewById(R.id.switch_name);
-            switch_battery_level = (TextView) itemView.findViewById(R.id.switch_battery_level);
-
-            buttonLog = (Button) itemView.findViewById(R.id.log_button);
-            buttonTimer = (Button) itemView.findViewById(R.id.timer_button);
-            buttonNotifications = (Button) itemView.findViewById(R.id.notifications_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+            buttonOn = itemView.findViewById(R.id.on_button);
+            signal_level = itemView.findViewById(R.id.switch_signal_level);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            switch_name = itemView.findViewById(R.id.switch_name);
+            switch_battery_level = itemView.findViewById(R.id.switch_battery_level);
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
+            buttonLog = itemView.findViewById(R.id.log_button);
+            buttonTimer = itemView.findViewById(R.id.timer_button);
+            buttonNotifications = itemView.findViewById(R.id.notifications_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
 
             if (buttonTimer != null)
                 buttonTimer.setVisibility(View.GONE);
             if (buttonNotifications != null)
                 buttonNotifications.setVisibility(View.GONE);
 
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            buttonLog = (Button) itemView.findViewById(R.id.log_button);
-            buttonOff = (Button) itemView.findViewById(R.id.off_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            buttonLog = itemView.findViewById(R.id.log_button);
+            buttonOff = itemView.findViewById(R.id.off_button);
 
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
@@ -409,10 +404,8 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     sceneInfos.add(filterableObject);
                 }
             }
-
             results.values = sceneInfos;
             results.count = sceneInfos.size();
-
             return results;
         }
 

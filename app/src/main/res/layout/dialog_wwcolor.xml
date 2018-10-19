@@ -19,20 +19,25 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <com.larswerkman.lobsterpicker.LobsterPicker
-        android:id="@+id/lobsterpicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/wwslider">
 
-    <com.larswerkman.lobsterpicker.sliders.LobsterShadeSlider
-        android:id="@+id/shadeslider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <SeekBar
+            android:id="@+id/kelvinBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:max="100"
+            android:min="0"
+            android:padding="16dp"
+            android:progress="50"/>
+    </LinearLayout>
 
 </LinearLayout>

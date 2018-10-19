@@ -215,7 +215,6 @@ public class DomoticzDashboardFragment extends Fragment {
      * @param fragment fragment to cast the DomoticzFragmentListener to
      */
     public void onAttachFragment(Fragment fragment) {
-
         fragmentName = fragment.toString();
 
         try {
@@ -240,9 +239,10 @@ public class DomoticzDashboardFragment extends Fragment {
      * Checks for a active connection
      */
     public void checkConnection() {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
-
+        if (listener == null) {
+            List<Fragment> fragments = getFragmentManager().getFragments();
+            onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        }
         mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
@@ -251,7 +251,6 @@ public class DomoticzDashboardFragment extends Fragment {
             listener.onConnectionFailed();
             setErrorMessage(getString(R.string.error_notConnected));
         }
-        ;
     }
 
     /**

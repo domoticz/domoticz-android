@@ -35,18 +35,18 @@
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+        android:paddingBottom="10dp">
 
         <CheckBox
             android:id="@+id/enableSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"/>
 
         <RelativeLayout
             android:layout_width="253dp"
@@ -58,26 +58,26 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                tools:text="Location name" />
+                tools:text="Location name"/>
 
             <TextView
                 android:id="@+id/location_radius"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/location_name"
-                tools:text="Radius (meter): 120" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                tools:text="Radius (meter): 120"/>
 
             <TextView
                 android:id="@+id/location_connectedSwitch"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/location_radius"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/location_radius" />
+                android:layout_alignParentLeft="true"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -93,14 +93,15 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/remove_button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:background="@drawable/button_status"
             android:text="@string/delete_short"
-            android:textSize="10dp" />
+            android:textSize="10dp"/>
 
     </LinearLayout>
 </RelativeLayout>

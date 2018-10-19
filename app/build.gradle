@@ -45,6 +45,12 @@ android {
         throw new GradleException("Could not read version.properties!")
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+        incremental = false;
+    }
+
     //noinspection GroovyAssignabilityCheck
     buildTypes {
         release {
@@ -52,6 +58,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             lintOptions {
                 disable 'MissingTranslation'
+                checkReleaseBuilds false
+                abortOnError false
             }
         }
     }
@@ -139,7 +147,6 @@ repositories {
     }
 }
 
-
 allprojects {
     repositories {
         jcenter()
@@ -181,10 +188,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
-    implementation 'com.larswerkman:lobsterpicker:1.0.1'
 
-    implementation 'com.github.zurche:plain-pie:v0.2.2'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.github.zurche:plain-pie:v0.2.9'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
     implementation 'com.github.dexafree:MaterialList:v3.2.2'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
@@ -192,9 +198,10 @@ dependencies {
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
-    implementation 'jp.wasabeef:recyclerview-animators:2.2.4'
+    implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+
     implementation("com.mikepenz:materialdrawer:6.0.9@aar") {
         transitive = true
     }
@@ -205,9 +212,9 @@ dependencies {
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
     implementation 'com.afollestad:digitus:0.3.0'
+    implementation "com.github.skydoves:colorpickerview:2.0.1"
 
     implementation project(':libs:MemorizingTrustManager')
-
     implementation project(path: ':materialIntro_library')
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')

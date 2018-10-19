@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import nl.hnogames.domoticzapi.Containers.EventInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
@@ -65,9 +67,16 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_events);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -159,7 +168,9 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         ArrayList<EventInfo> cacheEventInfos = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheEventInfos = (ArrayList<EventInfo>) SerializableManager.readSerializedObject(mContext, "Events");
                 } catch (Exception ex) {

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -53,6 +54,7 @@ import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Temperature extends DomoticzRecyclerFragment implements DomoticzFragmentListener, TemperatureClickListener {
 
@@ -80,7 +82,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         processTemperature();
     }
 
@@ -88,10 +89,17 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_temperature);
         initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+        //if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_temperature);
     }
 
     @Override
@@ -355,7 +363,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         ArrayList<TemperatureInfo> cacheTemperatures = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
                 } catch (Exception ex) {

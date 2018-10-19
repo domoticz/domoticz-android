@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.InputType;
@@ -44,9 +45,9 @@ import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener, UserVariablesClickListener {
-
     private ArrayList<UserVariableInfo> mUserVariableInfos;
     private UserVariablesAdapter adapter;
     private Context mContext;
@@ -70,9 +71,16 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_vars);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -198,7 +206,9 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         ArrayList<UserVariableInfo> cacheUserVariables = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
                     UserVariables.this.mUserVariableInfos = cacheUserVariables;

@@ -608,8 +608,7 @@ public class UsefulBits {
             //TODO: Implement correct piracychecker for this app!!
             mSharedPrefs.setAPKValidated(true);
             return;
-        }
-        else {
+        } else {
             // release build
             PiracyChecker oPiracyChecker = new PiracyChecker(context);
             oPiracyChecker

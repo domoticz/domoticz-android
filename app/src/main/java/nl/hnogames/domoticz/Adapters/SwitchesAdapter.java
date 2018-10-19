@@ -24,7 +24,7 @@ package nl.hnogames.domoticz.Adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +35,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Filter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -151,34 +150,21 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row = null;
         row = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.dashboard_row_list, parent, false);
+            .inflate(R.layout.switch_row_list, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) row.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((row.findViewById(R.id.card_global_wrapper)) != null)
+                row.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.row_wrapper)) != null)
-                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.row_global_wrapper)) != null)
-                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-            if ((row.findViewById(R.id.day_button)) != null)
-                (row.findViewById(R.id.day_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.year_button)) != null)
-                (row.findViewById(R.id.year_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.month_button)) != null)
-                (row.findViewById(R.id.month_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.week_button)) != null)
-                (row.findViewById(R.id.week_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.log_button)) != null)
-                (row.findViewById(R.id.log_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.timer_button)) != null)
-                (row.findViewById(R.id.timer_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            if ((row.findViewById(R.id.notifications_button)) != null)
-                (row.findViewById(R.id.notifications_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.on_button)) != null)
-                (row.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (row.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((row.findViewById(R.id.off_button)) != null)
-                (row.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (row.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((row.findViewById(R.id.color_button)) != null)
-                (row.findViewById(R.id.color_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
+                (row.findViewById(R.id.color_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
         }
 
         return new DataObjectHolder(row);
@@ -197,7 +183,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     handleLogButtonClick(v.getId());
                 }
             });
-
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
             if (holder.likeButton != null) {
                 holder.likeButton.setId(extendedStatusInfo.getIdx());
                 holder.likeButton.setLiked(extendedStatusInfo.getFavoriteBoolean());
@@ -292,6 +283,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.ON_OFF:
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
+                case DomoticzValues.Device.Type.Value.DOORLOCKINVERTED:
                 case DomoticzValues.Device.Type.Value.DOORCONTACT:
                     switch (mDeviceInfo.getSwitchType()) {
                         case DomoticzValues.Device.Type.Name.SECURITY:
@@ -352,7 +344,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB)) {
+                    if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
+                        mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
                         if (mSharedPrefs.showSwitchesAsButtons()) {
                             setButtons(holder, Buttons.DIMMER_BUTTONS);
                             setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
@@ -509,7 +502,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
             if (mSharedPrefs.darkThemeEnabled())
-                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                holder.buttonOn.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             else
                 holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
 
@@ -1796,49 +1789,49 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
-        ImageButton buttonUp, buttonDown, buttonStop;
-        Button buttonOn, buttonLog, buttonTimer, buttonColor, buttonSetStatus, buttonSet, buttonOff, buttonNotifications;
+        ImageView buttonUp, buttonDown, buttonStop;
+        Button buttonOn, buttonColor, buttonSetStatus, buttonSet, buttonOff;
+        Chip buttonLog, buttonTimer, buttonNotifications;
         Boolean isProtected;
         LikeButton likeButton;
         ImageView iconRow, iconMode;
         SeekBar dimmer;
         Spinner spSelector;
         LinearLayout extraPanel;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            buttonOn = (Button) itemView.findViewById(R.id.on_button);
-            buttonOff = (Button) itemView.findViewById(R.id.off_button);
-            buttonSetStatus = (Button) itemView.findViewById(R.id.set_button);
+            buttonOn = itemView.findViewById(R.id.on_button);
+            buttonOff = itemView.findViewById(R.id.off_button);
+            buttonSetStatus = itemView.findViewById(R.id.set_button);
 
-            onOffSwitch = (Switch) itemView.findViewById(R.id.switch_button);
-            signal_level = (TextView) itemView.findViewById(R.id.switch_signal_level);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            switch_name = (TextView) itemView.findViewById(R.id.switch_name);
-            switch_battery_level = (TextView) itemView.findViewById(R.id.switch_battery_level);
+            onOffSwitch = itemView.findViewById(R.id.switch_button);
+            signal_level = itemView.findViewById(R.id.switch_signal_level);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            switch_name = itemView.findViewById(R.id.switch_name);
+            switch_battery_level = itemView.findViewById(R.id.switch_battery_level);
 
-            switch_dimmer_level = (TextView) itemView.findViewById(R.id.switch_dimmer_level);
-            dimmerOnOffSwitch = (Switch) itemView.findViewById(R.id.switch_dimmer_switch);
-            dimmer = (SeekBar) itemView.findViewById(R.id.switch_dimmer);
-            spSelector = (Spinner) itemView.findViewById(R.id.spSelector);
-            buttonColor = (Button) itemView.findViewById(R.id.color_button);
-            buttonLog = (Button) itemView.findViewById(R.id.log_button);
-            buttonTimer = (Button) itemView.findViewById(R.id.timer_button);
-            buttonUp = (ImageButton) itemView.findViewById(R.id.switch_button_up);
-            buttonNotifications = (Button) itemView.findViewById(R.id.notifications_button);
-            buttonStop = (ImageButton) itemView.findViewById(R.id.switch_button_stop);
-            buttonDown = (ImageButton) itemView.findViewById(R.id.switch_button_down);
-            buttonSet = (Button) itemView.findViewById(R.id.set_button);
-
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
-
+            switch_dimmer_level = itemView.findViewById(R.id.switch_dimmer_level);
+            dimmerOnOffSwitch = itemView.findViewById(R.id.switch_dimmer_switch);
+            dimmer = itemView.findViewById(R.id.switch_dimmer);
+            spSelector = itemView.findViewById(R.id.spSelector);
+            buttonColor = itemView.findViewById(R.id.color_button);
+            buttonLog = itemView.findViewById(R.id.log_button);
+            buttonTimer = itemView.findViewById(R.id.timer_button);
+            buttonUp = itemView.findViewById(R.id.switch_button_up);
+            buttonNotifications = itemView.findViewById(R.id.notifications_button);
+            buttonStop = itemView.findViewById(R.id.switch_button_stop);
+            buttonDown = itemView.findViewById(R.id.switch_button_down);
+            buttonSet = itemView.findViewById(R.id.set_button);
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
+            likeButton = itemView.findViewById(R.id.fav_button);
             if (buttonLog != null)
                 buttonLog.setVisibility(View.GONE);
             if (buttonTimer != null)
                 buttonTimer.setVisibility(View.GONE);
-
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
@@ -1869,7 +1862,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
             results.values = devicesInfos;
             results.count = devicesInfos.size();
-
             return results;
         }
 

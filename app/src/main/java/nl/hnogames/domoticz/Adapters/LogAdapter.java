@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,13 +78,13 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.logs_row_default, parent, false);
 
-
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.card_global_wrapper)) != null)
+                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
         }
 
         return new DataObjectHolder(view);
@@ -141,11 +140,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            name = (TextView) itemView.findViewById(R.id.logs_name);
-            datetime = (TextView) itemView.findViewById(R.id.logs_datetime);
-            message = (TextView) itemView.findViewById(R.id.logs_message);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-
+            name = itemView.findViewById(R.id.logs_name);
+            datetime = itemView.findViewById(R.id.logs_datetime);
+            message = itemView.findViewById(R.id.logs_message);
+            iconRow = itemView.findViewById(R.id.rowIcon);
             itemView.setOnClickListener(this);
         }
 

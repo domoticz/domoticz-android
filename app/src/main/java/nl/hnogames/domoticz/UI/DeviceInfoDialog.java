@@ -23,24 +23,27 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.support.design.button.MaterialButton;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzValues;
+import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
-
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private DevicesInfo mSwitch;
@@ -49,30 +52,25 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
     private String signalLevel;
     private String batteryLevel;
     private boolean isFavorite;
+    private boolean isColorLight;
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private Switch favorite_switch;
+    private LinearLayout colorOptions;
+    private Domoticz mDomoticz;
+    private MaterialButton buttonNight, buttonFull;
+    private boolean isChanged = false;
 
     public DeviceInfoDialog(Context mContext,
+                            Domoticz domoticz,
                             DevicesInfo mSwitch,
                             int layout) {
         this.mContext = mContext;
         this.mSwitch = mSwitch;
+        this.mDomoticz = domoticz;
         this.mSharedPrefs = new SharedPrefUtil(mContext);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
@@ -83,6 +81,10 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
 
     public void setIdx(String idx) {
         this.idx = idx;
+    }
+
+    public void setColorLight(boolean iscolorLight) {
+        this.isColorLight = iscolorLight;
     }
 
     public void setLastUpdate(String lastUpdate) {
@@ -102,16 +104,20 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-
         mdb.title(mSwitch.getName());
 
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        TextView IDX_value = (TextView) view.findViewById(R.id.IDX_value);
+        TextView IDX_value = view.findViewById(R.id.IDX_value);
         IDX_value.setText(idx);
 
-        TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
+        InitButtons(view);
+
+        TextView LastUpdate_value = view.findViewById(R.id.LastUpdate_value);
+        colorOptions = view.findViewById(R.id.color_light_options);
+        if (isColorLight)
+            colorOptions.setVisibility(View.VISIBLE);
         LastUpdate_value.setText(lastUpdate);
 
         int signalLevelVal;
@@ -122,7 +128,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             signalLevelVal = 0;
         }
 
-        SeekBar signalLevelIndicator = (SeekBar) view.findViewById(R.id.SignalLevel_indicator);
+        SeekBar signalLevelIndicator = view.findViewById(R.id.SignalLevel_indicator);
         signalLevelIndicator.setVisibility(View.VISIBLE);
         signalLevelIndicator.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -137,7 +143,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         signalLevelIndicator.startAnimation(anim);
 
 
-        TextView BatteryLevel_value = (TextView) view.findViewById(R.id.BatteryLevel_value);
+        TextView BatteryLevel_value = view.findViewById(R.id.BatteryLevel_value);
         int batteryLevelVal;
         try {
             batteryLevelVal = Integer.valueOf(batteryLevel);
@@ -150,7 +156,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             BatteryLevel_value.setText(batteryLevel);
         } else {
             BatteryLevel_value.setVisibility(View.GONE);
-            SeekBar batteryLevelIndicator = (SeekBar) view.findViewById(R.id.BatteryLevel_indicator);
+            SeekBar batteryLevelIndicator = view.findViewById(R.id.BatteryLevel_indicator);
             batteryLevelIndicator.setVisibility(View.VISIBLE);
             batteryLevelIndicator.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -164,22 +170,83 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             batteryLevelIndicator.startAnimation(anim);
         }
 
-
-        favorite_switch = (Switch) view.findViewById(R.id.favorite_switch);
+        favorite_switch = view.findViewById(R.id.favorite_switch);
         favorite_switch.setChecked(isFavorite);
-        favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        md.show();
+    }
 
+    private void InitButtons(View view) {
+        buttonNight = view.findViewById(R.id.night_button);
+        buttonFull = view.findViewById(R.id.full_button);
+
+        buttonNight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSwitch.isProtected()) {
+                    PasswordDialog passwordDialog = new PasswordDialog(
+                        mContext, mDomoticz);
+                    passwordDialog.show();
+                    passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                        @Override
+                        @DebugLog
+                        public void onDismiss(String password) {
+                            setAction(DomoticzValues.Json.Url.Set.NIGHTLIGHT, DomoticzValues.Device.Switch.Action.ON, password);
+                            Toast.makeText(mContext, mContext.getString(R.string.switch_night) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+                } else {
+                    setAction(DomoticzValues.Json.Url.Set.NIGHTLIGHT, DomoticzValues.Device.Switch.Action.ON, null);
+                    Toast.makeText(mContext, mContext.getString(R.string.switch_night) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
+        buttonFull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSwitch.isProtected()) {
+                    PasswordDialog passwordDialog = new PasswordDialog(
+                        mContext, mDomoticz);
+                    passwordDialog.show();
+                    passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                        @Override
+                        @DebugLog
+                        public void onDismiss(String password) {
+                            setAction(DomoticzValues.Json.Url.Set.FULLLIGHT, DomoticzValues.Device.Switch.Action.ON, password);
+                            Toast.makeText(mContext, mContext.getString(R.string.switch_full) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT).show();
+                        }
 
-        md.show();
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+                } else {
+                    setAction(DomoticzValues.Json.Url.Set.FULLLIGHT, DomoticzValues.Device.Switch.Action.ON, null);
+                    Toast.makeText(mContext, mContext.getString(R.string.switch_full) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void setAction(int jsonUrl, int actionUrl, final String password) {
+        isChanged = true;
+        mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, actionUrl, 0, password, new setCommandReceiver() {
+            @Override
+            @DebugLog
+            public void onReceiveResult(String result) {
+            }
+
+            @Override
+            public void onError(Exception error) {
+            }
+        });
     }
 
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
-        boolean isChanged = false;
         boolean isChecked = favorite_switch.isChecked();
         if (isChecked != isFavorite) isChanged = true;
         if (dismissListener != null)

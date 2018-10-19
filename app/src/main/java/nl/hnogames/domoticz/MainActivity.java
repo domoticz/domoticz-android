@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
@@ -70,6 +71,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,7 +84,7 @@ import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
-import nl.hnogames.domoticz.Fragments.Dashboard;
+import nl.hnogames.domoticz.Fragments.MainPager;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.UI.PasswordDialog;
@@ -101,6 +103,7 @@ import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.app.RefreshFragment;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
@@ -155,6 +158,15 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDarkMain);
@@ -163,17 +175,14 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
-        AdView mAdView;
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
             setContentView(R.layout.activity_newmain_free);
-            mAdView = findViewById(R.id.adView);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice("83DBECBB403C3E924CAA8B529F7E848E").build();
-            mAdView.loadAd(adRequest);
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4").build();
+            ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else {
             setContentView(R.layout.activity_newmain_paid);
-            mAdView = findViewById(R.id.adView);
-            mAdView.setVisibility(View.GONE);
+            (findViewById(R.id.adView)).setVisibility(View.GONE);
         }
 
         if (savedInstanceState == null) {
@@ -185,6 +194,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         }
 
         toolbar = findViewById(R.id.toolbar);
+        if (mSharedPrefs.darkThemeEnabled())
+            toolbar.setBackgroundColor(getResources().getColor(R.color.secondary));
+
         setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
@@ -505,7 +517,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         return jsonValue;
     }
 
-
     @DebugLog
     public void refreshFragment() {
         Fragment f = latestFragment;
@@ -515,6 +526,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             ((DomoticzCardFragment) f).refreshFragment();
         else if (f instanceof DomoticzDashboardFragment)
             ((DomoticzDashboardFragment) f).refreshFragment();
+        else if (f instanceof RefreshFragment)
+            ((RefreshFragment) f).RefreshFragment();
     }
 
     @DebugLog
@@ -832,11 +845,19 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         String ICONS[] = mSharedPrefs.getNavigationIcons();
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Wizard") || fragments[i].contains("Dashboard"))
+            if (fragments[i].contains("Wizard") || fragments[i].contains("MainPager"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+
         drawerItems.add(new DividerDrawerItem());
+
         for (int i = 0; i < drawerActions.length; i++)
-            if (!fragments[i].contains("Wizard") && !fragments[i].contains("Dashboard"))
+            if ((!fragments[i].contains("Wizard") && !fragments[i].contains("MainPager")) && fragments[i].contains("Utilities") || fragments[i].contains("Plans") || fragments[i].contains("Camera"))
+                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+
+        drawerItems.add(new DividerDrawerItem());
+
+        for (int i = 0; i < drawerActions.length; i++)
+            if (!fragments[i].contains("Wizard") && !fragments[i].contains("MainPager") && !fragments[i].contains("Utilities") && !fragments[i].contains("Plans") && !fragments[i].contains("Camera"))
                 drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
         return drawerItems;
@@ -851,7 +872,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.material_indigo_600);
         }
-
         return item;
     }
 
@@ -864,7 +884,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.material_indigo_600);
         }
-
         return item;
     }
 
@@ -981,8 +1000,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
-            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment)) {
-                if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches))
+            } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
+                if ((f instanceof MainPager) || (f instanceof Scenes) || (f instanceof Switches))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -1004,6 +1023,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             ((DomoticzDashboardFragment) n).Filter(newText);
                         } else if (n instanceof DomoticzRecyclerFragment) {
                             ((DomoticzRecyclerFragment) n).Filter(newText);
+                        } else if (n instanceof RefreshFragment) {
+                            ((RefreshFragment) n).Filter(newText);
                         }
                         return false;
                     }
@@ -1164,6 +1185,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                 ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
                             } else if (f instanceof DomoticzDashboardFragment) {
                                 ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
+                            } else if (f instanceof RefreshFragment) {
+                                ((RefreshFragment) f).sortFragment(selectedSort);
                             }
                         }
                     });
@@ -1398,6 +1421,15 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         super.onDestroy();
     }
 
+    @DebugLog
+    public void clearSearch() {
+        if (searchViewAction != null) {
+            searchViewAction.setQuery("", false);
+            searchViewAction.clearFocus();
+            searchViewAction.onActionViewCollapsed();
+        }
+    }
+
     @Override
     @DebugLog
     public void onPause() {
@@ -1473,16 +1505,19 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @Override
     public void onFingerprintDialogAuthenticated() {
-        FingerprintDialog dialog = FingerprintDialog.getVisible(this);
-        if (dialog != null)
-            dialog.dismiss();
-        Digitus.deinit();
-        validateOnce = false;
-        if (!mSharedPrefs.isGeofencingStarted()) {
-            mSharedPrefs.setGeofencingStarted(true);
-            new GeoUtils(this, this).AddGeofences();
+        try {
+            FingerprintDialog dialog = FingerprintDialog.getVisible(this);
+            if (dialog != null)
+                dialog.dismiss();
+            Digitus.deinit();
+            validateOnce = false;
+            if (!mSharedPrefs.isGeofencingStarted()) {
+                mSharedPrefs.setGeofencingStarted(true);
+                new GeoUtils(this, this).AddGeofences();
+            }
+            buildScreen();
+        } catch (Exception ex) {
         }
-        buildScreen();
     }
 
     @Override

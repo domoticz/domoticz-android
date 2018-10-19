@@ -22,7 +22,7 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -98,17 +98,18 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             .inflate(R.layout.utilities_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.card_global_wrapper)) != null)
+                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.on_button)) != null)
-                (view.findViewById(R.id.on_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (view.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((view.findViewById(R.id.off_button)) != null)
-                (view.findViewById(R.id.off_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (view.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
             if ((view.findViewById(R.id.set_button)) != null)
-                (view.findViewById(R.id.set_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (view.findViewById(R.id.set_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
         }
 
         return new DataObjectHolder(view);
@@ -146,6 +147,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     listener.onItemClicked(v, position);
                 }
             });
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
         }
     }
 
@@ -180,9 +187,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 && !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
-        if (mSharedPrefs.darkThemeEnabled()) {
-            holder.buttonLog.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-        }
 
         if (holder.likeButton != null) {
             holder.likeButton.setId(mUtilitiesInfo.getIdx());
@@ -217,13 +221,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     private void CreateDefaultRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
         holder.isProtected = mUtilitiesInfo.isProtected();
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-        }
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
@@ -321,13 +318,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (holder.isProtected)
             holder.on_button.setEnabled(false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-        }
-
         holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
         holder.on_button.setOnClickListener(new View.OnClickListener() {
@@ -337,7 +327,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             }
         });
         if (mSharedPrefs.darkThemeEnabled()) {
-            holder.on_button.setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+            holder.on_button.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
         }
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
@@ -466,33 +456,34 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         ImageView iconRow;
         Boolean isProtected;
 
-        Button dayButton;
-        Button monthButton;
-        Button yearButton;
-        Button weekButton;
-        Button buttonLog;
+        Chip dayButton;
+        Chip monthButton;
+        Chip yearButton;
+        Chip weekButton;
+        Chip buttonLog;
         Button on_button;
-
+        ImageView infoIcon;
         LikeButton likeButton;
         LinearLayout extraPanel;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            dayButton = (Button) itemView.findViewById(R.id.day_button);
-            monthButton = (Button) itemView.findViewById(R.id.month_button);
-            yearButton = (Button) itemView.findViewById(R.id.year_button);
-            weekButton = (Button) itemView.findViewById(R.id.week_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
+            dayButton = itemView.findViewById(R.id.day_button);
+            monthButton = itemView.findViewById(R.id.month_button);
+            yearButton = itemView.findViewById(R.id.year_button);
+            weekButton = itemView.findViewById(R.id.week_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
 
-            on_button = (Button) itemView.findViewById(R.id.on_button);
-            name = (TextView) itemView.findViewById(R.id.utilities_name);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            buttonLog = (Button) itemView.findViewById(R.id.log_button);
-            data = (TextView) itemView.findViewById(R.id.utilities_data);
-            hardware = (TextView) itemView.findViewById(R.id.utilities_hardware);
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
+            on_button = itemView.findViewById(R.id.on_button);
+            name = itemView.findViewById(R.id.utilities_name);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            buttonLog = itemView.findViewById(R.id.log_button);
+            data = itemView.findViewById(R.id.utilities_data);
+            hardware = itemView.findViewById(R.id.utilities_hardware);
 
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }

@@ -72,20 +72,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         this.domoticz = mDomoticz;
         this.panelInfo = panelInfo;
         mSharedPrefs = new SharedPrefUtil(c);
-        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
-
+        mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_security, true)
             .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
             .negativeText(android.R.string.cancel);
@@ -112,9 +99,9 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
             txtCountDown = (TextView) view.findViewById(R.id.countdown);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-                btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-                btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+                btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+                btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+                btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
                 editPinCode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
                 int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -53,6 +54,7 @@ import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmentListener, WeatherClickListener {
 
@@ -84,10 +86,17 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_weather);
         initAnimation();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+        //if (getActionBar() != null)
+        //   getActionBar().setTitle(R.string.title_weather);
     }
 
     @Override
@@ -304,7 +313,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         ArrayList<WeatherInfo> cacheWeathers = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheWeathers = (ArrayList<WeatherInfo>) SerializableManager.readSerializedObject(mContext, "Weathers");
                 } catch (Exception ex) {

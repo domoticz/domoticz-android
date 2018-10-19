@@ -22,14 +22,13 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.design.chip.Chip;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -109,11 +108,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             .inflate(R.layout.weather_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.card_global_wrapper)) != null)
+                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
         }
 
         return new DataObjectHolder(view);
@@ -136,12 +136,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 windSign = mConfigInfo.getWindSign();
             }
 
-            if (mSharedPrefs.darkThemeEnabled()) {
-                holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            }
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked(position);
+                }
+            });
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
@@ -181,8 +181,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 if (!this.mSharedPrefs.darkThemeEnabled()) {
                     holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    holder.pieView.setPercentageTextSize(17);
                 }
+                holder.pieView.setPercentageTextSize(16);
+                holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
                 double temp = mWeatherInfo.getTemp();
                 if (!tempSign.equals("C"))
@@ -298,31 +299,30 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         TextView hardware;
         ImageView iconRow;
         Boolean isProtected;
-        Button dayButton;
-        Button monthButton;
-        Button yearButton;
-        Button weekButton;
+        Chip dayButton;
+        Chip monthButton;
+        Chip yearButton;
+        Chip weekButton;
         LikeButton likeButton;
         LinearLayout extraPanel;
         PieView pieView;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-
-            pieView = (PieView) itemView.findViewById(R.id.pieView);
+            pieView = itemView.findViewById(R.id.pieView);
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             pieView.setVisibility(View.GONE);
-
-            dayButton = (Button) itemView.findViewById(R.id.day_button);
-            monthButton = (Button) itemView.findViewById(R.id.month_button);
-            yearButton = (Button) itemView.findViewById(R.id.year_button);
-            weekButton = (Button) itemView.findViewById(R.id.week_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
-            name = (TextView) itemView.findViewById(R.id.weather_name);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            data = (TextView) itemView.findViewById(R.id.weather_data);
-            hardware = (TextView) itemView.findViewById(R.id.weather_hardware);
-
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            dayButton = itemView.findViewById(R.id.day_button);
+            monthButton = itemView.findViewById(R.id.month_button);
+            yearButton = itemView.findViewById(R.id.year_button);
+            weekButton = itemView.findViewById(R.id.week_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
+            name = itemView.findViewById(R.id.weather_name);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            data = itemView.findViewById(R.id.weather_data);
+            hardware = itemView.findViewById(R.id.weather_hardware);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
         }
@@ -331,18 +331,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-
             String filterString = constraint.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
-
             final ArrayList<WeatherInfo> list = data;
 
             int count = list.size();
             final ArrayList<WeatherInfo> weatherInfos = new ArrayList<>(count);
 
             WeatherInfo filterableObject;
-
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {

@@ -287,6 +287,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCKINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SECURITY);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SELECTOR);
@@ -312,6 +313,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.X10SIREN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCKINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SECURITY);
@@ -659,9 +661,33 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public void setWWColorAction(int idx,
+                                 int cw,
+                                 int ww,
+                                  int brightness,
+                                  String password,
+                                  setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+
+        String url = mDomoticzUrls.constructSetUrl(DomoticzValues.Json.Url.Set.WWCOLOR, idx, DomoticzValues.Device.Dimmer.Action.WWCOLOR, 0);
+        url = url.replace("%ww%", String.valueOf(ww))
+            .replace("%cw%", String.valueOf(cw))
+            .replace("%bright%", String.valueOf(brightness));
+
+        if (!UsefulBits.isEmpty(password)) {
+            url += "&passcode=" + password;
+        }
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonGetRequest(parser,
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
     }
 
     @SuppressWarnings("SpellCheckingInspection")

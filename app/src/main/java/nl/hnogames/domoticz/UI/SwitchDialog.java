@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,19 +54,7 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
         this.mContext = c;
         this.mDomoticz = domoticz;
 
-        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
             .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
             .negativeText(android.R.string.cancel);

@@ -20,17 +20,21 @@
   ~  under the License.
   -->
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    xmlns:tools="http://schemas.android.com/tools"
-                                    android:id="@+id/row_global_wrapper"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:clickable="true"
-                                    android:foreground="?android:attr/selectableItemBackground"
-                                    android:orientation="vertical"
-                                    card_view:cardCornerRadius="0dp"
-                                    card_view:cardUseCompatPadding="true">
+<android.support.design.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_global_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:padding="8dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -43,17 +47,17 @@
             android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/name"
             style="@style/row_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            tools:text="12 devices" />
+            android:paddingBottom="8dp"
+            tools:text="12 devices"/>
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+</android.support.design.card.MaterialCardView>

@@ -116,6 +116,7 @@ public class DevicesInfo implements Comparable, Serializable {
         if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
         if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("Barometer")) Barometer = row.getInt("Barometer");
+        if (row.has("Description")) Description = row.getString("Description");
 
         try {
             if (row.has("MaxDimLevel"))
@@ -332,10 +333,10 @@ public class DevicesInfo implements Comparable, Serializable {
     public boolean getStatusBoolean() {
         try {
             boolean statusBoolean = true;
-
             if (status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.OFF) || status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.CLOSED))
                 statusBoolean = false;
-
+            else if (status.equalsIgnoreCase(DomoticzValues.Device.Door.State.UNLOCKED) || status.equalsIgnoreCase(DomoticzValues.Device.Door.State.OPEN))
+                statusBoolean = false;
             this.statusBoolean = statusBoolean;
             return statusBoolean;
         } catch (Exception ex) {

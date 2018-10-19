@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -61,19 +60,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(mContext);
 
-        if (mSharedPrefUtil.darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
             .negativeText(android.R.string.cancel)
             .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
@@ -107,8 +94,8 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         Button btnMin = (Button) view.findViewById(R.id.min);
 
         if (mSharedPrefUtil.darkThemeEnabled()) {
-            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
-            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_status_dark));
+            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
         }
 
         final String text = String.valueOf(currentTemperature);

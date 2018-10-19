@@ -33,6 +33,8 @@
   <string name="button_state_off">Uit</string>
   <string name="button_state_closed">Gesloten</string>
   <string name="button_state_open">Open</string>
+  <string name="button_state_lock">Vergrendel</string>
+  <string name="button_state_unlock">Ontgrendel</string>
   <string name="button_status_log">Log</string>
   <string name="button_status_day">Dag</string>
   <string name="button_status_week">Week</string>

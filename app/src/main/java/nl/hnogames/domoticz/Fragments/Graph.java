@@ -101,9 +101,16 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         this.context = context;
         mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mSharedPrefs = new SharedPrefUtil(context);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -190,12 +197,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         xAxis.setLabelCount(15);
         getGraphs();
         return root;
-    }
-
-    @Override
-    @DebugLog
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     public void getGraphs() {

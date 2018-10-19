@@ -96,18 +96,21 @@ public class QRCodeAdapter extends BaseAdapter {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-
+            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
+                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_wrapper)) != null)
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                (convertView.findViewById(R.id.remove_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableNFC);
-        holder.nfc_name = (TextView) convertView.findViewById(R.id.nfc_name);
-        holder.nfc_tag_id = (TextView) convertView.findViewById(R.id.nfc_tag_id);
-        holder.nfc_switch_idx = (TextView) convertView.findViewById(R.id.nfc_switchidx);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable = convertView.findViewById(R.id.enableNFC);
+        holder.nfc_name = convertView.findViewById(R.id.nfc_name);
+        holder.nfc_tag_id = convertView.findViewById(R.id.nfc_tag_id);
+        holder.nfc_switch_idx = convertView.findViewById(R.id.nfc_switchidx);
+        holder.remove = convertView.findViewById(R.id.remove_button);
 
         holder.nfc_name.setText(mQRCodeInfo.getName());
         holder.nfc_tag_id.setText(mQRCodeInfo.getId());

@@ -136,8 +136,10 @@ public class DomoticzCardFragment extends Fragment {
      * Checks for a active connection
      */
     public void checkConnection() {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        if (listener == null) {
+            List<Fragment> fragments = getFragmentManager().getFragments();
+            onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        }
 
         mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
