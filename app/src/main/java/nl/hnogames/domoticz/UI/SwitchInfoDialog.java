@@ -73,8 +73,8 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
         mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         mdb.customView(layout, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -118,7 +118,7 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
         LastUpdate_value.setText(lastUpdate);
 
         colorOptions = view.findViewById(R.id.color_light_options);
-        if(isColorLight)
+        if (isColorLight)
             colorOptions.setVisibility(View.VISIBLE);
 
         int signalLevelVal;
@@ -139,7 +139,7 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
         });
         signalLevelIndicator.setMax(Domoticz.signalLevelMax * 100);
         ProgressBarAnimation anim =
-                new ProgressBarAnimation(signalLevelIndicator, 5, signalLevelVal * 100);
+            new ProgressBarAnimation(signalLevelIndicator, 5, signalLevelVal * 100);
         anim.setDuration(1000);
         signalLevelIndicator.startAnimation(anim);
 
@@ -196,15 +196,16 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
                         @DebugLog
                         public void onDismiss(String password) {
                             setAction(DomoticzValues.Json.Url.Set.NIGHTLIGHT, DomoticzValues.Device.Switch.Action.ON, password);
-                            Toast.makeText(mContext, mContext.getString(R.string.switch_night)+ ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
+                            Toast.makeText(mContext, mContext.getString(R.string.switch_night) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
                         }
 
                         @Override
-                        public void onCancel() {}
+                        public void onCancel() {
+                        }
                     });
                 } else {
                     setAction(DomoticzValues.Json.Url.Set.NIGHTLIGHT, DomoticzValues.Device.Switch.Action.ON, null);
-                    Toast.makeText(mContext, mContext.getString(R.string.switch_night)+ ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
+                    Toast.makeText(mContext, mContext.getString(R.string.switch_night) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -220,30 +221,32 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
                         @DebugLog
                         public void onDismiss(String password) {
                             setAction(DomoticzValues.Json.Url.Set.FULLLIGHT, DomoticzValues.Device.Switch.Action.ON, password);
-                            Toast.makeText(mContext, mContext.getString(R.string.switch_full)+ ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
+                            Toast.makeText(mContext, mContext.getString(R.string.switch_full) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
                         }
 
                         @Override
-                        public void onCancel() {}
+                        public void onCancel() {
+                        }
                     });
                 } else {
                     setAction(DomoticzValues.Json.Url.Set.FULLLIGHT, DomoticzValues.Device.Switch.Action.ON, null);
-                    Toast.makeText(mContext, mContext.getString(R.string.switch_full)+ ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
+                    Toast.makeText(mContext, mContext.getString(R.string.switch_full) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
                 }
             }
         });
     }
 
-    public void setAction(int jsonUrl, int actionUrl, final String password)
-    {
+    public void setAction(int jsonUrl, int actionUrl, final String password) {
         isChanged = true;
         mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, actionUrl, 0, password, new setCommandReceiver() {
             @Override
             @DebugLog
-            public void onReceiveResult(String result) {}
+            public void onReceiveResult(String result) {
+            }
 
             @Override
-            public void onError(Exception error) {}
+            public void onError(Exception error) {
+            }
         });
     }
 

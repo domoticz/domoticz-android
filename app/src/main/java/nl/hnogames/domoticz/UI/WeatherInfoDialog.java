@@ -51,8 +51,8 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -74,7 +74,7 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         TextView weather_chill_title = view.findViewById(R.id.weather_chill);
         TextView weather_direction_title = view.findViewById(R.id.weather_direction);
         TextView weather_speed_title = view.findViewById(R.id.weather_speed);
-        TextView weather_forecast =  view.findViewById(R.id.weather_forcast_value);
+        TextView weather_forecast = view.findViewById(R.id.weather_forcast_value);
         TextView weather_humidity = view.findViewById(R.id.weather_humidity_value);
         TextView weather_barometer = view.findViewById(R.id.weather_barometer_value);
         TextView weather_dewpoint = view.findViewById(R.id.weather_drewpoint_value);

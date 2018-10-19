@@ -46,8 +46,8 @@ public class WWColorPickerDialog implements DialogInterface.OnDismissListener {
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_wwcolor, true)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -61,7 +61,8 @@ public class WWColorPickerDialog implements DialogInterface.OnDismissListener {
             kelvinBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (dismissListener != null) dismissListener.onChangeColor(kelvinBar.getProgress());
+                    if (dismissListener != null)
+                        dismissListener.onChangeColor(kelvinBar.getProgress());
                 }
 
                 @Override
@@ -89,6 +90,7 @@ public class WWColorPickerDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(int color);
+
         void onChangeColor(int color);
     }
 }

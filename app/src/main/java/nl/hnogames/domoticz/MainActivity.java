@@ -158,11 +158,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(Build.VERSION.SDK_INT>=24){
-            try{
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
                 Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                 m.invoke(null);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             setContentView(R.layout.activity_newmain_free);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4").build();
-            ((AdView)findViewById(R.id.adView)).loadAd(adRequest);
+            ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else {
             setContentView(R.layout.activity_newmain_paid);
             (findViewById(R.id.adView)).setVisibility(View.GONE);
@@ -1422,8 +1422,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @DebugLog
-    public void clearSearch()
-    {
+    public void clearSearch() {
         if (searchViewAction != null) {
             searchViewAction.setQuery("", false);
             searchViewAction.clearFocus();
@@ -1506,16 +1505,19 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
     @Override
     public void onFingerprintDialogAuthenticated() {
-        FingerprintDialog dialog = FingerprintDialog.getVisible(this);
-        if (dialog != null)
-            dialog.dismiss();
-        Digitus.deinit();
-        validateOnce = false;
-        if (!mSharedPrefs.isGeofencingStarted()) {
-            mSharedPrefs.setGeofencingStarted(true);
-            new GeoUtils(this, this).AddGeofences();
+        try {
+            FingerprintDialog dialog = FingerprintDialog.getVisible(this);
+            if (dialog != null)
+                dialog.dismiss();
+            Digitus.deinit();
+            validateOnce = false;
+            if (!mSharedPrefs.isGeofencingStarted()) {
+                mSharedPrefs.setGeofencingStarted(true);
+                new GeoUtils(this, this).AddGeofences();
+            }
+            buildScreen();
+        } catch (Exception ex) {
         }
-        buildScreen();
     }
 
     @Override
