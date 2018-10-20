@@ -134,6 +134,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                 SetTitle(GetTitle(position));
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).clearSearch();
+                RefreshFragment();
             }
 
             @Override
@@ -168,6 +169,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                 }
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).clearSearch();
+                RefreshFragment();
                 return false;
             }
         });
