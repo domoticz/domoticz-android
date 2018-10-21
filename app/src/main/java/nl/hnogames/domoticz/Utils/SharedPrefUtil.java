@@ -619,7 +619,7 @@ public class SharedPrefUtil {
 
     public int getStartupScreenIndex() {
         String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
-        if (startupScreenSelectedValue == null) return 0;
+        if (startupScreenSelectedValue == null) return 1;
         else {
             String[] startupScreenValues =
                 mContext.getResources().getStringArray(R.array.drawer_actions);
@@ -633,8 +633,8 @@ public class SharedPrefUtil {
             }
 
             //fix, could not find startup screen
-            setStartupScreenIndex(0);
-            return 0;
+            setStartupScreenIndex(1);
+            return 1;
         }
     }
 
@@ -647,7 +647,7 @@ public class SharedPrefUtil {
             startupScreenValue = startupScreenValues[position];
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-            startupScreenValue = startupScreenValues[0];
+            startupScreenValue = startupScreenValues[1];
         }
 
         editor.putString(PREF_STARTUP_SCREEN, startupScreenValue).apply();

@@ -613,6 +613,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
                 saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
             } catch (Exception ignored) {
+                //get default screen (dashboard)
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[1]);
+                tx.replace(R.id.main, latestFragment);
+                tx.commitAllowingStateLoss();
+                addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[0]);
+                saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[0]);
             }
         }
     }
