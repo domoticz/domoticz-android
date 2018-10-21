@@ -58,7 +58,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-    ScenesClickListener {
+        ScenesClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
@@ -127,13 +127,16 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     private void processScenes() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        try {
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setRefreshing(true);
 
-        state = gridView.getLayoutManager().onSaveInstanceState();
-        WidgetUtils.RefreshWidgets(mContext);
+            state = gridView.getLayoutManager().onSaveInstanceState();
+            WidgetUtils.RefreshWidgets(mContext);
 
-        new GetCachedDataTask().execute();
+            new GetCachedDataTask().execute();
+        } catch (Exception ex) {
+        }
     }
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
@@ -201,9 +204,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void showInfoDialog(final SceneInfo mSceneInfo) {
         SceneInfoDialog infoDialog = new SceneInfoDialog(
-            getActivity(),
-            mSceneInfo,
-            R.layout.dialog_scene_info);
+                getActivity(),
+                mSceneInfo,
+                R.layout.dialog_scene_info);
         infoDialog.setIdx(String.valueOf(mSceneInfo.getIdx()));
         infoDialog.setLastUpdate(mSceneInfo.getLastUpdate());
         infoDialog.setIsFavorite(mSceneInfo.getFavoriteBoolean());
@@ -264,7 +267,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                getActivity(), mDomoticz);
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -346,9 +349,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                getActivity(),
-                switchLogs,
-                R.layout.dialog_switch_logs);
+                    getActivity(),
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }
@@ -410,6 +413,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         ArrayList<SceneInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if( mContext == null) return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {

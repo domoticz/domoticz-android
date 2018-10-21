@@ -39,8 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 
 public class PhoneConnectionUtil {
-
-    private final WifiManager wifiManager;
+    private WifiManager wifiManager;
     private Context mContext;
     private NetworkInfo networkWifiInfo;
     private NetworkInfo networkCellInfo;
@@ -48,22 +47,25 @@ public class PhoneConnectionUtil {
     private BroadcastReceiver receiver;
     private AtomicBoolean unregistered;
 
-    public PhoneConnectionUtil(Context mContext,
-                               final WifiSSIDListener listener) {
+    public PhoneConnectionUtil(Context mContext, final WifiSSIDListener listener) {
+        if(mContext == null)
+            return;
         this.mContext = mContext;
-        wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        networkWifiInfo = connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) : null;
+        networkCellInfo = connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) : null;
         this.listener = listener;
     }
 
     public PhoneConnectionUtil(Context mContext) {
+        if(mContext == null)
+            return;
         this.mContext = mContext;
-        wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        networkWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        networkCellInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        networkWifiInfo = connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) : null;
+        networkCellInfo = connManager != null ? connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) : null;
     }
 
     public void stopReceiver() {
@@ -83,7 +85,6 @@ public class PhoneConnectionUtil {
 
     public void startSsidScan() {
         wifiManager.startScan();
-
         unregistered = new AtomicBoolean(false);
         receiver = new BroadcastReceiver() {
             @Override
@@ -140,7 +141,7 @@ public class PhoneConnectionUtil {
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

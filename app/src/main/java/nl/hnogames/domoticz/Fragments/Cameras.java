@@ -222,7 +222,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             }
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }
@@ -267,6 +267,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         ArrayList<CameraInfo> cacheCameras = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if( context == null) return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(context);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {

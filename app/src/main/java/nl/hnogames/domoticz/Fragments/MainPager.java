@@ -63,8 +63,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     @Override
     public void RefreshFragment() {
         Fragment f = (Fragment) vpPager
-            .getAdapter()
-            .instantiateItem(vpPager, vpPager.getCurrentItem());
+                .getAdapter()
+                .instantiateItem(vpPager, vpPager.getCurrentItem());
         if (f instanceof DomoticzRecyclerFragment) {
             ((DomoticzRecyclerFragment) f).refreshFragment();
         } else if (f instanceof DomoticzCardFragment)
@@ -78,8 +78,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     @Override
     public void Filter(String newText) {
         Fragment n = (Fragment) vpPager
-            .getAdapter()
-            .instantiateItem(vpPager, vpPager.getCurrentItem());
+                .getAdapter()
+                .instantiateItem(vpPager, vpPager.getCurrentItem());
         if (n instanceof DomoticzDashboardFragment) {
             ((DomoticzDashboardFragment) n).Filter(newText);
         } else if (n instanceof DomoticzRecyclerFragment) {
@@ -92,8 +92,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     @Override
     public void sortFragment(String selectedSort) {
         Fragment f = (Fragment) vpPager
-            .getAdapter()
-            .instantiateItem(vpPager, vpPager.getCurrentItem());
+                .getAdapter()
+                .instantiateItem(vpPager, vpPager.getCurrentItem());
         if (f instanceof DomoticzRecyclerFragment) {
             ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
         } else if (f instanceof DomoticzDashboardFragment) {

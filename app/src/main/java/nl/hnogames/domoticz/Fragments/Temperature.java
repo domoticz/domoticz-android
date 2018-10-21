@@ -128,10 +128,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     private void processTemperature() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        try {
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setRefreshing(true);
 
-        new GetCachedDataTask().execute();
+            new GetCachedDataTask().execute();
+        } catch (Exception ex) {
+        }
     }
 
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
@@ -161,9 +164,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
         TemperatureInfoDialog infoDialog = new TemperatureInfoDialog(
-            mContext,
-            mTemperatureInfo,
-            R.layout.dialog_utilities_info);
+                mContext,
+                mTemperatureInfo,
+                R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mTemperatureInfo.getIdx()));
         infoDialog.setLastUpdate(mTemperatureInfo.getLastUpdate());
         infoDialog.setIsFavorite(mTemperatureInfo.getFavoriteBoolean());
@@ -271,13 +274,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
-                mContext,
-                t.getSetPoint(),
-                !"auto".equalsIgnoreCase(t.getStatus()));
+                    mContext,
+                    t.getSetPoint(),
+                    !"auto".equalsIgnoreCase(t.getStatus()));
         } else {
             tempDialog = new TemperatureDialog(
-                mContext,
-                t.getSetPoint());
+                    mContext,
+                    t.getSetPoint());
         }
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
@@ -288,7 +291,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                        "&mode=" + PERMANENT_OVERRIDE;
+                            "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
@@ -296,7 +299,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     addDebugText("Set idx " + idx + " to Auto");
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                        "&mode=" + AUTO;
+                            "&mode=" + AUTO;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
