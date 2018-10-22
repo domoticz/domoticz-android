@@ -62,17 +62,19 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
 
     @Override
     public void RefreshFragment() {
-        Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
-        if (f instanceof DomoticzRecyclerFragment) {
-            ((DomoticzRecyclerFragment) f).refreshFragment();
-        } else if (f instanceof DomoticzCardFragment)
-            ((DomoticzCardFragment) f).refreshFragment();
-        else if (f instanceof DomoticzDashboardFragment)
-            ((DomoticzDashboardFragment) f).refreshFragment();
-        else if (f instanceof RefreshFragment)
-            ((RefreshFragment) f).RefreshFragment();
+        try {
+            Fragment f = (Fragment) vpPager
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
+            if (f instanceof DomoticzRecyclerFragment) {
+                ((DomoticzRecyclerFragment) f).refreshFragment();
+            } else if (f instanceof DomoticzCardFragment)
+                ((DomoticzCardFragment) f).refreshFragment();
+            else if (f instanceof DomoticzDashboardFragment)
+                ((DomoticzDashboardFragment) f).refreshFragment();
+            else if (f instanceof RefreshFragment)
+                ((RefreshFragment) f).RefreshFragment();
+        }catch(Exception ex){}
     }
 
     @Override
