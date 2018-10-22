@@ -27,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
             if (mDataset != null && mDataset.size() > 0) {
                 String name = mDataset.get(position).getName();
                 holder.name.setText(name);
-
+                holder.iconRow.setAlpha(0.5f);
                 int numberOfDevices = mDataset.get(position).getDevices();
                 String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
                 holder.devices.setText(String.valueOf(text));
@@ -101,11 +102,13 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
         implements View.OnClickListener {
         TextView name;
         TextView devices;
+        ImageView iconRow;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             devices = itemView.findViewById(R.id.devices);
+            iconRow = itemView.findViewById(R.id.rowIcon);
             itemView.setOnClickListener(this);
         }
 
