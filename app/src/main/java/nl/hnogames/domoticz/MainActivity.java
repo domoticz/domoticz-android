@@ -608,6 +608,24 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 int screenIndex = mSharedPrefs.getStartupScreenIndex();
                 FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                 latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
+                if(screenIndex == 1)
+                {
+                    if (latestFragment instanceof MainPager) {
+                        String screen = mSharedPrefs.getStartupScreen();
+                        int i = 0;
+                        if (screen.equalsIgnoreCase("Switches")) {
+                            i = 1;
+                        } else if (screen.equalsIgnoreCase("Scenes") ){
+                            i = 2;
+                        } else if (screen.equalsIgnoreCase("Temperature")) {
+                            i = 3;
+                        } else if (screen.equalsIgnoreCase("Weather")) {
+                            i = 4;
+                        }
+                        ((MainPager) latestFragment).SetStartupScreen(i);
+                    }
+                }
+
                 tx.replace(R.id.main, latestFragment);
                 tx.commitAllowingStateLoss();
                 addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);

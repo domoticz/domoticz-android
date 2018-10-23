@@ -34,9 +34,9 @@
 
     <PreferenceCategory android:title="@string/category_generic">
         <ListPreference
-            android:entries="@array/drawer_actions"
-            android:entryValues="@array/drawer_actions"
-            android:key="startup_screen"
+            android:entries="@array/startup_actions"
+            android:entryValues="@array/startup_actions"
+            android:key="startup_fragment"
             android:title="@string/startup_screen"/>
         <MultiSelectListPreference
             android:defaultValue="@array/drawer_actions"

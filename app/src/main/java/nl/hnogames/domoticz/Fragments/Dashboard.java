@@ -1147,7 +1147,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         ArrayList<DevicesInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if( mContext == null) return false;
+            if(mContext==null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -1160,6 +1161,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheSwitches != null)
                 processDevices(cacheSwitches);
 

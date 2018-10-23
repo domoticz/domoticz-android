@@ -23,6 +23,8 @@ android {
 
         def versionMajor = 0
         def versionMinor = 2
+
+
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
         def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
         def version_Code = versionProps['VERSION_CODE'].toInteger() + value

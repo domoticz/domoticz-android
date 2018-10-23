@@ -1025,6 +1025,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         ArrayList<DevicesInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if(mContext==null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -1038,6 +1040,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheSwitches != null)
                 createListView(cacheSwitches);
 

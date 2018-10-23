@@ -471,6 +471,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         ArrayList<UtilitiesInfo> cacheUtilities = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if(mContext==null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -484,6 +486,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheUtilities != null)
                 createListView();
 

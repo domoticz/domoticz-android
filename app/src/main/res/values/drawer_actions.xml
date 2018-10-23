@@ -32,6 +32,36 @@
         <item>@string/title_vars</item>
     </string-array>
 
+    <string-array name="startup_actions" translatable="false">
+        <item>@string/title_dashboard</item>
+        <item>@string/title_switches</item>
+        <item>@string/title_scenes</item>
+        <item>@string/title_temperature</item>
+        <item>@string/title_weather</item>
+        <item>@string/title_plans</item>
+        <item>@string/title_utilities</item>
+        <item>@string/title_cameras</item>
+    </string-array>
+
+    <string-array name="dashboard_actions" translatable="false">
+        <item>@string/title_dashboard</item>
+        <item>@string/title_switches</item>
+        <item>@string/title_scenes</item>
+        <item>@string/title_temperature</item>
+        <item>@string/title_weather</item>
+    </string-array>
+
+    <string-array name="startup_fragments" translatable="false">
+        <item>nl.hnogames.domoticz.Fragments.Dashboard</item>
+        <item>nl.hnogames.domoticz.Fragments.Scenes</item>
+        <item>nl.hnogames.domoticz.Fragments.Switches</item>
+        <item>nl.hnogames.domoticz.Fragments.Utilities</item>
+        <item>nl.hnogames.domoticz.Fragments.Temperature</item>
+        <item>nl.hnogames.domoticz.Fragments.Weather</item>
+        <item>nl.hnogames.domoticz.Fragments.Cameras</item>
+        <item>nl.hnogames.domoticz.Fragments.Plans</item>
+    </string-array>
+
     <!--suppress CheckTagEmptyBody -->
     <string-array name="empty_array" translatable="false"></string-array>
 

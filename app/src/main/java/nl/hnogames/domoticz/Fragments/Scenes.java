@@ -426,6 +426,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheSwitches != null)
                 createListView(cacheSwitches);
 

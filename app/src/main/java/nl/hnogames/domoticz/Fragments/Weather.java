@@ -316,7 +316,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         ArrayList<WeatherInfo> cacheWeathers = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if( mContext == null) return false;
+            if(mContext==null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -329,6 +330,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheWeathers != null)
                 createListView(cacheWeathers);
 

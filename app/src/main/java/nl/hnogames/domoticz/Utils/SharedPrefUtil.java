@@ -80,7 +80,7 @@ public class SharedPrefUtil {
     private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
     private static final String PREF_UPDATE_SERVER_SHOWN = "updateservershown";
     private static final String PREF_EXTRA_DATA = "extradata";
-    private static final String PREF_STARTUP_SCREEN = "startup_screen";
+    private static final String PREF_STARTUP_SCREEN = "startup_fragment";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
     private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
@@ -122,6 +122,7 @@ public class SharedPrefUtil {
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
+    private static final int DEFAULT_STARTUP_SCREEN = 1;
 
     private Context mContext;
     private SharedPreferences prefs;
@@ -595,7 +596,7 @@ public class SharedPrefUtil {
 
     public void removeWizard() {
         // 1 if start up screen is 0 (wizard) change to dashboard
-        if (getStartupScreenIndex() == 0) setStartupScreenIndex(1);
+        if (getStartupScreenIndex() == 0) setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
 
         //2 remove wizard from navigation
         String removeWizard = "";
@@ -619,12 +620,11 @@ public class SharedPrefUtil {
 
     public int getStartupScreenIndex() {
         String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
-        if (startupScreenSelectedValue == null) return 1;
+        if (startupScreenSelectedValue == null)
+            return DEFAULT_STARTUP_SCREEN;
         else {
-            String[] startupScreenValues =
-                mContext.getResources().getStringArray(R.array.drawer_actions);
+            String[] startupScreenValues = mContext.getResources().getStringArray(R.array.drawer_actions);
             int i = 0;
-
             for (String screen : startupScreenValues) {
                 if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
                     return i;
@@ -632,22 +632,34 @@ public class SharedPrefUtil {
                 i++;
             }
 
-            //fix, could not find startup screen
-            setStartupScreenIndex(1);
-            return 1;
+            // Check for dashboard actions
+            startupScreenValues = mContext.getResources().getStringArray(R.array.dashboard_actions);
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return 1;
+                }
+            }
+
+            //else, could not find startup screen
+            setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
+            return DEFAULT_STARTUP_SCREEN;
         }
+    }
+
+    public String getStartupScreen() {
+        return prefs.getString(PREF_STARTUP_SCREEN, null);
     }
 
     public void setStartupScreenIndex(int position) {
         String[] startupScreenValues =
-            mContext.getResources().getStringArray(R.array.drawer_actions);
+            mContext.getResources().getStringArray(R.array.startup_actions);
         String startupScreenValue;
 
         try {
             startupScreenValue = startupScreenValues[position];
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-            startupScreenValue = startupScreenValues[1];
+            startupScreenValue = startupScreenValues[DEFAULT_STARTUP_SCREEN];
         }
 
         editor.putString(PREF_STARTUP_SCREEN, startupScreenValue).apply();

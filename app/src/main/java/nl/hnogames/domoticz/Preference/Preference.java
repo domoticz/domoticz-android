@@ -858,7 +858,7 @@ public class Preference extends PreferenceFragment {
 
     private void setStartUpScreenDefaultValue() {
         int defaultValue = mSharedPrefs.getStartupScreenIndex();
-        ListPreference startup_screen = (ListPreference) findPreference("startup_screen");
+        ListPreference startup_screen = (ListPreference) findPreference("startup_fragment");
         startup_screen.setValueIndex(defaultValue);
     }
 

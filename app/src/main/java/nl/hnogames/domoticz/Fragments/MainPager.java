@@ -54,6 +54,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     private ViewPager vpPager;
     private SharedPrefUtil mSharedPrefs;
     private RelativeLayout root;
+    private int startupScreen = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,34 +75,41 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                 ((DomoticzDashboardFragment) f).refreshFragment();
             else if (f instanceof RefreshFragment)
                 ((RefreshFragment) f).RefreshFragment();
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 
     @Override
     public void Filter(String newText) {
-        Fragment n = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
-        if (n instanceof DomoticzDashboardFragment) {
-            ((DomoticzDashboardFragment) n).Filter(newText);
-        } else if (n instanceof DomoticzRecyclerFragment) {
-            ((DomoticzRecyclerFragment) n).Filter(newText);
-        } else if (n instanceof RefreshFragment) {
-            ((RefreshFragment) n).Filter(newText);
+        try {
+            Fragment n = (Fragment) vpPager
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
+            if (n instanceof DomoticzDashboardFragment) {
+                ((DomoticzDashboardFragment) n).Filter(newText);
+            } else if (n instanceof DomoticzRecyclerFragment) {
+                ((DomoticzRecyclerFragment) n).Filter(newText);
+            } else if (n instanceof RefreshFragment) {
+                ((RefreshFragment) n).Filter(newText);
+            }
+        } catch (Exception ex) {
         }
     }
 
     @Override
     public void sortFragment(String selectedSort) {
-        Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
-        if (f instanceof DomoticzRecyclerFragment) {
-            ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
-        } else if (f instanceof DomoticzDashboardFragment) {
-            ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
-        } else if (f instanceof RefreshFragment) {
-            ((RefreshFragment) f).sortFragment(selectedSort);
+        try {
+            Fragment f = (Fragment) vpPager
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
+            if (f instanceof DomoticzRecyclerFragment) {
+                ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
+            } else if (f instanceof DomoticzDashboardFragment) {
+                ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
+            } else if (f instanceof RefreshFragment) {
+                ((RefreshFragment) f).sortFragment(selectedSort);
+            }
+        } catch (Exception ex) {
         }
     }
 
@@ -144,6 +152,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
             }
         });
 
+        vpPager.setCurrentItem(startupScreen);
+        SetTitle(GetTitle(startupScreen));
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -225,6 +235,10 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     @Override
     public void onConnectionFailed() {
         Log.i(TAG, "Connection Failed MainPager");
+    }
+
+    public void SetStartupScreen(int screen) {
+        startupScreen = screen;
     }
 
     public static class MainPagerAdapter extends FragmentStatePagerAdapter {

@@ -206,6 +206,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         ArrayList<UserVariableInfo> cacheUserVariables = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if(mContext==null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -219,6 +221,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheUserVariables != null)
                 createListView();
 

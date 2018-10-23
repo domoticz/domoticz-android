@@ -366,6 +366,8 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         ArrayList<TemperatureInfo> cacheTemperatures = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if(mContext==null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -378,6 +380,8 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         }
 
         protected void onPostExecute(Boolean result) {
+            if(mContext==null)
+                return;
             if (cacheTemperatures != null)
                 createListView(cacheTemperatures);
 
