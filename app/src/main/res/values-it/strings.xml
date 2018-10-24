@@ -45,6 +45,8 @@
   <string name="button_color">Colore</string>
   <string name="button_arm">Arma</string>
   <string name="button_disarm">Disarma</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Ultimo contatto</string>
   <string name="signal_level">Livello segnale</string>
   <string name="battery_level">Livello batteria</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatura</string>
   <string name="status">Stato</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Set point</string>
   <string name="set_point_min">Valore del set point min</string>
   <string name="set_point_min_description">Temperatura min impostabile dal termostato</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s cancellato</string>
   <string name="switch_on">Interruttore on</string>
   <string name="switch_off">Interruttore off</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Tapparella su</string>
   <string name="blind_down">Tapparella giu</string>
   <string name="blind_stop">Ferma la tapparella</string>

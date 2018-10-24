@@ -45,6 +45,8 @@
   <string name="button_color">Farbe</string>
   <string name="button_arm">Scharfstellen</string>
   <string name="button_disarm">Entschärfen</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Zuletzt gesehen</string>
   <string name="signal_level">Signalpegel</string>
   <string name="battery_level">Batteriezustand</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatur</string>
   <string name="status">Status</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Sollwert</string>
   <string name="set_point_min">Set point min value</string>
   <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s gelöscht</string>
   <string name="switch_on">Schalte ein</string>
   <string name="switch_off">Schalte aus</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Ziehe Vorhang hoch</string>
   <string name="blind_down">Lasse Vorhang herunter</string>
   <string name="blind_stop">Halte Vorhang an</string>

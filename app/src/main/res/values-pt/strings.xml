@@ -45,6 +45,8 @@
   <string name="button_color">Cor</string>
   <string name="button_arm">Armar</string>
   <string name="button_disarm">Desarmar</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Visto pela última vez</string>
   <string name="signal_level">Nível de sinal</string>
   <string name="battery_level">Nível de bateria</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatura</string>
   <string name="status">Estado</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Ponto de ajuste</string>
   <string name="set_point_min">Temperatura minima de ajuste</string>
   <string name="set_point_min_description">Temperatura minima que pode ser dfinida em seu termostato</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s excluído</string>
   <string name="switch_on">Ligando o interruptor</string>
   <string name="switch_off">Desligando o interruptor</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Abrindo persiana</string>
   <string name="blind_down">Fechando persiana</string>
   <string name="blind_stop">Parar persiana</string>

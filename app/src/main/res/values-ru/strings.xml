@@ -45,6 +45,8 @@
   <string name="button_color">Цвет</string>
   <string name="button_arm">Включить</string>
   <string name="button_disarm">Выключить</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Последнее посещение</string>
   <string name="signal_level">Уровень сигнала</string>
   <string name="battery_level">Уровень батареи</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Аппаратное обеспечение</string>
   <string name="temperature">Температура</string>
   <string name="status">Статус</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Уставка</string>
   <string name="set_point_min">Установка минимального значения</string>
   <string name="set_point_min_description">Минимальная температура, которую можно задать для термостата</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s удалено</string>
   <string name="switch_on">Включение переключателя</string>
   <string name="switch_off">Выключение переключателя</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Поднять занавески</string>
   <string name="blind_down">Опустить занавески</string>
   <string name="blind_stop">Остановить занавески</string>

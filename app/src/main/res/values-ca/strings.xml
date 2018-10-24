@@ -45,6 +45,8 @@
   <string name="button_color">Color</string>
   <string name="button_arm">Activa</string>
   <string name="button_disarm">Desactiva</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Última activitat</string>
   <string name="signal_level">Nivell de senyal</string>
   <string name="battery_level">Nivell de la bateria</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Maquinari</string>
   <string name="temperature">Temperatura</string>
   <string name="status">Estat</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Set point</string>
   <string name="set_point_min">Set point min value</string>
   <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s eliminat</string>
   <string name="switch_on">Encenent l\'interruptor</string>
   <string name="switch_off">Apagant l\'interruptor</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Pujant cortines</string>
   <string name="blind_down">Baixant cortines</string>
   <string name="blind_stop">Atura cortines</string>

@@ -45,6 +45,8 @@
   <string name="button_color">Колір</string>
   <string name="button_arm">Постановка на охорону</string>
   <string name="button_disarm">Зняття з охорони</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Останнє відвідування</string>
   <string name="signal_level">Рівень сигналу</string>
   <string name="battery_level">Рівень заряду акумулятора</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Устаткування</string>
   <string name="temperature">Температура</string>
   <string name="status">Статус</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Термостат</string>
   <string name="set_point_min">Мінімальне значення термостату</string>
   <string name="set_point_min_description">Мінімальна температура, яку можна встановити на термостаті</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s видалено</string>
   <string name="switch_on">Перемикач ввімкнено</string>
   <string name="switch_off">Перемикач вимкнено</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Жалюзі вгору</string>
   <string name="blind_down">Жалюзі вниз</string>
   <string name="blind_stop">Жалюзі вгору</string>

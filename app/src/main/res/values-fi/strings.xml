@@ -45,6 +45,8 @@
   <string name="button_color">Väri</string>
   <string name="button_arm">Kytke päälle</string>
   <string name="button_disarm">Kytke pois päältä</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Viimeksi nähty</string>
   <string name="signal_level">Signaalin taso</string>
   <string name="battery_level">Akun varaus</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Laitteisto</string>
   <string name="temperature">Lämpötila</string>
   <string name="status">Tila</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Asetusarvo</string>
   <string name="set_point_min">Pienin asetusarvo</string>
   <string name="set_point_min_description">Alin lämpötila joka termostaatille voidaan antaa</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s on poistettu</string>
   <string name="switch_on">Kytkin päälle</string>
   <string name="switch_off">Kytkin pois päältä</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Kaihdin ylös</string>
   <string name="blind_down">Kaihdin alas</string>
   <string name="blind_stop">Pysäytä kaihdin</string>

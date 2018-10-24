@@ -45,6 +45,8 @@
   <string name="button_color">צבע</string>
   <string name="button_arm">דריכה</string>
   <string name="button_disarm">ניטרול</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">נראה לאחרונה</string>
   <string name="signal_level">עוצמת אות</string>
   <string name="battery_level">רמת סוללה</string>
@@ -52,6 +54,7 @@
   <string name="hardware">חומרה</string>
   <string name="temperature">טמפרטורה</string>
   <string name="status">מצב</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">כיוון</string>
   <string name="set_point_min">ערך מינימלי</string>
   <string name="set_point_min_description">טמפרטורה מינימלית שבאפשרותך להגדיר עבור התרמוסטט שלך</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s נמחק</string>
   <string name="switch_on">הפעלת מתג</string>
   <string name="switch_off">כיבוי מתג</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">הרמת תריס</string>
   <string name="blind_down">הורדת תריס</string>
   <string name="blind_stop">עצירת תריס</string>

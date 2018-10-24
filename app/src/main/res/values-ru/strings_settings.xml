@@ -30,7 +30,7 @@
   <string name="category_auto">Android Auto</string>
   <string name="category_server">Сервер</string>
   <string name="category_geofencing">Geofencing</string>
-  <string name="category_info">Инофрмация</string>
+  <string name="category_info">Информация</string>
   <string name="category_advanced">Дополнительные опции</string>
   <string name="category_language">Язык</string>
   <string name="category_talk_back">Talk Back</string>
@@ -39,7 +39,7 @@
   <string name="category_export">Экспорт/импорт параметров</string>
   <string name="category_theme">Оформление</string>
   <string name="category_nfc">NFC соединения</string>
-  <string name="category_startup_security">Безопастность</string>
+  <string name="category_startup_security">Безопасность</string>
   <string name="category_account">Учётные записи</string>
   <string name="category_QRCode">QR-код</string>
   <string name="category_Speech">Голосовое управление</string>

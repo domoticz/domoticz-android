@@ -45,6 +45,8 @@
   <string name="button_color">Couleur</string>
   <string name="button_arm">Armer</string>
   <string name="button_disarm">Désarmer</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Dernière activité</string>
   <string name="signal_level">Niveau du signal</string>
   <string name="battery_level">Niveau de batterie</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Matériel</string>
   <string name="temperature">Température</string>
   <string name="status">Statut</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Définir un point</string>
   <string name="set_point_min">Configurez la valeur mini</string>
   <string name="set_point_min_description">Température minimum configurable sur votre thermostat</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s supprimé</string>
   <string name="switch_on">Allumer</string>
   <string name="switch_off">Éteindre</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Ouvrir les stores</string>
   <string name="blind_down">Fermer les stores</string>
   <string name="blind_stop">Arrêter les stores</string>

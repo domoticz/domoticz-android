@@ -45,6 +45,8 @@
   <string name="button_color">Ini</string>
   <string name="button_arm">Ḥarj</string>
   <string name="button_disarm">Senqer</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Tamuɣli taneggarut</string>
   <string name="signal_level">Tamuli n aswir</string>
   <string name="battery_level">Tamuli n aẓru</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Angawi</string>
   <string name="temperature">taszɣelt</string>
   <string name="status">Iẓuyar</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Ired n tamelmaḍt</string>
   <string name="set_point_min">Azal n adday n yired tamelmaḍt</string>
   <string name="set_point_min_description">Tazɣelt taddayt i tzemer-eḍ att swel-eḍ teṛmusṭa innek</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s yettwakkes</string>
   <string name="switch_on">Skker</string>
   <string name="switch_off">Sens</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Bren-kkan</string>
   <string name="blind_down">Bren mezlagu</string>
   <string name="blind_stop">Ḥbes</string>

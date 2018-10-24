@@ -45,6 +45,8 @@
   <string name="button_color">Barva</string>
   <string name="button_arm">Zastřežit</string>
   <string name="button_disarm">Odstřežit</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Naposledy viděný</string>
   <string name="signal_level">Úroveň signálu</string>
   <string name="battery_level">Stav baterie</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Teplota</string>
   <string name="status">Stav</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Nastavit bod</string>
   <string name="set_point_min">Nastavit minimální hodnotu</string>
   <string name="set_point_min_description">Minimální teplota, kterou můžete nastavit na vašem termostatu</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s odstraněné</string>
   <string name="switch_on">Zapnout přepínač</string>
   <string name="switch_off">Vypnout přepínač</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Vytáhnout žaluzie</string>
   <string name="blind_down">Stáhnout žaluzie</string>
   <string name="blind_stop">Zastavit žaluzie</string>

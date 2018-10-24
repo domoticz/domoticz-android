@@ -45,6 +45,8 @@
   <string name="button_color">Renk</string>
   <string name="button_arm">Kur</string>
   <string name="button_disarm">Devredışı</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Son görülme</string>
   <string name="signal_level">Sinyal seviyesi</string>
   <string name="battery_level">Pil seviyesi</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Donanım</string>
   <string name="temperature">Sıcaklık</string>
   <string name="status">Durum</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Ayar noktası</string>
   <string name="set_point_min">En küçük değer ayarı</string>
   <string name="set_point_min_description">Termostatınıza ayarlayabileceğiniz minimum sıcaklık</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s silindi</string>
   <string name="switch_on">Anahtar açma</string>
   <string name="switch_off">Anahtarı kapatma</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Yukarıya çevir</string>
   <string name="blind_down">Aşağıya çevir</string>
   <string name="blind_stop">Çevirmeyi Durdur</string>

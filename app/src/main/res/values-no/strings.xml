@@ -45,6 +45,8 @@
   <string name="button_color">Farge</string>
   <string name="button_arm">Armèr</string>
   <string name="button_disarm">Desarmèr</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Sist sett</string>
   <string name="signal_level">Signalnivå</string>
   <string name="battery_level">Batterinivå</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Maskinvare</string>
   <string name="temperature">Temperatur</string>
   <string name="status">Status</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Settpunkt</string>
   <string name="set_point_min">Set punkt minimum</string>
   <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s slettet</string>
   <string name="switch_on">Slår på bryter</string>
   <string name="switch_off">Slår av bryteren</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">åpner persienner</string>
   <string name="blind_down">Persienner nede</string>
   <string name="blind_stop">Stopp persienner</string>

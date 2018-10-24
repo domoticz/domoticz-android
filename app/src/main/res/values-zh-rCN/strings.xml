@@ -45,6 +45,8 @@
   <string name="button_color">颜色</string>
   <string name="button_arm">激活</string>
   <string name="button_disarm">解除</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">更新于</string>
   <string name="signal_level">信号程度</string>
   <string name="battery_level">电池电量</string>
@@ -52,6 +54,7 @@
   <string name="hardware">硬件</string>
   <string name="temperature">温度</string>
   <string name="status">状态</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">设置点</string>
   <string name="set_point_min">设置点的最小值</string>
   <string name="set_point_min_description">你可以为你的温控器设置的最小温度</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s 已刪除</string>
   <string name="switch_on">打开开关</string>
   <string name="switch_off">关闭开关</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">打开百叶窗</string>
   <string name="blind_down">关闭百叶窗</string>
   <string name="blind_stop">停止百叶窗</string>

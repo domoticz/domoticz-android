@@ -45,6 +45,8 @@
   <string name="button_color">Barva</string>
   <string name="button_arm">Vklop</string>
   <string name="button_disarm">Izklop</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Nazadnje viden</string>
   <string name="signal_level">Raven signala</string>
   <string name="battery_level">Stanje baterije</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Strojna oprema</string>
   <string name="temperature">Temperatura</string>
   <string name="status">Stanje</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Nastavljena vrednost</string>
   <string name="set_point_min">Minimalna nastavljena vrednost</string>
   <string name="set_point_min_description">Termostat ne omogoča nastavitev tako nizke temperature</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s izbrisan</string>
   <string name="switch_on">Vklop stikala</string>
   <string name="switch_off">Izklop stikala</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Dvig rolet</string>
   <string name="blind_down">Spust rolet</string>
   <string name="blind_stop">Ustavi rolete</string>

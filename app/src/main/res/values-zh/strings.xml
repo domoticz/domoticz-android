@@ -45,6 +45,8 @@
   <string name="button_color">顏色</string>
   <string name="button_arm">保全設防</string>
   <string name="button_disarm">保全撤防</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">最後上線</string>
   <string name="signal_level">訊號等級</string>
   <string name="battery_level">電池電量</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperature</string>
   <string name="status">Status</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Set point</string>
   <string name="set_point_min">Set point min value</string>
   <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s deleted</string>
   <string name="switch_on">Turning switch on</string>
   <string name="switch_off">Turning switch off</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Turning blind up</string>
   <string name="blind_down">Turning blind down</string>
   <string name="blind_stop">Stop blind</string>

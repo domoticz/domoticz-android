@@ -45,6 +45,8 @@
   <string name="button_color">Boja</string>
   <string name="button_arm">Naoružaj</string>
   <string name="button_disarm">Razoružaj</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Posljednje viđeno</string>
   <string name="signal_level">Nivo signala</string>
   <string name="battery_level">Nivo baterija</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatura</string>
   <string name="status">Status</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Odabir vrijednosti</string>
   <string name="set_point_min">Odaberi minimalnu vrijednost</string>
   <string name="set_point_min_description">Minimalna temperatura koju možete odabrati na vašem termostatu</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s obrisano</string>
   <string name="switch_on">Uključi prekidač</string>
   <string name="switch_off">Isključi prekidač</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Podigni zavjese</string>
   <string name="blind_down">Spusti zavjese</string>
   <string name="blind_stop">Zaustavi zavjese</string>

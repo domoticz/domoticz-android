@@ -45,6 +45,8 @@
   <string name="button_color">Kleur</string>
   <string name="button_arm">Activeer</string>
   <string name="button_disarm">Deactiveer</string>
+  <string name="button_state_full_light">Vol aan</string>
+  <string name="button_state_night">Nachtverlichting</string>
   <string name="last_update">Laatst gezien</string>
   <string name="signal_level">Signaalsterkte</string>
   <string name="battery_level">Batterijniveau</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hardware</string>
   <string name="temperature">Temperatuur</string>
   <string name="status">Status</string>
+  <string name="switch_rgb_wwcolor">RGB-kleur of warm wit</string>
   <string name="set_point">Gewenste waarde</string>
   <string name="set_point_min">Instel minimumwaarde in</string>
   <string name="set_point_min_description">Minimale temperatuur die u voor uw thermostaat kunt instellen</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s is verwijderd</string>
   <string name="switch_on">Zet schakelaar aan</string>
   <string name="switch_off">Zet schakelaar uit</string>
+  <string name="switch_night">Verander schakelaar naar nachtverlichting</string>
+  <string name="switch_full">Verander schakelaar naar vol aan</string>
   <string name="blind_up">Draai rolluik omhoog</string>
   <string name="blind_down">Draai rolluik naar beneden</string>
   <string name="blind_stop">Stop rolluik</string>

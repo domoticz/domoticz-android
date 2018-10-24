@@ -33,8 +33,8 @@
   <string name="button_state_off">Av</string>
   <string name="button_state_closed">Stängd</string>
   <string name="button_state_open">Öppen</string>
-  <string name="button_state_lock">Lock</string>
-  <string name="button_state_unlock">Unlock</string>
+  <string name="button_state_lock">Lås</string>
+  <string name="button_state_unlock">Lås upp</string>
   <string name="button_status_log">Logg</string>
   <string name="button_status_day">Dag</string>
   <string name="button_status_week">Vecka</string>
@@ -45,6 +45,8 @@
   <string name="button_color">Färg</string>
   <string name="button_arm">Aktivera</string>
   <string name="button_disarm">Avaktivera</string>
+  <string name="button_state_full_light">Full light</string>
+  <string name="button_state_night">Night light</string>
   <string name="last_update">Senast sedd</string>
   <string name="signal_level">Signalstyrka</string>
   <string name="battery_level">Batterinivå</string>
@@ -52,6 +54,7 @@
   <string name="hardware">Hårdvara</string>
   <string name="temperature">Temperatur</string>
   <string name="status">Status</string>
+  <string name="switch_rgb_wwcolor">RGB color or warm white</string>
   <string name="set_point">Börvärde</string>
   <string name="set_point_min">Sätt punkt för minsta värde</string>
   <string name="set_point_min_description">Min temperatur du kan sätta för termostaten</string>
@@ -89,6 +92,8 @@
   <string name="something_deleted">%1$s togs bort</string>
   <string name="switch_on">Slår på brytare</string>
   <string name="switch_off">Slår av brytare</string>
+  <string name="switch_night">Turning switch to night light</string>
+  <string name="switch_full">Turning switch to full light</string>
   <string name="blind_up">Rullar upp rullgardinen</string>
   <string name="blind_down">Rullar ner rullgardinen</string>
   <string name="blind_stop">Stoppa rullgardinen</string>
