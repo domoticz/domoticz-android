@@ -53,6 +53,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.NotificationInfoDialog;
 import nl.hnogames.domoticz.UI.PasswordDialog;
+import nl.hnogames.domoticz.UI.RGBWWColorPickerDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.SwitchInfoDialog;
 import nl.hnogames.domoticz.UI.SwitchLogInfoDialog;
@@ -365,7 +366,51 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     @Override
     @DebugLog
     public void onColorButtonClick(final int idx) {
-        if (getSwitch(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
+        if (getSwitch(idx).getSubType().contains(DomoticzValues.Device.SubType.Name.WW) && getSwitch(idx).getSubType().contains(DomoticzValues.Device.SubType.Name.RGB)) {
+            RGBWWColorPickerDialog colorDialog = new RGBWWColorPickerDialog(mContext,
+                    getSwitch(idx).getIdx());
+            colorDialog.show();
+            colorDialog.onDismissListener(new RGBWWColorPickerDialog.DismissListener() {
+                @Override
+                public void onDismiss(final int value, final boolean isRGB) {
+                    if (getSwitch(idx).isProtected()) {
+                        PasswordDialog passwordDialog = new PasswordDialog(
+                                mContext, mDomoticz);
+                        passwordDialog.show();
+                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                            @Override
+                            @DebugLog
+                            public void onDismiss(String password) {
+                                if(!isRGB)
+                                    setKelvinColor(value, idx, password, true);
+                                else
+                                    setRGBColor(value, idx, password, true);
+                            }
+
+                            @Override
+                            public void onCancel() {}
+                        });
+                    } else {
+                        if(!isRGB)
+                            setKelvinColor(value, idx, null, true);
+                        else
+                            setRGBColor(value, idx, null, true);
+                    }
+                }
+
+                @Override
+                public void onChangeRGBColor(int color) {
+                    if (!getSwitch(idx).isProtected())
+                        setRGBColor(color, idx, null, false);
+                }
+
+                @Override
+                public void onChangeKelvinColor(int kelvin) {
+                    if (!getSwitch(idx).isProtected())
+                        setKelvinColor(kelvin, idx, null, false);
+                }
+            });
+        }else if (getSwitch(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
             WWColorPickerDialog colorDialog = new WWColorPickerDialog(mContext,
                     getSwitch(idx).getIdx());
             colorDialog.show();
@@ -428,7 +473,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     dialogInterface.dismiss();
                 }
             });
-            builder.show(); // show dialog
+            builder.show();
         }
     }
 

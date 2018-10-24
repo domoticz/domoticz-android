@@ -52,6 +52,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.DeviceInfoDialog;
 import nl.hnogames.domoticz.UI.PasswordDialog;
+import nl.hnogames.domoticz.UI.RGBWWColorPickerDialog;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
@@ -528,7 +529,51 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     @Override
     @DebugLog
     public void onColorButtonClick(final int idx) {
-        if (getDevice(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
+        if (getDevice(idx).getSubType().contains(DomoticzValues.Device.SubType.Name.WW) && getDevice(idx).getSubType().contains(DomoticzValues.Device.SubType.Name.RGB)) {
+            RGBWWColorPickerDialog colorDialog = new RGBWWColorPickerDialog(mContext,
+                    getDevice(idx).getIdx());
+            colorDialog.show();
+            colorDialog.onDismissListener(new RGBWWColorPickerDialog.DismissListener() {
+                @Override
+                public void onDismiss(final int value, final boolean isRGB) {
+                    if (getDevice(idx).isProtected()) {
+                        PasswordDialog passwordDialog = new PasswordDialog(
+                                mContext, mDomoticz);
+                        passwordDialog.show();
+                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                            @Override
+                            @DebugLog
+                            public void onDismiss(String password) {
+                                if(!isRGB)
+                                    setKelvinColor(value, idx, password, true);
+                                else
+                                    setRGBColor(value, idx, password, true);
+                            }
+
+                            @Override
+                            public void onCancel() {}
+                        });
+                    } else {
+                        if(!isRGB)
+                            setKelvinColor(value, idx, null, true);
+                        else
+                            setRGBColor(value, idx, null, true);
+                    }
+                }
+
+                @Override
+                public void onChangeRGBColor(int color) {
+                    if (!getDevice(idx).isProtected())
+                        setRGBColor(color, idx, null, false);
+                }
+
+                @Override
+                public void onChangeKelvinColor(int kelvin) {
+                    if (!getDevice(idx).isProtected())
+                        setKelvinColor(kelvin, idx, null, false);
+                }
+            });
+        }else if (getDevice(idx).getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
             WWColorPickerDialog colorDialog = new WWColorPickerDialog(mContext,
                     getDevice(idx).getIdx());
             colorDialog.show();
