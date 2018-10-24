@@ -613,13 +613,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     if (latestFragment instanceof MainPager) {
                         String screen = mSharedPrefs.getStartupScreen();
                         int i = 0;
-                        if (screen.equalsIgnoreCase("Switches")) {
+                        if (screen.equalsIgnoreCase(getString(R.string.title_switches))) {
                             i = 1;
-                        } else if (screen.equalsIgnoreCase("Scenes") ){
+                        } else if (screen.equalsIgnoreCase(getString(R.string.title_scenes)) ){
                             i = 2;
-                        } else if (screen.equalsIgnoreCase("Temperature")) {
+                        } else if (screen.equalsIgnoreCase(getString(R.string.title_temperature))) {
                             i = 3;
-                        } else if (screen.equalsIgnoreCase("Weather")) {
+                        } else if (screen.equalsIgnoreCase(getString(R.string.title_weather))) {
                             i = 4;
                         }
                         ((MainPager) latestFragment).SetStartupScreen(i);

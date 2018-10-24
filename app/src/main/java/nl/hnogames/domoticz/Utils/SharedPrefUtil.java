@@ -618,6 +618,25 @@ public class SharedPrefUtil {
         }
     }
 
+    public int getActualStartupScreenIndex() {
+        String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
+        if (startupScreenSelectedValue == null)
+            return DEFAULT_STARTUP_SCREEN;
+        else {
+            String[] startupScreenValues = mContext.getResources().getStringArray(R.array.startup_actions);
+            int i = 0;
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return i;
+                }
+                i++;
+            }
+            //else, could not find startup screen
+            setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
+            return DEFAULT_STARTUP_SCREEN;
+        }
+    }
+
     public int getStartupScreenIndex() {
         String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
         if (startupScreenSelectedValue == null)
