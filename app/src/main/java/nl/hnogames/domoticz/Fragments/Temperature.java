@@ -370,7 +370,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                 return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
                 } catch (Exception ex) {
