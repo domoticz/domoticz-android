@@ -176,8 +176,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 public void onItemClick(int position, View v) {
                     if (mPhoneConnectionUtil.isNetworkAvailable()) {
                         try {
-                            ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
-                            TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                            ImageView cameraImage = v.findViewById(R.id.image);
+                            TextView cameraTitle = v.findViewById(R.id.name);
                             Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

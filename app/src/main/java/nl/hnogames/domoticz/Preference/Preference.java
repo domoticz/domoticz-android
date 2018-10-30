@@ -174,7 +174,7 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference EnableQRCodePreference = (android.preference.SwitchPreference) findPreference("enableQRCode");
         android.preference.SwitchPreference EnableSpeechPreference = (android.preference.SwitchPreference) findPreference("enableSpeech");
         android.preference.SwitchPreference EnableTalkBackPreference = (android.preference.SwitchPreference) findPreference("talkBack");
-        MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("enable_menu_items");
+        MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("show_menu_items");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference AlwaysOnPreference = (android.preference.SwitchPreference) findPreference("alwayson");
         @SuppressWarnings("SpellCheckingInspection") android.preference.SwitchPreference RefreshScreenPreference = (android.preference.SwitchPreference) findPreference("autorefresh");
         @SuppressWarnings("SpellCheckingInspection") android.preference.PreferenceScreen preferenceScreen = (android.preference.PreferenceScreen) findPreference("settingsscreen");

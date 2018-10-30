@@ -46,8 +46,8 @@ import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.app.RefreshFragment;
 
-public class MainPager extends RefreshFragment implements DomoticzFragmentListener {
-    private static final String TAG = MainPager.class.getSimpleName();
+public class TemperatureMainPager extends RefreshFragment implements DomoticzFragmentListener {
+    private static final String TAG = TemperatureMainPager.class.getSimpleName();
     private Context context;
     private FragmentStatePagerAdapter adapterViewPager;
     private BottomNavigationView bottomNavigation;
@@ -119,7 +119,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                              Bundle savedInstanceState) {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-        root = (RelativeLayout) inflater.inflate(R.layout.mainpager, null);
+        root = (RelativeLayout) inflater.inflate(R.layout.temp_mainpager, null);
         initViews();
         return root;
     }
@@ -131,7 +131,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
         if (mSharedPrefs.darkThemeEnabled()) {
             bottomNavigation.setBackgroundColor(getResources().getColor(R.color.background_dark));
         }
-        adapterViewPager = new MainPagerAdapter(((AppCompatActivity) context), 3);
+        adapterViewPager = new MainPagerAdapter(((AppCompatActivity) context), 2);
         vpPager.setAdapter(adapterViewPager);
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -158,17 +158,13 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.bbn_dashboard:
+                    case R.id.bbn_temperature:
                         vpPager.setCurrentItem(0);
                         SetTitle(GetTitle(0));
                         break;
-                    case R.id.bbn_switches:
+                    case R.id.bbn_weather:
                         vpPager.setCurrentItem(1);
                         SetTitle(GetTitle(1));
-                        break;
-                    case R.id.bbn_scenes:
-                        vpPager.setCurrentItem(2);
-                        SetTitle(GetTitle(2));
                         break;
                 }
                 if (getActivity() instanceof MainActivity)
@@ -182,13 +178,11 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public int GetTitle(int position) {
         switch (position) {
             case 0:
-                return R.string.title_dashboard;
+                return R.string.title_temperature;
             case 1:
-                return R.string.title_switches;
-            case 2:
-                return R.string.title_scenes;
+                return R.string.title_weather;
             default:
-                return R.string.title_dashboard;
+                return R.string.title_temperature;
         }
     }
 
@@ -196,7 +190,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        SetTitle(R.string.title_dashboard);
+        SetTitle(R.string.title_temperature);
     }
 
     @Override
@@ -247,11 +241,9 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new Dashboard();
+                    return new Temperature();
                 case 1:
-                    return new Switches();
-                case 2:
-                    return new Scenes();
+                    return new Weather();
                 default:
                     return null;
             }

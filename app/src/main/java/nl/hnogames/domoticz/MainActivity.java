@@ -87,6 +87,7 @@ import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.MainPager;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
+import nl.hnogames.domoticz.Fragments.TemperatureMainPager;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.GCMUtils;
@@ -608,22 +609,24 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 int screenIndex = mSharedPrefs.getStartupScreenIndex();
                 FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                 latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-                if(screenIndex == 1)
+                if(screenIndex == 1 && latestFragment instanceof MainPager)
                 {
-                    if (latestFragment instanceof MainPager) {
                         String screen = mSharedPrefs.getStartupScreen();
                         int i = 0;
                         if (screen.equalsIgnoreCase(getString(R.string.title_switches))) {
                             i = 1;
                         } else if (screen.equalsIgnoreCase(getString(R.string.title_scenes)) ){
                             i = 2;
-                        } else if (screen.equalsIgnoreCase(getString(R.string.title_temperature))) {
-                            i = 3;
-                        } else if (screen.equalsIgnoreCase(getString(R.string.title_weather))) {
-                            i = 4;
                         }
                         ((MainPager) latestFragment).SetStartupScreen(i);
+                }
+                if (screenIndex == 2 && latestFragment instanceof TemperatureMainPager) {
+                    String screen = mSharedPrefs.getStartupScreen();
+                    int i = 0;
+                    if (screen.equalsIgnoreCase(getString(R.string.title_weather))) {
+                        i = 1;
                     }
+                    ((TemperatureMainPager) latestFragment).SetStartupScreen(i);
                 }
 
                 tx.replace(R.id.main, latestFragment);
@@ -870,19 +873,26 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         String ICONS[] = mSharedPrefs.getNavigationIcons();
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Wizard") || fragments[i].contains("MainPager"))
+            if (fragments[i].contains("Fragments.Wizard") )
+                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+
+        if(drawerItems.size() > 0)
+            drawerItems.add(new DividerDrawerItem());
+
+        for (int i = 0; i < drawerActions.length; i++)
+            if (fragments[i].contains("Fragments.MainPager") || fragments[i].contains("Fragments.Temperature") || fragments[i].contains("Fragments.Utilities"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if ((!fragments[i].contains("Wizard") && !fragments[i].contains("MainPager")) && fragments[i].contains("Utilities") || fragments[i].contains("Plans") || fragments[i].contains("Camera"))
+            if (fragments[i].contains("Fragments.Plans") || fragments[i].contains("Fragments.Camera"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (!fragments[i].contains("Wizard") && !fragments[i].contains("MainPager") && !fragments[i].contains("Utilities") && !fragments[i].contains("Plans") && !fragments[i].contains("Camera"))
+            if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
                 drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
         return drawerItems;

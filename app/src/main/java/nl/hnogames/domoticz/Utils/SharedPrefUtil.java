@@ -82,7 +82,7 @@ public class SharedPrefUtil {
     private static final String PREF_EXTRA_DATA = "extradata";
     private static final String PREF_STARTUP_SCREEN = "startup_fragment";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
-    private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_NAVIGATION_ITEMS = "show_menu_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
@@ -656,6 +656,14 @@ public class SharedPrefUtil {
             for (String screen : startupScreenValues) {
                 if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
                     return 1;
+                }
+            }
+
+            // Check for temperature actions
+            startupScreenValues = mContext.getResources().getStringArray(R.array.temperature_actions);
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return 2;
                 }
             }
 
