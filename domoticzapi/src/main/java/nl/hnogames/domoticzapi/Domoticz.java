@@ -444,7 +444,7 @@ public class Domoticz {
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
-        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA, true, getUserCredentials(Authentication.USERNAME), getUserCredentials(Authentication.PASSWORD)) + camera.getIdx();
+        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + camera.getIdx();
     }
 
     /**
