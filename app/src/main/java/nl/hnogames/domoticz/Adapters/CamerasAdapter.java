@@ -95,7 +95,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
+            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz,
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getSessionUtil(),
+                true,
+                mContext);
             holder.camera.setImageUrl(imageUrl, imageLoader);
 
             if (!refreshTimer)
@@ -106,6 +111,10 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void setRefreshTimer(boolean timer) {
+        this.refreshTimer = timer;
     }
 
     public interface onClickListener {

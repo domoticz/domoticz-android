@@ -92,7 +92,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         refreshTimer = true;
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         getCameras();
     }
 
@@ -162,8 +161,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             return;
 
         if (mRecyclerView == null) {
-            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+            mRecyclerView = getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -203,6 +202,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
+            mAdapter.setRefreshTimer(refreshTimer);
             mAdapter.setData(Cameras);
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
