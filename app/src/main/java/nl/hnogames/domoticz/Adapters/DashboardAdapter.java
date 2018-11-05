@@ -46,7 +46,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import az.plainpie.PieView;
@@ -67,6 +66,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 2000;
+    public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
     private final int[] EVOHOME_STATE_IDS = {
@@ -77,7 +77,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
         DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
-
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private boolean showAsList;
@@ -87,7 +86,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private int previousDimmerValue;
     private SharedPrefUtil mSharedPrefs;
     private ConfigInfo mConfigInfo;
-    public static List<String> mCustomSorting;
     private ItemFilter mFilter = new ItemFilter();
 
     public DashboardAdapter(Context context,
@@ -102,8 +100,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
-        if(mCustomSorting==null)
-            mCustomSorting = mSharedPrefs.getDashboardSortingList();
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("dashboard");
         setData(data);
     }
 
@@ -115,30 +113,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
     private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
         ArrayList<DevicesInfo> customdata = new ArrayList<>();
-        if(mSharedPrefs.enableCustomDashboardSorting() && mCustomSorting != null){
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             for (String s : mCustomSorting) {
                 for (DevicesInfo d : data) {
-                    if(s.equals(String.valueOf(d.getIdx())))
+                    if (s.equals(String.valueOf(d.getIdx())))
                         customdata.add(d);
                 }
             }
             for (DevicesInfo d : data) {
-                if(!customdata.contains(d))
+                if (!customdata.contains(d))
                     customdata.add(d);
             }
-        }
-        else
+        } else
             customdata = data;
         return customdata;
     }
 
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
-        for (DevicesInfo d: filteredData) {
+        for (DevicesInfo d : filteredData) {
             ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
-        mSharedPrefs.saveDashboardSortingList(ids);
+        mSharedPrefs.saveSortingList("dashboard", ids);
     }
 
     /**
@@ -198,12 +195,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
             setSwitchRowData(extendedStatusInfo, holder);
-                holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onItemLongClicked(position);
-                    }
-                });
+
+            holder.infoIcon.setTag(extendedStatusInfo.getIdx());
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked((int) v.getTag());
+                }
+            });
         }
     }
 
@@ -1798,12 +1797,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         swap(fromPosition, toPosition);
-        return false;
+        return true;
     }
 
     @Override
     public void onItemDismiss(int position, int direction) {
         remove(position);
+    }
+
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
     }
 
     interface Buttons {
@@ -1885,17 +1895,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         public void onItemClear() {
             System.out.println("Item is unselected");
         }
-    }
-
-    private void remove(int position) {
-        filteredData.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(filteredData, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
     }
 
     /**

@@ -48,7 +48,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Containers.NFCInfo;
@@ -113,19 +112,16 @@ public class SharedPrefUtil {
     private static final String PREF_TEMP_MIN = "tempMinValue";
     private static final String PREF_TEMP_MAX = "tempMaxValue";
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
-    private static final String PREF_DASHBOARD_SORT_LIST = "dashboardSortList";
-
-
+    private static final String PREF_SORT_LIST = "customSortList";
+    private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_SORT_CUSTOM = "sort_dashboardCustom";
+    private final String PREF_SORT_CUSTOM = "sortCustom";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
-    private static final int DEFAULT_STARTUP_SCREEN = 1;
-
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -183,7 +179,7 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
-    public boolean enableCustomDashboardSorting() {
+    public boolean enableCustomSorting() {
         return prefs.getBoolean(PREF_SORT_CUSTOM, false);
     }
 
@@ -430,29 +426,20 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
     }
 
-    public List<String> getDashboardSortingList() {
-        if (!prefs.contains(PREF_DASHBOARD_SORT_LIST))
+    public List<String> getSortingList(String listName) {
+        if (!prefs.contains(listName + PREF_SORT_LIST))
             return null;
-        Set<String> sortListin = new HashSet(prefs.getStringSet(PREF_DASHBOARD_SORT_LIST, null));
-        if (sortListin != null) {
-            List<String> sortValues = new ArrayList<>();
-            for (String s : sortListin) {
-                sortValues.add(s);
-            }
-            return sortValues;
-        }
+        String sortString = prefs.getString(listName + PREF_SORT_LIST, null);
+        if (!UsefulBits.isEmpty(sortString))
+            return Arrays.asList(sortString.split(","));
         return null;
     }
 
-    public void saveDashboardSortingList(List<String> ids) {
-        if(ids != null)
-        {
-            Set<String> sortList = new HashSet<>();
-            for(String s : ids) sortList.add(s);
-            editor.putStringSet(PREF_DASHBOARD_SORT_LIST, sortList).apply();
-        }
+    public void saveSortingList(String listName, List<String> ids) {
+        if (ids != null)
+            editor.putString(listName + PREF_SORT_LIST, UsefulBits.Join(ids)).apply();
         else
-            editor.putStringSet(PREF_DASHBOARD_SORT_LIST, null).apply();
+            editor.putString(listName + PREF_SORT_LIST, null).apply();
         editor.commit();
     }
 
@@ -700,10 +687,6 @@ public class SharedPrefUtil {
         }
     }
 
-    public String getStartupScreen() {
-        return prefs.getString(PREF_STARTUP_SCREEN, null);
-    }
-
     public void setStartupScreenIndex(int position) {
         String[] startupScreenValues =
             mContext.getResources().getStringArray(R.array.startup_actions);
@@ -717,6 +700,10 @@ public class SharedPrefUtil {
         }
 
         editor.putString(PREF_STARTUP_SCREEN, startupScreenValue).apply();
+    }
+
+    public String getStartupScreen() {
+        return prefs.getString(PREF_STARTUP_SCREEN, null);
     }
 
     public String[] getWearSwitches() {

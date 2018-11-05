@@ -150,19 +150,19 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     @Override
     public void onUserVariableClick(final UserVariableInfo clickedVar) {
         new MaterialDialog.Builder(mContext)
-                .title(R.string.title_vars)
-                .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        if (validateInput(String.valueOf(input), clickedVar.getType())) {
-                            updateUserVariable(String.valueOf(input), clickedVar);
-                        } else {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
-                        }
+            .title(R.string.title_vars)
+            .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+            .inputType(InputType.TYPE_CLASS_TEXT)
+            .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                @Override
+                public void onInput(MaterialDialog dialog, CharSequence input) {
+                    if (validateInput(String.valueOf(input), clickedVar.getType())) {
+                        updateUserVariable(String.valueOf(input), clickedVar);
+                    } else {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
                     }
-                }).show();
+                }
+            }).show();
     }
 
     private boolean validateInput(String input, String type) {
@@ -206,7 +206,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         ArrayList<UserVariableInfo> cacheUserVariables = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if(mContext==null)
+            if (mContext == null)
                 return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
@@ -221,7 +221,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         }
 
         protected void onPostExecute(Boolean result) {
-            if(mContext==null)
+            if (mContext == null)
                 return;
             if (cacheUserVariables != null)
                 createListView();

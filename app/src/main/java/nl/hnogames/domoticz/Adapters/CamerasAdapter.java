@@ -39,7 +39,6 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Utils.RequestUtil;
-import nl.hnogames.domoticzapi.Utils.SessionUtil;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {

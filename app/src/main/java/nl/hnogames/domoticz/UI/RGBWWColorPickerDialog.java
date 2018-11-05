@@ -66,9 +66,9 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
 
         if (view != null) {
             kelvinBar = view.findViewById(R.id.kelvinBar);
-            colorPickerView= view.findViewById(R.id.colorPickerView);
+            colorPickerView = view.findViewById(R.id.colorPickerView);
             rgbSwitch = view.findViewById(R.id.rgbSwitch);
-            wrapperKelvin= view.findViewById(R.id.kelvinBarWrapper);
+            wrapperKelvin = view.findViewById(R.id.kelvinBarWrapper);
 
             rgbSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -81,8 +81,7 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
             colorPickerView.setColorListener(new ColorListener() {
                 @Override
                 public void onColorSelected(int color, boolean fromUser) {
-                    if(fromUser)
-                    {
+                    if (fromUser) {
                         if (dismissListener != null)
                             dismissListener.onChangeRGBColor(color);
                     }
@@ -112,7 +111,7 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         if (dismissListener != null)
-            dismissListener.onDismiss(colorPickerView.getVisibility() == View.VISIBLE ? colorPickerView.getColor() :kelvinBar.getProgress(), colorPickerView.getVisibility() == View.VISIBLE);
+            dismissListener.onDismiss(colorPickerView.getVisibility() == View.VISIBLE ? colorPickerView.getColor() : kelvinBar.getProgress(), colorPickerView.getVisibility() == View.VISIBLE);
     }
 
     public void onDismissListener(DismissListener dismissListener) {
@@ -121,7 +120,9 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
 
     public interface DismissListener {
         void onDismiss(int color, final boolean isRGB);
+
         void onChangeRGBColor(int color);
+
         void onChangeKelvinColor(int color);
     }
 }

@@ -48,8 +48,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -63,11 +64,11 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataObjectHolder> {
+public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 2000;
+    public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
-
     private final int[] EVOHOME_STATE_IDS = {
         DomoticzValues.Device.ModalSwitch.Action.AUTO,
         DomoticzValues.Device.ModalSwitch.Action.ECONOMY,
@@ -101,12 +102,42 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
 
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("switches");
         setData(data);
     }
 
     public void setData(ArrayList<DevicesInfo> data) {
-        this.data = data;
-        this.filteredData = data;
+        ArrayList<DevicesInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
+    }
+
+    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
+        ArrayList<DevicesInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (DevicesInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (DevicesInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (DevicesInfo d : filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("switches", ids);
     }
 
     private void handleLikeButtonClick(int idx, boolean checked) {
@@ -159,10 +190,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     handleLogButtonClick(v.getId());
                 }
             });
+            holder.infoIcon.setTag(extendedStatusInfo.getIdx());
             holder.infoIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemLongClicked(position);
+                    listener.onItemLongClicked((int) v.getTag());
                 }
             });
             if (holder.likeButton != null) {
@@ -207,13 +239,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 @Override
                 public void onClick(View v) {
                     listener.onItemClicked(v, position);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
                 }
             });
         }
@@ -1742,6 +1767,28 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
     private void handleNotificationButtonClick(int idx) {
         listener.onNotificationButtonClick(idx);
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return false;
+    }
+
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
+    }
+
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
     }
 
     interface Buttons {

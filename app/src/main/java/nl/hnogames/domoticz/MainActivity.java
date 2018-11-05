@@ -609,16 +609,15 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 int screenIndex = mSharedPrefs.getStartupScreenIndex();
                 FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
                 latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-                if(screenIndex == 1 && latestFragment instanceof MainPager)
-                {
-                        String screen = mSharedPrefs.getStartupScreen();
-                        int i = 0;
-                        if (screen.equalsIgnoreCase(getString(R.string.title_switches))) {
-                            i = 1;
-                        } else if (screen.equalsIgnoreCase(getString(R.string.title_scenes)) ){
-                            i = 2;
-                        }
-                        ((MainPager) latestFragment).SetStartupScreen(i);
+                if (screenIndex == 1 && latestFragment instanceof MainPager) {
+                    String screen = mSharedPrefs.getStartupScreen();
+                    int i = 0;
+                    if (screen.equalsIgnoreCase(getString(R.string.title_switches))) {
+                        i = 1;
+                    } else if (screen.equalsIgnoreCase(getString(R.string.title_scenes))) {
+                        i = 2;
+                    }
+                    ((MainPager) latestFragment).SetStartupScreen(i);
                 }
                 if (screenIndex == 2 && latestFragment instanceof TemperatureMainPager) {
                     String screen = mSharedPrefs.getStartupScreen();
@@ -873,10 +872,10 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         String ICONS[] = mSharedPrefs.getNavigationIcons();
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.Wizard") )
+            if (fragments[i].contains("Fragments.Wizard"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
-        if(drawerItems.size() > 0)
+        if (drawerItems.size() > 0)
             drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)

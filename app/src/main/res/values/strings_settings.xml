@@ -50,9 +50,11 @@
     <!--        Generic settings       -->
     <string name="startup_screen">Startup screen</string>
     <string name="enable_items">Enable/Disable Items</string>
-    <string name="sort_dashboardLikeServer_title">Dashboard sorting</string>
-    <string name="sort_dashboardLikeServer_on">Sort dashboard like server</string>
-    <string name="sort_dashboardCustom_on">Custom dashboard sorting with drag and drop</string>
+
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
 
     <string name="sort_dashboardLikeServer_off">Sort dashboard alphabetically</string>
     <string name="extra_data_title">Extra data on dashboard</string>

@@ -101,6 +101,12 @@ public class UsefulBits {
         else return true;
     }
 
+    public static String Join(List<String> msgs) {
+        return msgs == null || msgs.size() == 0 ?
+            "" : msgs.size() == 1 ? msgs.get(0) :
+            msgs.subList(0, msgs.size() - 1).toString().replaceAll("^.|.$", "") + " and " + msgs.get(msgs.size() - 1);
+    }
+
     public static String newLine() {
         return System.getProperty("line.separator");
     }
