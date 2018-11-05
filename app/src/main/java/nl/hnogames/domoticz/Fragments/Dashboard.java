@@ -31,6 +31,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
@@ -43,6 +45,8 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import github.nisrulz.recyclerviewhelper.RVHItemDividerDecoration;
+import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.DashboardAdapter;
@@ -83,15 +87,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
-
+    private ItemTouchHelper mItemTouchHelper;
     private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        // if (getActionBar() != null)
-        //    getActionBar().setTitle(R.string.title_dashboard);
     }
 
     @Override
@@ -237,15 +239,27 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, true);
                     }
                     alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                    gridView.setAdapter(alphaSlideIn);
+                    gridView.setAdapter(adapter);
+
                 } else {
                     adapter.setData(supportedSwitches);
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
                 }
-
                 if (state != null) {
                     gridView.getLayoutManager().onRestoreInstanceState(state);
+                }
+
+                if(mSharedPrefs.enableCustomDashboardSorting()) {
+                    if(mItemTouchHelper == null) {
+                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                            false));
+                    }
+                    mItemTouchHelper.attachToRecyclerView(gridView);
+                }
+                else{
+                    if(mItemTouchHelper!=null)
+                        mItemTouchHelper.attachToRecyclerView(null);
                 }
 
                 mSwipeRefreshLayout.setRefreshing(false);

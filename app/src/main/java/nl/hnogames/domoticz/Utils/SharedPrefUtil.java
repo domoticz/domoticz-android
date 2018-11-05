@@ -48,6 +48,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Containers.NFCInfo;
@@ -112,11 +113,12 @@ public class SharedPrefUtil {
     private static final String PREF_TEMP_MIN = "tempMinValue";
     private static final String PREF_TEMP_MAX = "tempMaxValue";
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
+    private static final String PREF_DASHBOARD_SORT_LIST = "dashboardSortList";
 
 
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
+    private final String PREF_SORT_CUSTOM = "sort_dashboardCustom";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
@@ -181,8 +183,8 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
-    public boolean isDashboardSortedLikeServer() {
-        return prefs.getBoolean(PREF_SORT_LIKESERVER, true);
+    public boolean enableCustomDashboardSorting() {
+        return prefs.getBoolean(PREF_SORT_CUSTOM, false);
     }
 
     public boolean getAlwaysOn() {
@@ -428,6 +430,32 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
     }
 
+    public List<String> getDashboardSortingList() {
+        if (!prefs.contains(PREF_DASHBOARD_SORT_LIST))
+            return null;
+        Set<String> sortListin = new HashSet(prefs.getStringSet(PREF_DASHBOARD_SORT_LIST, null));
+        if (sortListin != null) {
+            List<String> sortValues = new ArrayList<>();
+            for (String s : sortListin) {
+                sortValues.add(s);
+            }
+            return sortValues;
+        }
+        return null;
+    }
+
+    public void saveDashboardSortingList(List<String> ids) {
+        if(ids != null)
+        {
+            Set<String> sortList = new HashSet<>();
+            for(String s : ids) sortList.add(s);
+            editor.putStringSet(PREF_DASHBOARD_SORT_LIST, sortList).apply();
+        }
+        else
+            editor.putStringSet(PREF_DASHBOARD_SORT_LIST, null).apply();
+        editor.commit();
+    }
+
     /**
      * Get's the users preference to vibrate on notifications
      *
@@ -457,7 +485,6 @@ public class SharedPrefUtil {
         Set<String> notifications = prefs.getStringSet(PREF_SUPPRESS_NOTIFICATIONS, null);
         if (notifications != null) {
             List<String> notificationsValues = new ArrayList<>();
-
             for (String s : notifications) {
                 notificationsValues.add(s);
             }

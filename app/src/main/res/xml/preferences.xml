@@ -45,29 +45,11 @@
             android:key="show_menu_items"
             android:title="@string/enable_items"/>
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="sort_dashboardLikeServer"
-            android:summaryOff="@string/sort_dashboardLikeServer_off"
-            android:summaryOn="@string/sort_dashboardLikeServer_on"
-            android:title="@string/sort_dashboardLikeServer_title"/>
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="extradata"
-            android:summaryOff="@string/show_extra_data_off"
-            android:summaryOn="@string/show_extra_data_on"
-            android:title="@string/extra_data_title"/>
-        <SwitchPreference
             android:defaultValue="false"
             android:key="switchButtons"
             android:summaryOff="@string/switch_buttons_off"
             android:summaryOn="@string/switch_buttons_on"
             android:title="@string/switch_buttons_title"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="dashboardAsList"
-            android:summaryOff="@string/show_dashboard_list_on"
-            android:summaryOn="@string/show_dashboard_list_off"
-            android:title="@string/dashboard_list_title"/>
         <SwitchPreference
             android:defaultValue="false"
             android:key="alwayson"
@@ -96,6 +78,27 @@
                 android:title="@string/set_point_max"/>
         </PreferenceCategory>
     </PreferenceScreen>
+
+    <PreferenceCategory android:title="@string/title_dashboard">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="sort_dashboardCustom"
+            android:summaryOff="@string/sort_dashboardLikeServer_on"
+            android:summaryOn="@string/sort_dashboardCustom_on"
+            android:title="@string/sort_dashboardLikeServer_title"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="extradata"
+            android:summaryOff="@string/show_extra_data_off"
+            android:summaryOn="@string/show_extra_data_on"
+            android:title="@string/extra_data_title"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="dashboardAsList"
+            android:summaryOff="@string/show_dashboard_list_on"
+            android:summaryOn="@string/show_dashboard_list_off"
+            android:title="@string/dashboard_list_title"/>
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_wear">
         <SwitchPreference

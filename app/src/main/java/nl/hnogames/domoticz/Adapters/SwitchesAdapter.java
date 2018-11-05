@@ -98,18 +98,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         this.context = context;
         domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-        // When not sorted the devices are almost like dashboard on server
-        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
-            // Sort alphabetically
-            Collections.sort(data, new Comparator<DevicesInfo>() {
-                @Override
-                public int compare(DevicesInfo left, DevicesInfo right) {
-                    return left.getName().compareTo(right.getName());
-                }
-            });
-        }
-
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
 
@@ -117,17 +105,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     }
 
     public void setData(ArrayList<DevicesInfo> data) {
-        // When not sorted the devices are almost like dashboard on server
-        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
-            // Sort alphabetically
-            Collections.sort(data, new Comparator<DevicesInfo>() {
-                @Override
-                public int compare(DevicesInfo left, DevicesInfo right) {
-                    return left.getName().compareTo(right.getName());
-                }
-            });
-        }
-
         this.data = data;
         this.filteredData = data;
     }
@@ -135,7 +112,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private void handleLikeButtonClick(int idx, boolean checked) {
         listener.onLikeButtonClick(idx, checked);
     }
-
 
     /**
      * Get's the filter

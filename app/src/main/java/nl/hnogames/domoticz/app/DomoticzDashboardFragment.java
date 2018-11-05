@@ -61,9 +61,7 @@ import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class DomoticzDashboardFragment extends Fragment {
-
     public RecyclerView gridView;
-
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
@@ -119,20 +117,19 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     public void initViews(View root) {
-        gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+        gridView = root.findViewById(R.id.my_recycler_view);
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getContext());
 
         setGridViewLayout();
-        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
     }
 
     public void setGridViewLayout() {
 
         try {
             boolean isTablet = false;
-            float screenWidth = 0;
             boolean isPortrait = false;
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -143,7 +140,6 @@ public class DomoticzDashboardFragment extends Fragment {
             }
 
             gridView.setHasFixedSize(true);
-
             if (!mSharedPrefs.showDashboardAsList()) {
                 if (isTablet) {
                     if (isPortrait) {

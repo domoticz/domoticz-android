@@ -186,6 +186,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:16.0.0"
     implementation "com.google.android.gms:play-services-places:16.0.0"
     implementation "com.google.android.gms:play-services-ads:16.0.0"
+    implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.4'

@@ -52,6 +52,8 @@
     <string name="enable_items">Enable/Disable Items</string>
     <string name="sort_dashboardLikeServer_title">Dashboard sorting</string>
     <string name="sort_dashboardLikeServer_on">Sort dashboard like server</string>
+    <string name="sort_dashboardCustom_on">Custom dashboard sorting with drag and drop</string>
+
     <string name="sort_dashboardLikeServer_off">Sort dashboard alphabetically</string>
     <string name="extra_data_title">Extra data on dashboard</string>
     <string name="show_extra_data_on">Show extra data on dashboard</string>

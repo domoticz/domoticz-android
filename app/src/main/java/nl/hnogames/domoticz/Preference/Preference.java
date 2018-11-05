@@ -187,6 +187,7 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
         android.preference.PreferenceScreen notificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
         android.preference.Preference noticiationSettings = findPreference("noticiationSettings");
+        android.preference.SwitchPreference CustomSortProperty = (android.preference.SwitchPreference) findPreference("sort_dashboardCustom");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             android.preference.PreferenceCategory notificationSound = (android.preference.PreferenceCategory) findPreference("notificationSound");
@@ -256,6 +257,18 @@ public class Preference extends PreferenceFragment {
                     return false;
                 }
                 return true;
+            }
+        });
+
+        CustomSortProperty.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_theme));
+                    return false;
+                } else {
+                    return true;
+                }
             }
         });
 

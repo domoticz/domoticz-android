@@ -47,9 +47,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -62,7 +65,7 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> {
+public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 2000;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
@@ -84,6 +87,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private int previousDimmerValue;
     private SharedPrefUtil mSharedPrefs;
     private ConfigInfo mConfigInfo;
+    public static List<String> mCustomSorting;
     private ItemFilter mFilter = new ItemFilter();
 
     public DashboardAdapter(Context context,
@@ -94,29 +98,47 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         super();
         this.showAsList = showAsList;
         mSharedPrefs = new SharedPrefUtil(context);
-
         this.context = context;
         domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
-
+        if(mCustomSorting==null)
+            mCustomSorting = mSharedPrefs.getDashboardSortingList();
         setData(data);
     }
 
     public void setData(ArrayList<DevicesInfo> data) {
-        // When not sorted the devices are almost like dashboard on server
-        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
-            // Sort alphabetically
-            Collections.sort(data, new Comparator<DevicesInfo>() {
-                @Override
-                public int compare(DevicesInfo left, DevicesInfo right) {
-                    return left.getName().compareTo(right.getName());
-                }
-            });
-        }
+        ArrayList<DevicesInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
+    }
 
-        this.data = data;
-        this.filteredData = data;
+    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
+        ArrayList<DevicesInfo> customdata = new ArrayList<>();
+        if(mSharedPrefs.enableCustomDashboardSorting() && mCustomSorting != null){
+            for (String s : mCustomSorting) {
+                for (DevicesInfo d : data) {
+                    if(s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (DevicesInfo d : data) {
+                if(!customdata.contains(d))
+                    customdata.add(d);
+            }
+        }
+        else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (DevicesInfo d: filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveDashboardSortingList(ids);
     }
 
     /**
@@ -176,25 +198,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
             setSwitchRowData(extendedStatusInfo, holder);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClicked(v, position);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
-                }
-            });
-            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemLongClicked(position);
-                }
-            });
+                holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemLongClicked(position);
+                    }
+                });
         }
     }
 
@@ -207,7 +216,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   DataObjectHolder holder) {
         holder.pieView.setVisibility(View.GONE);
-
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
             (mDeviceInfo.getSwitchType() == null)) {
             if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
@@ -1787,6 +1795,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
     }
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
     interface Buttons {
         int NOTHING = 0;
         int SWITCH = 1;
@@ -1807,8 +1826,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public interface OnClickListener {
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder {
-
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageView buttonUp, buttonDown, buttonStop;
@@ -1857,6 +1875,27 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             pieView.setVisibility(View.GONE);//default
         }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
+        }
+    }
+
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
     }
 
     /**
@@ -1867,11 +1906,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         protected FilterResults performFiltering(CharSequence constraint) {
 
             String filterString = constraint.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
-
             final ArrayList<DevicesInfo> list = data;
-
             int count = list.size();
             final ArrayList<DevicesInfo> devicesInfos = new ArrayList<>(count);
 
@@ -1884,7 +1920,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
             results.values = devicesInfos;
             results.count = devicesInfos.size();
-
             return results;
         }
 
