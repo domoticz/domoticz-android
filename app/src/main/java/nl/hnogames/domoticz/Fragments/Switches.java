@@ -129,8 +129,22 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     public void Filter(String text) {
         filter = text;
         try {
-            if (adapter != null)
+            if (adapter != null) {
+                if (UsefulBits.isEmpty(text) &&
+                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting()) {
+                    if (mItemTouchHelper == null) {
+                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                                false));
+                    }
+                    mItemTouchHelper.attachToRecyclerView(gridView);
+                } else {
+                    if (mItemTouchHelper != null)
+                        mItemTouchHelper.attachToRecyclerView(null);
+                }
                 adapter.getFilter().filter(text);
+                adapter.notifyDataSetChanged();
+            }
             super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -215,11 +229,12 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     alphaSlideIn.notifyDataSetChanged();
                 }
 
-                if (mSharedPrefs.enableCustomSorting()) {
-                    if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                if (mItemTouchHelper == null) {
+                    mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
                             false));
-                    }
+                }
+                if (    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting()) {
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
                     if (mItemTouchHelper != null)
