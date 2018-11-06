@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Iɣewwaṛen</string>
-  <string name="cameraActivity_name">Takamiṛat</string>
-  <!--        Categories             -->
-  <string name="category_generic">Imcettel</string>
-  <string name="category_wear">Android asiweḍ</string>
-  <string name="category_auto">Android Awurman </string>
-  <string name="category_server">Aqeddac</string>
-  <string name="category_geofencing">Asideg-arakal</string>
-  <string name="category_info">Talɣut</string>
-  <string name="category_advanced">Talqayt</string>
-  <string name="category_language">Tutlayt</string>
-  <string name="category_talk_back">Tiririt</string>
-  <string name="category_notification">Ilɣa</string>
-  <string name="category_debug">Tamseɣtayt</string>
-  <string name="category_export">Sifeḍ/Kter iɣewwaṛen</string>
-  <string name="category_theme">Asentel</string>
-  <string name="category_nfc">Tuqqniwin NFC</string>
-  <string name="category_startup_security">Taɣellist</string>
-  <string name="category_account">Imiḍanen</string>
-  <string name="category_QRCode">Tangalt QR</string>
-  <string name="category_Speech">Ameslay</string>
-  <string name="category_Reset">Ales awennez</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Agdil n waskar</string>
-  <string name="enable_items">Sermed/Ssens iferdisen</string>
-  <string name="sort_dashboardLikeServer_title">Afran n tifelwa n wenzaḍ</string>
-  <string name="sort_dashboardLikeServer_on">Fren tafelwit n wenzaḍ aqeddac</string>
-  <string name="sort_dashboardLikeServer_off">Fren tafelwit n wenzaḍ s tasunḍa ugmiy</string>
-  <string name="extra_data_title">Isefka imsitiyen n tafelwit n wenẓad</string>
-  <string name="show_extra_data_on">Beqqeḍ isefka imsitiyen deg tafelwit n wenẓad</string>
-  <string name="show_extra_data_off">Ffer isefka imsitiyen deg tafelwit n wenẓad</string>
-  <string name="always_on_title">Asekkweṛ asaki</string>
-  <string name="always_on_on">Asekkweṛ yal-ass agdil deg</string>
-  <string name="always_on_off">Ur sekkweṛ ara agdil yal-ass seg</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Isenfalen</string>
-  <string name="switch_buttons_on">Beqqeḍ isenfalen s usnegzi askar/aḥbas </string>
-  <string name="switch_buttons_off">Beqqeḍ isnegziyen s taqefalt askar/aḥbas </string>
-  <string name="dashboard_list_title">Iẓiki n tafelwit wenẓad</string>
-  <string name="show_dashboard_list_on">Beqqeḍ tafelwit n wenẓad d tabdart</string>
-  <string name="show_dashboard_list_off">Beqqeḍ tafelwit n wenẓad d iẓiki</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Amagrad yettwaggan Android n usiweḍ</string>
-  <string name="custom_wear_select">Fren isnegziyen usiweḍ</string>
-  <string name="custom_wear_select_desc">Fren ayen tebɣiḍ attwaliḍ deg allal innek Android usiweḍ</string>
-  <string name="wear_custom_on">Rmed imagraden yettwaggan n Android usiweḍ</string>
-  <string name="wear_custom_off">Ssens imagraden yettwaggan n Android usiweḍ</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Ssens alɣuten iwurmanen n Android</string>
-  <string name="auto_custom_off">Ssens alɣuten iwurmanen n Android</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Swel Asideg-Arakal</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Tagrumma umezgun  </string>
-  <string name="set_dark_theme">Beddel amezgun n wasnas deg Dark</string>
-  <string name="set_light_theme">Beddel amezgun n wasnas deg Tafat </string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Anef OOTT ak-id imeslay</string>
-  <string name="set_talk_back_off">Uɣal s ameslay</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Iɣewwaren yettwakteren,skar OOTT</string>
-  <string name="settings_import_failed">Tella-d tucḍa deg taktert n iɣewwaren</string>
-  <string name="settings_exported">Iɣewwaren yesifḍen,skar OOTT</string>
-  <string name="settings_export_failed">Tella-d tucḍa deg asifeḍ n iɣewwaren</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Iɣewwaren n tuqqna n uqeddac</string>
-  <string name="server_force_fetch_config">Ḥeli-d tawila n uqeddac</string>
-  <string name="nfc_settings">Tawila n tuqqniwin NFC </string>
-  <string name="speech_settings">Tawila n inezḍayen n tuɣac</string>
-  <string name="title_activity_server_settings">Iɣewwaren n uqeddac</string>
-  <string name="multi_server">Agetqeddac</string>
-  <string name="enable_nfc">Sermed NFC</string>
-  <string name="enable_speech">Sermed asemmezdey n taɣect</string>
-  <string name="export_settings">Iɣewwaren n usifeḍ</string>
-  <string name="reset_settings">Wennez meṛṛa iɣewwaren n wasnas (TISUSLA!)</string>
-  <string name="import_settings">Iɣewwaren n taktert </string>
-  <string name="multi_server_settings">Rmed tannalt n iqeddacen</string>
-  <string name="nfc_enable_settings">Rmed tuqqniwin n NFC</string>
-  <string name="speech_enable_settings">Rmed asemmezdey n taɣect</string>
-  <string name="server">Aqeddac</string>
-  <string name="qrcode_settings">Tawila n tangalin QR</string>
-  <string name="enable_qrcode">Rmed tangalin n QR</string>
-  <string name="qrcode_enable_settings">Rmed tangalin n tamseɣnat  n QR</string>
-  <string name="security_settings">Taɣlist n userkeb</string>
-  <string name="enable_security">Rmed amesten n tarkit n talfaft deg wasekkar</string>
-  <string name="disable_security">Ssens amesten n tarkit n talfaft mara tesekkar-eḍ</string>
-  <string name="setup_fingerprints">Swel amesten n tarkit n talfaft seg wagdil n tawila n Android</string>
-  <string name="fingerprint_not_supported">Ameɣri n udsil umdin ur ittusefrak ara ɣef yibenk-agi</string>
-  <string name="fingerprint_not_setup_in_android">Swel di tazwara adsil umdin i yibenk-agi</string>
-  <string name="fingerprint_sure">Awal uffir d win n umiḍan-ik n OOTT.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Isfayluraren (BETA)</string>
-  <string name="widget_description">Rmed neɣ Sens asfaylurar ɣef yibenl-agi</string>
-  <string name="widget_disabled">Isfaylurarn ur rmiden ara ɣef yibenk-agi, senqed ma ulac aɣilif iɣewwaren n OOTT</string>
-  <string name="widget_warning">Ma ulac aɣilif, aseqdec n isfayluraren d tamasit-ik!! Akka tura Isfayluraren llan deg uswir Beta, ihi zemren ad gebren kra n ibugen. Zemren ad d-glun s useqdec n sefka/aẓru s waṭas...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">ID n tirawt n Google Cloud</string>
-  <string name="notification_settings_push">Ssers amsulay n usekles ɣer OOTT</string>
-  <string name="notification_settings_pushed">Amsulay innek n usekles dayen tura tettwasekles deg OOTT</string>
-  <string name="notification_settings_push_failed">Dawezɣi ad yettwasekles amsulay n tiggezt innek deg OOTT,aɛṛeḍ tikkelt nniḍen.</string>
-  <string name="notification_show_title">Ilɣa ineggura</string>
-  <string name="notification_show_nothing">Ulac alɣu</string>
-  <string name="notification_show">Beqqeḍ alɣuten ineggura</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Sfeɛǰ ilɣa</string>
-  <string name="overwrite_notifications">Ekkes alɣuten imezwura seg wallal agi</string>
-  <string name="enable_notifications_title">Rmed tullɣiwin</string>
-  <string name="enable_notifications">Rmed tulɣiwin seg wallal agi</string>
-  <string name="notification_screen_title">Iɣewwaren n walɣu</string>
-  <string name="notification_vibrate_title">Senhez</string>
-  <string name="notification_vibrate_on">Rgigi mara d-yettwaṭef walɣu</string>
-  <string name="notification_vibrate_off">Ur senhaz ara</string>
-  <string name="notification_sound_title">Imesli</string>
-  <string name="notification_sound_summary">Seqdec imesli n walɣu mara d yaweḍ wulɣu</string>
-  <string name="suppress_notifications_select">Ffren ulɣuten ara yettwakkesen</string>
-  <string name="suppress_notifications">Ekkes ulɣuten ulmisen seg wallal agi</string>
-  <string name="suppress_notifications_title">Tukkessa n ulɣuten</string>
-  <string name="alarm_notifications_select">Ffren ulɣuten i tangedwit</string>
-  <string name="alarm_notifications">Asṭenṭen n tangedwit iw ulɣuten ulmisen</string>
-  <string name="clear_notifications">Ileznan n ulɣuten zeddigen</string>
-  <string name="alarm_notifications_title">Ulɣuten n tangedwit</string>
-  <string name="alarm">Tangedwit</string>
-  <string name="alarmtimer_title">Tangedwit n tamsdat</string>
-  <string name="alarmtimer">Amḍan n tasinin ɣer asrag n tangedwit</string>
-  <string name="default_values">Azalen s lexṣas</string>
-  <string name="default_values_min_error">Azal n afellay yesefkk ad yilli nnig n wazal n wadday</string>
-  <string name="default_values_max_error">Azal n afellay yesefkk ad yilli nnig n wazal n wadday</string>
-  <!--        Information category       -->
-  <string name="info_version">Lqem</string>
-  <string name="info_OOTT_version">Lqem OOTT</string>
-  <string name="info_about">Awal ɣef OOTT</string>
-  <string name="info_credits">Amerwas</string>
-  <string name="info_credits_text">OOTT (Powered by Domoticz) iw Android yezmer ad iddu akked ugar n timkarḍiyin open source</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Aseɣti</string>
-  <string name="debug_switch_summary_on">Aseɣti yermed</string>
-  <string name="debug_switch_summary_off">Aseɣti ur yermed</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Teḥwaǧǧ-eḍ uma yiwen uferdis deg leqjeṛ</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Update server</string>
-  <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac OOTT: %1$s"</string>
-  <string name="update_available_enhanced">Amucceḍ n uqeddac yella: %1$s ɣer lqem: %2$s</string>
-  <string name="check_for_update_title">Selken amucceḍ</string>
-  <string name="check_for_update">Tebɣam a neselken amucceḍ n unagraw OOTT?</string>
-  <string name="update_server_warning">Mara yemucceḍ uqeddac innek asnas agi ur iteddu yara akken iwata.</string>
-  <string name="update_server_downloadNotReady1">Amucceḍ werɛad ig zdem (ummiḍ)</string>
-  <string name="update_server_downloadNotReady2">Ttxilek aɛreḍ tikkelt nniḍen.</string>
-  <string name="server_update_available">Amucceḍ n uqeddac yestufa</string>
-  <string name="update_server">Aqeddac n umucceḍ</string>
-  <string name="server_update_revision">Asemsawi n umucceḍ uqeddac</string>
-  <string name="server_version">Lqem uqeddac</string>
-  <string name="server_update">Amucceḍ uqeddac</string>
-  <string name="please_wait_while_we_check">Ttxilek arǧǧu s imal anselken ma yella aqeddac innek yettwahegga iw mucceḍ </string>
-  <string name="server_update_not_ready">Aleqqem n uqeddac ur d-yettwasider ara</string>
-  <string name="please_wait_while_server_updated">Ttxilek sbaṛ s imal amucceḍ i teddu.</string>
-  <string name="server_update_done">Aleqqem n uqeddac immed</string>
-  <string name="update_not_started">Aleqqem ur yekkir ara</string>
-  <string name="update_not_started_unknown_error">Werɛad ig teddu umucceḍ ɣef idra n anezri ur nessin</string>
-  <string name="server_update_not_available">Ulac amucceḍ n uqeddac</string>
-  <string name="click_to_update_server">Sit dagi iw mucceḍ n uqeddac innek</string>
-  <string name="debug_test_text">Tamseɣtayt</string>
-  <string name="restart_required_title">Tulsa n tnekra tlaq</string>
-  <string name="restart_now">Ales tanekra tura?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Iɣewwaṛen</string>
+    <string name="cameraActivity_name">Takamiṛat</string>
+    <!--        Categories             -->
+    <string name="category_generic">Imcettel</string>
+    <string name="category_wear">Android asiweḍ</string>
+    <string name="category_auto">Android Awurman</string>
+    <string name="category_server">Aqeddac</string>
+    <string name="category_geofencing">Asideg-arakal</string>
+    <string name="category_info">Talɣut</string>
+    <string name="category_advanced">Talqayt</string>
+    <string name="category_language">Tutlayt</string>
+    <string name="category_talk_back">Tiririt</string>
+    <string name="category_notification">Ilɣa</string>
+    <string name="category_debug">Tamseɣtayt</string>
+    <string name="category_export">Sifeḍ/Kter iɣewwaṛen</string>
+    <string name="category_theme">Asentel</string>
+    <string name="category_nfc">Tuqqniwin NFC</string>
+    <string name="category_startup_security">Taɣellist</string>
+    <string name="category_account">Imiḍanen</string>
+    <string name="category_QRCode">Tangalt QR</string>
+    <string name="category_Speech">Ameslay</string>
+    <string name="category_Reset">Ales awennez</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Agdil n waskar</string>
+    <string name="enable_items">Sermed/Ssens iferdisen</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Fren tafelwit n wenzaḍ s tasunḍa ugmiy</string>
+    <string name="extra_data_title">Isefka imsitiyen n tafelwit n wenẓad</string>
+    <string name="show_extra_data_on">Beqqeḍ isefka imsitiyen deg tafelwit n wenẓad</string>
+    <string name="show_extra_data_off">Ffer isefka imsitiyen deg tafelwit n wenẓad</string>
+    <string name="always_on_title">Asekkweṛ asaki</string>
+    <string name="always_on_on">Asekkweṛ yal-ass agdil deg</string>
+    <string name="always_on_off">Ur sekkweṛ ara agdil yal-ass seg</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Isenfalen</string>
+    <string name="switch_buttons_on">Beqqeḍ isenfalen s usnegzi askar/aḥbas</string>
+    <string name="switch_buttons_off">Beqqeḍ isnegziyen s taqefalt askar/aḥbas</string>
+    <string name="dashboard_list_title">Iẓiki n tafelwit wenẓad</string>
+    <string name="show_dashboard_list_on">Beqqeḍ tafelwit n wenẓad d tabdart</string>
+    <string name="show_dashboard_list_off">Beqqeḍ tafelwit n wenẓad d iẓiki</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Amagrad yettwaggan Android n usiweḍ</string>
+    <string name="custom_wear_select">Fren isnegziyen usiweḍ</string>
+    <string name="custom_wear_select_desc">Fren ayen tebɣiḍ attwaliḍ deg allal innek Android usiweḍ</string>
+    <string name="wear_custom_on">Rmed imagraden yettwaggan n Android usiweḍ</string>
+    <string name="wear_custom_off">Ssens imagraden yettwaggan n Android usiweḍ</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Ssens alɣuten iwurmanen n Android</string>
+    <string name="auto_custom_off">Ssens alɣuten iwurmanen n Android</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Swel Asideg-Arakal</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Tagrumma umezgun</string>
+    <string name="set_dark_theme">Beddel amezgun n wasnas deg Dark</string>
+    <string name="set_light_theme">Beddel amezgun n wasnas deg Tafat</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Anef OOTT ak-id imeslay</string>
+    <string name="set_talk_back_off">Uɣal s ameslay</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Iɣewwaren yettwakteren,skar OOTT</string>
+    <string name="settings_import_failed">Tella-d tucḍa deg taktert n iɣewwaren</string>
+    <string name="settings_exported">Iɣewwaren yesifḍen,skar OOTT</string>
+    <string name="settings_export_failed">Tella-d tucḍa deg asifeḍ n iɣewwaren</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Iɣewwaren n tuqqna n uqeddac</string>
+    <string name="server_force_fetch_config">Ḥeli-d tawila n uqeddac</string>
+    <string name="nfc_settings">Tawila n tuqqniwin NFC</string>
+    <string name="speech_settings">Tawila n inezḍayen n tuɣac</string>
+    <string name="title_activity_server_settings">Iɣewwaren n uqeddac</string>
+    <string name="multi_server">Agetqeddac</string>
+    <string name="enable_nfc">Sermed NFC</string>
+    <string name="enable_speech">Sermed asemmezdey n taɣect</string>
+    <string name="export_settings">Iɣewwaren n usifeḍ</string>
+    <string name="reset_settings">Wennez meṛṛa iɣewwaren n wasnas (TISUSLA!)</string>
+    <string name="import_settings">Iɣewwaren n taktert</string>
+    <string name="multi_server_settings">Rmed tannalt n iqeddacen</string>
+    <string name="nfc_enable_settings">Rmed tuqqniwin n NFC</string>
+    <string name="speech_enable_settings">Rmed asemmezdey n taɣect</string>
+    <string name="server">Aqeddac</string>
+    <string name="qrcode_settings">Tawila n tangalin QR</string>
+    <string name="enable_qrcode">Rmed tangalin n QR</string>
+    <string name="qrcode_enable_settings">Rmed tangalin n tamseɣnat  n QR</string>
+    <string name="security_settings">Taɣlist n userkeb</string>
+    <string name="enable_security">Rmed amesten n tarkit n talfaft deg wasekkar</string>
+    <string name="disable_security">Ssens amesten n tarkit n talfaft mara tesekkar-eḍ</string>
+    <string name="setup_fingerprints">Swel amesten n tarkit n talfaft seg wagdil n tawila n Android</string>
+    <string name="fingerprint_not_supported">Ameɣri n udsil umdin ur ittusefrak ara ɣef yibenk-agi</string>
+    <string name="fingerprint_not_setup_in_android">Swel di tazwara adsil umdin i yibenk-agi</string>
+    <string name="fingerprint_sure">Awal uffir d win n umiḍan-ik n OOTT.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Isfayluraren (BETA)</string>
+    <string name="widget_description">Rmed neɣ Sens asfaylurar ɣef yibenl-agi</string>
+    <string name="widget_disabled">Isfaylurarn ur rmiden ara ɣef yibenk-agi, senqed ma ulac aɣilif iɣewwaren n OOTT</string>
+    <string name="widget_warning">Ma ulac aɣilif, aseqdec n isfayluraren d tamasit-ik!! Akka tura Isfayluraren llan deg uswir Beta, ihi zemren ad gebren kra n ibugen. Zemren ad d-glun s useqdec n sefka/aẓru s waṭas...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID n tirawt n Google Cloud</string>
+    <string name="notification_settings_push">Ssers amsulay n usekles ɣer OOTT</string>
+    <string name="notification_settings_pushed">Amsulay innek n usekles dayen tura tettwasekles deg OOTT</string>
+    <string name="notification_settings_push_failed">Dawezɣi ad yettwasekles amsulay n tiggezt innek deg OOTT,aɛṛeḍ tikkelt nniḍen.</string>
+    <string name="notification_show_title">Ilɣa ineggura</string>
+    <string name="notification_show_nothing">Ulac alɣu</string>
+    <string name="notification_show">Beqqeḍ alɣuten ineggura</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Sfeɛǰ ilɣa</string>
+    <string name="overwrite_notifications">Ekkes alɣuten imezwura seg wallal agi</string>
+    <string name="enable_notifications_title">Rmed tullɣiwin</string>
+    <string name="enable_notifications">Rmed tulɣiwin seg wallal agi</string>
+    <string name="notification_screen_title">Iɣewwaren n walɣu</string>
+    <string name="notification_vibrate_title">Senhez</string>
+    <string name="notification_vibrate_on">Rgigi mara d-yettwaṭef walɣu</string>
+    <string name="notification_vibrate_off">Ur senhaz ara</string>
+    <string name="notification_sound_title">Imesli</string>
+    <string name="notification_sound_summary">Seqdec imesli n walɣu mara d yaweḍ wulɣu</string>
+    <string name="suppress_notifications_select">Ffren ulɣuten ara yettwakkesen</string>
+    <string name="suppress_notifications">Ekkes ulɣuten ulmisen seg wallal agi</string>
+    <string name="suppress_notifications_title">Tukkessa n ulɣuten</string>
+    <string name="alarm_notifications_select">Ffren ulɣuten i tangedwit</string>
+    <string name="alarm_notifications">Asṭenṭen n tangedwit iw ulɣuten ulmisen</string>
+    <string name="clear_notifications">Ileznan n ulɣuten zeddigen</string>
+    <string name="alarm_notifications_title">Ulɣuten n tangedwit</string>
+    <string name="alarm">Tangedwit</string>
+    <string name="alarmtimer_title">Tangedwit n tamsdat</string>
+    <string name="alarmtimer">Amḍan n tasinin ɣer asrag n tangedwit</string>
+    <string name="default_values">Azalen s lexṣas</string>
+    <string name="default_values_min_error">Azal n afellay yesefkk ad yilli nnig n wazal n wadday</string>
+    <string name="default_values_max_error">Azal n afellay yesefkk ad yilli nnig n wazal n wadday</string>
+    <!--        Information category       -->
+    <string name="info_version">Lqem</string>
+    <string name="info_OOTT_version">Lqem OOTT</string>
+    <string name="info_about">Awal ɣef OOTT</string>
+    <string name="info_credits">Amerwas</string>
+    <string name="info_credits_text">OOTT iw Android yezmer ad iddu akked ugar n timkarḍiyin open source</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Aseɣti</string>
+    <string name="debug_switch_summary_on">Aseɣti yermed</string>
+    <string name="debug_switch_summary_off">Aseɣti ur yermed</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Teḥwaǧǧ-eḍ uma yiwen uferdis deg leqjeṛ</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Update server</string>
+    <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac OOTT: %1$s"</string>
+    <string name="update_available_enhanced">Amucceḍ n uqeddac yella: %1$s ɣer lqem: %2$s</string>
+    <string name="check_for_update_title">Selken amucceḍ</string>
+    <string name="check_for_update">Tebɣam a neselken amucceḍ n unagraw OOTT?</string>
+    <string name="update_server_warning">Mara yemucceḍ uqeddac innek asnas agi ur iteddu yara akken iwata.</string>
+    <string name="update_server_downloadNotReady1">Amucceḍ werɛad ig zdem (ummiḍ)</string>
+    <string name="update_server_downloadNotReady2">Ttxilek aɛreḍ tikkelt nniḍen.</string>
+    <string name="server_update_available">Amucceḍ n uqeddac yestufa</string>
+    <string name="update_server">Aqeddac n umucceḍ</string>
+    <string name="server_update_revision">Asemsawi n umucceḍ uqeddac</string>
+    <string name="server_version">Lqem uqeddac</string>
+    <string name="server_update">Amucceḍ uqeddac</string>
+    <string name="please_wait_while_we_check">Ttxilek arǧǧu s imal anselken ma yella aqeddac innek yettwahegga iw mucceḍ</string>
+    <string name="server_update_not_ready">Aleqqem n uqeddac ur d-yettwasider ara</string>
+    <string name="please_wait_while_server_updated">Ttxilek sbaṛ s imal amucceḍ i teddu.</string>
+    <string name="server_update_done">Aleqqem n uqeddac immed</string>
+    <string name="update_not_started">Aleqqem ur yekkir ara</string>
+    <string name="update_not_started_unknown_error">Werɛad ig teddu umucceḍ ɣef idra n anezri ur nessin</string>
+    <string name="server_update_not_available">Ulac amucceḍ n uqeddac</string>
+    <string name="click_to_update_server">Sit dagi iw mucceḍ n uqeddac innek</string>
+    <string name="debug_test_text">Tamseɣtayt</string>
+    <string name="restart_required_title">Tulsa n tnekra tlaq</string>
+    <string name="restart_now">Ales tanekra tura?</string>
 </resources>

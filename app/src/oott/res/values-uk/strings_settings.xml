@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Налаштування</string>
-  <string name="cameraActivity_name">Камера</string>
-  <!--        Categories             -->
-  <string name="category_generic">Загальні</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android авто</string>
-  <string name="category_server">Сервер</string>
-  <string name="category_geofencing">Geofencing</string>
-  <string name="category_info">Інформація</string>
-  <string name="category_advanced">Додаткові налаштування</string>
-  <string name="category_language">Мова</string>
-  <string name="category_talk_back">Talk Back</string>
-  <string name="category_notification">Сповіщення</string>
-  <string name="category_debug">Налагодження</string>
-  <string name="category_export">Експорт/імпорт параметрів</string>
-  <string name="category_theme">Тема оформлення</string>
-  <string name="category_nfc">NFC підключення</string>
-  <string name="category_startup_security">Безпека</string>
-  <string name="category_account">Облікові записи</string>
-  <string name="category_QRCode">QR-код</string>
-  <string name="category_Speech">Мовлення</string>
-  <string name="category_Reset">Скидання</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Початковий екран</string>
-  <string name="enable_items">Увімкнути/вимкнути елементів</string>
-  <string name="sort_dashboardLikeServer_title">Сортування елементів на головній сторінці</string>
-  <string name="sort_dashboardLikeServer_on">Сортувати головну сторінку, як на сервері</string>
-  <string name="sort_dashboardLikeServer_off">Сортувати головну сторінку по алфавіту</string>
-  <string name="extra_data_title">Додаткові дані на головній сторінці</string>
-  <string name="show_extra_data_on">Показувати додаткові дані на головній сторінці</string>
-  <string name="show_extra_data_off">Приховати додаткові дані на головній сторінці</string>
-  <string name="always_on_title">Після блокування</string>
-  <string name="always_on_on">Блокування екрану коли ввімкнено \"Завжди включений\"</string>
-  <string name="always_on_off">Не блокувати екран коли ввімкнено \"Завжди включений\"</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Перемикачі</string>
-  <string name="switch_buttons_on">Показати комутатори зі перемикач вкл/викл</string>
-  <string name="switch_buttons_off">Показати комутатори зі кнопки включення/вимикання</string>
-  <string name="dashboard_list_title">Елементи на головній сторінці у вигляді сітки</string>
-  <string name="show_dashboard_list_on">Елементи на головній сторінці у вигляді списку</string>
-  <string name="show_dashboard_list_off">Показувати елементи на головній сторінці у вигляді сітки</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Спеціальні елементи Android Wear</string>
-  <string name="custom_wear_select">Установіть перемикачі Wear</string>
-  <string name="custom_wear_select_desc">Оберіть які комутатори, ви хотіли б бачити на пристрої Android Wear</string>
-  <string name="wear_custom_on">Увімкнути Android Wear користувацькі елементи</string>
-  <string name="wear_custom_off">Вимкнути Android Wear користувацькі елементи</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Увімкнути сповіщення Android авто</string>
-  <string name="auto_custom_off">Заборонити надсилання сповіщень Android авто</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Настроювання Geofencing</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Задану тему</string>
-  <string name="set_dark_theme">Змінити тему додатку на Темну</string>
-  <string name="set_light_theme">Змінити тему додатку на Світлу</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Нехай OOTT озвучує виконані дії</string>
-  <string name="set_talk_back_off">Вимкнути озвучування виконаних дій</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Параметри імпортування, необхідно перезавантажити OOTT</string>
-  <string name="settings_import_failed">Не вдалося імпортувати дані</string>
-  <string name="settings_exported">Параметри експортовані, необхідно перезавантажити OOTT</string>
-  <string name="settings_export_failed">Не вдалося експортувати налаштування</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Параметри підключення до сервера</string>
-  <string name="server_force_fetch_config">Витягування сервер конфігурації</string>
-  <string name="nfc_settings">Налаштування NFC підключень</string>
-  <string name="speech_settings">Налаштування команд мови</string>
-  <string name="title_activity_server_settings">Налаштування сервера</string>
-  <string name="multi_server">Multi-сервер</string>
-  <string name="enable_nfc">Увімкнути NFC</string>
-  <string name="enable_speech">Увімкнення розпізнавання мовлення</string>
-  <string name="export_settings">Експорт налаштувань</string>
-  <string name="reset_settings">Увага!!! Скидання всіх налаштувань додатку</string>
-  <string name="import_settings">Імпортувати налаштування</string>
-  <string name="multi_server_settings">Увімкнення підтримки кількох серверів</string>
-  <string name="nfc_enable_settings">Увімкнути NFC підключення</string>
-  <string name="speech_enable_settings">Увімкнення розпізнавання мовлення</string>
-  <string name="server">Сервер</string>
-  <string name="qrcode_settings">Установка QR-кодів</string>
-  <string name="enable_qrcode">Увімкнути QR-коди</string>
-  <string name="qrcode_enable_settings">Увімкнути функціональність QR-кодів</string>
-  <string name="security_settings">Параметри безпеки</string>
-  <string name="enable_security">Увімкнути захист відбитком пальця при запуску</string>
-  <string name="disable_security">Вимкнути захист відбитком пальця при запуску</string>
-  <string name="setup_fingerprints">Налаштування відбитку пальця через налаштування екрану в Android</string>
-  <string name="fingerprint_not_supported">Цей пристрій не підтримує розпізнавання відбитку пальця</string>
-  <string name="fingerprint_not_setup_in_android">Перше розпізнавання відбитку пальця на цьому пристрої</string>
-  <string name="fingerprint_sure">Ти впевнений? Пароль відмовостійкості - це пароль вашого облікового запису OOTT.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Віджети (бета-версія)</string>
-  <string name="widget_description">Увімкнути або вимкнути віджет на цьому пристрої</string>
-  <string name="widget_disabled">Віджети не ввімкнуто на цьому пристрої, будь ласка, перевірте ваші параметри OOTT</string>
-  <string name="widget_warning">Будь ласка, використовуйте віджети на свій страх і ризик! Віджети в даний час в стадії бета-тестування і ймовірно містити певні помилки. Це може призвести до великих обсягів даних / акумулятора...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">Google Cloud id обміну повідомленнями</string>
-  <string name="notification_settings_push">Зареєструвати id OOTT</string>
-  <string name="notification_settings_pushed">Ваш id тепер збережено в OOTT</string>
-  <string name="notification_settings_push_failed">Неможливо зберегти Ваш id в OOTT, спробуйте звязатися пізніше.</string>
-  <string name="notification_show_title">Останні повідомлення</string>
-  <string name="notification_show_nothing">Повідомлення відсутні</string>
-  <string name="notification_show">Показати кілька останніх повідомлень</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Перезаписувати сповіщення</string>
-  <string name="overwrite_notifications">Перезаписувати попередні повідомлення на цьому пристрої</string>
-  <string name="enable_notifications_title">Увімкнути сповіщення</string>
-  <string name="enable_notifications">Увімкнути сповіщення на цьому пристрої</string>
-  <string name="notification_screen_title">Параметри сповіщень</string>
-  <string name="notification_vibrate_title">Вібрація</string>
-  <string name="notification_vibrate_on">Вібрація при надходженні сповіщення</string>
-  <string name="notification_vibrate_off">Не вібрувати</string>
-  <string name="notification_sound_title">Мелодія</string>
-  <string name="notification_sound_summary">Використовувати мелодію, коли надходить повідомлення</string>
-  <string name="suppress_notifications_select">Вибрати сповіщення які будуть ігноруватися</string>
-  <string name="suppress_notifications">Заборонити конкретні сповіщення на цьому пристрої</string>
-  <string name="suppress_notifications_title">Ігнорувати сповіщення</string>
-  <string name="alarm_notifications_select">Вибрати сповіщення для тривоги</string>
-  <string name="alarm_notifications">Звуковий сигнал тривоги, для конкретних повідомлень</string>
-  <string name="clear_notifications">Чистий журнал сповіщень</string>
-  <string name="alarm_notifications_title">Сповіщення сигналізації</string>
-  <string name="alarm">Сигналізації</string>
-  <string name="alarmtimer_title">Таймер</string>
-  <string name="alarmtimer">Час на вихід</string>
-  <string name="default_values">Значення за замовчуванням</string>
-  <string name="default_values_min_error">Значення Max повинна бути вище, ніж значення Min</string>
-  <string name="default_values_max_error">Значення Max повинна бути вище, ніж значення Min</string>
-  <!--        Information category       -->
-  <string name="info_version">Версія</string>
-  <string name="info_OOTT_version">Версія OOTT</string>
-  <string name="info_about">Про OOTT</string>
-  <string name="info_credits">Подяки</string>
-  <string name="info_credits_text">Створення OOTT для Android стало можливим за допомогою кількох відкритих бібліотек</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Налагодження</string>
-  <string name="debug_switch_summary_on">Налагодження ввімкнено</string>
-  <string name="debug_switch_summary_off">Налагодження вимкнено</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Вам потрібно принаймні один елемент у ящику</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Сервера оновлень</string>
-  <string name="error_couldNotCheckForUpdates">"Не вдається перевірити наявність оновлень: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Не вдалося отримати конфігурацію сервера OOTT: %1$s"</string>
-  <string name="update_available_enhanced">Доступні оновлення сервера: %1$s версії: %2$s</string>
-  <string name="check_for_update_title">Перевірити наявність оновлень</string>
-  <string name="check_for_update">Ви бажаєте перевіряти наявність оновлень системи OOTT?</string>
-  <string name="update_server_warning">Під час оновлення сервера цей додаток не працюватиме належним чином.</string>
-  <string name="update_server_downloadNotReady1">Оновлення ще не повністю завантажені.</string>
-  <string name="update_server_downloadNotReady2">Будь ласка, спробуйте ще раз пізніше.</string>
-  <string name="server_update_available">Доступні оновлення сервера</string>
-  <string name="update_server">Оновити сервер</string>
-  <string name="server_update_revision">Версія оновлень сервера</string>
-  <string name="server_version">Версія серверу</string>
-  <string name="server_update">Сервер оновлення</string>
-  <string name="please_wait_while_we_check">Зачекайте, поки ми перевірити чи ваш сервер готовий оновитися</string>
-  <string name="server_update_not_ready">Оновлення не завантажуються</string>
-  <string name="please_wait_while_server_updated">Будь ласка, почекайте, під час оновлення сервера.</string>
-  <string name="server_update_done">Оновлення сервера завершено</string>
-  <string name="update_not_started">Оновлення не почато</string>
-  <string name="update_not_started_unknown_error">Оновлення не почалося через невідому помилку</string>
-  <string name="server_update_not_available">Оновлення сервера не доступні</string>
-  <string name="click_to_update_server">Натисніть тут, щоб оновити сервер</string>
-  <string name="debug_test_text">Тест налагодження</string>
-  <string name="restart_required_title">Потрібне перезавантаження</string>
-  <string name="restart_now">Перезавантажити зараз?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Налаштування</string>
+    <string name="cameraActivity_name">Камера</string>
+    <!--        Categories             -->
+    <string name="category_generic">Загальні</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android авто</string>
+    <string name="category_server">Сервер</string>
+    <string name="category_geofencing">Geofencing</string>
+    <string name="category_info">Інформація</string>
+    <string name="category_advanced">Додаткові налаштування</string>
+    <string name="category_language">Мова</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Сповіщення</string>
+    <string name="category_debug">Налагодження</string>
+    <string name="category_export">Експорт/імпорт параметрів</string>
+    <string name="category_theme">Тема оформлення</string>
+    <string name="category_nfc">NFC підключення</string>
+    <string name="category_startup_security">Безпека</string>
+    <string name="category_account">Облікові записи</string>
+    <string name="category_QRCode">QR-код</string>
+    <string name="category_Speech">Мовлення</string>
+    <string name="category_Reset">Скидання</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Початковий екран</string>
+    <string name="enable_items">Увімкнути/вимкнути елементів</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Сортувати головну сторінку по алфавіту</string>
+    <string name="extra_data_title">Додаткові дані на головній сторінці</string>
+    <string name="show_extra_data_on">Показувати додаткові дані на головній сторінці</string>
+    <string name="show_extra_data_off">Приховати додаткові дані на головній сторінці</string>
+    <string name="always_on_title">Після блокування</string>
+    <string name="always_on_on">Блокування екрану коли ввімкнено \"Завжди включений\"</string>
+    <string name="always_on_off">Не блокувати екран коли ввімкнено \"Завжди включений\"</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Перемикачі</string>
+    <string name="switch_buttons_on">Показати комутатори зі перемикач вкл/викл</string>
+    <string name="switch_buttons_off">Показати комутатори зі кнопки включення/вимикання</string>
+    <string name="dashboard_list_title">Елементи на головній сторінці у вигляді сітки</string>
+    <string name="show_dashboard_list_on">Елементи на головній сторінці у вигляді списку</string>
+    <string name="show_dashboard_list_off">Показувати елементи на головній сторінці у вигляді сітки</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Спеціальні елементи Android Wear</string>
+    <string name="custom_wear_select">Установіть перемикачі Wear</string>
+    <string name="custom_wear_select_desc">Оберіть які комутатори, ви хотіли б бачити на пристрої Android Wear</string>
+    <string name="wear_custom_on">Увімкнути Android Wear користувацькі елементи</string>
+    <string name="wear_custom_off">Вимкнути Android Wear користувацькі елементи</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Увімкнути сповіщення Android авто</string>
+    <string name="auto_custom_off">Заборонити надсилання сповіщень Android авто</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Настроювання Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Задану тему</string>
+    <string name="set_dark_theme">Змінити тему додатку на Темну</string>
+    <string name="set_light_theme">Змінити тему додатку на Світлу</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Нехай OOTT озвучує виконані дії</string>
+    <string name="set_talk_back_off">Вимкнути озвучування виконаних дій</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Параметри імпортування, необхідно перезавантажити OOTT</string>
+    <string name="settings_import_failed">Не вдалося імпортувати дані</string>
+    <string name="settings_exported">Параметри експортовані, необхідно перезавантажити OOTT</string>
+    <string name="settings_export_failed">Не вдалося експортувати налаштування</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Параметри підключення до сервера</string>
+    <string name="server_force_fetch_config">Витягування сервер конфігурації</string>
+    <string name="nfc_settings">Налаштування NFC підключень</string>
+    <string name="speech_settings">Налаштування команд мови</string>
+    <string name="title_activity_server_settings">Налаштування сервера</string>
+    <string name="multi_server">Multi-сервер</string>
+    <string name="enable_nfc">Увімкнути NFC</string>
+    <string name="enable_speech">Увімкнення розпізнавання мовлення</string>
+    <string name="export_settings">Експорт налаштувань</string>
+    <string name="reset_settings">Увага!!! Скидання всіх налаштувань додатку</string>
+    <string name="import_settings">Імпортувати налаштування</string>
+    <string name="multi_server_settings">Увімкнення підтримки кількох серверів</string>
+    <string name="nfc_enable_settings">Увімкнути NFC підключення</string>
+    <string name="speech_enable_settings">Увімкнення розпізнавання мовлення</string>
+    <string name="server">Сервер</string>
+    <string name="qrcode_settings">Установка QR-кодів</string>
+    <string name="enable_qrcode">Увімкнути QR-коди</string>
+    <string name="qrcode_enable_settings">Увімкнути функціональність QR-кодів</string>
+    <string name="security_settings">Параметри безпеки</string>
+    <string name="enable_security">Увімкнути захист відбитком пальця при запуску</string>
+    <string name="disable_security">Вимкнути захист відбитком пальця при запуску</string>
+    <string name="setup_fingerprints">Налаштування відбитку пальця через налаштування екрану в Android</string>
+    <string name="fingerprint_not_supported">Цей пристрій не підтримує розпізнавання відбитку пальця</string>
+    <string name="fingerprint_not_setup_in_android">Перше розпізнавання відбитку пальця на цьому пристрої</string>
+    <string name="fingerprint_sure">Ти впевнений? Пароль відмовостійкості - це пароль вашого облікового запису OOTT.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Віджети (бета-версія)</string>
+    <string name="widget_description">Увімкнути або вимкнути віджет на цьому пристрої</string>
+    <string name="widget_disabled">Віджети не ввімкнуто на цьому пристрої, будь ласка, перевірте ваші параметри OOTT</string>
+    <string name="widget_warning">Будь ласка, використовуйте віджети на свій страх і ризик! Віджети в даний час в стадії бета-тестування і ймовірно містити певні помилки. Це може призвести до великих обсягів даних / акумулятора...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Cloud id обміну повідомленнями</string>
+    <string name="notification_settings_push">Зареєструвати id OOTT</string>
+    <string name="notification_settings_pushed">Ваш id тепер збережено в OOTT</string>
+    <string name="notification_settings_push_failed">Неможливо зберегти Ваш id в OOTT, спробуйте звязатися пізніше.</string>
+    <string name="notification_show_title">Останні повідомлення</string>
+    <string name="notification_show_nothing">Повідомлення відсутні</string>
+    <string name="notification_show">Показати кілька останніх повідомлень</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Перезаписувати сповіщення</string>
+    <string name="overwrite_notifications">Перезаписувати попередні повідомлення на цьому пристрої</string>
+    <string name="enable_notifications_title">Увімкнути сповіщення</string>
+    <string name="enable_notifications">Увімкнути сповіщення на цьому пристрої</string>
+    <string name="notification_screen_title">Параметри сповіщень</string>
+    <string name="notification_vibrate_title">Вібрація</string>
+    <string name="notification_vibrate_on">Вібрація при надходженні сповіщення</string>
+    <string name="notification_vibrate_off">Не вібрувати</string>
+    <string name="notification_sound_title">Мелодія</string>
+    <string name="notification_sound_summary">Використовувати мелодію, коли надходить повідомлення</string>
+    <string name="suppress_notifications_select">Вибрати сповіщення які будуть ігноруватися</string>
+    <string name="suppress_notifications">Заборонити конкретні сповіщення на цьому пристрої</string>
+    <string name="suppress_notifications_title">Ігнорувати сповіщення</string>
+    <string name="alarm_notifications_select">Вибрати сповіщення для тривоги</string>
+    <string name="alarm_notifications">Звуковий сигнал тривоги, для конкретних повідомлень</string>
+    <string name="clear_notifications">Чистий журнал сповіщень</string>
+    <string name="alarm_notifications_title">Сповіщення сигналізації</string>
+    <string name="alarm">Сигналізації</string>
+    <string name="alarmtimer_title">Таймер</string>
+    <string name="alarmtimer">Час на вихід</string>
+    <string name="default_values">Значення за замовчуванням</string>
+    <string name="default_values_min_error">Значення Max повинна бути вище, ніж значення Min</string>
+    <string name="default_values_max_error">Значення Max повинна бути вище, ніж значення Min</string>
+    <!--        Information category       -->
+    <string name="info_version">Версія</string>
+    <string name="info_OOTT_version">Версія OOTT</string>
+    <string name="info_about">Про OOTT</string>
+    <string name="info_credits">Подяки</string>
+    <string name="info_credits_text">Створення OOTT для Android стало можливим за допомогою кількох відкритих бібліотек</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Налагодження</string>
+    <string name="debug_switch_summary_on">Налагодження ввімкнено</string>
+    <string name="debug_switch_summary_off">Налагодження вимкнено</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Вам потрібно принаймні один елемент у ящику</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Сервера оновлень</string>
+    <string name="error_couldNotCheckForUpdates">"Не вдається перевірити наявність оновлень: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Не вдалося отримати конфігурацію сервера OOTT: %1$s"</string>
+    <string name="update_available_enhanced">Доступні оновлення сервера: %1$s версії: %2$s</string>
+    <string name="check_for_update_title">Перевірити наявність оновлень</string>
+    <string name="check_for_update">Ви бажаєте перевіряти наявність оновлень системи OOTT?</string>
+    <string name="update_server_warning">Під час оновлення сервера цей додаток не працюватиме належним чином.</string>
+    <string name="update_server_downloadNotReady1">Оновлення ще не повністю завантажені.</string>
+    <string name="update_server_downloadNotReady2">Будь ласка, спробуйте ще раз пізніше.</string>
+    <string name="server_update_available">Доступні оновлення сервера</string>
+    <string name="update_server">Оновити сервер</string>
+    <string name="server_update_revision">Версія оновлень сервера</string>
+    <string name="server_version">Версія серверу</string>
+    <string name="server_update">Сервер оновлення</string>
+    <string name="please_wait_while_we_check">Зачекайте, поки ми перевірити чи ваш сервер готовий оновитися</string>
+    <string name="server_update_not_ready">Оновлення не завантажуються</string>
+    <string name="please_wait_while_server_updated">Будь ласка, почекайте, під час оновлення сервера.</string>
+    <string name="server_update_done">Оновлення сервера завершено</string>
+    <string name="update_not_started">Оновлення не почато</string>
+    <string name="update_not_started_unknown_error">Оновлення не почалося через невідому помилку</string>
+    <string name="server_update_not_available">Оновлення сервера не доступні</string>
+    <string name="click_to_update_server">Натисніть тут, щоб оновити сервер</string>
+    <string name="debug_test_text">Тест налагодження</string>
+    <string name="restart_required_title">Потрібне перезавантаження</string>
+    <string name="restart_now">Перезавантажити зараз?</string>
 </resources>

@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Tervetuloa</string>
-  <string name="welcome_info_domoticz">OOTT (Powered by Domoticz)on kotiautomaatiojärjestelmä jonka avulla voit ohjata erilaisia laitteita, kuten valoja ja kytkimiä. Lisäksi voit kytkeä järjestelmään erilaisia antureita esimerkiksi lämpötilan, sateen, tuulen, sähkön-, kaasun- tai vedenkulutuksen mittaamiseen. Järjestelmästä on mahdollista saada ilmoituksia ja hälytyksiä mobiililaitteisiin.</string>
+  <string name="welcome_info_domoticz">OOTT on kotiautomaatiojärjestelmä jonka avulla voit ohjata erilaisia laitteita, kuten valoja ja kytkimiä. Lisäksi voit kytkeä järjestelmään erilaisia antureita esimerkiksi lämpötilan, sateen, tuulen, sähkön-, kaasun- tai vedenkulutuksen mittaamiseen. Järjestelmästä on mahdollista saada ilmoituksia ja hälytyksiä mobiililaitteisiin.</string>
   <string name="welcome_info_swipe">Pyyhkäise oikealle tai käytä siirtymispainikkeita alareunassa jatkaaksesi</string>
   <string name="welcome_info_settings1">Seuraavalla sivulla määritetään OOTT-asetukset.</string>
   <string name="welcome_info_settings2">

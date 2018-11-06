@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Nastavenia</string>
-  <string name="cameraActivity_name">Kamera</string>
-  <!--        Categories             -->
-  <string name="category_generic">Všeobecné</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android Auto</string>
-  <string name="category_server">Server</string>
-  <string name="category_geofencing">Geofencing</string>
-  <string name="category_info">Informácie</string>
-  <string name="category_advanced">Pokročilé</string>
-  <string name="category_language">Jazyk</string>
-  <string name="category_talk_back">Spätné odpovede</string>
-  <string name="category_notification">Oznámenia</string>
-  <string name="category_debug">Ladenie chýb</string>
-  <string name="category_export">Exportovať/importovať nastavenia</string>
-  <string name="category_theme">Vzhľad</string>
-  <string name="category_nfc">NFC pripojenie</string>
-  <string name="category_startup_security">Bezpečnosť</string>
-  <string name="category_account">Účty</string>
-  <string name="category_QRCode">QR kód</string>
-  <string name="category_Speech">Reč</string>
-  <string name="category_Reset">Reset</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Úvodná obrazovka</string>
-  <string name="enable_items">Povolenie alebo zakázanie položiek</string>
-  <string name="sort_dashboardLikeServer_title">Triedenie hlavného panelu</string>
-  <string name="sort_dashboardLikeServer_on">Triediť hlavný panel podľa servera</string>
-  <string name="sort_dashboardLikeServer_off">Triediť hlavný panel abecedne</string>
-  <string name="extra_data_title">Extra údaje na hlavnom panely</string>
-  <string name="show_extra_data_on">Zobraziť extra údaje</string>
-  <string name="show_extra_data_off">Skryť extra údaje</string>
-  <string name="always_on_title">Zámok obrazovky</string>
-  <string name="always_on_on">Vždy zamknúť obrazovku</string>
-  <string name="always_on_off">Nezamykať obrazovku</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Prepínače</string>
-  <string name="switch_buttons_on">Zobraziť prepínače s on/off prepínačom</string>
-  <string name="switch_buttons_off">Zobraziť prepínače s on/off tlačidlom</string>
-  <string name="dashboard_list_title">Zobrazenie hlavného panela</string>
-  <string name="show_dashboard_list_on">Zobraziť hlavný panel ako zoznam</string>
-  <string name="show_dashboard_list_off">Zobraziť hlavný panel ako mriežku</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Položky pre Android Wear</string>
-  <string name="custom_wear_select">Vybrať prepínače pre Android Wear</string>
-  <string name="custom_wear_select_desc">Vyberte prepínače ktoré uvidíte na vašom Android Wear zariadení</string>
-  <string name="wear_custom_on">Povoliť Android Wear</string>
-  <string name="wear_custom_off">Zakázať Android Wear</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Zapnúť upozornenia Android Auto</string>
-  <string name="auto_custom_off">Zakázať Android Auto oznámenia</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Konfigurovať Geofencing</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Nastavenie vzhľadu</string>
-  <string name="set_dark_theme">Nastaviť tmavý vzhľad</string>
-  <string name="set_light_theme">Nastaviť svetlý vzhľad</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Nechajte OOTT hovoriť späť na Vás</string>
-  <string name="set_talk_back_off">Vypnutie spätných odpovedí</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Nastavenie importované, reštartujte OOTT</string>
-  <string name="settings_import_failed">Nepodarilo sa importovať nastavenia</string>
-  <string name="settings_exported">Nastavenia exportované, reštartujte OOTT</string>
-  <string name="settings_export_failed">Nepodarilo sa exportovať nastavenia</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Nastavenia pripojenia servera</string>
-  <string name="server_force_fetch_config">Načítanie konfigurácie servera</string>
-  <string name="nfc_settings">Nastavenie NFC prepojení</string>
-  <string name="speech_settings">Nastavenie hlasových príkazov</string>
-  <string name="title_activity_server_settings">Nastavenia servera</string>
-  <string name="multi_server">Viacero serverov</string>
-  <string name="enable_nfc">Povoliť NFC</string>
-  <string name="enable_speech">Povoliť rozpoznanie hlasu</string>
-  <string name="export_settings">Exportovať nastavenia</string>
-  <string name="reset_settings">Reset všetkých nastavení aplikácie (UPOZORNENIE!!)</string>
-  <string name="import_settings">Importovať nastavenia</string>
-  <string name="multi_server_settings">Zapnúť podporu viacerých serverov</string>
-  <string name="nfc_enable_settings">Povolit NFC prepojenia</string>
-  <string name="speech_enable_settings">Povoliť rozpoznanie hlasu</string>
-  <string name="server">Server</string>
-  <string name="qrcode_settings">Nastaviť QR kódy</string>
-  <string name="enable_qrcode">Povoliť QR kódy</string>
-  <string name="qrcode_enable_settings">Povoliť funkcie QR kódov</string>
-  <string name="security_settings">Nastavenie zabezpečenia</string>
-  <string name="enable_security">Zapnúť ochranu odtlačkov prstov na štarte</string>
-  <string name="disable_security">Vypnúť ochranu odtlačkov prstov na štarte</string>
-  <string name="setup_fingerprints">Nastavenie odtlačky prstov cez Android - Nastavenia obrazovky</string>
-  <string name="fingerprint_not_supported">Toto zariadenie nepodporuje zabezpečenie odtlačkom prsta</string>
-  <string name="fingerprint_not_setup_in_android">Najprv nakonfigurujte/pripojte odtlačok prsta na tomto zariadení</string>
-  <string name="fingerprint_sure">Ste si istý? Záložné heslo je heslo konta OOTT.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of OOTT</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">ID správy Google Cloud</string>
-  <string name="notification_settings_push">Poslať vaše registračné ID do OOTT</string>
-  <string name="notification_settings_pushed">Vaše registračné id je teraz uložené v OOTT</string>
-  <string name="notification_settings_push_failed">Nebolo možné uložiť Vaše registračné id v OOTT, prosím skúste to znova neskôr.</string>
-  <string name="notification_show_title">Posledné oznámenia</string>
-  <string name="notification_show_nothing">Žiadne nájdené notifikácie</string>
-  <string name="notification_show">Zobraziť posledných pár upozornení</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Prepísať oznámenia</string>
-  <string name="overwrite_notifications">Prepísať predchádzajúce oznámenia tohto zariadenia</string>
-  <string name="enable_notifications_title">Povoliť oznámenia</string>
-  <string name="enable_notifications">Povoliť oznámenia na tomto zariadení</string>
-  <string name="notification_screen_title">Nastavenia oznámení</string>
-  <string name="notification_vibrate_title">Vibrovanie</string>
-  <string name="notification_vibrate_on">Vibrovať pri prijatí oznámenia</string>
-  <string name="notification_vibrate_off">Nevibrovať</string>
-  <string name="notification_sound_title">Zvuk</string>
-  <string name="notification_sound_summary">Použiť zvukové oznámenia, pri doručení oznámenia</string>
-  <string name="suppress_notifications_select">Vyberte zakázané oznámenia</string>
-  <string name="suppress_notifications">Môžete zakázať niektoré oznámenia na tomto zariadení</string>
-  <string name="suppress_notifications_title">Zakázať oznámenia</string>
-  <string name="alarm_notifications_select">Vyberte upozornenia pre hlásenie</string>
-  <string name="alarm_notifications">Zvukové hlásenie pre osobitné upozornenia</string>
-  <string name="clear_notifications">Clean notification logs</string>
-  <string name="alarm_notifications_title">Hlásiť upozornenie</string>
-  <string name="alarm">Hlásenia</string>
-  <string name="alarmtimer_title">Časovač hlásení</string>
-  <string name="alarmtimer">Trvanie hlásenia</string>
-  <string name="default_values">Default values</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
-  <string name="default_values_max_error">Max value should be higher than Min value</string>
-  <!--        Information category       -->
-  <string name="info_version">Verzia</string>
-  <string name="info_OOTT_version">OOTT verzia</string>
-  <string name="info_about">O OOTT</string>
-  <string name="info_credits">Autori</string>
-  <string name="info_credits_text">Aplikácia OOTT pre Android je vyrobená z niekoľkých open source knižníc</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Ladenie chýb</string>
-  <string name="debug_switch_summary_on">Ladenie zapnuté</string>
-  <string name="debug_switch_summary_off">Ladenie vypnuté</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Musíte mať aspoň jednu položku</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Aktualizovať server</string>
-  <string name="error_couldNotCheckForUpdates">"Nepodarilo sa skontrolovať aktualizácie: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Nepodarilo sa získať konfiguráciu zo servera OOTT: %1$s"</string>
-  <string name="update_available_enhanced">Aktualizácia servera k dispozícii: %1$s na verziu: %2$s</string>
-  <string name="check_for_update_title">Skontrolovať aktualizácie</string>
-  <string name="check_for_update">Ak chcete vyhľadať aktualizácie systému OOTT?</string>
-  <string name="update_server_warning">Kým as Váš server neaktualizuje aplikácia nemusí fungovať správne.</string>
-  <string name="update_server_downloadNotReady1">Aktualizácia nie je ešte (úplne) stiahnutá.</string>
-  <string name="update_server_downloadNotReady2">Skúste neskôr prosím.</string>
-  <string name="server_update_available">Aktualizácia servera k dispozícii</string>
-  <string name="update_server">Aktualizácia servera</string>
-  <string name="server_update_revision">Verzia aktualizácie servera</string>
-  <string name="server_version">Verzia servera</string>
-  <string name="server_update">Aktualizácia servera</string>
-  <string name="please_wait_while_we_check">Čakajte, prosím, kým zistím, či je Váš server pripravený na aktualizáciu</string>
-  <string name="server_update_not_ready">Aktualizáciu sa nepodarilo stiahnúť</string>
-  <string name="please_wait_while_server_updated">Čakajte, prosím, server sa aktualizuje.</string>
-  <string name="server_update_done">Aktualizácie bola dokončená</string>
-  <string name="update_not_started">Aktualizácia sa nespustila</string>
-  <string name="update_not_started_unknown_error">Aktualizácia sa nespustila vzhľadom k neznámej chybe</string>
-  <string name="server_update_not_available">Aktualizácia serveru nieje k dispozícii</string>
-  <string name="click_to_update_server">Kliknite sem pre aktualizáciu Vášho serveru</string>
-  <string name="debug_test_text">Test ladenia</string>
-  <string name="restart_required_title">Vyžaduje sa reštart</string>
-  <string name="restart_now">Reštartovať teraz?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Nastavenia</string>
+    <string name="cameraActivity_name">Kamera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Všeobecné</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Server</string>
+    <string name="category_geofencing">Geofencing</string>
+    <string name="category_info">Informácie</string>
+    <string name="category_advanced">Pokročilé</string>
+    <string name="category_language">Jazyk</string>
+    <string name="category_talk_back">Spätné odpovede</string>
+    <string name="category_notification">Oznámenia</string>
+    <string name="category_debug">Ladenie chýb</string>
+    <string name="category_export">Exportovať/importovať nastavenia</string>
+    <string name="category_theme">Vzhľad</string>
+    <string name="category_nfc">NFC pripojenie</string>
+    <string name="category_startup_security">Bezpečnosť</string>
+    <string name="category_account">Účty</string>
+    <string name="category_QRCode">QR kód</string>
+    <string name="category_Speech">Reč</string>
+    <string name="category_Reset">Reset</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Úvodná obrazovka</string>
+    <string name="enable_items">Povolenie alebo zakázanie položiek</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Triediť hlavný panel abecedne</string>
+    <string name="extra_data_title">Extra údaje na hlavnom panely</string>
+    <string name="show_extra_data_on">Zobraziť extra údaje</string>
+    <string name="show_extra_data_off">Skryť extra údaje</string>
+    <string name="always_on_title">Zámok obrazovky</string>
+    <string name="always_on_on">Vždy zamknúť obrazovku</string>
+    <string name="always_on_off">Nezamykať obrazovku</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Prepínače</string>
+    <string name="switch_buttons_on">Zobraziť prepínače s on/off prepínačom</string>
+    <string name="switch_buttons_off">Zobraziť prepínače s on/off tlačidlom</string>
+    <string name="dashboard_list_title">Zobrazenie hlavného panela</string>
+    <string name="show_dashboard_list_on">Zobraziť hlavný panel ako zoznam</string>
+    <string name="show_dashboard_list_off">Zobraziť hlavný panel ako mriežku</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Položky pre Android Wear</string>
+    <string name="custom_wear_select">Vybrať prepínače pre Android Wear</string>
+    <string name="custom_wear_select_desc">Vyberte prepínače ktoré uvidíte na vašom Android Wear zariadení</string>
+    <string name="wear_custom_on">Povoliť Android Wear</string>
+    <string name="wear_custom_off">Zakázať Android Wear</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Zapnúť upozornenia Android Auto</string>
+    <string name="auto_custom_off">Zakázať Android Auto oznámenia</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Konfigurovať Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Nastavenie vzhľadu</string>
+    <string name="set_dark_theme">Nastaviť tmavý vzhľad</string>
+    <string name="set_light_theme">Nastaviť svetlý vzhľad</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Nechajte OOTT hovoriť späť na Vás</string>
+    <string name="set_talk_back_off">Vypnutie spätných odpovedí</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Nastavenie importované, reštartujte OOTT</string>
+    <string name="settings_import_failed">Nepodarilo sa importovať nastavenia</string>
+    <string name="settings_exported">Nastavenia exportované, reštartujte OOTT</string>
+    <string name="settings_export_failed">Nepodarilo sa exportovať nastavenia</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Nastavenia pripojenia servera</string>
+    <string name="server_force_fetch_config">Načítanie konfigurácie servera</string>
+    <string name="nfc_settings">Nastavenie NFC prepojení</string>
+    <string name="speech_settings">Nastavenie hlasových príkazov</string>
+    <string name="title_activity_server_settings">Nastavenia servera</string>
+    <string name="multi_server">Viacero serverov</string>
+    <string name="enable_nfc">Povoliť NFC</string>
+    <string name="enable_speech">Povoliť rozpoznanie hlasu</string>
+    <string name="export_settings">Exportovať nastavenia</string>
+    <string name="reset_settings">Reset všetkých nastavení aplikácie (UPOZORNENIE!!)</string>
+    <string name="import_settings">Importovať nastavenia</string>
+    <string name="multi_server_settings">Zapnúť podporu viacerých serverov</string>
+    <string name="nfc_enable_settings">Povolit NFC prepojenia</string>
+    <string name="speech_enable_settings">Povoliť rozpoznanie hlasu</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">Nastaviť QR kódy</string>
+    <string name="enable_qrcode">Povoliť QR kódy</string>
+    <string name="qrcode_enable_settings">Povoliť funkcie QR kódov</string>
+    <string name="security_settings">Nastavenie zabezpečenia</string>
+    <string name="enable_security">Zapnúť ochranu odtlačkov prstov na štarte</string>
+    <string name="disable_security">Vypnúť ochranu odtlačkov prstov na štarte</string>
+    <string name="setup_fingerprints">Nastavenie odtlačky prstov cez Android - Nastavenia obrazovky</string>
+    <string name="fingerprint_not_supported">Toto zariadenie nepodporuje zabezpečenie odtlačkom prsta</string>
+    <string name="fingerprint_not_setup_in_android">Najprv nakonfigurujte/pripojte odtlačok prsta na tomto zariadení</string>
+    <string name="fingerprint_sure">Ste si istý? Záložné heslo je heslo konta OOTT.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Enable or Disable Widget on this device</string>
+    <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of OOTT</string>
+    <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID správy Google Cloud</string>
+    <string name="notification_settings_push">Poslať vaše registračné ID do OOTT</string>
+    <string name="notification_settings_pushed">Vaše registračné id je teraz uložené v OOTT</string>
+    <string name="notification_settings_push_failed">Nebolo možné uložiť Vaše registračné id v OOTT, prosím skúste to znova neskôr.</string>
+    <string name="notification_show_title">Posledné oznámenia</string>
+    <string name="notification_show_nothing">Žiadne nájdené notifikácie</string>
+    <string name="notification_show">Zobraziť posledných pár upozornení</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Prepísať oznámenia</string>
+    <string name="overwrite_notifications">Prepísať predchádzajúce oznámenia tohto zariadenia</string>
+    <string name="enable_notifications_title">Povoliť oznámenia</string>
+    <string name="enable_notifications">Povoliť oznámenia na tomto zariadení</string>
+    <string name="notification_screen_title">Nastavenia oznámení</string>
+    <string name="notification_vibrate_title">Vibrovanie</string>
+    <string name="notification_vibrate_on">Vibrovať pri prijatí oznámenia</string>
+    <string name="notification_vibrate_off">Nevibrovať</string>
+    <string name="notification_sound_title">Zvuk</string>
+    <string name="notification_sound_summary">Použiť zvukové oznámenia, pri doručení oznámenia</string>
+    <string name="suppress_notifications_select">Vyberte zakázané oznámenia</string>
+    <string name="suppress_notifications">Môžete zakázať niektoré oznámenia na tomto zariadení</string>
+    <string name="suppress_notifications_title">Zakázať oznámenia</string>
+    <string name="alarm_notifications_select">Vyberte upozornenia pre hlásenie</string>
+    <string name="alarm_notifications">Zvukové hlásenie pre osobitné upozornenia</string>
+    <string name="clear_notifications">Clean notification logs</string>
+    <string name="alarm_notifications_title">Hlásiť upozornenie</string>
+    <string name="alarm">Hlásenia</string>
+    <string name="alarmtimer_title">Časovač hlásení</string>
+    <string name="alarmtimer">Trvanie hlásenia</string>
+    <string name="default_values">Default values</string>
+    <string name="default_values_min_error">Max value should be higher than Min value</string>
+    <string name="default_values_max_error">Max value should be higher than Min value</string>
+    <!--        Information category       -->
+    <string name="info_version">Verzia</string>
+    <string name="info_OOTT_version">OOTT verzia</string>
+    <string name="info_about">O OOTT</string>
+    <string name="info_credits">Autori</string>
+    <string name="info_credits_text">Aplikácia OOTT pre Android je vyrobená z niekoľkých open source knižníc</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Ladenie chýb</string>
+    <string name="debug_switch_summary_on">Ladenie zapnuté</string>
+    <string name="debug_switch_summary_off">Ladenie vypnuté</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Musíte mať aspoň jednu položku</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Aktualizovať server</string>
+    <string name="error_couldNotCheckForUpdates">"Nepodarilo sa skontrolovať aktualizácie: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Nepodarilo sa získať konfiguráciu zo servera OOTT: %1$s"</string>
+    <string name="update_available_enhanced">Aktualizácia servera k dispozícii: %1$s na verziu: %2$s</string>
+    <string name="check_for_update_title">Skontrolovať aktualizácie</string>
+    <string name="check_for_update">Ak chcete vyhľadať aktualizácie systému OOTT?</string>
+    <string name="update_server_warning">Kým as Váš server neaktualizuje aplikácia nemusí fungovať správne.</string>
+    <string name="update_server_downloadNotReady1">Aktualizácia nie je ešte (úplne) stiahnutá.</string>
+    <string name="update_server_downloadNotReady2">Skúste neskôr prosím.</string>
+    <string name="server_update_available">Aktualizácia servera k dispozícii</string>
+    <string name="update_server">Aktualizácia servera</string>
+    <string name="server_update_revision">Verzia aktualizácie servera</string>
+    <string name="server_version">Verzia servera</string>
+    <string name="server_update">Aktualizácia servera</string>
+    <string name="please_wait_while_we_check">Čakajte, prosím, kým zistím, či je Váš server pripravený na aktualizáciu</string>
+    <string name="server_update_not_ready">Aktualizáciu sa nepodarilo stiahnúť</string>
+    <string name="please_wait_while_server_updated">Čakajte, prosím, server sa aktualizuje.</string>
+    <string name="server_update_done">Aktualizácie bola dokončená</string>
+    <string name="update_not_started">Aktualizácia sa nespustila</string>
+    <string name="update_not_started_unknown_error">Aktualizácia sa nespustila vzhľadom k neznámej chybe</string>
+    <string name="server_update_not_available">Aktualizácia serveru nieje k dispozícii</string>
+    <string name="click_to_update_server">Kliknite sem pre aktualizáciu Vášho serveru</string>
+    <string name="debug_test_text">Test ladenia</string>
+    <string name="restart_required_title">Vyžaduje sa reštart</string>
+    <string name="restart_now">Reštartovať teraz?</string>
 </resources>
