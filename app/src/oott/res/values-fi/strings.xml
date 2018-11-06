@@ -106,13 +106,13 @@
     <string name="filter_devices">Suodata laitteet</string>
     <string name="filter_graph_empty">Määritä suodatin</string>
     <string name="choose_color">Valitse väri</string>
-    <string name="no_data_on_OOTT">OOTT palvelimella ei ole dataa</string>
+    <string name="no_data_on_domoticz">OOTT palvelimella ei ole dataa</string>
     <string name="row_icon_description">rivi-kuvake</string>
     <string name="error_image_description">Virhekuva</string>
     <string name="device_image_description">Laitekuva</string>
     <string name="white">Valkoinen</string>
     <string name="refresh">Päivitä</string>
-    <string name="OOTT_logo">OOTT-logo</string>
+    <string name="domoticz_logo">OOTT-logo</string>
     <string name="this_take_minutes">Tämä voi kestää useita minuutteja.</string>
     <string name="continue_question">Haluatko jatkaa?</string>
     <string name="cant_remove_default_server">Oletuspalvelinta ei voi poistaa</string>

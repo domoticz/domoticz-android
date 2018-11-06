@@ -106,13 +106,13 @@
     <string name="filter_devices">Filtre cihazları</string>
     <string name="filter_graph_empty">Lütfen bir filtre belirtin.</string>
     <string name="choose_color">Renk seçin</string>
-    <string name="no_data_on_OOTT">OOTT sunucu üzerinde veri yok</string>
+    <string name="no_data_on_domoticz">OOTT sunucu üzerinde veri yok</string>
     <string name="row_icon_description">Satır simgesi</string>
     <string name="error_image_description">Hata görüntüsü</string>
     <string name="device_image_description">Aygıt resmi</string>
     <string name="white">Beyaz</string>
     <string name="refresh">Yenile</string>
-    <string name="OOTT_logo">OOTT logo</string>
+    <string name="domoticz_logo">OOTT logo</string>
     <string name="this_take_minutes">Bu işlem birkaç dakika sürebilir...</string>
     <string name="continue_question">Devam</string>
     <string name="cant_remove_default_server">Varsayılan sunucuyu kaldıramazsınız</string>

@@ -106,13 +106,13 @@
     <string name="filter_devices">Filtrera enheter</string>
     <string name="filter_graph_empty">Ange ett filter</string>
     <string name="choose_color">Välj färg</string>
-    <string name="no_data_on_OOTT">Ingen data på OOTT-server</string>
+    <string name="no_data_on_domoticz">Ingen data på OOTT-server</string>
     <string name="row_icon_description">rad-ikon</string>
     <string name="error_image_description">Felbild</string>
     <string name="device_image_description">Enhetsbild</string>
     <string name="white">Vit</string>
     <string name="refresh">Uppdatera</string>
-    <string name="OOTT_logo">OOTT logotyp</string>
+    <string name="domoticz_logo">OOTT logotyp</string>
     <string name="this_take_minutes">Detta kan ta flera minuter.</string>
     <string name="continue_question">Vill du fortsätta?</string>
     <string name="cant_remove_default_server">Kan inte ta bort standardserver</string>

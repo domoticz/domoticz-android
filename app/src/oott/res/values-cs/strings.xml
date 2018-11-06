@@ -106,13 +106,13 @@
     <string name="filter_devices">Filtrovat zařízení</string>
     <string name="filter_graph_empty">Prosím upřesněte filtr</string>
     <string name="choose_color">Vybrat barvu</string>
-    <string name="no_data_on_OOTT">Žádná data na serveru OOTT</string>
+    <string name="no_data_on_domoticz">Žádná data na serveru OOTT</string>
     <string name="row_icon_description">ikona řádku</string>
     <string name="error_image_description">Obrázek chyby</string>
     <string name="device_image_description">Obrázek zařízení</string>
     <string name="white">Bílá</string>
     <string name="refresh">Aktualizovat</string>
-    <string name="OOTT_logo">OOTT logo</string>
+    <string name="domoticz_logo">OOTT logo</string>
     <string name="this_take_minutes">Toto může trvat několik minut.</string>
     <string name="continue_question">Pokračovat?</string>
     <string name="cant_remove_default_server">Nelze odstranit výchozí server</string>

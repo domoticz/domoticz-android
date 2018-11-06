@@ -106,13 +106,13 @@
     <string name="filter_devices">筛选设备</string>
     <string name="filter_graph_empty">请指定筛选器</string>
     <string name="choose_color">选择颜色</string>
-    <string name="no_data_on_OOTT">OOTT服务器上没有数据</string>
+    <string name="no_data_on_domoticz">OOTT服务器上没有数据</string>
     <string name="row_icon_description">行图标</string>
     <string name="error_image_description">错误图像</string>
     <string name="device_image_description">设备图像</string>
     <string name="white">白</string>
     <string name="refresh">重新载入</string>
-    <string name="OOTT_logo">OOTT标志</string>
+    <string name="domoticz_logo">OOTT标志</string>
     <string name="this_take_minutes">这可能需要几分钟。</string>
     <string name="continue_question">继续？</string>
     <string name="cant_remove_default_server">不能删除默认服务器</string>

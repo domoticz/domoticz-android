@@ -106,13 +106,13 @@
     <string name="filter_devices">סנן התקנים</string>
     <string name="filter_graph_empty">נא להגדיר מסנן</string>
     <string name="choose_color">בחר צבע</string>
-    <string name="no_data_on_OOTT">אין נתונים בשרת OOTT</string>
+    <string name="no_data_on_domoticz">אין נתונים בשרת OOTT</string>
     <string name="row_icon_description">צלמית שורה</string>
     <string name="error_image_description">תמונת שגיאה</string>
     <string name="device_image_description">תמונת התקן</string>
     <string name="white">לבן</string>
     <string name="refresh">רענון</string>
-    <string name="OOTT_logo">OOTT לוגו</string>
+    <string name="domoticz_logo">OOTT לוגו</string>
     <string name="this_take_minutes">הפעולה עשויה להימשך מספר דקות.</string>
     <string name="continue_question">האם להמשיך?</string>
     <string name="cant_remove_default_server">אין אפשרות להסיר שרת המשמש כברירת מחדל</string>

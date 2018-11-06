@@ -106,13 +106,13 @@
     <string name="filter_devices">Eszközök szűrése</string>
     <string name="filter_graph_empty">Állíts be szűrőt</string>
     <string name="choose_color">Szín választása</string>
-    <string name="no_data_on_OOTT">Nincs adat a OOTT szerveren</string>
+    <string name="no_data_on_domoticz">Nincs adat a OOTT szerveren</string>
     <string name="row_icon_description">sor ikon</string>
     <string name="error_image_description">Hiba kép</string>
     <string name="device_image_description">Készülék kép</string>
     <string name="white">Fehér</string>
     <string name="refresh">Frissítés</string>
-    <string name="OOTT_logo">OOTT logó</string>
+    <string name="domoticz_logo">OOTT logó</string>
     <string name="this_take_minutes">Ez több percig is eltarthat.</string>
     <string name="continue_question">Folytatod?</string>
     <string name="cant_remove_default_server">Nem lehet eltávolítani az alapértelmezett kiszolgálót</string>

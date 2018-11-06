@@ -106,13 +106,13 @@
     <string name="filter_devices">Allalen n atastay</string>
     <string name="filter_graph_empty">Ttxil-ek sefru aniwa atastay</string>
     <string name="choose_color">fren ini</string>
-    <string name="no_data_on_OOTT">Ur yelli kra n isefka deg aqeddac OOTT</string>
+    <string name="no_data_on_domoticz">Ur yelli kra n isefka deg aqeddac OOTT</string>
     <string name="row_icon_description">Askar uqqin</string>
     <string name="error_image_description">Anezri n tugna</string>
     <string name="device_image_description">Tugna n wallal</string>
     <string name="white">amellal</string>
     <string name="refresh">Sismeḍ</string>
-    <string name="OOTT_logo">Turza n OOTT</string>
+    <string name="domoticz_logo">Turza n OOTT</string>
     <string name="this_take_minutes">yezmer ad yeṭṭef aṭas n timercin</string>
     <string name="continue_question">An-kemmel?</string>
     <string name="cant_remove_default_server">Dawezɣi tukksa n uqeddac s lexṣas</string>

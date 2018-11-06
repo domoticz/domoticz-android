@@ -106,13 +106,13 @@
     <string name="filter_devices">Filtrer les dispositifs</string>
     <string name="filter_graph_empty">Veuillez spécifier un filtre</string>
     <string name="choose_color">Sélectionnez la couleur</string>
-    <string name="no_data_on_OOTT">Aucune donnée sur le serveur OOTT</string>
+    <string name="no_data_on_domoticz">Aucune donnée sur le serveur OOTT</string>
     <string name="row_icon_description">icône de la ligne</string>
     <string name="error_image_description">Image d\'erreur</string>
     <string name="device_image_description">Image du dispositif</string>
     <string name="white">Blanc</string>
     <string name="refresh">Actualiser</string>
-    <string name="OOTT_logo">Logo OOTT</string>
+    <string name="domoticz_logo">Logo OOTT</string>
     <string name="this_take_minutes">Cela peut prendre plusieurs minutes.</string>
     <string name="continue_question">Continuer ?</string>
     <string name="cant_remove_default_server">Impossible de supprimer le serveur par défaut</string>

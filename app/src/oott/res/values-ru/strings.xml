@@ -106,13 +106,13 @@
     <string name="filter_devices">Фильтр устройств</string>
     <string name="filter_graph_empty">Пожалуйста, укажите фильтр</string>
     <string name="choose_color">Выберите цвет</string>
-    <string name="no_data_on_OOTT">Нет данных на сервере OOTT</string>
+    <string name="no_data_on_domoticz">Нет данных на сервере OOTT</string>
     <string name="row_icon_description">значок строки</string>
     <string name="error_image_description">Изображение ошибки</string>
     <string name="device_image_description">Изображение устройства</string>
     <string name="white">Белый</string>
     <string name="refresh">Обновить</string>
-    <string name="OOTT_logo">OOTT лого</string>
+    <string name="domoticz_logo">OOTT лого</string>
     <string name="this_take_minutes">Это может занять несколько минут.</string>
     <string name="continue_question">Продолжить?</string>
     <string name="cant_remove_default_server">Не удается удалить сервер по умолчанию</string>

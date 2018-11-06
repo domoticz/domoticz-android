@@ -106,13 +106,13 @@
     <string name="filter_devices">Filtriraj naprave</string>
     <string name="filter_graph_empty">Prosim definirajte filter</string>
     <string name="choose_color">Izberite barvo</string>
-    <string name="no_data_on_OOTT">Ni podatkov na OOTT strežniku</string>
+    <string name="no_data_on_domoticz">Ni podatkov na OOTT strežniku</string>
     <string name="row_icon_description">ikona vrstice</string>
     <string name="error_image_description">Napaka slike</string>
     <string name="device_image_description">Slika naprave</string>
     <string name="white">Bela</string>
     <string name="refresh">Osveži</string>
-    <string name="OOTT_logo">OOTT logotip</string>
+    <string name="domoticz_logo">OOTT logotip</string>
     <string name="this_take_minutes">To lahko traja nekaj minut.</string>
     <string name="continue_question">Ali želite nadaljevati?</string>
     <string name="cant_remove_default_server">Privzetega strežnika ni mogoče odstraniti</string>
