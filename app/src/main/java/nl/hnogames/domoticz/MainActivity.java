@@ -728,7 +728,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         ProfileDrawerItem loggedinAccount = new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
             .withIcon(R.mipmap.ic_launcher);
         if (mSharedPrefs.darkThemeEnabled()) {
-            loggedinAccount.withSelectedColorRes(R.color.material_indigo_600);
+            loggedinAccount.withSelectedColorRes(R.color.primary);
         }
 
         // Create the AccountHeader
@@ -752,7 +752,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                             UsefulBits.openPremiumAppStore(MainActivity.this);
                                         }
                                     })
-                                    .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.material_blue_600))
+                                    .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.primary))
                                     .show();
                             }
                             return false;
@@ -820,7 +820,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     .withEnabled(user.isEnabled());
 
                 if (mSharedPrefs.darkThemeEnabled()) {
-                    profile.withSelectedColorRes(R.color.material_indigo_600);
+                    profile.withSelectedColorRes(R.color.primary);
                 }
 
                 headerResult.addProfiles(profile);
@@ -900,11 +900,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private SecondaryDrawerItem createSecondaryDrawerItem(String title, String icon, String fragmentID) {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
-            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.primary)
             .withTag(fragmentID);
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
-            item.withSelectedColorRes(R.color.material_indigo_600);
+            item.withSelectedColorRes(R.color.primary);
         }
         return item;
     }
@@ -912,11 +912,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private PrimaryDrawerItem createPrimaryDrawerItem(String title, String icon, String fragmentID) {
         PrimaryDrawerItem item = new PrimaryDrawerItem();
         item.withName(title)
-            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.material_indigo_600)
+            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.primary)
             .withTag(fragmentID);
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
-            item.withSelectedColorRes(R.color.material_indigo_600);
+            item.withSelectedColorRes(R.color.primary);
         }
         return item;
     }
