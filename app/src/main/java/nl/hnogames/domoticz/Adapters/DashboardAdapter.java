@@ -1694,6 +1694,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
         if (!mSharedPrefs.showExtraData()) {
             holder.infoIcon.setVisibility(View.GONE);
+            if (!showAsList) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
+                p.topMargin = 20;
+            }
         } else {
             if (showAsList) {
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
