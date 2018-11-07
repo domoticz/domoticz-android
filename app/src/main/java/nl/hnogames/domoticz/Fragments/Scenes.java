@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
@@ -70,6 +72,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -98,8 +101,22 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     public void Filter(String text) {
         filter = text;
         try {
-            if (adapter != null)
+            if (adapter != null) {
+                if (UsefulBits.isEmpty(text) &&
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting()) {
+                    if (mItemTouchHelper == null) {
+                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                            false));
+                    }
+                    mItemTouchHelper.attachToRecyclerView(gridView);
+                } else {
+                    if (mItemTouchHelper != null)
+                        mItemTouchHelper.attachToRecyclerView(null);
+                }
                 adapter.getFilter().filter(text);
+                adapter.notifyDataSetChanged();
+            }
             super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -173,6 +190,19 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
+
+            if (mItemTouchHelper == null) {
+                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                    false));
+            }
+            if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                mSharedPrefs.enableCustomSorting()) {
+                mItemTouchHelper.attachToRecyclerView(gridView);
+            } else {
+                if (mItemTouchHelper != null)
+                    mItemTouchHelper.attachToRecyclerView(null);
+            }
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -339,8 +369,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     @Override
     @DebugLog
-    public boolean onItemLongClicked(int position) {
-        showInfoDialog(adapter.filteredData.get(position));
+    public boolean onItemLongClicked(int idx) {
+        showInfoDialog(getScene(idx));
         return true;
     }
 

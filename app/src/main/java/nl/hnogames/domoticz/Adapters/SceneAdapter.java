@@ -41,18 +41,22 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
-public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHolder> {
+public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHolder> implements RVHAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = SceneAdapter.class.getSimpleName();
@@ -62,6 +66,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     private Context context;
     private ArrayList<SceneInfo> data = null;
     private Domoticz domoticz;
+    public static List<String> mCustomSorting;
 
     private SharedPrefUtil mSharedPrefs;
     private ItemFilter mFilter = new ItemFilter();
@@ -75,20 +80,17 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("scenes");
         setData(data);
 
         this.listener = listener;
     }
 
     public void setData(ArrayList<SceneInfo> data) {
-        Collections.sort(data, new Comparator<SceneInfo>() {
-            @Override
-            public int compare(SceneInfo left, SceneInfo right) {
-                return left.getName().compareTo(right.getName());
-            }
-        });
-        this.data = data;
-        this.filteredData = data;
+        ArrayList<SceneInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
     }
 
     public Filter getFilter() {
@@ -112,16 +114,45 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         return new DataObjectHolder(view);
     }
 
+    private ArrayList<SceneInfo> SortData(ArrayList<SceneInfo> data) {
+        ArrayList<SceneInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (SceneInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (SceneInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (SceneInfo d : filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("plans", ids);
+    }
+
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
-        holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemLongClicked(position);
-            }
-        });
         if (filteredData != null && filteredData.size() > 0) {
             final SceneInfo mSceneInfo = filteredData.get(position);
+
+            holder.infoIcon.setTag(mSceneInfo.getIdx());
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked((int) v.getTag());
+                }
+            });
 
             if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
@@ -277,14 +308,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
                 + mSceneInfo.toString());
 
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
-                }
-            });
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -343,7 +366,29 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         int GROUP = 1;
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder {
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView switch_name, signal_level, switch_battery_level;
         Boolean isProtected;
         ImageView iconRow;
@@ -352,6 +397,16 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         Button buttonOn, buttonOff;
         Chip buttonLog, buttonTimer, buttonNotifications;
         ImageView infoIcon;
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
+        }
 
         public DataObjectHolder(View itemView) {
             super(itemView);

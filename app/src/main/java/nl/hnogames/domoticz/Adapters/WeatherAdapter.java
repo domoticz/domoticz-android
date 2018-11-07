@@ -43,15 +43,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.Language;
+import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -59,7 +63,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> {
+public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> implements RVHAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = WeatherAdapter.class.getSimpleName();
@@ -71,6 +75,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     private ItemFilter mFilter = new ItemFilter();
     private ConfigInfo mConfigInfo;
     private SharedPrefUtil mSharedPrefs;
+    public static List<String> mCustomSorting;
 
     public WeatherAdapter(Context context,
                           Domoticz mDomoticz,
@@ -83,19 +88,42 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         mSharedPrefs = new SharedPrefUtil(context);
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("weather");
         setData(data);
     }
 
     public void setData(ArrayList<WeatherInfo> data) {
-        Collections.sort(data, new Comparator<WeatherInfo>() {
-            @Override
-            public int compare(WeatherInfo left, WeatherInfo right) {
-                return left.getName().compareTo(right.getName());
-            }
-        });
+        ArrayList<WeatherInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
+    }
 
-        this.data = data;
-        this.filteredData = data;
+    private ArrayList<WeatherInfo> SortData(ArrayList<WeatherInfo> data) {
+        ArrayList<WeatherInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (WeatherInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (WeatherInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (WeatherInfo d : filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("weather", ids);
     }
 
     public Filter getFilter() {
@@ -120,8 +148,19 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     }
 
     @Override
-    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return true;
+    }
 
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
+
+    @Override
+    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         if (filteredData != null && filteredData.size() > 0) {
             final WeatherInfo mWeatherInfo = filteredData.get(position);
 
@@ -136,10 +175,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 windSign = mConfigInfo.getWindSign();
             }
 
+            holder.infoIcon.setTag(mWeatherInfo.getIdx());
             holder.infoIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemLongClicked(position);
+                    listener.onItemLongClicked((int) v.getTag());
                 }
             });
 
@@ -265,14 +305,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 });
             }
 
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
-                }
-            });
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -293,7 +325,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         listener.onLikeButtonClick(idx, checked);
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder {
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView name;
         TextView data;
         TextView hardware;
@@ -307,6 +350,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         LinearLayout extraPanel;
         PieView pieView;
         ImageView infoIcon;
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
+        }
 
         public DataObjectHolder(View itemView) {
             super(itemView);

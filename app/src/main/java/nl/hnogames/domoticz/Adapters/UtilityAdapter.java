@@ -41,17 +41,21 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
-public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> {
+public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> implements RVHAdapter {
 
     private static final String TAG = UtilityAdapter.class.getSimpleName();
 
@@ -62,6 +66,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
+    public static List<String> mCustomSorting;
 
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
@@ -73,19 +78,43 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         mSharedPrefs = new SharedPrefUtil(context);
         domoticz = mDomoticz;
 
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("utilities");
         setData(data);
         this.listener = listener;
     }
 
     public void setData(ArrayList<UtilitiesInfo> data) {
-        Collections.sort(data, new Comparator<UtilitiesInfo>() {
-            @Override
-            public int compare(UtilitiesInfo left, UtilitiesInfo right) {
-                return left.getName().compareTo(right.getName());
+        ArrayList<UtilitiesInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
+    }
+
+    private ArrayList<UtilitiesInfo> SortData(ArrayList<UtilitiesInfo> data) {
+        ArrayList<UtilitiesInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (UtilitiesInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
             }
-        });
-        this.data = data;
-        this.filteredData = data;
+            for (UtilitiesInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (UtilitiesInfo d : filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("utilities", ids);
     }
 
     public Filter getFilter() {
@@ -134,23 +163,19 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     setButtons(holder, Buttons.DEFAULT);
                 }
             }
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
-                }
-            });
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClicked(v, position);
                 }
             });
+
+            holder.infoIcon.setTag(mUtilitiesInfo.getIdx());
             holder.infoIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemLongClicked(position);
+                    listener.onItemLongClicked((int) v.getTag());
                 }
             });
         }
@@ -449,7 +474,29 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         int THERMOSTAT = 2;
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder {
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView name;
         TextView data;
         TextView hardware;
@@ -465,6 +512,16 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         ImageView infoIcon;
         LikeButton likeButton;
         LinearLayout extraPanel;
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
+        }
 
         public DataObjectHolder(View itemView) {
             super(itemView);
