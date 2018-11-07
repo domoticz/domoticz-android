@@ -721,6 +721,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     @DebugLog
     public void drawNavigationMenu(final ConfigInfo mConfig) {
         ConfigInfo config = mConfig;
+        List<String> allUsers = new ArrayList<>();
 
         if (config == null)
             config = mServerUtil.getActiveServer().getConfigInfo(this);
@@ -730,6 +731,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (mSharedPrefs.darkThemeEnabled()) {
             loggedinAccount.withSelectedColorRes(R.color.primary);
         }
+        allUsers.add(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME));
 
         // Create the AccountHeader
         final ConfigInfo finalConfig = config;
@@ -813,17 +815,18 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (config != null &&
             config.getUsers() != null) {
             for (UserInfo user : config.getUsers()) {
+                if(!allUsers.contains(user.getUsername())) {
+                    ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
+                    ).withEmail(user.getUsername())
+                        .withIcon(R.drawable.users)
+                        .withEnabled(user.isEnabled());
 
-                ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
-                ).withEmail(user.getUsername())
-                    .withIcon(R.drawable.users)
-                    .withEnabled(user.isEnabled());
-
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    profile.withSelectedColorRes(R.color.primary);
+                    if (mSharedPrefs.darkThemeEnabled()) {
+                        profile.withSelectedColorRes(R.color.primary);
+                    }
+                    allUsers.add(user.getUsername());
+                    headerResult.addProfiles(profile);
                 }
-
-                headerResult.addProfiles(profile);
             }
         }
 
