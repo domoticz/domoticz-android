@@ -42,6 +42,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -379,6 +381,16 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             this.finish();
 
         permissionHelper.onActivityForResult(requestCode);
+    }
+
+    public void hideViews() {
+        toolbar.animate().translationY(-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+        toolbar.setVisibility(View.GONE);
+    }
+
+    public void showViews() {
+        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+        toolbar.setVisibility(View.VISIBLE);
     }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.app;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.method.ScrollingMovementMethod;
@@ -48,6 +50,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -74,6 +77,10 @@ public class DomoticzDashboardFragment extends Fragment {
     private ViewGroup root;
     private String sort = "";
 
+    private int scrolledDistance = 0;
+    private int SCROLL_THRESHOLD = 40;
+    private boolean controlsVisible = true;
+
     public DomoticzDashboardFragment() {
     }
 
@@ -96,6 +103,18 @@ public class DomoticzDashboardFragment extends Fragment {
                 R.color.secondary_dark,
                 R.color.background_dark);
         }
+    }
+
+    @DebugLog
+    public void hideViews() {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).hideViews();
+    }
+
+    @DebugLog
+    public void showViews() {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).showViews();
     }
 
     public String getSort() {
@@ -124,6 +143,39 @@ public class DomoticzDashboardFragment extends Fragment {
         setGridViewLayout();
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
+        //setting up our OnScrollListener
+        gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                if (firstVisibleItem == 0) {
+                    if(!controlsVisible) {
+                        showViews();
+                        controlsVisible = true;
+                    }
+                } else {
+                    if (scrolledDistance > SCROLL_THRESHOLD && controlsVisible) {
+                        hideViews();
+                        controlsVisible = false;
+                        scrolledDistance = 0;
+                    } else if (scrolledDistance < -SCROLL_THRESHOLD && !controlsVisible) {
+                        showViews();
+                        controlsVisible = true;
+                        scrolledDistance = 0;
+                    }
+                }
+                if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
+                    scrolledDistance += dy;
+                }
+            }
+        });
     }
 
     public void setGridViewLayout() {
