@@ -45,7 +45,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;

@@ -154,7 +154,16 @@ public class DomoticzDashboardFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                int firstVisibleItem = 0;
+                try {
+                    firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                }catch(Exception ex){
+                    int[] firstVisibleItems = null;
+                    firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPositions(firstVisibleItems);
+                    if(firstVisibleItems != null)
+                        firstVisibleItem = firstVisibleItems[0];
+                }
+
                 if (firstVisibleItem == 0) {
                     if(!controlsVisible) {
                         showViews();

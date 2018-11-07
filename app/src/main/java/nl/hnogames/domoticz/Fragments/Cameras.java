@@ -52,7 +52,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
