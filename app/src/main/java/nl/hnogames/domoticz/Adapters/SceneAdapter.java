@@ -40,7 +40,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -49,7 +48,6 @@ import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -60,14 +58,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
     @SuppressWarnings("unused")
     private static final String TAG = SceneAdapter.class.getSimpleName();
-
+    public static List<String> mCustomSorting;
     private final ScenesClickListener listener;
     public ArrayList<SceneInfo> filteredData = null;
     private Context context;
     private ArrayList<SceneInfo> data = null;
     private Domoticz domoticz;
-    public static List<String> mCustomSorting;
-
     private SharedPrefUtil mSharedPrefs;
     private ItemFilter mFilter = new ItemFilter();
 
@@ -361,11 +357,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         listener.onSceneClick(idx, action);
     }
 
-    interface Buttons {
-        int SCENE = 0;
-        int GROUP = 1;
-    }
-
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         swap(fromPosition, toPosition);
@@ -388,6 +379,11 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         SaveSorting();
     }
 
+    interface Buttons {
+        int SCENE = 0;
+        int GROUP = 1;
+    }
+
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView switch_name, signal_level, switch_battery_level;
         Boolean isProtected;
@@ -397,16 +393,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         Button buttonOn, buttonOff;
         Chip buttonLog, buttonTimer, buttonNotifications;
         ImageView infoIcon;
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
-        }
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -435,6 +421,16 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
         }
     }
 

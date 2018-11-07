@@ -40,7 +40,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -48,7 +47,6 @@ import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -58,7 +56,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> implements RVHAdapter {
 
     private static final String TAG = UtilityAdapter.class.getSimpleName();
-
+    public static List<String> mCustomSorting;
     private final UtilityClickListener listener;
     public ArrayList<UtilitiesInfo> filteredData = null;
     private Context context;
@@ -66,7 +64,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
-    public static List<String> mCustomSorting;
 
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
@@ -468,12 +465,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         listener.onLikeButtonClick(idx, checked);
     }
 
-    interface Buttons {
-        int DEFAULT = 0;
-        int TEXT = 1;
-        int THERMOSTAT = 2;
-    }
-
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         swap(fromPosition, toPosition);
@@ -496,6 +487,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         SaveSorting();
     }
 
+    interface Buttons {
+        int DEFAULT = 0;
+        int TEXT = 1;
+        int THERMOSTAT = 2;
+    }
+
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView name;
         TextView data;
@@ -512,16 +509,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         ImageView infoIcon;
         LikeButton likeButton;
         LinearLayout extraPanel;
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
-        }
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -543,6 +530,16 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
         }
     }
 

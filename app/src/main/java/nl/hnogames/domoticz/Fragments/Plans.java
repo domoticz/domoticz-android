@@ -32,6 +32,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
@@ -67,6 +69,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private ArrayList<PlanInfo> mPlans;
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -174,6 +177,18 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
+        
+        if (mItemTouchHelper == null) {
+            mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
+                false));
+        }
+        if (mSharedPrefs.enableCustomSorting()) {
+            mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        } else {
+            if (mItemTouchHelper != null)
+                mItemTouchHelper.attachToRecyclerView(null);
+        }
+
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

@@ -41,19 +41,18 @@ import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Utils.RequestUtil;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements RVHAdapter {
+    public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private ArrayList<CameraInfo> mDataset;
     private Domoticz domoticz;
     private boolean refreshTimer;
-    public static List<String> mCustomSorting;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz, boolean refreshTimer) {
         this.mContext = mContext;

@@ -41,7 +41,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import az.plainpie.PieView;
@@ -53,7 +52,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -61,10 +59,11 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder>  implements RVHAdapter {
+public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder> implements RVHAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
+    public static List<String> mCustomSorting;
     private final TemperatureClickListener listener;
     public ArrayList<TemperatureInfo> filteredData = null;
     private SharedPrefUtil mSharedPrefs;
@@ -73,7 +72,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     private Context context;
     private ArrayList<TemperatureInfo> data = null;
     private ItemFilter mFilter = new ItemFilter();
-    public static List<String> mCustomSorting;
 
     public TemperatureAdapter(Context context,
                               Domoticz mDomoticz,
@@ -93,7 +91,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     }
 
     public void setData(ArrayList<TemperatureInfo> data) {
-            ArrayList<TemperatureInfo > sortedData = SortData(data);
+        ArrayList<TemperatureInfo> sortedData = SortData(data);
         this.data = sortedData;
         this.filteredData = sortedData;
     }
@@ -378,8 +376,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         listener.onLikeButtonClick(idx, checked);
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder
-    {
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView name;
         TextView data;
         TextView data2;
@@ -395,16 +392,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         LinearLayout extraPanel;
         PieView pieView;
         ImageView infoIcon;
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
-        }
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -426,6 +413,16 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
         }
     }
 

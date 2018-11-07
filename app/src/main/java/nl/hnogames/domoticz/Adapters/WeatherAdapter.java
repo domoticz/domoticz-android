@@ -42,7 +42,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import az.plainpie.PieView;
@@ -55,7 +54,6 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.Language;
-import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -67,6 +65,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
     @SuppressWarnings("unused")
     private static final String TAG = WeatherAdapter.class.getSimpleName();
+    public static List<String> mCustomSorting;
     private final WeatherClickListener listener;
     public ArrayList<WeatherInfo> filteredData = null;
     private Context context;
@@ -75,7 +74,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     private ItemFilter mFilter = new ItemFilter();
     private ConfigInfo mConfigInfo;
     private SharedPrefUtil mSharedPrefs;
-    public static List<String> mCustomSorting;
 
     public WeatherAdapter(Context context,
                           Domoticz mDomoticz,
@@ -351,16 +349,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         PieView pieView;
         ImageView infoIcon;
 
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
-        }
-
         public DataObjectHolder(View itemView) {
             super(itemView);
             pieView = itemView.findViewById(R.id.pieView);
@@ -378,6 +366,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
         }
     }
 
