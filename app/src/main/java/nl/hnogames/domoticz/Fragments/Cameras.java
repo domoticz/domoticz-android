@@ -211,11 +211,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
+
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
                 false));
         }
-
         if (mSharedPrefs.enableCustomSorting()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
         } else {

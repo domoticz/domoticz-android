@@ -1199,7 +1199,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                     }
                                 });
                             }
-                        }, 0, 5000);//schedule in 5 seconds
+                        }, 0, 10000);//schedule in 10 seconds
                     }
                     invalidateOptionsMenu();//set pause button
                     return true;

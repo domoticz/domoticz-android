@@ -173,8 +173,8 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:16.0.4"
     implementation "com.google.firebase:firebase-crash:16.2.1"
-    implementation "com.google.firebase:firebase-perf:16.1.2"
-    implementation "com.google.firebase:firebase-messaging:17.3.3"
+    implementation "com.google.firebase:firebase-perf:16.2.0"
+    implementation "com.google.firebase:firebase-messaging:17.3.4"
     implementation "com.crashlytics.sdk.android:crashlytics:2.9.5"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.6'

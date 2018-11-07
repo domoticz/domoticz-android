@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,7 +133,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
             ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz,
                 domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
-                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD),
                 domoticz.getSessionUtil(),
                 true,
                 mContext);
@@ -181,7 +182,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static class DataObjectHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener, RVHViewHolder {
         TextView name;
-        com.android.volley.toolbox.NetworkImageView camera;
+        NetworkImageView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);

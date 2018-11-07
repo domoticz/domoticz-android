@@ -424,7 +424,7 @@ public class RequestUtil {
                     }
                 };
 
-                request.setShouldCache(false);
+                //request.setShouldCache(false);
                 return request;
             }
         };
