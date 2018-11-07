@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
@@ -64,6 +66,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private PlansAdapter mAdapter;
     private ArrayList<PlanInfo> mPlans;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void onConnectionFailed() {
@@ -80,10 +83,14 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     @Override
     public void refreshFragment() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         processPlans();
     }
 
     public void processPlans() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         new GetCachedDataTask().execute();
     }
 
@@ -134,7 +141,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         });
 
         if (mRecyclerView == null) {
-            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+            mRecyclerView = getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -166,6 +174,14 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
+        mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            @DebugLog
+            public void onRefresh() {
+                processPlans();
+            }
+        });
     }
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {

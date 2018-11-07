@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class DomoticzCardFragment extends Fragment {
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
+    public SwipeRefreshLayout mSwipeRefreshLayout;
 
     public DomoticzCardFragment() {
     }
@@ -80,6 +82,11 @@ public class DomoticzCardFragment extends Fragment {
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+            if(mSwipeRefreshLayout!=null)
+                mSwipeRefreshLayout.setColorSchemeResources(
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -96,8 +103,8 @@ public class DomoticzCardFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
-
+        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         setTheme();
         return root;
     }
