@@ -52,6 +52,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
@@ -223,6 +224,13 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            @DebugLog
+            public void onRefresh() {
+                getCameras();
+            }
+        });
     }
 
     @Override
