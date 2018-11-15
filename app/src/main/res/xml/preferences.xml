@@ -44,12 +44,7 @@
             android:entryValues="@array/drawer_actions"
             android:key="show_menu_items"
             android:title="@string/enable_items"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="sortCustom"
-            android:summaryOff="@string/sort_server_on"
-            android:summaryOn="@string/sort_custom_on"
-            android:title="@string/sort_server_title"/>
+
         <SwitchPreference
             android:defaultValue="false"
             android:key="switchButtons"
@@ -84,6 +79,22 @@
                 android:title="@string/set_point_max"/>
         </PreferenceCategory>
     </PreferenceScreen>
+
+    <PreferenceCategory android:title="@string/sort_server_title">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="sortCustom"
+            android:summaryOff="@string/sort_server_on"
+            android:summaryOn="@string/sort_custom_on"
+            android:title="@string/sort_server_title"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="lockSortCustom"
+            android:summaryOff="@string/sort_lock_custom_on"
+            android:dependency="sortCustom"
+            android:summaryOn="@string/sort_lock_custom_on"
+            android:title="@string/sort_lock_server_title"/>
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_dashboard">
         <SwitchPreference

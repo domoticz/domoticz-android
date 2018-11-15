@@ -56,13 +56,13 @@ public class DomoticzCardFragment extends Fragment {
     public Domoticz mDomoticz;
     public CoordinatorLayout coordinatorLayout;
     public PhoneConnectionUtil mPhoneConnectionUtil;
+    public SwipeRefreshLayout mSwipeRefreshLayout;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private SharedPrefUtil mSharedPrefs;
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
-    public SwipeRefreshLayout mSwipeRefreshLayout;
 
     public DomoticzCardFragment() {
     }
@@ -82,7 +82,7 @@ public class DomoticzCardFragment extends Fragment {
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
-            if(mSwipeRefreshLayout!=null)
+            if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setColorSchemeResources(
                     R.color.secondary,
                     R.color.secondary_dark,

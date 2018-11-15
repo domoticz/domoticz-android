@@ -45,10 +45,10 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SwitchesAdapter;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -131,11 +131,11 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting()) {
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                            false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -231,10 +231,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
                 if (mItemTouchHelper == null) {
                     mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                            false));
+                        false));
                 }
-                if (    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting()) {
+                if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
                     if (mItemTouchHelper != null)

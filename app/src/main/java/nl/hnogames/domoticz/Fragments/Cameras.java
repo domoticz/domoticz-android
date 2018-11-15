@@ -53,10 +53,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -216,7 +216,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
                 false));
         }
-        if (mSharedPrefs.enableCustomSorting()) {
+        if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
         } else {
             if (mItemTouchHelper != null)

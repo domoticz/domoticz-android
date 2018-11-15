@@ -36,11 +36,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.WeatherAdapter;
 import nl.hnogames.domoticz.GraphActivity;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -109,7 +109,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
                     (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting()) {
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
                             false));
@@ -166,7 +166,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
                 false));
         }
         if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-            mSharedPrefs.enableCustomSorting()) {
+            mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(gridView);
         } else {
             if (mItemTouchHelper != null)

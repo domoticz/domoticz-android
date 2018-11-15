@@ -36,10 +36,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -104,7 +104,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
                     (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting()) {
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
                             false));
@@ -196,7 +196,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                     false));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                mSharedPrefs.enableCustomSorting()) {
+                mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                 mItemTouchHelper.attachToRecyclerView(gridView);
             } else {
                 if (mItemTouchHelper != null)

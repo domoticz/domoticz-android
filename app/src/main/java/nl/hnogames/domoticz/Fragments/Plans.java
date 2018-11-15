@@ -182,7 +182,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
                 false));
         }
-        if (mSharedPrefs.enableCustomSorting()) {
+        if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
         } else {
             if (mItemTouchHelper != null)

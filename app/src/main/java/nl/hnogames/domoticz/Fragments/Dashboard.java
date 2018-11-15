@@ -44,10 +44,10 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.DashboardAdapter;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -123,12 +123,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                        (UsefulBits.isEmpty(planName) || planName.length() <= 0) &&
-                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting()) {
+                    (UsefulBits.isEmpty(planName) || planName.length() <= 0) &&
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                            false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -263,11 +263,11 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
                 if (mItemTouchHelper == null) {
                     mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                            false));
+                        false));
                 }
                 if ((UsefulBits.isEmpty(planName) || planName.length() <= 0) &&
-                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting()) {
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
                     if (mItemTouchHelper != null)

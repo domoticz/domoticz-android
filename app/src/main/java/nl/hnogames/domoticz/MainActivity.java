@@ -827,7 +827,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (config != null &&
             config.getUsers() != null) {
             for (UserInfo user : config.getUsers()) {
-                if(!allUsers.contains(user.getUsername())) {
+                if (!allUsers.contains(user.getUsername())) {
                     ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
                     ).withEmail(user.getUsername())
                         .withIcon(R.drawable.users)

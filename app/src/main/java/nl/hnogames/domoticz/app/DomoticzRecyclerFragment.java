@@ -150,20 +150,21 @@ public class DomoticzRecyclerFragment extends Fragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstVisibleItem = 0;
                 try {
                     firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     int[] firstVisibleItems = null;
                     firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPositions(firstVisibleItems);
-                    if(firstVisibleItems != null)
+                    if (firstVisibleItems != null)
                         firstVisibleItem = firstVisibleItems[0];
                 }
                 if (firstVisibleItem == 0) {
-                    if(!controlsVisible) {
+                    if (!controlsVisible) {
                         showViews();
                         controlsVisible = true;
                     }
@@ -178,7 +179,7 @@ public class DomoticzRecyclerFragment extends Fragment {
                         scrolledDistance = 0;
                     }
                 }
-                if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
+                if ((controlsVisible && dy > 0) || (!controlsVisible && dy < 0)) {
                     scrolledDistance += dy;
                 }
             }

@@ -113,10 +113,12 @@ public class SharedPrefUtil {
     private static final String PREF_TEMP_MAX = "tempMaxValue";
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
+
     private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_SORT_CUSTOM = "sortCustom";
+    private final String PREF_LOCK_SORT_CUSTOM = "lockSortCustom";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
@@ -181,6 +183,10 @@ public class SharedPrefUtil {
 
     public boolean enableCustomSorting() {
         return prefs.getBoolean(PREF_SORT_CUSTOM, false);
+    }
+
+    public boolean isCustomSortingLocked() {
+        return prefs.getBoolean(PREF_LOCK_SORT_CUSTOM, false);
     }
 
     public boolean getAlwaysOn() {
