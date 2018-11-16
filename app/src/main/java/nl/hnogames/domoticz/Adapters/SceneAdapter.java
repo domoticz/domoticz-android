@@ -173,7 +173,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 holder.signal_level.setText(text);
                 holder.switch_battery_level.setText(DomoticzValues.Scene.Type.SCENE);
 
-                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
+                Picasso.get().load(DomoticzIcons.getDrawableIcon(
                     DomoticzValues.Scene.Type.SCENE.toLowerCase(),
                     null,
                     null,
@@ -264,7 +264,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     });
                 }
 
-                Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
+                Picasso.get().load(DomoticzIcons.getDrawableIcon(
                     DomoticzValues.Scene.Type.GROUP.toLowerCase(),
                     null,
                     null,

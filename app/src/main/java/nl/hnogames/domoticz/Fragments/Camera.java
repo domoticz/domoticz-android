@@ -43,7 +43,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class Camera extends Fragment {
-
     private ImageView root;
     private String url = "";
     private SharedPrefUtil mSharedPrefs;
@@ -58,11 +57,12 @@ public class Camera extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         RelativeLayout group = (RelativeLayout) inflater.inflate(R.layout.camera_default, null);
-        if (mSharedPrefs.darkThemeEnabled()) {
+
+        if (mSharedPrefs.darkThemeEnabled())
             group.findViewById(R.id.row_global_wrapper).setBackgroundColor(getResources().getColor(R.color.background_dark));
-        }
-        root = (ImageView) group.findViewById(R.id.image);
-        FloatingActionButton fabButton = (FloatingActionButton) group.findViewById(R.id.fab);
+
+        root = group.findViewById(R.id.image);
+        FloatingActionButton fabButton = group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,10 +104,10 @@ public class Camera extends Fragment {
 
     public void setImage(String url) {
         this.url = url;
-        if (root != null && !root.equals(null)) {
+        if (root != null) {
             File file = new File(url);
             Uri uri = Uri.fromFile(file);
-            Picasso.with(getActivity())
+            Picasso.get()
                 .load(uri)
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)

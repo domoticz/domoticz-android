@@ -159,11 +159,11 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
         }
 
         if (mDeviceInfo.getIdx() == iVoiceAction) {
-            Picasso.with(context).load(R.drawable.mic).into(holder.iconRow);
+            Picasso.get().load(R.drawable.mic).into(holder.iconRow);
         } else if (mDeviceInfo.getIdx() == iQRCodeAction) {
-            Picasso.with(context).load(R.drawable.qrcode).into(holder.iconRow);
+            Picasso.get().load(R.drawable.qrcode).into(holder.iconRow);
         } else {
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
                 mDeviceInfo.getStatusBoolean(),

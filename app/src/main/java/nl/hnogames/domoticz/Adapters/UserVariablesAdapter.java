@@ -119,7 +119,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
                 }
             });
 
-            Picasso.with(context).load(R.drawable.printer).into(holder.iconRow);
+            Picasso.get().load(R.drawable.printer).into(holder.iconRow);
         }
     }
 

@@ -133,7 +133,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                 }
             }
 
-            Picasso.with(context).load(R.drawable.cone).into(holder.iconRow);
+            Picasso.get().load(R.drawable.cone).into(holder.iconRow);
         }
     }
 

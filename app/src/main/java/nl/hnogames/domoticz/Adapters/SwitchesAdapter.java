@@ -460,7 +460,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -516,7 +516,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             });
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSwitchType(),
             mDeviceInfo.getStatusBoolean(),
@@ -557,7 +557,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(text);
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -636,7 +636,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -723,7 +723,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(setPointText);
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(
             mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
@@ -803,7 +803,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
     /**
@@ -868,7 +868,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDevicesInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDevicesInfo.getTypeImg(),
             mDevicesInfo.getType(),
             mDevicesInfo.getSwitchType(),
             mDevicesInfo.getStatusBoolean(),
@@ -904,7 +904,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -1031,7 +1031,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
         });
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -1103,7 +1103,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
         });
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSwitchType(),
             mDeviceInfo.getStatusBoolean(),
@@ -1151,7 +1151,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -1298,7 +1298,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSubType(),
             mDeviceInfo.getStatusBoolean(),
@@ -1436,7 +1436,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             });
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
             mDeviceInfo.getType(),
             mDeviceInfo.getSwitchType(),
             mDeviceInfo.getStatusBoolean(),

@@ -116,7 +116,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
 
             holder.datetime.setText(dateTime);
 
-            Picasso.with(context).load(R.drawable.text).into(holder.iconRow);
+            Picasso.get().load(R.drawable.text).into(holder.iconRow);
         }
     }
 

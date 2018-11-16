@@ -135,7 +135,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                 domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                 domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD),
                 domoticz.getSessionUtil(),
-                true,
+                false,
                 mContext);
             holder.camera.setImageUrl(imageUrl, imageLoader);
 
