@@ -198,6 +198,7 @@ dependencies {
 
     implementation 'com.github.hotchemi:android-rate:1.0.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'

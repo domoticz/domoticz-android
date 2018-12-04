@@ -28,22 +28,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.squareup.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
+
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Utils.RequestUtil;
+import okhttp3.Credentials;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements RVHAdapter {
@@ -54,12 +62,31 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private ArrayList<CameraInfo> mDataset;
     private Domoticz domoticz;
     private boolean refreshTimer;
+    private Picasso picasso;
 
-    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz, boolean refreshTimer) {
+    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, final Domoticz domoticz, boolean refreshTimer) {
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
+
+        OkHttpClient client = new OkHttpClient.Builder()
+            .addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Interceptor.Chain chain) throws IOException {
+                    String credential = Credentials.basic(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                        domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
+                    Request newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", credential)
+                        .build();
+                    return chain.proceed(newRequest);
+                }
+            })
+            .build();
+
+        picasso = new Picasso.Builder(mContext)
+            .downloader(new OkHttp3Downloader(client))
+            .build();
 
         if (mCustomSorting == null)
             mCustomSorting = mSharedPrefs.getSortingList("cameras");
@@ -131,16 +158,21 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
+            picasso.load(imageUrl).into(holder.camera);
+
+            /*
             ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz,
                 domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                 domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD),
                 domoticz.getSessionUtil(),
                 false,
                 mContext);
+
             holder.camera.setImageUrl(imageUrl, imageLoader);
 
             if (!refreshTimer)
                 holder.camera.setDefaultImageResId(R.drawable.placeholder);
+*/
         }
     }
 
@@ -182,7 +214,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static class DataObjectHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener, RVHViewHolder {
         TextView name;
-        NetworkImageView camera;
+        ImageView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
