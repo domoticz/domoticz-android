@@ -1635,13 +1635,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+        changeFragment("nl.hnogames.domoticz.Fragments.MainPager");
     }
 
     @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+        changeFragment("nl.hnogames.domoticz.Fragments.MainPager");
     }
 
     @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
@@ -1653,6 +1653,6 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
     public void OpenTemperature() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Temperature");
+        changeFragment("nl.hnogames.domoticz.Fragments.TemperatureMainPager");
     }
 }
