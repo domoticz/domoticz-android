@@ -188,6 +188,10 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:16.0.0"
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
 
+    compile('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.android.volley:volley:1.1.0'
@@ -198,7 +202,6 @@ dependencies {
 
     implementation 'com.github.hotchemi:android-rate:1.0.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'

@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Downloader;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -42,16 +43,14 @@ import java.util.List;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 
+import nl.hnogames.domoticz.Helpers.BasicAuthInterceptor;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PicassoUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 
 import nl.hnogames.domoticzapi.Domoticz;
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements RVHAdapter {
@@ -70,24 +69,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
 
-        OkHttpClient client = new OkHttpClient.Builder()
-            .addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Interceptor.Chain chain) throws IOException {
-                    String credential = Credentials.basic(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
-                        domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
-                    Request newRequest = chain.request().newBuilder()
-                        .addHeader("Authorization", credential)
-                        .build();
-                    return chain.proceed(newRequest);
-                }
-            })
-            .build();
-
-        picasso = new Picasso.Builder(mContext)
-            .downloader(new OkHttp3Downloader(client))
-            .build();
-
+        picasso = new PicassoUtil().getPicasso(mContext, domoticz.getSessionUtil().getSessionCookie());
         if (mCustomSorting == null)
             mCustomSorting = mSharedPrefs.getSortingList("cameras");
         setData(data);
