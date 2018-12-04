@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
@@ -51,9 +50,9 @@ public class DefaultHeadersInterceptor implements Interceptor {
                 .header("Accept-Encoding", "gzip, deflate, br")
                 //.header("X-Client-Id", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType())
                 .header("User-Agent", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType());
-        if(useBasicAuth)
+        if (useBasicAuth)
             builder.header("Authorization", Credentials.basic(sUsername, sPassword));
-        if(useCookie)
+        if (useCookie)
             builder.header("Cookie", sCookie);
         return chain.proceed(builder.build());
     }

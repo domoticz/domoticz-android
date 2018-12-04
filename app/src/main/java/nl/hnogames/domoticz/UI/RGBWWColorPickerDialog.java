@@ -54,8 +54,8 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_rgbwwcolor, true)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 

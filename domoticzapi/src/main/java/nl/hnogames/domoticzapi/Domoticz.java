@@ -942,7 +942,7 @@ public class Domoticz {
         FileOutputStream fOut;
         try {
             fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             fOut.flush();
             fOut.close();
             return file;

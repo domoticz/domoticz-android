@@ -99,9 +99,9 @@ public class DomoticzDashboardFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
 
             mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.secondary,
-                R.color.secondary_dark,
-                R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -279,7 +279,7 @@ public class DomoticzDashboardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -393,7 +393,7 @@ public class DomoticzDashboardFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                        "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -407,7 +407,7 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -426,14 +426,14 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-            "Layout should have a ListView defined with the ID of listView");
+                "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

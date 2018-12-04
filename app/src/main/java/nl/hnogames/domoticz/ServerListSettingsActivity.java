@@ -157,7 +157,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         removeServerFromListView(serverInfo);
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, String.format(getString(R.string.something_deleted),
-            getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+                getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);

@@ -108,11 +108,11 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                            false));
+                                false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -163,10 +163,10 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                false));
+                    false));
         }
         if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-            mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(gridView);
         } else {
             if (mItemTouchHelper != null)
@@ -188,9 +188,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     private void showInfoDialog(final WeatherInfo mWeatherInfo) {
         WeatherInfoDialog infoDialog = new WeatherInfoDialog(
-            mContext,
-            mWeatherInfo,
-            R.layout.dialog_weather);
+                mContext,
+                mWeatherInfo,
+                R.layout.dialog_weather);
         infoDialog.setWeatherInfo(mWeatherInfo);
         infoDialog.show();
         infoDialog.onDismissListener(new WeatherInfoDialog.DismissListener() {
@@ -224,24 +224,24 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mWeatherInfo.getIdx(),
-            jsonUrl,
-            jsonAction,
-            0,
-            null,
-            new setCommandReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    mWeatherInfo.setFavoriteBoolean(isFavorite);
-                }
+                jsonUrl,
+                jsonAction,
+                0,
+                null,
+                new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        mWeatherInfo.setFavoriteBoolean(isFavorite);
+                    }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
     @Override
@@ -268,9 +268,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     @DebugLog
     public void onLogClick(final WeatherInfo weather, final String range) {
         final String graphType = weather.getTypeImg()
-            .toLowerCase()
-            .replace("temperature", "temp")
-            .replace("visibility", "counter");
+                .toLowerCase()
+                .replace("temperature", "temp")
+                .replace("visibility", "counter");
 
         JSONObject language = null;
         Language languageObj = new SharedPrefUtil(mContext).getSavedLanguage();

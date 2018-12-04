@@ -31,26 +31,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Downloader;
-import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
-
-import nl.hnogames.domoticz.Helpers.BasicAuthInterceptor;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PicassoUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
-
 import nl.hnogames.domoticzapi.Domoticz;
-import okhttp3.OkHttpClient;
 
 @SuppressWarnings("unused")
 public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements RVHAdapter {
@@ -115,7 +108,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.camera_row, parent, false);
+                .inflate(R.layout.camera_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -194,7 +187,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener, RVHViewHolder {
+            implements View.OnClickListener, RVHViewHolder {
         TextView name;
         ImageView camera;
 
