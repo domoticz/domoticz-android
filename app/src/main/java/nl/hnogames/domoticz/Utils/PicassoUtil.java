@@ -131,7 +131,7 @@ public class PicassoUtil {
                     }
                 })
                 .downloader(okHttpDownloader)
-                .memoryCache(new LruCache(context))
+                //.memoryCache(new LruCache(context))
                 .executor(Executors.newSingleThreadExecutor())//avoid OutOfMemoryError
                 .build();
     }
@@ -184,7 +184,7 @@ public class PicassoUtil {
                 .addNetworkInterceptor(new DefaultHeadersInterceptor(context))
                 .addInterceptor(new DefaultHeadersInterceptor(context))
                 .addInterceptor(loggingInterceptor)
-                .cache(new Cache(cacheDir, cacheSize))
+                //.cache(new Cache(cacheDir, cacheSize))
                 .build();
     }
 
@@ -232,7 +232,7 @@ public class PicassoUtil {
                 .addNetworkInterceptor(new DefaultHeadersInterceptor(context, username, password))
                 .addInterceptor(new DefaultHeadersInterceptor(context, username, password))
                 .addInterceptor(loggingInterceptor)
-                .cache(new Cache(cacheDir, cacheSize))
+                //.cache(new Cache(cacheDir, cacheSize))
                 .build();
     }
 
@@ -281,7 +281,7 @@ public class PicassoUtil {
                 .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie))
                 .addInterceptor(new DefaultHeadersInterceptor(context, cookie))
                 .addInterceptor(loggingInterceptor)
-                .cache(new Cache(cacheDir, cacheSize))
+                //.cache(new Cache(cacheDir, cacheSize))
                 .build();
     }
 

@@ -133,21 +133,10 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            picasso.load(imageUrl).into(holder.camera);
-
-            /*
-            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz,
-                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
-                domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD),
-                domoticz.getSessionUtil(),
-                false,
-                mContext);
-
-            holder.camera.setImageUrl(imageUrl, imageLoader);
-
-            if (!refreshTimer)
-                holder.camera.setDefaultImageResId(R.drawable.placeholder);
-*/
+            picasso.load(imageUrl)
+                .placeholder(R.drawable.placeholder)
+                //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                .into(holder.camera);
         }
     }
 
