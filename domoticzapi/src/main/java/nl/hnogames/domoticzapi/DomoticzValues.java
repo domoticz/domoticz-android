@@ -183,6 +183,7 @@ public class DomoticzValues {
                 int SELECTOR = 18;
                 int DOORLOCK = 19;
                 int DOORLOCKINVERTED = 20;
+                int TEMP = 21;
             }
 
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -212,6 +213,7 @@ public class DomoticzValues {
                 String WIND = "Wind";
                 String SELECTOR = "Selector";
                 String EVOHOME = "evohome";
+                String TEMP = "21";
             }
         }
 

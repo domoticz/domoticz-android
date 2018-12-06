@@ -197,7 +197,13 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                         holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
                     }
                     holder.pieView.setPercentageTextSize(16);
+
+                    if((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
+                        (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30))
+                        holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                        else
                     holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
+
                     double temp = mTemperatureInfo.getTemperature();
                     if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
                         temp = temp / 2;
