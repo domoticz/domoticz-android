@@ -78,7 +78,7 @@ public class DomoticzDashboardFragment extends Fragment {
     private String sort = "";
 
     private int scrolledDistance = 0;
-    private int SCROLL_THRESHOLD = 40;
+    private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
 
     public DomoticzDashboardFragment() {
@@ -164,7 +164,6 @@ public class DomoticzDashboardFragment extends Fragment {
                     if (firstVisibleItems != null)
                         firstVisibleItem = firstVisibleItems[0];
                 }
-
                 if (firstVisibleItem == 0) {
                     if (!controlsVisible) {
                         showViews();
