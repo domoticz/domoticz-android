@@ -59,6 +59,7 @@
     <string name="hardware">Hardware</string>
     <string name="temperature">Temperature</string>
     <string name="status">Status</string>
+    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
 
     <string name="set_point">Set point</string>
     <string name="set_point_min">Set point min value</string>
@@ -120,7 +121,7 @@
 
     <string name="choose_color">Choose color</string>
 
-    <string name="no_data_on_OOTT">No data on OOTT server</string>
+    <string name="no_data_on_domoticz">No data on OOTT server</string>
 
     <string name="row_icon_description">row icon</string>
     <string name="error_image_description">Error image</string>
@@ -128,7 +129,7 @@
 
     <string name="white">White</string>
     <string name="refresh">Refresh</string>
-    <string name="OOTT_logo">OOTT logo</string>
+    <string name="domoticz_logo">OOTT logo</string>
     <string name="this_take_minutes">This could take several minutes.</string>
     <string name="continue_question">Continue?</string>
     <string name="cant_remove_default_server">Can\'t remove the default server</string>

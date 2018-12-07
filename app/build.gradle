@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
 
     def versionPropsFile = file('version.properties')
 
@@ -22,7 +22,9 @@ android {
         println "****************************"
 
         def versionMajor = 0
-        def versionMinor = 1
+        def versionMinor = 2
+
+
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
         def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
         def version_Code = versionProps['VERSION_CODE'].toInteger() + value
@@ -149,10 +151,11 @@ repositories {
 
 allprojects {
     repositories {
-        jcenter()
+        google()
         maven {
             url "https://maven.google.com"
         }
+        jcenter()
     }
 }
 
@@ -170,8 +173,8 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:16.0.4"
     implementation "com.google.firebase:firebase-crash:16.2.1"
-    implementation "com.google.firebase:firebase-perf:16.1.2"
-    implementation "com.google.firebase:firebase-messaging:17.3.3"
+    implementation "com.google.firebase:firebase-perf:16.2.0"
+    implementation "com.google.firebase:firebase-messaging:17.3.4"
     implementation "com.crashlytics.sdk.android:crashlytics:2.9.5"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.6'
@@ -183,6 +186,11 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:16.0.0"
     implementation "com.google.android.gms:play-services-places:16.0.0"
     implementation "com.google.android.gms:play-services-ads:16.0.0"
+    implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
+
+    compile('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
 
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.8.4'
@@ -192,15 +200,15 @@ dependencies {
     implementation 'com.github.zurche:plain-pie:v0.2.9'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
-    implementation 'com.github.dexafree:MaterialList:v3.2.2'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    implementation 'com.alexvasilkov:gesture-views:2.5.2'
 
     implementation("com.mikepenz:materialdrawer:6.0.9@aar") {
         transitive = true
@@ -218,6 +226,7 @@ dependencies {
     implementation project(path: ':materialIntro_library')
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
+    implementation project(path: ':materialList')
 }
 
 buildscript {

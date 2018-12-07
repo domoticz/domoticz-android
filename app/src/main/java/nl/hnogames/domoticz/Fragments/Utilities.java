@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -41,6 +42,7 @@ import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UtilityAdapter;
 import nl.hnogames.domoticz.GraphActivity;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -61,7 +63,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-    UtilityClickListener {
+        UtilityClickListener {
 
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
     private double thermostatSetPointValue;
@@ -71,6 +73,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private LinearLayout lExtraPanel = null;
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private Animation animShow, animHide;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -107,8 +110,22 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     public void Filter(String text) {
         filter = text;
         try {
-            if (adapter != null)
+            if (adapter != null) {
+                if (UsefulBits.isEmpty(text) &&
+                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    if (mItemTouchHelper == null) {
+                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                                false));
+                    }
+                    mItemTouchHelper.attachToRecyclerView(gridView);
+                } else {
+                    if (mItemTouchHelper != null)
+                        mItemTouchHelper.attachToRecyclerView(null);
+                }
                 adapter.getFilter().filter(text);
+                adapter.notifyDataSetChanged();
+            }
             super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -128,10 +145,13 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     private void processUtilities() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        try {
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setRefreshing(true);
 
-        new GetCachedDataTask().execute();
+            new GetCachedDataTask().execute();
+        } catch (Exception ex) {
+        }
     }
 
     private void createListView() {
@@ -144,6 +164,17 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 adapter.setData(mUtilitiesInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
+            }
+            if (mItemTouchHelper == null) {
+                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                        false));
+            }
+            if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mItemTouchHelper.attachToRecyclerView(gridView);
+            } else {
+                if (mItemTouchHelper != null)
+                    mItemTouchHelper.attachToRecyclerView(null);
             }
 
             mSwipeRefreshLayout.setRefreshing(false);
@@ -162,9 +193,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     private void showInfoDialog(final UtilitiesInfo mUtilitiesInfo) {
         UtilitiesInfoDialog infoDialog = new UtilitiesInfoDialog(
-            mContext,
-            mUtilitiesInfo,
-            R.layout.dialog_utilities_info);
+                mContext,
+                mUtilitiesInfo,
+                R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mUtilitiesInfo.getIdx()));
         infoDialog.setLastUpdate(mUtilitiesInfo.getLastUpdate());
         infoDialog.setIsFavorite(mUtilitiesInfo.getFavoriteBoolean());
@@ -199,24 +230,24 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mUtilitiesInfo.getIdx(),
-            jsonUrl,
-            jsonAction,
-            0,
-            null,
-            new setCommandReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    mUtilitiesInfo.setFavoriteBoolean(isFavorite);
-                }
+                jsonUrl,
+                jsonAction,
+                0,
+                null,
+                new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        mUtilitiesInfo.setFavoriteBoolean(isFavorite);
+                    }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
     /**
@@ -289,18 +320,18 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             Replace so we get the right log
          */
         String graphType = utility.getSubType()
-            .replace("Electric", "counter")
-            .replace("kWh", "counter")
-            .replace("Gas", "counter")
-            .replace("Energy", "counter")
-            .replace("Voltcraft", "counter")
-            .replace("Voltage", "counter")
-            .replace("SetPoint", "temp")
-            .replace("Lux", "counter")
-            .replace("BWR102", "counter")
-            .replace("Sound Level", "counter")
-            .replace("Pressure", "counter")
-            .replace("YouLess counter", "counter");
+                .replace("Electric", "counter")
+                .replace("kWh", "counter")
+                .replace("Gas", "counter")
+                .replace("Energy", "counter")
+                .replace("Voltcraft", "counter")
+                .replace("Voltage", "counter")
+                .replace("SetPoint", "temp")
+                .replace("Lux", "counter")
+                .replace("BWR102", "counter")
+                .replace("Sound Level", "counter")
+                .replace("Pressure", "counter")
+                .replace("YouLess counter", "counter");
 
         if (graphType.contains("counter"))
             graphType = "counter";
@@ -323,8 +354,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         final UtilitiesInfo tempUtil = getUtility(idx);
 
         TemperatureDialog tempDialog = new TemperatureDialog(
-            mContext,
-            tempUtil.getSetPoint());
+                mContext,
+                tempUtil.getSetPoint());
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
             @Override
@@ -335,7 +366,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     if (tempUtil != null) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                mContext, mDomoticz);
+                                    mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
@@ -372,24 +403,24 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             action = DomoticzValues.Device.Thermostat.Action.MIN;
 
         mDomoticz.setAction(tempUtil.getIdx(),
-            jsonUrl,
-            action,
-            newSetPoint,
-            password,
-            new setCommandReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveResult(String result) {
-                    updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
-                    successHandling(result, false);
-                }
+                jsonUrl,
+                action,
+                newSetPoint,
+                password,
+                new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
+                        successHandling(result, false);
+                    }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
 
@@ -447,8 +478,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     @Override
     @DebugLog
-    public boolean onItemLongClicked(int position) {
-        showInfoDialog(adapter.filteredData.get(position));
+    public boolean onItemLongClicked(int idx) {
+        showInfoDialog(getUtility(idx));
         return true;
     }
 
@@ -457,9 +488,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             Toast.makeText(mContext, "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                mContext,
-                switchLogs,
-                R.layout.dialog_switch_logs);
+                    mContext,
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }
@@ -468,6 +499,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         ArrayList<UtilitiesInfo> cacheUtilities = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if (mContext == null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -481,6 +514,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         }
 
         protected void onPostExecute(Boolean result) {
+            if (mContext == null)
+                return;
             if (cacheUtilities != null)
                 createListView();
 

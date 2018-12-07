@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -40,6 +41,7 @@ import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
 import nl.hnogames.domoticz.GraphActivity;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -71,6 +73,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private Animation animShow, animHide;
     private ArrayList<TemperatureInfo> mTempInfos;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -107,8 +110,22 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     public void Filter(String text) {
         filter = text;
         try {
-            if (adapter != null)
+            if (adapter != null) {
+                if (UsefulBits.isEmpty(text) &&
+                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    if (mItemTouchHelper == null) {
+                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                                false));
+                    }
+                    mItemTouchHelper.attachToRecyclerView(gridView);
+                } else {
+                    if (mItemTouchHelper != null)
+                        mItemTouchHelper.attachToRecyclerView(null);
+                }
                 adapter.getFilter().filter(text);
+                adapter.notifyDataSetChanged();
+            }
             super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -128,10 +145,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     private void processTemperature() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        try {
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setRefreshing(true);
 
-        new GetCachedDataTask().execute();
+            new GetCachedDataTask().execute();
+        } catch (Exception ex) {
+        }
     }
 
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
@@ -144,6 +164,17 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                 adapter.setData(mTemperatureInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
+            }
+            if (mItemTouchHelper == null) {
+                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                        false));
+            }
+            if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mItemTouchHelper.attachToRecyclerView(gridView);
+            } else {
+                if (mItemTouchHelper != null)
+                    mItemTouchHelper.attachToRecyclerView(null);
             }
 
             mSwipeRefreshLayout.setRefreshing(false);
@@ -161,9 +192,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
         TemperatureInfoDialog infoDialog = new TemperatureInfoDialog(
-            mContext,
-            mTemperatureInfo,
-            R.layout.dialog_utilities_info);
+                mContext,
+                mTemperatureInfo,
+                R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mTemperatureInfo.getIdx()));
         infoDialog.setLastUpdate(mTemperatureInfo.getLastUpdate());
         infoDialog.setIsFavorite(mTemperatureInfo.getFavoriteBoolean());
@@ -271,13 +302,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
-                mContext,
-                t.getSetPoint(),
-                !"auto".equalsIgnoreCase(t.getStatus()));
+                    mContext,
+                    t.getSetPoint(),
+                    !"auto".equalsIgnoreCase(t.getStatus()));
         } else {
             tempDialog = new TemperatureDialog(
-                mContext,
-                t.getSetPoint());
+                    mContext,
+                    t.getSetPoint());
         }
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
@@ -288,7 +319,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                        "&mode=" + PERMANENT_OVERRIDE;
+                            "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
@@ -296,7 +327,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     addDebugText("Set idx " + idx + " to Auto");
 
                     String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                        "&mode=" + AUTO;
+                            "&mode=" + AUTO;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
@@ -343,8 +374,8 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     @Override
     @DebugLog
-    public boolean onItemLongClicked(int position) {
-        showInfoDialog(adapter.filteredData.get(position));
+    public boolean onItemLongClicked(int idx) {
+        showInfoDialog(getTemperature(idx));
         return true;
     }
 
@@ -363,9 +394,11 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         ArrayList<TemperatureInfo> cacheTemperatures = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if (mContext == null)
+                return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
                 } catch (Exception ex) {
@@ -375,6 +408,8 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         }
 
         protected void onPostExecute(Boolean result) {
+            if (mContext == null)
+                return;
             if (cacheTemperatures != null)
                 createListView(cacheTemperatures);
 

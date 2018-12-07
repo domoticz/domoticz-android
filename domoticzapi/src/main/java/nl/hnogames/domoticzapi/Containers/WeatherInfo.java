@@ -54,7 +54,6 @@ public class WeatherInfo implements Comparable, Serializable {
     private String TypeImg;
     private int signalLevel;
 
-
     public WeatherInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
 
@@ -80,7 +79,13 @@ public class WeatherInfo implements Comparable, Serializable {
         if (Type.equals("Wind") && Data.indexOf(';') >= 0) {
             Data = Data.substring(0, Data.indexOf(';'));
         }
-        if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
+        if (row.has("DewPoint")) {
+            try {
+                DewPoint = row.getLong("DewPoint");
+            } catch (Exception ex) {
+                DewPoint = 0;
+            }
+        }
         if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
         if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
@@ -88,7 +93,6 @@ public class WeatherInfo implements Comparable, Serializable {
         if (row.has("DirectionStr")) DirectionStr = row.getString("DirectionStr");
         if (row.has("Chill")) Chill = row.getString("Chill");
         if (row.has("Speed")) Speed = row.getString("Speed");
-
         if (row.has("SignalLevel")) {
             try {
                 signalLevel = row.getInt("SignalLevel");

@@ -89,8 +89,8 @@
                             style="@style/row_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:gravity="left"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
                             android:maxLines="2"
                             android:paddingLeft="10dp"
                             android:paddingBottom="7dp"
@@ -101,8 +101,8 @@
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:gravity="left"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
                             android:paddingLeft="10dp"
                             android:text="@string/battery_level"/>
 
@@ -111,8 +111,8 @@
                             style="@style/row_body2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:gravity="left"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
                             android:paddingLeft="10dp"
                             android:text="@string/signal_level"/>
                     </LinearLayout>

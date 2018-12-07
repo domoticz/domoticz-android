@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -55,6 +56,7 @@ public class DomoticzCardFragment extends Fragment {
     public Domoticz mDomoticz;
     public CoordinatorLayout coordinatorLayout;
     public PhoneConnectionUtil mPhoneConnectionUtil;
+    public SwipeRefreshLayout mSwipeRefreshLayout;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private SharedPrefUtil mSharedPrefs;
@@ -80,6 +82,11 @@ public class DomoticzCardFragment extends Fragment {
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setColorSchemeResources(
+                        R.color.secondary,
+                        R.color.secondary_dark,
+                        R.color.background_dark);
         }
     }
 
@@ -96,8 +103,8 @@ public class DomoticzCardFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
-
+        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         setTheme();
         return root;
     }
@@ -128,7 +135,7 @@ public class DomoticzCardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -222,7 +229,7 @@ public class DomoticzCardFragment extends Fragment {
                     debugText.setText(temp);
                 }
             } else throw new RuntimeException(
-                "Layout should have a TextView defined with the ID \"debugText\"");
+                    "Layout should have a TextView defined with the ID \"debugText\"");
         }
     }
 
@@ -234,7 +241,7 @@ public class DomoticzCardFragment extends Fragment {
                 TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
                 errorTextMessage.setText(message);
             } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                    "Layout should have a RelativeLayout defined with the ID of errorLayout");
         }
     }
 
@@ -254,7 +261,7 @@ public class DomoticzCardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideRecyclerView() {

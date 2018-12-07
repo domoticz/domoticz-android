@@ -57,5 +57,5 @@ public interface switchesClickListener {
 
     void onItemClicked(View v, int position);
 
-    boolean onItemLongClicked(int position);
+    boolean onItemLongClicked(int idx);
 }

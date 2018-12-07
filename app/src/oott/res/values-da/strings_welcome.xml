@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Velkommen</string>
-  <string name="welcome_info_domoticz">OOTT (Powered by Domoticz)er et Home Automation System, der lader dig overvåge og konfigurere forskellige enheder som: lys, switche, forskellige sensorer/målere som temperatur, regn, vind, UV, Electra, Gas, vand og meget mere. Meddelelser/beskeder kan sendes til alle mobile enheder.</string>
+  <string name="welcome_info_domoticz">OOTT er et Home Automation System, der lader dig overvåge og konfigurere forskellige enheder som: lys, switche, forskellige sensorer/målere som temperatur, regn, vind, UV, Electra, Gas, vand og meget mere. Meddelelser/beskeder kan sendes til alle mobile enheder.</string>
   <string name="welcome_info_swipe">Swipe til højre eller Brug navigationsknapperne nederst til at fortsætte</string>
   <string name="welcome_info_settings1">Næste side er for dine indstillinger for OOTT.</string>
   <string name="welcome_info_settings2">

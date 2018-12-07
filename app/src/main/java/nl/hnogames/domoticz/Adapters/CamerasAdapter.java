@@ -28,49 +28,87 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.PicassoUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Utils.RequestUtil;
-import nl.hnogames.domoticzapi.Utils.SessionUtil;
 
 @SuppressWarnings("unused")
-public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> {
+public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements RVHAdapter {
+    public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private ArrayList<CameraInfo> mDataset;
     private Domoticz domoticz;
     private boolean refreshTimer;
+    private Picasso picasso;
 
-    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, Domoticz domoticz, boolean refreshTimer) {
-        setData(data);
+    public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, final Domoticz domoticz, boolean refreshTimer) {
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
+
+        picasso = new PicassoUtil().getPicasso(mContext, domoticz.getSessionUtil().getSessionCookie());
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("cameras");
+        setData(data);
     }
 
     public void setData(ArrayList<CameraInfo> data) {
-        this.mDataset = data;
+        ArrayList<CameraInfo> sortedData = SortData(data);
+        this.mDataset = sortedData;
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
         CamerasAdapter.onClickListener = onClickListener;
     }
 
+    private ArrayList<CameraInfo> SortData(ArrayList<CameraInfo> data) {
+        ArrayList<CameraInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (CameraInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (CameraInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (CameraInfo d : mDataset) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("cameras", ids);
+    }
+
     @NonNull
     @Override
     public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.camera_row, parent, false);
+                .inflate(R.layout.camera_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -95,12 +133,33 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            ImageLoader imageLoader = RequestUtil.getImageLoader(domoticz, new SessionUtil(mContext), mContext);
-            holder.camera.setImageUrl(imageUrl, imageLoader);
-
-            if (!refreshTimer)
-                holder.camera.setDefaultImageResId(R.drawable.placeholder);
+            picasso.load(imageUrl)
+                .placeholder(R.drawable.placeholder)
+                //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                .into(holder.camera);
         }
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
+    private void remove(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(mDataset, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
     }
 
     @Override
@@ -108,14 +167,18 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         return mDataset.size();
     }
 
+    public void setRefreshTimer(boolean timer) {
+        this.refreshTimer = timer;
+    }
+
     public interface onClickListener {
         void onItemClick(int position, View v);
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener, RVHViewHolder {
         TextView name;
-        com.android.volley.toolbox.NetworkImageView camera;
+        ImageView camera;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -127,6 +190,16 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         @Override
         public void onClick(View v) {
             onClickListener.onItemClick(getLayoutPosition(), v);
+        }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
         }
     }
 }

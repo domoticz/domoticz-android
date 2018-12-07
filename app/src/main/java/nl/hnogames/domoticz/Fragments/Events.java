@@ -100,9 +100,12 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     private void processEvents() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
-        new GetCachedDataTask().execute();
+        try {
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setRefreshing(true);
+            new GetCachedDataTask().execute();
+        } catch (Exception ex) {
+        }
     }
 
     private void createListView(ArrayList<EventInfo> mEventInfos) {
@@ -168,6 +171,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         ArrayList<EventInfo> cacheEventInfos = null;
 
         protected Boolean doInBackground(Boolean... geto) {
+            if (mContext == null) return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {

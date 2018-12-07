@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      android:background="@android:color/white">
+    <item
+        android:id="@+id/bbn_temperature"
+        android:icon="@drawable/baseline_opacity_black_24"
+        android:title="@string/title_temperature"/>
+
+    <item
+        android:id="@+id/bbn_weather"
+        android:icon="@drawable/baseline_wb_sunny_black_24"
+        android:title="@string/title_weather"/>
+</menu>

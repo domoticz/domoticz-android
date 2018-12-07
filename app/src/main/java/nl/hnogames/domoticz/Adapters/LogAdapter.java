@@ -76,7 +76,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.logs_row_default, parent, false);
+                .inflate(R.layout.logs_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -116,7 +116,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
 
             holder.datetime.setText(dateTime);
 
-            Picasso.with(context).load(R.drawable.text).into(holder.iconRow);
+            Picasso.get().load(R.drawable.text).into(holder.iconRow);
         }
     }
 
@@ -131,7 +131,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
 
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;

@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Nastavitve</string>
-  <string name="cameraActivity_name">Fotoaparat</string>
-  <!--        Categories             -->
-  <string name="category_generic">Splošno</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android avtomobil</string>
-  <string name="category_server">Strežnik</string>
-  <string name="category_geofencing">Geolokacija</string>
-  <string name="category_info">Informacija</string>
-  <string name="category_advanced">Napredno</string>
-  <string name="category_language">Jezik</string>
-  <string name="category_talk_back">Talk Back</string>
-  <string name="category_notification">Obvestila</string>
-  <string name="category_debug">Razhroščevanje</string>
-  <string name="category_export">Izvozi/uvozi nastavitve</string>
-  <string name="category_theme">Tema</string>
-  <string name="category_nfc">NFC povezave</string>
-  <string name="category_startup_security">Varnost</string>
-  <string name="category_account">Računi</string>
-  <string name="category_QRCode">QR koda</string>
-  <string name="category_Speech">Govor</string>
-  <string name="category_Reset">Ponastavitev</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Začetno okno</string>
-  <string name="enable_items">Omogoči/onemogoči predmete</string>
-  <string name="sort_dashboardLikeServer_title">Razvrščanje namizja</string>
-  <string name="sort_dashboardLikeServer_on">Razvrsti namizje kot na strežniku</string>
-  <string name="sort_dashboardLikeServer_off">Razvrsti namizje po abecednem redu</string>
-  <string name="extra_data_title">Dodatne informacije namizja</string>
-  <string name="show_extra_data_on">Na namizju pokaži dodatne informacije</string>
-  <string name="show_extra_data_off">Skrij dodatne informacije namizja</string>
-  <string name="always_on_title">Preprečevanje zaklepanja</string>
-  <string name="always_on_on">Prečevanje zaklepanja zaslona</string>
-  <string name="always_on_off">Izklop preprečevanja zaklepanja</string>
-  <string name="always_auto_refresh">Samodejna osvežitev</string>
-  <string name="always_auto_refresh_on">Osveži stanje naprave vsakih 5 min</string>
-  <string name="always_auto_refresh_off">Ne osvežuj stanja naprave vsakih 5 min</string>
-  <string name="switch_buttons_title">Stikala</string>
-  <string name="switch_buttons_on">Pokaži stikala z on/off stikali</string>
-  <string name="switch_buttons_off">Pokaži stikala z on/off gumbi</string>
-  <string name="dashboard_list_title">Mreža na nadzorni plošči</string>
-  <string name="show_dashboard_list_on">Pokaži nadzorno ploščo kot seznam</string>
-  <string name="show_dashboard_list_off">Pokaži nadzorno ploščo kot mrežo</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Android Wear pripomočki po meri</string>
-  <string name="custom_wear_select">Izberi Android Wear stikala</string>
-  <string name="custom_wear_select_desc">Izberite stikala, katera naj bodo vidna na Android Wear napravi</string>
-  <string name="wear_custom_on">Omogoči Andorid Wear pripomočke po meri</string>
-  <string name="wear_custom_off">Onemogoči Andorid Wear pripomočke po meri</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Omogoči Android Wear avtomatska obvestila</string>
-  <string name="auto_custom_off">Onemogoči Android Wear avtomatska obvestila</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Nastavi Geolokacijo</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Nastavi temo</string>
-  <string name="set_dark_theme">Nastavi temno temo</string>
-  <string name="set_light_theme">Nastavi svetlo temo</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Naj OOTT govori z vami</string>
-  <string name="set_talk_back_off">Izključi govorna obvestila</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Nastavitve uvožene, znova zaženite OOTT</string>
-  <string name="settings_import_failed">Neuspešen uvoz nastavitev</string>
-  <string name="settings_exported">Nastavitve izvožene, znova zaženite OOTT</string>
-  <string name="settings_export_failed">Neuspešen izvoz nastavitev</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Nastavitve povezave strežnika</string>
-  <string name="server_force_fetch_config">Pridobi nastavitev strežnika</string>
-  <string name="nfc_settings">Nastavitev NFC povezave</string>
-  <string name="speech_settings">Nastavi govorne ukaze</string>
-  <string name="title_activity_server_settings">Nastavitve strežnika</string>
-  <string name="multi_server">Več strežnikov</string>
-  <string name="enable_nfc">Omogoči NFC</string>
-  <string name="enable_speech">Omogoči prepoznavo govora</string>
-  <string name="export_settings">Izvoz nastavitev</string>
-  <string name="reset_settings">Ponastavite vse nastavitve aplikacije (OPOZORILO!)</string>
-  <string name="import_settings">Uvoz nastavitev</string>
-  <string name="multi_server_settings">Omogči podporo več strežnikom</string>
-  <string name="nfc_enable_settings">Omogoči NFC povezave</string>
-  <string name="speech_enable_settings">Omogoči prepoznavo govora</string>
-  <string name="server">Strežnik</string>
-  <string name="qrcode_settings">Nastavitev QR kod</string>
-  <string name="enable_qrcode">Omogoči QR kode</string>
-  <string name="qrcode_enable_settings">Omogoči funkcionalnost QR kod</string>
-  <string name="security_settings">Nastavitev varnosti</string>
-  <string name="enable_security">Omogoči prstni odtis ob zagonu</string>
-  <string name="disable_security">Onemogoči prstni odtis ob zagonu</string>
-  <string name="setup_fingerprints">Nastavi prstni odtise prako nastavitev v Android-u</string>
-  <string name="fingerprint_not_supported">Prstni odtis ni podprt v tej napravi</string>
-  <string name="fingerprint_not_setup_in_android">Najprej nastavite/povežite prstni odtis s to napravo</string>
-  <string name="fingerprint_sure">Ste prepričani? Rezervno geslo je geslo vašega OOTT računa.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Vtičniki (BETA)</string>
-  <string name="widget_description">Omogoči ali onemogoči vtičnike na tej napravi</string>
-  <string name="widget_disabled">Vtičniki na tej napravi niso omogočene, preverite nastavitve OOTT-a</string>
-  <string name="widget_warning">Pripomočki so trenutno v testnem obdobju in verjetno vsebujejo nekatere napake. Uporaba na lastno odgovornost! To lahko povzroči povečano porabo podatkov / akumulatorja...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">ID sporočil Google oblačnih storitev</string>
-  <string name="notification_settings_push">Potisnite svoj registracijski ID na OOTT</string>
-  <string name="notification_settings_pushed">Vaša registracijski ID je sedaj shranjen v OOTT</string>
-  <string name="notification_settings_push_failed">Vašega registracijskega ID ni bilo mogoče shraniti v OOTT. Prosim poskusite znova pozneje.</string>
-  <string name="notification_show_title">Zadnja obvestila</string>
-  <string name="notification_show_nothing">Brez obvestil</string>
-  <string name="notification_show">Prikaži zadnjih nekaj obvestil</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Prepiši obvestila</string>
-  <string name="overwrite_notifications">Prepiši prejšnjega obvestila na tej napravi</string>
-  <string name="enable_notifications_title">Omogoči obvestila</string>
-  <string name="enable_notifications">Omogoči obvestila na tej napravi</string>
-  <string name="notification_screen_title">Nastavitve obvestil</string>
-  <string name="notification_vibrate_title">Vibriraj</string>
-  <string name="notification_vibrate_on">Vibriraj, ko prejmeš obvestilo</string>
-  <string name="notification_vibrate_off">Ne vibriraj</string>
-  <string name="notification_sound_title">Zvok</string>
-  <string name="notification_sound_summary">Ko prispe obvestilo, uporabi zvok obvestila</string>
-  <string name="suppress_notifications_select">Izberi katera obvestila naj bodo utišana</string>
-  <string name="suppress_notifications">Utiša izbrana obvestila na tej napravi</string>
-  <string name="suppress_notifications_title">Utišaj obvestila</string>
-  <string name="alarm_notifications_select">Izberite obvestila za alarmiranje</string>
-  <string name="alarm_notifications">Zvočni alarm ob določenih obvestilih</string>
-  <string name="clear_notifications">Pobriši dnevnik obvestil</string>
-  <string name="alarm_notifications_title">Alarmna sporočila</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Časovnik alarma</string>
-  <string name="alarmtimer">Število sekund pred sproženjem alarma</string>
-  <string name="default_values">Privzete vrednosti</string>
-  <string name="default_values_min_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
-  <string name="default_values_max_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
-  <!--        Information category       -->
-  <string name="info_version">Različica</string>
-  <string name="info_OOTT_version">Različica OOTT</string>
-  <string name="info_about">O OOTT</string>
-  <string name="info_credits">Zasluge</string>
-  <string name="info_credits_text">OOTT (Powered by Domoticz) za Android je mogoč z uporabo odprtih knjižnic</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Razhroščevanje</string>
-  <string name="debug_switch_summary_on">Razhroščevanje vključeno</string>
-  <string name="debug_switch_summary_off">Razhroščevanje izključeno</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Vsa en predmet mora biti v predalniku</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Posodobi strežnik</string>
-  <string name="error_couldNotCheckForUpdates">"Ni bilo mogoče preveriti posodobitve: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Ne morem naložiti nastavitev OOTT strežnika: %1$s"</string>
-  <string name="update_available_enhanced">Mogoča nadgradnja strežnika: %1$s na %2$s</string>
-  <string name="check_for_update_title">Preveri posodobitve</string>
-  <string name="check_for_update">Bi radi preverili ali obstajajo posodobitve sistema OOTT?</string>
-  <string name="update_server_warning">Medtem ko se strežnik posodablja, aplikacija ne bo delovala pravilno.</string>
-  <string name="update_server_downloadNotReady1">Posodobitev še ni (popolnoma) prenesena.</string>
-  <string name="update_server_downloadNotReady2">Prosimo poizkusite pozneje.</string>
-  <string name="server_update_available">Posodobitev strežnika na voljo</string>
-  <string name="update_server">Posodobi strežnik</string>
-  <string name="server_update_revision">Revizija posodobitve strežnika</string>
-  <string name="server_version">Različica strežnika</string>
-  <string name="server_update">Posodobitev strežnika</string>
-  <string name="please_wait_while_we_check">Počakajte dokler preverjamo, če je vaš strežnik pripravljen za posodobitev</string>
-  <string name="server_update_not_ready">Posodobitev strežnika ni prenesena</string>
-  <string name="please_wait_while_server_updated">Prosimo počakajte, dokler se strežnik posodablja.</string>
-  <string name="server_update_done">Posodobitev strežnika je končana</string>
-  <string name="update_not_started">Posodobitev se ni začela</string>
-  <string name="update_not_started_unknown_error">Posodobitev se ni začela zaradi neznane napake</string>
-  <string name="server_update_not_available">Posodobitev strežnika ni na voljo</string>
-  <string name="click_to_update_server">Kliknite tukaj, če želite posodobiti strežnik</string>
-  <string name="debug_test_text">Razhroščevalni test</string>
-  <string name="restart_required_title">Potreben je vnovičen zagon</string>
-  <string name="restart_now">Ponovni zagon zdaj?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Nastavitve</string>
+    <string name="cameraActivity_name">Fotoaparat</string>
+    <!--        Categories             -->
+    <string name="category_generic">Splošno</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android avtomobil</string>
+    <string name="category_server">Strežnik</string>
+    <string name="category_geofencing">Geolokacija</string>
+    <string name="category_info">Informacija</string>
+    <string name="category_advanced">Napredno</string>
+    <string name="category_language">Jezik</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Obvestila</string>
+    <string name="category_debug">Razhroščevanje</string>
+    <string name="category_export">Izvozi/uvozi nastavitve</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_nfc">NFC povezave</string>
+    <string name="category_startup_security">Varnost</string>
+    <string name="category_account">Računi</string>
+    <string name="category_QRCode">QR koda</string>
+    <string name="category_Speech">Govor</string>
+    <string name="category_Reset">Ponastavitev</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Začetno okno</string>
+    <string name="enable_items">Omogoči/onemogoči predmete</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Razvrsti namizje po abecednem redu</string>
+    <string name="extra_data_title">Dodatne informacije namizja</string>
+    <string name="show_extra_data_on">Na namizju pokaži dodatne informacije</string>
+    <string name="show_extra_data_off">Skrij dodatne informacije namizja</string>
+    <string name="always_on_title">Preprečevanje zaklepanja</string>
+    <string name="always_on_on">Prečevanje zaklepanja zaslona</string>
+    <string name="always_on_off">Izklop preprečevanja zaklepanja</string>
+    <string name="always_auto_refresh">Samodejna osvežitev</string>
+    <string name="always_auto_refresh_on">Osveži stanje naprave vsakih 5 min</string>
+    <string name="always_auto_refresh_off">Ne osvežuj stanja naprave vsakih 5 min</string>
+    <string name="switch_buttons_title">Stikala</string>
+    <string name="switch_buttons_on">Pokaži stikala z on/off stikali</string>
+    <string name="switch_buttons_off">Pokaži stikala z on/off gumbi</string>
+    <string name="dashboard_list_title">Mreža na nadzorni plošči</string>
+    <string name="show_dashboard_list_on">Pokaži nadzorno ploščo kot seznam</string>
+    <string name="show_dashboard_list_off">Pokaži nadzorno ploščo kot mrežo</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Android Wear pripomočki po meri</string>
+    <string name="custom_wear_select">Izberi Android Wear stikala</string>
+    <string name="custom_wear_select_desc">Izberite stikala, katera naj bodo vidna na Android Wear napravi</string>
+    <string name="wear_custom_on">Omogoči Andorid Wear pripomočke po meri</string>
+    <string name="wear_custom_off">Onemogoči Andorid Wear pripomočke po meri</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Omogoči Android Wear avtomatska obvestila</string>
+    <string name="auto_custom_off">Onemogoči Android Wear avtomatska obvestila</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Nastavi Geolokacijo</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Nastavi temo</string>
+    <string name="set_dark_theme">Nastavi temno temo</string>
+    <string name="set_light_theme">Nastavi svetlo temo</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Naj OOTT govori z vami</string>
+    <string name="set_talk_back_off">Izključi govorna obvestila</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Nastavitve uvožene, znova zaženite OOTT</string>
+    <string name="settings_import_failed">Neuspešen uvoz nastavitev</string>
+    <string name="settings_exported">Nastavitve izvožene, znova zaženite OOTT</string>
+    <string name="settings_export_failed">Neuspešen izvoz nastavitev</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Nastavitve povezave strežnika</string>
+    <string name="server_force_fetch_config">Pridobi nastavitev strežnika</string>
+    <string name="nfc_settings">Nastavitev NFC povezave</string>
+    <string name="speech_settings">Nastavi govorne ukaze</string>
+    <string name="title_activity_server_settings">Nastavitve strežnika</string>
+    <string name="multi_server">Več strežnikov</string>
+    <string name="enable_nfc">Omogoči NFC</string>
+    <string name="enable_speech">Omogoči prepoznavo govora</string>
+    <string name="export_settings">Izvoz nastavitev</string>
+    <string name="reset_settings">Ponastavite vse nastavitve aplikacije (OPOZORILO!)</string>
+    <string name="import_settings">Uvoz nastavitev</string>
+    <string name="multi_server_settings">Omogči podporo več strežnikom</string>
+    <string name="nfc_enable_settings">Omogoči NFC povezave</string>
+    <string name="speech_enable_settings">Omogoči prepoznavo govora</string>
+    <string name="server">Strežnik</string>
+    <string name="qrcode_settings">Nastavitev QR kod</string>
+    <string name="enable_qrcode">Omogoči QR kode</string>
+    <string name="qrcode_enable_settings">Omogoči funkcionalnost QR kod</string>
+    <string name="security_settings">Nastavitev varnosti</string>
+    <string name="enable_security">Omogoči prstni odtis ob zagonu</string>
+    <string name="disable_security">Onemogoči prstni odtis ob zagonu</string>
+    <string name="setup_fingerprints">Nastavi prstni odtise prako nastavitev v Android-u</string>
+    <string name="fingerprint_not_supported">Prstni odtis ni podprt v tej napravi</string>
+    <string name="fingerprint_not_setup_in_android">Najprej nastavite/povežite prstni odtis s to napravo</string>
+    <string name="fingerprint_sure">Ste prepričani? Rezervno geslo je geslo vašega OOTT računa.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Vtičniki (BETA)</string>
+    <string name="widget_description">Omogoči ali onemogoči vtičnike na tej napravi</string>
+    <string name="widget_disabled">Vtičniki na tej napravi niso omogočene, preverite nastavitve OOTT-a</string>
+    <string name="widget_warning">Pripomočki so trenutno v testnem obdobju in verjetno vsebujejo nekatere napake. Uporaba na lastno odgovornost! To lahko povzroči povečano porabo podatkov / akumulatorja...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID sporočil Google oblačnih storitev</string>
+    <string name="notification_settings_push">Potisnite svoj registracijski ID na OOTT</string>
+    <string name="notification_settings_pushed">Vaša registracijski ID je sedaj shranjen v OOTT</string>
+    <string name="notification_settings_push_failed">Vašega registracijskega ID ni bilo mogoče shraniti v OOTT. Prosim poskusite znova pozneje.</string>
+    <string name="notification_show_title">Zadnja obvestila</string>
+    <string name="notification_show_nothing">Brez obvestil</string>
+    <string name="notification_show">Prikaži zadnjih nekaj obvestil</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Prepiši obvestila</string>
+    <string name="overwrite_notifications">Prepiši prejšnjega obvestila na tej napravi</string>
+    <string name="enable_notifications_title">Omogoči obvestila</string>
+    <string name="enable_notifications">Omogoči obvestila na tej napravi</string>
+    <string name="notification_screen_title">Nastavitve obvestil</string>
+    <string name="notification_vibrate_title">Vibriraj</string>
+    <string name="notification_vibrate_on">Vibriraj, ko prejmeš obvestilo</string>
+    <string name="notification_vibrate_off">Ne vibriraj</string>
+    <string name="notification_sound_title">Zvok</string>
+    <string name="notification_sound_summary">Ko prispe obvestilo, uporabi zvok obvestila</string>
+    <string name="suppress_notifications_select">Izberi katera obvestila naj bodo utišana</string>
+    <string name="suppress_notifications">Utiša izbrana obvestila na tej napravi</string>
+    <string name="suppress_notifications_title">Utišaj obvestila</string>
+    <string name="alarm_notifications_select">Izberite obvestila za alarmiranje</string>
+    <string name="alarm_notifications">Zvočni alarm ob določenih obvestilih</string>
+    <string name="clear_notifications">Pobriši dnevnik obvestil</string>
+    <string name="alarm_notifications_title">Alarmna sporočila</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Časovnik alarma</string>
+    <string name="alarmtimer">Število sekund pred sproženjem alarma</string>
+    <string name="default_values">Privzete vrednosti</string>
+    <string name="default_values_min_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
+    <string name="default_values_max_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
+    <!--        Information category       -->
+    <string name="info_version">Različica</string>
+    <string name="info_OOTT_version">Različica OOTT</string>
+    <string name="info_about">O OOTT</string>
+    <string name="info_credits">Zasluge</string>
+    <string name="info_credits_text">OOTT za Android je mogoč z uporabo odprtih knjižnic</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Razhroščevanje</string>
+    <string name="debug_switch_summary_on">Razhroščevanje vključeno</string>
+    <string name="debug_switch_summary_off">Razhroščevanje izključeno</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Vsa en predmet mora biti v predalniku</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Posodobi strežnik</string>
+    <string name="error_couldNotCheckForUpdates">"Ni bilo mogoče preveriti posodobitve: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Ne morem naložiti nastavitev OOTT strežnika: %1$s"</string>
+    <string name="update_available_enhanced">Mogoča nadgradnja strežnika: %1$s na %2$s</string>
+    <string name="check_for_update_title">Preveri posodobitve</string>
+    <string name="check_for_update">Bi radi preverili ali obstajajo posodobitve sistema OOTT?</string>
+    <string name="update_server_warning">Medtem ko se strežnik posodablja, aplikacija ne bo delovala pravilno.</string>
+    <string name="update_server_downloadNotReady1">Posodobitev še ni (popolnoma) prenesena.</string>
+    <string name="update_server_downloadNotReady2">Prosimo poizkusite pozneje.</string>
+    <string name="server_update_available">Posodobitev strežnika na voljo</string>
+    <string name="update_server">Posodobi strežnik</string>
+    <string name="server_update_revision">Revizija posodobitve strežnika</string>
+    <string name="server_version">Različica strežnika</string>
+    <string name="server_update">Posodobitev strežnika</string>
+    <string name="please_wait_while_we_check">Počakajte dokler preverjamo, če je vaš strežnik pripravljen za posodobitev</string>
+    <string name="server_update_not_ready">Posodobitev strežnika ni prenesena</string>
+    <string name="please_wait_while_server_updated">Prosimo počakajte, dokler se strežnik posodablja.</string>
+    <string name="server_update_done">Posodobitev strežnika je končana</string>
+    <string name="update_not_started">Posodobitev se ni začela</string>
+    <string name="update_not_started_unknown_error">Posodobitev se ni začela zaradi neznane napake</string>
+    <string name="server_update_not_available">Posodobitev strežnika ni na voljo</string>
+    <string name="click_to_update_server">Kliknite tukaj, če želite posodobiti strežnik</string>
+    <string name="debug_test_text">Razhroščevalni test</string>
+    <string name="restart_required_title">Potreben je vnovičen zagon</string>
+    <string name="restart_now">Ponovni zagon zdaj?</string>
 </resources>

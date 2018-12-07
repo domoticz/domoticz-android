@@ -46,10 +46,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -62,19 +64,19 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> {
+public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 2000;
+    public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
     private final int[] EVOHOME_STATE_IDS = {
-        DomoticzValues.Device.ModalSwitch.Action.AUTO,
-        DomoticzValues.Device.ModalSwitch.Action.ECONOMY,
-        DomoticzValues.Device.ModalSwitch.Action.AWAY,
-        DomoticzValues.Device.ModalSwitch.Action.AWAY,
-        DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
-        DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
+            DomoticzValues.Device.ModalSwitch.Action.AUTO,
+            DomoticzValues.Device.ModalSwitch.Action.ECONOMY,
+            DomoticzValues.Device.ModalSwitch.Action.AWAY,
+            DomoticzValues.Device.ModalSwitch.Action.AWAY,
+            DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
+            DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
-
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private boolean showAsList;
@@ -94,29 +96,46 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         super();
         this.showAsList = showAsList;
         mSharedPrefs = new SharedPrefUtil(context);
-
         this.context = context;
         domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
-
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("dashboard");
         setData(data);
     }
 
     public void setData(ArrayList<DevicesInfo> data) {
-        // When not sorted the devices are almost like dashboard on server
-        if (!mSharedPrefs.isDashboardSortedLikeServer()) {
-            // Sort alphabetically
-            Collections.sort(data, new Comparator<DevicesInfo>() {
-                @Override
-                public int compare(DevicesInfo left, DevicesInfo right) {
-                    return left.getName().compareTo(right.getName());
-                }
-            });
-        }
+        ArrayList<DevicesInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
+    }
 
-        this.data = data;
-        this.filteredData = data;
+    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
+        ArrayList<DevicesInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (DevicesInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (DevicesInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (DevicesInfo d : filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("dashboard", ids);
     }
 
     /**
@@ -141,10 +160,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         View row;
         if (showAsList)
             row = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dashboard_row_list, parent, false);
+                    .inflate(R.layout.dashboard_row_list, parent, false);
         else
             row = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dashboard_row, parent, false);
+                    .inflate(R.layout.dashboard_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((row.findViewById(R.id.card_global_wrapper)) != null)
@@ -176,23 +195,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
             setSwitchRowData(extendedStatusInfo, holder);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClicked(v, position);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
-                }
-            });
+
+            holder.infoIcon.setTag(extendedStatusInfo.getIdx());
             holder.infoIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemLongClicked(position);
+                    listener.onItemLongClicked((int) v.getTag());
                 }
             });
         }
@@ -207,9 +215,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   DataObjectHolder holder) {
         holder.pieView.setVisibility(View.GONE);
-
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-            (mDeviceInfo.getSwitchType() == null)) {
+                (mDeviceInfo.getSwitchType() == null)) {
             if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
@@ -301,7 +308,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
-                        mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
+                            mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
                         if (mSharedPrefs.showSwitchesAsButtons()) {
                             setButtons(holder, Buttons.DIMMER_BUTTONS);
                             setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
@@ -349,7 +356,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                 default:
                     throw new NullPointerException(
-                        "No supported switch type defined in the adapter (setSwitchRowData)");
+                            "No supported switch type defined in the adapter (setSwitchRowData)");
             }
         }
     }
@@ -380,16 +387,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status)
-                + ": "
-                + String.valueOf(mDeviceInfo.getData());
+                    + ": "
+                    + String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
 
             if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
@@ -412,10 +419,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
                 holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
             if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
+                    !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                 holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
-                mDeviceInfo.getType().equals("Wind")) {
+                    mDeviceInfo.getType().equals("Wind")) {
                 text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
                 holder.switch_battery_level.setText(text);
             }
@@ -431,17 +438,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
             if (mDeviceInfo.getDewPoint() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
-            if (mDeviceInfo.getTemperature() > 0) {
+            if ((mDeviceInfo.getType() != null && mDeviceInfo.getType().equals(DomoticzValues.Device.Type.Value.TEMP)) ||
+                !Double.isNaN(mDeviceInfo.getTemperature()))
+            {
                 holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
-
                 holder.pieView.setVisibility(View.VISIBLE);
                 double temp = mDeviceInfo.getTemperature();
                 if (tempSign != null && !tempSign.equals("C"))
                     temp = temp / 2;
-
                 holder.pieView.setPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemperature() + " " + tempSign);
-
+                if((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
+                    (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30))
+                    holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                else
+                    holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);
                 holder.pieView.startAnimation(animation);
@@ -457,12 +468,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         holder.iconRow.setAlpha(1f);
         if (!mDeviceInfo.getStatusBoolean())
@@ -482,13 +493,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-            UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
 
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-            String.valueOf(mDeviceInfo.getData());
+                String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -513,12 +524,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSwitchType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -543,23 +554,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
+                    String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (holder.buttonOn != null) {
             if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
@@ -623,22 +634,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         text = context.getString(R.string.status) + ": " +
-            String.valueOf(mDeviceInfo.getData());
+                String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -709,24 +720,24 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         String text;
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         if (holder.switch_battery_level != null) {
             String setPointText =
-                context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
+                    context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
             holder.switch_battery_level.setText(setPointText);
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(
-            mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            false,
-            false,
-            null)).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(
+                mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                false,
+                false,
+                null)).into(holder.iconRow);
     }
 
     /**
@@ -749,8 +760,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             if (holder.switch_battery_level != null) {
                 String batteryText = context.getString(R.string.temperature)
-                    + ": "
-                    + mDeviceInfo.getData();
+                        + ": "
+                        + mDeviceInfo.getData();
                 holder.switch_battery_level.setText(batteryText);
             }
         } else {
@@ -758,17 +769,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.signal_level.setVisibility(View.VISIBLE);
             if (holder.switch_battery_level != null) {
                 String batteryLevelText = context.getString(R.string.temperature)
-                    + ": "
-                    + String.valueOf(temperature)
-                    + " " + sign;
+                        + ": "
+                        + String.valueOf(temperature)
+                        + " " + sign;
                 holder.switch_battery_level.setText(batteryLevelText);
             }
 
             if (holder.signal_level != null) {
                 String signalText = context.getString(R.string.set_point)
-                    + ": "
-                    + String.valueOf(mDeviceInfo.getSetPoint()
-                    + " " + sign);
+                        + ": "
+                        + String.valueOf(mDeviceInfo.getSetPoint()
+                        + " " + sign);
                 holder.signal_level.setText(signalText);
             }
         }
@@ -793,11 +804,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setVisibility(View.VISIBLE);
 
             double temp = temperature;
-            if (!sign.equals("C"))
+            if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
                 temp = temp / 2;
+
+            holder.pieView.setPercentageTextSize(16);
             holder.pieView.setPercentage(Float.valueOf(temp + ""));
             holder.pieView.setInnerText(temperature + " " + sign);
 
+            holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
             if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
                 holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
             }
@@ -817,13 +831,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                (mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
-                true, "Freezing")).into(holder.iconRow);
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
+                    (mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                    true, "Freezing")).into(holder.iconRow);
         } else {
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                (mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
-                false, null)).into(holder.iconRow);
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
+                    (mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                    false, null)).into(holder.iconRow);
         }
     }
 
@@ -852,8 +866,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         String text = context.getString(R.string.last_update)
-            + ": "
-            + UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
+                + ": "
+                + UsefulBits.getFormattedDate(context, mDevicesInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null) {
             holder.signal_level.setText(text);
         }
@@ -889,12 +903,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDevicesInfo.getTypeImg(),
-            mDevicesInfo.getType(),
-            mDevicesInfo.getSwitchType(),
-            mDevicesInfo.getStatusBoolean(),
-            mDevicesInfo.getUseCustomImage(),
-            mDevicesInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDevicesInfo.getTypeImg(),
+                mDevicesInfo.getType(),
+                mDevicesInfo.getSwitchType(),
+                mDevicesInfo.getStatusBoolean(),
+                mDevicesInfo.getUseCustomImage(),
+                mDevicesInfo.getImage())).into(holder.iconRow);
 
         if (!mDevicesInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -915,22 +929,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update)
-            + ": "
-            + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
+                + ": "
+                + UsefulBits.getFormattedDate(context, mDeviceInfo.getLastUpdateDateTime().getTime());
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-            String.valueOf(mDeviceInfo.getData());
+                String.valueOf(mDeviceInfo.getData());
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -996,17 +1010,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.switch_status != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(
-                context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(
+                    context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.switch_status.setText(text);
         }
 
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
+                    String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
         }
 
@@ -1052,12 +1066,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         });
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -1080,15 +1094,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
+                    String.valueOf(mDeviceInfo.getStatus());
             holder.switch_battery_level.setText(text);
         }
 
@@ -1100,7 +1114,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.spSelector.setTag(mDeviceInfo.getIdx());
         if (levelNames != null && levelNames.size() > loadLevel) {
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_item, levelNames);
+                    android.R.layout.simple_spinner_item, levelNames);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             holder.spSelector.setAdapter(dataAdapter);
             holder.spSelector.setSelection(loadLevel);
@@ -1124,12 +1138,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         });
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSwitchType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -1155,29 +1169,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
+                    String.valueOf(mDeviceInfo.getStatus());
             holder.switch_battery_level.setText(text);
         }
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         String percentage = calculateDimPercentage(
-            mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
+                mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -1221,7 +1235,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
                 TextView switch_dimmer_level = (TextView) seekBar.getRootView()
-                    .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+                        .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
 
                 if (switch_dimmer_level != null)
                     switch_dimmer_level.setText(percentage);
@@ -1238,7 +1252,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 Switch dimmerOnOffSwitch = null;
                 try {
                     dimmerOnOffSwitch = (Switch) seekBar.getRootView()
-                        .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
+                            .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
                     if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
                         dimmerOnOffSwitch.setChecked(false);
                         seekBar.setProgress(previousDimmerValue);
@@ -1302,29 +1316,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                    + ": "
+                    + UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
             holder.signal_level.setText(text);
         }
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
+                    String.valueOf(mDeviceInfo.getStatus());
             holder.switch_battery_level.setText(text);
         }
 
         holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         String percentage = calculateDimPercentage(
-            mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
+                mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
         holder.switch_dimmer_level.setText(percentage);
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSubType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (!mDeviceInfo.getStatusBoolean())
             holder.iconRow.setAlpha(0.5f);
@@ -1371,8 +1385,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
-                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
-                    .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+                TextView switch_dimmer_level = seekBar.getRootView()
+                        .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
                 if (switch_dimmer_level != null)
                     switch_dimmer_level.setText(percentage);
             }
@@ -1438,12 +1452,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.switch_name.setText(mDeviceInfo.getName());
 
         String text = context.getString(R.string.last_update) + ": " +
-            UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                UsefulBits.getFormattedDate(context,
+                        mDeviceInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-            getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
+                getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         if (holder.buttonSetStatus != null) {
@@ -1457,12 +1471,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-            mDeviceInfo.getType(),
-            mDeviceInfo.getSwitchType(),
-            mDeviceInfo.getStatusBoolean(),
-            mDeviceInfo.getUseCustomImage(),
-            mDeviceInfo.getImage())).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSwitchType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage())).into(holder.iconRow);
     }
 
     /**
@@ -1687,6 +1701,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
         if (!mSharedPrefs.showExtraData()) {
             holder.infoIcon.setVisibility(View.GONE);
+            if (!showAsList) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
+                p.topMargin = 20;
+            }
         } else {
             if (showAsList) {
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
@@ -1787,6 +1805,28 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
     }
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
+    }
+
     interface Buttons {
         int NOTHING = 0;
         int SWITCH = 1;
@@ -1807,8 +1847,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public interface OnClickListener {
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder {
-
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
         Switch onOffSwitch, dimmerOnOffSwitch;
         ImageView buttonUp, buttonDown, buttonStop;
@@ -1857,6 +1896,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             pieView.setVisibility(View.GONE);//default
         }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
+        }
     }
 
     /**
@@ -1867,11 +1916,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         protected FilterResults performFiltering(CharSequence constraint) {
 
             String filterString = constraint.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
-
             final ArrayList<DevicesInfo> list = data;
-
             int count = list.size();
             final ArrayList<DevicesInfo> devicesInfos = new ArrayList<>(count);
 
@@ -1884,7 +1930,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
             results.values = devicesInfos;
             results.count = devicesInfos.size();
-
             return results;
         }
 

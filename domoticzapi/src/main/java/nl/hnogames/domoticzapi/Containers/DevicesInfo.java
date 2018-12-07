@@ -275,7 +275,6 @@ public class DevicesInfo implements Comparable, Serializable {
         else this.Favorite = 0;
     }
 
-
     public double getTemperature() {
         return temp;
     }
@@ -335,7 +334,8 @@ public class DevicesInfo implements Comparable, Serializable {
             boolean statusBoolean = true;
             if (status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.OFF) || status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.CLOSED))
                 statusBoolean = false;
-            else if (status.equalsIgnoreCase(DomoticzValues.Device.Door.State.UNLOCKED) || status.equalsIgnoreCase(DomoticzValues.Device.Door.State.OPEN))
+            else if ((status.equalsIgnoreCase(DomoticzValues.Device.Door.State.UNLOCKED) && switchTypeVal == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) ||
+                    (status.equalsIgnoreCase(DomoticzValues.Device.Door.State.OPEN) && switchTypeVal == DomoticzValues.Device.Type.Value.BLINDINVERTED))
                 statusBoolean = false;
             this.statusBoolean = statusBoolean;
             return statusBoolean;

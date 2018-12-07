@@ -137,19 +137,19 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
     private void showEditDialog(final SpeechInfo mSpeechInfo) {
         new MaterialDialog.Builder(this)
-            .title(R.string.Speech_edit)
-            .content(R.string.Speech_name)
-            .inputType(InputType.TYPE_CLASS_TEXT)
-            .negativeText(R.string.cancel)
-            .input(this.getString(R.string.category_Speech), mSpeechInfo.getName(), new MaterialDialog.InputCallback() {
-                @Override
-                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                    if (!UsefulBits.isEmpty(String.valueOf(input))) {
-                        mSpeechInfo.setName(String.valueOf(input));
-                        updateSpeech(mSpeechInfo);
+                .title(R.string.Speech_edit)
+                .content(R.string.Speech_name)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .negativeText(R.string.cancel)
+                .input(this.getString(R.string.category_Speech), mSpeechInfo.getName(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        if (!UsefulBits.isEmpty(String.valueOf(input))) {
+                            mSpeechInfo.setName(String.valueOf(input));
+                            updateSpeech(mSpeechInfo);
+                        }
                     }
-                }
-            }).show();
+                }).show();
     }
 
     private void getSwitchesAndShowSwitchesDialog(final SpeechInfo qrInfo) {
@@ -169,19 +169,19 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
             @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(SpeechSettingsActivity.this, coordinatorLayout, SpeechSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
-                    null, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getSwitchesAndShowSwitchesDialog(qrInfo);
-                        }
-                    }, SpeechSettingsActivity.this.getString(R.string.retry));
+                        null, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getSwitchesAndShowSwitchesDialog(qrInfo);
+                            }
+                        }, SpeechSettingsActivity.this.getString(R.string.retry));
             }
         }, 0, "all");
     }
 
     private void showSwitchesDialog(
-        final SpeechInfo SpeechInfo,
-        final ArrayList<DevicesInfo> switches) {
+            final SpeechInfo SpeechInfo,
+            final ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
         for (DevicesInfo d : switches) {
@@ -190,9 +190,9 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         }
 
         SwitchDialog infoDialog = new SwitchDialog(
-            SpeechSettingsActivity.this, supportedSwitches,
-            R.layout.dialog_switch_logs,
-            domoticz);
+                SpeechSettingsActivity.this, supportedSwitches,
+                R.layout.dialog_switch_logs,
+                domoticz);
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
@@ -220,16 +220,16 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private void showSelectorDialog(final SpeechInfo SpeechInfo, DevicesInfo selector) {
         final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
-            .title(R.string.selector_value)
-            .items(levelNames)
-            .itemsCallback(new MaterialDialog.ListCallback() {
-                @Override
-                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    SpeechInfo.setValue(String.valueOf(text));
-                    updateSpeech(SpeechInfo);
-                }
-            })
-            .show();
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        SpeechInfo.setValue(String.valueOf(text));
+                        updateSpeech(SpeechInfo);
+                    }
+                })
+                .show();
     }
 
     public void updateSpeech(SpeechInfo SpeechInfo) {
@@ -255,21 +255,21 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
     private boolean showNoDeviceAttachedDialog(final SpeechInfo SpeechInfo) {
         new MaterialDialog.Builder(this)
-            .title(R.string.noSwitchSelected_title)
-            .content(getString(R.string.noSwitchSelected_explanation_Speech)
-                + UsefulBits.newLine()
-                + UsefulBits.newLine()
-                + getString(R.string.noSwitchSelected_connectOneNow))
-            .positiveText(R.string.yes)
-            .negativeText(R.string.no)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    getSwitchesAndShowSwitchesDialog(SpeechInfo);
-                    result = true;
-                }
-            })
-            .show();
+                .title(R.string.noSwitchSelected_title)
+                .content(getString(R.string.noSwitchSelected_explanation_Speech)
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + getString(R.string.noSwitchSelected_connectOneNow))
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        getSwitchesAndShowSwitchesDialog(SpeechInfo);
+                        result = true;
+                    }
+                })
+                .show();
         return result;
     }
 
@@ -295,7 +295,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
         // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
-            getString(R.string.Speech));
+                getString(R.string.Speech));
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
@@ -353,11 +353,11 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                 }
 
                 int[] colors = {
-                    ContextCompat.getColor(this, R.color.material_amber_600),
-                    ContextCompat.getColor(this, R.color.material_blue_600),
-                    ContextCompat.getColor(this, R.color.material_deep_purple_600),
-                    ContextCompat.getColor(this, R.color.material_green_600),
-                    ContextCompat.getColor(this, R.color.material_orange_600)
+                        ContextCompat.getColor(this, R.color.material_amber_600),
+                        ContextCompat.getColor(this, R.color.material_blue_600),
+                        ContextCompat.getColor(this, R.color.material_deep_purple_600),
+                        ContextCompat.getColor(this, R.color.material_green_600),
+                        ContextCompat.getColor(this, R.color.material_orange_600)
                 };
                 recognitionProgressView.setColors(colors);
                 recognitionProgressView.setSpeechRecognizer(speechRecognizer);
@@ -389,7 +389,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
-            .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches != null)
             processResult(matches.get(0).toLowerCase());
     }

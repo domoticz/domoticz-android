@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Settaggi</string>
-  <string name="cameraActivity_name">Camera</string>
-  <!--        Categories             -->
-  <string name="category_generic">Generica</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android Auto</string>
-  <string name="category_server">Server</string>
-  <string name="category_geofencing">Localizzazione</string>
-  <string name="category_info">Informazioni</string>
-  <string name="category_advanced">Preferenze avanzate</string>
-  <string name="category_language">Lingua</string>
-  <string name="category_talk_back">Talk Back</string>
-  <string name="category_notification">Notifiche</string>
-  <string name="category_debug">Debugging</string>
-  <string name="category_export">Importa/Esporta impostazioni</string>
-  <string name="category_theme">Tema</string>
-  <string name="category_nfc">Connessioni NFC</string>
-  <string name="category_startup_security">Sicurezza</string>
-  <string name="category_account">Accounts</string>
-  <string name="category_QRCode">QR Code</string>
-  <string name="category_Speech">Comando vocale</string>
-  <string name="category_Reset">Reset</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Schermata iniziale</string>
-  <string name="enable_items">Abilita/Disabilita i componenti</string>
-  <string name="sort_dashboardLikeServer_title">Ordinamento pagina principale</string>
-  <string name="sort_dashboardLikeServer_on">Ordina la pagina principale come il server</string>
-  <string name="sort_dashboardLikeServer_off">Ordinamento alfabetico pagina principale</string>
-  <string name="extra_data_title">Dati addizionali nel pannello principale</string>
-  <string name="show_extra_data_on">Visualizza dati extra nel pannello principale</string>
-  <string name="show_extra_data_off">Nascondi dati extra nel pannello principale</string>
-  <string name="always_on_title">Wake Lock</string>
-  <string name="always_on_on">Blocca lo schemo sempre attivo</string>
-  <string name="always_on_off">Non bloccare lo schemo sempre attivo</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Interruttori</string>
-  <string name="switch_buttons_on">Visualizza interruttori on/off</string>
-  <string name="switch_buttons_off">Visualizza pulsanti on/off</string>
-  <string name="dashboard_list_title">Griglia pagina principale</string>
-  <string name="show_dashboard_list_on">Visualizza la pagina principale cole lista</string>
-  <string name="show_dashboard_list_off">Visualizza la pagina principale come griglia</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Dispositivi personalizzati Android Wear</string>
-  <string name="custom_wear_select">Seleziona gli interruttori Wear</string>
-  <string name="custom_wear_select_desc">Seleziona quali interruttori vuoi visualizzare nel tuo Android Wear</string>
-  <string name="wear_custom_on">Abilita dispositivi personalizzati Android Wear</string>
-  <string name="wear_custom_off">Disabilita dispositivi personalizzati Android Wear</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Attivare le notifiche di Android Auto</string>
-  <string name="auto_custom_off">Disattivare le notifiche di Android Auto</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Configura Localizzazione</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Imposta Tema</string>
-  <string name="set_dark_theme">Passa al tema Scuro</string>
-  <string name="set_light_theme">Passa al tema Chiaro</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Lascia che Domoticz ti parli</string>
-  <string name="set_talk_back_off">Disattivare talk back</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Impostazioni importate, si prega di riavviare Domoticz</string>
-  <string name="settings_import_failed">Impossibile importare le impostazioni</string>
-  <string name="settings_exported">Impostazioni esportate, si prega di riavviare Domoticz</string>
-  <string name="settings_export_failed">Impossibile esportare le impostazioni</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Impostazioni di connessione del server</string>
-  <string name="server_force_fetch_config">Recuperare la configurazione del server</string>
-  <string name="nfc_settings">Impostazioni connessioni NFC</string>
-  <string name="speech_settings">Configurazione comandi vocali</string>
-  <string name="title_activity_server_settings">Impostazioni del server</string>
-  <string name="multi_server">Server Multipli</string>
-  <string name="enable_nfc">Attivare NFC</string>
-  <string name="enable_speech">Abilitare il riconoscimento vocale</string>
-  <string name="export_settings">Esporta impostazioni</string>
-  <string name="reset_settings">Reset di tutte le impostazioni app (WARNING!!)</string>
-  <string name="import_settings">Importa impostazioni</string>
-  <string name="multi_server_settings">Attivare il supporto di server multipli</string>
-  <string name="nfc_enable_settings">Attivare le connessioni NFC</string>
-  <string name="speech_enable_settings">Abilitare il riconoscimento vocale</string>
-  <string name="server">Server</string>
-  <string name="qrcode_settings">Impostazioni QR Code</string>
-  <string name="enable_qrcode">Abilita QR Code</string>
-  <string name="qrcode_enable_settings">Abilita le funzionalità QR Code</string>
-  <string name="security_settings">Impostazioni di sicurezza</string>
-  <string name="enable_security">Attivare la protezione delle impronte digitali all\'avvio</string>
-  <string name="disable_security">Disattivare la protezione delle impronte digitali all\'avvio</string>
-  <string name="setup_fingerprints">Impostazioni impronte digitali tramite le schermate di Android</string>
-  <string name="fingerprint_not_supported">Impronta digitale non supportata in questo dispositivo</string>
-  <string name="fingerprint_not_setup_in_android">Per prima cosa configurare/collegare un\'impronta digitale a questo dispositivo</string>
-  <string name="fingerprint_sure">Sei sicuro? La password di failover è la password del tuo account Domoticz.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Abilita o Disabilita Widget in questo dispositivo</string>
-  <string name="widget_disabled">I widget non sono abilitati in questo dispositivo, per favore controlla le impostazioni di Domoticz</string>
-  <string name="widget_warning">Usa i widget a tuo rischio!! I widget sono attualmente in fase Beta e possono contenere alcuni bug. possono causare un uso eccessivo di dati e batteria...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">ID di messaggistica Google Cloud</string>
-  <string name="notification_settings_push">Invia il tuo ID di registrazione a Domoticz</string>
-  <string name="notification_settings_pushed">Il tuo ID di registrazione è ora salvato in Domoticz</string>
-  <string name="notification_settings_push_failed">Il tuo id potrebbe non essere salvato in Domoticz, riprova più tardi.</string>
-  <string name="notification_show_title">Ultime notifiche</string>
-  <string name="notification_show_nothing">Nessuna notifica trovata</string>
-  <string name="notification_show">Visualizza ultimo paio di notifiche</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Sovrascrivere le Notifiche</string>
-  <string name="overwrite_notifications">Sovrascrivere le notifiche precedenti su questo dispositivo</string>
-  <string name="enable_notifications_title">Attivare le Notifiche</string>
-  <string name="enable_notifications">Attivare le notifiche di questo dispositivo</string>
-  <string name="notification_screen_title">Impostazioni notifiche</string>
-  <string name="notification_vibrate_title">Vibrazione</string>
-  <string name="notification_vibrate_on">Vibra quando si riceve una notifica</string>
-  <string name="notification_vibrate_off">Non vibrare</string>
-  <string name="notification_sound_title">Suono</string>
-  <string name="notification_sound_summary">Usa il suono di notifica all\'arrivo di una notifica</string>
-  <string name="suppress_notifications_select">Seleziona le Notifiche da cancellare</string>
-  <string name="suppress_notifications">Cancella una Notifica specifica del dispositivo</string>
-  <string name="suppress_notifications_title">Cancella le Notifiche</string>
-  <string name="alarm_notifications_select">Selezionare notifiche di allarme</string>
-  <string name="alarm_notifications">Allarme sonoro per notifiche specifiche</string>
-  <string name="clear_notifications">Cancellare il log delle notifiche</string>
-  <string name="alarm_notifications_title">Notifiche di Allarme</string>
-  <string name="alarm">Allarme</string>
-  <string name="alarmtimer_title">Tempo di Allarme</string>
-  <string name="alarmtimer">Durata dell\'allarme in secondi</string>
-  <string name="default_values">Valori predefiniti</string>
-  <string name="default_values_min_error">Il valore max dovrebbe essere superiore al valore min</string>
-  <string name="default_values_max_error">Il valore max dovrebbe essere superiore al valore min</string>
-  <!--        Information category       -->
-  <string name="info_version">Versione</string>
-  <string name="info_domoticz_version">Versione Domoticz</string>
-  <string name="info_about">Info Domoticz</string>
-  <string name="info_credits">Crediti</string>
-  <string name="info_credits_text">Domoticz per Android è stato realizzato con librerie open source</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Debugging</string>
-  <string name="debug_switch_summary_on">Debugging abilitato</string>
-  <string name="debug_switch_summary_off">Debugging disabilitato</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Hai bisogno di almeno un dispositivo</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Aggiornamento server</string>
-  <string name="error_couldNotCheckForUpdates">"Impossibile controllare gli aggiornamenti: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Impossibile ottenere la configurazione del server Domoticz: %1$s"</string>
-  <string name="update_available_enhanced">Aggiornamento di server disponibile: %1$s versione: %2$s</string>
-  <string name="check_for_update_title">Controlla Aggiornamenti</string>
-  <string name="check_for_update">Vuoi controllare gli aggiornamenti di Domoticz?</string>
-  <string name="update_server_warning">Durante l\'aggiornamento del server questa app potrebbe non funzionare correttamente.</string>
-  <string name="update_server_downloadNotReady1">L\'update non è stato (completamente) scaricato.</string>
-  <string name="update_server_downloadNotReady2">Si prega di riprovare più tardi.</string>
-  <string name="server_update_available">Aggiornamento server disponibile</string>
-  <string name="update_server">Aggiornamento server</string>
-  <string name="server_update_revision">Revisione aggiornamento server</string>
-  <string name="server_version">Versione server</string>
-  <string name="server_update">Aggiornamento server</string>
-  <string name="please_wait_while_we_check">Si prega di attendere, verifichiamo se il server è pronto</string>
-  <string name="server_update_not_ready">Aggiornamento server non scaricato</string>
-  <string name="please_wait_while_server_updated">Si prega di attendere, il server è in fase di aggiornamento.</string>
-  <string name="server_update_done">Aggiornamento server eseguito</string>
-  <string name="update_not_started">Aggiornamento non avviato</string>
-  <string name="update_not_started_unknown_error">Aggiornamento non avviato a causa di un errore sconosciuto</string>
-  <string name="server_update_not_available">Aggiornamento server non disponibile</string>
-  <string name="click_to_update_server">Clicca qui per aggiornare il server</string>
-  <string name="debug_test_text">Test di debug</string>
-  <string name="restart_required_title">È necessario riavviare</string>
-  <string name="restart_now">Riavviare ora?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Settaggi</string>
+    <string name="cameraActivity_name">Camera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Generica</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Server</string>
+    <string name="category_geofencing">Localizzazione</string>
+    <string name="category_info">Informazioni</string>
+    <string name="category_advanced">Preferenze avanzate</string>
+    <string name="category_language">Lingua</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Notifiche</string>
+    <string name="category_debug">Debugging</string>
+    <string name="category_export">Importa/Esporta impostazioni</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_nfc">Connessioni NFC</string>
+    <string name="category_startup_security">Sicurezza</string>
+    <string name="category_account">Accounts</string>
+    <string name="category_QRCode">QR Code</string>
+    <string name="category_Speech">Comando vocale</string>
+    <string name="category_Reset">Reset</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Schermata iniziale</string>
+    <string name="enable_items">Abilita/Disabilita i componenti</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Ordinamento alfabetico pagina principale</string>
+    <string name="extra_data_title">Dati addizionali nel pannello principale</string>
+    <string name="show_extra_data_on">Visualizza dati extra nel pannello principale</string>
+    <string name="show_extra_data_off">Nascondi dati extra nel pannello principale</string>
+    <string name="always_on_title">Wake Lock</string>
+    <string name="always_on_on">Blocca lo schemo sempre attivo</string>
+    <string name="always_on_off">Non bloccare lo schemo sempre attivo</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Interruttori</string>
+    <string name="switch_buttons_on">Visualizza interruttori on/off</string>
+    <string name="switch_buttons_off">Visualizza pulsanti on/off</string>
+    <string name="dashboard_list_title">Griglia pagina principale</string>
+    <string name="show_dashboard_list_on">Visualizza la pagina principale cole lista</string>
+    <string name="show_dashboard_list_off">Visualizza la pagina principale come griglia</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Dispositivi personalizzati Android Wear</string>
+    <string name="custom_wear_select">Seleziona gli interruttori Wear</string>
+    <string name="custom_wear_select_desc">Seleziona quali interruttori vuoi visualizzare nel tuo Android Wear</string>
+    <string name="wear_custom_on">Abilita dispositivi personalizzati Android Wear</string>
+    <string name="wear_custom_off">Disabilita dispositivi personalizzati Android Wear</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Attivare le notifiche di Android Auto</string>
+    <string name="auto_custom_off">Disattivare le notifiche di Android Auto</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Configura Localizzazione</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Imposta Tema</string>
+    <string name="set_dark_theme">Passa al tema Scuro</string>
+    <string name="set_light_theme">Passa al tema Chiaro</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Lascia che Domoticz ti parli</string>
+    <string name="set_talk_back_off">Disattivare talk back</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Impostazioni importate, si prega di riavviare Domoticz</string>
+    <string name="settings_import_failed">Impossibile importare le impostazioni</string>
+    <string name="settings_exported">Impostazioni esportate, si prega di riavviare Domoticz</string>
+    <string name="settings_export_failed">Impossibile esportare le impostazioni</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Impostazioni di connessione del server</string>
+    <string name="server_force_fetch_config">Recuperare la configurazione del server</string>
+    <string name="nfc_settings">Impostazioni connessioni NFC</string>
+    <string name="speech_settings">Configurazione comandi vocali</string>
+    <string name="title_activity_server_settings">Impostazioni del server</string>
+    <string name="multi_server">Server Multipli</string>
+    <string name="enable_nfc">Attivare NFC</string>
+    <string name="enable_speech">Abilitare il riconoscimento vocale</string>
+    <string name="export_settings">Esporta impostazioni</string>
+    <string name="reset_settings">Reset di tutte le impostazioni app (WARNING!!)</string>
+    <string name="import_settings">Importa impostazioni</string>
+    <string name="multi_server_settings">Attivare il supporto di server multipli</string>
+    <string name="nfc_enable_settings">Attivare le connessioni NFC</string>
+    <string name="speech_enable_settings">Abilitare il riconoscimento vocale</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">Impostazioni QR Code</string>
+    <string name="enable_qrcode">Abilita QR Code</string>
+    <string name="qrcode_enable_settings">Abilita le funzionalità QR Code</string>
+    <string name="security_settings">Impostazioni di sicurezza</string>
+    <string name="enable_security">Attivare la protezione delle impronte digitali all\'avvio</string>
+    <string name="disable_security">Disattivare la protezione delle impronte digitali all\'avvio</string>
+    <string name="setup_fingerprints">Impostazioni impronte digitali tramite le schermate di Android</string>
+    <string name="fingerprint_not_supported">Impronta digitale non supportata in questo dispositivo</string>
+    <string name="fingerprint_not_setup_in_android">Per prima cosa configurare/collegare un\'impronta digitale a questo dispositivo</string>
+    <string name="fingerprint_sure">Sei sicuro? La password di failover è la password del tuo account Domoticz.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Abilita o Disabilita Widget in questo dispositivo</string>
+    <string name="widget_disabled">I widget non sono abilitati in questo dispositivo, per favore controlla le impostazioni di Domoticz</string>
+    <string name="widget_warning">Usa i widget a tuo rischio!! I widget sono attualmente in fase Beta e possono contenere alcuni bug. possono causare un uso eccessivo di dati e batteria...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID di messaggistica Google Cloud</string>
+    <string name="notification_settings_push">Invia il tuo ID di registrazione a Domoticz</string>
+    <string name="notification_settings_pushed">Il tuo ID di registrazione è ora salvato in Domoticz</string>
+    <string name="notification_settings_push_failed">Il tuo id potrebbe non essere salvato in Domoticz, riprova più tardi.</string>
+    <string name="notification_show_title">Ultime notifiche</string>
+    <string name="notification_show_nothing">Nessuna notifica trovata</string>
+    <string name="notification_show">Visualizza ultimo paio di notifiche</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Sovrascrivere le Notifiche</string>
+    <string name="overwrite_notifications">Sovrascrivere le notifiche precedenti su questo dispositivo</string>
+    <string name="enable_notifications_title">Attivare le Notifiche</string>
+    <string name="enable_notifications">Attivare le notifiche di questo dispositivo</string>
+    <string name="notification_screen_title">Impostazioni notifiche</string>
+    <string name="notification_vibrate_title">Vibrazione</string>
+    <string name="notification_vibrate_on">Vibra quando si riceve una notifica</string>
+    <string name="notification_vibrate_off">Non vibrare</string>
+    <string name="notification_sound_title">Suono</string>
+    <string name="notification_sound_summary">Usa il suono di notifica all\'arrivo di una notifica</string>
+    <string name="suppress_notifications_select">Seleziona le Notifiche da cancellare</string>
+    <string name="suppress_notifications">Cancella una Notifica specifica del dispositivo</string>
+    <string name="suppress_notifications_title">Cancella le Notifiche</string>
+    <string name="alarm_notifications_select">Selezionare notifiche di allarme</string>
+    <string name="alarm_notifications">Allarme sonoro per notifiche specifiche</string>
+    <string name="clear_notifications">Cancellare il log delle notifiche</string>
+    <string name="alarm_notifications_title">Notifiche di Allarme</string>
+    <string name="alarm">Allarme</string>
+    <string name="alarmtimer_title">Tempo di Allarme</string>
+    <string name="alarmtimer">Durata dell\'allarme in secondi</string>
+    <string name="default_values">Valori predefiniti</string>
+    <string name="default_values_min_error">Il valore max dovrebbe essere superiore al valore min</string>
+    <string name="default_values_max_error">Il valore max dovrebbe essere superiore al valore min</string>
+    <!--        Information category       -->
+    <string name="info_version">Versione</string>
+    <string name="info_domoticz_version">Versione Domoticz</string>
+    <string name="info_about">Info Domoticz</string>
+    <string name="info_credits">Crediti</string>
+    <string name="info_credits_text">Domoticz per Android è stato realizzato con librerie open source</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Debugging</string>
+    <string name="debug_switch_summary_on">Debugging abilitato</string>
+    <string name="debug_switch_summary_off">Debugging disabilitato</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Hai bisogno di almeno un dispositivo</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Aggiornamento server</string>
+    <string name="error_couldNotCheckForUpdates">"Impossibile controllare gli aggiornamenti: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Impossibile ottenere la configurazione del server Domoticz: %1$s"</string>
+    <string name="update_available_enhanced">Aggiornamento di server disponibile: %1$s versione: %2$s</string>
+    <string name="check_for_update_title">Controlla Aggiornamenti</string>
+    <string name="check_for_update">Vuoi controllare gli aggiornamenti di Domoticz?</string>
+    <string name="update_server_warning">Durante l\'aggiornamento del server questa app potrebbe non funzionare correttamente.</string>
+    <string name="update_server_downloadNotReady1">L\'update non è stato (completamente) scaricato.</string>
+    <string name="update_server_downloadNotReady2">Si prega di riprovare più tardi.</string>
+    <string name="server_update_available">Aggiornamento server disponibile</string>
+    <string name="update_server">Aggiornamento server</string>
+    <string name="server_update_revision">Revisione aggiornamento server</string>
+    <string name="server_version">Versione server</string>
+    <string name="server_update">Aggiornamento server</string>
+    <string name="please_wait_while_we_check">Si prega di attendere, verifichiamo se il server è pronto</string>
+    <string name="server_update_not_ready">Aggiornamento server non scaricato</string>
+    <string name="please_wait_while_server_updated">Si prega di attendere, il server è in fase di aggiornamento.</string>
+    <string name="server_update_done">Aggiornamento server eseguito</string>
+    <string name="update_not_started">Aggiornamento non avviato</string>
+    <string name="update_not_started_unknown_error">Aggiornamento non avviato a causa di un errore sconosciuto</string>
+    <string name="server_update_not_available">Aggiornamento server non disponibile</string>
+    <string name="click_to_update_server">Clicca qui per aggiornare il server</string>
+    <string name="debug_test_text">Test di debug</string>
+    <string name="restart_required_title">È necessario riavviare</string>
+    <string name="restart_now">Riavviare ora?</string>
 </resources>

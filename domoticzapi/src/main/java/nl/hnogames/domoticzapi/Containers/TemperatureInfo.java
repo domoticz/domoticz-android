@@ -61,8 +61,12 @@ public class TemperatureInfo implements Comparable, Serializable {
             HardwareID = row.getInt("HardwareID");
         if (row.has("HardwareName"))
             HardwareName = row.getString("HardwareName");
-        if (row.has("Temp"))
-            Temp = row.getDouble("Temp");
+
+        try {
+            if (row.has("Temp"))
+                Temp = row.getDouble("Temp");
+        }catch(Exception ex){}
+
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
         if (row.has("Status"))

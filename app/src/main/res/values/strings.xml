@@ -59,6 +59,7 @@
     <string name="hardware">Hardware</string>
     <string name="temperature">Temperature</string>
     <string name="status">Status</string>
+    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
 
     <string name="set_point">Set point</string>
     <string name="set_point_min">Set point min value</string>

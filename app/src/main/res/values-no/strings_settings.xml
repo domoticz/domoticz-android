@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Innstillinger</string>
-  <string name="cameraActivity_name">Kamera</string>
-  <!--        Categories             -->
-  <string name="category_generic">Generelt</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android Auto</string>
-  <string name="category_server">Server</string>
-  <string name="category_geofencing">Geofencing</string>
-  <string name="category_info">Informasjon</string>
-  <string name="category_advanced">Advanced</string>
-  <string name="category_language">Språk</string>
-  <string name="category_talk_back">Snakk tilbake</string>
-  <string name="category_notification">Varslinger</string>
-  <string name="category_debug">Feilsøking</string>
-  <string name="category_export">Eksportere/importere innstillinger</string>
-  <string name="category_theme">Tema</string>
-  <string name="category_nfc">NFC tilkoblinger</string>
-  <string name="category_startup_security">Sikkerhet</string>
-  <string name="category_account">Kontoer</string>
-  <string name="category_QRCode">QR-kode</string>
-  <string name="category_Speech">Tale</string>
-  <string name="category_Reset">Reset</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Startside</string>
-  <string name="enable_items">Aktivere/deaktivere elementer</string>
-  <string name="sort_dashboardLikeServer_title">Instrumentpanel sortering</string>
-  <string name="sort_dashboardLikeServer_on">Sorter Instrumentpanel lik som på server</string>
-  <string name="sort_dashboardLikeServer_off">Sortere Instrumentpanel alfabetisk</string>
-  <string name="extra_data_title">Ekstra info på Instrumentpanel</string>
-  <string name="show_extra_data_on">Vis ekstra info på dashbordet</string>
-  <string name="show_extra_data_off">Skjul ekstra info på Instrumentpanel</string>
-  <string name="always_on_title">Wake Lock</string>
-  <string name="always_on_on">Lås skjermen alltid på</string>
-  <string name="always_on_off">Ikke låse skjermen alltid på</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Brytere</string>
-  <string name="switch_buttons_on">Vis brytere med av/på-bryter</string>
-  <string name="switch_buttons_off">Vis brytere med på/av knapper</string>
-  <string name="dashboard_list_title">Instrumentpanel rutenett</string>
-  <string name="show_dashboard_list_on">Vis Instrumentpanel som liste</string>
-  <string name="show_dashboard_list_off">Vis Instrumentpanel som rutenett</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Android Wear egendefinerte elementer</string>
-  <string name="custom_wear_select">Velg Wear brytere</string>
-  <string name="custom_wear_select_desc">Velg hvilke brytere du vil like å se på Android Wear enheten</string>
-  <string name="wear_custom_on">Aktiver Android Wear egendefinerte elementer</string>
-  <string name="wear_custom_off">Deaktivere Android Wear egendefinerte elementer</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Enable Android Auto Notifications</string>
-  <string name="auto_custom_off">Disable Android Auto Notifications</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Konfigurere Geofencing</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Set tema</string>
-  <string name="set_dark_theme">Bytt app-temaet til mørk</string>
-  <string name="set_light_theme">Bytt app-temaet til lys</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">La Domoticz snakke tilbake til deg</string>
-  <string name="set_talk_back_off">Deaktivere snakk tilbake</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Innstillingene importeres, vær så snill å restart Domoticz</string>
-  <string name="settings_import_failed">Kan ikke importere innstillinger</string>
-  <string name="settings_exported">Innstillinger eksporteres, vær så snill å restarte Domoticz</string>
-  <string name="settings_export_failed">Kan ikke eksportere innstillinger</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Serverens tilkoblingsinnstillinger</string>
-  <string name="server_force_fetch_config">Hent serverkonfigurasjonen</string>
-  <string name="nfc_settings">NFC tilkoblinger</string>
-  <string name="speech_settings">Konfigurer talekommandoer </string>
-  <string name="title_activity_server_settings">Serverinnstillinger</string>
-  <string name="multi_server">Multi Server</string>
-  <string name="enable_nfc">Aktiver NFC</string>
-  <string name="enable_speech">Aktivere talegjenkjenning</string>
-  <string name="export_settings">Eksporter innstillingene</string>
-  <string name="reset_settings">Reset all app settings (WARNING!!)</string>
-  <string name="import_settings">Import innstillinger</string>
-  <string name="multi_server_settings">Aktiver serverstøtte for flere</string>
-  <string name="nfc_enable_settings">Aktivere NFC tilkoblinger</string>
-  <string name="speech_enable_settings">Aktivere talegjenkjenning</string>
-  <string name="server">Server</string>
-  <string name="qrcode_settings">Oppsettskoder QR</string>
-  <string name="enable_qrcode">Aktiver QR-koder</string>
-  <string name="qrcode_enable_settings">Aktivere funksjonaliteten for QR-koder</string>
-  <string name="security_settings">Konfigurere sikkerhet</string>
-  <string name="enable_security">Aktivere fingeravtrykksbeskyttelse ved oppstart</string>
-  <string name="disable_security">Deaktivere fingeravtrykksbeskyttelse ved oppstart</string>
-  <string name="setup_fingerprints">Konfigurer fingeravtrykkene via Android innstillinger</string>
-  <string name="fingerprint_not_supported">Fingeravtrykkssikkerhet støttes ikke på denne enheten</string>
-  <string name="fingerprint_not_setup_in_android">Først konfigurer/koble et fingeravtrykk til denne enheten</string>
-  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">Google Sky meldings-ID</string>
-  <string name="notification_settings_push">Send registrerings-Iden til Domoticz</string>
-  <string name="notification_settings_pushed">Registrerings-Iden er nå lagret i Domoticz</string>
-  <string name="notification_settings_push_failed">Kunne ikke lagre registrerings-Iden i Domoticz, prøv igjen senere.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
-  <string name="notification_show">Show last couple of Notifications</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Overskrive varsler</string>
-  <string name="overwrite_notifications">Overskrive tidligere varsler på denne enheten</string>
-  <string name="enable_notifications_title">Aktiver varsler</string>
-  <string name="enable_notifications">Aktivere varsler på denne enheten</string>
-  <string name="notification_screen_title">Varslingsinnstillinger</string>
-  <string name="notification_vibrate_title">Vibrer</string>
-  <string name="notification_vibrate_on">Vibrere når en melding mottas</string>
-  <string name="notification_vibrate_off">Ikke vibrer</string>
-  <string name="notification_sound_title">Lyd</string>
-  <string name="notification_sound_summary">Bruke lydsignal når varsling ankommer</string>
-  <string name="suppress_notifications_select">Velg varslinger å undertrykke</string>
-  <string name="suppress_notifications">Undertrykk bestemte varsler på denne enheten</string>
-  <string name="suppress_notifications_title">Undertrykk varsler</string>
-  <string name="alarm_notifications_select">Select Notifications to Alarm</string>
-  <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
-  <string name="clear_notifications">Clean notification logs</string>
-  <string name="alarm_notifications_title">Alarm Notifications</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm Timer</string>
-  <string name="alarmtimer">Number of seconds to time the alarm</string>
-  <string name="default_values">Default values</string>
-  <string name="default_values_min_error">Max value should be higher than Min value</string>
-  <string name="default_values_max_error">Max value should be higher than Min value</string>
-  <!--        Information category       -->
-  <string name="info_version">Versjon</string>
-  <string name="info_domoticz_version">Domoticz versjon</string>
-  <string name="info_about">Om Domoticz</string>
-  <string name="info_credits">Takk til</string>
-  <string name="info_credits_text">Domoticz for Android er gjort mulig med flere åpen kildekode-biblioteker</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Feilsøking</string>
-  <string name="debug_switch_summary_on">Feilsøking er aktivert</string>
-  <string name="debug_switch_summary_off">Feilsøking er deaktivert</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Du trenger minst ett element i skuffen</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Oppdater serveren</string>
-  <string name="error_couldNotCheckForUpdates">"Kan ikke søke etter oppdateringer: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Kan ikke hente Domoticz server konfigurasjon: %1$s"</string>
-  <string name="update_available_enhanced">Server-oppdatering tilgjengelig: %1$s til versjon: %2$s</string>
-  <string name="check_for_update_title">Se etter oppdateringer</string>
-  <string name="check_for_update">Ønsker du oss etter Domoticz systemoppdateringer?</string>
-  <string name="update_server_warning">Under oppdateringen av serveren vil denne app ikke fungere riktig.</string>
-  <string name="update_server_downloadNotReady1">Oppdateringen er ikke (helt) lastet ned ennå.</string>
-  <string name="update_server_downloadNotReady2">Vennligst å prøve igjen senere.</string>
-  <string name="server_update_available">Server-oppdatering er tilgjengelig</string>
-  <string name="update_server">Oppdater serveren</string>
-  <string name="server_update_revision">Server oppdaterings revisjon</string>
-  <string name="server_version">Serverversjon</string>
-  <string name="server_update">Server-oppdatering</string>
-  <string name="please_wait_while_we_check">Vent mens vi kontrollerer om serveren er klar til og oppdateres</string>
-  <string name="server_update_not_ready">Server-oppdatering ikke lastet ned</string>
-  <string name="please_wait_while_server_updated">Vennligst vent mens serveren oppdateres.</string>
-  <string name="server_update_done">Serveren er oppdatert</string>
-  <string name="update_not_started">Oppdateringen ikke startet</string>
-  <string name="update_not_started_unknown_error">Oppdateringen ikke startet på grunn av en ukjent feil</string>
-  <string name="server_update_not_available">Server-oppdatering ikke tilgjengelig</string>
-  <string name="click_to_update_server">Klikk her for å oppdatere serveren</string>
-  <string name="debug_test_text">Feilsøkingstest</string>
-  <string name="restart_required_title">Omstart kreves</string>
-  <string name="restart_now">Starte på nytt nå?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Innstillinger</string>
+    <string name="cameraActivity_name">Kamera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Generelt</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Server</string>
+    <string name="category_geofencing">Geofencing</string>
+    <string name="category_info">Informasjon</string>
+    <string name="category_advanced">Advanced</string>
+    <string name="category_language">Språk</string>
+    <string name="category_talk_back">Snakk tilbake</string>
+    <string name="category_notification">Varslinger</string>
+    <string name="category_debug">Feilsøking</string>
+    <string name="category_export">Eksportere/importere innstillinger</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_nfc">NFC tilkoblinger</string>
+    <string name="category_startup_security">Sikkerhet</string>
+    <string name="category_account">Kontoer</string>
+    <string name="category_QRCode">QR-kode</string>
+    <string name="category_Speech">Tale</string>
+    <string name="category_Reset">Reset</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Startside</string>
+    <string name="enable_items">Aktivere/deaktivere elementer</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Sortere Instrumentpanel alfabetisk</string>
+    <string name="extra_data_title">Ekstra info på Instrumentpanel</string>
+    <string name="show_extra_data_on">Vis ekstra info på dashbordet</string>
+    <string name="show_extra_data_off">Skjul ekstra info på Instrumentpanel</string>
+    <string name="always_on_title">Wake Lock</string>
+    <string name="always_on_on">Lås skjermen alltid på</string>
+    <string name="always_on_off">Ikke låse skjermen alltid på</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Brytere</string>
+    <string name="switch_buttons_on">Vis brytere med av/på-bryter</string>
+    <string name="switch_buttons_off">Vis brytere med på/av knapper</string>
+    <string name="dashboard_list_title">Instrumentpanel rutenett</string>
+    <string name="show_dashboard_list_on">Vis Instrumentpanel som liste</string>
+    <string name="show_dashboard_list_off">Vis Instrumentpanel som rutenett</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Android Wear egendefinerte elementer</string>
+    <string name="custom_wear_select">Velg Wear brytere</string>
+    <string name="custom_wear_select_desc">Velg hvilke brytere du vil like å se på Android Wear enheten</string>
+    <string name="wear_custom_on">Aktiver Android Wear egendefinerte elementer</string>
+    <string name="wear_custom_off">Deaktivere Android Wear egendefinerte elementer</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Enable Android Auto Notifications</string>
+    <string name="auto_custom_off">Disable Android Auto Notifications</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Konfigurere Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Set tema</string>
+    <string name="set_dark_theme">Bytt app-temaet til mørk</string>
+    <string name="set_light_theme">Bytt app-temaet til lys</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">La Domoticz snakke tilbake til deg</string>
+    <string name="set_talk_back_off">Deaktivere snakk tilbake</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Innstillingene importeres, vær så snill å restart Domoticz</string>
+    <string name="settings_import_failed">Kan ikke importere innstillinger</string>
+    <string name="settings_exported">Innstillinger eksporteres, vær så snill å restarte Domoticz</string>
+    <string name="settings_export_failed">Kan ikke eksportere innstillinger</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Serverens tilkoblingsinnstillinger</string>
+    <string name="server_force_fetch_config">Hent serverkonfigurasjonen</string>
+    <string name="nfc_settings">NFC tilkoblinger</string>
+    <string name="speech_settings">Konfigurer talekommandoer</string>
+    <string name="title_activity_server_settings">Serverinnstillinger</string>
+    <string name="multi_server">Multi Server</string>
+    <string name="enable_nfc">Aktiver NFC</string>
+    <string name="enable_speech">Aktivere talegjenkjenning</string>
+    <string name="export_settings">Eksporter innstillingene</string>
+    <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+    <string name="import_settings">Import innstillinger</string>
+    <string name="multi_server_settings">Aktiver serverstøtte for flere</string>
+    <string name="nfc_enable_settings">Aktivere NFC tilkoblinger</string>
+    <string name="speech_enable_settings">Aktivere talegjenkjenning</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">Oppsettskoder QR</string>
+    <string name="enable_qrcode">Aktiver QR-koder</string>
+    <string name="qrcode_enable_settings">Aktivere funksjonaliteten for QR-koder</string>
+    <string name="security_settings">Konfigurere sikkerhet</string>
+    <string name="enable_security">Aktivere fingeravtrykksbeskyttelse ved oppstart</string>
+    <string name="disable_security">Deaktivere fingeravtrykksbeskyttelse ved oppstart</string>
+    <string name="setup_fingerprints">Konfigurer fingeravtrykkene via Android innstillinger</string>
+    <string name="fingerprint_not_supported">Fingeravtrykkssikkerhet støttes ikke på denne enheten</string>
+    <string name="fingerprint_not_setup_in_android">Først konfigurer/koble et fingeravtrykk til denne enheten</string>
+    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Enable or Disable Widget on this device</string>
+    <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+    <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Sky meldings-ID</string>
+    <string name="notification_settings_push">Send registrerings-Iden til Domoticz</string>
+    <string name="notification_settings_pushed">Registrerings-Iden er nå lagret i Domoticz</string>
+    <string name="notification_settings_push_failed">Kunne ikke lagre registrerings-Iden i Domoticz, prøv igjen senere.</string>
+    <string name="notification_show_title">Last Notifications</string>
+    <string name="notification_show_nothing">No notifications found</string>
+    <string name="notification_show">Show last couple of Notifications</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Overskrive varsler</string>
+    <string name="overwrite_notifications">Overskrive tidligere varsler på denne enheten</string>
+    <string name="enable_notifications_title">Aktiver varsler</string>
+    <string name="enable_notifications">Aktivere varsler på denne enheten</string>
+    <string name="notification_screen_title">Varslingsinnstillinger</string>
+    <string name="notification_vibrate_title">Vibrer</string>
+    <string name="notification_vibrate_on">Vibrere når en melding mottas</string>
+    <string name="notification_vibrate_off">Ikke vibrer</string>
+    <string name="notification_sound_title">Lyd</string>
+    <string name="notification_sound_summary">Bruke lydsignal når varsling ankommer</string>
+    <string name="suppress_notifications_select">Velg varslinger å undertrykke</string>
+    <string name="suppress_notifications">Undertrykk bestemte varsler på denne enheten</string>
+    <string name="suppress_notifications_title">Undertrykk varsler</string>
+    <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+    <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+    <string name="clear_notifications">Clean notification logs</string>
+    <string name="alarm_notifications_title">Alarm Notifications</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Alarm Timer</string>
+    <string name="alarmtimer">Number of seconds to time the alarm</string>
+    <string name="default_values">Default values</string>
+    <string name="default_values_min_error">Max value should be higher than Min value</string>
+    <string name="default_values_max_error">Max value should be higher than Min value</string>
+    <!--        Information category       -->
+    <string name="info_version">Versjon</string>
+    <string name="info_domoticz_version">Domoticz versjon</string>
+    <string name="info_about">Om Domoticz</string>
+    <string name="info_credits">Takk til</string>
+    <string name="info_credits_text">Domoticz for Android er gjort mulig med flere åpen kildekode-biblioteker</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Feilsøking</string>
+    <string name="debug_switch_summary_on">Feilsøking er aktivert</string>
+    <string name="debug_switch_summary_off">Feilsøking er deaktivert</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Du trenger minst ett element i skuffen</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Oppdater serveren</string>
+    <string name="error_couldNotCheckForUpdates">"Kan ikke søke etter oppdateringer: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Kan ikke hente Domoticz server konfigurasjon: %1$s"</string>
+    <string name="update_available_enhanced">Server-oppdatering tilgjengelig: %1$s til versjon: %2$s</string>
+    <string name="check_for_update_title">Se etter oppdateringer</string>
+    <string name="check_for_update">Ønsker du oss etter Domoticz systemoppdateringer?</string>
+    <string name="update_server_warning">Under oppdateringen av serveren vil denne app ikke fungere riktig.</string>
+    <string name="update_server_downloadNotReady1">Oppdateringen er ikke (helt) lastet ned ennå.</string>
+    <string name="update_server_downloadNotReady2">Vennligst å prøve igjen senere.</string>
+    <string name="server_update_available">Server-oppdatering er tilgjengelig</string>
+    <string name="update_server">Oppdater serveren</string>
+    <string name="server_update_revision">Server oppdaterings revisjon</string>
+    <string name="server_version">Serverversjon</string>
+    <string name="server_update">Server-oppdatering</string>
+    <string name="please_wait_while_we_check">Vent mens vi kontrollerer om serveren er klar til og oppdateres</string>
+    <string name="server_update_not_ready">Server-oppdatering ikke lastet ned</string>
+    <string name="please_wait_while_server_updated">Vennligst vent mens serveren oppdateres.</string>
+    <string name="server_update_done">Serveren er oppdatert</string>
+    <string name="update_not_started">Oppdateringen ikke startet</string>
+    <string name="update_not_started_unknown_error">Oppdateringen ikke startet på grunn av en ukjent feil</string>
+    <string name="server_update_not_available">Server-oppdatering ikke tilgjengelig</string>
+    <string name="click_to_update_server">Klikk her for å oppdatere serveren</string>
+    <string name="debug_test_text">Feilsøkingstest</string>
+    <string name="restart_required_title">Omstart kreves</string>
+    <string name="restart_now">Starte på nytt nå?</string>
 </resources>
