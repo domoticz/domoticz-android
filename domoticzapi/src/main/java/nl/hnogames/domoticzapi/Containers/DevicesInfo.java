@@ -275,7 +275,6 @@ public class DevicesInfo implements Comparable, Serializable {
         else this.Favorite = 0;
     }
 
-
     public double getTemperature() {
         return temp;
     }

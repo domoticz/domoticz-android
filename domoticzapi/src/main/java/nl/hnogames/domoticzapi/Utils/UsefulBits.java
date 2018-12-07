@@ -191,6 +191,18 @@ public class UsefulBits {
     }
 
     /**
+     * @param text input value
+     * @return encode base 64 text
+     */
+    public static String encodeBase64(String text){
+        try {
+            return Base64.encodeToString(text.getBytes("UTF-8"), Base64.DEFAULT);
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
+
+    /**
      * Get's the relative formatted date
      *
      * @param mContext     Context

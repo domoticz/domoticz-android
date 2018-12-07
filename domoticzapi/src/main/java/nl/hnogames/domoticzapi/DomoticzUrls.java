@@ -444,6 +444,10 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.UserVariable.UPDATE;
                 break;
 
+            case DomoticzValues.Json.Url.Request.CHECKLOGIN:
+                url = DomoticzValues.Url.Security.CHECKLOGIN;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }

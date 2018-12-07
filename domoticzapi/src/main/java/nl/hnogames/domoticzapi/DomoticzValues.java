@@ -290,6 +290,7 @@ public class DomoticzValues {
                 int FAVORITES = 37;
                 int UPDATEVAR = 40;
                 int IMAGE = 41;
+                int CHECKLOGIN = 42;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -482,6 +483,7 @@ public class DomoticzValues {
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
+            String CHECKLOGIN = "/json.htm?type=command&param=logincheck";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
