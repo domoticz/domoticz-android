@@ -80,6 +80,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     private PermissionHelper permissionHelper;
     private Switch geoSwitch;
     private Switch geoNotificationSwitch;
+    private int editedLocationID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -382,78 +383,103 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        final int editedID = editedLocationID; //Store the edited value locally, and delete the global value
+        editedLocationID = -1;
         if (resultCode == RESULT_OK) {
+            final LatLng latLng = new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0));
+            String prefillEditedName = null;
+
+            if(editedID != -1) {
+                for (LocationInfo location : locations)
+                    if(location.getID() == editedID) {
+                        prefillEditedName = location.getName();
+                        break;
+                    }
+
+                if(prefillEditedName == null) // The ID hasn't matched any LI, so we invalidate it
+                    editedLocationID = -1;
+            }
+
             String name = data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS);
             if (nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
                 new MaterialDialog.Builder(this)
                         .title(R.string.title_edit_location)
                         .content(R.string.Location_name)
                         .inputType(InputType.TYPE_CLASS_TEXT)
-                        .input(null, null, new MaterialDialog.InputCallback() {
+                        .input(null, prefillEditedName, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 String name = String.valueOf(input);
-                                if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
-                                    final LocationInfo location = new LocationInfo(new Random().nextInt(999999), name,
-                                            new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
-                                            500);
-                                    new MaterialDialog.Builder(GeoSettingsActivity.this)
-                                            .title(R.string.radius)
-                                            .content(R.string.radius)
-                                            .inputType(InputType.TYPE_CLASS_NUMBER)
-                                            .input("500", "500", new MaterialDialog.InputCallback() {
-                                                @Override
-                                                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                                    try {
-                                                        location.setRadius(Integer.parseInt(String.valueOf(input)));
-                                                    } catch (Exception ignored) {
-                                                    }
-                                                    mSharedPrefs.addLocation(location);
-                                                    locations = mSharedPrefs.getLocations();
-
-                                                    GeoUtils.geofencesAlreadyRegistered = false;
-                                                    oGeoUtils.AddGeofences();
-
-                                                    createListView();
-                                                }
-                                            }).show();
-                                }
+                                if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name))
+                                    showRadiusEditor(editedID, name, latLng);
                             }
                         }).show();
-            } else {
-                final LocationInfo location = new LocationInfo(new Random().nextInt(999999), name,
-                        new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0)),
-                        500);
-                new MaterialDialog.Builder(this)
-                        .title(R.string.radius)
-                        .content(R.string.radius)
-                        .inputType(InputType.TYPE_CLASS_NUMBER)
-                        .input("500", "500", new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                try {
-                                    location.setRadius(Integer.parseInt(String.valueOf(input)));
-                                } catch (Exception ignored) {
-                                }
-                                mSharedPrefs.addLocation(location);
-                                locations = mSharedPrefs.getLocations();
-
-                                GeoUtils.geofencesAlreadyRegistered = false;
-                                oGeoUtils.AddGeofences();
-
-                                createListView();
-                            }
-                        }).show();
-            }
+            } else
+                showRadiusEditor(editedLocationID, name, latLng);
         } else
             permissionHelper.onActivityForResult(requestCode);
     }
 
+    private void showRadiusEditor(final int editedLocationID, String name, LatLng latlng)
+    {
+        LocationInfo location = null;
+        if(editedLocationID != -1) { // We are currently editing something
+            for (LocationInfo loc : locations)
+                if(loc.getID() == editedLocationID) {
+                    location = loc;
+                    loc.setLocation(latlng);
+                    loc.setName(name);
+                    break;
+                }
+
+        }
+
+        if(location == null)
+            location = new LocationInfo(new Random().nextInt(999999), name, latlng, 500);
+
+        final LocationInfo finalLocation = location;
+        new MaterialDialog.Builder(GeoSettingsActivity.this)
+                .title(R.string.radius)
+                .content(R.string.radius)
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .input("500", String.valueOf(location.getRadius()), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        try {
+                            finalLocation.setRadius(Integer.parseInt(String.valueOf(input)));
+                        } catch (Exception ignored) {
+                        }
+
+                        if(editedLocationID != -1) {
+                            mSharedPrefs.updateLocation(finalLocation);
+                            for (int i = locations.size() - 1; i >= 0; i--)
+                                if(locations.get(i).getID() == editedLocationID) {
+                                    locations.set(i, finalLocation);
+
+                                    GeoUtils.geofencesAlreadyRegistered = false;
+                                    oGeoUtils.AddGeofences();
+
+                                    adapter.notifyDataSetChanged();
+                                    break;
+                                }
+                        }else {
+                            mSharedPrefs.addLocation(finalLocation);
+                            locations = mSharedPrefs.getLocations();
+
+                            GeoUtils.geofencesAlreadyRegistered = false;
+                            oGeoUtils.AddGeofences();
+
+                            createListView();
+                        }
+                    }
+                }).show();
+    }
+
     private void showEditLocationDialog(LocationInfo location) {
-        //int editLocationID = location.getID();
         Intent intent = new Intent(getApplicationContext(), LocationPickerActivity.class);
         intent.putExtra(LocationPickerActivity.LATITUDE, location.getLocation().latitude);
         intent.putExtra(LocationPickerActivity.LONGITUDE, location.getLocation().longitude);
+        editedLocationID = location.getID();
         startActivityForResult(intent, 2);
     }
 
