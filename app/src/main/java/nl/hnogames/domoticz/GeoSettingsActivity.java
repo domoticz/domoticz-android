@@ -417,7 +417,8 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
             } else
                 showRadiusEditor(editedLocationID, name, latLng);
         } else
-            permissionHelper.onActivityForResult(requestCode);
+            if(resultCode != RESULT_CANCELED)
+                permissionHelper.onActivityForResult(requestCode);
     }
 
     private void showRadiusEditor(final int editedLocationID, String name, LatLng latlng)
@@ -464,12 +465,12 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                                 }
                         }else {
                             mSharedPrefs.addLocation(finalLocation);
-                            locations = mSharedPrefs.getLocations();
+                            locations.add(finalLocation);
 
                             GeoUtils.geofencesAlreadyRegistered = false;
                             oGeoUtils.AddGeofences();
 
-                            createListView();
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }).show();
