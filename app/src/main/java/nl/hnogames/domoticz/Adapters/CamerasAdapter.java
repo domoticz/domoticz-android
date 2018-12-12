@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -133,10 +134,18 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
             holder.name.setText(name);
 
-            picasso.load(imageUrl)
-                .placeholder(R.drawable.placeholder)
-                //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
-                .into(holder.camera);
+            if(holder.camera.getDrawable() == null) {
+                picasso.load(imageUrl)
+                        .placeholder(R.drawable.placeholder)
+                        //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                        .into(holder.camera);
+            }else
+                picasso.load(imageUrl)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .noFade()
+                        .noPlaceholder()
+                    //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                    .into(holder.camera);
         }
     }
 
