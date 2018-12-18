@@ -22,13 +22,17 @@
 package nl.hnogames.domoticz.app;
 
 import android.os.Bundle;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -209,7 +213,6 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void setErrorMessage(String message) {
-
         if (debug) addDebugText(message);
         else {
             Logger(fragmentName, message);
@@ -236,10 +239,10 @@ public class DomoticzCardFragment extends Fragment {
 
     private void setErrorLayoutMessage(String message) {
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
-            RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+            RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
             if (errorLayout != null) {
                 errorLayout.setVisibility(View.VISIBLE);
-                TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+                TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
                 errorTextMessage.setText(message);
             } else throw new RuntimeException(
                     "Layout should have a RelativeLayout defined with the ID of errorLayout");
@@ -247,26 +250,26 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void setMessage(String message) {
-        RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+        RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
 
-            ImageView errorImage = (ImageView) root.findViewById(R.id.errorImage);
+            ImageView errorImage = root.findViewById(R.id.errorImage);
             errorImage.setImageResource(R.drawable.empty);
             errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
-            TextView errorTextWrong = (TextView) root.findViewById(R.id.errorTextWrong);
+            TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);
             errorTextWrong.setVisibility(View.GONE);
 
-            TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+            TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
                 "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideRecyclerView() {
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+        RecyclerView recyclerView = root.findViewById(R.id.my_recycler_view);
         if (recyclerView != null) {
             recyclerView.setVisibility(View.GONE);
         }
@@ -275,11 +278,10 @@ public class DomoticzCardFragment extends Fragment {
     private void showDebugLayout() {
         try {
             if (root != null) {
-                LinearLayout debugLayout = (LinearLayout) root.findViewById(R.id.debugLayout);
+                LinearLayout debugLayout = root.findViewById(R.id.debugLayout);
                 if (debugLayout != null) {
                     debugLayout.setVisibility(View.VISIBLE);
-
-                    debugText = (TextView) root.findViewById(R.id.debugText);
+                    debugText = root.findViewById(R.id.debugText);
                 }
             }
         } catch (Exception ex) {

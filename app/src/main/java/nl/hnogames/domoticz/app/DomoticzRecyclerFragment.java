@@ -24,9 +24,12 @@ package nl.hnogames.domoticz.app;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBar;
@@ -35,6 +38,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,12 +113,16 @@ public class DomoticzRecyclerFragment extends Fragment {
     public void hideViews() {
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).hideViews();
+        controlsVisible = false;
+        scrolledDistance = 0;
     }
 
     @DebugLog
     public void showViews() {
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).showViews();
+        controlsVisible = true;
+        scrolledDistance = 0;
     }
 
     public String getSort() {
@@ -166,17 +174,12 @@ public class DomoticzRecyclerFragment extends Fragment {
                 if (firstVisibleItem == 0) {
                     if (!controlsVisible) {
                         showViews();
-                        controlsVisible = true;
                     }
                 } else {
                     if (scrolledDistance > SCROLL_THRESHOLD && controlsVisible) {
                         hideViews();
-                        controlsVisible = false;
-                        scrolledDistance = 0;
                     } else if (scrolledDistance < -SCROLL_THRESHOLD && !controlsVisible) {
                         showViews();
-                        controlsVisible = true;
-                        scrolledDistance = 0;
                     }
                 }
                 if ((controlsVisible && dy > 0) || (!controlsVisible && dy < 0)) {

@@ -23,8 +23,10 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
+
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
+
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;

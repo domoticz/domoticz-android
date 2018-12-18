@@ -24,7 +24,9 @@ package nl.hnogames.domoticz.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.core.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +107,7 @@ public class SpeechAdapter extends BaseAdapter {
             if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
                 (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                ((MaterialButton)convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
+                ((MaterialButton) convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         holder.enable = convertView.findViewById(R.id.enableSpeech);

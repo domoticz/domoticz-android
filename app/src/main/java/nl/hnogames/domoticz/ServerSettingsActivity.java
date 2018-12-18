@@ -23,9 +23,11 @@ package nl.hnogames.domoticz;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.AlertDialog;
+
 import android.view.MenuItem;
 import android.widget.Toast;
 

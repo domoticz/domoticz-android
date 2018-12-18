@@ -24,9 +24,11 @@ package nl.hnogames.domoticz.Widgets;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;

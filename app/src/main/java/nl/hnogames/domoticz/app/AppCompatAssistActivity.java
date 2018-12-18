@@ -25,6 +25,7 @@ import android.annotation.TargetApi;
 import android.app.assist.AssistContent;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;

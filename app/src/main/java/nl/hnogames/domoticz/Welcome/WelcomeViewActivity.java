@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Welcome;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.viewpager.widget.ViewPager;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;

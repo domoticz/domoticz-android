@@ -22,9 +22,12 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
+
 import com.google.android.material.chip.Chip;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;

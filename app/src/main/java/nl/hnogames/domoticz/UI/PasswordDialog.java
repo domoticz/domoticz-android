@@ -25,7 +25,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;

@@ -22,8 +22,10 @@
 package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;

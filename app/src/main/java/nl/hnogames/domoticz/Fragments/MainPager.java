@@ -23,15 +23,6 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +30,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -71,12 +71,15 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                     .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).refreshFragment();
-            } else if (f instanceof DomoticzCardFragment)
+                ((DomoticzRecyclerFragment) f).showViews();
+            } else if (f instanceof DomoticzCardFragment) {
                 ((DomoticzCardFragment) f).refreshFragment();
-            else if (f instanceof DomoticzDashboardFragment)
+            } else if (f instanceof DomoticzDashboardFragment) {
                 ((DomoticzDashboardFragment) f).refreshFragment();
-            else if (f instanceof RefreshFragment)
+                ((DomoticzDashboardFragment) f).showViews();
+            } else if (f instanceof RefreshFragment) {
                 ((RefreshFragment) f).RefreshFragment();
+            }
         } catch (Exception ex) {
         }
     }
