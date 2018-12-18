@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.button.MaterialButton;
 import com.triggertrap.seekarc.SeekArc;
 
 import nl.hnogames.domoticz.R;
@@ -85,17 +86,17 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        temperatureControl = (SeekArc) view.findViewById(R.id.seekTemperature);
-        temperatureText = (TextView) view.findViewById(R.id.seekTempProgress);
-        final TextView temperatureSign = (TextView) view.findViewById(R.id.seekTempSign);
+        temperatureControl = view.findViewById(R.id.seekTemperature);
+        temperatureText = view.findViewById(R.id.seekTempProgress);
+        final TextView temperatureSign = view.findViewById(R.id.seekTempSign);
         temperatureSign.setText(tempSign);
 
-        Button bntPlus = (Button) view.findViewById(R.id.plus);
-        Button btnMin = (Button) view.findViewById(R.id.min);
+        Button bntPlus = view.findViewById(R.id.plus);
+        Button btnMin = view.findViewById(R.id.min);
 
         if (mSharedPrefUtil.darkThemeEnabled()) {
-            bntPlus.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
-            btnMin.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+            btnMin.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            bntPlus.setTextColor(ContextCompat.getColor(mContext, R.color.white));
         }
 
         final String text = String.valueOf(currentTemperature);

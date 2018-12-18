@@ -23,6 +23,8 @@ package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -139,6 +141,14 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                 (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
                 (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((view.findViewById(R.id.on_button)) != null)
+                ((MaterialButton)view.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
+            if ((view.findViewById(R.id.off_button)) != null)
+                ((MaterialButton)view.findViewById(R.id.off_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
+            if ((view.findViewById(R.id.set_button)) != null)
+                ((MaterialButton)view.findViewById(R.id.set_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
+            if ((view.findViewById(R.id.color_button)) != null)
+                ((MaterialButton)view.findViewById(R.id.color_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         return new DataObjectHolder(view);
@@ -150,10 +160,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         if (filteredData != null && filteredData.size() > 0) {
             final TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
-            if (mSharedPrefs.darkThemeEnabled()) {
-                if (holder.setButton != null)
-                    holder.setButton.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
-            }
             holder.infoIcon.setTag(mTemperatureInfo.getIdx());
             holder.infoIcon.setOnClickListener(new View.OnClickListener() {
                 @Override

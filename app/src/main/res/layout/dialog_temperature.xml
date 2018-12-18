@@ -93,7 +93,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_status"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="-"
                 android:textSize="12sp"/>
 
@@ -104,7 +104,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_status"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="+"
                 android:textSize="12sp"/>
 

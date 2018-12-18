@@ -34,6 +34,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Containers.NFCInfo;
@@ -104,7 +106,7 @@ public class NFCAdapter extends BaseAdapter {
                 (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
 
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                (convertView.findViewById(R.id.remove_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
+                ((MaterialButton)convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         holder.enable = convertView.findViewById(R.id.enableNFC);

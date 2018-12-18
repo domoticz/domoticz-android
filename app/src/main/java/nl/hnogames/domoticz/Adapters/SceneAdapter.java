@@ -22,6 +22,8 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -105,6 +107,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
                 (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((view.findViewById(R.id.on_button)) != null)
+                ((MaterialButton)view.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
+            if ((view.findViewById(R.id.off_button)) != null)
+                ((MaterialButton)view.findViewById(R.id.off_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         return new DataObjectHolder(view);
@@ -154,12 +160,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 holder.isProtected = mSceneInfo.isProtected();
 
                 setButtons(holder, Buttons.SCENE);
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    if ((holder.itemView.findViewById(R.id.on_button)) != null)
-                        (holder.itemView.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
-                    if ((holder.itemView.findViewById(R.id.off_button)) != null)
-                        (holder.itemView.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
-                }
                 if (holder.buttonTimer != null)
                     holder.buttonTimer.setVisibility(View.GONE);
                 if (holder.buttonNotifications != null)
@@ -223,12 +223,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 holder.isProtected = mSceneInfo.isProtected();
 
                 setButtons(holder, Buttons.GROUP);
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    if ((holder.itemView.findViewById(R.id.on_button)) != null)
-                        (holder.itemView.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
-                    if ((holder.itemView.findViewById(R.id.off_button)) != null)
-                        (holder.itemView.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
-                }
 
                 if (holder.buttonTimer != null)
                     holder.buttonTimer.setVisibility(View.GONE);

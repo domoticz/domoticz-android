@@ -32,6 +32,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
                 (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.set_uservar)) != null)
-                (view.findViewById(R.id.set_uservar)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
+                ((MaterialButton)view.findViewById(R.id.set_uservar)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         return new DataObjectHolder(view);

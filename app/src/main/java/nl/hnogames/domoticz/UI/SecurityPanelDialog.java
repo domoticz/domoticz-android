@@ -91,16 +91,16 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
 
         if (view != null) {
-            editPinCode = (androidx.appcompat.widget.AppCompatEditText) view.findViewById(R.id.securitypin);
-            btnDisarm = (Button) view.findViewById(R.id.disarm);
-            btnArmHome = (Button) view.findViewById(R.id.armhome);
-            btnArmAway = (Button) view.findViewById(R.id.armaway);
-            txtCountDown = (TextView) view.findViewById(R.id.countdown);
+            editPinCode = view.findViewById(R.id.securitypin);
+            btnDisarm =  view.findViewById(R.id.disarm);
+            btnArmHome =  view.findViewById(R.id.armhome);
+            btnArmAway =  view.findViewById(R.id.armaway);
+            txtCountDown =  view.findViewById(R.id.countdown);
 
             if (mSharedPrefs.darkThemeEnabled()) {
-                btnDisarm.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
-                btnArmHome.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
-                btnArmAway.setBackground(ContextCompat.getDrawable(mContext, R.color.button_dark));
+                btnArmAway.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                btnArmHome.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                btnDisarm.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 editPinCode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
                 int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};

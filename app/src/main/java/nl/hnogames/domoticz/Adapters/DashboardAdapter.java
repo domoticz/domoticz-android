@@ -24,6 +24,8 @@ package nl.hnogames.domoticz.Adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -173,11 +175,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if ((row.findViewById(R.id.row_global_wrapper)) != null)
                 (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.on_button)) != null)
-                (row.findViewById(R.id.on_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
+                ((MaterialButton)row.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
             if ((row.findViewById(R.id.off_button)) != null)
-                (row.findViewById(R.id.off_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
+                ((MaterialButton)row.findViewById(R.id.off_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
             if ((row.findViewById(R.id.color_button)) != null)
-                (row.findViewById(R.id.color_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark_status));
+                ((MaterialButton)row.findViewById(R.id.color_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
         return new DataObjectHolder(row);
     }
@@ -508,11 +510,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.buttonOn.setText(context.getString(R.string.button_disarm));
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
-
-            if (mSharedPrefs.darkThemeEnabled())
-                holder.buttonOn.setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
-            else
-                holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
 
             holder.buttonOn.setOnClickListener(new View.OnClickListener() {
                 @Override

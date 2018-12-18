@@ -76,13 +76,13 @@ public class TemperatureInfoDialog implements DialogInterface.OnDismissListener 
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        TextView IDX_value = (TextView) view.findViewById(R.id.IDX_value);
+        TextView IDX_value = view.findViewById(R.id.IDX_value);
         IDX_value.setText(idx);
 
-        TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
+        TextView LastUpdate_value = view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(lastUpdate);
 
-        favorite_switch = (Switch) view.findViewById(R.id.favorite_switch);
+        favorite_switch = view.findViewById(R.id.favorite_switch);
         favorite_switch.setChecked(isFavorite);
         favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
