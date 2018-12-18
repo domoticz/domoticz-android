@@ -19,20 +19,20 @@
   ~  under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context=".MainActivity">
+              xmlns:ads="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/phoneLayoutWrapper"
         style="@style/background_recyclerview"
         android:layout_width="match_parent"
-        android:layout_weight="5"
         android:layout_height="match_parent"
+        android:layout_weight="5"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -63,13 +63,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="bottom"
-        android:orientation="vertical" >
+        android:orientation="vertical">
+
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/ADMOB_ADS_KEY" >
+            ads:adUnitId="@string/ADMOB_ADS_KEY">
         </com.google.android.gms.ads.AdView>
     </LinearLayout>
 </LinearLayout>

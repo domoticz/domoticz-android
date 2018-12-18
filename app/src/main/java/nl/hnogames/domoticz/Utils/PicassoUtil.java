@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
-import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +28,6 @@ import javax.net.ssl.X509TrustManager;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Helpers.DefaultHeadersInterceptor;
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;

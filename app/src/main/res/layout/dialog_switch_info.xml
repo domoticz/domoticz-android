@@ -134,12 +134,14 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:id="@+id/color_light_options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone">
+
             <android.support.design.button.MaterialButton
                 android:id="@+id/full_button"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -152,12 +154,12 @@
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/night_button"
-                android:layout_marginLeft="10dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
                 android:text="@string/button_state_night"
                 android:textSize="10dp"/>
         </LinearLayout>

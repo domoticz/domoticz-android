@@ -28,8 +28,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-            android:hint="@string/Location_name"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="@string/Location_name">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/name"
@@ -41,8 +41,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-            android:hint="@string/locationAddress"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="@string/locationAddress">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/address"
@@ -62,8 +62,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-                android:hint="@string/latitude"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="@string/latitude">
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/latitude"
@@ -76,8 +76,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-                android:hint="@string/longitude"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="@string/longitude">
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/longitude"
@@ -140,8 +140,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                    android:hint="@string/radius"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="@string/radius">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/radius"

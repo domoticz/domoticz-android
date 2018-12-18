@@ -439,8 +439,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getDewPoint() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
             if ((mDeviceInfo.getType() != null && mDeviceInfo.getType().equals(DomoticzValues.Device.Type.Value.TEMP)) ||
-                !Double.isNaN(mDeviceInfo.getTemperature()))
-            {
+                    !Double.isNaN(mDeviceInfo.getTemperature())) {
                 holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
                 holder.pieView.setVisibility(View.VISIBLE);
                 double temp = mDeviceInfo.getTemperature();
@@ -448,8 +447,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     temp = temp / 2;
                 holder.pieView.setPercentage(Float.valueOf(temp + ""));
                 holder.pieView.setInnerText(mDeviceInfo.getTemperature() + " " + tempSign);
-                if((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
-                    (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30))
+                if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
+                        (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30))
                     holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_blue_600));
                 else
                     holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));

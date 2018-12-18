@@ -389,14 +389,14 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
             final LatLng latLng = new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0));
             String prefillEditedName = null;
 
-            if(editedID != -1) {
+            if (editedID != -1) {
                 for (LocationInfo location : locations)
-                    if(location.getID() == editedID) {
+                    if (location.getID() == editedID) {
                         prefillEditedName = location.getName();
                         break;
                     }
 
-                if(prefillEditedName == null) // The ID hasn't matched any LI, so we invalidate it
+                if (prefillEditedName == null) // The ID hasn't matched any LI, so we invalidate it
                     editedLocationID = -1;
             }
 
@@ -416,17 +416,15 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         }).show();
             } else
                 showRadiusEditor(editedLocationID, name, latLng);
-        } else
-            if(resultCode != RESULT_CANCELED)
-                permissionHelper.onActivityForResult(requestCode);
+        } else if (resultCode != RESULT_CANCELED)
+            permissionHelper.onActivityForResult(requestCode);
     }
 
-    private void showRadiusEditor(final int editedLocationID, String name, LatLng latlng)
-    {
+    private void showRadiusEditor(final int editedLocationID, String name, LatLng latlng) {
         LocationInfo location = null;
-        if(editedLocationID != -1) { // We are currently editing something
+        if (editedLocationID != -1) { // We are currently editing something
             for (LocationInfo loc : locations)
-                if(loc.getID() == editedLocationID) {
+                if (loc.getID() == editedLocationID) {
                     location = loc;
                     loc.setLocation(latlng);
                     loc.setName(name);
@@ -435,7 +433,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
 
         }
 
-        if(location == null)
+        if (location == null)
             location = new LocationInfo(new Random().nextInt(999999), name, latlng, 500);
 
         final LocationInfo finalLocation = location;
@@ -451,10 +449,10 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         } catch (Exception ignored) {
                         }
 
-                        if(editedLocationID != -1) {
+                        if (editedLocationID != -1) {
                             mSharedPrefs.updateLocation(finalLocation);
                             for (int i = locations.size() - 1; i >= 0; i--)
-                                if(locations.get(i).getID() == editedLocationID) {
+                                if (locations.get(i).getID() == editedLocationID) {
                                     locations.set(i, finalLocation);
 
                                     GeoUtils.geofencesAlreadyRegistered = false;
@@ -463,7 +461,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                                     adapter.notifyDataSetChanged();
                                     break;
                                 }
-                        }else {
+                        } else {
                             mSharedPrefs.addLocation(finalLocation);
                             locations.add(finalLocation);
 
