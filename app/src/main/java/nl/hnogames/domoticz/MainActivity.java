@@ -742,6 +742,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 .withIcon(R.mipmap.ic_launcher);
         if (mSharedPrefs.darkThemeEnabled()) {
             loggedinAccount.withSelectedColorRes(R.color.primary);
+            loggedinAccount.withSelectedTextColorRes(R.color.white);
         }
         allUsers.add(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME));
 
@@ -920,6 +921,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.primary);
+            item.withSelectedTextColorRes(R.color.white);
+            item.withSelectedIconColorRes(R.color.white);
         }
         return item;
     }
@@ -932,6 +935,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         if (mSharedPrefs.darkThemeEnabled()) {
             item.withIconColorRes(R.color.white);
             item.withSelectedColorRes(R.color.primary);
+            item.withSelectedTextColorRes(R.color.white);
+            item.withSelectedIconColorRes(R.color.white);
         }
         return item;
     }

@@ -59,6 +59,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
@@ -88,6 +89,7 @@ import nl.hnogames.domoticzapi.Parsers.EventsParser;
 import nl.hnogames.domoticzapi.Parsers.GraphDataParser;
 import nl.hnogames.domoticzapi.Parsers.LanguageParser;
 import nl.hnogames.domoticzapi.Parsers.LogOffParser;
+import nl.hnogames.domoticzapi.Parsers.LoginParser;
 import nl.hnogames.domoticzapi.Parsers.LogsParser;
 import nl.hnogames.domoticzapi.Parsers.MobileDeviceParser;
 import nl.hnogames.domoticzapi.Parsers.NotificationsParser;
@@ -489,13 +491,34 @@ public class Domoticz {
                 url, mSessionUtil, true, 3, queue);
     }
 
+    public void checkLogin(LoginReceiver loginReceiver) {
+        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
+        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
+
+        LoginParser parser = new LoginParser(loginReceiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
+
+        try {
+            url += "&username=" + URLEncoder.encode(username, "UTF-8");
+            url += "&password=" + URLEncoder.encode(password, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Url: " + url);
+        RequestUtil.makeJsonGetRequest(parser,
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
+    }
+
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
         RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -521,7 +544,6 @@ public class Domoticz {
     public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG) + String.valueOf(idx);
-
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),

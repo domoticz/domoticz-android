@@ -66,7 +66,9 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener, OnPermissionCallback {
@@ -96,6 +98,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         refreshTimer = true;
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
+
         getCameras();
     }
 
@@ -304,13 +307,22 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         protected void onPostExecute(Boolean result) {
             if (cacheCameras != null)
                 createListView(cacheCameras);
-
-            mDomoticz.getCameras(new CameraReceiver() {
+            mDomoticz.checkLogin(new LoginReceiver() {
                 @Override
-                public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
-                    successHandling(Cameras.toString(), false);
-                    SerializableManager.saveSerializable(context, Cameras, "Cameras");
-                    createListView(Cameras);
+                public void OnReceive(LoginInfo mLoginInfo) {
+                    mDomoticz.getCameras(new CameraReceiver() {
+                        @Override
+                        public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
+                            successHandling(Cameras.toString(), false);
+                            SerializableManager.saveSerializable(context, Cameras, "Cameras");
+                            createListView(Cameras);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error, coordinatorLayout);
+                        }
+                    });
                 }
 
                 @Override
