@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +59,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Domoticz domoticz;
     private SettingsInfo mSettings;
     private MaterialDialog md;
-    private EditText editPinCode;
+    private android.support.v7.widget.AppCompatEditText editPinCode;
     private TextView txtCountDown;
     private Button btnDisarm;
     private Button btnArmHome;
@@ -92,7 +91,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
 
         if (view != null) {
-            editPinCode = (EditText) view.findViewById(R.id.securitypin);
+            editPinCode = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.securitypin);
             btnDisarm = (Button) view.findViewById(R.id.disarm);
             btnArmHome = (Button) view.findViewById(R.id.armhome);
             btnArmAway = (Button) view.findViewById(R.id.armaway);

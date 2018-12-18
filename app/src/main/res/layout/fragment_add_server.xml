@@ -36,14 +36,14 @@
             android:id="@+id/input_server_name_input"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
+                android:hint="@string/servername"
             android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/server_name_input"
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/servername"
                 android:inputType="text|textEmailAddress"
                 android:textColor="@color/default_text_color_light"/>
         </android.support.design.widget.TextInputLayout>
@@ -62,14 +62,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+                android:hint="@string/welcome_remote_server_address"
             android:layout_marginTop="15dp">
 
-            <android.support.design.widget.TextInputEditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/remote_server_input"
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/welcome_remote_server_address"
                 android:inputType="textNoSuggestions"
                 android:textColor="@color/default_text_color_light"/>
         </android.support.design.widget.TextInputLayout>
@@ -95,16 +95,16 @@
                 <android.support.design.widget.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
+                        android:hint="@string/welcome_remote_server_port"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_weight="0">
 
-                    <android.support.design.widget.TextInputEditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/remote_port_input"
                         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/welcome_remote_server_port"
                         android:inputType="numberSigned"
                         android:textColor="@color/default_text_color_light"/>
                 </android.support.design.widget.TextInputLayout>
@@ -121,15 +121,15 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                    android:hint="@string/welcome_remote_server_username"
                 android:layout_weight="1"
                 android:minWidth="@dimen/width_min_welcomePage3_username_input">
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/remote_username_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/welcome_remote_server_username"
                     android:inputType="textNoSuggestions"
                     android:paddingRight="15dp"
                     android:textColor="@color/default_text_color_light"/>
@@ -138,16 +138,16 @@
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
+                    android:hint="@string/welcome_remote_server_password"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1">
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/remote_password_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/welcome_remote_server_password"
                     android:inputType="textPassword"
                     android:paddingRight="15dp"
                     android:textColor="@color/default_text_color_light"/>
@@ -167,14 +167,14 @@
         <android.support.design.widget.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
+                android:hint="@string/welcome_remote_server_directory"
             android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/remote_directory_input"
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/welcome_remote_server_directory"
                 android:inputType="textNoSuggestions"
                 android:textColor="@color/default_text_color_light"/>
         </android.support.design.widget.TextInputLayout>
@@ -242,15 +242,15 @@
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
+                    android:hint="@string/welcome_local_server_address"
                 android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/local_server_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:hint="@string/welcome_local_server_address"
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/default_text_color_light"/>
             </android.support.design.widget.TextInputLayout>
@@ -278,14 +278,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
+                            android:hint="@string/welcome_local_server_port"
                         android:layout_weight="0">
 
-                        <android.support.design.widget.TextInputEditText
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/local_port_input"
                             style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/welcome_local_server_port"
                             android:inputType="numberSigned"
                             android:textColor="@color/default_text_color_light"/>
                     </android.support.design.widget.TextInputLayout>
@@ -303,15 +303,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                        android:hint="@string/welcome_local_server_username"
                     android:layout_weight="1"
                     android:minWidth="@dimen/width_min_welcomePage3_username_input">
 
-                    <android.support.design.widget.TextInputEditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/local_username_input"
                         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/welcome_local_server_username"
                         android:inputType="textNoSuggestions"
                         android:minWidth="@dimen/width_min_welcomePage3_username_input"
                         android:textColor="@color/default_text_color_light"/>
@@ -323,14 +323,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
+                        android:hint="@string/welcome_local_server_password"
                     android:layout_weight="1">
 
-                    <android.support.design.widget.TextInputEditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/local_password_input"
                         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/welcome_local_server_password"
                         android:inputType="textPassword"
                         android:textColor="@color/default_text_color_light"/>
                 </android.support.design.widget.TextInputLayout>
@@ -349,15 +349,15 @@
             <android.support.design.widget.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
+                    android:hint="@string/welcome_local_server_directory"
                 android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/local_directory_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:hint="@string/welcome_local_server_directory"
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/default_text_color_light"/>
             </android.support.design.widget.TextInputLayout>

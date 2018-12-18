@@ -30,7 +30,6 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -50,7 +49,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private Domoticz domoticz;
     private MaterialDialog md;
     private SharedPrefUtil mSharedPrefs;
-    private EditText editPassword;
+    private android.support.v7.widget.AppCompatEditText editPassword;
     private CheckBox showPassword;
 
     public PasswordDialog(Context c, Domoticz mDomoticz) {
@@ -84,7 +83,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         md = mdb.build();
         View view = md.getCustomView();
 
-        editPassword = (EditText) view.findViewById(R.id.password);
+        editPassword = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.password);
         showPassword = (CheckBox) view.findViewById(R.id.showpassword);
 
         if (mSharedPrefs.darkThemeEnabled()) {

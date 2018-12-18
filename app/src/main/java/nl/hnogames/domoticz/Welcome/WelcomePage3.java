@@ -26,9 +26,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,7 +69,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
-    private TextInputEditText remote_server_input, remote_port_input,
+    private AppCompatEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
             local_username_input, local_port_input, local_directory_input;

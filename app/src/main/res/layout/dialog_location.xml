@@ -28,27 +28,27 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+            android:hint="@string/Location_name"
         android:layout_height="wrap_content">
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Location_name"
             android:inputType="textNoSuggestions"
             android:textColor="@color/default_text_color_light"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+            android:hint="@string/locationAddress"
         android:layout_height="wrap_content">
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="@string/locationAddress"
             android:inputType="textNoSuggestions"
             android:textColor="@color/default_text_color_light"/>
     </android.support.design.widget.TextInputLayout>
@@ -62,28 +62,28 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+                android:hint="@string/latitude"
             android:layout_height="wrap_content">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/latitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="@string/latitude"
                 android:inputType="textNoSuggestions|number"
                 android:textColor="@color/default_text_color_light"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+                android:hint="@string/longitude"
             android:layout_height="wrap_content">
 
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/longitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="@string/longitude"
                 android:inputType="textNoSuggestions|number"
                 android:textColor="@color/default_text_color_light"/>
         </android.support.design.widget.TextInputLayout>
@@ -140,13 +140,13 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                    android:hint="@string/radius"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/radius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/radius"
                     android:inputType="number"
                     android:textColor="@color/default_text_color_light"/>
             </android.support.design.widget.TextInputLayout>
