@@ -25,8 +25,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -65,7 +65,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
     private TextView txtTitle;
     private TextView txtStatus;
     private Button btnConfig;
-    private android.support.v7.widget.AppCompatEditText editPin;
+    private androidx.appcompat.widget.AppCompatEditText editPin;
 
     private SettingsInfo mSettings;
     private DevicesInfo sSecurityPanel;
@@ -89,7 +89,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         txtTitle = (TextView) this.findViewById(R.id.title);
         btnConfig = (Button) this.findViewById(R.id.checkpin);
 
-        editPin = (android.support.v7.widget.AppCompatEditText) this.findViewById(R.id.securitypin);
+        editPin = (androidx.appcompat.widget.AppCompatEditText) this.findViewById(R.id.securitypin);
         if (mSharedPrefs.darkThemeEnabled()) {
             btnConfig.setBackground(ContextCompat.getDrawable(this, R.color.button_dark));
             editPin.setTextColor(ContextCompat.getColor(this, R.color.white));

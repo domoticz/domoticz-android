@@ -1,9 +1,8 @@
 package com.dexafree.materialList.card.provider;
 
 import android.database.DataSetObserver;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import androidx.annotation.NonNull;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;

@@ -1,6 +1,6 @@
 package com.dexafree.materialList.card.event;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.dexafree.materialList.card.Card;
 

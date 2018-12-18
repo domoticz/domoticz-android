@@ -23,8 +23,8 @@ package nl.hnogames.domoticz.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 
 import com.fastaccess.permission.base.PermissionHelper;

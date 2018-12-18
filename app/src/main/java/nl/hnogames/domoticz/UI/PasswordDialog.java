@@ -25,7 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
@@ -49,7 +49,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private Domoticz domoticz;
     private MaterialDialog md;
     private SharedPrefUtil mSharedPrefs;
-    private android.support.v7.widget.AppCompatEditText editPassword;
+    private androidx.appcompat.widget.AppCompatEditText editPassword;
     private CheckBox showPassword;
 
     public PasswordDialog(Context c, Domoticz mDomoticz) {
@@ -83,7 +83,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         md = mdb.build();
         View view = md.getCustomView();
 
-        editPassword = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.password);
+        editPassword = (androidx.appcompat.widget.AppCompatEditText) view.findViewById(R.id.password);
         showPassword = (CheckBox) view.findViewById(R.id.showpassword);
 
         if (mSharedPrefs.darkThemeEnabled()) {

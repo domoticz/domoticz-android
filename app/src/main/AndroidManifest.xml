@@ -423,6 +423,10 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode"/>
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ADMOB_APP_KEY"/>
+
         <activity
             android:name=".UpdateActivity"
             android:label="@string/title_activity_update"

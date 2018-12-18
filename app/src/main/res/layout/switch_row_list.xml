@@ -19,7 +19,7 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<android.support.design.card.MaterialCardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
@@ -139,7 +139,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"/>
 
-                            <android.support.design.button.MaterialButton
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/set_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="56dp"
@@ -238,7 +238,7 @@
                                     plainpie:percentage="75"
                                     plainpie:percentage_size="15"/>
 
-                                <android.support.design.button.MaterialButton
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/on_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
@@ -248,7 +248,7 @@
                                     android:text="@string/button_state_on"
                                     android:textSize="10dp"/>
 
-                                <android.support.design.button.MaterialButton
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/off_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
@@ -265,7 +265,7 @@
                                     android:layout_gravity="right"/>
                             </LinearLayout>
 
-                            <android.support.design.button.MaterialButton
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/color_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
@@ -298,4 +298,4 @@
         <include layout="@layout/log_timer_button_row_default"/>
     </LinearLayout>
 
-</android.support.design.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>

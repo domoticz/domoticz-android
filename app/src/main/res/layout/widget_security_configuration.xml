@@ -47,13 +47,13 @@
         android:text="Status: Armed"
         android:textSize="@dimen/text_size_small"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_securitypin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/security_pin">
 
-        <android.support.v7.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/securitypin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_toLeftOf="@+id/linearLayout5"
             android:inputType="number"
             android:textColor="@color/white"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/checkpin"

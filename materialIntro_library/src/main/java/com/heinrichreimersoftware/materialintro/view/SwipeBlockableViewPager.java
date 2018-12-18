@@ -1,8 +1,8 @@
 package com.heinrichreimersoftware.materialintro.view;
 
 import android.content.Context;
-import android.support.annotation.IntDef;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.IntDef;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 

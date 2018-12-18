@@ -1,6 +1,6 @@
 package com.dexafree.materialList.listeners;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.dexafree.materialList.card.Card;
 

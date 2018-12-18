@@ -25,7 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
@@ -49,7 +49,7 @@ public class FingerprintPasswordDialog implements DialogInterface.OnDismissListe
     private Domoticz domoticz;
     private MaterialDialog md;
     private SharedPrefUtil mSharedPrefs;
-    private android.support.v7.widget.AppCompatEditText editPassword;
+    private androidx.appcompat.widget.AppCompatEditText editPassword;
     private CheckBox showPassword;
 
     public FingerprintPasswordDialog(Context c, Domoticz mDomoticz) {

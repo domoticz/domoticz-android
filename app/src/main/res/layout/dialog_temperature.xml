@@ -86,7 +86,7 @@
             android:layout_marginTop="70dp"
             android:orientation="horizontal">
 
-            <android.support.design.button.MaterialButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/min"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 android:text="-"
                 android:textSize="12sp"/>
 
-            <android.support.design.button.MaterialButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/plus"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"

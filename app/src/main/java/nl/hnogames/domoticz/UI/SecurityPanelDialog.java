@@ -26,7 +26,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.CountDownTimer;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -59,7 +59,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private Domoticz domoticz;
     private SettingsInfo mSettings;
     private MaterialDialog md;
-    private android.support.v7.widget.AppCompatEditText editPinCode;
+    private androidx.appcompat.widget.AppCompatEditText editPinCode;
     private TextView txtCountDown;
     private Button btnDisarm;
     private Button btnArmHome;
@@ -91,7 +91,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         View view = md.getCustomView();
 
         if (view != null) {
-            editPinCode = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.securitypin);
+            editPinCode = (androidx.appcompat.widget.AppCompatEditText) view.findViewById(R.id.securitypin);
             btnDisarm = (Button) view.findViewById(R.id.disarm);
             btnArmHome = (Button) view.findViewById(R.id.armhome);
             btnArmAway = (Button) view.findViewById(R.id.armaway);

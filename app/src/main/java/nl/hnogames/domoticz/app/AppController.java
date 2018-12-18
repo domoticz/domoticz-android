@@ -23,8 +23,8 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -86,18 +86,6 @@ public class AppController extends MultiDexApplication {
         }
         return mRequestQueue;
     }
-
-    /*
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
-    }
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
-    */
 
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);

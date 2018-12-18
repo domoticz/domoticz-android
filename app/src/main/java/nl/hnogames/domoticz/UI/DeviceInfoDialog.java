@@ -23,7 +23,7 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.design.button.MaterialButton;
+import com.google.android.material.button.MaterialButton;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;

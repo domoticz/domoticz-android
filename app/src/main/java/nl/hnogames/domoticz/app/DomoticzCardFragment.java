@@ -22,12 +22,13 @@
 package nl.hnogames.domoticz.app;
 
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -265,7 +266,7 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void hideRecyclerView() {
-        android.support.v7.widget.RecyclerView recyclerView = (android.support.v7.widget.RecyclerView) root.findViewById(R.id.my_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
         if (recyclerView != null) {
             recyclerView.setVisibility(View.GONE);
         }

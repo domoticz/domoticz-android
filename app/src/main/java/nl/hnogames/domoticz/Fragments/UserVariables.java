@@ -24,8 +24,8 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.InputType;
 
 import com.afollestad.materialdialogs.MaterialDialog;
