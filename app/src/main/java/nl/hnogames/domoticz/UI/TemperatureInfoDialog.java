@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -43,7 +44,7 @@ public class TemperatureInfoDialog implements DialogInterface.OnDismissListener 
     private String idx;
     private String lastUpdate;
     private boolean isFavorite;
-    private Switch favorite_switch;
+    private SwitchMaterial favorite_switch;
 
     public TemperatureInfoDialog(Context mContext,
                                  TemperatureInfo info,

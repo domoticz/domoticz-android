@@ -22,6 +22,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/welcome_top_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -181,7 +182,8 @@
             android:text="@string/welcome_local_server_used_switch_summary"
             android:textColor="@color/white"/>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
+app:useMaterialThemeColors="false"
             android:id="@+id/localServer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

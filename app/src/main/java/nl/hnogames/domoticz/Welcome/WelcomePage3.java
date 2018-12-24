@@ -42,6 +42,7 @@ import android.widget.Switch;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         local_username_input, local_port_input, local_directory_input;
 
     private Spinner remote_protocol_spinner, local_protocol_spinner;
-    private Switch localServer_switch;
+    private SwitchMaterial localServer_switch;
     private int remoteProtocolSelectedPosition, localProtocolSelectedPosition;
     private View v;
     private boolean hasBeenVisibleToUser = false;

@@ -31,6 +31,7 @@ import android.widget.Switch;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;
 
@@ -45,7 +46,7 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
     private int idx;
     private SeekBar kelvinBar;
     private ColorPickerView colorPickerView;
-    private Switch rgbSwitch;
+    private SwitchMaterial rgbSwitch;
     private LinearLayout wrapperKelvin;
 
     public RGBWWColorPickerDialog(Context mContext, int idx) {

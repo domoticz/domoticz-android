@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
@@ -55,7 +56,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
     private boolean isColorLight;
     private Context mContext;
     private SharedPrefUtil mSharedPrefs;
-    private Switch favorite_switch;
+    private SwitchMaterial favorite_switch;
     private LinearLayout colorOptions;
     private Domoticz mDomoticz;
     private MaterialButton buttonNight, buttonFull;

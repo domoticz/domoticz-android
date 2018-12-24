@@ -40,6 +40,7 @@ import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.schibstedspain.leku.LocationPickerActivity;
 
@@ -78,8 +79,8 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     private GeoUtils oGeoUtils;
     private CoordinatorLayout coordinatorLayout;
     private PermissionHelper permissionHelper;
-    private Switch geoSwitch;
-    private Switch geoNotificationSwitch;
+    private SwitchMaterial geoSwitch;
+    private SwitchMaterial geoNotificationSwitch;
     private int editedLocationID = -1;
 
     @Override

@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -1244,9 +1245,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
-                Switch dimmerOnOffSwitch = null;
+                SwitchMaterial dimmerOnOffSwitch = null;
                 try {
-                    dimmerOnOffSwitch = (Switch) seekBar.getRootView()
+                    dimmerOnOffSwitch = seekBar.getRootView()
                         .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
                     if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
                         dimmerOnOffSwitch.setChecked(false);
@@ -1844,7 +1845,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
-        Switch onOffSwitch, dimmerOnOffSwitch;
+        SwitchMaterial onOffSwitch, dimmerOnOffSwitch;
         ImageView buttonUp, buttonDown, buttonStop;
         Button buttonOn, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Chip buttonLog, buttonTimer;

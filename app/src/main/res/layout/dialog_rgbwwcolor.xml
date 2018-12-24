@@ -26,7 +26,8 @@
               android:layout_margin="20dp"
               android:orientation="vertical">
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
+app:useMaterialThemeColors="false"
         android:id="@+id/rgbSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

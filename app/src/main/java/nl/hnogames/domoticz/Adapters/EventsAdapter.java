@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
         implements View.OnClickListener {
         TextView name;
         TextView message;
-        Switch buttonON;
+        SwitchMaterial buttonON;
         ImageView iconRow;
 
         public DataObjectHolder(View itemView) {

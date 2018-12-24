@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
@@ -55,7 +56,7 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
     private String batteryLevel;
     private boolean isFavorite;
     private Context mContext;
-    private Switch favorite_switch;
+    private SwitchMaterial favorite_switch;
     private boolean isColorLight;
     private LinearLayout colorOptions;
     private Domoticz mDomoticz;
