@@ -33,9 +33,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.RemoteInput;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -43,6 +40,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.RemoteInput;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Service.RingtonePlayingService;
@@ -82,16 +82,16 @@ public class NotificationUtil {
                 }
 
                 NotificationCompat.Builder builder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(R.drawable.domoticz_white)
-                                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-                                .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
-                                .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
-                                .setChannelId(CHANNEL_ID)
-                                .setStyle(new NotificationCompat.BigTextStyle().setSummaryText(text))
-                                //.setGroupSummary(true)
-                                //.setGroup(GROUP_KEY_NOTIFICATIONS)
-                                .setAutoCancel(true);
+                    new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.domoticz_white)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                        .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + title : title)
+                        .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + text : text)
+                        .setChannelId(CHANNEL_ID)
+                        .setStyle(new NotificationCompat.BigTextStyle().setSummaryText(text))
+                        //.setGroupSummary(true)
+                        //.setGroup(GROUP_KEY_NOTIFICATIONS)
+                        .setAutoCancel(true);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     int nrOfNotifications = 1;
@@ -124,7 +124,7 @@ public class NotificationUtil {
                 }
                 if (prefUtil.showAutoNotifications()) {
                     builder.extend(new NotificationCompat.CarExtender()
-                            .setUnreadConversation(getUnreadConversation(context, text)));
+                        .setUnreadConversation(getUnreadConversation(context, text)));
                 }
 
                 mNotificationManager.notify(NOTIFICATION_ID, builder.build());
@@ -140,8 +140,8 @@ public class NotificationUtil {
         SharedPrefUtil prefUtil = new SharedPrefUtil(context);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel = new NotificationChannel(channelid,
-                channelid,
-                GetPriority(priority));
+            channelid,
+            GetPriority(priority));
 
         if (!backgroundProcess) {
             channel.setShowBadge(true);
@@ -164,12 +164,12 @@ public class NotificationUtil {
         }
 
         return new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.domoticz_white)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-                .setContentTitle("Domoticz")
-                .setContentText("Processing widget request..")
-                .setChannelId(channelid)
-                .setContentIntent(contentIntent).build();
+            .setSmallIcon(R.drawable.domoticz_white)
+            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+            .setContentTitle("Domoticz")
+            .setContentText("Processing widget request..")
+            .setChannelId(channelid)
+            .setContentIntent(contentIntent).build();
     }
 
     private static int GetPriority(int priority) {
@@ -224,41 +224,41 @@ public class NotificationUtil {
 
     private static Intent getMessageReadIntent() {
         return new Intent()
-                .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-                .setAction(MESSAGE_READ_ACTION)
-                .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
+            .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+            .setAction(MESSAGE_READ_ACTION)
+            .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
     }
 
     private static PendingIntent getMessageReadPendingIntent(Context context) {
         return PendingIntent.getBroadcast(context,
-                NOTIFICATION_ID,
-                getMessageReadIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+            NOTIFICATION_ID,
+            getMessageReadIntent(),
+            PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static Intent getMessageReplyIntent() {
         return new Intent()
-                .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-                .setAction(MESSAGE_REPLY_ACTION)
-                .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
+            .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+            .setAction(MESSAGE_REPLY_ACTION)
+            .putExtra(MESSAGE_CONVERSATION_ID_KEY, NOTIFICATION_ID);
     }
 
     private static PendingIntent getMessageReplyPendingIntent(Context context) {
         return PendingIntent.getBroadcast(context,
-                NOTIFICATION_ID,
-                getMessageReplyIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+            NOTIFICATION_ID,
+            getMessageReplyIntent(),
+            PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private static RemoteInput getVoiceReplyRemoteInput() {
         return new RemoteInput.Builder(VOICE_REPLY_KEY)
-                .setLabel("Reply")
-                .build();
+            .setLabel("Reply")
+            .build();
     }
 
     private static NotificationCompat.CarExtender.UnreadConversation getUnreadConversation(Context context, String text) {
         NotificationCompat.CarExtender.UnreadConversation.Builder unreadConversationBuilder =
-                new NotificationCompat.CarExtender.UnreadConversation.Builder(UNREAD_CONVERSATION_BUILDER_NAME + text);
+            new NotificationCompat.CarExtender.UnreadConversation.Builder(UNREAD_CONVERSATION_BUILDER_NAME + text);
         unreadConversationBuilder.setReadPendingIntent(getMessageReadPendingIntent(context));
         unreadConversationBuilder.setReplyAction(getMessageReplyPendingIntent(context), getVoiceReplyRemoteInput());
         unreadConversationBuilder.addMessage(text);

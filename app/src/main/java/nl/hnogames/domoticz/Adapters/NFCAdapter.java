@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Interfaces.NFCClickListener;
 import nl.hnogames.domoticz.R;
@@ -104,7 +106,7 @@ public class NFCAdapter extends BaseAdapter {
                 (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
 
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                (convertView.findViewById(R.id.remove_button)).setBackgroundColor(ContextCompat.getColor(context, R.color.button_dark));
+                ((MaterialButton) convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         holder.enable = convertView.findViewById(R.id.enableNFC);
@@ -122,7 +124,7 @@ public class NFCAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mNFCInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available));
+                + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mNFCInfo.getValue()))

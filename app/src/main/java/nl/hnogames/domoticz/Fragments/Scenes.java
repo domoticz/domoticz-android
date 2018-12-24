@@ -25,17 +25,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
@@ -60,7 +61,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-        ScenesClickListener {
+    ScenesClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
@@ -103,11 +104,11 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                            false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -193,10 +194,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
             if (mItemTouchHelper == null) {
                 mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                        false));
+                    false));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                 mItemTouchHelper.attachToRecyclerView(gridView);
             } else {
                 if (mItemTouchHelper != null)
@@ -234,9 +235,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void showInfoDialog(final SceneInfo mSceneInfo) {
         SceneInfoDialog infoDialog = new SceneInfoDialog(
-                getActivity(),
-                mSceneInfo,
-                R.layout.dialog_scene_info);
+            getActivity(),
+            mSceneInfo,
+            R.layout.dialog_scene_info);
         infoDialog.setIdx(String.valueOf(mSceneInfo.getIdx()));
         infoDialog.setLastUpdate(mSceneInfo.getLastUpdate());
         infoDialog.setIsFavorite(mSceneInfo.getFavoriteBoolean());
@@ -297,7 +298,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity(), mDomoticz);
+                getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -379,9 +380,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                    getActivity(),
-                    switchLogs,
-                    R.layout.dialog_switch_logs);
+                getActivity(),
+                switchLogs,
+                R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }

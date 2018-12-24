@@ -19,13 +19,14 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/extra_panel"
               android:layout_width="wrap_content"
-              android:layout_height="25dp"
+              android:layout_height="30dp"
+              android:gravity="center_vertical"
+              android:layout_gravity="center_vertical"
               android:layout_marginLeft="10dp"
               android:layout_marginTop="10dp"
               android:layout_marginRight="10dp"
@@ -39,6 +40,8 @@
         android:id="@+id/hsv"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         android:fillViewport="true"
         android:measureAllChildren="false"
         android:scrollbars="none">
@@ -46,13 +49,15 @@
         <LinearLayout
             android:id="@+id/innerLay"
             android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <com.like.LikeButton
                 android:id="@+id/fav_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_below="@id/rowIcon"
                 android:layout_weight=".20"
                 android:paddingTop="-17dp"
@@ -60,31 +65,39 @@
                 app:icon_size="20dp"
                 app:icon_type="star"/>
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:id="@+id/day_button"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="@string/button_status_day"/>
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:id="@+id/week_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
                 android:layout_marginLeft="10dp"
                 android:text="@string/button_status_week"/>
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:id="@+id/month_button"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="@string/button_status_month"/>
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:id="@+id/year_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
                 android:layout_marginLeft="10dp"
                 android:text="@string/button_status_year"/>
         </LinearLayout>

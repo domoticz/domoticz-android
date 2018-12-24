@@ -19,7 +19,7 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<android.support.design.card.MaterialCardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
@@ -126,7 +126,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <android.support.design.button.MaterialButton
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/on_button"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="60dp"
@@ -137,7 +137,7 @@
                             android:text="@string/button_state_on"
                             android:textSize="10dp"/>
 
-                        <android.support.design.button.MaterialButton
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/off_button"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="60dp"
@@ -155,4 +155,4 @@
 
         <include layout="@layout/log_timer_button_row_default"/>
     </LinearLayout>
-</android.support.design.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>

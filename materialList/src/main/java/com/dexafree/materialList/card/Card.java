@@ -1,8 +1,8 @@
 package com.dexafree.materialList.card;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.dexafree.materialList.card.event.DismissEvent;
 

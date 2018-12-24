@@ -22,7 +22,8 @@ package nl.hnogames.domoticz.Service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 public class StopAlarmButtonListener extends IntentService {
     public StopAlarmButtonListener() {

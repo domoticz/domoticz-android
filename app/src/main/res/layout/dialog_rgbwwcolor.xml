@@ -20,35 +20,37 @@
   ~  under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_margin="20dp"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
+
     <Switch
         android:id="@+id/rgbSwitch"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:checked="true"
         android:text="@string/switch_rgb_wwcolor"/>
 
     <com.skydoves.colorpickerview.ColorPickerView
         android:id="@+id/colorPickerView"
-        android:layout_height="250dp"
         android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
-        app:palette="@drawable/palette"
         android:visibility="visible"
-        app:selector="@drawable/wheel" />
+        app:palette="@drawable/palette"
+        app:selector="@drawable/wheel"/>
 
     <LinearLayout
-        android:id="@+id/kelvinBarWrapper"
         xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:visibility="gone"
-                  android:layout_height="50dp"
-                  android:background="@drawable/wwslider">
+        android:id="@+id/kelvinBarWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/wwslider"
+        android:visibility="gone">
+
         <SeekBar
             android:id="@+id/kelvinBar"
             android:layout_width="match_parent"

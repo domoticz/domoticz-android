@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/MainLayout">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView"
             style="@style/Material_Card_View"
@@ -21,5 +21,5 @@
                     android:layout_width="match_parent"
                       android:layout_height="match_parent"/>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </com.dexafree.materialList.card.CardLayout>

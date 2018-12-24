@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
-import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +28,6 @@ import javax.net.ssl.X509TrustManager;
 
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.Helpers.DefaultHeadersInterceptor;
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -89,7 +87,7 @@ public class PicassoUtil {
             }
             // Target at least 90% of available or 25% of total space
             size = (long) Math.min(availableBytes * MAX_AVAILABLE_SPACE_USE_FRACTION, totalBytes
-                    * MAX_TOTAL_SPACE_USE_FRACTION);
+                * MAX_TOTAL_SPACE_USE_FRACTION);
         } catch (IllegalArgumentException ignored) {
             // ignored
         }
@@ -98,12 +96,12 @@ public class PicassoUtil {
 
     public Picasso getPicasso(Context context, final String username, final String password) {
         OkHttpClient okHttpClient = providesOkHttpClient(context, new LoggingInterceptor.Builder()
-                .loggable(BuildConfig.DEBUG)
-                .setLevel(Level.BASIC)
-                .log(Platform.INFO)
-                .request("Request")
-                .response("Response")
-                .build(), username, password);
+            .loggable(BuildConfig.DEBUG)
+            .setLevel(Level.BASIC)
+            .log(Platform.INFO)
+            .request("Request")
+            .response("Response")
+            .build(), username, password);
         OkHttp3Downloader okHttpDownloader = providesPicassoOkHttpClient(okHttpClient);
         Picasso picasso = providesCustomPicasso(context, okHttpDownloader);
         return picasso;
@@ -111,12 +109,12 @@ public class PicassoUtil {
 
     public Picasso getPicasso(Context context, final String cookie) {
         OkHttpClient okHttpClient = providesOkHttpClient(context, new LoggingInterceptor.Builder()
-                .loggable(BuildConfig.DEBUG)
-                .setLevel(Level.BASIC)
-                .log(Platform.INFO)
-                .request("Request")
-                .response("Response")
-                .build(), cookie);
+            .loggable(BuildConfig.DEBUG)
+            .setLevel(Level.BASIC)
+            .log(Platform.INFO)
+            .request("Request")
+            .response("Response")
+            .build(), cookie);
         OkHttp3Downloader okHttpDownloader = providesPicassoOkHttpClient(okHttpClient);
         Picasso picasso = providesCustomPicasso(context, okHttpDownloader);
         return picasso;
@@ -124,16 +122,16 @@ public class PicassoUtil {
 
     Picasso providesCustomPicasso(Context context, OkHttp3Downloader okHttpDownloader) {
         return new Picasso.Builder(context)
-                .listener(new Picasso.Listener() {
-                    @Override
-                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                        Log.e(TAG, "onImageLoadFailed: uri: " + uri, exception);
-                    }
-                })
-                .downloader(okHttpDownloader)
-                //.memoryCache(new LruCache(context))
-                .executor(Executors.newSingleThreadExecutor())//avoid OutOfMemoryError
-                .build();
+            .listener(new Picasso.Listener() {
+                @Override
+                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                    Log.e(TAG, "onImageLoadFailed: uri: " + uri, exception);
+                }
+            })
+            .downloader(okHttpDownloader)
+            //.memoryCache(new LruCache(context))
+            .executor(Executors.newSingleThreadExecutor())//avoid OutOfMemoryError
+            .build();
     }
 
     public OkHttp3Downloader providesPicassoOkHttpClient(OkHttpClient okHttpClient) {
@@ -145,20 +143,20 @@ public class PicassoUtil {
         long cacheSize = calculateDiskCacheSize(cacheDir);
         // Create a trust manager that does not validate certificate chains
         final TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    @Override
-                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return new java.security.cert.X509Certificate[]{};
-                    }
+            new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                 }
+
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[]{};
+                }
+            }
         };
 
         SSLSocketFactory sslSocketFactory = null;
@@ -178,14 +176,14 @@ public class PicassoUtil {
             e.printStackTrace();
         }
         return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                .hostnameVerifier(new TrustAllHostnameVerifier())
-                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context))
-                .addInterceptor(new DefaultHeadersInterceptor(context))
-                .addInterceptor(loggingInterceptor)
-                //.cache(new Cache(cacheDir, cacheSize))
-                .build();
+            .protocols(Arrays.asList(Protocol.HTTP_1_1))
+            .hostnameVerifier(new TrustAllHostnameVerifier())
+            .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+            .addNetworkInterceptor(new DefaultHeadersInterceptor(context))
+            .addInterceptor(new DefaultHeadersInterceptor(context))
+            .addInterceptor(loggingInterceptor)
+            //.cache(new Cache(cacheDir, cacheSize))
+            .build();
     }
 
     public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor, String username, String password) {
@@ -193,20 +191,20 @@ public class PicassoUtil {
         long cacheSize = calculateDiskCacheSize(cacheDir);
         // Create a trust manager that does not validate certificate chains
         final TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    @Override
-                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return new java.security.cert.X509Certificate[]{};
-                    }
+            new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                 }
+
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[]{};
+                }
+            }
         };
 
         SSLSocketFactory sslSocketFactory = null;
@@ -226,14 +224,14 @@ public class PicassoUtil {
             e.printStackTrace();
         }
         return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                .hostnameVerifier(new TrustAllHostnameVerifier())
-                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context, username, password))
-                .addInterceptor(new DefaultHeadersInterceptor(context, username, password))
-                .addInterceptor(loggingInterceptor)
-                //.cache(new Cache(cacheDir, cacheSize))
-                .build();
+            .protocols(Arrays.asList(Protocol.HTTP_1_1))
+            .hostnameVerifier(new TrustAllHostnameVerifier())
+            .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+            .addNetworkInterceptor(new DefaultHeadersInterceptor(context, username, password))
+            .addInterceptor(new DefaultHeadersInterceptor(context, username, password))
+            .addInterceptor(loggingInterceptor)
+            //.cache(new Cache(cacheDir, cacheSize))
+            .build();
     }
 
     public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor, String cookie) {
@@ -241,20 +239,20 @@ public class PicassoUtil {
         long cacheSize = calculateDiskCacheSize(cacheDir);
         // Create a trust manager that does not validate certificate chains
         final TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    @Override
-                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return new java.security.cert.X509Certificate[]{};
-                    }
+            new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
                 }
+
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[]{};
+                }
+            }
         };
 
         SSLSocketFactory sslSocketFactory = null;
@@ -275,14 +273,14 @@ public class PicassoUtil {
         }
 
         return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                .hostnameVerifier(new TrustAllHostnameVerifier())
-                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie))
-                .addInterceptor(new DefaultHeadersInterceptor(context, cookie))
-                .addInterceptor(loggingInterceptor)
-                //.cache(new Cache(cacheDir, cacheSize))
-                .build();
+            .protocols(Arrays.asList(Protocol.HTTP_1_1))
+            .hostnameVerifier(new TrustAllHostnameVerifier())
+            .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+            .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie))
+            .addInterceptor(new DefaultHeadersInterceptor(context, cookie))
+            .addInterceptor(loggingInterceptor)
+            //.cache(new Cache(cacheDir, cacheSize))
+            .build();
     }
 
     @SuppressLint("BadHostnameVerifier")

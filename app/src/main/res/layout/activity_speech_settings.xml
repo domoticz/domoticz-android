@@ -19,11 +19,11 @@
   ~  under the License.
   -->
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 android:id="@+id/coordinatorLayout"
-                                                 style="@style/background_listview"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     android:id="@+id/coordinatorLayout"
+                                                     style="@style/background_listview"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent">
 
     <com.github.zagum.speechrecognitionview.RecognitionProgressView
         android:id="@+id/recognition_view"
@@ -55,4 +55,4 @@
             android:smoothScrollbar="true"/>
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

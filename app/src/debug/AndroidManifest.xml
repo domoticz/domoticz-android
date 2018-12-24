@@ -414,6 +414,9 @@
             android:theme="@style/AppThemeIntro"/>
 
         <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ADMOB_APP_KEY"/>
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/googleapikey"/>
         <meta-data

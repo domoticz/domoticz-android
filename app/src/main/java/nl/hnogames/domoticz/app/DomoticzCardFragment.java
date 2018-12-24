@@ -22,12 +22,6 @@
 package nl.hnogames.domoticz.app;
 
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +32,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -84,9 +86,9 @@ public class DomoticzCardFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setColorSchemeResources(
-                        R.color.secondary,
-                        R.color.secondary_dark,
-                        R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -135,7 +137,7 @@ public class DomoticzCardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -208,7 +210,6 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     private void setErrorMessage(String message) {
-
         if (debug) addDebugText(message);
         else {
             Logger(fragmentName, message);
@@ -229,43 +230,43 @@ public class DomoticzCardFragment extends Fragment {
                     debugText.setText(temp);
                 }
             } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                "Layout should have a TextView defined with the ID \"debugText\"");
         }
     }
 
     private void setErrorLayoutMessage(String message) {
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
-            RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+            RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
             if (errorLayout != null) {
                 errorLayout.setVisibility(View.VISIBLE);
-                TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+                TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
                 errorTextMessage.setText(message);
             } else throw new RuntimeException(
-                    "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
         }
     }
 
     private void setMessage(String message) {
-        RelativeLayout errorLayout = (RelativeLayout) root.findViewById(R.id.errorLayout);
+        RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
 
-            ImageView errorImage = (ImageView) root.findViewById(R.id.errorImage);
+            ImageView errorImage = root.findViewById(R.id.errorImage);
             errorImage.setImageResource(R.drawable.empty);
             errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
-            TextView errorTextWrong = (TextView) root.findViewById(R.id.errorTextWrong);
+            TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);
             errorTextWrong.setVisibility(View.GONE);
 
-            TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
+            TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+            "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideRecyclerView() {
-        android.support.v7.widget.RecyclerView recyclerView = (android.support.v7.widget.RecyclerView) root.findViewById(R.id.my_recycler_view);
+        RecyclerView recyclerView = root.findViewById(R.id.my_recycler_view);
         if (recyclerView != null) {
             recyclerView.setVisibility(View.GONE);
         }
@@ -274,11 +275,10 @@ public class DomoticzCardFragment extends Fragment {
     private void showDebugLayout() {
         try {
             if (root != null) {
-                LinearLayout debugLayout = (LinearLayout) root.findViewById(R.id.debugLayout);
+                LinearLayout debugLayout = root.findViewById(R.id.debugLayout);
                 if (debugLayout != null) {
                     debugLayout.setVisibility(View.VISIBLE);
-
-                    debugText = (TextView) root.findViewById(R.id.debugText);
+                    debugText = root.findViewById(R.id.debugText);
                 }
             }
         } catch (Exception ex) {

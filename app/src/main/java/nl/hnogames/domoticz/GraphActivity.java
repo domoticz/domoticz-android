@@ -60,7 +60,7 @@ public class GraphActivity extends AppCompatAssistActivity {
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-                    graph).commit();
+                graph).commit();
         } catch (Exception ex) {
             this.finish();
         }

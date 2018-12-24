@@ -25,22 +25,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alexvasilkov.gestures.Settings;
 import com.alexvasilkov.gestures.views.GestureImageView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
@@ -65,8 +64,8 @@ public class Camera extends Fragment {
 
         root = group.findViewById(R.id.image);
         root.getController().getSettings()
-                .setFitMethod(Settings.Fit.VERTICAL)
-                .setFillViewport(false);
+            .setFitMethod(Settings.Fit.VERTICAL)
+            .setFillViewport(false);
 
         FloatingActionButton fabButton = group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -113,10 +112,10 @@ public class Camera extends Fragment {
             File file = new File(url);
             Uri uri = Uri.fromFile(file);
             Picasso.get()
-                    .load(uri)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(root);
+                .load(uri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .into(root);
         }
     }
 }

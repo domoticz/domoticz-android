@@ -21,13 +21,12 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 public class UserVariableInfo implements Comparable, Serializable {
     String jsonObject;
