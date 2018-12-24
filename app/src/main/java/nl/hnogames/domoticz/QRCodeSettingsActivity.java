@@ -24,14 +24,6 @@ package nl.hnogames.domoticz;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.content.ContextCompat;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -43,11 +35,15 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
@@ -130,19 +126,19 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
 
     private void showEditDialog(final QRCodeInfo mQRCodeInfo) {
         new MaterialDialog.Builder(this)
-                .title(R.string.qrcode_edit)
-                .content(R.string.qrcode_name)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .negativeText(R.string.cancel)
-                .input(this.getString(R.string.category_QRCode), mQRCodeInfo.getName(), new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        if (!UsefulBits.isEmpty(String.valueOf(input))) {
-                            mQRCodeInfo.setName(String.valueOf(input));
-                            updateQRCode(mQRCodeInfo);
-                        }
+            .title(R.string.qrcode_edit)
+            .content(R.string.qrcode_name)
+            .inputType(InputType.TYPE_CLASS_TEXT)
+            .negativeText(R.string.cancel)
+            .input(this.getString(R.string.category_QRCode), mQRCodeInfo.getName(), new MaterialDialog.InputCallback() {
+                @Override
+                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                    if (!UsefulBits.isEmpty(String.valueOf(input))) {
+                        mQRCodeInfo.setName(String.valueOf(input));
+                        updateQRCode(mQRCodeInfo);
                     }
-                }).show();
+                }
+            }).show();
     }
 
     private void getSwitchesAndShowSwitchesDialog(final QRCodeInfo qrInfo) {
@@ -162,19 +158,19 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
             @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(QRCodeSettingsActivity.this, coordinatorLayout, QRCodeSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
-                        null, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getSwitchesAndShowSwitchesDialog(qrInfo);
-                            }
-                        }, QRCodeSettingsActivity.this.getString(R.string.retry));
+                    null, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getSwitchesAndShowSwitchesDialog(qrInfo);
+                        }
+                    }, QRCodeSettingsActivity.this.getString(R.string.retry));
             }
         }, 0, "all");
     }
 
     private void showSwitchesDialog(
-            final QRCodeInfo qrcodeInfo,
-            final ArrayList<DevicesInfo> switches) {
+        final QRCodeInfo qrcodeInfo,
+        final ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
         for (DevicesInfo d : switches) {
@@ -183,9 +179,9 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
         }
 
         SwitchDialog infoDialog = new SwitchDialog(
-                QRCodeSettingsActivity.this, supportedSwitches,
-                R.layout.dialog_switch_logs,
-                domoticz);
+            QRCodeSettingsActivity.this, supportedSwitches,
+            R.layout.dialog_switch_logs,
+            domoticz);
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
@@ -215,16 +211,16 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
     private void showSelectorDialog(final QRCodeInfo qrcodeInfo, DevicesInfo selector) {
         final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
-                .title(R.string.selector_value)
-                .items(levelNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        qrcodeInfo.setValue(String.valueOf(text));
-                        updateQRCode(qrcodeInfo);
-                    }
-                })
-                .show();
+            .title(R.string.selector_value)
+            .items(levelNames)
+            .itemsCallback(new MaterialDialog.ListCallback() {
+                @Override
+                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                    qrcodeInfo.setValue(String.valueOf(text));
+                    updateQRCode(qrcodeInfo);
+                }
+            })
+            .show();
     }
 
     public void updateQRCode(QRCodeInfo qrcodeInfo) {
@@ -250,21 +246,21 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
 
     private boolean showNoDeviceAttachedDialog(final QRCodeInfo qrcodeInfo) {
         new MaterialDialog.Builder(this)
-                .title(R.string.noSwitchSelected_title)
-                .content(getString(R.string.noSwitchSelected_explanation_qrcode)
-                        + UsefulBits.newLine()
-                        + UsefulBits.newLine()
-                        + getString(R.string.noSwitchSelected_connectOneNow))
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        getSwitchesAndShowSwitchesDialog(qrcodeInfo);
-                        result = true;
-                    }
-                })
-                .show();
+            .title(R.string.noSwitchSelected_title)
+            .content(getString(R.string.noSwitchSelected_explanation_qrcode)
+                + UsefulBits.newLine()
+                + UsefulBits.newLine()
+                + getString(R.string.noSwitchSelected_connectOneNow))
+            .positiveText(R.string.yes)
+            .negativeText(R.string.no)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    getSwitchesAndShowSwitchesDialog(qrcodeInfo);
+                    result = true;
+                }
+            })
+            .show();
         return result;
     }
 
@@ -291,7 +287,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
 
         // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
-                getString(R.string.qrcode));
+            getString(R.string.qrcode));
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
@@ -374,21 +370,21 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
             if (newTagFound) {
                 UsefulBits.showSnackbar(this, coordinatorLayout, getString(R.string.qrcode_found) + ": " + QR_Code_ID, Snackbar.LENGTH_SHORT);
                 new MaterialDialog.Builder(this)
-                        .title(R.string.qrcode_found)
-                        .content(R.string.qrcode_name)
-                        .inputType(InputType.TYPE_CLASS_TEXT)
-                        .input(R.string.category_QRCode, 0, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                if (!UsefulBits.isEmpty(String.valueOf(input))) {
-                                    UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, getString(R.string.qrcode_saved) + ": " + input, Snackbar.LENGTH_SHORT);
-                                    QRCodeInfo qrCodeInfo = new QRCodeInfo();
-                                    qrCodeInfo.setId(QR_Code_ID);
-                                    qrCodeInfo.setName(String.valueOf(input));
-                                    updateQRCode(qrCodeInfo);
-                                }
+                    .title(R.string.qrcode_found)
+                    .content(R.string.qrcode_name)
+                    .inputType(InputType.TYPE_CLASS_TEXT)
+                    .input(R.string.category_QRCode, 0, new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            if (!UsefulBits.isEmpty(String.valueOf(input))) {
+                                UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, getString(R.string.qrcode_saved) + ": " + input, Snackbar.LENGTH_SHORT);
+                                QRCodeInfo qrCodeInfo = new QRCodeInfo();
+                                qrCodeInfo.setId(QR_Code_ID);
+                                qrCodeInfo.setName(String.valueOf(input));
+                                updateQRCode(qrCodeInfo);
                             }
-                        }).show();
+                        }
+                    }).show();
             } else {
                 UsefulBits.showSnackbar(this, coordinatorLayout, R.string.qrcode_exists, Snackbar.LENGTH_SHORT);
             }

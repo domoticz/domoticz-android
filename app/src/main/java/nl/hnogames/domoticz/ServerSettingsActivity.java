@@ -23,14 +23,12 @@ package nl.hnogames.domoticz;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.core.app.NavUtils;
-import androidx.appcompat.app.AlertDialog;
-
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.SetupServerSettings;
@@ -77,8 +75,8 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
         if (!addNew && UsefulBits.isEmpty(updateName)) {
             Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
             getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, serverSettings)
-                    .commit();
+                .replace(android.R.id.content, serverSettings)
+                .commit();
         } else {
             SetupServerSettings serverSettings = SetupServerSettings.newInstance(SETTINGS);
 
@@ -90,8 +88,8 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
             }
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, serverSettings)
-                    .commit();
+                .replace(android.R.id.content, serverSettings)
+                .commit();
         }
     }
 
@@ -129,17 +127,17 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
     public void onBackPressed() {
         if (addNew) {
             new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(getString(R.string.dont_save_new_server))
-                    .setMessage(R.string.are_you_sure)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ServerCancel();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(getString(R.string.dont_save_new_server))
+                .setMessage(R.string.are_you_sure)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ServerCancel();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
         } else
             super.onBackPressed();
     }

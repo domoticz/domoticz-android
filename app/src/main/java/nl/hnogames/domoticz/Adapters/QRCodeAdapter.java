@@ -24,9 +24,6 @@ package nl.hnogames.domoticz.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-
-import androidx.core.content.ContextCompat;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +37,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.R;
@@ -127,7 +125,7 @@ public class QRCodeAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
-                    + ": " + context.getString(R.string.not_available));
+                + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mQRCodeInfo.getValue()))

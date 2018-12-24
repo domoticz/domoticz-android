@@ -23,9 +23,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-
-import com.google.android.material.button.MaterialButton;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -36,6 +33,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.button.MaterialButton;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
@@ -76,8 +74,8 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -140,7 +138,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         });
         signalLevelIndicator.setMax(Domoticz.signalLevelMax * 100);
         ProgressBarAnimation anim =
-                new ProgressBarAnimation(signalLevelIndicator, 5, signalLevelVal * 100);
+            new ProgressBarAnimation(signalLevelIndicator, 5, signalLevelVal * 100);
         anim.setDuration(1000);
         signalLevelIndicator.startAnimation(anim);
 
@@ -186,7 +184,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             public void onClick(View v) {
                 if (mSwitch.isProtected()) {
                     PasswordDialog passwordDialog = new PasswordDialog(
-                            mContext, mDomoticz);
+                        mContext, mDomoticz);
                     passwordDialog.show();
                     passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                         @Override
@@ -211,7 +209,7 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
             public void onClick(View v) {
                 if (mSwitch.isProtected()) {
                     PasswordDialog passwordDialog = new PasswordDialog(
-                            mContext, mDomoticz);
+                        mContext, mDomoticz);
                     passwordDialog.show();
                     passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                         @Override

@@ -22,11 +22,9 @@
 package nl.hnogames.domoticz;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.MenuItem;
 
+import androidx.fragment.app.FragmentTransaction;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;

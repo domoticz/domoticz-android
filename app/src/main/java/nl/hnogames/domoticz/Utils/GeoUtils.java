@@ -28,9 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-
-import androidx.core.app.ActivityCompat;
-
 import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
@@ -40,6 +37,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
 
+import androidx.core.app.ActivityCompat;
 import nl.hnogames.domoticz.Service.GeofenceTransitionsIntentService;
 
 public class GeoUtils {

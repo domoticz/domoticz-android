@@ -23,13 +23,6 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.content.ContextCompat;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,10 +30,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.Adapters.ServerAdapter;
 import nl.hnogames.domoticz.Interfaces.ServerClickListener;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -161,7 +157,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         removeServerFromListView(serverInfo);
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, String.format(getString(R.string.something_deleted),
-                getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+            getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);

@@ -25,12 +25,11 @@ package nl.hnogames.domoticz.Welcome;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.viewpager.widget.ViewPager;
-
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
+import androidx.viewpager.widget.ViewPager;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -54,26 +53,26 @@ public class WelcomeViewActivity extends IntroActivity {
         UsefulBits.checkAPK(this, new SharedPrefUtil(this));
 
         addSlide(new SimpleSlide.Builder()
-                .image(R.mipmap.ic_launcher)
-                .title(R.string.app_name_domoticz)
-                .description(R.string.welcome_info_domoticz)
-                .background(R.color.black)
-                .build());
+            .image(R.mipmap.ic_launcher)
+            .title(R.string.app_name_domoticz)
+            .description(R.string.welcome_info_domoticz)
+            .background(R.color.black)
+            .build());
 
         addSlide(new FragmentSlide.Builder()
-                .background(R.color.welcome2_background)
-                .fragment(WelcomePage2.newInstance())
-                .build());
+            .background(R.color.welcome2_background)
+            .fragment(WelcomePage2.newInstance())
+            .build());
 
         addSlide(new FragmentSlide.Builder()
-                .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
-                .fragment(WelcomePage3.newInstance(WELCOME_WIZARD))
-                .build());
+            .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
+            .fragment(WelcomePage3.newInstance(WELCOME_WIZARD))
+            .build());
 
         addSlide(new FragmentSlide.Builder()
-                .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
-                .fragment(WelcomePage4.newInstance())
-                .build());
+            .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
+            .fragment(WelcomePage4.newInstance())
+            .build());
 
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

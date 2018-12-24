@@ -3,7 +3,6 @@ package nl.hnogames.domoticz.Helpers;
 import android.graphics.Canvas;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 

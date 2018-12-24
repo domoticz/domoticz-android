@@ -25,9 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-
-import androidx.core.content.ContextCompat;
-
 import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
@@ -37,6 +34,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -60,23 +58,23 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         mSharedPrefs = new SharedPrefUtil(c);
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        if (dismissListener != null)
-                            dismissListener.onDismiss(editPassword.getText().toString());
-                    }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        if (dismissListener != null)
-                            dismissListener.onCancel();
-                    }
-                });
+            .positiveText(android.R.string.ok)
+            .negativeText(android.R.string.cancel)
+            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    if (dismissListener != null)
+                        dismissListener.onDismiss(editPassword.getText().toString());
+                }
+            })
+            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    if (dismissListener != null)
+                        dismissListener.onCancel();
+                }
+            });
         mdb.dismissListener(this);
     }
 

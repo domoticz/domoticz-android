@@ -334,7 +334,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             .replace("YouLess", "counter")
             .replace("Custom Sensor", "Percentage")
             .replace("Waterflow", "Percentage");*/
-        if(utility.getSubType().equals("Percentage")||utility.getSubType().equals("Custom Sensor")||utility.getSubType().equals("Waterflow"))
+        if (utility.getSubType().equals("Percentage") || utility.getSubType().equals("Custom Sensor") || utility.getSubType().equals("Waterflow"))
             graphType = "Percentage";
 
         //if (graphType.contains("counter"))
