@@ -387,7 +387,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             windSign = mConfigInfo.getWindSign();
         }
 
-        if (holder.signal_level != null) {
+        if (holder.signal_level != null && mDeviceInfo.getLastUpdateDateTime() != null) {
             text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,
@@ -400,7 +400,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 + ": "
                 + String.valueOf(mDeviceInfo.getData());
             holder.switch_battery_level.setText(text);
-
             if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                 try {
                     int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
