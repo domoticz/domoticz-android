@@ -81,7 +81,7 @@
     <string name="add">rnu</string>
     <string name="cancel">Sefxes</string>
     <string name="ok">Yerbaḥ</string>
-    <string name="request_again">Tuttra nniḍen</string>
+    <string name="request_again">Tuttra nniḍen </string>
     <string name="upgrade">UPGRADE</string>
     <string name="something_went_wrong">Wisen d\'acu yeḍṛan</string>
     <string name="no_network_available">Anzri:ulac tuqqna uzeṭṭa yestufan</string>
@@ -101,7 +101,7 @@
     <string name="filterOn_on">Aẓayer ɣer</string>
     <string name="filterOn_off">Aẓayer insa</string>
     <string name="filterOn_static">Allalen udmisen</string>
-    <string name="filterOn_all">Allalen meṛṛa</string>
+    <string name="filterOn_all">Allalen meṛṛa </string>
     <string name="filter">sti</string>
     <string name="filter_devices">Allalen n atastay</string>
     <string name="filter_graph_empty">Ttxil-ek sefru aniwa atastay</string>

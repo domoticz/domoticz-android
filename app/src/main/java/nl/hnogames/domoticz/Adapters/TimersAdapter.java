@@ -132,6 +132,34 @@ public class TimersAdapter extends BaseAdapter {
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly);
                 else if (mSwitchTimerInfo.getType() == 13)
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly_weekday);
+                else if (mSwitchTimerInfo.getType() == 14)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_sun_at_south);
+                else if (mSwitchTimerInfo.getType() == 15)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_sun_at_south);
+                else if (mSwitchTimerInfo.getType() == 16)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_civil_twilight_start);
+                else if (mSwitchTimerInfo.getType() == 17)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_civil_twilight_start);
+                else if (mSwitchTimerInfo.getType() == 18)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_civil_twilight_end);
+                else if (mSwitchTimerInfo.getType() == 19)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_civil_twilight_end);
+                else if (mSwitchTimerInfo.getType() == 20)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_nautical_twilight_start);
+                else if (mSwitchTimerInfo.getType() == 21)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_nautical_twilight_start);
+                else if (mSwitchTimerInfo.getType() == 22)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_nautical_twilight_end);
+                else if (mSwitchTimerInfo.getType() == 23)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_nautical_twilight_end);
+                else if (mSwitchTimerInfo.getType() == 24)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_austronomical_twilight_start);
+                else if (mSwitchTimerInfo.getType() == 25)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_austronomical_twilight_start);
+                else if (mSwitchTimerInfo.getType() == 26)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.before_austronomical_twilight_end);
+                else if (mSwitchTimerInfo.getType() == 27)
+                    type += context.getString(R.string.type) + ": " + context.getString(R.string.after_austronomical_twilight_end);
                 else
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.notapplicable);
 

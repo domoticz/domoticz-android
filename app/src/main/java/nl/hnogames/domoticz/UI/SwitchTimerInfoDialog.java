@@ -57,11 +57,9 @@ public class SwitchTimerInfoDialog {
         mdb.title(R.string.timers);
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
         TimersAdapter adapter = new TimersAdapter(mContext, info);
         listView.setAdapter(adapter);
-
         md.show();
     }
-
 }

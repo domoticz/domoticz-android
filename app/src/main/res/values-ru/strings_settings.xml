@@ -51,6 +51,8 @@
     <string name="sort_server_title">Sorting</string>
     <string name="sort_server_on">Sort devices like sorted on the server</string>
     <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
     <string name="sort_dashboardLikeServer_off">Сортировать панель в алфавитном порядке</string>
     <string name="extra_data_title">Дополнительные данные на панели мониторинга</string>
     <string name="show_extra_data_on">Показать дополнительные данные на панели мониторинга</string>
@@ -71,7 +73,7 @@
     <string name="enable_wear_select">Android Wear элементы</string>
     <string name="custom_wear_select">Выбрать Wear переключатель</string>
     <string name="custom_wear_select_desc">Выберите какие переключатели Вы хотите видеть на Вашем устройстве Android Wear</string>
-    <string name="wear_custom_on">Включение пользовательских элементов Android Wear</string>
+    <string name="wear_custom_on">Включение пользовательских элементов Android Wear </string>
     <string name="wear_custom_off">Выключение пользовательских элементов Android Wear</string>
     <!--        Auto settings       -->
     <string name="auto_custom_on">Включить автоматические уведомления Android</string>

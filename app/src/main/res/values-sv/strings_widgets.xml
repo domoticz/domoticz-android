@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Välj en enhet</string>
-  <string name="choose_switch">Välj enhet</string>
-  <string name="failed_to_get_securitypanel">Ingen säkerhetspanel hittad under dina brytare</string>
-  <string name="failed_to_get_switches">Det gick inte att hämta enheter</string>
-  <string name="failed_toggle_switch">Misslyckades att växla enhet</string>
-  <string name="switch_toggled">"Byt enhet"</string>
-  <string name="text_loading">Laddar...</string>
-  <string name="text_go">KÖR</string>
-  <string name="widget_background">Bakgrund</string>
-  <string name="widget_dark">Mörk</string>
-  <string name="widget_light">Ljus</string>
-  <string name="widget_transparent_dark">Mörk transparent</string>
-  <string name="widget_transparent_light">Ljus transparent</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Välj en enhet</string>
+    <string name="choose_switch">Välj enhet</string>
+    <string name="failed_to_get_securitypanel">Ingen säkerhetspanel hittad under dina brytare</string>
+    <string name="failed_to_get_switches">Det gick inte att hämta enheter</string>
+    <string name="failed_toggle_switch">Misslyckades att växla enhet</string>
+    <string name="switch_toggled">"Byt enhet"</string>
+    <string name="text_loading">Laddar...</string>
+    <string name="text_go">KÖR</string>
+    <string name="widget_background">Bakgrund</string>
+    <string name="widget_dark">Mörk</string>
+    <string name="widget_light">Ljus</string>
+    <string name="widget_transparent_dark">Mörk transparent</string>
+    <string name="widget_transparent_light">Ljus transparent</string>
 </resources>
