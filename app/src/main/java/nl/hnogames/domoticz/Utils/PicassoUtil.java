@@ -88,7 +88,7 @@ public class PicassoUtil {
             // Target at least 90% of available or 25% of total space
             size = (long) Math.min(availableBytes * MAX_AVAILABLE_SPACE_USE_FRACTION, totalBytes
                 * MAX_TOTAL_SPACE_USE_FRACTION);
-        } catch (IllegalArgumentException ignored) {
+        } catch (Exception e) {
             // ignored
         }
         return size;

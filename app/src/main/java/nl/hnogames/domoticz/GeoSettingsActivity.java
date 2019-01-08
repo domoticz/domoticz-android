@@ -447,19 +447,15 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                 public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                     try {
                         finalLocation.setRadius(Integer.parseInt(String.valueOf(input)));
-                    } catch (Exception ignored) {
-                    }
+                    } catch (Exception ex) {}
 
-                    if (editedLocationID != -1) {
+                    if (editedLocationID != -1 && locations != null) {
                         mSharedPrefs.updateLocation(finalLocation);
                         for (int i = locations.size() - 1; i >= 0; i--)
                             if (locations.get(i).getID() == editedLocationID) {
                                 locations.set(i, finalLocation);
-
                                 GeoUtils.geofencesAlreadyRegistered = false;
                                 oGeoUtils.AddGeofences();
-
-                                adapter.notifyDataSetChanged();
                                 break;
                             }
                     } else {
@@ -468,9 +464,8 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
 
                         GeoUtils.geofencesAlreadyRegistered = false;
                         oGeoUtils.AddGeofences();
-
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
                 }
             }).show();
     }
