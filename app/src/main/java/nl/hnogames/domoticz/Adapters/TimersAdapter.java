@@ -172,13 +172,75 @@ public class TimersAdapter extends BaseAdapter {
                         holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
                     else if (mSwitchTimerInfo.getDays() == 256)
                         holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_working_days));
-                    else if (mSwitchTimerInfo.getDays() == 512)
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
+
+                     else if (mSwitchTimerInfo.getOccurence() > 0 && mSwitchTimerInfo.getDays() < 8)
+                    {
+                        String occurence = "";
+                        String days = "";
+
+                        if (mSwitchTimerInfo.getOccurence() == 1)
+                            occurence = context.getString(R.string.first);
+                        else if (mSwitchTimerInfo.getOccurence() == 2)
+                            occurence = context.getString(R.string.second);
+                        else if (mSwitchTimerInfo.getOccurence() == 3)
+                            occurence = context.getString(R.string.third);
+                        else if (mSwitchTimerInfo.getOccurence() == 4)
+                            occurence = context.getString(R.string.fourth);
+                        else if (mSwitchTimerInfo.getOccurence() == 5)
+                            occurence = context.getString(R.string.last);
+
+                        if (mSwitchTimerInfo.getDays() == 1)
+                            days = context.getString(R.string.monday);
+                        else if (mSwitchTimerInfo.getDays() == 2)
+                            days = context.getString(R.string.tuesday);
+                        else if (mSwitchTimerInfo.getDays() == 3)
+                            days = context.getString(R.string.wednesday);
+                        else if (mSwitchTimerInfo.getDays() == 4)
+                            days = context.getString(R.string.thursday);
+                        else if (mSwitchTimerInfo.getDays() == 5)
+                            days = context.getString(R.string.friday);
+                        else if (mSwitchTimerInfo.getDays() == 6)
+                            days = context.getString(R.string.saturday);
+                        else if (mSwitchTimerInfo.getDays() == 7)
+                            days = context.getString(R.string.sunday);
+
+                        String month = "";
+                        if (mSwitchTimerInfo.getMonth() == 1)
+                            month = context.getString(R.string.January);
+                        else if (mSwitchTimerInfo.getMonth() == 2)
+                            month = context.getString(R.string.February);
+                        else if (mSwitchTimerInfo.getMonth() == 3)
+                            month = context.getString(R.string.March);
+                        else if (mSwitchTimerInfo.getMonth() == 4)
+                            month = context.getString(R.string.April);
+                        else if (mSwitchTimerInfo.getMonth() == 5)
+                            month = context.getString(R.string.May);
+                        else if (mSwitchTimerInfo.getMonth() == 6)
+                            month = context.getString(R.string.June);
+                        else if (mSwitchTimerInfo.getMonth() == 7)
+                            month = context.getString(R.string.July);
+                        else if (mSwitchTimerInfo.getMonth() == 8)
+                            month = context.getString(R.string.August);
+                        else if (mSwitchTimerInfo.getMonth() == 9)
+                            month = context.getString(R.string.September);
+                        else if (mSwitchTimerInfo.getMonth() == 10)
+                            month = context.getString(R.string.October);
+                        else if (mSwitchTimerInfo.getMonth() == 11)
+                            month = context.getString(R.string.November);
+                        else if (mSwitchTimerInfo.getMonth() == 12)
+                            month = context.getString(R.string.December);
+
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + occurence + " " + days + " " + month );
+                    }
+
                     else
                         holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_other));
                 }
 
-                holder.switch_status.setText(commando);
+                if(mSwitchTimerInfo.getRandomness())
+                    holder.switch_status.setText(commando + " (random)");
+                else
+                    holder.switch_status.setText(commando);
                 holder.signal_level.setText(type);
                 convertView.setTag(holder);
             }

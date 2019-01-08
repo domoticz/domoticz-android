@@ -34,6 +34,9 @@ public class SwitchTimerInfo {
     int idx = 0;
     int Cmd = 0;
     int Days = 0;
+    int Month = 0;
+    int Occurence = 0;
+    boolean Randomness = false;
 
     public SwitchTimerInfo(JSONObject row) throws JSONException {
         this.jsonObject = row;
@@ -44,17 +47,21 @@ public class SwitchTimerInfo {
             Active = row.getString("Active");
         if (row.has("Time"))
             Active = row.getString("Time");
-
         if (row.has("Type"))
             Type = row.getInt("Type");
         if (row.has("Days"))
             Days = row.getInt("Days");
         if (row.has("Cmd"))
             Cmd = row.getInt("Cmd");
+        if (row.has("Month"))
+            Month = row.getInt("Month");
+        if (row.has("Occurence"))
+            Occurence = row.getInt("Occurence");
+        if (row.has("Randomness"))
+            Randomness = row.getBoolean("Randomness");
 
         idx = row.getInt("idx");
     }
-
 
     public String getDate() {
         return Date;
@@ -67,7 +74,6 @@ public class SwitchTimerInfo {
     public String getTime() {
         return Time;
     }
-
 
     public int getIdx() {
         return idx;
@@ -83,6 +89,18 @@ public class SwitchTimerInfo {
 
     public int getDays() {
         return Days;
+    }
+
+    public int getMonth() {
+        return Month;
+    }
+
+    public int getOccurence() {
+        return Occurence;
+    }
+
+    public boolean getRandomness() {
+        return Randomness;
     }
 
 }
