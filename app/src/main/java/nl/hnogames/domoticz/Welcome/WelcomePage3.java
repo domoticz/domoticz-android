@@ -37,7 +37,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
@@ -332,7 +331,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             remote_directory_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerSecure(
             getSpinnerDomoticzRemoteSecureBoolean());
-        Switch useSameAddress = v.findViewById(R.id.localServer_switch);
+        SwitchMaterial useSameAddress = v.findViewById(R.id.localServer_switch);
         if (!useSameAddress.isChecked()) {
             mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
