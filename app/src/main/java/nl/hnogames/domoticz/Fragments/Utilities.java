@@ -316,19 +316,19 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         int steps = 2;
         String graphType = utility.getSubType()
-                .replace("Electric", "counter")
-                .replace("kWh", "counter")
-                .replace("Gas", "counter")
-                .replace("Energy", "counter")
-                .replace("Voltcraft", "counter")
-                .replace("Voltage", "counter")
-                .replace("SetPoint", "temp")
-                .replace("Lux", "counter")
-                .replace("BWR102", "counter")
-                .replace("Sound Level", "counter")
-                .replace("Pressure", "counter")
-                .replace("Custom Sensor", "Percentage")
-                .replace("YouLess counter", "counter");
+            .replace("Electric", "counter")
+            .replace("kWh", "counter")
+            .replace("Gas", "counter")
+            .replace("Energy", "counter")
+            .replace("Voltcraft", "counter")
+            .replace("Voltage", "counter")
+            .replace("SetPoint", "temp")
+            .replace("Lux", "counter")
+            .replace("BWR102", "counter")
+            .replace("Sound Level", "counter")
+            .replace("Pressure", "counter")
+            .replace("Custom Sensor", "Percentage")
+            .replace("YouLess counter", "counter");
 
         if (graphType.contains("counter"))
             graphType = "counter";

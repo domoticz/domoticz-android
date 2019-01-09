@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Sélectionnez le nom d\'un dispositif</string>
-  <string name="choose_switch">Sélectionnez un périphérique</string>
-  <string name="failed_to_get_securitypanel">Aucune sécurité trouvé pour vos interrupteurs</string>
-  <string name="failed_to_get_switches">Impossible d\'obtenir les interrupteurs</string>
-  <string name="failed_toggle_switch">Impossible d\'activer/désactiver le dispositif</string>
-  <string name="switch_toggled">"Changer d'interrupteur"</string>
-  <string name="text_loading">Chargement...</string>
-  <string name="text_go">Go</string>
-  <string name="widget_background">Arrière-plan</string>
-  <string name="widget_dark">Sombre</string>
-  <string name="widget_light">Clair</string>
-  <string name="widget_transparent_dark">Noir Transparent</string>
-  <string name="widget_transparent_light">Clair Transparent</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Sélectionnez le nom d\'un dispositif</string>
+    <string name="choose_switch">Sélectionnez un périphérique</string>
+    <string name="failed_to_get_securitypanel">Aucune sécurité trouvé pour vos interrupteurs</string>
+    <string name="failed_to_get_switches">Impossible d\'obtenir les interrupteurs</string>
+    <string name="failed_toggle_switch">Impossible d\'activer/désactiver le dispositif</string>
+    <string name="switch_toggled">"Changer d'interrupteur"</string>
+    <string name="text_loading">Chargement...</string>
+    <string name="text_go">Go</string>
+    <string name="widget_background">Arrière-plan</string>
+    <string name="widget_dark">Sombre</string>
+    <string name="widget_light">Clair</string>
+    <string name="widget_transparent_dark">Noir Transparent</string>
+    <string name="widget_transparent_light">Clair Transparent</string>
 </resources>

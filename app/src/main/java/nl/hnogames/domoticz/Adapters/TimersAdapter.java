@@ -173,8 +173,7 @@ public class TimersAdapter extends BaseAdapter {
                     else if (mSwitchTimerInfo.getDays() == 256)
                         holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_working_days));
 
-                     else if (mSwitchTimerInfo.getOccurence() > 0 && mSwitchTimerInfo.getDays() < 8)
-                    {
+                    else if (mSwitchTimerInfo.getOccurence() > 0 && mSwitchTimerInfo.getDays() < 8) {
                         String occurence = "";
                         String days = "";
 
@@ -230,14 +229,12 @@ public class TimersAdapter extends BaseAdapter {
                         else if (mSwitchTimerInfo.getMonth() == 12)
                             month = context.getString(R.string.December);
 
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + occurence + " " + days + " " + month );
-                    }
-
-                    else
+                        holder.switch_name.setText(holder.switch_name.getText() + " | " + occurence + " " + days + " " + month);
+                    } else
                         holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_other));
                 }
 
-                if(mSwitchTimerInfo.getRandomness())
+                if (mSwitchTimerInfo.getRandomness())
                     holder.switch_status.setText(commando + " (random)");
                 else
                     holder.switch_status.setText(commando);

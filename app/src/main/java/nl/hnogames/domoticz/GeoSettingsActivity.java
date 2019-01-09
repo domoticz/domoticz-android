@@ -447,7 +447,8 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                 public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                     try {
                         finalLocation.setRadius(Integer.parseInt(String.valueOf(input)));
-                    } catch (Exception ex) {}
+                    } catch (Exception ex) {
+                    }
 
                     if (editedLocationID != -1 && locations != null) {
                         mSharedPrefs.updateLocation(finalLocation);
