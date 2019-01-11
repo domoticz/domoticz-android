@@ -42,6 +42,17 @@ public class ConfigInfo implements Serializable {
     private String DashboardType;
     private ArrayList<UserInfo> mUsers;
 
+    private boolean EnableTabCustom = false;
+    private boolean EnableTabDashboard = false;
+    private boolean EnableTabFloorplans = false;
+    private boolean EnableTabLights = false;
+    private boolean EnableTabProxy = false;
+    private boolean EnableTabScenes = false;
+    private boolean EnableTabTemp = false;
+    private boolean EnableTabUtility = false;
+    private boolean EnableTabWeather = false;
+    private boolean ShowUpdatedEffect = false;
+
     public ConfigInfo(JSONObject row) throws JSONException {
         mapFields(row);
     }
@@ -75,6 +86,30 @@ public class ConfigInfo implements Serializable {
             language = row.getString("language");
         if (row.has("DashboardType"))
             DashboardType = row.getString("DashboardType");
+
+        if (row.has("result")) {
+            JSONObject json = row.getJSONObject("result");
+            if (json.has("EnableTabCustom"))
+                EnableTabCustom = json.getBoolean("EnableTabCustom");
+            if (json.has("EnableTabDashboard"))
+                EnableTabDashboard = json.getBoolean("EnableTabDashboard");
+            if (json.has("EnableTabProxy"))
+                EnableTabProxy = json.getBoolean("EnableTabProxy");
+            if (json.has("EnableTabLights"))
+                EnableTabLights = json.getBoolean("EnableTabLights");
+            if (json.has("EnableTabFloorplans"))
+                EnableTabFloorplans = json.getBoolean("EnableTabFloorplans");
+            if (json.has("EnableTabScenes"))
+                EnableTabScenes = json.getBoolean("EnableTabScenes");
+            if (json.has("EnableTabTemp"))
+                EnableTabTemp = json.getBoolean("EnableTabTemp");
+            if (json.has("EnableTabUtility"))
+                EnableTabUtility = json.getBoolean("EnableTabUtility");
+            if (json.has("EnableTabWeather"))
+                EnableTabWeather = json.getBoolean("EnableTabWeather");
+            if (json.has("ShowUpdatedEffect"))
+                ShowUpdatedEffect = json.getBoolean("ShowUpdatedEffect");
+        }
     }
 
     public String getWindSign() {
@@ -131,5 +166,85 @@ public class ConfigInfo implements Serializable {
 
     public void setUsers(ArrayList<UserInfo> mUsers) {
         this.mUsers = mUsers;
+    }
+
+    public boolean isEnableTabCustom() {
+        return EnableTabCustom;
+    }
+
+    public void setEnableTabCustom(boolean enableTabCustom) {
+        EnableTabCustom = enableTabCustom;
+    }
+
+    public boolean isEnableTabDashboard() {
+        return EnableTabDashboard;
+    }
+
+    public void setEnableTabDashboard(boolean enableTabDashboard) {
+        EnableTabDashboard = enableTabDashboard;
+    }
+
+    public boolean isEnableTabFloorplans() {
+        return EnableTabFloorplans;
+    }
+
+    public void setEnableTabFloorplans(boolean enableTabFloorplans) {
+        EnableTabFloorplans = enableTabFloorplans;
+    }
+
+    public boolean isEnableTabLights() {
+        return EnableTabLights;
+    }
+
+    public void setEnableTabLights(boolean enableTabLights) {
+        EnableTabLights = enableTabLights;
+    }
+
+    public boolean isEnableTabProxy() {
+        return EnableTabProxy;
+    }
+
+    public void setEnableTabProxy(boolean enableTabProxy) {
+        EnableTabProxy = enableTabProxy;
+    }
+
+    public boolean isEnableTabScenes() {
+        return EnableTabScenes;
+    }
+
+    public void setEnableTabScenes(boolean enableTabScenes) {
+        EnableTabScenes = enableTabScenes;
+    }
+
+    public boolean isEnableTabTemp() {
+        return EnableTabTemp;
+    }
+
+    public void setEnableTabTemp(boolean enableTabTemp) {
+        EnableTabTemp = enableTabTemp;
+    }
+
+    public boolean isEnableTabUtility() {
+        return EnableTabUtility;
+    }
+
+    public void setEnableTabUtility(boolean enableTabUtility) {
+        EnableTabUtility = enableTabUtility;
+    }
+
+    public boolean isEnableTabWeather() {
+        return EnableTabWeather;
+    }
+
+    public void setEnableTabWeather(boolean enableTabWeather) {
+        EnableTabWeather = enableTabWeather;
+    }
+
+    public boolean isShowUpdatedEffect() {
+        return ShowUpdatedEffect;
+    }
+
+    public void setShowUpdatedEffect(boolean showUpdatedEffect) {
+        ShowUpdatedEffect = showUpdatedEffect;
     }
 }

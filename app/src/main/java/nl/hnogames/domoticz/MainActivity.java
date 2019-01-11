@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     private boolean validateOnce = true;
     private PermissionHelper permissionHelper;
     private boolean fromShortcut = false;
+    private ConfigInfo mConfigInfo;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 if (domoticz == null)
                     domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
+                mConfigInfo =  mServerUtil.getActiveServer().getConfigInfo(this);
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
                     setupMobileDevice();
                     checkDomoticzServerUpdate();
@@ -283,25 +285,25 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
                     WidgetUtils.RefreshWidgets(this);
                     UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-                    drawNavigationMenu(null);
+                    drawNavigationMenu(mConfigInfo);
 
                     UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
                         @Override
                         @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
-                            drawNavigationMenu(settings);
-                            if (!fromShortcut) addFragment();
-                            //setupAutoRefresh();
+                            mConfigInfo = settings;
+                            drawNavigationMenu(mConfigInfo);
+                            if (!fromShortcut)
+                                addFragment();
                         }
 
                         @Override
                         @DebugLog
                         public void onError(Exception error) {
-                            //drawNavigationMenu(null);
                             if (!fromShortcut)
                                 addFragment();
                         }
-                    }, mServerUtil.getActiveServer().getConfigInfo(this));
+                    }, mConfigInfo);
                 } else {
                     if (!fromShortcut) addFragment();
                 }
@@ -942,8 +944,8 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     private void checkDomoticzServerUpdate() {
-        if (mSharedPrefs.checkForUpdatesEnabled()) {
-            // Get latest Domoticz version update
+        if (mSharedPrefs.checkForUpdatesEnabled() &&
+                (mServerUtil.getActiveServer() != null && mServerUtil.getActiveServer().getConfigInfo(this) != null && mServerUtil.getActiveServer().getConfigInfo(this).isShowUpdatedEffect())) {
             domoticz.getUpdate(new UpdateVersionReceiver() {
                 @Override
                 @DebugLog
