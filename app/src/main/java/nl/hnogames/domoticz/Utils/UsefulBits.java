@@ -53,7 +53,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -86,19 +88,54 @@ public class UsefulBits {
     private static final String TAG = UsefulBits.class.getSimpleName();
 
     public static boolean isEmpty(String string) {
-        //noinspection SimplifiableIfStatement
         if (string != null)
-            return string.equalsIgnoreCase("")
-                || string.isEmpty()
-                || string.length() <= 0;
+            return string.equalsIgnoreCase("") || string.isEmpty();
         else return true;
     }
 
     public static boolean isEmpty(CharSequence charSequence) {
-        //noinspection SimplifiableIfStatement
         if (charSequence != null)
             return charSequence.length() <= 0;
         else return true;
+    }
+
+    public static String getMonth(int month) {
+        try {
+            return new DateFormatSymbols().getMonths()[month - 1];
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public static String getWeekDay(int day) {
+        try {
+            return getWeekDayNames()[day];
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private static String[] getWeekDayNames() {
+        String[] names = new DateFormatSymbols().getShortWeekdays();
+        List<String> daysName = new ArrayList<>(Arrays.asList(names));
+        daysName.remove(0);
+        daysName.add(daysName.remove(0));
+        names = new String[daysName.size()];
+        daysName.toArray(names);
+        return names;
+    }
+
+    public static char[] Reverse(char[] A) {
+        if (A == null)
+            return null;
+        int idx = 0;
+        for (int i = A.length - 1; i >= A.length / 2; i--) {
+            char temp = A[i];
+            A[i] = A[idx];
+            A[idx] = temp;
+            idx++;
+        }
+        return A;
     }
 
     public static String Join(List<String> msgs) {

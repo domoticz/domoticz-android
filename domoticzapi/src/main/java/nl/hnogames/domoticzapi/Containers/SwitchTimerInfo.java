@@ -24,6 +24,8 @@ package nl.hnogames.domoticzapi.Containers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import nl.hnogames.domoticzapi.Utils.UsefulBits;
+
 public class SwitchTimerInfo {
 
     JSONObject jsonObject;
@@ -34,6 +36,7 @@ public class SwitchTimerInfo {
     int idx = 0;
     int Cmd = 0;
     int Days = 0;
+    int MDay = 0;
     int Month = 0;
     int Occurence = 0;
     boolean Randomness = false;
@@ -49,6 +52,8 @@ public class SwitchTimerInfo {
             Active = row.getString("Time");
         if (row.has("Type"))
             Type = row.getInt("Type");
+        if (row.has("MDay"))
+            MDay = row.getInt("MDay");
         if (row.has("Days"))
             Days = row.getInt("Days");
         if (row.has("Cmd"))
@@ -87,6 +92,10 @@ public class SwitchTimerInfo {
         return Cmd;
     }
 
+    public int getMonthDay() {
+        return MDay;
+    }
+
     public int getDays() {
         return Days;
     }
@@ -97,6 +106,13 @@ public class SwitchTimerInfo {
 
     public int getOccurence() {
         return Occurence;
+    }
+
+    public char[] getDaysBinary() {
+        String binary = Integer.toBinaryString(Days);
+        if(!UsefulBits.isEmpty(binary))
+            return binary.toCharArray();
+        else return null;
     }
 
     public boolean getRandomness() {
