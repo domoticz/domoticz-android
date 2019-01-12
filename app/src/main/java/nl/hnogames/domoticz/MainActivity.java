@@ -893,13 +893,12 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             if (fragments[i].contains("Fragments.Plans") || fragments[i].contains("Fragments.Camera"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
 
-        drawerItems.add(new DividerDrawerItem());
-
         for (UserInfo user : mConfigInfo.getUsers()) {
             if(user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
             {
                 if(user.getRights()>=2)
                 {
+                    drawerItems.add(new DividerDrawerItem());
                     for (int i = 0; i < drawerActions.length; i++)
                         if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
                             drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
