@@ -874,33 +874,39 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         String[] fragments = mSharedPrefs.getNavigationFragments();
         String ICONS[] = mSharedPrefs.getNavigationIcons();
+        UserInfo user = null;
+        for (UserInfo u : mConfigInfo.getUsers()) {
+            if (u.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                user = u;
+        }
 
         for (int i = 0; i < drawerActions.length; i++)
             if (fragments[i].contains("Fragments.Wizard"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
-
         if (drawerItems.size() > 0)
             drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.MainPager") || fragments[i].contains("Fragments.Temperature") || fragments[i].contains("Fragments.Utilities"))
+            if (fragments[i].contains("Fragments.MainPager") ||
+                    (fragments[i].contains("Fragments.Temperature") && (mConfigInfo.isEnableTabTemp() || mConfigInfo.isEnableTabWeather())) ||
+                    (fragments[i].contains("Fragments.Utilities") && mConfigInfo.isEnableTabUtility()))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
-
         drawerItems.add(new DividerDrawerItem());
 
-        for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.Plans") || fragments[i].contains("Fragments.Camera"))
+        for (int i = 0; i < drawerActions.length; i++) {
+            if ((fragments[i].contains("Fragments.Plans") && mConfigInfo.isEnableTabFloorplans()))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+        }
 
-        for (UserInfo user : mConfigInfo.getUsers()) {
-            if (user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))) {
-                if (user.getRights() >= 2) {
-                    drawerItems.add(new DividerDrawerItem());
-                    for (int i = 0; i < drawerActions.length; i++)
-                        if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
-                            drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
-                }
+        if (user.getRights() >= 2) {
+            for (int i = 0; i < drawerActions.length; i++) {
+                if (fragments[i].contains("Fragments.Camera"))
+                    drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
             }
+            drawerItems.add(new DividerDrawerItem());
+            for (int i = 0; i < drawerActions.length; i++)
+                if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
+                    drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
         return drawerItems;

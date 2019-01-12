@@ -444,6 +444,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @Override
     @DebugLog
     public void onLogButtonClick(int idx) {
+
+
         mDomoticz.getTextLogs(idx, new SwitchLogReceiver() {
             @Override
             @DebugLog

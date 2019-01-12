@@ -499,7 +499,8 @@ public class UsefulBits {
                             if (currentConfig != null) {
                                 configInfo.setUsers(currentConfig.getUsers());
                             }
-
+                            mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
+                            mServerUtil.saveDomoticzServers(true);
                             if (receiver != null)
                                 receiver.onReceiveConfig(configInfo);
                         }
