@@ -895,9 +895,17 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
         drawerItems.add(new DividerDrawerItem());
 
-        for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
-                drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+        for (UserInfo user : mConfigInfo.getUsers()) {
+            if(user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+            {
+                if(user.getRights()>=2)
+                {
+                    for (int i = 0; i < drawerActions.length; i++)
+                        if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
+                            drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+                }
+            }
+        }
 
         return drawerItems;
     }
