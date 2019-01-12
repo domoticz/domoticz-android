@@ -210,7 +210,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     private void changeFavorite(final UtilitiesInfo mUtilitiesInfo, final boolean isFavorite) {
-         if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -353,6 +353,13 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @Override
     @DebugLog
     public void onThermostatClick(final int idx) {
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            return;
+        }
+
         addDebugText("onThermostatClick");
         final UtilitiesInfo tempUtil = getUtility(idx);
 

@@ -1322,7 +1322,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
             return true;
         }

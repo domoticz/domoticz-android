@@ -85,7 +85,8 @@ public class DomoticzRecyclerFragment extends Fragment {
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
 
-    public DomoticzRecyclerFragment() {}
+    public DomoticzRecyclerFragment() {
+    }
 
     public void setTheme() {
         if (mSharedPrefs == null)
@@ -102,9 +103,9 @@ public class DomoticzRecyclerFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
 
             mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.secondary,
-                R.color.secondary_dark,
-                R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -121,7 +122,7 @@ public class DomoticzRecyclerFragment extends Fragment {
         Activity activity = getActivity();
         ConfigInfo config = getServerConfigInfo(context);
         for (UserInfo user : config.getUsers()) {
-            if(user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+            if (user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
                 return user;
         }
         return null;
@@ -216,7 +217,7 @@ public class DomoticzRecyclerFragment extends Fragment {
                 isPortrait = true;
             if (getActivity() instanceof MainActivity) {
                 isTablet = !
-                    ((MainActivity) getActivity()).onPhone;
+                        ((MainActivity) getActivity()).onPhone;
             }
             gridView.setHasFixedSize(true);
 
@@ -276,7 +277,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -382,7 +383,7 @@ public class DomoticzRecyclerFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                        "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -396,7 +397,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -415,14 +416,14 @@ public class DomoticzRecyclerFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-            "Layout should have a ListView defined with the ID of listView");
+                "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

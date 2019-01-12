@@ -288,6 +288,12 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     public void onSetClick(final TemperatureInfo t) {
         addDebugText("onSetClick");
         final int idx = t.getIdx();
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            return;
+        }
 
         final setCommandReceiver commandReceiver = new setCommandReceiver() {
             @Override
