@@ -64,8 +64,8 @@ public class Camera extends Fragment {
 
         root = group.findViewById(R.id.image);
         root.getController().getSettings()
-            .setFitMethod(Settings.Fit.VERTICAL)
-            .setFillViewport(false);
+                .setFitMethod(Settings.Fit.VERTICAL)
+                .setFillViewport(false);
 
         FloatingActionButton fabButton = group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -112,10 +112,10 @@ public class Camera extends Fragment {
             File file = new File(url);
             Uri uri = Uri.fromFile(file);
             Picasso.get()
-                .load(uri)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .into(root);
+                    .load(uri)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(root);
         }
     }
 }

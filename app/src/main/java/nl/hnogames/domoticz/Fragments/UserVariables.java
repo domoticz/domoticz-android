@@ -38,6 +38,7 @@ import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UserVariablesClickListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -149,20 +150,27 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     @Override
     public void onUserVariableClick(final UserVariableInfo clickedVar) {
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
+            return;
+        }
         new MaterialDialog.Builder(mContext)
-            .title(R.string.title_vars)
-            .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
-            .inputType(InputType.TYPE_CLASS_TEXT)
-            .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
-                @Override
-                public void onInput(MaterialDialog dialog, CharSequence input) {
-                    if (validateInput(String.valueOf(input), clickedVar.getType())) {
-                        updateUserVariable(String.valueOf(input), clickedVar);
-                    } else {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                .title(R.string.title_vars)
+                .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (validateInput(String.valueOf(input), clickedVar.getType())) {
+                            updateUserVariable(String.valueOf(input), clickedVar);
+                        } else {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                        }
                     }
-                }
-            }).show();
+                }).show();
     }
 
     private boolean validateInput(String input, String type) {

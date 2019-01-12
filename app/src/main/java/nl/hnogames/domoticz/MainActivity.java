@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     this);
             } else {
                 new GeoUtils(this, this).AddGeofences();
-                buildScreen();
+                buildScreen(true);
             }
         }
     }
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
     }
 
     @DebugLog
-    public void buildScreen() {
+    public void buildScreen(boolean forceConfig) {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
             TextView usingTabletLayout = findViewById(R.id.tabletLayout);
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
                     drawNavigationMenu(mConfigInfo);
 
-                    UsefulBits.getServerConfigForActiveServer(this, false, new ConfigReceiver() {
+                    UsefulBits.getServerConfigForActiveServer(this, forceConfig, new ConfigReceiver() {
                         @Override
                         @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                             setTheme(R.style.AppThemeDarkMain);
                         else
                             setTheme(R.style.AppThemeMain);
-                        buildScreen();
+                        buildScreen(false);
                     }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
@@ -789,22 +789,9 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                                             if (user.getUsername().equals(profile.getEmail().getText())) {
                                                 String md5Pass = UsefulBits.getMd5String(password);
                                                 if (md5Pass.equals(user.getPassword())) {
-                                                    //if correct set credentials in activeserver and recreate drawer
-                                                    domoticz.setUserCredentials(user.getUsername(), password);
                                                     domoticz.LogOff();
-                                                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, true, new ConfigReceiver() {
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onReceiveConfig(ConfigInfo settings) {
-                                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.user_switch, Snackbar.LENGTH_SHORT);
-                                                            drawNavigationMenu(finalConfig);
-                                                        }
-
-                                                        @Override
-                                                        @DebugLog
-                                                        public void onError(Exception error) {
-                                                        }
-                                                    }, finalConfig);
+                                                    domoticz.setUserCredentials(user.getUsername(), password);
+                                                    buildScreen(true);
                                                 } else {
                                                     UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                     drawNavigationMenu(finalConfig);
@@ -1392,7 +1379,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                     }
                     if (setNew != null) {
                         mServerUtil.setActiveServer(setNew);
-                        buildScreen();
+                        buildScreen(true);
                         invalidateOptionsMenu();
                     }
                     return false;
@@ -1551,7 +1538,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             mSharedPrefs.setGeofencingStarted(true);
             new GeoUtils(this, this).AddGeofences();
         }
-        buildScreen();
+        buildScreen(false);
     }
 
     @Override
@@ -1571,7 +1558,7 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 mSharedPrefs.setGeofencingStarted(true);
                 new GeoUtils(this, this).AddGeofences();
             }
-            buildScreen();
+            buildScreen(false);
         } catch (Exception ex) {
         }
     }
@@ -1586,13 +1573,11 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
                 dialog.dismiss();
             Digitus.deinit();
             validateOnce = false;
-
             if (!mSharedPrefs.isGeofencingStarted()) {
                 mSharedPrefs.setGeofencingStarted(true);
                 new GeoUtils(this, this).AddGeofences();
             }
-
-            buildScreen();
+            buildScreen(false);
         } else {
             UsefulBits.showSimpleToast(this, this.getString(R.string.security_wrong_password_fingerprint), Toast.LENGTH_LONG);
             if (dialog != null)

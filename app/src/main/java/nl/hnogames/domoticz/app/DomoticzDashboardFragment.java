@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -59,6 +60,8 @@ import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
@@ -133,6 +136,25 @@ public class DomoticzDashboardFragment extends Fragment {
         } else if (activity instanceof PlanActivity) {
             return ((PlanActivity) getActivity()).getServerUtil();
         } else return null;
+    }
+
+    public ConfigInfo getServerConfigInfo(Context context) {
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            return ((MainActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+        } else if (activity instanceof PlanActivity) {
+            return ((PlanActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+        } else return null;
+    }
+
+    public UserInfo getCurrentUser(Context context, Domoticz domoticz) {
+        Activity activity = getActivity();
+        ConfigInfo config = getServerConfigInfo(context);
+        for (UserInfo user : config.getUsers()) {
+            if(user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                return user;
+        }
+        return null;
     }
 
     public void sortFragment(String sort) {
