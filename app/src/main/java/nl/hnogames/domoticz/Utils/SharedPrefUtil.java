@@ -80,9 +80,9 @@ public class SharedPrefUtil {
     private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
     private static final String PREF_UPDATE_SERVER_SHOWN = "updateservershown";
     private static final String PREF_EXTRA_DATA = "extradata";
-    private static final String PREF_STARTUP_SCREEN = "startup_fragment";
+    private static final String PREF_STARTUP_SCREEN = "startup_nav";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
-    private static final String PREF_NAVIGATION_ITEMS = "show_menu_items";
+    private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";

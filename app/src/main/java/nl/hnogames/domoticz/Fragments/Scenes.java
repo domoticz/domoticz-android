@@ -87,6 +87,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         onAttachFragment(this);
         mContext = context;
         initAnimation();
+        if (getActionBar() != null)
+            getActionBar().setTitle(getString(R.string.title_scenes));
     }
 
     @Override

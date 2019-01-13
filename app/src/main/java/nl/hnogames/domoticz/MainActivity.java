@@ -887,18 +887,25 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
             drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.MainPager") ||
-                    (fragments[i].contains("Fragments.Temperature") && (mConfigInfo.isEnableTabTemp() || mConfigInfo.isEnableTabWeather())) ||
-                    (fragments[i].contains("Fragments.Utilities") && mConfigInfo.isEnableTabUtility()))
+            if (fragments[i].contains("Fragments.Dashboard") ||
+                    (fragments[i].contains("Fragments.Switch") && mConfigInfo.isEnableTabLights()) ||
+                    (fragments[i].contains("Fragments.Scene") && mConfigInfo.isEnableTabScenes()))
+                drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+        drawerItems.add(new DividerDrawerItem());
+
+        for (int i = 0; i < drawerActions.length; i++)
+            if ((fragments[i].contains("Fragments.Temperature") && mConfigInfo.isEnableTabTemp()) ||
+                    (fragments[i].contains("Fragments.Weather") && mConfigInfo.isEnableTabWeather()))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++) {
-            if ((fragments[i].contains("Fragments.Plans") && mConfigInfo.isEnableTabFloorplans()))
+            if ((fragments[i].contains("Fragments.Plans") && mConfigInfo.isEnableTabFloorplans()) ||
+                    (fragments[i].contains("Fragments.Utilities") && mConfigInfo.isEnableTabUtility()))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
-        if (user.getRights() >= 2) {
+        if (user != null && user.getRights() >= 2) {
             for (int i = 0; i < drawerActions.length; i++) {
                 if (fragments[i].contains("Fragments.Camera"))
                     drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));

@@ -95,6 +95,8 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         onAttachFragment(this);
         mContext = context;
         initAnimation();
+        if (getActionBar() != null)
+            getActionBar().setTitle(getString(R.string.title_temperature));
     }
 
     @Override

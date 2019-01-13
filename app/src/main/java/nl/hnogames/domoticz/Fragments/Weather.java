@@ -92,6 +92,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         onAttachFragment(this);
         mContext = context;
         initAnimation();
+        if (getActionBar() != null)
+            getActionBar().setTitle(getString(R.string.title_weather));
     }
 
     @Override

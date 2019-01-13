@@ -100,6 +100,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
+        if (getActionBar() != null)
+            getActionBar().setTitle(getString(R.string.title_dashboard));
     }
 
     @Override
@@ -153,6 +155,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (planName != null && planName.length() > 0)
                 if (getActionBar() != null)
                     getActionBar().setTitle(planName + "");
+
             processDashboard();
         }
     }
