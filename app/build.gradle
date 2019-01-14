@@ -24,7 +24,6 @@ android {
         def versionMajor = 0
         def versionMinor = 2
 
-
         def versionPatch = versionProps['VERSION_PATCH'].toInteger() + value
         def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
         def version_Code = versionProps['VERSION_CODE'].toInteger() + value
@@ -170,12 +169,12 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:16.0.6"
     implementation "com.google.firebase:firebase-crash:16.2.1"
-    implementation "com.google.firebase:firebase-perf:16.2.2"
+    implementation "com.google.firebase:firebase-perf:16.2.3"
     implementation "com.google.firebase:firebase-messaging:17.3.4"
     implementation "com.google.firebase:firebase-ads:17.1.2"
-    implementation "com.crashlytics.sdk.android:crashlytics:2.9.7"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.8"
 
-    implementation 'com.google.android.ads.consent:consent-library:1.0.6'
+    implementation 'com.google.android.ads.consent:consent-library:1.0.7'
 
     implementation "com.google.android.gms:play-services-analytics:16.0.6"
     implementation "com.google.android.gms:play-services-wearable:16.0.1"

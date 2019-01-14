@@ -874,10 +874,13 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         String[] fragments = mSharedPrefs.getNavigationFragments();
         String ICONS[] = mSharedPrefs.getNavigationIcons();
+
         UserInfo user = null;
-        for (UserInfo u : mConfigInfo.getUsers()) {
-            if (u.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
-                user = u;
+        if(mConfigInfo != null) {
+            for (UserInfo u : mConfigInfo.getUsers()) {
+                if (u.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                    user = u;
+            }
         }
 
         for (int i = 0; i < drawerActions.length; i++)
@@ -888,20 +891,20 @@ public class MainActivity extends AppCompatPermissionsActivity implements Digitu
 
         for (int i = 0; i < drawerActions.length; i++)
             if (fragments[i].contains("Fragments.Dashboard") ||
-                    (fragments[i].contains("Fragments.Switch") && mConfigInfo.isEnableTabLights()) ||
-                    (fragments[i].contains("Fragments.Scene") && mConfigInfo.isEnableTabScenes()))
+                    (fragments[i].contains("Fragments.Switch") && (mConfigInfo != null && mConfigInfo.isEnableTabLights())) ||
+                    (fragments[i].contains("Fragments.Scene") && (mConfigInfo != null && mConfigInfo.isEnableTabScenes())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if ((fragments[i].contains("Fragments.Temperature") && mConfigInfo.isEnableTabTemp()) ||
-                    (fragments[i].contains("Fragments.Weather") && mConfigInfo.isEnableTabWeather()))
+            if ((fragments[i].contains("Fragments.Temperature") && (mConfigInfo != null && mConfigInfo.isEnableTabTemp())) ||
+                    (fragments[i].contains("Fragments.Weather") && (mConfigInfo != null && mConfigInfo.isEnableTabWeather())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++) {
-            if ((fragments[i].contains("Fragments.Plans") && mConfigInfo.isEnableTabFloorplans()) ||
-                    (fragments[i].contains("Fragments.Utilities") && mConfigInfo.isEnableTabUtility()))
+            if ((fragments[i].contains("Fragments.Plans") && (mConfigInfo != null && mConfigInfo.isEnableTabFloorplans())) ||
+                    (fragments[i].contains("Fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
