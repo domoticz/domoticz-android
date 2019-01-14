@@ -42,18 +42,15 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 
 # Screenshots
 -----
-
-
-| Some screenshots   |   |   |   |   |
-| ------------- | ------------- | ------------- | ------------- | ------------- |
-|  ![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png) | ![screenshot_2019-01-14-10-39-59-116_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)  |  ![screenshot_2019-01-14-10-39-53-701_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png) |  ![screenshot_2019-01-14-10-40-10-106_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png) | 
+|  ![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png) | ![screenshot_2019-01-14-10-39-59-116_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)  |
+|  ![screenshot_2019-01-14-10-39-53-701_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png) |  ![screenshot_2019-01-14-10-40-10-106_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png) | 
 ![screenshot_2019-01-14-10-39-47-277_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106124-29599180-17eb-11e9-8fc0-1b967569ab0d.png)  |
 
 
 # Geofencing
 -----
 Add (one or multiple) Geofences and connect a switch to it which will be triggered when entering the Geofence.
-![geo_1](https://user-images.githubusercontent.com/14561640/51105938-b223fd80-17ea-11e9-8026-fa7148ab35ef.png) ![geo_2](https://user-images.githubusercontent.com/14561640/51105944-b6501b00-17ea-11e9-826b-29b7295c6758.png)
+|  ![geo_1](https://user-images.githubusercontent.com/14561640/51105938-b223fd80-17ea-11e9-8026-fa7148ab35ef.png)  |  ![geo_2](https://user-images.githubusercontent.com/14561640/51105944-b6501b00-17ea-11e9-826b-29b7295c6758.png)  |
 
 
 # Widgets
@@ -85,7 +82,7 @@ Use your devices within your floorplans
 -----
 The app is light and dark themed..  
 
-![dark_theme_1](https://user-images.githubusercontent.com/14561640/51105649-e0eda400-17e9-11e9-80f6-f69e93022e73.png) ![dark_theme_2](https://user-images.githubusercontent.com/14561640/51105651-e0eda400-17e9-11e9-84d9-be83fa89a09c.png)
+|  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/51105649-e0eda400-17e9-11e9-80f6-f69e93022e73.png)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/51105651-e0eda400-17e9-11e9-84d9-be83fa89a09c.png)  |
 
 
 # Credits
