@@ -50,7 +50,8 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 
 # Geofencing
 -----
-Add (one or multiple) Geofences and connect a switch to it which will be triggered when entering the Geofence.
+Add (one or multiple) Geofences and connect a switch to it which will be triggered when entering the Geofence. 
+
 |  |  |
 | ------------- | ------------- | 
 |  ![geo_1](https://user-images.githubusercontent.com/14561640/51105938-b223fd80-17ea-11e9-8026-fa7148ab35ef.png)  |  ![geo_2](https://user-images.githubusercontent.com/14561640/51105944-b6501b00-17ea-11e9-826b-29b7295c6758.png)  |
