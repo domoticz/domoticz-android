@@ -51,6 +51,8 @@
     <string name="sort_server_title">Sorteren</string>
     <string name="sort_server_on">Sorteer de apparaten zoals ze gesorteerd zijn op de server</string>
     <string name="sort_custom_on">Sorteer de apparaten zelf voor dit toestel, drag &amp; drop de apparaten om ze te sorteren</string>
+    <string name="sort_lock_server_title">Vergrendel</string>
+    <string name="sort_lock_custom_on">Vergrendel het aangepast sorteren (drag &amp; drop)</string>
     <string name="sort_dashboardLikeServer_off">Op alfabetische volgorde sorteren</string>
     <string name="extra_data_title">Uitgebreide gegevens op dashboard</string>
     <string name="show_extra_data_on">Uitgebreide gegevens op dashboard tegels</string>

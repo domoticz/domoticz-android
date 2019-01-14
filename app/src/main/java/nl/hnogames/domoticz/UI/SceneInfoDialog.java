@@ -25,11 +25,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -43,7 +43,7 @@ public class SceneInfoDialog implements DialogInterface.OnDismissListener {
     private String idx;
     private String lastUpdate;
     private boolean isFavorite;
-    private Switch favorite_switch;
+    private SwitchMaterial favorite_switch;
 
     public SceneInfoDialog(Context mContext,
                            SceneInfo info,
@@ -53,8 +53,8 @@ public class SceneInfoDialog implements DialogInterface.OnDismissListener {
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -83,7 +83,7 @@ public class SceneInfoDialog implements DialogInterface.OnDismissListener {
         TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(lastUpdate);
 
-        favorite_switch = (Switch) view.findViewById(R.id.favorite_switch);
+        favorite_switch = (SwitchMaterial) view.findViewById(R.id.favorite_switch);
         favorite_switch.setChecked(isFavorite);
         favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

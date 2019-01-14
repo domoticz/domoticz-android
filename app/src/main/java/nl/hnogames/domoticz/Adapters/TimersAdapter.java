@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticz.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -34,16 +35,13 @@ import java.util.ArrayList;
 import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 
 public class TimersAdapter extends BaseAdapter {
-
-    private static final String TAG = TimersAdapter.class.getSimpleName();
-
     private SharedPrefUtil mSharedPrefs;
-
     private Context context;
-    private ArrayList<SwitchTimerInfo> data = null;
+    private ArrayList<SwitchTimerInfo> data;
 
     public TimersAdapter(Context context,
                          ArrayList<SwitchTimerInfo> data) {
@@ -70,6 +68,7 @@ public class TimersAdapter extends BaseAdapter {
     }
 
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (data != null) {
@@ -103,54 +102,129 @@ public class TimersAdapter extends BaseAdapter {
                 else
                     commando += context.getString(R.string.command) + ": " + context.getString(R.string.button_state_off);
 
+                String occurence = "";
+                String days = "";
                 String type = "";
+                String month = "";
+
+                char[] daysBinary = UsefulBits.Reverse(mSwitchTimerInfo.getDaysBinary());
+
                 if (mSwitchTimerInfo.getType() == 0)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_before_sunrise);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.timer_before_sunrise));
                 else if (mSwitchTimerInfo.getType() == 1)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunrise);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.timer_after_sunrise));
                 else if (mSwitchTimerInfo.getType() == 2)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_ontime);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.timer_ontime));
                 else if (mSwitchTimerInfo.getType() == 3)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_before_sunset);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.timer_before_sunset));
                 else if (mSwitchTimerInfo.getType() == 4)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_after_sunset);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.timer_after_sunset));
                 else if (mSwitchTimerInfo.getType() == 5)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.timer_fixed);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.timer_fixed));
                 else if (mSwitchTimerInfo.getType() == 6)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_day_numbers);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.odd_day_numbers));
                 else if (mSwitchTimerInfo.getType() == 7)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.even_day_numbers);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.even_day_numbers));
                 else if (mSwitchTimerInfo.getType() == 8)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.odd_week_numbers);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.odd_week_numbers));
                 else if (mSwitchTimerInfo.getType() == 9)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.even_week_numbers);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.even_week_numbers));
                 else if (mSwitchTimerInfo.getType() == 10)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.monthly);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.monthly));
                 else if (mSwitchTimerInfo.getType() == 11)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.monthly_weekday);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.monthly_weekday));
                 else if (mSwitchTimerInfo.getType() == 12)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.yearly));
                 else if (mSwitchTimerInfo.getType() == 13)
-                    type += context.getString(R.string.type) + ": " + context.getString(R.string.yearly_weekday);
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.yearly_weekday));
+                else if (mSwitchTimerInfo.getType() == 14)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_sun_at_south));
+                else if (mSwitchTimerInfo.getType() == 15)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_sun_at_south));
+                else if (mSwitchTimerInfo.getType() == 16)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_civil_twilight_start));
+                else if (mSwitchTimerInfo.getType() == 17)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_civil_twilight_start));
+                else if (mSwitchTimerInfo.getType() == 18)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_civil_twilight_end));
+                else if (mSwitchTimerInfo.getType() == 19)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_civil_twilight_end));
+                else if (mSwitchTimerInfo.getType() == 20)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_nautical_twilight_start));
+                else if (mSwitchTimerInfo.getType() == 21)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_nautical_twilight_start));
+                else if (mSwitchTimerInfo.getType() == 22)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_nautical_twilight_end));
+                else if (mSwitchTimerInfo.getType() == 23)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_nautical_twilight_end));
+                else if (mSwitchTimerInfo.getType() == 24)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_austronomical_twilight_start));
+                else if (mSwitchTimerInfo.getType() == 25)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_austronomical_twilight_start));
+                else if (mSwitchTimerInfo.getType() == 26)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.before_austronomical_twilight_end));
+                else if (mSwitchTimerInfo.getType() == 27)
+                    type += String.format("%s: %s", context.getString(R.string.type), context.getString(R.string.after_austronomical_twilight_end));
                 else
                     type += context.getString(R.string.type) + ": " + context.getString(R.string.notapplicable);
 
                 if (mSwitchTimerInfo.getDate() != null && mSwitchTimerInfo.getDate().length() > 0)
-                    holder.switch_name.setText(holder.switch_name.getText() + " | " + mSwitchTimerInfo.getDate());
+                    holder.switch_name.setText(String.format("%s | %s",
+                            holder.switch_name.getText(), mSwitchTimerInfo.getDate()));
+                else if (mSwitchTimerInfo.getMonthDay() > 0)
+                    days = String.format("%s %d", context.getString(R.string.button_status_day).toLowerCase(), mSwitchTimerInfo.getMonthDay());
                 else {
                     if (mSwitchTimerInfo.getDays() == 128)
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_every_days));
+                        holder.switch_name.setText(String.format("%s | %s",
+                                holder.switch_name.getText(), context.getString(R.string.timer_every_days)));
                     else if (mSwitchTimerInfo.getDays() == 512)
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
+                        holder.switch_name.setText(String.format("%s | %s",
+                                holder.switch_name.getText(), context.getString(R.string.timer_weekend)));
                     else if (mSwitchTimerInfo.getDays() == 256)
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_working_days));
-                    else if (mSwitchTimerInfo.getDays() == 512)
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_weekend));
-                    else
-                        holder.switch_name.setText(holder.switch_name.getText() + " | " + context.getString(R.string.timer_other));
+                        holder.switch_name.setText(String.format("%s | %s",
+                                holder.switch_name.getText(), context.getString(R.string.timer_working_days)));
+
+                    if (mSwitchTimerInfo.getOccurence() > 0) {
+                        if (mSwitchTimerInfo.getOccurence() == 1)
+                            occurence = context.getString(R.string.first);
+                        else if (mSwitchTimerInfo.getOccurence() == 2)
+                            occurence = context.getString(R.string.second);
+                        else if (mSwitchTimerInfo.getOccurence() == 3)
+                            occurence = context.getString(R.string.third);
+                        else if (mSwitchTimerInfo.getOccurence() == 4)
+                            occurence = context.getString(R.string.fourth);
+                        else if (mSwitchTimerInfo.getOccurence() == 5)
+                            occurence = context.getString(R.string.last);
+                    }
+
+                    if (mSwitchTimerInfo.getDays() > 0) {
+                        try {
+                            for (int i = 0; i < 7; i++) {
+                                if (daysBinary[i] == '1') {
+                                    if (UsefulBits.isEmpty(days))
+                                        days = UsefulBits.getWeekDay(i);
+                                    else
+                                        days += ", " + UsefulBits.getWeekDay(i);
+                                }
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    }
+                    if (mSwitchTimerInfo.getMonth() > 0)
+                        month = UsefulBits.getMonth(mSwitchTimerInfo.getMonth());
                 }
 
-                holder.switch_status.setText(commando);
+                if (!UsefulBits.isEmpty(occurence) || !UsefulBits.isEmpty(days) || !UsefulBits.isEmpty(month))
+                    holder.switch_name.setText(String.format("%s | %s %s %s",
+                            holder.switch_name.getText(), occurence != null ? occurence.toLowerCase() : null,
+                            days != null ? days.toLowerCase() : null,
+                            month != null ? month.toLowerCase() : null));
+                else
+                    holder.switch_name.setText(String.format("%s", holder.switch_name.getText().toString().toLowerCase()));
+                if (mSwitchTimerInfo.getRandomness())
+                    holder.switch_status.setText(String.format("%s (random)", commando));
+                else
+                    holder.switch_status.setText(commando);
                 holder.signal_level.setText(type);
                 convertView.setTag(holder);
             }

@@ -33,8 +33,8 @@
     <string name="button_state_off">Wył.</string>
     <string name="button_state_closed">Zamknięte</string>
     <string name="button_state_open">Otwarte</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">Blokada</string>
+    <string name="button_state_unlock">Odblokuj</string>
     <string name="button_status_log">Log</string>
     <string name="button_status_day">Dzień</string>
     <string name="button_status_week">Tydzień</string>
@@ -45,8 +45,8 @@
     <string name="button_color">Kolor</string>
     <string name="button_arm">Uzbrój</string>
     <string name="button_disarm">Rozbrój</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
+    <string name="button_state_full_light">Pełne oświetlenie</string>
+    <string name="button_state_night">Lampka nocna</string>
     <string name="last_update">Ostatnio widoczny</string>
     <string name="signal_level">Poziom sygnału</string>
     <string name="battery_level">Poziom baterii</string>
@@ -54,7 +54,7 @@
     <string name="hardware">Sprzęt</string>
     <string name="temperature">Temperatura</string>
     <string name="status">Status</string>
-    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
+    <string name="switch_rgb_wwcolor">Kolor RGB lub ciepły biały</string>
     <string name="set_point">Ustaw punkt</string>
     <string name="set_point_min">Ustaw wartość minimalną</string>
     <string name="set_point_min_description">Minimalna temperatura jaką możesz ustawić dla swojego termostatu</string>
@@ -92,8 +92,8 @@
     <string name="something_deleted">%1$s usuniętych</string>
     <string name="switch_on">Przełącznik przełączony na wł.</string>
     <string name="switch_off">Przełącznik przełączony na wył.</string>
-    <string name="switch_night">Turning switch to night light</string>
-    <string name="switch_full">Turning switch to full light</string>
+    <string name="switch_night">Obróć przełącznik na nocne światło</string>
+    <string name="switch_full">Obróć przełącznik na pełne światło</string>
     <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
     <string name="blind_down">Przełaczenie na zasłanianie rolety</string>
     <string name="blind_stop">Zatrzymaj roletę</string>

@@ -25,6 +25,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,8 +35,10 @@ import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.EventsAdapter;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.EventsClickListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.EventInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -115,9 +119,16 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                     @Override
                     @DebugLog
                     public void onEventClick(final int idx, boolean action) {
+                        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+                            refreshFragment();
+                            return;
+                        }
+
                         int jsonAction = action ? DomoticzValues.Event.Action.ON : DomoticzValues.Event.Action.OFF;
                         int jsonUrl = DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS;
-
                         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
                             @Override
                             @DebugLog

@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -59,6 +60,8 @@ import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
@@ -100,9 +103,9 @@ public class DomoticzDashboardFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
 
             mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.secondary,
-                R.color.secondary_dark,
-                R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
@@ -133,6 +136,25 @@ public class DomoticzDashboardFragment extends Fragment {
         } else if (activity instanceof PlanActivity) {
             return ((PlanActivity) getActivity()).getServerUtil();
         } else return null;
+    }
+
+    public ConfigInfo getServerConfigInfo(Context context) {
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            return ((MainActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+        } else if (activity instanceof PlanActivity) {
+            return ((PlanActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+        } else return null;
+    }
+
+    public UserInfo getCurrentUser(Context context, Domoticz domoticz) {
+        Activity activity = getActivity();
+        ConfigInfo config = getServerConfigInfo(context);
+        for (UserInfo user : config.getUsers()) {
+            if (user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                return user;
+        }
+        return null;
     }
 
     public void sortFragment(String sort) {
@@ -278,7 +300,7 @@ public class DomoticzDashboardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -392,7 +414,7 @@ public class DomoticzDashboardFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                        "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -406,7 +428,7 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -425,14 +447,14 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-            "Layout should have a ListView defined with the ID of listView");
+                "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

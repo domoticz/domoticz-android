@@ -51,6 +51,8 @@
     <string name="sort_server_title">Sorting</string>
     <string name="sort_server_on">Sort devices like sorted on the server</string>
     <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
     <string name="sort_dashboardLikeServer_off">仪表板按字母顺序排序</string>
     <string name="extra_data_title">仪表盘上的额外数据</string>
     <string name="show_extra_data_on">在仪表盘中显示额外数据</string>

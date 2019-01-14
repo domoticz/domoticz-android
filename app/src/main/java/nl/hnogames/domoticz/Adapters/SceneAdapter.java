@@ -97,7 +97,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.scene_row_default, parent, false);
+                .inflate(R.layout.scene_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -166,19 +166,19 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
                 holder.switch_name.setText(mSceneInfo.getName());
                 String text = context.getString(R.string.last_update)
-                    + ": "
-                    + UsefulBits.getFormattedDate(context,
-                    mSceneInfo.getLastUpdateDateTime().getTime());
+                        + ": "
+                        + UsefulBits.getFormattedDate(context,
+                        mSceneInfo.getLastUpdateDateTime().getTime());
                 holder.signal_level.setText(text);
                 holder.switch_battery_level.setText(DomoticzValues.Scene.Type.SCENE);
 
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(
-                    DomoticzValues.Scene.Type.SCENE.toLowerCase(),
-                    null,
-                    null,
-                    false,
-                    false,
-                    null)).into(holder.iconRow);
+                        DomoticzValues.Scene.Type.SCENE.toLowerCase(),
+                        null,
+                        null,
+                        false,
+                        false,
+                        null)).into(holder.iconRow);
 
                 if (holder.buttonOn != null) {
                     holder.buttonOn.setId(mSceneInfo.getIdx());
@@ -231,9 +231,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 holder.switch_name.setText(mSceneInfo.getName());
 
                 String text = context.getString(R.string.last_update)
-                    + ": "
-                    + UsefulBits.getFormattedDate(context,
-                    mSceneInfo.getLastUpdateDateTime().getTime());
+                        + ": "
+                        + UsefulBits.getFormattedDate(context,
+                        mSceneInfo.getLastUpdateDateTime().getTime());
 
                 holder.signal_level.setText(text);
                 holder.switch_battery_level.setText(DomoticzValues.Scene.Type.GROUP);
@@ -258,12 +258,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 }
 
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(
-                    DomoticzValues.Scene.Type.GROUP.toLowerCase(),
-                    null,
-                    null,
-                    mSceneInfo.getStatusInBoolean(),
-                    false,
-                    null)).into(holder.iconRow);
+                        DomoticzValues.Scene.Type.GROUP.toLowerCase(),
+                        null,
+                        null,
+                        mSceneInfo.getStatusInBoolean(),
+                        false,
+                        null)).into(holder.iconRow);
 
                 if (!mSceneInfo.getStatusInBoolean())
                     holder.iconRow.setAlpha(0.5f);
@@ -295,7 +295,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     });
                 }
             } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
-                + mSceneInfo.toString());
+                    + mSceneInfo.toString());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

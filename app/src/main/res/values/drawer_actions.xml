@@ -21,19 +21,6 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string-array name="drawer_actions" translatable="false">
-        <item>@string/title_wizard</item>
-        <item>@string/title_dashboard</item>
-        <item>@string/title_temperature</item>
-        <item>@string/title_utilities</item>
-
-        <item>@string/title_plans</item>
-        <item>@string/title_cameras</item>
-
-        <item>@string/title_logs</item>
-        <item>@string/title_events</item>
-        <item>@string/title_vars</item>
-    </string-array>
 
     <string-array name="startup_actions" translatable="false">
         <item>@string/title_dashboard</item>
@@ -71,16 +58,31 @@
     <!--suppress CheckTagEmptyBody -->
     <string-array name="empty_array" translatable="false"></string-array>
 
+    <string-array name="drawer_actions" translatable="false">
+        <item>@string/title_wizard</item>
+        <item>@string/title_dashboard</item>
+        <item>@string/title_switches</item>
+        <item>@string/title_scenes</item>
+        <item>@string/title_temperature</item>
+        <item>@string/title_weather</item>
+        <item>@string/title_utilities</item>
+        <item>@string/title_plans</item>
+        <item>@string/title_cameras</item>
+        <item>@string/title_logs</item>
+        <item>@string/title_events</item>
+        <item>@string/title_vars</item>
+    </string-array>
+
     <string-array name="drawer_fragments" translatable="false">
         <item>nl.hnogames.domoticz.Fragments.Wizard</item>
-
-        <item>nl.hnogames.domoticz.Fragments.MainPager</item>
-        <item>nl.hnogames.domoticz.Fragments.TemperatureMainPager</item>
+        <item>nl.hnogames.domoticz.Fragments.Dashboard</item>
+        <item>nl.hnogames.domoticz.Fragments.Switches</item>
+        <item>nl.hnogames.domoticz.Fragments.Scenes</item>
+        <item>nl.hnogames.domoticz.Fragments.Temperature</item>
+        <item>nl.hnogames.domoticz.Fragments.Weather</item>
         <item>nl.hnogames.domoticz.Fragments.Utilities</item>
-
         <item>nl.hnogames.domoticz.Fragments.Plans</item>
         <item>nl.hnogames.domoticz.Fragments.Cameras</item>
-
         <item>nl.hnogames.domoticz.Fragments.Logs</item>
         <item>nl.hnogames.domoticz.Fragments.Events</item>
         <item>nl.hnogames.domoticz.Fragments.UserVariables</item>
@@ -88,14 +90,14 @@
 
     <array name="drawer_icons" translatable="false">
         <item>gmd_build</item>
-
         <item>gmd_dashboard</item>
+        <item>gmd_lightbulb_outline</item>
+        <item>gmd_view_carousel</item>
         <item>gmd_opacity</item>
+        <item>gmd_wb_sunny</item>
         <item>gmd_dvr</item>
-
         <item>gmd_location_city</item>
         <item>gmd_camera</item>
-
         <item>gmd_bug_report</item>
         <item>gmd_event</item>
         <item>gmd_assignment</item>

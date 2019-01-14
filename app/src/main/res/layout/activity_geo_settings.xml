@@ -20,6 +20,7 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
                                                      android:id="@+id/coordinatorLayout"
                                                      style="@style/background_listview"
                                                      android:layout_width="match_parent"
@@ -67,7 +68,8 @@
                     android:layout_alignParentLeft="true"
                     android:text="@string/description_geofence"/>
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
+app:useMaterialThemeColors="false"
                     android:id="@+id/switch_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,7 +109,8 @@
                     android:layout_alignParentLeft="true"
                     android:text="@string/description_notification_geofence"/>
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    app:useMaterialThemeColors="false"
                     android:id="@+id/switch_notifications_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

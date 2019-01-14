@@ -27,7 +27,7 @@
     <!--        Categories             -->
     <string name="category_generic">Imcettel</string>
     <string name="category_wear">Android asiweḍ</string>
-    <string name="category_auto">Android Awurman</string>
+    <string name="category_auto">Android Awurman </string>
     <string name="category_server">Aqeddac</string>
     <string name="category_geofencing">Asideg-arakal</string>
     <string name="category_info">Talɣut</string>
@@ -51,6 +51,8 @@
     <string name="sort_server_title">Sorting</string>
     <string name="sort_server_on">Sort devices like sorted on the server</string>
     <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
     <string name="sort_dashboardLikeServer_off">Fren tafelwit n wenzaḍ s tasunḍa ugmiy</string>
     <string name="extra_data_title">Isefka imsitiyen n tafelwit n wenẓad</string>
     <string name="show_extra_data_on">Beqqeḍ isefka imsitiyen deg tafelwit n wenẓad</string>
@@ -62,8 +64,8 @@
     <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
     <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
     <string name="switch_buttons_title">Isenfalen</string>
-    <string name="switch_buttons_on">Beqqeḍ isenfalen s usnegzi askar/aḥbas</string>
-    <string name="switch_buttons_off">Beqqeḍ isnegziyen s taqefalt askar/aḥbas</string>
+    <string name="switch_buttons_on">Beqqeḍ isenfalen s usnegzi askar/aḥbas </string>
+    <string name="switch_buttons_off">Beqqeḍ isnegziyen s taqefalt askar/aḥbas </string>
     <string name="dashboard_list_title">Iẓiki n tafelwit wenẓad</string>
     <string name="show_dashboard_list_on">Beqqeḍ tafelwit n wenẓad d tabdart</string>
     <string name="show_dashboard_list_off">Beqqeḍ tafelwit n wenẓad d iẓiki</string>
@@ -79,9 +81,9 @@
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Swel Asideg-Arakal</string>
     <!--        Theming settings -->
-    <string name="config_theme">Tagrumma umezgun</string>
+    <string name="config_theme">Tagrumma umezgun  </string>
     <string name="set_dark_theme">Beddel amezgun n wasnas deg Dark</string>
-    <string name="set_light_theme">Beddel amezgun n wasnas deg Tafat</string>
+    <string name="set_light_theme">Beddel amezgun n wasnas deg Tafat </string>
     <!--        Talk Back Settings   -->
     <string name="set_talk_back_on">Anef Domoticz ak-id imeslay</string>
     <string name="set_talk_back_off">Uɣal s ameslay</string>
@@ -93,7 +95,7 @@
     <!--        Preference screens      -->
     <string name="server_settings">Iɣewwaren n tuqqna n uqeddac</string>
     <string name="server_force_fetch_config">Ḥeli-d tawila n uqeddac</string>
-    <string name="nfc_settings">Tawila n tuqqniwin NFC</string>
+    <string name="nfc_settings">Tawila n tuqqniwin NFC </string>
     <string name="speech_settings">Tawila n inezḍayen n tuɣac</string>
     <string name="title_activity_server_settings">Iɣewwaren n uqeddac</string>
     <string name="multi_server">Agetqeddac</string>
@@ -101,7 +103,7 @@
     <string name="enable_speech">Sermed asemmezdey n taɣect</string>
     <string name="export_settings">Iɣewwaren n usifeḍ</string>
     <string name="reset_settings">Wennez meṛṛa iɣewwaren n wasnas (TISUSLA!)</string>
-    <string name="import_settings">Iɣewwaren n taktert</string>
+    <string name="import_settings">Iɣewwaren n taktert </string>
     <string name="multi_server_settings">Rmed tannalt n iqeddacen</string>
     <string name="nfc_enable_settings">Rmed tuqqniwin n NFC</string>
     <string name="speech_enable_settings">Rmed asemmezdey n taɣect</string>
@@ -180,7 +182,7 @@
     <string name="server_update_revision">Asemsawi n umucceḍ uqeddac</string>
     <string name="server_version">Lqem uqeddac</string>
     <string name="server_update">Amucceḍ uqeddac</string>
-    <string name="please_wait_while_we_check">Ttxilek arǧǧu s imal anselken ma yella aqeddac innek yettwahegga iw mucceḍ</string>
+    <string name="please_wait_while_we_check">Ttxilek arǧǧu s imal anselken ma yella aqeddac innek yettwahegga iw mucceḍ </string>
     <string name="server_update_not_ready">Aleqqem n uqeddac ur d-yettwasider ara</string>
     <string name="please_wait_while_server_updated">Ttxilek sbaṛ s imal amucceḍ i teddu.</string>
     <string name="server_update_done">Aleqqem n uqeddac immed</string>

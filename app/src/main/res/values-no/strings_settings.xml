@@ -51,6 +51,8 @@
     <string name="sort_server_title">Sorting</string>
     <string name="sort_server_on">Sort devices like sorted on the server</string>
     <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
     <string name="sort_dashboardLikeServer_off">Sortere Instrumentpanel alfabetisk</string>
     <string name="extra_data_title">Ekstra info på Instrumentpanel</string>
     <string name="show_extra_data_on">Vis ekstra info på dashbordet</string>
@@ -94,7 +96,7 @@
     <string name="server_settings">Serverens tilkoblingsinnstillinger</string>
     <string name="server_force_fetch_config">Hent serverkonfigurasjonen</string>
     <string name="nfc_settings">NFC tilkoblinger</string>
-    <string name="speech_settings">Konfigurer talekommandoer</string>
+    <string name="speech_settings">Konfigurer talekommandoer </string>
     <string name="title_activity_server_settings">Serverinnstillinger</string>
     <string name="multi_server">Multi Server</string>
     <string name="enable_nfc">Aktiver NFC</string>

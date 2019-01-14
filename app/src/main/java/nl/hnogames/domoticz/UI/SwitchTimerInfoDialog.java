@@ -49,19 +49,17 @@ public class SwitchTimerInfoDialog {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
     }
 
     public void show() {
         mdb.title(R.string.timers);
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
         TimersAdapter adapter = new TimersAdapter(mContext, info);
         listView.setAdapter(adapter);
-
         md.show();
     }
-
 }

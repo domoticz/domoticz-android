@@ -75,7 +75,7 @@
     <string name="msg_copiedToClipboard">Texto copiado al portapapeles</string>
     <string name="favorite">Favorito</string>
     <string name="yes">Sí</string>
-    <string name="no">No</string>
+    <string name="no">No </string>
     <string name="are_you_sure">¿Estás seguro?</string>
     <string name="are_you_sure_clear_settings">¿¿Está seguro?? Esto también eliminará todos los widgets en la pantalla de inicio, por lo que debería volver a añadirlos más tarde..</string>
     <string name="add">Añadir</string>

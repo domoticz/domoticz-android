@@ -77,6 +77,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation 'com.android.volley:volley:1.1.0'
 }

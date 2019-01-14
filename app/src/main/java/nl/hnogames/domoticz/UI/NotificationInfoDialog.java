@@ -48,8 +48,8 @@ public class NotificationInfoDialog {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_switch_timer, true)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
     }
 
     public void show() {
