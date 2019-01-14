@@ -42,6 +42,9 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 
 # Screenshots
 -----
+
+| Screenshots |  |  |
+| ------------- | ------------- | ------------- |
 |  ![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png) | ![screenshot_2019-01-14-10-39-59-116_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)  |
 |  ![screenshot_2019-01-14-10-39-53-701_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png) |  ![screenshot_2019-01-14-10-40-10-106_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png) | 
 ![screenshot_2019-01-14-10-39-47-277_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106124-29599180-17eb-11e9-8fc0-1b967569ab0d.png)  |
