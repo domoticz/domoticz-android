@@ -19,114 +19,124 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/extra_panel"
-    android:layout_width="wrap_content"
-    android:layout_height="25dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
-    android:animateLayoutChanges="true"
-    android:orientation="horizontal"
-    android:visibility="gone"
-    tools:visibility="visible">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/extra_panel"
+              android:layout_width="wrap_content"
+              android:layout_height="30dp"
+              android:gravity="center_vertical"
+              android:layout_gravity="center_vertical"
+              android:layout_marginLeft="10dp"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginBottom="10dp"
+              android:animateLayoutChanges="true"
+              android:orientation="horizontal"
+              android:visibility="gone"
+              tools:visibility="visible">
 
-    <com.like.LikeButton
-        android:id="@+id/fav_button"
-        android:layout_width="0dp"
+    <HorizontalScrollView
+        android:id="@+id/hsv"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rowIcon"
-        android:layout_weight=".20"
-        android:paddingBottom="-25dp"
-        android:paddingTop="-17dp"
-        app:icon_size="20dp"
-        app:icon_type="star" />
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:fillViewport="true"
+        android:measureAllChildren="false"
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/day_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_weight=".25"
-        android:background="@drawable/button_white_status"
-        android:text="@string/button_status_day"
-        android:textSize="10dp"
-        android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/innerLay"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/week_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_weight=".25"
-        android:background="@drawable/button_white_status"
-        android:elevation="0dp"
-        android:text="@string/button_status_week"
-        android:textSize="10dp"
-        android:visibility="gone" />
+            <com.like.LikeButton
+                android:id="@+id/fav_button"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/rowIcon"
+                android:layout_weight=".20"
+                android:paddingTop="-17dp"
+                android:paddingBottom="-25dp"
+                app:icon_size="20dp"
+                app:icon_type="star"/>
 
-    <Button
-        android:id="@+id/month_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_weight=".25"
-        android:background="@drawable/button_white_status"
-        android:elevation="0dp"
-        android:text="@string/button_status_month"
-        android:textSize="10dp"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/day_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/button_status_day"
+                android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/year_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_weight=".25"
-        android:background="@drawable/button_white_status"
-        android:elevation="0dp"
-        android:text="@string/button_status_year"
-        android:textSize="10dp"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/week_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/button_status_week"
+                android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/log_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_weight=".20"
-        android:background="@drawable/button_white_status"
-        android:text="@string/button_status_log"
-        android:textSize="12sp"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/month_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:text="@string/button_status_month"
+                android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/timer_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_weight=".20"
-        android:background="@drawable/button_white_status"
-        android:text="@string/button_status_timer"
-        android:textSize="12sp"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/year_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/button_status_year"
+                android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/notifications_button"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_weight=".20"
-        android:background="@drawable/button_white_status"
-        android:text="@string/button_status_notifications"
-        android:textSize="12sp"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/log_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/button_status_log"
+                android:visibility="gone"/>
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/timer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:text="@string/button_status_timer"
+                android:visibility="gone"/>
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/notifications_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/button_status_notifications"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 </LinearLayout>

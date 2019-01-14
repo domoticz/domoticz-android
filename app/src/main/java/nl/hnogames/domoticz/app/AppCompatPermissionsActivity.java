@@ -23,8 +23,6 @@ package nl.hnogames.domoticz.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.fastaccess.permission.base.PermissionHelper;
@@ -32,6 +30,8 @@ import com.fastaccess.permission.base.callback.OnPermissionCallback;
 
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 
@@ -56,7 +56,7 @@ public class AppCompatPermissionsActivity extends AppCompatAssistActivity implem
 
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                this.getString(R.string.permission_desc_phone), permissionName);
+                    this.getString(R.string.permission_desc_phone), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -64,7 +64,7 @@ public class AppCompatPermissionsActivity extends AppCompatAssistActivity implem
 
         if (builder.toString().contains("android.permission.READ_EXTERNAL_STORAGE") || builder.toString().contains("android.permission.WRITE_EXTERNAL_STORAGE")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                this.getString(R.string.permission_desc_storage), permissionName);
+                    this.getString(R.string.permission_desc_storage), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -72,7 +72,7 @@ public class AppCompatPermissionsActivity extends AppCompatAssistActivity implem
 
         if (builder.toString().contains("android.permission.CAMERA")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                this.getString(R.string.permission_desc_camera), permissionName);
+                    this.getString(R.string.permission_desc_camera), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -80,7 +80,7 @@ public class AppCompatPermissionsActivity extends AppCompatAssistActivity implem
 
         if (builder.toString().contains("android.permission.RECORD_AUDIO")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                this.getString(R.string.permission_desc_audio), permissionName);
+                    this.getString(R.string.permission_desc_audio), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }
@@ -88,7 +88,7 @@ public class AppCompatPermissionsActivity extends AppCompatAssistActivity implem
 
         if (builder.toString().contains("android.permission.USE_FINGERPRINT")) {
             AlertDialog alert = PermissionsUtil.getAlertDialog(this, permissionHelper, this.getString(R.string.permission_title),
-                this.getString(R.string.permission_desc_finger), permissionName);
+                    this.getString(R.string.permission_desc_finger), permissionName);
             if (!alert.isShowing()) {
                 alert.show();
             }

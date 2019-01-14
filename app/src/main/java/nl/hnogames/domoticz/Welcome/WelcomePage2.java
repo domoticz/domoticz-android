@@ -25,9 +25,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +38,9 @@ import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import java.io.File;
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -61,14 +61,14 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
 
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
-        Button importButton = (Button) v.findViewById(R.id.import_settings);
+        Button importButton = v.findViewById(R.id.import_settings);
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         permissionFragmentHelper
-                            .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else {
                         importSettings();
                     }
@@ -97,7 +97,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }

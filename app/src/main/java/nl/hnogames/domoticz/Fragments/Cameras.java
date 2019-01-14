@@ -28,15 +28,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,14 +37,26 @@ import android.widget.TextView;
 
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -63,7 +66,10 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener, OnPermissionCallback {
 
@@ -78,6 +84,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private SharedPrefUtil mSharedPrefs;
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private PermissionFragmentHelper permissionFragmentHelper;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -97,6 +104,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -122,6 +130,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
         if (getActionBar() != null)
@@ -159,8 +168,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             return;
 
         if (mRecyclerView == null) {
-            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
-            mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_refresh_layout);
+            mRecyclerView = getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -173,8 +182,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 public void onItemClick(int position, View v) {
                     if (mPhoneConnectionUtil.isNetworkAvailable()) {
                         try {
-                            ImageView cameraImage = (ImageView) v.findViewById(R.id.image);
-                            TextView cameraTitle = (TextView) v.findViewById(R.id.name);
+                            ImageView cameraImage = v.findViewById(R.id.image);
+                            TextView cameraTitle = v.findViewById(R.id.name);
                             Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -200,12 +209,31 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
+            mAdapter.setRefreshTimer(refreshTimer);
             mAdapter.setData(Cameras);
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
 
+        if (mItemTouchHelper == null) {
+            mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
+                    false));
+        }
+        if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+            mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        } else {
+            if (mItemTouchHelper != null)
+                mItemTouchHelper.attachToRecyclerView(null);
+        }
+
         mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            @DebugLog
+            public void onRefresh() {
+                getCameras();
+            }
+        });
     }
 
     @Override
@@ -219,7 +247,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             }
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }
@@ -264,7 +292,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         ArrayList<CameraInfo> cacheCameras = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (context == null) return false;
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(context);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheCameras = (ArrayList<CameraInfo>) SerializableManager.readSerializedObject(context, "Cameras");
                 } catch (Exception ex) {
@@ -276,13 +307,22 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         protected void onPostExecute(Boolean result) {
             if (cacheCameras != null)
                 createListView(cacheCameras);
-
-            mDomoticz.getCameras(new CameraReceiver() {
+            mDomoticz.checkLogin(new LoginReceiver() {
                 @Override
-                public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
-                    successHandling(Cameras.toString(), false);
-                    SerializableManager.saveSerializable(context, Cameras, "Cameras");
-                    createListView(Cameras);
+                public void OnReceive(LoginInfo mLoginInfo) {
+                    mDomoticz.getCameras(new CameraReceiver() {
+                        @Override
+                        public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
+                            successHandling(Cameras.toString(), false);
+                            SerializableManager.saveSerializable(context, Cameras, "Cameras");
+                            createListView(Cameras);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error, coordinatorLayout);
+                        }
+                    });
                 }
 
                 @Override

@@ -22,9 +22,6 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +30,14 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import nl.hnogames.domoticz.Interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -83,16 +83,17 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.vars_row_default, parent, false);
+                .inflate(R.layout.vars_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.card_global_wrapper)) != null)
+                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.set_uservar)) != null)
-                (view.findViewById(R.id.set_uservar)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                ((MaterialButton) view.findViewById(R.id.set_uservar)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         return new DataObjectHolder(view);
@@ -119,7 +120,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
                 }
             });
 
-            Picasso.with(context).load(R.drawable.printer).into(holder.iconRow);
+            Picasso.get().load(R.drawable.printer).into(holder.iconRow);
         }
     }
 
@@ -134,7 +135,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
 
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;
@@ -144,12 +145,11 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-            name = (TextView) itemView.findViewById(R.id.logs_name);
-            datetime = (TextView) itemView.findViewById(R.id.logs_datetime);
-            message = (TextView) itemView.findViewById(R.id.logs_message);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            set = (Button) itemView.findViewById(R.id.set_uservar);
-
+            name = itemView.findViewById(R.id.logs_name);
+            datetime = itemView.findViewById(R.id.logs_datetime);
+            message = itemView.findViewById(R.id.logs_message);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            set = itemView.findViewById(R.id.set_uservar);
             itemView.setOnClickListener(this);
         }
 

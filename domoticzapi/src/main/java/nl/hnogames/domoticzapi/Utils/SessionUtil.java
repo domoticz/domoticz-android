@@ -129,4 +129,28 @@ public class SessionUtil {
             }
         }
     }
+
+    /**
+     * Get session cookie to headers if exists.
+     */
+    public final String getSessionCookie() {
+        String sessionId = prefs.getString(SESSION_COOKIE, "");
+        String expires = prefs.getString(COOKIE_EXPIRE_KEY, "");
+
+        Calendar calExpired = parseStringToDate(expires);
+        if (calExpired != null) {
+            Calendar calNow = Calendar.getInstance();
+            if (calExpired.after(calNow)) {
+                //session id still valid!
+                if (sessionId.length() > 0) {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(SESSION_COOKIE);
+                    builder.append("=");
+                    builder.append(sessionId);
+                    return builder.toString();
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -21,36 +21,37 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
+        android:layout_height="wrap_content"
+        android:hint="@string/Location_name">
+
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textNoSuggestions"
-            android:textColor="@color/default_text_color_light"
-            android:hint="@string/Location_name" />
-    </android.support.design.widget.TextInputLayout>
+            android:textColor="@color/default_text_color_light"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
+        android:layout_height="wrap_content"
+        android:hint="@string/locationAddress">
+
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:inputType="textNoSuggestions"
-            android:textColor="@color/default_text_color_light"
-            android:hint="@string/locationAddress" />
-    </android.support.design.widget.TextInputLayout>
+            android:textColor="@color/default_text_color_light"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/layout_latLong"
@@ -59,59 +60,62 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
+            android:layout_height="wrap_content"
+            android:hint="@string/latitude">
+
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/latitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:inputType="textNoSuggestions|number"
-                android:textColor="@color/default_text_color_light"
-                android:hint="@string/latitude" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+                android:textColor="@color/default_text_color_light"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
+            android:layout_height="wrap_content"
+            android:hint="@string/longitude">
+
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/longitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:inputType="textNoSuggestions|number"
-                android:textColor="@color/default_text_color_light"
-                android:hint="@string/longitude" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/default_text_color_light"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/get_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button_status"
-            android:text="@string/getLocation" />
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="@string/getLocation"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/edit_mode_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button_status"
-            android:text="@string/manual" />
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="@string/manual"/>
     </LinearLayout>
 
     <LinearLayout
@@ -132,27 +136,28 @@
                 android:labelFor="@+id/radius"
                 android:paddingBottom="20dp"
                 android:text="@string/radius"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
+                android:layout_height="wrap_content"
+                android:hint="@string/radius">
+
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/radius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:textColor="@color/default_text_color_light"
-                    android:hint="@string/radius" />
-            </android.support.design.widget.TextInputLayout>
+                    android:textColor="@color/default_text_color_light"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -161,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
                 android:text="@string/locationAddress"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"/>
 
             <TextView
                 android:id="@+id/resolvedAddress"
@@ -170,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:singleLine="false"
-                tools:text="Address 1, Ohio" />
+                tools:text="Address 1, Ohio"/>
 
             <TextView
                 android:id="@+id/resolvedCountry"
@@ -178,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                tools:text="America" />
+                tools:text="America"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -116,6 +116,14 @@ public class DomoticzUrls {
                 actionUrl = DomoticzValues.Url.Switch.COLOR;
                 break;
 
+            case DomoticzValues.Device.Dimmer.Action.KELVIN:
+                actionUrl = DomoticzValues.Url.Switch.KELVIN + String.valueOf(value);
+                break;
+
+            case DomoticzValues.Device.Dimmer.Action.WWCOLOR:
+                actionUrl = DomoticzValues.Url.Switch.WWCOLOR;
+                break;
+
             case DomoticzValues.Device.ModalSwitch.Action.AUTO:
                 actionUrl = DomoticzValues.Url.ModalAction.AUTO;
                 break;
@@ -202,13 +210,38 @@ public class DomoticzUrls {
                         + actionUrl;
                 break;
 
+            case DomoticzValues.Json.Url.Set.KELVIN:
+                url = DomoticzValues.Url.System.KELVIN;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + actionUrl;
+                break;
+
+            case DomoticzValues.Json.Url.Set.WWCOLOR:
+                url = DomoticzValues.Url.System.RGBCOLOR;
+                jsonUrl = url
+                    + String.valueOf(idx)
+                    + actionUrl;
+                break;
+
+            case DomoticzValues.Json.Url.Set.NIGHTLIGHT:
+                url = DomoticzValues.Url.System.NIGHTLIGHT;
+                jsonUrl = url
+                    + String.valueOf(idx);
+                break;
+
+            case DomoticzValues.Json.Url.Set.FULLLIGHT:
+                url = DomoticzValues.Url.System.FULLLIGHT;
+                jsonUrl = url
+                    + String.valueOf(idx);
+                break;
+
             case DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS:
                 url = DomoticzValues.Url.System.EVENTS_UPDATE_STATUS;
                 jsonUrl = url
                         + String.valueOf(idx)
                         + actionUrl;
                 break;
-
         }
 
         String fullString = buildUrl.append(protocol)
@@ -409,6 +442,10 @@ public class DomoticzUrls {
 
             case DomoticzValues.Json.Url.Request.UPDATEVAR:
                 url = DomoticzValues.Url.UserVariable.UPDATE;
+                break;
+
+            case DomoticzValues.Json.Url.Request.CHECKLOGIN:
+                url = DomoticzValues.Url.Security.CHECKLOGIN;
                 break;
 
             default:

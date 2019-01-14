@@ -22,19 +22,16 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
@@ -43,10 +40,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.Interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -60,10 +61,11 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> {
+public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObjectHolder> implements RVHAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = WeatherAdapter.class.getSimpleName();
+    public static List<String> mCustomSorting;
     private final WeatherClickListener listener;
     public ArrayList<WeatherInfo> filteredData = null;
     private Context context;
@@ -84,19 +86,42 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         mSharedPrefs = new SharedPrefUtil(context);
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
+        if (mCustomSorting == null)
+            mCustomSorting = mSharedPrefs.getSortingList("weather");
         setData(data);
     }
 
     public void setData(ArrayList<WeatherInfo> data) {
-        Collections.sort(data, new Comparator<WeatherInfo>() {
-            @Override
-            public int compare(WeatherInfo left, WeatherInfo right) {
-                return left.getName().compareTo(right.getName());
-            }
-        });
+        ArrayList<WeatherInfo> sortedData = SortData(data);
+        this.data = sortedData;
+        this.filteredData = sortedData;
+    }
 
-        this.data = data;
-        this.filteredData = data;
+    private ArrayList<WeatherInfo> SortData(ArrayList<WeatherInfo> data) {
+        ArrayList<WeatherInfo> customdata = new ArrayList<>();
+        if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            for (String s : mCustomSorting) {
+                for (WeatherInfo d : data) {
+                    if (s.equals(String.valueOf(d.getIdx())))
+                        customdata.add(d);
+                }
+            }
+            for (WeatherInfo d : data) {
+                if (!customdata.contains(d))
+                    customdata.add(d);
+            }
+        } else
+            customdata = data;
+        return customdata;
+    }
+
+    private void SaveSorting() {
+        List<String> ids = new ArrayList<>();
+        for (WeatherInfo d : filteredData) {
+            ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
+        mSharedPrefs.saveSortingList("weather", ids);
     }
 
     public Filter getFilter() {
@@ -106,22 +131,34 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.weather_row_default, parent, false);
+                .inflate(R.layout.weather_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            ((android.support.v7.widget.CardView) view.findViewById(R.id.card_global_wrapper)).setCardBackgroundColor(Color.parseColor("#3F3F3F"));
+            if ((view.findViewById(R.id.card_global_wrapper)) != null)
+                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
+                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
         }
 
         return new DataObjectHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return true;
+    }
 
+    @Override
+    public void onItemDismiss(int position, int direction) {
+        remove(position);
+    }
+
+
+    @Override
+    public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         if (filteredData != null && filteredData.size() > 0) {
             final WeatherInfo mWeatherInfo = filteredData.get(position);
 
@@ -136,12 +173,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 windSign = mConfigInfo.getWindSign();
             }
 
-            if (mSharedPrefs.darkThemeEnabled()) {
-                holder.dayButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.monthButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.yearButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-                holder.weekButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_dark_status));
-            }
+            holder.infoIcon.setTag(mWeatherInfo.getIdx());
+            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemLongClicked((int) v.getTag());
+                }
+            });
 
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
@@ -181,8 +219,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 if (!this.mSharedPrefs.darkThemeEnabled()) {
                     holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
                     holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    holder.pieView.setPercentageTextSize(17);
                 }
+                holder.pieView.setPercentageTextSize(16);
+                holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
                 double temp = mWeatherInfo.getTemp();
                 if (!tempSign.equals("C"))
@@ -264,14 +303,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 });
             }
 
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onItemLongClicked(position);
-                    return true;
-                }
-            });
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -279,7 +310,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 }
             });
 
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
         }
     }
 
@@ -292,57 +323,73 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         listener.onLikeButtonClick(idx, checked);
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder {
+    private void remove(int position) {
+        filteredData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(filteredData, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+        SaveSorting();
+    }
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
         TextView name;
         TextView data;
         TextView hardware;
         ImageView iconRow;
         Boolean isProtected;
-        Button dayButton;
-        Button monthButton;
-        Button yearButton;
-        Button weekButton;
+        Chip dayButton;
+        Chip monthButton;
+        Chip yearButton;
+        Chip weekButton;
         LikeButton likeButton;
         LinearLayout extraPanel;
         PieView pieView;
+        ImageView infoIcon;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-
-            pieView = (PieView) itemView.findViewById(R.id.pieView);
+            pieView = itemView.findViewById(R.id.pieView);
+            infoIcon = itemView.findViewById(R.id.widget_info_icon);
             pieView.setVisibility(View.GONE);
-
-            dayButton = (Button) itemView.findViewById(R.id.day_button);
-            monthButton = (Button) itemView.findViewById(R.id.month_button);
-            yearButton = (Button) itemView.findViewById(R.id.year_button);
-            weekButton = (Button) itemView.findViewById(R.id.week_button);
-            likeButton = (LikeButton) itemView.findViewById(R.id.fav_button);
-            name = (TextView) itemView.findViewById(R.id.weather_name);
-            iconRow = (ImageView) itemView.findViewById(R.id.rowIcon);
-            data = (TextView) itemView.findViewById(R.id.weather_data);
-            hardware = (TextView) itemView.findViewById(R.id.weather_hardware);
-
-            extraPanel = (LinearLayout) itemView.findViewById(R.id.extra_panel);
+            dayButton = itemView.findViewById(R.id.day_button);
+            monthButton = itemView.findViewById(R.id.month_button);
+            yearButton = itemView.findViewById(R.id.year_button);
+            weekButton = itemView.findViewById(R.id.week_button);
+            likeButton = itemView.findViewById(R.id.fav_button);
+            name = itemView.findViewById(R.id.weather_name);
+            iconRow = itemView.findViewById(R.id.rowIcon);
+            data = itemView.findViewById(R.id.weather_data);
+            hardware = itemView.findViewById(R.id.weather_hardware);
+            extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onItemSelected(int actionstate) {
+            System.out.println("Item is selected");
+        }
+
+        @Override
+        public void onItemClear() {
+            System.out.println("Item is unselected");
         }
     }
 
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-
             String filterString = constraint.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
-
             final ArrayList<WeatherInfo> list = data;
 
             int count = list.size();
             final ArrayList<WeatherInfo> weatherInfos = new ArrayList<>(count);
 
             WeatherInfo filterableObject;
-
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString)) {

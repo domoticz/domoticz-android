@@ -18,7 +18,8 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ads="http://schemas.android.com/apk/res-auto"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               style="@style/background_recyclerview"
@@ -29,10 +30,11 @@
 
     <LinearLayout android:id="@+id/phoneLayoutWrapper"
                   android:layout_width="match_parent"
+                  android:layout_weight="7"
                   android:layout_height="match_parent"
                   android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -52,7 +54,6 @@
     <FrameLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_marginBottom="50dp"
         android:layout_height="match_parent" />
 
         <!-- TextView used to detect if this tablet layout is used -->
@@ -63,13 +64,18 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/ADMOB_ADS_KEY" />
-</RelativeLayout>
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/ADMOB_ADS_KEY" >
+        </com.google.android.gms.ads.AdView>
+    </LinearLayout>
+</LinearLayout>

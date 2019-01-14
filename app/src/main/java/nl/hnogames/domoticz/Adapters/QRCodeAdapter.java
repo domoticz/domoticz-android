@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.R;
@@ -96,18 +98,22 @@ public class QRCodeAdapter extends BaseAdapter {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
+            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
+                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_wrapper)) != null)
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
 
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                ((MaterialButton) convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableNFC);
-        holder.nfc_name = (TextView) convertView.findViewById(R.id.nfc_name);
-        holder.nfc_tag_id = (TextView) convertView.findViewById(R.id.nfc_tag_id);
-        holder.nfc_switch_idx = (TextView) convertView.findViewById(R.id.nfc_switchidx);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable = convertView.findViewById(R.id.enableNFC);
+        holder.nfc_name = convertView.findViewById(R.id.nfc_name);
+        holder.nfc_tag_id = convertView.findViewById(R.id.nfc_tag_id);
+        holder.nfc_switch_idx = convertView.findViewById(R.id.nfc_switchidx);
+        holder.remove = convertView.findViewById(R.id.remove_button);
 
         holder.nfc_name.setText(mQRCodeInfo.getName());
         holder.nfc_tag_id.setText(mQRCodeInfo.getId());
@@ -119,7 +125,7 @@ public class QRCodeAdapter extends BaseAdapter {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mQRCodeInfo.getSwitchIdx());
         } else {
             holder.nfc_switch_idx.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mQRCodeInfo.getValue()))

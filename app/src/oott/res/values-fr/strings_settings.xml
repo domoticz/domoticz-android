@@ -21,172 +21,174 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Paramètres</string>
-  <string name="cameraActivity_name">Caméra</string>
-  <!--        Categories             -->
-  <string name="category_generic">Général</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android Auto</string>
-  <string name="category_server">Serveur</string>
-  <string name="category_geofencing">Géorepérage</string>
-  <string name="category_info">Informations</string>
-  <string name="category_advanced">Options avancées</string>
-  <string name="category_language">Langue</string>
-  <string name="category_talk_back">Retour Audio</string>
-  <string name="category_notification">Notifications</string>
-  <string name="category_debug">Debuggage</string>
-  <string name="category_export">Export/Import des paramètres</string>
-  <string name="category_theme">Thème</string>
-  <string name="category_nfc">Associations NFC</string>
-  <string name="category_startup_security">Sécurité </string>
-  <string name="category_account">Comptes</string>
-  <string name="category_QRCode">QR Code</string>
-  <string name="category_Speech">Commande vocale.</string>
-  <string name="category_Reset">Ràz</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Écran d\'accueil</string>
-  <string name="enable_items">Activer/Désactiver des éléments</string>
-  <string name="sort_dashboardLikeServer_title">Tri du tableau de bord</string>
-  <string name="sort_dashboardLikeServer_on">Trier le tableau de bord comme sur le serveur</string>
-  <string name="sort_dashboardLikeServer_off">Trier par ordre alphabétique le tableau de bord</string>
-  <string name="extra_data_title">Informations détaillées sur le Tableau de bord</string>
-  <string name="show_extra_data_on">Les détails seront affichés sur le Tableau de bord</string>
-  <string name="show_extra_data_off">Les détails seront masqués sur le Tableau de bord</string>
-  <string name="always_on_title">Empêcher le réveil</string>
-  <string name="always_on_on">Toujours verrouiller l\'écran</string>
-  <string name="always_on_off">Ne jamais verrouiller l\'écran</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Interrupteurs</string>
-  <string name="switch_buttons_on">Afficher les interrupteurs avec les interrupteurs On / Off</string>
-  <string name="switch_buttons_off">Afficher les interrupteurs avec les boutons On / Off</string>
-  <string name="dashboard_list_title">Tableau de bord | Grille</string>
-  <string name="show_dashboard_list_on">Voir la tableau de bord en tant que liste</string>
-  <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Activer Android Wear</string>
-  <string name="custom_wear_select">Interrupteurs Wear</string>
-  <string name="custom_wear_select_desc">Sélectionner les interrupteurs à contrôler sur vôtre Android Wear</string>
-  <string name="wear_custom_on">Éléments spécifiques Android Wear activés</string>
-  <string name="wear_custom_off">Éléments spécifique Android Wear désactivés</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Activer les notifications Android Auto</string>
-  <string name="auto_custom_off">Désactiver les notifications Android Auto</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Configurer le Géorepérage</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Utiliser un thème</string>
-  <string name="set_dark_theme">Utilser le thème Dark</string>
-  <string name="set_light_theme">Utiliser le thème Light</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Autoriser le retour audio de OOTT</string>
-  <string name="set_talk_back_off">Annule le retour audio</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Paramètres importés, s\'il vous plaît redémarrer OOTT</string>
-  <string name="settings_import_failed">Impossible d\'importer les paramètres</string>
-  <string name="settings_exported">Les paramètres exportés, s\'il vous plaît redémarrer OOTT</string>
-  <string name="settings_export_failed">Impossible d\'exporter les paramètres</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Paramètre de connexion au serveur</string>
-  <string name="server_force_fetch_config">Récupérer la configuration du serveur</string>
-  <string name="nfc_settings">Configurer les associations NFC</string>
-  <string name="speech_settings">Paramétrer la commande vocale</string>
-  <string name="title_activity_server_settings">Paramètres du serveur</string>
-  <string name="multi_server">Multi serveur</string>
-  <string name="enable_nfc">Activer le NFC</string>
-  <string name="enable_speech">Activer les commandes vocales</string>
-  <string name="export_settings">Exporter les paramètres</string>
-  <string name="reset_settings">Réinitialiser tous les paramètres de l’application (ATTENTION !!)</string>
-  <string name="import_settings">Importer les paramètres</string>
-  <string name="multi_server_settings">Activer le support de serveur multiples</string>
-  <string name="nfc_enable_settings">Activer les associations NFC</string>
-  <string name="speech_enable_settings">Activer les commandes vocales</string>
-  <string name="server">Serveur</string>
-  <string name="qrcode_settings">Configuration des QR Code</string>
-  <string name="enable_qrcode">Activer les QR Code</string>
-  <string name="qrcode_enable_settings">Activer la fonctionnalité de QR Code</string>
-  <string name="security_settings">Configurer la sécurité</string>
-  <string name="enable_security">Activer la protection par empreinte digitale au démarrage</string>
-  <string name="disable_security">Désactiver la protection d’empreintes digitales au démarrage</string>
-  <string name="setup_fingerprints">Configuration des empreintes via écrans réglages de Android</string>
-  <string name="fingerprint_not_supported">Lecteur d’empreintes digitales n’est pas pris en charge sur cet appareil</string>
-  <string name="fingerprint_not_setup_in_android">Configurer / connecter une empreinte digitale à ce dispositif</string>
-  <string name="fingerprint_sure">Le mot de passe est le mot de passe de votre compte de OOTT.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Activer ou désactiver le Widget sur ce dispositif</string>
-  <string name="widget_disabled">Les Widgets ne sont pas activés sur cet appareil, Veuillez vérifier vos paramètres OOTT</string>
-  <string name="widget_warning">Utilisez les widgets à vos risques et périls ! Les widgets sont actuellement en phase bêta et probablement avec quelques bugs. Il peuvent causer une surconsommation de la batterie / des données plus volumineuses...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">ID de messagerie Google Cloud</string>
-  <string name="notification_settings_push">Envoyer votre id d\'enregistrement à OOTT</string>
-  <string name="notification_settings_pushed">Votre id d\'enregistrement est enregistré dans OOTT</string>
-  <string name="notification_settings_push_failed">Impossible d\'enregistrer votre id d\'enregistrement dans OOTT, veuillez réessayer plus tard.</string>
-  <string name="notification_show_title">Dernières notifications</string>
-  <string name="notification_show_nothing">Pas de notifications trouvées</string>
-  <string name="notification_show">Afficher les dernières notifications</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Écraser les Notifications</string>
-  <string name="overwrite_notifications">Écraser les précédentes notifications sur ce dispositif</string>
-  <string name="enable_notifications_title">Activer les Notifications</string>
-  <string name="enable_notifications">Activer les notifications sur ce dispositif</string>
-  <string name="notification_screen_title">Paramètre de notification</string>
-  <string name="notification_vibrate_title">Vibrer</string>
-  <string name="notification_vibrate_on">Vibrer lorsqu\'une notification est reçue</string>
-  <string name="notification_vibrate_off">Ne pas vibrer</string>
-  <string name="notification_sound_title">Sons</string>
-  <string name="notification_sound_summary">Utilisez le son de notification lorsqu\'une notification arrive</string>
-  <string name="suppress_notifications_select">Sélectionnez les Notifications à supprimer</string>
-  <string name="suppress_notifications">Supprimer les Notifications spécifiques sur ce dispositif</string>
-  <string name="suppress_notifications_title">Supprimer les Notifications</string>
-  <string name="alarm_notifications_select">Choisir la notification pour les alarmes</string>
-  <string name="alarm_notifications">Jouer une alarme pour les notifications spécifiques</string>
-  <string name="clear_notifications">Effacer les logs de notification</string>
-  <string name="alarm_notifications_title">Notifications pour les alarmes</string>
-  <string name="alarm">Alarme</string>
-  <string name="alarmtimer_title">Minuteur pour alarme</string>
-  <string name="alarmtimer">Durée en seconde de l\'alarme</string>
-  <string name="default_values">Valeur par défaut</string>
-  <string name="default_values_min_error">La valeur maximale doit être supérieure à la valeur Minimale</string>
-  <string name="default_values_max_error">La valeur maximale doit être supérieure à la valeur Minimale</string>
-  <!--        Information category       -->
-  <string name="info_version">Version</string>
-  <string name="info_OOTT_version">Version de OOTT</string>
-  <string name="info_about">À propos de OOTT</string>
-  <string name="info_credits">Credit</string>
-  <string name="info_credits_text">OOTT (Powered by Domoticz) pour Android est rendu possible grâce à plusieurs bibliothèques open source</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Debuggage</string>
-  <string name="debug_switch_summary_on">Debuggage activé</string>
-  <string name="debug_switch_summary_off">Debuggage désactivé</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Vous avez besoin d\'au moins un item.</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Mettre à jour le serveur</string>
-  <string name="error_couldNotCheckForUpdates">"Impossible de mettre à jour: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Impossible d'obtenir la configuration du serveur OOTT: %1$s"</string>
-  <string name="update_available_enhanced">Mise à jour du serveur disponible : %1$s version : %2$s</string>
-  <string name="check_for_update_title">Vérifiez les mises à jour</string>
-  <string name="check_for_update">Souhaitez vous que nous vérifiions les mises à jour de OOTT ?</string>
-  <string name="update_server_warning">Cette application ne fonctionnera pas pendant la mise à jour du serveur.</string>
-  <string name="update_server_downloadNotReady1">La mise à jour n\'est pas encore téléchargé.</string>
-  <string name="update_server_downloadNotReady2">Réessayez plus tard.</string>
-  <string name="server_update_available">Mise à jour du serveur disponible</string>
-  <string name="update_server">Mettre à jour le serveur</string>
-  <string name="server_update_revision">Mise à jour du serveur disponible</string>
-  <string name="server_version">Version du serveur</string>
-  <string name="server_update">Mise à jour du serveur</string>
-  <string name="please_wait_while_we_check">Veuillez patienter pendant que nous vérifions si votre serveur est prêt à se mettre à jour</string>
-  <string name="server_update_not_ready">Mise à jour du serveur non téléchargée</string>
-  <string name="please_wait_while_server_updated">Veuillez patienter pendant que le serveur se met à jour.</string>
-  <string name="server_update_done">Mise à jour du serveur effectuée</string>
-  <string name="update_not_started">Mise à jour non démarrée</string>
-  <string name="update_not_started_unknown_error">Mise à jour non démarrée en raison d\'une erreur inconnue</string>
-  <string name="server_update_not_available">Mise à jour du serveur non disponible</string>
-  <string name="click_to_update_server">Cliquez ici pour mettre à jour votre serveur</string>
-  <string name="debug_test_text">Débogage</string>
-  <string name="restart_required_title">Redémarrage requis</string>
-  <string name="restart_now">Redémarrer maintenant ?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Paramètres</string>
+    <string name="cameraActivity_name">Caméra</string>
+    <!--        Categories             -->
+    <string name="category_generic">Général</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Serveur</string>
+    <string name="category_geofencing">Géorepérage</string>
+    <string name="category_info">Informations</string>
+    <string name="category_advanced">Options avancées</string>
+    <string name="category_language">Langue</string>
+    <string name="category_talk_back">Retour Audio</string>
+    <string name="category_notification">Notifications</string>
+    <string name="category_debug">Debuggage</string>
+    <string name="category_export">Export/Import des paramètres</string>
+    <string name="category_theme">Thème</string>
+    <string name="category_nfc">Associations NFC</string>
+    <string name="category_startup_security">Sécurité </string>
+    <string name="category_account">Comptes</string>
+    <string name="category_QRCode">QR Code</string>
+    <string name="category_Speech">Commande vocale.</string>
+    <string name="category_Reset">Ràz</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Écran d\'accueil</string>
+    <string name="enable_items">Activer/Désactiver des éléments</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_dashboardLikeServer_off">Trier par ordre alphabétique le tableau de bord</string>
+    <string name="extra_data_title">Informations détaillées sur le Tableau de bord</string>
+    <string name="show_extra_data_on">Les détails seront affichés sur le Tableau de bord</string>
+    <string name="show_extra_data_off">Les détails seront masqués sur le Tableau de bord</string>
+    <string name="always_on_title">Empêcher le réveil</string>
+    <string name="always_on_on">Toujours verrouiller l\'écran</string>
+    <string name="always_on_off">Ne jamais verrouiller l\'écran</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Interrupteurs</string>
+    <string name="switch_buttons_on">Afficher les interrupteurs avec les interrupteurs On / Off</string>
+    <string name="switch_buttons_off">Afficher les interrupteurs avec les boutons On / Off</string>
+    <string name="dashboard_list_title">Tableau de bord | Grille</string>
+    <string name="show_dashboard_list_on">Voir la tableau de bord en tant que liste</string>
+    <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Activer Android Wear</string>
+    <string name="custom_wear_select">Interrupteurs Wear</string>
+    <string name="custom_wear_select_desc">Sélectionner les interrupteurs à contrôler sur vôtre Android Wear</string>
+    <string name="wear_custom_on">Éléments spécifiques Android Wear activés</string>
+    <string name="wear_custom_off">Éléments spécifique Android Wear désactivés</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Activer les notifications Android Auto</string>
+    <string name="auto_custom_off">Désactiver les notifications Android Auto</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Configurer le Géorepérage</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Utiliser un thème</string>
+    <string name="set_dark_theme">Utilser le thème Dark</string>
+    <string name="set_light_theme">Utiliser le thème Light</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Autoriser le retour audio de OOTT</string>
+    <string name="set_talk_back_off">Annule le retour audio</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Paramètres importés, s\'il vous plaît redémarrer OOTT</string>
+    <string name="settings_import_failed">Impossible d\'importer les paramètres</string>
+    <string name="settings_exported">Les paramètres exportés, s\'il vous plaît redémarrer OOTT</string>
+    <string name="settings_export_failed">Impossible d\'exporter les paramètres</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Paramètre de connexion au serveur</string>
+    <string name="server_force_fetch_config">Récupérer la configuration du serveur</string>
+    <string name="nfc_settings">Configurer les associations NFC</string>
+    <string name="speech_settings">Paramétrer la commande vocale</string>
+    <string name="title_activity_server_settings">Paramètres du serveur</string>
+    <string name="multi_server">Multi serveur</string>
+    <string name="enable_nfc">Activer le NFC</string>
+    <string name="enable_speech">Activer les commandes vocales</string>
+    <string name="export_settings">Exporter les paramètres</string>
+    <string name="reset_settings">Réinitialiser tous les paramètres de l’application (ATTENTION !!)</string>
+    <string name="import_settings">Importer les paramètres</string>
+    <string name="multi_server_settings">Activer le support de serveur multiples</string>
+    <string name="nfc_enable_settings">Activer les associations NFC</string>
+    <string name="speech_enable_settings">Activer les commandes vocales</string>
+    <string name="server">Serveur</string>
+    <string name="qrcode_settings">Configuration des QR Code</string>
+    <string name="enable_qrcode">Activer les QR Code</string>
+    <string name="qrcode_enable_settings">Activer la fonctionnalité de QR Code</string>
+    <string name="security_settings">Configurer la sécurité</string>
+    <string name="enable_security">Activer la protection par empreinte digitale au démarrage</string>
+    <string name="disable_security">Désactiver la protection d’empreintes digitales au démarrage</string>
+    <string name="setup_fingerprints">Configuration des empreintes via écrans réglages de Android</string>
+    <string name="fingerprint_not_supported">Lecteur d’empreintes digitales n’est pas pris en charge sur cet appareil</string>
+    <string name="fingerprint_not_setup_in_android">Configurer / connecter une empreinte digitale à ce dispositif</string>
+    <string name="fingerprint_sure">Le mot de passe est le mot de passe de votre compte de OOTT.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Activer ou désactiver le Widget sur ce dispositif</string>
+    <string name="widget_disabled">Les Widgets ne sont pas activés sur cet appareil, Veuillez vérifier vos paramètres OOTT</string>
+    <string name="widget_warning">Utilisez les widgets à vos risques et périls ! Les widgets sont actuellement en phase bêta et probablement avec quelques bugs. Il peuvent causer une surconsommation de la batterie / des données plus volumineuses...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID de messagerie Google Cloud</string>
+    <string name="notification_settings_push">Envoyer votre id d\'enregistrement à OOTT</string>
+    <string name="notification_settings_pushed">Votre id d\'enregistrement est enregistré dans OOTT</string>
+    <string name="notification_settings_push_failed">Impossible d\'enregistrer votre id d\'enregistrement dans OOTT, veuillez réessayer plus tard.</string>
+    <string name="notification_show_title">Dernières notifications</string>
+    <string name="notification_show_nothing">Pas de notifications trouvées</string>
+    <string name="notification_show">Afficher les dernières notifications</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Écraser les Notifications</string>
+    <string name="overwrite_notifications">Écraser les précédentes notifications sur ce dispositif</string>
+    <string name="enable_notifications_title">Activer les Notifications</string>
+    <string name="enable_notifications">Activer les notifications sur ce dispositif</string>
+    <string name="notification_screen_title">Paramètre de notification</string>
+    <string name="notification_vibrate_title">Vibrer</string>
+    <string name="notification_vibrate_on">Vibrer lorsqu\'une notification est reçue</string>
+    <string name="notification_vibrate_off">Ne pas vibrer</string>
+    <string name="notification_sound_title">Sons</string>
+    <string name="notification_sound_summary">Utilisez le son de notification lorsqu\'une notification arrive</string>
+    <string name="suppress_notifications_select">Sélectionnez les Notifications à supprimer</string>
+    <string name="suppress_notifications">Supprimer les Notifications spécifiques sur ce dispositif</string>
+    <string name="suppress_notifications_title">Supprimer les Notifications</string>
+    <string name="alarm_notifications_select">Choisir la notification pour les alarmes</string>
+    <string name="alarm_notifications">Jouer une alarme pour les notifications spécifiques</string>
+    <string name="clear_notifications">Effacer les logs de notification</string>
+    <string name="alarm_notifications_title">Notifications pour les alarmes</string>
+    <string name="alarm">Alarme</string>
+    <string name="alarmtimer_title">Minuteur pour alarme</string>
+    <string name="alarmtimer">Durée en seconde de l\'alarme</string>
+    <string name="default_values">Valeur par défaut</string>
+    <string name="default_values_min_error">La valeur maximale doit être supérieure à la valeur Minimale</string>
+    <string name="default_values_max_error">La valeur maximale doit être supérieure à la valeur Minimale</string>
+    <!--        Information category       -->
+    <string name="info_version">Version</string>
+    <string name="info_OOTT_version">Version de OOTT</string>
+    <string name="info_about">À propos de OOTT</string>
+    <string name="info_credits">Credit</string>
+    <string name="info_credits_text">OOTT pour Android est rendu possible grâce à plusieurs bibliothèques open source</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Debuggage</string>
+    <string name="debug_switch_summary_on">Debuggage activé</string>
+    <string name="debug_switch_summary_off">Debuggage désactivé</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Vous avez besoin d\'au moins un item.</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Mettre à jour le serveur</string>
+    <string name="error_couldNotCheckForUpdates">"Impossible de mettre à jour: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Impossible d'obtenir la configuration du serveur OOTT: %1$s"</string>
+    <string name="update_available_enhanced">Mise à jour du serveur disponible : %1$s version : %2$s</string>
+    <string name="check_for_update_title">Vérifiez les mises à jour</string>
+    <string name="check_for_update">Souhaitez vous que nous vérifiions les mises à jour de OOTT ?</string>
+    <string name="update_server_warning">Cette application ne fonctionnera pas pendant la mise à jour du serveur.</string>
+    <string name="update_server_downloadNotReady1">La mise à jour n\'est pas encore téléchargé.</string>
+    <string name="update_server_downloadNotReady2">Réessayez plus tard.</string>
+    <string name="server_update_available">Mise à jour du serveur disponible</string>
+    <string name="update_server">Mettre à jour le serveur</string>
+    <string name="server_update_revision">Mise à jour du serveur disponible</string>
+    <string name="server_version">Version du serveur</string>
+    <string name="server_update">Mise à jour du serveur</string>
+    <string name="please_wait_while_we_check">Veuillez patienter pendant que nous vérifions si votre serveur est prêt à se mettre à jour</string>
+    <string name="server_update_not_ready">Mise à jour du serveur non téléchargée</string>
+    <string name="please_wait_while_server_updated">Veuillez patienter pendant que le serveur se met à jour.</string>
+    <string name="server_update_done">Mise à jour du serveur effectuée</string>
+    <string name="update_not_started">Mise à jour non démarrée</string>
+    <string name="update_not_started_unknown_error">Mise à jour non démarrée en raison d\'une erreur inconnue</string>
+    <string name="server_update_not_available">Mise à jour du serveur non disponible</string>
+    <string name="click_to_update_server">Cliquez ici pour mettre à jour votre serveur</string>
+    <string name="debug_test_text">Débogage</string>
+    <string name="restart_required_title">Redémarrage requis</string>
+    <string name="restart_now">Redémarrer maintenant ?</string>
 </resources>

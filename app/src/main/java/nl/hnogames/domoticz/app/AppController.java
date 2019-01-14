@@ -23,8 +23,6 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -42,6 +40,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.R;
 import shortbread.Shortbread;
@@ -76,7 +76,7 @@ public class AppController extends MultiDexApplication {
 
                 HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 HttpsURLConnection.setDefaultHostnameVerifier(
-                    mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+                        mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -87,24 +87,12 @@ public class AppController extends MultiDexApplication {
         return mRequestQueue;
     }
 
-    /*
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
-    }
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
-    */
-
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
 
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout,
-            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         req.setRetryPolicy(retryPolicy);
         getRequestQueue().add(req);

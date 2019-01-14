@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -104,7 +105,12 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
         convertView.setTag(holder);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(context.getResources().getColor(R.color.background_dark));
+            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
+                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_wrapper)) != null)
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
         }
 
         setDefaultRowData(deviceInfo, holder);
@@ -117,10 +123,10 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View row = inflater.inflate(layoutResourceId, null);
 
-        holder.signal_level = (TextView) row.findViewById(R.id.switch_signal_level);
-        holder.iconRow = (ImageView) row.findViewById(R.id.rowIcon);
-        holder.switch_name = (TextView) row.findViewById(R.id.switch_name);
-        holder.switch_battery_level = (TextView) row.findViewById(R.id.switch_battery_level);
+        holder.signal_level = row.findViewById(R.id.switch_signal_level);
+        holder.iconRow = row.findViewById(R.id.rowIcon);
+        holder.switch_name = row.findViewById(R.id.switch_name);
+        holder.switch_battery_level = row.findViewById(R.id.switch_battery_level);
 
         return row;
     }
@@ -133,11 +139,11 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
 
         try {
             String text = context.getString(R.string.last_update) + ": " +
-                String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
+                    String.valueOf(mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1));
             if (holder.signal_level != null)
                 holder.signal_level.setText(text);
             text = context.getString(R.string.data) + ": " +
-                String.valueOf(mDeviceInfo.getData());
+                    String.valueOf(mDeviceInfo.getData());
             if (holder.switch_battery_level != null)
                 holder.switch_battery_level.setText(text);
             if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
@@ -145,7 +151,7 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
             if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
                 holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
             if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
+                    !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                 holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
         } catch (Exception ex) {
             holder.switch_battery_level.setText("");
@@ -153,16 +159,16 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
         }
 
         if (mDeviceInfo.getIdx() == iVoiceAction) {
-            Picasso.with(context).load(R.drawable.mic).into(holder.iconRow);
+            Picasso.get().load(R.drawable.mic).into(holder.iconRow);
         } else if (mDeviceInfo.getIdx() == iQRCodeAction) {
-            Picasso.with(context).load(R.drawable.qrcode).into(holder.iconRow);
+            Picasso.get().load(R.drawable.qrcode).into(holder.iconRow);
         } else {
-            Picasso.with(context).load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-                mDeviceInfo.getType(),
-                mDeviceInfo.getSubType(),
-                mDeviceInfo.getStatusBoolean(),
-                mDeviceInfo.getUseCustomImage(),
-                mDeviceInfo.getImage())).into(holder.iconRow);
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                    mDeviceInfo.getType(),
+                    mDeviceInfo.getSubType(),
+                    mDeviceInfo.getStatusBoolean(),
+                    mDeviceInfo.getUseCustomImage(),
+                    mDeviceInfo.getImage())).into(holder.iconRow);
         }
 
         holder.iconRow.setAlpha(1f);

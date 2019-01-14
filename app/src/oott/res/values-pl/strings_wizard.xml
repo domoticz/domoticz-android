@@ -51,8 +51,8 @@
   <string name="wizard_nfc_description">Przerzuć przełączniki za pomocą NFC</string>
   <string name="wizard_qrcode">Kod QR</string>
   <string name="wizard_qrcode_description">Przerzuć przełączniki, przez zeskanowanie kodu QR (lub kodu kreskowego)!</string>
-  <string name="wizard_speech">Komendy mowy</string>
-  <string name="wizard_speech_description">Przełączniki przerzutowe z Twoim głosem! Skonfiguruj polecenia mowy za pomocą ekranów ustawień i połącz przełączniki.</string>
+  <string name="wizard_speech">Polecenia głosowe</string>
+  <string name="wizard_speech_description">Przełączaj przełączniki głosem! Skonfiguruj polecenia głosowe za pomocą ekranu ustawień i podłącz przełączniki.</string>
   <string name="wizard_button_nice">Dobrze</string>
   <string name="wizard_button_switches">Przełączniki</string>
   <string name="wizard_button_settings">Ustawienia</string>

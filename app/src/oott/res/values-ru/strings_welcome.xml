@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Добро пожаловать</string>
-  <string name="welcome_info_domoticz">OOTT (Powered by Domoticz)это домашняя система автоматизации, которая позволяет контролировать и настраивать различные устройства, такие как: свет, переключатели, различные датчики такие как температуры, дождя, ветера, электричества, газа, воды и многое другое. Предупреждения/уведомления могут быть отправлены на любое мобильное устройство.</string>
+  <string name="welcome_info_domoticz">OOTT это домашняя система автоматизации, которая позволяет контролировать и настраивать различные устройства, такие как: свет, переключатели, различные датчики такие как температуры, дождя, ветера, электричества, газа, воды и многое другое. Предупреждения/уведомления могут быть отправлены на любое мобильное устройство.</string>
   <string name="welcome_info_swipe">Проведите пальцем вправо или используйте кнопки перехода внизу для продолжения</string>
   <string name="welcome_info_settings1">Следующая страница предназначена для настройки OOTT.</string>
   <string name="welcome_info_settings2">

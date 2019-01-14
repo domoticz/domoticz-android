@@ -21,7 +21,7 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +36,7 @@ public class SceneInfo implements Comparable, Serializable {
     private String jsonObject;
 
     private int favorite;
+    private String Description;
     private int hardwareID;
     private String lastUpdate;
     private String name;
@@ -50,6 +51,7 @@ public class SceneInfo implements Comparable, Serializable {
         this.jsonObject = row.toString();
         if (row.has("Favorite"))
             favorite = row.getInt("Favorite");
+        if (row.has("Description")) Description = row.getString("Description");
 
         isProtected = row.getBoolean("Protected");
         if (row.has("HardwareID"))
@@ -70,6 +72,13 @@ public class SceneInfo implements Comparable, Serializable {
             type = row.getString("Type");
 
         idx = row.getInt("idx");
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+    public void setDescription(String description) {
+        Description = description;
     }
 
     @Override

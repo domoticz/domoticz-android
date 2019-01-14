@@ -22,13 +22,13 @@
   -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:textColor="@color/default_text_color_light" />
+          android:id="@android:id/text1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:paddingLeft="10dp"
+          android:paddingTop="5dp"
+          android:paddingRight="10dp"
+          android:paddingBottom="5dp"
+          android:textAppearance="?android:attr/textAppearanceListItemSmall"
+          android:textColor="@color/default_text_color_light"/>

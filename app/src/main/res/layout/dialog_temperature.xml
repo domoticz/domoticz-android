@@ -20,15 +20,15 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:seekarc="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+              xmlns:seekarc="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingBottom="@dimen/activity_vertical_margin">
 
     <FrameLayout
         android:id="@+id/seekArcContainer"
@@ -45,13 +45,13 @@
             android:paddingRight="30dp"
             seekarc:arcColor="@color/material_red_400"
             seekarc:clockwise="true"
-            seekarc:progressMax="20"
-            seekarc:showClockface="false"
             seekarc:progressColor="@color/material_orange_600"
+            seekarc:progressMax="20"
             seekarc:rotation="180"
+            seekarc:showClockface="false"
             seekarc:startAngle="30"
             seekarc:sweepAngle="300"
-            seekarc:touchInside="true" />
+            seekarc:touchInside="true"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:textSize="40sp"
-                tools:text="20,5" />
+                tools:text="20,5"/>
 
             <TextView
                 android:id="@+id/seekTempSign"
@@ -75,7 +75,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:textSize="40sp"
-                tools:text="C" />
+                tools:text="C"/>
         </LinearLayout>
 
 
@@ -86,27 +86,27 @@
             android:layout_marginTop="70dp"
             android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/min"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_status"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="-"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/plus"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_status"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="+"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
     </FrameLayout>

@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Interfaces.SpeechClickListener;
 import nl.hnogames.domoticz.R;
@@ -96,18 +98,21 @@ public class SpeechAdapter extends BaseAdapter {
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
-            (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.drawable.bordershadowdark));
-            (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.background_dark));
-
+            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
+                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_wrapper)) != null)
+                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
+            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
+                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
             if ((convertView.findViewById(R.id.remove_button)) != null)
-                (convertView.findViewById(R.id.remove_button)).setBackground(ContextCompat.getDrawable(context, R.drawable.button_status_dark));
+                ((MaterialButton) convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
-        holder.enable = (CheckBox) convertView.findViewById(R.id.enableSpeech);
-        holder.Speech_name = (TextView) convertView.findViewById(R.id.speech_name);
-        holder.Speech_tag_id = (TextView) convertView.findViewById(R.id.speech_tag_id);
-        holder.Speech_switch_idx = (TextView) convertView.findViewById(R.id.speech_switchidx);
-        holder.remove = (Button) convertView.findViewById(R.id.remove_button);
+        holder.enable = convertView.findViewById(R.id.enableSpeech);
+        holder.Speech_name = convertView.findViewById(R.id.speech_name);
+        holder.Speech_tag_id = convertView.findViewById(R.id.speech_tag_id);
+        holder.Speech_switch_idx = convertView.findViewById(R.id.speech_switchidx);
+        holder.remove = convertView.findViewById(R.id.remove_button);
 
         holder.Speech_name.setText(mSpeechInfo.getName());
         if (!UsefulBits.isEmpty(mSpeechInfo.getSwitchName())) {
@@ -116,14 +121,14 @@ public class SpeechAdapter extends BaseAdapter {
             holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch) + ": " + mSpeechInfo.getSwitchIdx());
         } else {
             holder.Speech_tag_id.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mSpeechInfo.getValue()))
             holder.Speech_tag_id.setText(holder.Speech_tag_id.getText() + " - " + mSpeechInfo.getValue());
 
         holder.Speech_switch_idx.setText("Commando's: \r\n" + "'" + mSpeechInfo.getName() + "' " + "\r\n'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_on).toLowerCase() + "'\r\n" +
-            "'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_off).toLowerCase() + "'");
+                "'" + mSpeechInfo.getName() + " " + context.getString(R.string.button_state_off).toLowerCase() + "'");
 
         holder.remove.setId(position);
         holder.remove.setOnClickListener(new View.OnClickListener() {

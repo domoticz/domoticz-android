@@ -25,26 +25,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.alexvasilkov.gestures.Settings;
+import com.alexvasilkov.gestures.views.GestureImageView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 
 public class Camera extends Fragment {
-
-    private ImageView root;
+    private GestureImageView root;
     private String url = "";
     private SharedPrefUtil mSharedPrefs;
 
@@ -58,18 +58,22 @@ public class Camera extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         RelativeLayout group = (RelativeLayout) inflater.inflate(R.layout.camera_default, null);
-        if (mSharedPrefs.darkThemeEnabled()) {
+
+        if (mSharedPrefs.darkThemeEnabled())
             group.findViewById(R.id.row_global_wrapper).setBackgroundColor(getResources().getColor(R.color.background_dark));
-        }
-        root = (ImageView) group.findViewById(R.id.image);
-        FloatingActionButton fabButton = (FloatingActionButton) group.findViewById(R.id.fab);
+
+        root = group.findViewById(R.id.image);
+        root.getController().getSettings()
+                .setFitMethod(Settings.Fit.VERTICAL)
+                .setFillViewport(false);
+
+        FloatingActionButton fabButton = group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 processImage();
             }
         });
-
         if (this.url.length() > 0)
             setImage(this.url);
         return group;
@@ -79,6 +83,12 @@ public class Camera extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mSharedPrefs = new SharedPrefUtil(context);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void processImage() {
@@ -98,14 +108,14 @@ public class Camera extends Fragment {
 
     public void setImage(String url) {
         this.url = url;
-        if (root != null && !root.equals(null)) {
+        if (root != null) {
             File file = new File(url);
             Uri uri = Uri.fromFile(file);
-            Picasso.with(getActivity())
-                .load(uri)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .into(root);
+            Picasso.get()
+                    .load(uri)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(root);
         }
     }
 }

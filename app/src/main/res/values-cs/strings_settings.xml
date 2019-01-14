@@ -21,172 +21,176 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Nastavení</string>
-  <string name="cameraActivity_name">Kamera</string>
-  <!--        Categories             -->
-  <string name="category_generic">Obecné</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android Auto</string>
-  <string name="category_server">Server</string>
-  <string name="category_geofencing">Geofencing</string>
-  <string name="category_info">Informace</string>
-  <string name="category_advanced">Pokročilá nastavení</string>
-  <string name="category_language">Jazyk</string>
-  <string name="category_talk_back">Hlasová odezva</string>
-  <string name="category_notification">Oznámení</string>
-  <string name="category_debug">Ladění</string>
-  <string name="category_export">Export/Import nastavení</string>
-  <string name="category_theme">Téma</string>
-  <string name="category_nfc">NFC připojení</string>
-  <string name="category_startup_security">Zabezpečení</string>
-  <string name="category_account">Účty</string>
-  <string name="category_QRCode">QR kód</string>
-  <string name="category_Speech">Řeč</string>
-  <string name="category_Reset">Obnovit</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Úvodní obrazovka</string>
-  <string name="enable_items">Povolit/zakázat položky</string>
-  <string name="sort_dashboardLikeServer_title">Třídění panelu</string>
-  <string name="sort_dashboardLikeServer_on">Třídit panel jako server</string>
-  <string name="sort_dashboardLikeServer_off">Třídit panel podle abecedy</string>
-  <string name="extra_data_title">Extra data na panelu</string>
-  <string name="show_extra_data_on">Zobrazit extra data na panelu</string>
-  <string name="show_extra_data_off">Skrýt extra data na panelu</string>
-  <string name="always_on_title">Neusínat</string>
-  <string name="always_on_on">Vždy uzamknout obrazovku</string>
-  <string name="always_on_off">Nikdy nezamykat obrazovku</string>
-  <string name="always_auto_refresh">Obnovovat automaticky</string>
-  <string name="always_auto_refresh_on">Obnovovat stav zařízení každých 5 sekund</string>
-  <string name="always_auto_refresh_off">Neobnovovat stav zařízení každých 5 sekund</string>
-  <string name="switch_buttons_title">Přepínače</string>
-  <string name="switch_buttons_on">Zobrazit přepínače s zap/vyp přepínačem</string>
-  <string name="switch_buttons_off">Zobrazit přepínače se zap/vyp tlačítkem</string>
-  <string name="dashboard_list_title">Mřížka řídícího panelu</string>
-  <string name="show_dashboard_list_on">Zobrazit řídící panel jako seznam</string>
-  <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Vlastní položky Android Wear</string>
-  <string name="custom_wear_select">Zvolte Wear přepínače</string>
-  <string name="custom_wear_select_desc">Vyberte přepínače, které chcete vidět na vašem Android Wear zařízení</string>
-  <string name="wear_custom_on">Zapnout vlastní položky Android Wear</string>
-  <string name="wear_custom_off">Zakázat vlastní položky Android Wear</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Povolit notifikace na Android Auto</string>
-  <string name="auto_custom_off">Zakázat notifikace na Android Auto</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Konfigurovat Geofencing</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Nastavit téma</string>
-  <string name="set_dark_theme">Přepnout téma aplikace na tmavé</string>
-  <string name="set_light_theme">Přepnout téma aplikace na světlé</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Dovolte Domoticz, aby na vás mluvil</string>
-  <string name="set_talk_back_off">Hlasová odezva je vypnuta</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Nastavení bylo importováno, prosím restartujte Domoticz</string>
-  <string name="settings_import_failed">Import nastavení se nezdařil</string>
-  <string name="settings_exported">Nastavení bylo exportováno, prosím restartujte Domoticz</string>
-  <string name="settings_export_failed">Export nastavení se nezdařil</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Nastavení připojení k serveru</string>
-  <string name="server_force_fetch_config">Načtení konfigurace serveru</string>
-  <string name="nfc_settings">Nastavení NFC spojení</string>
-  <string name="speech_settings">Nastavení hlasových příkazů</string>
-  <string name="title_activity_server_settings">Nastavení serveru</string>
-  <string name="multi_server">Multi Server</string>
-  <string name="enable_nfc">Povolit NFC</string>
-  <string name="enable_speech">Povolit rozpoznávání řeči</string>
-  <string name="export_settings">Nastavení exportu</string>
-  <string name="reset_settings">Obnovit všechna nastavení aplikace (pozor!!)</string>
-  <string name="import_settings">Nastavení importu</string>
-  <string name="multi_server_settings">Povolit podporu více serverů</string>
-  <string name="nfc_enable_settings">Povolit NFC spojení</string>
-  <string name="speech_enable_settings">Povolit rozpoznávání řeči</string>
-  <string name="server">Server</string>
-  <string name="qrcode_settings">Nastavení QR kódů</string>
-  <string name="enable_qrcode">Povolit QR kódy</string>
-  <string name="qrcode_enable_settings">Povolit funkce QR kódů</string>
-  <string name="security_settings">Nastavení zabezpečení</string>
-  <string name="enable_security">Povolit ochranu otisk při startu</string>
-  <string name="disable_security">Zakázat ochranu otiskem prstu po startu</string>
-  <string name="setup_fingerprints">Nastavit otisky prstů přes Nastavení Androidu</string>
-  <string name="fingerprint_not_supported">Zabezpečení otiskem prstu není na tomto zařízení podporováno</string>
-  <string name="fingerprint_not_setup_in_android">První nastavení/propojení otisku prstu k tomuto zařízení</string>
-  <string name="fingerprint_sure">Opravdu? Failover heslo je heslo vašeho Domoticz účtu.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Widgety (BETA)</string>
-  <string name="widget_description">Povolit nebo zakázat Widget na tomto zařízení</string>
-  <string name="widget_disabled">Widgety nejsou na tomto zařízení povoleny, prosím, zkontrolujte nastavení aplikace Domoticz</string>
-  <string name="widget_warning">Používání widgetů je na vlastní riziko! Widgety jsou aktuálně v Beta fázi a pravděpodobně obsahují nějaké chyby. Mohou způsobovat vetší datovou zátěž / zvýšit spotřebu baterie...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">Google Cloud Messaging ID</string>
-  <string name="notification_settings_push">Poslat vaše registrační ID do Domoticz</string>
-  <string name="notification_settings_pushed">Vaše registrační id je nyní uloženo v Domoticz</string>
-  <string name="notification_settings_push_failed">Nelze uložit registrační id do Domoticz, opakujte akci později.</string>
-  <string name="notification_show_title">Nedávná upozornění</string>
-  <string name="notification_show_nothing">Nebyla nalezena žádná oznámení</string>
-  <string name="notification_show">Zobrazit posledních pár notifikací</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Přepsat oznámení</string>
-  <string name="overwrite_notifications">Přepsat předchozí oznámení na tomto zařízení</string>
-  <string name="enable_notifications_title">Povolit oznámení</string>
-  <string name="enable_notifications">Povolit oznámení na tomto zařízení</string>
-  <string name="notification_screen_title">Nastavení oznámení</string>
-  <string name="notification_vibrate_title">Vibrovat</string>
-  <string name="notification_vibrate_on">Vibrovat při doručení oznámení</string>
-  <string name="notification_vibrate_off">Nevibrovat</string>
-  <string name="notification_sound_title">Zvuk</string>
-  <string name="notification_sound_summary">Použít zvukové upozornění, když přijde oznámení</string>
-  <string name="suppress_notifications_select">Vyberte oznámení k potlačení</string>
-  <string name="suppress_notifications">Potlačit konkrétní upozornění na tomto zařízení</string>
-  <string name="suppress_notifications_title">Potlačit upozornění</string>
-  <string name="alarm_notifications_select">Vyberte notifikace pro alarm</string>
-  <string name="alarm_notifications">Spustit alarm pro specifické notifikace</string>
-  <string name="clear_notifications">Vymazat logy notifikací</string>
-  <string name="alarm_notifications_title">Notifikace Alarmu</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Časovač alarmu</string>
-  <string name="alarmtimer">Počet sekund do alarmu</string>
-  <string name="default_values">Výchozí hodnoty</string>
-  <string name="default_values_min_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
-  <string name="default_values_max_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
-  <!--        Information category       -->
-  <string name="info_version">Verze</string>
-  <string name="info_domoticz_version">verze Domoticz</string>
-  <string name="info_about">O Domoticz</string>
-  <string name="info_credits">Poděkování</string>
-  <string name="info_credits_text">Domoticz pro Android je možné použít s několika open source knihovnami</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Ladění</string>
-  <string name="debug_switch_summary_on">Ladění povoleno</string>
-  <string name="debug_switch_summary_off">Ladění zakázáno</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Musíte mít alespoň jednu položku</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Aktualizace serveru</string>
-  <string name="error_couldNotCheckForUpdates">"Nepodařilo se zkontrolovat aktualizace: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Nepodařilo se získat konfiguraci ze serveru Domoticz: %1$s"</string>
-  <string name="update_available_enhanced">Aktualizace serveru je k dispozici: %1$s na verzi: %2$s</string>
-  <string name="check_for_update_title">Zkontrolovat aktualizace</string>
-  <string name="check_for_update">Chcete zkontrolovat aktualizace systému Domoticz?</string>
-  <string name="update_server_warning">Zatímco váš server aktualizuje tato app nebude fungovat správně.</string>
-  <string name="update_server_downloadNotReady1">Tato aktualizace není stažen (zcela).</string>
-  <string name="update_server_downloadNotReady2">Zkuste to prosím později.</string>
-  <string name="server_update_available">Aktualizace serveru k dispozici</string>
-  <string name="update_server">Aktualizace serveru</string>
-  <string name="server_update_revision">Revize aktualizace serveru</string>
-  <string name="server_version">Verze serveru</string>
-  <string name="server_update">Aktualizace serveru</string>
-  <string name="please_wait_while_we_check">Počkejte prosím, než zkontrolujeme, zda je váš server připraven k aktualizaci</string>
-  <string name="server_update_not_ready">Aktualizace serveru není stažena</string>
-  <string name="please_wait_while_server_updated">Počkejte prosím, probíhá aktualizace serveru.</string>
-  <string name="server_update_done">Aktualizace serveru dokončena</string>
-  <string name="update_not_started">Aktualizace není spuštěna</string>
-  <string name="update_not_started_unknown_error">Aktualizace nebyla spuštěna z důvodu neznámé chyby</string>
-  <string name="server_update_not_available">Aktualizace serveru není k dispozici</string>
-  <string name="click_to_update_server">Klikněte zde pro aktualizaci vašeho serveru</string>
-  <string name="debug_test_text">Zkouška ladění</string>
-  <string name="restart_required_title">Je vyžadován restart</string>
-  <string name="restart_now">Chcete nyní restartovat?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Nastavení</string>
+    <string name="cameraActivity_name">Kamera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Obecné</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Server</string>
+    <string name="category_geofencing">Geofencing</string>
+    <string name="category_info">Informace</string>
+    <string name="category_advanced">Pokročilá nastavení</string>
+    <string name="category_language">Jazyk</string>
+    <string name="category_talk_back">Hlasová odezva</string>
+    <string name="category_notification">Oznámení</string>
+    <string name="category_debug">Ladění</string>
+    <string name="category_export">Export/Import nastavení</string>
+    <string name="category_theme">Téma</string>
+    <string name="category_nfc">NFC připojení</string>
+    <string name="category_startup_security">Zabezpečení</string>
+    <string name="category_account">Účty</string>
+    <string name="category_QRCode">QR kód</string>
+    <string name="category_Speech">Řeč</string>
+    <string name="category_Reset">Obnovit</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Úvodní obrazovka</string>
+    <string name="enable_items">Povolit/zakázat položky</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_dashboardLikeServer_off">Třídit panel podle abecedy</string>
+    <string name="extra_data_title">Extra data na panelu</string>
+    <string name="show_extra_data_on">Zobrazit extra data na panelu</string>
+    <string name="show_extra_data_off">Skrýt extra data na panelu</string>
+    <string name="always_on_title">Neusínat</string>
+    <string name="always_on_on">Vždy uzamknout obrazovku</string>
+    <string name="always_on_off">Nikdy nezamykat obrazovku</string>
+    <string name="always_auto_refresh">Obnovovat automaticky</string>
+    <string name="always_auto_refresh_on">Obnovovat stav zařízení každých 5 sekund</string>
+    <string name="always_auto_refresh_off">Neobnovovat stav zařízení každých 5 sekund</string>
+    <string name="switch_buttons_title">Přepínače</string>
+    <string name="switch_buttons_on">Zobrazit přepínače s zap/vyp přepínačem</string>
+    <string name="switch_buttons_off">Zobrazit přepínače se zap/vyp tlačítkem</string>
+    <string name="dashboard_list_title">Mřížka řídícího panelu</string>
+    <string name="show_dashboard_list_on">Zobrazit řídící panel jako seznam</string>
+    <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Vlastní položky Android Wear</string>
+    <string name="custom_wear_select">Zvolte Wear přepínače</string>
+    <string name="custom_wear_select_desc">Vyberte přepínače, které chcete vidět na vašem Android Wear zařízení</string>
+    <string name="wear_custom_on">Zapnout vlastní položky Android Wear</string>
+    <string name="wear_custom_off">Zakázat vlastní položky Android Wear</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Povolit notifikace na Android Auto</string>
+    <string name="auto_custom_off">Zakázat notifikace na Android Auto</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Konfigurovat Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Nastavit téma</string>
+    <string name="set_dark_theme">Přepnout téma aplikace na tmavé</string>
+    <string name="set_light_theme">Přepnout téma aplikace na světlé</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Dovolte Domoticz, aby na vás mluvil</string>
+    <string name="set_talk_back_off">Hlasová odezva je vypnuta</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Nastavení bylo importováno, prosím restartujte Domoticz</string>
+    <string name="settings_import_failed">Import nastavení se nezdařil</string>
+    <string name="settings_exported">Nastavení bylo exportováno, prosím restartujte Domoticz</string>
+    <string name="settings_export_failed">Export nastavení se nezdařil</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Nastavení připojení k serveru</string>
+    <string name="server_force_fetch_config">Načtení konfigurace serveru</string>
+    <string name="nfc_settings">Nastavení NFC spojení</string>
+    <string name="speech_settings">Nastavení hlasových příkazů</string>
+    <string name="title_activity_server_settings">Nastavení serveru</string>
+    <string name="multi_server">Multi Server</string>
+    <string name="enable_nfc">Povolit NFC</string>
+    <string name="enable_speech">Povolit rozpoznávání řeči</string>
+    <string name="export_settings">Nastavení exportu</string>
+    <string name="reset_settings">Obnovit všechna nastavení aplikace (pozor!!)</string>
+    <string name="import_settings">Nastavení importu</string>
+    <string name="multi_server_settings">Povolit podporu více serverů</string>
+    <string name="nfc_enable_settings">Povolit NFC spojení</string>
+    <string name="speech_enable_settings">Povolit rozpoznávání řeči</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">Nastavení QR kódů</string>
+    <string name="enable_qrcode">Povolit QR kódy</string>
+    <string name="qrcode_enable_settings">Povolit funkce QR kódů</string>
+    <string name="security_settings">Nastavení zabezpečení</string>
+    <string name="enable_security">Povolit ochranu otisk při startu</string>
+    <string name="disable_security">Zakázat ochranu otiskem prstu po startu</string>
+    <string name="setup_fingerprints">Nastavit otisky prstů přes Nastavení Androidu</string>
+    <string name="fingerprint_not_supported">Zabezpečení otiskem prstu není na tomto zařízení podporováno</string>
+    <string name="fingerprint_not_setup_in_android">První nastavení/propojení otisku prstu k tomuto zařízení</string>
+    <string name="fingerprint_sure">Opravdu? Failover heslo je heslo vašeho Domoticz účtu.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgety (BETA)</string>
+    <string name="widget_description">Povolit nebo zakázat Widget na tomto zařízení</string>
+    <string name="widget_disabled">Widgety nejsou na tomto zařízení povoleny, prosím, zkontrolujte nastavení aplikace Domoticz</string>
+    <string name="widget_warning">Používání widgetů je na vlastní riziko! Widgety jsou aktuálně v Beta fázi a pravděpodobně obsahují nějaké chyby. Mohou způsobovat vetší datovou zátěž / zvýšit spotřebu baterie...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Cloud Messaging ID</string>
+    <string name="notification_settings_push">Poslat vaše registrační ID do Domoticz</string>
+    <string name="notification_settings_pushed">Vaše registrační id je nyní uloženo v Domoticz</string>
+    <string name="notification_settings_push_failed">Nelze uložit registrační id do Domoticz, opakujte akci později.</string>
+    <string name="notification_show_title">Nedávná upozornění</string>
+    <string name="notification_show_nothing">Nebyla nalezena žádná oznámení</string>
+    <string name="notification_show">Zobrazit posledních pár notifikací</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Přepsat oznámení</string>
+    <string name="overwrite_notifications">Přepsat předchozí oznámení na tomto zařízení</string>
+    <string name="enable_notifications_title">Povolit oznámení</string>
+    <string name="enable_notifications">Povolit oznámení na tomto zařízení</string>
+    <string name="notification_screen_title">Nastavení oznámení</string>
+    <string name="notification_vibrate_title">Vibrovat</string>
+    <string name="notification_vibrate_on">Vibrovat při doručení oznámení</string>
+    <string name="notification_vibrate_off">Nevibrovat</string>
+    <string name="notification_sound_title">Zvuk</string>
+    <string name="notification_sound_summary">Použít zvukové upozornění, když přijde oznámení</string>
+    <string name="suppress_notifications_select">Vyberte oznámení k potlačení</string>
+    <string name="suppress_notifications">Potlačit konkrétní upozornění na tomto zařízení</string>
+    <string name="suppress_notifications_title">Potlačit upozornění</string>
+    <string name="alarm_notifications_select">Vyberte notifikace pro alarm</string>
+    <string name="alarm_notifications">Spustit alarm pro specifické notifikace</string>
+    <string name="clear_notifications">Vymazat logy notifikací</string>
+    <string name="alarm_notifications_title">Notifikace Alarmu</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Časovač alarmu</string>
+    <string name="alarmtimer">Počet sekund do alarmu</string>
+    <string name="default_values">Výchozí hodnoty</string>
+    <string name="default_values_min_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
+    <string name="default_values_max_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
+    <!--        Information category       -->
+    <string name="info_version">Verze</string>
+    <string name="info_domoticz_version">verze Domoticz</string>
+    <string name="info_about">O Domoticz</string>
+    <string name="info_credits">Poděkování</string>
+    <string name="info_credits_text">Domoticz pro Android je možné použít s několika open source knihovnami</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Ladění</string>
+    <string name="debug_switch_summary_on">Ladění povoleno</string>
+    <string name="debug_switch_summary_off">Ladění zakázáno</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Musíte mít alespoň jednu položku</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Aktualizace serveru</string>
+    <string name="error_couldNotCheckForUpdates">"Nepodařilo se zkontrolovat aktualizace: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Nepodařilo se získat konfiguraci ze serveru Domoticz: %1$s"</string>
+    <string name="update_available_enhanced">Aktualizace serveru je k dispozici: %1$s na verzi: %2$s</string>
+    <string name="check_for_update_title">Zkontrolovat aktualizace</string>
+    <string name="check_for_update">Chcete zkontrolovat aktualizace systému Domoticz?</string>
+    <string name="update_server_warning">Zatímco váš server aktualizuje tato app nebude fungovat správně.</string>
+    <string name="update_server_downloadNotReady1">Tato aktualizace není stažen (zcela).</string>
+    <string name="update_server_downloadNotReady2">Zkuste to prosím později.</string>
+    <string name="server_update_available">Aktualizace serveru k dispozici</string>
+    <string name="update_server">Aktualizace serveru</string>
+    <string name="server_update_revision">Revize aktualizace serveru</string>
+    <string name="server_version">Verze serveru</string>
+    <string name="server_update">Aktualizace serveru</string>
+    <string name="please_wait_while_we_check">Počkejte prosím, než zkontrolujeme, zda je váš server připraven k aktualizaci</string>
+    <string name="server_update_not_ready">Aktualizace serveru není stažena</string>
+    <string name="please_wait_while_server_updated">Počkejte prosím, probíhá aktualizace serveru.</string>
+    <string name="server_update_done">Aktualizace serveru dokončena</string>
+    <string name="update_not_started">Aktualizace není spuštěna</string>
+    <string name="update_not_started_unknown_error">Aktualizace nebyla spuštěna z důvodu neznámé chyby</string>
+    <string name="server_update_not_available">Aktualizace serveru není k dispozici</string>
+    <string name="click_to_update_server">Klikněte zde pro aktualizaci vašeho serveru</string>
+    <string name="debug_test_text">Zkouška ladění</string>
+    <string name="restart_required_title">Je vyžadován restart</string>
+    <string name="restart_now">Chcete nyní restartovat?</string>
 </resources>

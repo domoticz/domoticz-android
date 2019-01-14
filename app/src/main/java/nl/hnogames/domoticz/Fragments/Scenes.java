@@ -23,20 +23,24 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.SceneAdapter;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -54,9 +58,10 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-    ScenesClickListener {
+        ScenesClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
@@ -68,6 +73,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -78,10 +84,19 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_scenes);
         initAnimation();
+        if (getActionBar() != null)
+            getActionBar().setTitle(getString(R.string.title_scenes));
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
+        //if (getActionBar() != null)
+        //    getActionBar().setTitle(R.string.title_scenes);
     }
 
     @Override
@@ -89,8 +104,22 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     public void Filter(String text) {
         filter = text;
         try {
-            if (adapter != null)
+            if (adapter != null) {
+                if (UsefulBits.isEmpty(text) &&
+                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    if (mItemTouchHelper == null) {
+                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                                false));
+                    }
+                    mItemTouchHelper.attachToRecyclerView(gridView);
+                } else {
+                    if (mItemTouchHelper != null)
+                        mItemTouchHelper.attachToRecyclerView(null);
+                }
                 adapter.getFilter().filter(text);
+                adapter.notifyDataSetChanged();
+            }
             super.Filter(text);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -118,13 +147,16 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     private void processScenes() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        try {
+            if (mSwipeRefreshLayout != null)
+                mSwipeRefreshLayout.setRefreshing(true);
 
-        state = gridView.getLayoutManager().onSaveInstanceState();
-        WidgetUtils.RefreshWidgets(mContext);
+            state = gridView.getLayoutManager().onSaveInstanceState();
+            WidgetUtils.RefreshWidgets(mContext);
 
-        new GetCachedDataTask().execute();
+            new GetCachedDataTask().execute();
+        } catch (Exception ex) {
+        }
     }
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
@@ -161,6 +193,19 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
+
+            if (mItemTouchHelper == null) {
+                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
+                        false));
+            }
+            if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mItemTouchHelper.attachToRecyclerView(gridView);
+            } else {
+                if (mItemTouchHelper != null)
+                    mItemTouchHelper.attachToRecyclerView(null);
+            }
+
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -192,9 +237,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void showInfoDialog(final SceneInfo mSceneInfo) {
         SceneInfoDialog infoDialog = new SceneInfoDialog(
-            getActivity(),
-            mSceneInfo,
-            R.layout.dialog_scene_info);
+                getActivity(),
+                mSceneInfo,
+                R.layout.dialog_scene_info);
         infoDialog.setIdx(String.valueOf(mSceneInfo.getIdx()));
         infoDialog.setLastUpdate(mSceneInfo.getLastUpdate());
         infoDialog.setIsFavorite(mSceneInfo.getFavoriteBoolean());
@@ -210,6 +255,13 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     private void changeFavorite(final SceneInfo mSceneInfo, final boolean isFavorite) {
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            return;
+        }
+
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSceneInfo.getIdx() + " favorite to " + isFavorite);
 
@@ -255,7 +307,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                getActivity(), mDomoticz);
+                    getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -327,8 +379,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     @Override
     @DebugLog
-    public boolean onItemLongClicked(int position) {
-        showInfoDialog(adapter.filteredData.get(position));
+    public boolean onItemLongClicked(int idx) {
+        showInfoDialog(getScene(idx));
         return true;
     }
 
@@ -337,9 +389,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                getActivity(),
-                switchLogs,
-                R.layout.dialog_switch_logs);
+                    getActivity(),
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }
@@ -353,6 +405,13 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.switch_off);
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.switch_off) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
+        }
+
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 0) {
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            return;
         }
 
         int jsonAction;
@@ -401,7 +460,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         ArrayList<SceneInfo> cacheSwitches = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mContext == null) return false;
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheSwitches = (ArrayList<SceneInfo>) SerializableManager.readSerializedObject(mContext, "Scenes");
                 } catch (Exception ex) {
@@ -411,6 +473,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         }
 
         protected void onPostExecute(Boolean result) {
+            if (mContext == null)
+                return;
             if (cacheSwitches != null)
                 createListView(cacheSwitches);
 

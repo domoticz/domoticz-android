@@ -35,42 +35,47 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class WidgetUtils {
     public static void RefreshWidgets(Context context) {
-        //refresh all widgets
-        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-        ComponentName widgetComponent = new ComponentName(context, WidgetProviderLarge.class);
-        int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
-        for (int appWidgetId : appWidgetIds) {
-            Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
-            updateIntent.setAction("FROM WIDGET PROVIDER");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                context.startForegroundService(updateIntent);
-            else
-                context.startService(updateIntent);
-        }
+        if (context == null)
+            return;
+        try {
+            //refresh all widgets
+            AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+            ComponentName widgetComponent = new ComponentName(context, WidgetProviderLarge.class);
+            int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
+            for (int appWidgetId : appWidgetIds) {
+                Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
+                updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
+                updateIntent.setAction("FROM WIDGET PROVIDER");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    context.startForegroundService(updateIntent);
+                else
+                    context.startService(updateIntent);
+            }
 
-        ComponentName widgetSecurityComponent = new ComponentName(context, SecurityWidgetProvider.class);
-        int[] appSecurityWidgetIds = widgetManager.getAppWidgetIds(widgetSecurityComponent);
-        for (int appSecurityWidgetId : appSecurityWidgetIds) {
-            Intent updateIntent = new Intent(context, SecurityWidgetProvider.UpdateSecurityWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSecurityWidgetId);
-            updateIntent.setAction("FROM WIDGET PROVIDER");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                context.startForegroundService(updateIntent);
-            else
-                context.startService(updateIntent);
-        }
+            ComponentName widgetSecurityComponent = new ComponentName(context, SecurityWidgetProvider.class);
+            int[] appSecurityWidgetIds = widgetManager.getAppWidgetIds(widgetSecurityComponent);
+            for (int appSecurityWidgetId : appSecurityWidgetIds) {
+                Intent updateIntent = new Intent(context, SecurityWidgetProvider.UpdateSecurityWidgetService.class);
+                updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSecurityWidgetId);
+                updateIntent.setAction("FROM WIDGET PROVIDER");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    context.startForegroundService(updateIntent);
+                else
+                    context.startService(updateIntent);
+            }
 
-        ComponentName smallwidgetComponent = new ComponentName(context, WidgetProviderSmall.class);
-        int[] appSmallWidgetIds = widgetManager.getAppWidgetIds(smallwidgetComponent);
-        for (int appSmallWidgetId : appSmallWidgetIds) {
-            Intent updateIntent = new Intent(context, WidgetProviderSmall.UpdateWidgetService.class);
-            updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSmallWidgetId);
-            updateIntent.setAction("FROM WIDGET PROVIDER");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                context.startForegroundService(updateIntent);
-            else
-                context.startService(updateIntent);
+            ComponentName smallwidgetComponent = new ComponentName(context, WidgetProviderSmall.class);
+            int[] appSmallWidgetIds = widgetManager.getAppWidgetIds(smallwidgetComponent);
+            for (int appSmallWidgetId : appSmallWidgetIds) {
+                Intent updateIntent = new Intent(context, WidgetProviderSmall.UpdateWidgetService.class);
+                updateIntent.putExtra(EXTRA_APPWIDGET_ID, appSmallWidgetId);
+                updateIntent.setAction("FROM WIDGET PROVIDER");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    context.startForegroundService(updateIntent);
+                else
+                    context.startService(updateIntent);
+            }
+        } catch (Exception ex) {
         }
     }
 }

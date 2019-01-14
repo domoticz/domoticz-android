@@ -80,9 +80,9 @@ public class SharedPrefUtil {
     private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
     private static final String PREF_UPDATE_SERVER_SHOWN = "updateservershown";
     private static final String PREF_EXTRA_DATA = "extradata";
-    private static final String PREF_STARTUP_SCREEN = "startup_screen";
+    private static final String PREF_STARTUP_SCREEN = "startup_nav";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
-    private static final String PREF_NAVIGATION_ITEMS = "enable_menu_items";
+    private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
@@ -112,17 +112,18 @@ public class SharedPrefUtil {
     private static final String PREF_TEMP_MIN = "tempMinValue";
     private static final String PREF_TEMP_MAX = "tempMaxValue";
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
+    private static final String PREF_SORT_LIST = "customSortList";
 
-
+    private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_SORT_LIKESERVER = "sort_dashboardLikeServer";
+    private final String PREF_SORT_CUSTOM = "sortCustom";
+    private final String PREF_LOCK_SORT_CUSTOM = "lockSortCustom";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
-
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
@@ -180,8 +181,12 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_OVERWRITE_NOTIFICATIONS, false);
     }
 
-    public boolean isDashboardSortedLikeServer() {
-        return prefs.getBoolean(PREF_SORT_LIKESERVER, true);
+    public boolean enableCustomSorting() {
+        return prefs.getBoolean(PREF_SORT_CUSTOM, false);
+    }
+
+    public boolean isCustomSortingLocked() {
+        return prefs.getBoolean(PREF_LOCK_SORT_CUSTOM, false);
     }
 
     public boolean getAlwaysOn() {
@@ -427,6 +432,23 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_WELCOME_SUCCESS, success).apply();
     }
 
+    public List<String> getSortingList(String listName) {
+        if (!prefs.contains(listName + PREF_SORT_LIST))
+            return null;
+        String sortString = prefs.getString(listName + PREF_SORT_LIST, null);
+        if (!UsefulBits.isEmpty(sortString))
+            return Arrays.asList(sortString.split(","));
+        return null;
+    }
+
+    public void saveSortingList(String listName, List<String> ids) {
+        if (ids != null)
+            editor.putString(listName + PREF_SORT_LIST, UsefulBits.Join(ids)).apply();
+        else
+            editor.putString(listName + PREF_SORT_LIST, null).apply();
+        editor.commit();
+    }
+
     /**
      * Get's the users preference to vibrate on notifications
      *
@@ -456,7 +478,6 @@ public class SharedPrefUtil {
         Set<String> notifications = prefs.getStringSet(PREF_SUPPRESS_NOTIFICATIONS, null);
         if (notifications != null) {
             List<String> notificationsValues = new ArrayList<>();
-
             for (String s : notifications) {
                 notificationsValues.add(s);
             }
@@ -595,7 +616,7 @@ public class SharedPrefUtil {
 
     public void removeWizard() {
         // 1 if start up screen is 0 (wizard) change to dashboard
-        if (getStartupScreenIndex() == 0) setStartupScreenIndex(1);
+        if (getStartupScreenIndex() == 0) setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
 
         //2 remove wizard from navigation
         String removeWizard = "";
@@ -617,14 +638,32 @@ public class SharedPrefUtil {
         }
     }
 
+    public int getActualStartupScreenIndex() {
+        String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
+        if (startupScreenSelectedValue == null)
+            return DEFAULT_STARTUP_SCREEN;
+        else {
+            String[] startupScreenValues = mContext.getResources().getStringArray(R.array.startup_actions);
+            int i = 0;
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return i;
+                }
+                i++;
+            }
+            //else, could not find startup screen
+            setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
+            return DEFAULT_STARTUP_SCREEN;
+        }
+    }
+
     public int getStartupScreenIndex() {
         String startupScreenSelectedValue = prefs.getString(PREF_STARTUP_SCREEN, null);
-        if (startupScreenSelectedValue == null) return 0;
+        if (startupScreenSelectedValue == null)
+            return DEFAULT_STARTUP_SCREEN;
         else {
-            String[] startupScreenValues =
-                mContext.getResources().getStringArray(R.array.drawer_actions);
+            String[] startupScreenValues = mContext.getResources().getStringArray(R.array.drawer_actions);
             int i = 0;
-
             for (String screen : startupScreenValues) {
                 if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
                     return i;
@@ -632,25 +671,45 @@ public class SharedPrefUtil {
                 i++;
             }
 
-            //fix, could not find startup screen
-            setStartupScreenIndex(0);
-            return 0;
+            // Check for dashboard actions
+            startupScreenValues = mContext.getResources().getStringArray(R.array.dashboard_actions);
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return 1;
+                }
+            }
+
+            // Check for temperature actions
+            startupScreenValues = mContext.getResources().getStringArray(R.array.temperature_actions);
+            for (String screen : startupScreenValues) {
+                if (screen.equalsIgnoreCase(startupScreenSelectedValue)) {
+                    return 2;
+                }
+            }
+
+            //else, could not find startup screen
+            setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
+            return DEFAULT_STARTUP_SCREEN;
         }
     }
 
     public void setStartupScreenIndex(int position) {
         String[] startupScreenValues =
-            mContext.getResources().getStringArray(R.array.drawer_actions);
+                mContext.getResources().getStringArray(R.array.startup_actions);
         String startupScreenValue;
 
         try {
             startupScreenValue = startupScreenValues[position];
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
-            startupScreenValue = startupScreenValues[0];
+            startupScreenValue = startupScreenValues[DEFAULT_STARTUP_SCREEN];
         }
 
         editor.putString(PREF_STARTUP_SCREEN, startupScreenValue).apply();
+    }
+
+    public String getStartupScreen() {
+        return prefs.getString(PREF_STARTUP_SCREEN, null);
     }
 
     public String[] getWearSwitches() {
@@ -871,7 +930,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
             Gson gson = new Gson();
             NFCInfo[] item = gson.fromJson(jsonNFCs,
-                NFCInfo[].class);
+                    NFCInfo[].class);
             nfcs = Arrays.asList(item);
             for (NFCInfo n : nfcs) {
                 oReturnValue.add(n);
@@ -895,7 +954,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_QR_CODES, null);
             Gson gson = new Gson();
             QRCodeInfo[] item = gson.fromJson(jsonNFCs,
-                QRCodeInfo[].class);
+                    QRCodeInfo[].class);
             qrs = Arrays.asList(item);
             for (QRCodeInfo n : qrs) {
                 oReturnValue.add(n);
@@ -919,7 +978,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_SPEECH_COMMANDS, null);
             Gson gson = new Gson();
             SpeechInfo[] item = gson.fromJson(jsonNFCs,
-                SpeechInfo[].class);
+                    SpeechInfo[].class);
             qrs = Arrays.asList(item);
             for (SpeechInfo n : qrs) {
                 oReturnValue.add(n);
@@ -946,7 +1005,7 @@ public class SharedPrefUtil {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
             Gson gson = new Gson();
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
-                LocationInfo[].class);
+                    LocationInfo[].class);
             locations = Arrays.asList(locationItem);
 
             for (LocationInfo l : locations) {
@@ -959,8 +1018,8 @@ public class SharedPrefUtil {
             if (incorrectDetected) {
                 saveLocations(returnValue);
                 Toast.makeText(mContext,
-                    R.string.geofence_error_recreateLocations,
-                    Toast.LENGTH_LONG).show();
+                        R.string.geofence_error_recreateLocations,
+                        Toast.LENGTH_LONG).show();
             }
         } else
             return null;

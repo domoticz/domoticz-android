@@ -25,9 +25,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,19 +35,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.UI.MultiSelectionSpinner;
@@ -72,19 +72,18 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
-    private EditText remote_server_input, remote_port_input,
-        remote_username_input, remote_password_input,
-        remote_directory_input, local_server_input, local_password_input,
-        local_username_input, local_port_input, local_directory_input, server_name_input;
+    private AppCompatEditText remote_server_input, remote_port_input,
+            remote_username_input, remote_password_input,
+            remote_directory_input, local_server_input, local_password_input,
+            local_username_input, local_port_input, local_directory_input, server_name_input;
 
-    private Spinner remote_protocol_spinner, local_protocol_spinner, startScreen_spinner;
-    private Switch localServer_switch;
-    private int remoteProtocolSelectedPosition, localProtocolSelectedPosition, startScreenSelectedPosition;
+    private Spinner remote_protocol_spinner, local_protocol_spinner;
+    private SwitchMaterial localServer_switch;
+    private int remoteProtocolSelectedPosition, localProtocolSelectedPosition;
     private View v;
     private boolean hasBeenVisibleToUser = false;
     private MultiSelectionSpinner local_wifi_spinner;
     private PhoneConnectionUtil mPhoneConnectionUtil;
-    private Switch advancedSettings_switch;
     private ServerInfo newServer;
     private boolean isUpdateRequest = false;
 
@@ -142,62 +141,57 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     }
 
     private void getLayoutReferences() {
-        Button saveButton = (Button) v.findViewById(R.id.save_server);
-        server_name_input = (EditText) v.findViewById(R.id.server_name_input);
-        remote_server_input = (EditText) v.findViewById(R.id.remote_server_input);
-        remote_port_input = (EditText) v.findViewById(R.id.remote_port_input);
-        remote_username_input = (EditText) v.findViewById(R.id.remote_username_input);
-        remote_password_input = (EditText) v.findViewById(R.id.remote_password_input);
-        remote_directory_input = (EditText) v.findViewById(R.id.remote_directory_input);
-        remote_protocol_spinner = (Spinner) v.findViewById(R.id.remote_protocol_spinner);
-        local_server_input = (EditText) v.findViewById(R.id.local_server_input);
-        local_port_input = (EditText) v.findViewById(R.id.local_port_input);
-        local_username_input = (EditText) v.findViewById(R.id.local_username_input);
-        local_password_input = (EditText) v.findViewById(R.id.local_password_input);
-        local_directory_input = (EditText) v.findViewById(R.id.local_directory_input);
-        local_protocol_spinner = (Spinner) v.findViewById(R.id.local_protocol_spinner);
-        local_wifi_spinner = (MultiSelectionSpinner) v.findViewById(R.id.local_wifi);
-        CheckBox cbShowPassword = (CheckBox) v.findViewById(R.id.showpassword);
-        CheckBox cbShowPasswordLocal = (CheckBox) v.findViewById(R.id.showpasswordlocal);
+        Button saveButton = v.findViewById(R.id.save_server);
+        server_name_input = v.findViewById(R.id.server_name_input);
+        remote_server_input = v.findViewById(R.id.remote_server_input);
+        remote_port_input = v.findViewById(R.id.remote_port_input);
+        remote_username_input = v.findViewById(R.id.remote_username_input);
+        remote_password_input = v.findViewById(R.id.remote_password_input);
+        remote_directory_input = v.findViewById(R.id.remote_directory_input);
+        remote_protocol_spinner = v.findViewById(R.id.remote_protocol_spinner);
+        local_server_input = v.findViewById(R.id.local_server_input);
+        local_port_input = v.findViewById(R.id.local_port_input);
+        local_username_input = v.findViewById(R.id.local_username_input);
+        local_password_input = v.findViewById(R.id.local_password_input);
+        local_directory_input = v.findViewById(R.id.local_directory_input);
+        local_protocol_spinner = v.findViewById(R.id.local_protocol_spinner);
+        local_wifi_spinner = v.findViewById(R.id.local_wifi);
+        CheckBox cbShowPassword = v.findViewById(R.id.showpassword);
+        CheckBox cbShowPasswordLocal = v.findViewById(R.id.showpasswordlocal);
+        Button btnManualSSID = v.findViewById(R.id.set_ssid);
 
-        startScreen_spinner = (Spinner) v.findViewById(R.id.startScreen_spinner);
-
-        Button btnManualSSID = (Button) v.findViewById(R.id.set_ssid);
         btnManualSSID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(getContext())
-                    .title(R.string.welcome_ssid_button_prompt)
-                    .content(R.string.welcome_msg_no_ssid_found)
-                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                    .input(null, null, new MaterialDialog.InputCallback() {
-                        @Override
-                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                            Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
-                            final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-                            if (ssidFromPrefs != null) {
-                                if (ssidFromPrefs.size() > 0) {
-                                    for (String wifi : ssidFromPrefs) {
-                                        ssidListFromPrefs.add(wifi);
+                        .title(R.string.welcome_ssid_button_prompt)
+                        .content(R.string.welcome_msg_no_ssid_found)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                        .input(null, null, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+                                if (ssidFromPrefs != null) {
+                                    if (ssidFromPrefs.size() > 0) {
+                                        for (String wifi : ssidFromPrefs) {
+                                            ssidListFromPrefs.add(wifi);
+                                        }
                                     }
                                 }
-                            }
 
-                            ssidListFromPrefs.add(String.valueOf(input));
-                            mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
-                            setSsid_spinner();
-                        }
-                    }).show();
+                                ssidListFromPrefs.add(String.valueOf(input));
+                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+                                setSsid_spinner();
+                            }
+                        }).show();
             }
         });
 
-        startScreen_spinner.setVisibility(View.GONE);
-        v.findViewById(R.id.startScreen_title).setVisibility(View.GONE);
         v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
 
-        final LinearLayout localServerSettingsLayout = (LinearLayout)
-            v.findViewById(R.id.local_server_settings);
-        localServer_switch = (Switch) v.findViewById(R.id.localServer_switch);
+        final LinearLayout localServerSettingsLayout = v.findViewById(R.id.local_server_settings);
+        localServer_switch = v.findViewById(R.id.localServer_switch);
         localServer_switch.setChecked(false);//default setting
         localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -206,29 +200,15 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                 else localServerSettingsLayout.setVisibility(View.GONE);
             }
         });
-
-        final LinearLayout advancedSettings_layout = (LinearLayout)
-            v.findViewById(R.id.advancedSettings_layout);
-        advancedSettings_switch = (Switch) v.findViewById(R.id.advancedSettings_switch);
-        advancedSettings_layout.setVisibility(View.INVISIBLE);
-        advancedSettings_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSharedPrefs.setAdvancedSettingsEnabled(isChecked);
-
-                if (isChecked) advancedSettings_layout.setVisibility(View.VISIBLE);
-                else advancedSettings_layout.setVisibility(View.GONE);
-            }
-        });
-        advancedSettings_layout.setVisibility(View.GONE);
-        advancedSettings_switch.setChecked(false);
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    remote_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    remote_password_input.setSelection(remote_password_input.getText().length());
                 } else {
                     remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    remote_password_input.setSelection(remote_password_input.getText().length());
                 }
             }
         });
@@ -236,13 +216,14 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    local_password_input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    local_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    local_password_input.setSelection(local_password_input.getText().length());
                 } else {
                     local_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    local_password_input.setSelection(local_password_input.getText().length());
                 }
             }
         });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,10 +243,10 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(newServer)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!isUpdateRequest && !mServerUtil.checkUniqueServerName(newServer)) {
             showErrorPopup("Server name must be unique!");
         } else {
@@ -275,15 +256,15 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
     private void showErrorPopup(String error) {
         new AlertDialog.Builder(getActivity())
-            .setIcon(android.R.drawable.ic_dialog_info)
-            .setTitle("Failed")
-            .setMessage(error)
-            .setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            })
-            .show();
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Failed")
+                .setMessage(error)
+                .setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
     }
 
     private void setPreferenceValues() {
@@ -302,16 +283,12 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             local_server_input.setText(newServer.getLocalServerUrl());
             local_port_input.setText(newServer.getLocalServerPort());
             local_directory_input.setText(newServer.getLocalServerDirectory());
-
             localServer_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
-            advancedSettings_switch.setChecked(newServer.getIsLocalServerAddressDifferent());
         } else {
             remote_username_input.setText("");
         }
 
         setProtocol_spinner();
-        setStartScreen_spinner();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!PermissionsUtil.canAccessLocation(getActivity())) {
                 permissionFragmentHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
@@ -372,7 +349,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void setProtocol_spinner() {
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         ArrayAdapter<String> protocolAdapter
-            = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
+                = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
         remote_protocol_spinner.setAdapter(protocolAdapter);
         remote_protocol_spinner.setSelection(getPrefsDomoticzRemoteSecureIndex());
         remote_protocol_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -402,45 +379,20 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
         });
     }
 
-    private void setStartScreen_spinner() {
-        if (mSharedPrefs == null)
-            mSharedPrefs = new SharedPrefUtil(getActivity().getApplicationContext());
-
-        String[] startScreens = getResources().getStringArray(R.array.drawer_actions);
-        ArrayAdapter<String> startScreenAdapter
-            = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, startScreens);
-
-        startScreen_spinner.setAdapter(startScreenAdapter);
-        if (mSharedPrefs != null)
-            startScreen_spinner.setSelection(mSharedPrefs.getStartupScreenIndex());
-        startScreen_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView,
-                                       View view, int position, long id) {
-                startScreenSelectedPosition = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-    }
-
     private void buildServerInfo() {
-
         newServer = new ServerInfo();
         newServer.setRemoteServerUsername(
-            remote_username_input.getText().toString().trim());
+                remote_username_input.getText().toString().trim());
         newServer.setRemoteServerPassword(
-            remote_password_input.getText().toString().trim());
+                remote_password_input.getText().toString().trim());
         newServer.setRemoteServerUrl(
-            remote_server_input.getText().toString().trim());
+                remote_server_input.getText().toString().trim());
         newServer.setRemoteServerPort(
-            remote_port_input.getText().toString().trim());
+                remote_port_input.getText().toString().trim());
         newServer.setRemoteServerDirectory(
-            remote_directory_input.getText().toString().trim());
+                remote_directory_input.getText().toString().trim());
         newServer.setRemoteServerSecure(
-            getSpinnerDomoticzRemoteSecureBoolean());
+                getSpinnerDomoticzRemoteSecureBoolean());
         newServer.setEnabled(false);
 
         if (!localServer_switch.isChecked()) {
@@ -448,17 +400,17 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             newServer.setIsLocalServerAddressDifferent(false);
         } else {
             newServer.setLocalServerUsername(
-                local_username_input.getText().toString().trim());
+                    local_username_input.getText().toString().trim());
             newServer.setLocalServerPassword(
-                local_password_input.getText().toString().trim());
+                    local_password_input.getText().toString().trim());
             newServer.setLocalServerUrl(
-                local_server_input.getText().toString().trim());
+                    local_server_input.getText().toString().trim());
             newServer.setLocalServerPort(
-                local_port_input.getText().toString().trim());
+                    local_port_input.getText().toString().trim());
             newServer.setLocalServerDirectory(
-                local_directory_input.getText().toString().trim());
+                    local_directory_input.getText().toString().trim());
             newServer.setLocalServerSecure(
-                getSpinnerDomoticzLocalSecureBoolean());
+                    getSpinnerDomoticzLocalSecureBoolean());
             newServer.setIsLocalServerAddressDifferent(true);
         }
 
@@ -550,13 +502,13 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_LOCATION_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (mPhoneConnectionUtil != null)
-                        mPhoneConnectionUtil.stopReceiver();
-                }
-            });
+                getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (mPhoneConnectionUtil != null)
+                            mPhoneConnectionUtil.stopReceiver();
+                    }
+                });
         if (!alert.isShowing()) {
             alert.show();
         }

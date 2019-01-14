@@ -25,8 +25,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -35,11 +35,7 @@ import com.android.volley.VolleyError;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +55,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
@@ -88,6 +85,7 @@ import nl.hnogames.domoticzapi.Parsers.EventsParser;
 import nl.hnogames.domoticzapi.Parsers.GraphDataParser;
 import nl.hnogames.domoticzapi.Parsers.LanguageParser;
 import nl.hnogames.domoticzapi.Parsers.LogOffParser;
+import nl.hnogames.domoticzapi.Parsers.LoginParser;
 import nl.hnogames.domoticzapi.Parsers.LogsParser;
 import nl.hnogames.domoticzapi.Parsers.MobileDeviceParser;
 import nl.hnogames.domoticzapi.Parsers.NotificationsParser;
@@ -287,6 +285,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.DOORLOCKINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SECURITY);
         switchesSupported.add(DomoticzValues.Device.Type.Value.SELECTOR);
@@ -312,6 +311,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.X10SIREN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DUSKSENSOR);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCK);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.DOORLOCKINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORCONTACT);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DOORBELL);
         switchesSupported.add(DomoticzValues.Device.Type.Name.SECURITY);
@@ -442,7 +442,7 @@ public class Domoticz {
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
-        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA, true, getUserCredentials(Authentication.USERNAME), getUserCredentials(Authentication.PASSWORD)) + camera.getIdx();
+        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + camera.getIdx();
     }
 
     /**
@@ -487,13 +487,34 @@ public class Domoticz {
                 url, mSessionUtil, true, 3, queue);
     }
 
+    public void checkLogin(LoginReceiver loginReceiver) {
+        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
+        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
+
+        LoginParser parser = new LoginParser(loginReceiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
+
+        try {
+            url += "&username=" + URLEncoder.encode(username, "UTF-8");
+            url += "&password=" + URLEncoder.encode(password, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Url: " + url);
+        RequestUtil.makeJsonGetRequest(parser,
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
+    }
+
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
         RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -519,7 +540,6 @@ public class Domoticz {
     public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG) + String.valueOf(idx);
-
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
@@ -659,9 +679,33 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public void setWWColorAction(int idx,
+                                 int cw,
+                                 int ww,
+                                  int brightness,
+                                  String password,
+                                  setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+
+        String url = mDomoticzUrls.constructSetUrl(DomoticzValues.Json.Url.Set.WWCOLOR, idx, DomoticzValues.Device.Dimmer.Action.WWCOLOR, 0);
+        url = url.replace("%ww%", String.valueOf(ww))
+            .replace("%cw%", String.valueOf(cw))
+            .replace("%bright%", String.valueOf(brightness));
+
+        if (!UsefulBits.isEmpty(password)) {
+            url += "&passcode=" + password;
+        }
+        Log.v(TAG, "Action: " + url);
+        RequestUtil.makeJsonGetRequest(parser,
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, mSessionUtil, true, 3, queue);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -916,7 +960,7 @@ public class Domoticz {
         FileOutputStream fOut;
         try {
             fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             fOut.flush();
             fOut.close();
             return file;

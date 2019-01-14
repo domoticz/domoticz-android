@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Benvinguts</string>
-  <string name="welcome_info_domoticz">OOTT (Powered by Domoticz)és un sistema d\'automatització domèstic que us permet monitoritzar i configurar dispositius com: llums, interruptors, diferents sensors/comptadors de temperatura, pluja, vent, UV, electricitat, gas, aigua i molts més. Podeu enviar notificacions i alertes a qualsevol dispositiu mòbil.</string>
+  <string name="welcome_info_domoticz">OOTT és un sistema d\'automatització domèstic que us permet monitoritzar i configurar dispositius com: llums, interruptors, diferents sensors/comptadors de temperatura, pluja, vent, UV, electricitat, gas, aigua i molts més. Podeu enviar notificacions i alertes a qualsevol dispositiu mòbil.</string>
   <string name="welcome_info_swipe">Llisqueu cap a la dreta o utilitzeu els botons de navegació de sota per continuar</string>
   <string name="welcome_info_settings1">La pàgina següent és per a la configuració de OOTT.</string>
   <string name="welcome_info_settings2">

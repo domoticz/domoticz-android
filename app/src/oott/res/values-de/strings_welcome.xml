@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Willkommen</string>
-  <string name="welcome_info_domoticz">OOTT (Powered by Domoticz)ist ein Home Automation System mit dem du dein Haus überwachen und steuern können. 
+  <string name="welcome_info_domoticz">OOTT ist ein Home Automation System mit dem du dein Haus überwachen und steuern können. 
 Du kannst verschiedene Geräte konfigurieren wie: Leuchten, Schalter, verschiedene Sensoren oder Temperatur, Regen, Wind, Stromverbrauch, Wasserstand und vieles mehr. 
 Benachrichtigungen können an jedes Mobilgerät gesendet werden.</string>
   <string name="welcome_info_swipe">Streiche nach rechts oder benutze die Navigationsschaltflächrn unten zum Fortfahren</string>

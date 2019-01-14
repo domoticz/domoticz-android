@@ -20,11 +20,11 @@
   ~  under the License.
   -->
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:tools="http://schemas.android.com/tools"
+                                                     android:id="@+id/coordinatorLayout"
+                                                     android:layout_width="fill_parent"
+                                                     android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -42,34 +42,14 @@
                 style="@style/debug_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/debug_textview_title" />
+                android:text="@string/debug_textview_title"/>
 
             <TextView
                 android:id="@+id/debugText"
                 style="@style/debug_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
-
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
-                style="@style/background_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:paddingBottom="@dimen/row_space"
-                android:paddingLeft="@dimen/row_space"
-                android:paddingRight="@dimen/row_space"
-                android:paddingTop="@dimen/row_space"
-                android:scrollbars="vertical" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/errorLayout"
@@ -84,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/error_image_description"
-                android:src="@drawable/sad_smiley" />
+                android:src="@drawable/sad_smiley"/>
 
             <TextView
                 android:id="@+id/errorTextOops"
@@ -94,7 +74,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:text="@string/oops"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"/>
 
             <TextView
                 android:id="@+id/errorTextWrong"
@@ -104,7 +84,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:text="@string/something_went_wrong"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_medium"/>
 
             <TextView
                 android:id="@+id/errorTextMessage"
@@ -115,10 +95,27 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/light_gray"
                 android:textSize="@dimen/text_size_small"
-                tools:text="Error: No network connection available" />
+                tools:text="Error: No network connection available"/>
 
         </RelativeLayout>
 
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                style="@style/background_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="vertical"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

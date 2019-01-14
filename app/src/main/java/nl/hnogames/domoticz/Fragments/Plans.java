@@ -25,22 +25,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.PlansAdapter;
+import nl.hnogames.domoticz.Helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -51,6 +56,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
 
@@ -63,6 +69,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private PlansAdapter mAdapter;
     private ArrayList<PlanInfo> mPlans;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -79,25 +87,31 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     @Override
     public void refreshFragment() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         processPlans();
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     public void processPlans() {
+        if (mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
         new GetCachedDataTask().execute();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         mSharedPrefs = new SharedPrefUtil(mContext);
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_plans);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -131,7 +145,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         });
 
         if (mRecyclerView == null) {
-            mRecyclerView = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+            mRecyclerView = getView().findViewById(R.id.my_recycler_view);
+            mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
             GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -163,13 +178,35 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
+
+        if (mItemTouchHelper == null) {
+            mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
+                    false));
+        }
+        if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+            mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        } else {
+            if (mItemTouchHelper != null)
+                mItemTouchHelper.attachToRecyclerView(null);
+        }
+
+        mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            @DebugLog
+            public void onRefresh() {
+                processPlans();
+            }
+        });
     }
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<PlanInfo> cachePlans = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cachePlans = (ArrayList<PlanInfo>) SerializableManager.readSerializedObject(mContext, "Plans");
                     Plans.this.mPlans = cachePlans;

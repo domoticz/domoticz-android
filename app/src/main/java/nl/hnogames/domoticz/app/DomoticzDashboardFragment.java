@@ -22,18 +22,9 @@
 package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,8 +37,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
@@ -55,15 +60,15 @@ import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class DomoticzDashboardFragment extends Fragment {
-
     public RecyclerView gridView;
-
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
@@ -75,6 +80,10 @@ public class DomoticzDashboardFragment extends Fragment {
     private boolean debug;
     private ViewGroup root;
     private String sort = "";
+
+    private int scrolledDistance = 0;
+    private int SCROLL_THRESHOLD = 600;
+    private boolean controlsVisible = true;
 
     public DomoticzDashboardFragment() {
     }
@@ -94,10 +103,26 @@ public class DomoticzDashboardFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
 
             mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.secondary,
-                R.color.secondary_dark,
-                R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
+    }
+
+    @DebugLog
+    public void hideViews() {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).hideViews();
+        controlsVisible = false;
+        scrolledDistance = 0;
+    }
+
+    @DebugLog
+    public void showViews() {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).showViews();
+        controlsVisible = true;
+        scrolledDistance = 0;
     }
 
     public String getSort() {
@@ -113,26 +138,81 @@ public class DomoticzDashboardFragment extends Fragment {
         } else return null;
     }
 
+    public ConfigInfo getServerConfigInfo(Context context) {
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            return ((MainActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+        } else if (activity instanceof PlanActivity) {
+            return ((PlanActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+        } else return null;
+    }
+
+    public UserInfo getCurrentUser(Context context, Domoticz domoticz) {
+        Activity activity = getActivity();
+        ConfigInfo config = getServerConfigInfo(context);
+        for (UserInfo user : config.getUsers()) {
+            if (user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                return user;
+        }
+        return null;
+    }
+
     public void sortFragment(String sort) {
         this.sort = sort;
         refreshFragment();
     }
 
     public void initViews(View root) {
-        gridView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
+        gridView = root.findViewById(R.id.my_recycler_view);
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getContext());
 
         setGridViewLayout();
-        coordinatorLayout = (CoordinatorLayout) root.findViewById(R.id.coordinatorLayout);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
+        //setting up our OnScrollListener
+        gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItem = 0;
+                try {
+                    firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                } catch (Exception ex) {
+                    int[] firstVisibleItems = null;
+                    firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPositions(firstVisibleItems);
+                    if (firstVisibleItems != null)
+                        firstVisibleItem = firstVisibleItems[0];
+                }
+                if (firstVisibleItem == 0) {
+                    if (!controlsVisible) {
+                        showViews();
+                    }
+                } else {
+                    if (scrolledDistance > SCROLL_THRESHOLD && controlsVisible) {
+                        hideViews();
+                    } else if (scrolledDistance < -SCROLL_THRESHOLD && !controlsVisible) {
+                        showViews();
+                    }
+                }
+                if ((controlsVisible && dy > 0) || (!controlsVisible && dy < 0)) {
+                    scrolledDistance += dy;
+                }
+            }
+        });
     }
 
     public void setGridViewLayout() {
 
         try {
             boolean isTablet = false;
-            float screenWidth = 0;
             boolean isPortrait = false;
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -143,7 +223,6 @@ public class DomoticzDashboardFragment extends Fragment {
             }
 
             gridView.setHasFixedSize(true);
-
             if (!mSharedPrefs.showDashboardAsList()) {
                 if (isTablet) {
                     if (isPortrait) {
@@ -215,14 +294,13 @@ public class DomoticzDashboardFragment extends Fragment {
      * @param fragment fragment to cast the DomoticzFragmentListener to
      */
     public void onAttachFragment(Fragment fragment) {
-
         fragmentName = fragment.toString();
 
         try {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -240,9 +318,10 @@ public class DomoticzDashboardFragment extends Fragment {
      * Checks for a active connection
      */
     public void checkConnection() {
-        List<Fragment> fragments = getFragmentManager().getFragments();
-        onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
-
+        if (listener == null) {
+            List<Fragment> fragments = getFragmentManager().getFragments();
+            onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
+        }
         mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
             addDebugText("Connection OK");
@@ -251,7 +330,6 @@ public class DomoticzDashboardFragment extends Fragment {
             listener.onConnectionFailed();
             setErrorMessage(getString(R.string.error_notConnected));
         }
-        ;
     }
 
     /**
@@ -336,7 +414,7 @@ public class DomoticzDashboardFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                        "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -350,7 +428,7 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -369,14 +447,14 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = (TextView) root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-            "Layout should have a ListView defined with the ID of listView");
+                "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

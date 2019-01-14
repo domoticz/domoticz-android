@@ -87,6 +87,8 @@ public class DomoticzValues {
             interface Action {
                 int DIM_LEVEL = 20;
                 int COLOR = 21;
+                int WWCOLOR = 22;
+                int KELVIN = 23;
             }
         }
 
@@ -108,6 +110,15 @@ public class DomoticzValues {
                 String SETPOINT = "SetPoint";
                 String YOULESS = "YouLess";
                 String SMARTWARES = "Smartwares";
+            }
+        }
+
+        interface Door {
+            interface State {
+                String UNLOCKED = "Unlocked";
+                String LOCKED = "Locked";
+                String OPEN = "Open";
+                String CLOSED = "Closed";
             }
         }
 
@@ -171,6 +182,8 @@ public class DomoticzValues {
                 int BLINDPERCENTAGEINVERTED = 16;
                 int SELECTOR = 18;
                 int DOORLOCK = 19;
+                int DOORLOCKINVERTED = 20;
+                int TEMP = 21;
             }
 
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -189,6 +202,7 @@ public class DomoticzValues {
                 String MEDIAPLAYER = "Media Player";
                 String DUSKSENSOR = "Dusk Sensor";
                 String DOORLOCK = "Door Lock";
+                String DOORLOCKINVERTED = "Door Lock Inverted";
                 String DOORCONTACT = "Door Contact";
                 String BLINDPERCENTAGE = "Blinds Percentage";
                 String BLINDVENETIAN = "Venetian Blinds EU";
@@ -199,6 +213,7 @@ public class DomoticzValues {
                 String WIND = "Wind";
                 String SELECTOR = "Selector";
                 String EVOHOME = "evohome";
+                String TEMP = "21";
             }
         }
 
@@ -213,6 +228,7 @@ public class DomoticzValues {
             @SuppressWarnings({"unused", "SpellCheckingInspection"})
             interface Name {
                 String RGB = "RGB";
+                String WW = "WW";
                 String SECURITYPANEL = "Security Panel";
                 String EVOHOME = "Evohome";
             }
@@ -274,6 +290,7 @@ public class DomoticzValues {
                 int FAVORITES = 37;
                 int UPDATEVAR = 40;
                 int IMAGE = 41;
+                int CHECKLOGIN = 42;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -287,6 +304,10 @@ public class DomoticzValues {
                 int RGBCOLOR = 107;
                 int MODAL_SWITCHES = 108;
                 int EVENTS_UPDATE_STATUS = 109;
+                int FULLLIGHT = 110;
+                int NIGHTLIGHT = 111;
+                int WWCOLOR = 112;
+                int KELVIN = 113;
             }
         }
 
@@ -391,6 +412,8 @@ public class DomoticzValues {
         interface Switch {
             String DIM_LEVEL = "Set%20Level&level=";
             String COLOR = "&hue=%hue%&brightness=%bright%&iswhite=false";
+            String KELVIN = "&kelvin=";
+            String WWCOLOR = "&brightness=%bright%&color={\"m\":2,\"t\":%ww%,\"r\":0,\"g\":0,\"b\":0,\"cw\":%cw%,\"ww\":%ww%}";
             String GET = "/json.htm?type=command&param=switchlight&idx=";
             String CMD = "&switchcmd=";
             String LEVEL = "&level=";
@@ -460,6 +483,7 @@ public class DomoticzValues {
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
+            String CHECKLOGIN = "/json.htm?type=command&param=logincheck";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -474,6 +498,9 @@ public class DomoticzValues {
             String EVENTS = "/json.htm?type=events&param=list";
             String EVENTS_UPDATE_STATUS = "/json.htm?type=events&param=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
+            String KELVIN = "/json.htm?type=command&param=setkelvinlevel&idx=";
+            String FULLLIGHT = "/json.htm?param=fulllight&type=command&idx=";
+            String NIGHTLIGHT = "/json.htm?param=nightlight&type=command&idx=";
             String SETTINGS = "/json.htm?type=settings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";

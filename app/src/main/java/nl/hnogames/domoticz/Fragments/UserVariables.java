@@ -23,20 +23,22 @@ package nl.hnogames.domoticz.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Bundle;
 import android.text.InputType;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.Adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.Interfaces.UserVariablesClickListener;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -44,9 +46,9 @@ import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
+import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener, UserVariablesClickListener {
-
     private ArrayList<UserVariableInfo> mUserVariableInfos;
     private UserVariablesAdapter adapter;
     private Context mContext;
@@ -70,9 +72,16 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     @DebugLog
     public void onAttach(Context context) {
         super.onAttach(context);
+        onAttachFragment(this);
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(R.string.title_vars);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        onAttachFragment(this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -141,20 +150,27 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     @Override
     public void onUserVariableClick(final UserVariableInfo clickedVar) {
+        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
+            return;
+        }
         new MaterialDialog.Builder(mContext)
-            .title(R.string.title_vars)
-            .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
-            .inputType(InputType.TYPE_CLASS_TEXT)
-            .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
-                @Override
-                public void onInput(MaterialDialog dialog, CharSequence input) {
-                    if (validateInput(String.valueOf(input), clickedVar.getType())) {
-                        updateUserVariable(String.valueOf(input), clickedVar);
-                    } else {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                .title(R.string.title_vars)
+                .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (validateInput(String.valueOf(input), clickedVar.getType())) {
+                            updateUserVariable(String.valueOf(input), clickedVar);
+                        } else {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                        }
                     }
-                }
-            }).show();
+                }).show();
     }
 
     private boolean validateInput(String input, String type) {
@@ -198,7 +214,11 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         ArrayList<UserVariableInfo> cacheUserVariables = null;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mContext == null)
+                return false;
+            if (mPhoneConnectionUtil == null)
+                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
                     UserVariables.this.mUserVariableInfos = cacheUserVariables;
@@ -209,6 +229,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         }
 
         protected void onPostExecute(Boolean result) {
+            if (mContext == null)
+                return;
             if (cacheUserVariables != null)
                 createListView();
 

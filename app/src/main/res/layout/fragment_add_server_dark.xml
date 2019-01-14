@@ -18,35 +18,36 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/welcome_top_margin"
-    android:windowSoftInputMode="adjustPan">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/welcome_top_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:windowSoftInputMode="adjustPan">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_server_name_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
+            android:layout_height="wrap_content"
+            android:hint="@string/servername">
+
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/server_name_input"
+                style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textEmailAddress"
-                android:textColor="@color/white"
-                android:hint="@string/servername" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/white"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/server_settings_title"
@@ -56,20 +57,23 @@
             android:text="@string/welcome_server_settings_title"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_welcomePage3_serverSettings_title"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_height="wrap_content">
-            <EditText
+            android:hint="@string/welcome_remote_server_address">
+
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/remote_server_input"
+                style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textNoSuggestions"
-                android:textColor="@color/white"
-                android:hint="@string/welcome_remote_server_address" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/white"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -81,27 +85,30 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                    <Spinner
-                        android:id="@+id/remote_protocol_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:paddingTop="3dp"
-                        android:spinnerMode="dropdown" />
+                <Spinner
+                    android:id="@+id/remote_protocol_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="3dp"
+                    android:spinnerMode="dropdown"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_weight="0"
-                    android:layout_height="wrap_content">
-                    <EditText
+                    android:hint="@string/welcome_remote_server_port">
+
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/remote_port_input"
+                        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberSigned"
-                        android:textColor="@color/white"
-                        android:hint="@string/welcome_remote_server_port" />
-                </android.support.design.widget.TextInputLayout>
+                        android:textColor="@color/white"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </TableRow>
         </TableLayout>
 
@@ -111,34 +118,40 @@
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="@string/welcome_remote_server_username"
                 android:minWidth="@dimen/width_min_welcomePage3_username_input">
-                <EditText
+
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/remote_username_input"
-                    android:inputType="textNoSuggestions"
+                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
                     android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:hint="@string/welcome_remote_server_username" />
-            </android.support.design.widget.TextInputLayout>
+                    android:textColor="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <EditText
+                android:layout_weight="1"
+                android:hint="@string/welcome_remote_server_password">
+
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/remote_password_input"
+                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:hint="@string/welcome_remote_server_password" />
-            </android.support.design.widget.TextInputLayout>
+                    android:textColor="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <CheckBox
@@ -149,236 +162,210 @@
             android:layout_marginTop="10dp"
             android:text="@string/show_password"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="@dimen/text_size_small"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/welcome_remote_server_directory">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/remote_directory_input"
+                style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                android:textColor="@color/white"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/advancedSettings_label"
+            android:id="@+id/local_server_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/welcome_advancedSettings"
+            android:text="@string/welcome_local_server_used_switch_title"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_large"/>
 
         <TextView
-            android:id="@+id/advancedSettings_summary"
+            android:id="@+id/local_server_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@string/welcome_advancedSettings_summary"
-            android:textColor="@color/white" />
+            android:text="@string/welcome_local_server_used_switch_summary"
+            android:textColor="@color/white"/>
 
-        <Switch
-            android:id="@+id/advancedSettings_switch"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+app:useMaterialThemeColors="false"
+            android:id="@+id/localServer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:checked="false" />
+            android:layout_marginTop="2dp"
+            android:checked="false"/>
 
         <LinearLayout
-            android:id="@+id/advancedSettings_layout"
+            android:id="@+id/local_server_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:visibility="gone">
 
-            <android.support.design.widget.TextInputLayout
+            <TextView
+                android:id="@+id/local_ssid_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/welcome_local_server_ssid"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large"/>
+
+            <nl.hnogames.domoticz.UI.MultiSelectionSpinner
+                android:id="@+id/local_wifi"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/remote_directory_input"
+                android:layout_height="wrap_content"
+                android:prompt="@string/welcome_ssid_spinner_prompt"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/set_ssid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_status_dark"
+                android:text="@string/add"
+                android:textSize="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/welcome_local_server_address">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/local_server_input"
+                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:inputType="textNoSuggestions"
-                    android:textColor="@color/white"
-                    android:hint="@string/welcome_remote_server_directory" />
-            </android.support.design.widget.TextInputLayout>
+                    android:textColor="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/startScreen_title"
-                android:layout_width="wrap_content"
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="@string/welcome_server_startScreen"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_large" />
+                android:stretchColumns="1">
 
-            <Spinner
-                android:id="@+id/startScreen_spinner"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/local_server_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/welcome_local_server_used_switch_title"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_large" />
+                    <Spinner
+                        android:id="@+id/local_protocol_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:paddingTop="3dp"
+                        android:spinnerMode="dropdown"/>
 
-            <TextView
-                android:id="@+id/local_server_summary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="@string/welcome_local_server_used_switch_summary"
-                android:textColor="@color/white" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_weight="0"
+                        android:hint="@string/welcome_local_server_port">
 
-            <Switch
-                android:id="@+id/localServer_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:checked="false" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/local_port_input"
+                            style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:textColor="@color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </TableRow>
+            </TableLayout>
 
             <LinearLayout
-                android:id="@+id/local_server_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/local_ssid_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:text="@string/welcome_local_server_ssid"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_large" />
-
-                <nl.hnogames.domoticz.UI.MultiSelectionSpinner
-                    android:id="@+id/local_wifi"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:prompt="@string/welcome_ssid_spinner_prompt" />
-
-                <Button
-                    android:id="@+id/set_ssid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="right"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_status_dark"
-                    android:text="@string/add"
-                    android:textSize="10dp" />
+                    android:hint="@string/welcome_local_server_username"
+                    android:minWidth="@dimen/width_min_welcomePage3_username_input">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/local_server_input"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/local_username_input"
+                        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textNoSuggestions"
-                        android:layout_marginTop="15dp"
-                        android:textColor="@color/white"
-                        android:hint="@string/welcome_local_server_address" />
-                </android.support.design.widget.TextInputLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:stretchColumns="1">
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-                            <Spinner
-                                android:id="@+id/local_protocol_spinner"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:paddingTop="3dp"
-                                android:spinnerMode="dropdown" />
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_marginTop="15dp"
-                            android:layout_weight="0"
-                            android:layout_height="wrap_content">
-                            <EditText
-                                android:id="@+id/local_port_input"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberSigned"
-                                android:textColor="@color/white"
-                                android:hint="@string/welcome_local_server_port" />
-                        </android.support.design.widget.TextInputLayout>
-                    </TableRow>
-                </TableLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="15dp"
-                        android:layout_height="wrap_content"
                         android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                        android:layout_weight="1">
-                        <EditText
-                            android:id="@+id/local_username_input"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textNoSuggestions"
-                            android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                            android:textColor="@color/white"
-                            android:hint="@string/welcome_local_server_username" />
-                    </android.support.design.widget.TextInputLayout>
+                        android:textColor="@color/white"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="15dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-                        <EditText
-                            android:id="@+id/local_password_input"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:textColor="@color/white"
-                            android:hint="@string/welcome_local_server_password" />
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
-
-                <CheckBox
-                    android:id="@+id/showpasswordlocal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/show_password"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_small" />
-
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/local_directory_input"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:hint="@string/welcome_local_server_password">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/local_password_input"
+                        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:inputType="textNoSuggestions"
-                        android:textColor="@color/white"
-                        android:hint="@string/welcome_local_server_directory" />
-                </android.support.design.widget.TextInputLayout>
+                        android:inputType="textPassword"
+                        android:textColor="@color/white"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/showpasswordlocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:text="@string/show_password"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_small"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/welcome_local_server_directory">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/local_directory_input"
+                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/save_server"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -386,8 +373,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:background="@drawable/button_status_dark"
-            android:text="Save"
-            android:textSize="10dp" />
+            android:text="Save"/>
     </LinearLayout>
 </ScrollView>

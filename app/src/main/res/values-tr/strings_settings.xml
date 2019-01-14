@@ -21,181 +21,176 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="settingsActivity_name">Ayarlar</string>
-  <string name="cameraActivity_name">Kamera</string>
-  <!--        Categories             -->
-  <string name="category_generic">Genel</string>
-  <string name="category_wear">Android Wear</string>
-  <string name="category_auto">Android Auto</string>
-  <string name="category_server">Sunucu</string>
-  <string name="category_geofencing">Coğrafik sınır</string>
-  <string name="category_info">Bilgi</string>
-  <string name="category_advanced">Gelişmiş</string>
-  <string name="category_language">Dil</string>
-  <string name="category_talk_back">Geri bildirim</string>
-  <string name="category_notification">Bildirimler</string>
-  <string name="category_debug">Hata ayıklama</string>
-  <string name="category_export">Dışa aktarma/içe aktarma ayarları</string>
-  <string name="category_theme">Tema</string>
-  <string name="category_nfc">NFC bağlantıları</string>
-  <string name="category_startup_security">Güvenlik</string>
-  <string name="category_account">Hesap</string>
-  <string name="category_QRCode">QR kodu</string>
-  <string name="category_Speech">Konuşma</string>
-  <string name="category_Reset">Sıfırla</string>
-  <!--        Generic settings       -->
-  <string name="startup_screen">Başlangıç ekranı</string>
-  <string name="enable_items">Öğeleri etkinleştir/devre dışı bırak</string>
-  <string name="sort_dashboardLikeServer_title">Kontrol paneli sıralama</string>
-  <string name="sort_dashboardLikeServer_on">Kontrol paneli sunucuya göre sırala</string>
-  <string name="sort_dashboardLikeServer_off">Kontrol paneli alfabetik sırala</string>
-  <string name="extra_data_title">Kontrol panelinde ek veriler</string>
-  <string name="show_extra_data_on">Kontrol paneli üzerinde ekstra veri göster</string>
-  <string name="show_extra_data_off">Kontrol paneli üzerinde ekstra verileri gizle</string>
-  <string name="always_on_title">Uyandırma kilidi</string>
-  <string name="always_on_on">Ekranı herzaman kilitle</string>
-  <string name="always_on_off">Ekran açıkken kilitleme</string>
-  <string name="always_auto_refresh">Auto Refresh</string>
-  <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-  <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
-  <string name="switch_buttons_title">Anahtarlar</string>
-  <string name="switch_buttons_on">Açma/kapama düğmesi ile anahtarları göster</string>
-  <string name="switch_buttons_off">Açık / kapalı düğmeleri olan anahtarları göster
-</string>
-  <string name="dashboard_list_title">Kontrol paneli ızgarası</string>
-  <string name="show_dashboard_list_on">Kontrol panelini liste olarak göster</string>
-  <string name="show_dashboard_list_off">Kontrol panelini tablo olarak göster</string>
-  <!--        Wear settings       -->
-  <string name="enable_wear_select">Android Wear özel öğeleri</string>
-  <string name="custom_wear_select">Android Wear anahtarlarını seçin</string>
-  <string name="custom_wear_select_desc">Android Wear cihazınızda hangi anahtarları görmek istediğinizi seçin
-</string>
-  <string name="wear_custom_on">Android Wear özel öğeleri etkinleştir</string>
-  <string name="wear_custom_off">Android Wear özel öğeleri devredışı bırak</string>
-  <!--        Auto settings       -->
-  <string name="auto_custom_on">Android otomatik bildirimleri etkinleştir</string>
-  <string name="auto_custom_off">Android otomatik bildirimleri devre dışı bırak</string>
-  <!--        Geofencing settings -->
-  <string name="geofencing_configure">Geofencing yapılandırma</string>
-  <!--        Theming settings -->
-  <string name="config_theme">Tema ayarla</string>
-  <string name="set_dark_theme">Karanlık temaya geç</string>
-  <string name="set_light_theme">Açık temeya geç</string>
-  <!--        Talk Back Settings   -->
-  <string name="set_talk_back_on">Domoticz :sana geri dönelim
-</string>
-  <string name="set_talk_back_off">Geri bildirimi kapat</string>
-  <!--        Import/Export settings  -->
-  <string name="settings_imported">Ayarlar alındı, lütfen Domoticz\'i yeniden başlatın.
-</string>
-  <string name="settings_import_failed">Ayarlar içe aktarılamadı</string>
-  <string name="settings_exported">Ayarlar verildi, lütfen Domoticz\'i yeniden başlatın.
-</string>
-  <string name="settings_export_failed">Ayarlar dışa aktarılamadı</string>
-  <!--        Preference screens      -->
-  <string name="server_settings">Sunucu bağlantı ayarları</string>
-  <string name="server_force_fetch_config">Sunucu yapılandırmasını getir</string>
-  <string name="nfc_settings">NFC bağlantıları kurulumu</string>
-  <string name="speech_settings">Konuşma komutları kurulumu</string>
-  <string name="title_activity_server_settings">Sunucu Ayarları</string>
-  <string name="multi_server">Çoklu sunucu</string>
-  <string name="enable_nfc">NFC etkinleştir</string>
-  <string name="enable_speech">Konuşma tanımayı etkinleştir</string>
-  <string name="export_settings">Ayarları Dışa Aktar</string>
-  <string name="reset_settings">Tüm uygulama ayarlarını sıfırlayın (UYARI!)
-</string>
-  <string name="import_settings">Ayarları İçe Aktar</string>
-  <string name="multi_server_settings">Birden çok sunucu desteğini etkinleştir</string>
-  <string name="nfc_enable_settings">NFC bağlantıları etkinleştir</string>
-  <string name="speech_enable_settings">Konuşma tanımayı etkinleştir</string>
-  <string name="server">Sunucu</string>
-  <string name="qrcode_settings">QR kodları kurulumu</string>
-  <string name="enable_qrcode">QR kodları etkinleştir</string>
-  <string name="qrcode_enable_settings">QR kodları işlevini etkinleştir</string>
-  <string name="security_settings">Kurulum güvenliği</string>
-  <string name="enable_security">Enable fingerprint protection on startup</string>
-  <string name="disable_security">Disable fingerprint protection on startup</string>
-  <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
-  <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
-  <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
-  <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
-  <!--        Widgets     -->
-  <string name="category_widgets">Widgets (BETA)</string>
-  <string name="widget_description">Enable or Disable Widget on this device</string>
-  <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
-  <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
-  <!--        GCM settings      -->
-  <string name="notification_settings_id">Google Cloud Messaging ID</string>
-  <string name="notification_settings_push">Push your registration id to Domoticz</string>
-  <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
-  <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
-  <string name="notification_show_title">Last Notifications</string>
-  <string name="notification_show_nothing">No notifications found</string>
-  <string name="notification_show">Show last couple of Notifications</string>
-  <!--        Notification settings      -->
-  <string name="overwrite_notifications_title">Overwrite Notifications</string>
-  <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
-  <string name="enable_notifications_title">Enable Notifications</string>
-  <string name="enable_notifications">Enable notifications on this device</string>
-  <string name="notification_screen_title">Notification settings</string>
-  <string name="notification_vibrate_title">Vibrate</string>
-  <string name="notification_vibrate_on">Vibrate when an notification is received</string>
-  <string name="notification_vibrate_off">Do not vibrate</string>
-  <string name="notification_sound_title">Sound</string>
-  <string name="notification_sound_summary">Bildirim geldiğinde bildirim sesi kullan</string>
-  <string name="suppress_notifications_select">Bildirimleri seçin</string>
-  <string name="suppress_notifications">Bu aygıt üzerindeki belirli bildirimleri seçin</string>
-  <string name="suppress_notifications_title">Bildirimleri Seçin</string>
-  <string name="alarm_notifications_select">Alarm bildirimleri seçin</string>
-  <string name="alarm_notifications">Belirli bildirimleri için bir Alarm sesi</string>
-  <string name="clear_notifications">Bildirim günlüklerini temizle</string>
-  <string name="alarm_notifications_title">Alarm bildirimleri</string>
-  <string name="alarm">Alarm</string>
-  <string name="alarmtimer_title">Alarm zamanlayıcı</string>
-  <string name="alarmtimer">Alarm zaman saniye sayısı</string>
-  <string name="default_values">Varsayılan değerlerler</string>
-  <string name="default_values_min_error">Max değeri Min değerinden yüksek olmalıdır</string>
-  <string name="default_values_max_error">Max değeri Min değerinden yüksek olmalıdır</string>
-  <!--        Information category       -->
-  <string name="info_version">Sürüm</string>
-  <string name="info_domoticz_version">Domoticz sürüm</string>
-  <string name="info_about">Domoticz hakkında</string>
-  <string name="info_credits">Kredi</string>
-  <string name="info_credits_text">Domoticz Android için çeşitli açık kaynak kütüphaneleri ile mümkün olmaktadır</string>
-  <!--        Debug category       -->
-  <string name="debug_switch_title">Hata ayıklama</string>
-  <string name="debug_switch_summary_on">Hata ayıklama etkin</string>
-  <string name="debug_switch_summary_off">Hata ayıklama devre dışı</string>
-  <!--        Geo settings activity       -->
-  <string name="error_atLeastOneItemInDrawer">Çekmece içerisinde en az bir öğeye ihtiyacınız var.
-</string>
-  <!--        Server update category       -->
-  <string name="title_activity_update">Sunucuyu Güncelle</string>
-  <string name="error_couldNotCheckForUpdates">"Güncelleştirmeler kontrol edilemedi: %1$s"</string>
-  <string name="error_couldNotCheckForConfig">"Domoticz sunucu yapılandırması alınamadı: %1$s"</string>
-  <string name="update_available_enhanced">Server güncelleştirmesi kullanılabilir: %1$s sürüm: %2$s</string>
-  <string name="check_for_update_title">Güncellemeleri kontrol et</string>
-  <string name="check_for_update">Domoticz sistem güncellemelerini kontrol etmemizi ister misin?</string>
-  <string name="update_server_warning">Sunucunuz güncellenirken bu uygulama düzgün çalışmayabilir.
-</string>
-  <string name="update_server_downloadNotReady1">Güncelleme henüz tamamen indirilmemiştir.
-</string>
-  <string name="update_server_downloadNotReady2">Lütfen daha sonra tekrar dene.</string>
-  <string name="server_update_available">Server güncelleştirmesi kullanılabilir</string>
-  <string name="update_server">Sunucuyu Güncelle</string>
-  <string name="server_update_revision">Sunucu güncelleme gözden geçirme</string>
-  <string name="server_version">Sunucu Sürümü</string>
-  <string name="server_update">Sunucu güncellemesi</string>
-  <string name="please_wait_while_we_check">Sunucunuzun güncellemeye hazır olup olmadığını kontrol ederken lütfen bekleyin</string>
-  <string name="server_update_not_ready">Server güncelleştirmesi indirilemedi</string>
-  <string name="please_wait_while_server_updated">Sunucu güncelleştirilirken bekleyin.</string>
-  <string name="server_update_done">Sunucu güncellendi</string>
-  <string name="update_not_started">Güncelleme başlatılamadı</string>
-  <string name="update_not_started_unknown_error">Bilinmeyen bir hata nedeniyle güncelleştirme başlatılamadı</string>
-  <string name="server_update_not_available">Server güncelleştirmesi kullanılabilir değil</string>
-  <string name="click_to_update_server">Sunucu güncellemek için buraya tıklayın</string>
-  <string name="debug_test_text">Hata ayıklama testi</string>
-  <string name="restart_required_title">Yeniden başlatmak gerekli!</string>
-  <string name="restart_now">Şimdi yeniden başlatılsın mı?</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Ayarlar</string>
+    <string name="cameraActivity_name">Kamera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Genel</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Sunucu</string>
+    <string name="category_geofencing">Coğrafik sınır</string>
+    <string name="category_info">Bilgi</string>
+    <string name="category_advanced">Gelişmiş</string>
+    <string name="category_language">Dil</string>
+    <string name="category_talk_back">Geri bildirim</string>
+    <string name="category_notification">Bildirimler</string>
+    <string name="category_debug">Hata ayıklama</string>
+    <string name="category_export">Dışa aktarma/içe aktarma ayarları</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_nfc">NFC bağlantıları</string>
+    <string name="category_startup_security">Güvenlik</string>
+    <string name="category_account">Hesap</string>
+    <string name="category_QRCode">QR kodu</string>
+    <string name="category_Speech">Konuşma</string>
+    <string name="category_Reset">Sıfırla</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Başlangıç ekranı</string>
+    <string name="enable_items">Öğeleri etkinleştir/devre dışı bırak</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_dashboardLikeServer_off">Kontrol paneli alfabetik sırala</string>
+    <string name="extra_data_title">Kontrol panelinde ek veriler</string>
+    <string name="show_extra_data_on">Kontrol paneli üzerinde ekstra veri göster</string>
+    <string name="show_extra_data_off">Kontrol paneli üzerinde ekstra verileri gizle</string>
+    <string name="always_on_title">Uyandırma kilidi</string>
+    <string name="always_on_on">Ekranı herzaman kilitle</string>
+    <string name="always_on_off">Ekran açıkken kilitleme</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="switch_buttons_title">Anahtarlar</string>
+    <string name="switch_buttons_on">Açma/kapama düğmesi ile anahtarları göster</string>
+    <string name="switch_buttons_off">Açık / kapalı düğmeleri olan anahtarları göster</string>
+    <string name="dashboard_list_title">Kontrol paneli ızgarası</string>
+    <string name="show_dashboard_list_on">Kontrol panelini liste olarak göster</string>
+    <string name="show_dashboard_list_off">Kontrol panelini tablo olarak göster</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Android Wear özel öğeleri</string>
+    <string name="custom_wear_select">Android Wear anahtarlarını seçin</string>
+    <string name="custom_wear_select_desc">Android Wear cihazınızda hangi anahtarları görmek istediğinizi seçin</string>
+    <string name="wear_custom_on">Android Wear özel öğeleri etkinleştir</string>
+    <string name="wear_custom_off">Android Wear özel öğeleri devredışı bırak</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Android otomatik bildirimleri etkinleştir</string>
+    <string name="auto_custom_off">Android otomatik bildirimleri devre dışı bırak</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Geofencing yapılandırma</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Tema ayarla</string>
+    <string name="set_dark_theme">Karanlık temaya geç</string>
+    <string name="set_light_theme">Açık temeya geç</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Domoticz :sana geri dönelim</string>
+    <string name="set_talk_back_off">Geri bildirimi kapat</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Ayarlar alındı, lütfen Domoticz\'i yeniden başlatın.</string>
+    <string name="settings_import_failed">Ayarlar içe aktarılamadı</string>
+    <string name="settings_exported">Ayarlar verildi, lütfen Domoticz\'i yeniden başlatın.</string>
+    <string name="settings_export_failed">Ayarlar dışa aktarılamadı</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Sunucu bağlantı ayarları</string>
+    <string name="server_force_fetch_config">Sunucu yapılandırmasını getir</string>
+    <string name="nfc_settings">NFC bağlantıları kurulumu</string>
+    <string name="speech_settings">Konuşma komutları kurulumu</string>
+    <string name="title_activity_server_settings">Sunucu Ayarları</string>
+    <string name="multi_server">Çoklu sunucu</string>
+    <string name="enable_nfc">NFC etkinleştir</string>
+    <string name="enable_speech">Konuşma tanımayı etkinleştir</string>
+    <string name="export_settings">Ayarları Dışa Aktar</string>
+    <string name="reset_settings">Tüm uygulama ayarlarını sıfırlayın (UYARI!)</string>
+    <string name="import_settings">Ayarları İçe Aktar</string>
+    <string name="multi_server_settings">Birden çok sunucu desteğini etkinleştir</string>
+    <string name="nfc_enable_settings">NFC bağlantıları etkinleştir</string>
+    <string name="speech_enable_settings">Konuşma tanımayı etkinleştir</string>
+    <string name="server">Sunucu</string>
+    <string name="qrcode_settings">QR kodları kurulumu</string>
+    <string name="enable_qrcode">QR kodları etkinleştir</string>
+    <string name="qrcode_enable_settings">QR kodları işlevini etkinleştir</string>
+    <string name="security_settings">Kurulum güvenliği</string>
+    <string name="enable_security">Enable fingerprint protection on startup</string>
+    <string name="disable_security">Disable fingerprint protection on startup</string>
+    <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+    <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+    <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Enable or Disable Widget on this device</string>
+    <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+    <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Cloud Messaging ID</string>
+    <string name="notification_settings_push">Push your registration id to Domoticz</string>
+    <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
+    <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
+    <string name="notification_show_title">Last Notifications</string>
+    <string name="notification_show_nothing">No notifications found</string>
+    <string name="notification_show">Show last couple of Notifications</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Overwrite Notifications</string>
+    <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
+    <string name="enable_notifications_title">Enable Notifications</string>
+    <string name="enable_notifications">Enable notifications on this device</string>
+    <string name="notification_screen_title">Notification settings</string>
+    <string name="notification_vibrate_title">Vibrate</string>
+    <string name="notification_vibrate_on">Vibrate when an notification is received</string>
+    <string name="notification_vibrate_off">Do not vibrate</string>
+    <string name="notification_sound_title">Sound</string>
+    <string name="notification_sound_summary">Bildirim geldiğinde bildirim sesi kullan</string>
+    <string name="suppress_notifications_select">Bildirimleri seçin</string>
+    <string name="suppress_notifications">Bu aygıt üzerindeki belirli bildirimleri seçin</string>
+    <string name="suppress_notifications_title">Bildirimleri Seçin</string>
+    <string name="alarm_notifications_select">Alarm bildirimleri seçin</string>
+    <string name="alarm_notifications">Belirli bildirimleri için bir Alarm sesi</string>
+    <string name="clear_notifications">Bildirim günlüklerini temizle</string>
+    <string name="alarm_notifications_title">Alarm bildirimleri</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Alarm zamanlayıcı</string>
+    <string name="alarmtimer">Alarm zaman saniye sayısı</string>
+    <string name="default_values">Varsayılan değerlerler</string>
+    <string name="default_values_min_error">Max değeri Min değerinden yüksek olmalıdır</string>
+    <string name="default_values_max_error">Max değeri Min değerinden yüksek olmalıdır</string>
+    <!--        Information category       -->
+    <string name="info_version">Sürüm</string>
+    <string name="info_domoticz_version">Domoticz sürüm</string>
+    <string name="info_about">Domoticz hakkında</string>
+    <string name="info_credits">Kredi</string>
+    <string name="info_credits_text">Domoticz Android için çeşitli açık kaynak kütüphaneleri ile mümkün olmaktadır</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Hata ayıklama</string>
+    <string name="debug_switch_summary_on">Hata ayıklama etkin</string>
+    <string name="debug_switch_summary_off">Hata ayıklama devre dışı</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Çekmece içerisinde en az bir öğeye ihtiyacınız var.</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Sunucuyu Güncelle</string>
+    <string name="error_couldNotCheckForUpdates">"Güncelleştirmeler kontrol edilemedi: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Domoticz sunucu yapılandırması alınamadı: %1$s"</string>
+    <string name="update_available_enhanced">Server güncelleştirmesi kullanılabilir: %1$s sürüm: %2$s</string>
+    <string name="check_for_update_title">Güncellemeleri kontrol et</string>
+    <string name="check_for_update">Domoticz sistem güncellemelerini kontrol etmemizi ister misin?</string>
+    <string name="update_server_warning">Sunucunuz güncellenirken bu uygulama düzgün çalışmayabilir.</string>
+    <string name="update_server_downloadNotReady1">Güncelleme henüz tamamen indirilmemiştir.</string>
+    <string name="update_server_downloadNotReady2">Lütfen daha sonra tekrar dene.</string>
+    <string name="server_update_available">Server güncelleştirmesi kullanılabilir</string>
+    <string name="update_server">Sunucuyu Güncelle</string>
+    <string name="server_update_revision">Sunucu güncelleme gözden geçirme</string>
+    <string name="server_version">Sunucu Sürümü</string>
+    <string name="server_update">Sunucu güncellemesi</string>
+    <string name="please_wait_while_we_check">Sunucunuzun güncellemeye hazır olup olmadığını kontrol ederken lütfen bekleyin</string>
+    <string name="server_update_not_ready">Server güncelleştirmesi indirilemedi</string>
+    <string name="please_wait_while_server_updated">Sunucu güncelleştirilirken bekleyin.</string>
+    <string name="server_update_done">Sunucu güncellendi</string>
+    <string name="update_not_started">Güncelleme başlatılamadı</string>
+    <string name="update_not_started_unknown_error">Bilinmeyen bir hata nedeniyle güncelleştirme başlatılamadı</string>
+    <string name="server_update_not_available">Server güncelleştirmesi kullanılabilir değil</string>
+    <string name="click_to_update_server">Sunucu güncellemek için buraya tıklayın</string>
+    <string name="debug_test_text">Hata ayıklama testi</string>
+    <string name="restart_required_title">Yeniden başlatmak gerekli!</string>
+    <string name="restart_now">Şimdi yeniden başlatılsın mı?</string>
 </resources>

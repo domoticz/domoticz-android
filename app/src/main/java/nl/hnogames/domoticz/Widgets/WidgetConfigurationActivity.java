@@ -24,9 +24,6 @@ package nl.hnogames.domoticz.Widgets;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +36,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import nl.hnogames.domoticz.Adapters.WidgetsAdapter;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
@@ -153,7 +153,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                             final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
-                                    WidgetConfigurationActivity.this, domoticz);
+                                        WidgetConfigurationActivity.this, domoticz);
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override
@@ -200,15 +200,15 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private void showSelectorDialog(final DevicesInfo selector, final String pass) {
         final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
-            .title(R.string.selector_value)
-            .items(levelNames)
-            .itemsCallback(new MaterialDialog.ListCallback() {
-                @Override
-                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    getBackground(selector, pass, String.valueOf(text));
-                }
-            })
-            .show();
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        getBackground(selector, pass, String.valueOf(text));
+                    }
+                })
+                .show();
     }
 
     private int getWidgetLayout(String background, DevicesInfo mSelectedSwitch) {
@@ -257,17 +257,17 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
 
     private void getBackground(final DevicesInfo mSelectedSwitch, final String password, final String value) {
         new MaterialDialog.Builder(this)
-            .title(this.getString(R.string.widget_background))
-            .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    showAppWidget(mSelectedSwitch, password, value, getWidgetLayout(String.valueOf(text), mSelectedSwitch));
-                    return true;
-                }
-            })
-            .positiveText(R.string.ok)
-            .show();
+                .title(this.getString(R.string.widget_background))
+                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        showAppWidget(mSelectedSwitch, password, value, getWidgetLayout(String.valueOf(text), mSelectedSwitch));
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .show();
     }
 
     private void showAppWidget(DevicesInfo mSelectedSwitch, String password, String value, int layoutId) {
@@ -277,7 +277,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         int idx = mSelectedSwitch.getIdx();
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                INVALID_APPWIDGET_ID);
+                    INVALID_APPWIDGET_ID);
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
                 Log.i(TAG, "Widget without a type saved");
                 mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
@@ -291,7 +291,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                 }
             }
             Intent startService = new Intent(WidgetConfigurationActivity.this,
-                WidgetProviderLarge.UpdateWidgetService.class);
+                    WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
@@ -318,7 +318,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchMenuItem = menu.findItem(R.id.search);
         searchViewAction = (SearchView) MenuItemCompat
-            .getActionView(searchMenuItem);
+                .getActionView(searchMenuItem);
         searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -338,7 +338,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         int withButton = 0;
         if (s != null) {
             if (s.getSwitchTypeVal() == 0 &&
-                (UsefulBits.isEmpty(s.getSwitchType()))) {
+                    (UsefulBits.isEmpty(s.getSwitchType()))) {
                 switch (s.getType()) {
                     case DomoticzValues.Scene.Type.SCENE:
                         withButton = BUTTON_TOGGLE;

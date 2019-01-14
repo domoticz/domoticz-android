@@ -21,18 +21,18 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="178dp"
-    android:background="@drawable/darkheader"
-    android:orientation="vertical"
-    android:weightSum="1">
+                android:layout_width="match_parent"
+                android:layout_height="178dp"
+                android:background="@drawable/darkheader"
+                android:orientation="vertical"
+                android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_marginLeft="16dp"
             android:textColor="#ffffff"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/email"
@@ -63,5 +63,5 @@
         android:layout_height="70dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"/>
 </RelativeLayout>

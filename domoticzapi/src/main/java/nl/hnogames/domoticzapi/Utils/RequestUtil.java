@@ -23,7 +23,7 @@ package nl.hnogames.domoticzapi.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
@@ -371,7 +371,12 @@ public class RequestUtil {
         addToRequestQueue(jsonObjReq, queue);
     }
 
-    public static ImageLoader getImageLoader(final Domoticz domoticz, final SessionUtil sessionUtil, Context context) {
+    public static ImageLoader getImageLoader(final Domoticz domoticz,
+                                             final String username,
+                                             final String password,
+                                             final SessionUtil sessionUtil,
+                                             final boolean usePreviousSession,
+                                             Context context) {
         if (domoticz == null)
             return null;
 
@@ -381,7 +386,7 @@ public class RequestUtil {
             @Override
             protected com.android.volley.Request<Bitmap> makeImageRequest(String requestUrl, int maxWidth, int maxHeight,
                                                                           ImageView.ScaleType scaleType, final String cacheKey) {
-                return new ImageRequest(requestUrl, new Response.Listener<Bitmap>() {
+                Request<Bitmap> request = new ImageRequest(requestUrl, new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap response) {
                         onGetImageSuccess(cacheKey, response);
@@ -395,6 +400,8 @@ public class RequestUtil {
                 }) {
 
                     @Override
+                    // HTTP basic authentication
+                    // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> headers = super.getHeaders();
 
@@ -403,19 +410,22 @@ public class RequestUtil {
                             headers = new HashMap<>();
                         }
 
-                        String credentials = domoticz.getUserCredentials(Domoticz.Authentication.USERNAME) + ":" + domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD);
-                        String base64EncodedCredentials =
-                            Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                        if (usePreviousSession)
+                            sessionUtil.addSessionCookie(headers);
+                        return createBasicAuthHeader(username, password, headers);
+                    }
 
-                        headers.put("Authorization", "Basic " + base64EncodedCredentials);
-                        headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-                        headers.put("Accept-Language", "en-US,en;q=0.7,nl;q=0.3");
-                        headers.put("Accept-Encoding", "gzip, deflate");
-
-                        sessionUtil.addSessionCookie(headers);
-                        return headers;
+                    @Override
+                    protected Response<Bitmap> parseNetworkResponse(NetworkResponse response) {
+                        // since we don't know which of the two underlying network vehicles
+                        // will Volley use, we have to handle and store session cookies manually
+                        sessionUtil.checkSessionCookie(response.headers);
+                        return super.parseNetworkResponse(response);
                     }
                 };
+
+                //request.setShouldCache(false);
+                return request;
             }
         };
     }

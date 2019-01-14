@@ -23,14 +23,13 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -42,30 +41,18 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
     private DismissListener dismissListener;
     private WeatherInfo info;
-    private Switch favorite_switch;
+    private SwitchMaterial favorite_switch;
 
     public WeatherInfoDialog(Context mContext,
                              WeatherInfo info,
                              int layout) {
         this.info = info;
-        if ((new SharedPrefUtil(mContext)).darkThemeEnabled()) {
-            mdb = new MaterialDialog.Builder(mContext)
-                .titleColorRes(R.color.white)
-                .contentColor(Color.WHITE) // notice no 'res' postfix for literal color
-                .dividerColorRes(R.color.white)
-                .backgroundColorRes(R.color.primary)
-                .positiveColorRes(R.color.white)
-                .neutralColorRes(R.color.white)
-                .negativeColorRes(R.color.white)
-                .widgetColorRes(R.color.white)
-                .buttonRippleColorRes(R.color.white);
-        } else
-            mdb = new MaterialDialog.Builder(mContext);
+        mdb = new MaterialDialog.Builder(mContext);
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -78,31 +65,29 @@ public class WeatherInfoDialog implements DialogInterface.OnDismissListener {
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        TextView IDX_value = (TextView) view.findViewById(R.id.IDX_value);
-
-        TextView weather_forecast_title = (TextView) view.findViewById(R.id.weather_forcast);
-        TextView weather_humidity_title = (TextView) view.findViewById(R.id.weather_humidity);
-        TextView weather_barometer_title = (TextView) view.findViewById(R.id.weather_barometer);
-        TextView weather_dewpoint_title = (TextView) view.findViewById(R.id.weather_drewpoint);
-        TextView weather_temperature_title = (TextView) view.findViewById(R.id.weather_temperature);
-        TextView weather_chill_title = (TextView) view.findViewById(R.id.weather_chill);
-        TextView weather_direction_title = (TextView) view.findViewById(R.id.weather_direction);
-        TextView weather_speed_title = (TextView) view.findViewById(R.id.weather_speed);
-
-        TextView weather_forecast = (TextView) view.findViewById(R.id.weather_forcast_value);
-        TextView weather_humidity = (TextView) view.findViewById(R.id.weather_humidity_value);
-        TextView weather_barometer = (TextView) view.findViewById(R.id.weather_barometer_value);
-        TextView weather_dewpoint = (TextView) view.findViewById(R.id.weather_drewpoint_value);
-        TextView weather_temperature = (TextView) view.findViewById(R.id.weather_temperature_value);
-        TextView weather_chill = (TextView) view.findViewById(R.id.weather_chill_value);
-        TextView weather_direction = (TextView) view.findViewById(R.id.weather_direction_value);
-        TextView weather_speed = (TextView) view.findViewById(R.id.weather_speed_value);
+        TextView IDX_value = view.findViewById(R.id.IDX_value);
+        TextView weather_forecast_title = view.findViewById(R.id.weather_forcast);
+        TextView weather_humidity_title = view.findViewById(R.id.weather_humidity);
+        TextView weather_barometer_title = view.findViewById(R.id.weather_barometer);
+        TextView weather_dewpoint_title = view.findViewById(R.id.weather_drewpoint);
+        TextView weather_temperature_title = view.findViewById(R.id.weather_temperature);
+        TextView weather_chill_title = view.findViewById(R.id.weather_chill);
+        TextView weather_direction_title = view.findViewById(R.id.weather_direction);
+        TextView weather_speed_title = view.findViewById(R.id.weather_speed);
+        TextView weather_forecast = view.findViewById(R.id.weather_forcast_value);
+        TextView weather_humidity = view.findViewById(R.id.weather_humidity_value);
+        TextView weather_barometer = view.findViewById(R.id.weather_barometer_value);
+        TextView weather_dewpoint = view.findViewById(R.id.weather_drewpoint_value);
+        TextView weather_temperature = view.findViewById(R.id.weather_temperature_value);
+        TextView weather_chill = view.findViewById(R.id.weather_chill_value);
+        TextView weather_direction = view.findViewById(R.id.weather_direction_value);
+        TextView weather_speed = view.findViewById(R.id.weather_speed_value);
 
         IDX_value.setText(String.valueOf(info.getIdx()));
-        TextView LastUpdate_value = (TextView) view.findViewById(R.id.LastUpdate_value);
+        TextView LastUpdate_value = view.findViewById(R.id.LastUpdate_value);
         LastUpdate_value.setText(info.getLastUpdate());
 
-        favorite_switch = (Switch) view.findViewById(R.id.favorite_switch);
+        favorite_switch = view.findViewById(R.id.favorite_switch);
         favorite_switch.setChecked(info.getFavoriteBoolean());
         favorite_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

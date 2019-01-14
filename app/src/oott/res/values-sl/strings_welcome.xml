@@ -3,7 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <!-- only temporarily to suppress the missing translations errors for now!! -->
   <string name="welcome_title_activity_welcome">Dobrodošli</string>
-  <string name="welcome_info_domoticz">OOTT (Powered by Domoticz)je sistem za avtomatizacijo doma, ki vam omogoča
+  <string name="welcome_info_domoticz">OOTT je sistem za avtomatizacijo doma, ki vam omogoča
         spremljanje in konfiguriranje različnih naprav, kot so
         luči, stikala, različni senzorji/merilniki kot npr. temperatura, padavine, veter, UV sevanje, elektrika, plin, voda in še veliko več.
         Obvestila/opozorila lahko pošlje na vseh mobilne naprave.</string>

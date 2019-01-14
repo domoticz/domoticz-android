@@ -42,11 +42,30 @@
     <string name="yearly">Yearly</string>
     <string name="yearly_weekday">Yearly (Weekday)</string>
 
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
+    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
+    <string name="after_civil_twilight_end">After Civil Twilight End</string>
+    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
+    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
+    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
+    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
+    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
+    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
+    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
+    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+
     <string name="timer_every_days">Every day</string>
     <string name="timer_working_days">Working days</string>
     <string name="timer_weekend">Weekend</string>
     <string name="timer_other">Other</string>
     <string name="timers">Timers</string>
 
-
+    <string name="first">First</string>
+    <string name="second">Second</string>
+    <string name="third">Third</string>
+    <string name="fourth">Fourth</string>
+    <string name="last">Last</string>
 </resources>

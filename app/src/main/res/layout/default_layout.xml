@@ -19,14 +19,13 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
-    style="@style/background_recyclerview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:tools="http://schemas.android.com/tools"
+                                                     android:id="@+id/coordinatorLayout"
+                                                     style="@style/background_recyclerview"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent"
+                                                     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -44,16 +43,16 @@
                 style="@style/debug_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/debug_textview_title" />
+                android:text="@string/debug_textview_title"/>
 
             <TextView
                 android:id="@+id/debugText"
                 style="@style/debug_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -67,12 +66,12 @@
                 android:animationCache="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="@dimen/row_space"
-                android:paddingBottom="@dimen/row_space"
                 android:paddingTop="@dimen/row_space"
+                android:paddingBottom="@dimen/row_space"
                 android:scrollingCache="false"
-                android:smoothScrollbar="true" />
+                android:smoothScrollbar="true"/>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/errorLayout"
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/error_image_description"
-                android:src="@drawable/sad_smiley" />
+                android:src="@drawable/sad_smiley"/>
 
             <TextView
                 android:id="@+id/errorTextOops"
@@ -97,7 +96,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:text="@string/oops"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"/>
 
             <TextView
                 android:id="@+id/errorTextWrong"
@@ -107,7 +106,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:text="@string/something_went_wrong"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_medium"/>
 
             <TextView
                 android:id="@+id/errorTextMessage"
@@ -118,7 +117,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/no_network_available"
                 android:textColor="@color/light_gray"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

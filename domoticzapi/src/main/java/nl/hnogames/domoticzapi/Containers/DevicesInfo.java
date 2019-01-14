@@ -21,8 +21,7 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import android.support.annotation.NonNull;
-import android.util.Base64;
+import androidx.annotation.NonNull;
 
 import com.google.gson.GsonBuilder;
 
@@ -30,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -116,6 +114,7 @@ public class DevicesInfo implements Comparable, Serializable {
         if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
         if (row.has("Temp")) Temp = row.getLong("Temp");
         if (row.has("Barometer")) Barometer = row.getInt("Barometer");
+        if (row.has("Description")) Description = row.getString("Description");
 
         try {
             if (row.has("MaxDimLevel"))
@@ -274,7 +273,6 @@ public class DevicesInfo implements Comparable, Serializable {
         else this.Favorite = 0;
     }
 
-
     public double getTemperature() {
         return temp;
     }
@@ -332,10 +330,11 @@ public class DevicesInfo implements Comparable, Serializable {
     public boolean getStatusBoolean() {
         try {
             boolean statusBoolean = true;
-
             if (status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.OFF) || status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.CLOSED))
                 statusBoolean = false;
-
+            else if ((status.equalsIgnoreCase(DomoticzValues.Device.Door.State.UNLOCKED) && switchTypeVal == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) ||
+                    (status.equalsIgnoreCase(DomoticzValues.Device.Door.State.OPEN) && switchTypeVal == DomoticzValues.Device.Type.Value.BLINDINVERTED))
+                statusBoolean = false;
             this.statusBoolean = statusBoolean;
             return statusBoolean;
         } catch (Exception ex) {

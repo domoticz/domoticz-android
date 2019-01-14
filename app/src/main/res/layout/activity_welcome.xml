@@ -20,16 +20,16 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
 
         android:id="@+id/viewpager"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <RelativeLayout
         android:id="@+id/navigation"
@@ -40,7 +40,7 @@
             android:id="@+id/btn_prev"
             style="@style/welcome_navButtons"
             android:layout_alignParentLeft="true"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <com.viewpagerindicator.CirclePageIndicator
             android:id="@+id/indicator"
@@ -48,12 +48,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:padding="10dip" />
+            android:padding="10dip"/>
 
         <TextView
             android:id="@+id/btn_next"
             style="@style/welcome_navButtons"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
 

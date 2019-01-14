@@ -19,22 +19,22 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:plainpie="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_grey_300_"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:paddingLeft="20dp"
-    card_view:cardCornerRadius="0dp"
-    card_view:cardUseCompatPadding="true">
+    android:padding="8dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
 
     <LinearLayout
         android:id="@+id/row_global_wrapper"
@@ -54,18 +54,28 @@
             android:padding="10dp">
 
             <ImageView
+                android:id="@+id/widget_info_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:src="@drawable/outline_info_black_18"
+                android:tint="@color/md_grey_300"/>
+
+            <ImageView
                 android:id="@+id/rowIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:contentDescription="@string/row_icon_description"
-                tools:src="@drawable/clock48" />
+                android:layout_marginLeft="-15dp"
+                android:contentDescription="@string/error_image_description"
+                android:paddingRight="5dp"
+                android:src="@drawable/clock48"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginBottom="10dp"
+                          android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -74,8 +84,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/linearLayout4"
                         android:layout_toStartOf="@+id/linearLayout4"
+                        android:layout_toLeftOf="@+id/linearLayout4"
                         android:orientation="vertical">
 
                         <TextView
@@ -83,21 +93,21 @@
                             style="@style/row_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="Utility name" />
+                            tools:text="Utility name"/>
 
                         <TextView
                             android:id="@+id/weather_hardware"
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="Hardware" />
+                            tools:text="Hardware"/>
 
                         <TextView
                             android:id="@+id/weather_data"
                             style="@style/row_body2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C" />
+                            tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -108,25 +118,25 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <az.plainpie.PieView
                             android:id="@+id/pieView"
                             android:layout_width="72dp"
                             android:layout_height="73dp"
-                            plainpie:inner_pie_padding="10"
-                            plainpie:percentage="75"
-                            plainpie:percentage_size="15"
                             android:visibility="gone"
-                            plainpie:inner_text_visibility="true"/>
+                            plainpie:inner_pie_padding="10"
+                            plainpie:inner_text_visibility="true"
+                            plainpie:percentage="75"
+                            plainpie:percentage_size="15"/>
 
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_graph_buttons_row_default" />
+        <include layout="@layout/log_graph_buttons_row_default"/>
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
