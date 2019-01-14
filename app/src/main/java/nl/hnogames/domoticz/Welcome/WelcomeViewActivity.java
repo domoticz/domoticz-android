@@ -25,17 +25,17 @@ package nl.hnogames.domoticz.Welcome;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.heinrichreimersoftware.materialintro.app.IntroActivity;
-import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
-import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+import com.github.paolorotolo.appintro.AppIntro2;
+import com.github.paolorotolo.appintro.AppIntroFragment;
+import com.github.paolorotolo.appintro.model.SliderPage;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
-public class WelcomeViewActivity extends IntroActivity {
-
+public class WelcomeViewActivity extends AppIntro2 {
     private static final int WELCOME_WIZARD = 1;
     private int p = 0;
 
@@ -45,63 +45,44 @@ public class WelcomeViewActivity extends IntroActivity {
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
-        setFullscreen(true);
         super.onCreate(savedInstanceState);
-
-        setFinishEnabled(false);
-        setSkipEnabled(false);
+        skipButtonEnabled = false;
         UsefulBits.checkAPK(this, new SharedPrefUtil(this));
 
-        addSlide(new SimpleSlide.Builder()
-            .image(R.mipmap.ic_launcher)
-            .title(R.string.app_name_domoticz)
-            .description(R.string.welcome_info_domoticz)
-            .background(R.color.black)
-            .build());
+        SliderPage sliderPage = new SliderPage();
+        sliderPage.setTitle(getString(R.string.app_name_domoticz));
+        sliderPage.setDescription(getString(R.string.welcome_info_domoticz));
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
+        sliderPage.setBgColor(R.color.black);
+        addSlide(AppIntroFragment.newInstance(sliderPage));
 
-        addSlide(new FragmentSlide.Builder()
-            .background(R.color.welcome2_background)
-            .fragment(WelcomePage2.newInstance())
-            .build());
-
-        addSlide(new FragmentSlide.Builder()
-            .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
-            .fragment(WelcomePage3.newInstance(WELCOME_WIZARD))
-            .build());
-
-        addSlide(new FragmentSlide.Builder()
-            .background(!mSharedPrefs.darkThemeEnabled() ? R.color.welcome4_background : R.color.primary_dark)
-            .fragment(WelcomePage4.newInstance())
-            .build());
-
-        addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                p = position;
-                if (position == 3) {
-                    setFinishEnabled(true);
-                } else {
-                    setFinishEnabled(false);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+        addSlide(WelcomePage2.newInstance());
+        addSlide(WelcomePage3.newInstance(WELCOME_WIZARD));
+        addSlide(WelcomePage4.newInstance());
     }
 
     @Override
     public void onBackPressed() {
         if (p > 0) {
-            previousSlide();
-            disableFinishButton(false);
+            setProgressButtonEnabled(false);
         } else {
             finishWithResult(false);
+        }
+    }
+
+    @Override
+    public void onDonePressed(Fragment currentFragment) {
+        super.onDonePressed(currentFragment);
+        finishWithResult(true);
+    }
+
+    @Override
+    public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
+        super.onSlideChanged(oldFragment, newFragment);
+       if (newFragment instanceof WelcomePage4) {
+            setProgressButtonEnabled(false);
+        } else {
+           setProgressButtonEnabled(true);
         }
     }
 
@@ -115,7 +96,7 @@ public class WelcomeViewActivity extends IntroActivity {
     }
 
     public void disableFinishButton(boolean disable) {
-        setFinishEnabled(!disable);
+        setProgressButtonEnabled(!disable);
     }
 
     private void endWelcomeWizard() {

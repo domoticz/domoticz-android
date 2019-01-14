@@ -56,9 +56,9 @@ public class WelcomePage4 extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_welcome4, container, false);
 
-        please_wait_layout = (LinearLayout) v.findViewById(R.id.layout_please_wait);
-        result_layout = (LinearLayout) v.findViewById(R.id.layout_result);
-        result = (TextView) v.findViewById(R.id.result);
+        please_wait_layout = v.findViewById(R.id.layout_please_wait);
+        result_layout = v.findViewById(R.id.layout_result);
+        result = v.findViewById(R.id.result);
 
         return v;
     }
