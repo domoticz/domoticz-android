@@ -10,16 +10,15 @@ http://hnogames.nl/domoticz.html
 
 
 # Google Play Store
------
+
 You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets.  
 
-**Free:**  
-[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)
+| **Free:**  | **Premium:**   |
+| ------------- | ------------- |
+| [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)  | [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)  |
 
-**Premium:**  
-[![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)
 
-![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106067-0c24c300-17eb-11e9-9a5d-57dce5a8872a.png) 
+-----
 
 # Table of Contents
 - [Screenshots](#screenshots)
@@ -35,6 +34,9 @@ Features:
 Credits:
 - [Credits](#credits)
 - [License](#license)
+
+
+-----
 
 
 # Screenshots
