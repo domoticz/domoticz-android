@@ -43,6 +43,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -150,7 +151,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     @Override
     public void onUserVariableClick(final UserVariableInfo clickedVar) {
-        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -158,19 +160,19 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
             return;
         }
         new MaterialDialog.Builder(mContext)
-                .title(R.string.title_vars)
-                .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        if (validateInput(String.valueOf(input), clickedVar.getType())) {
-                            updateUserVariable(String.valueOf(input), clickedVar);
-                        } else {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
-                        }
+            .title(R.string.title_vars)
+            .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+            .inputType(InputType.TYPE_CLASS_TEXT)
+            .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                @Override
+                public void onInput(MaterialDialog dialog, CharSequence input) {
+                    if (validateInput(String.valueOf(input), clickedVar.getType())) {
+                        updateUserVariable(String.valueOf(input), clickedVar);
+                    } else {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
                     }
-                }).show();
+                }
+            }).show();
     }
 
     private boolean validateInput(String input, String type) {
