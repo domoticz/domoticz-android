@@ -1,26 +1,12 @@
 # Domoticz for Android
 This is a Android app for Domoticz and is available for download in the Play Store.
 
-# Domoticz
------
-**Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
-
-For Beta registration or more information check:  
-http://hnogames.nl/domoticz.html
-
-
-# Google Play Store
-
-You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets.  
-
-| **Free:**  | **Premium:**   |
-| ------------- | ------------- |
-| [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)  | [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)  |
-
 
 -----
 
 # Table of Contents
+- [Domoticz](#domoticz)
+- [Play Store](#google-play-store)
 - [Screenshots](#screenshots)
 
 Features:
@@ -36,7 +22,22 @@ Credits:
 - [License](#license)
 
 
+
+# Domoticz
 -----
+**Domoticz** is a very light weight home automation system that lets you monitor and configure various devices like: lights, switches, various sensors/meters like temperature, rainfall, wind, Ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and much more. Notifications/alerts can be sent to any mobile device.
+
+For Beta registration or more information check:  
+http://hnogames.nl/domoticz.html
+
+
+# Google Play Store
+-----
+You can download Domoticz from the Google Play Store. There is a premium and free version! Premium features are Geofencing, Android Wear and Widgets.  
+
+| **Free:**  | **Premium:**   |
+| ------------- | ------------- |
+| [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)  | [![google-play-badge](https://cloud.githubusercontent.com/assets/14561640/22199304/96017fa6-e15a-11e6-99bd-6fd3412eac8e.png)](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium)  |
 
 
 # Screenshots
@@ -95,7 +96,6 @@ http://www.freepik.com/free-psd/rounded-flat-icons-in-two-versions_708307.htm
 **RoadXY** for the start version (framework) of the app.  
 **remb0** as the organizer   
 All other devs/mods/testers and domoticz supporters
-
 
 
 # License
