@@ -868,13 +868,18 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             int jsonAction;
             int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
             if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
-                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
-                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                else jsonAction = DomoticzValues.Device.Switch.Action.ON;
-            } else {
-                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE)
+            {
+                if (checked)
+                    jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                else jsonAction =
+                        DomoticzValues.Device.Switch.Action.ON;
+            } else
+                {
+                if (checked)
+                    jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                else jsonAction =
+                        DomoticzValues.Device.Switch.Action.OFF;
             }
 
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
