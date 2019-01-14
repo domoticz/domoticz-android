@@ -63,17 +63,18 @@ public class ServerUtil {
      */
     public ServerUtil(Context mContext) {
         this.mContext = mContext;
+        if(mContext != null) {
+            GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+            gson = gsonBuilder.create();
 
-        GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
-        gson = gsonBuilder.create();
+            prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            loadDomoticzServers();
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        loadDomoticzServers();
-
-        if (mServerList == null || mServerList.size() <= 0) {
-            //try to recover from previous settings framework:
-            Log.i(this.getClass().getSimpleName(), "Recovering old settings to new Object model");
-            loadPreviousSettingsToServerInfo();
+            if (mServerList == null || mServerList.size() <= 0) {
+                //try to recover from previous settings framework:
+                Log.i(this.getClass().getSimpleName(), "Recovering old settings to new Object model");
+                loadPreviousSettingsToServerInfo();
+            }
         }
     }
 

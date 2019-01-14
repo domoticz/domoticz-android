@@ -50,9 +50,9 @@ public class WelcomeViewActivity extends AppIntro2 {
         UsefulBits.checkAPK(this, new SharedPrefUtil(this));
 
         SliderPage sliderPage = new SliderPage();
-        sliderPage.setTitle(getString(R.string.app_name_domoticz));
+        sliderPage.setTitle(getString(R.string.wizard_welcome));
         sliderPage.setDescription(getString(R.string.welcome_info_domoticz));
-        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
+        sliderPage.setImageDrawable(R.drawable.domoticz);
         sliderPage.setBgColor(R.color.black);
         addSlide(AppIntroFragment.newInstance(sliderPage));
 
@@ -79,10 +79,10 @@ public class WelcomeViewActivity extends AppIntro2 {
     @Override
     public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
         super.onSlideChanged(oldFragment, newFragment);
-       if (newFragment instanceof WelcomePage4) {
+        if (newFragment instanceof WelcomePage4) {
             setProgressButtonEnabled(false);
         } else {
-           setProgressButtonEnabled(true);
+            setProgressButtonEnabled(true);
         }
     }
 

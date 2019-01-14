@@ -67,8 +67,8 @@ public class TemperatureMainPager extends RefreshFragment implements DomoticzFra
     public void RefreshFragment() {
         try {
             Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).refreshFragment();
                 ((DomoticzRecyclerFragment) f).showViews();
@@ -88,8 +88,8 @@ public class TemperatureMainPager extends RefreshFragment implements DomoticzFra
     public void Filter(String newText) {
         try {
             Fragment n = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (n instanceof DomoticzDashboardFragment) {
                 ((DomoticzDashboardFragment) n).Filter(newText);
             } else if (n instanceof DomoticzRecyclerFragment) {
@@ -105,8 +105,8 @@ public class TemperatureMainPager extends RefreshFragment implements DomoticzFra
     public void sortFragment(String selectedSort) {
         try {
             Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
             } else if (f instanceof DomoticzDashboardFragment) {
