@@ -41,6 +41,7 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.EventInfo;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -60,7 +61,6 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             mSwipeRefreshLayout.setRefreshing(true);
         processEvents();
     }
-
 
     @Override
     public void onConnectionFailed() {
@@ -119,7 +119,8 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                     @Override
                     @DebugLog
                     public void onEventClick(final int idx, boolean action) {
-                        if (getCurrentUser(mContext, mDomoticz).getRights() <= 1) {
+                        UserInfo user = getCurrentUser(mContext, mDomoticz);
+                        if (user != null && user.getRights() <= 1) {
                             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);

@@ -76,7 +76,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
         packageName = context.getPackageName();
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
-                WidgetProviderSmall.class);
+            WidgetProviderSmall.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         if (allWidgetIds != null) {
             for (int mAppWidgetId : allWidgetIds) {
@@ -110,11 +110,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             }
 
             AppWidgetManager appWidgetManager = AppWidgetManager
-                    .getInstance(UpdateWidgetService.this);
+                .getInstance(UpdateWidgetService.this);
 
             try {
                 int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                        INVALID_APPWIDGET_ID);
+                    INVALID_APPWIDGET_ID);
                 if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
                     try {
                         updateAppWidget(appWidgetManager, incomingAppWidgetId);
@@ -151,22 +151,22 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
                 views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                        UpdateWidgetService.this,
-                        appWidgetId,
-                        idx,
-                        false,
-                        true));
+                    UpdateWidgetService.this,
+                    appWidgetId,
+                    idx,
+                    false,
+                    true));
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else if (idx == iQRCodeAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
                 views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
                 views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                        UpdateWidgetService.this,
-                        appWidgetId,
-                        idx,
-                        false,
-                        true));
+                    UpdateWidgetService.this,
+                    appWidgetId,
+                    idx,
+                    false,
+                    true));
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -189,7 +189,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                 if (s.getCounterToday() != null && s.getCounterToday().length() > 0)
                                     text += " Today: " + s.getCounterToday();
                                 if (s.getCounter() != null && s.getCounter().length() > 0 &&
-                                        !s.getCounter().equals(s.getData()))
+                                    !s.getCounter().equals(s.getData()))
                                     text += " Total: " + s.getCounter();
 
                                 views.setTextViewText(R.id.desc, text);
@@ -197,11 +197,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                     boolean newStatus = !s.getStatusBoolean();//toggle
 
                                     views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                                            UpdateWidgetService.this,
-                                            appWidgetId,
-                                            s.getIdx(),
-                                            newStatus,
-                                            true));
+                                        UpdateWidgetService.this,
+                                        appWidgetId,
+                                        s.getIdx(),
+                                        newStatus,
+                                        true));
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
@@ -236,11 +236,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                     views.setTextViewText(R.id.title, s.getName());
                                     views.setTextViewText(R.id.desc, s.getStatusInString());
                                     views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                                            UpdateWidgetService.this,
-                                            appWidgetId,
-                                            idx,
-                                            !s.getStatusInBoolean(),
-                                            true));
+                                        UpdateWidgetService.this,
+                                        appWidgetId,
+                                        idx,
+                                        !s.getStatusInBoolean(),
+                                        true));
                                 }
 
                                 views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getType(), null, null, false, false, null));
@@ -291,7 +291,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             int withButton = 0;
             if (s != null) {
                 if (s.getSwitchTypeVal() == 0 &&
-                        (UsefulBits.isEmpty(s.getSwitchType()))) {
+                    (UsefulBits.isEmpty(s.getSwitchType()))) {
                     switch (s.getType()) {
                         case DomoticzValues.Scene.Type.SCENE:
                             withButton = WITHBUTTON;
