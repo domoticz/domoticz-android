@@ -21,6 +21,30 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 
 ![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106067-0c24c300-17eb-11e9-9a5d-57dce5a8872a.png) 
 
+# Table of Contents
+- [Screenshots](#screenshots)
+
+Features:
+- [Geofencing](#geofencing)
+- [Widgets](#widgets)
+- [Android Wear](#android-wear)
+- [NFC & QR Codes](#nfc--qr-codes)
+- [Floorplan](#floorplan)
+- [Dark Theme](#dark-theme)
+
+Credits:
+- [Credits](#credits)
+- [License](#license)
+
+
+# Screenshots
+-----
+Some screenshots 
+![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png)
+![screenshot_2019-01-14-10-39-59-116_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)
+![screenshot_2019-01-14-10-39-53-701_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png)
+![screenshot_2019-01-14-10-40-10-106_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png)
+![screenshot_2019-01-14-10-39-47-277_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106124-29599180-17eb-11e9-8fc0-1b967569ab0d.png)
 
 
 # Geofencing
@@ -52,17 +76,6 @@ This app has the option to scan NFC or QR codes and connect them to a switch!
 -----
 Use your devices within your floorplans  
 ![floorplan](https://user-images.githubusercontent.com/14561640/51106016-e3043280-17ea-11e9-806a-0443e7b3ab95.png)
-
-
-# Screenshots
------
-Some screenshots 
-![screenshot_2019-01-14-10-39-43-089_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png)
-![screenshot_2019-01-14-10-39-59-116_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)
-![screenshot_2019-01-14-10-39-53-701_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png)
-![screenshot_2019-01-14-10-40-10-106_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png)
-![screenshot_2019-01-14-10-39-47-277_nl hnogames domoticz premium](https://user-images.githubusercontent.com/14561640/51106124-29599180-17eb-11e9-8fc0-1b967569ab0d.png)
-
 
 
 # Dark Theme
