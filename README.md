@@ -79,7 +79,7 @@ This app has the option to scan NFC or QR codes and connect them to a switch!
 
 # Biometric
 -----
-Ask for biometric verification when opening the app for extra security
+Ask for biometric verification when opening the app for extra security  
 ![biometric](https://user-images.githubusercontent.com/14561640/51254525-944cc900-19a1-11e9-8242-1ed991c100e1.png)
 
 
