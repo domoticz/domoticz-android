@@ -21,13 +21,16 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Varnostna plošča</string>
-  <string name="security_pin">Pin Koda</string>
-  <string name="security_disarm">Izklop</string>
-  <string name="security_arm_home">Vklop prisoten</string>
-  <string name="security_arm_away">Vklop Odsoten</string>
-  <string name="security_wrong_code">Napačna koda!</string>
-  <string name="security_generic_error">Ne morem spremeniti stanja zaščite</string>
-  <string name="security_wrong_password_fingerprint">Vnesli ste napačno geslo, vaše domoticz geslo je nadomestno geslo, pri nedelovanju prstnega odtisa...!</string>
-  <string name="show_password">Pokaži geslo</string>
+    <string name="title_security_panel">Varnostna plošča</string>
+    <string name="security_pin">Pin Koda</string>
+    <string name="security_disarm">Izklop</string>
+    <string name="security_arm_home">Vklop prisoten</string>
+    <string name="security_arm_away">Vklop Odsoten</string>
+    <string name="security_wrong_code">Napačna koda!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Ne morem spremeniti stanja zaščite</string>
+    <string name="security_wrong_password_fingerprint">Vnesli ste napačno geslo, vaše domoticz geslo je nadomestno geslo, pri nedelovanju prstnega odtisa...!</string>
+    <string name="show_password">Pokaži geslo</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
 </resources>

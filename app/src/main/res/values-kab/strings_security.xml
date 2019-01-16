@@ -21,13 +21,16 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Agalis n taɣellist</string>
-  <string name="security_pin">Tangalt Pin</string>
-  <string name="security_disarm">Senqer</string>
-  <string name="security_arm_home">Taɣellist n waxxam</string>
-  <string name="security_arm_away">Senqed</string>
-  <string name="security_wrong_code">Tangalt unekcum d asaflaw</string>
-  <string name="security_generic_error">Dawezɣi ad i-ttwabeddel addad n taɣellist</string>
-  <string name="security_wrong_password_fingerprint">Awal uffir yettwadmen d irit,awal ufir n umiḍan Domoticz ed usaqluqal n tarkit talfaft...!</string>
-  <string name="show_password">Sken awal uffir</string>
+    <string name="title_security_panel">Agalis n taɣellist</string>
+    <string name="security_pin">Tangalt Pin</string>
+    <string name="security_disarm">Senqer</string>
+    <string name="security_arm_home">Taɣellist n waxxam</string>
+    <string name="security_arm_away">Senqed</string>
+    <string name="security_wrong_code">Tangalt unekcum d asaflaw</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Dawezɣi ad i-ttwabeddel addad n taɣellist</string>
+    <string name="security_wrong_password_fingerprint">Awal uffir yettwadmen d irit,awal ufir n umiḍan Domoticz ed usaqluqal n tarkit talfaft...!</string>
+    <string name="show_password">Sken awal uffir</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
 </resources>

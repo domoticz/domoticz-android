@@ -237,11 +237,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 MainActivity.this.finish();
             }
         });
-
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
             .setTitle(getString(R.string.app_name_domoticz))
-            .setSubtitle("We need to make sure its you")
-            .setDescription("Touch your finger on the fingerprint sensor to authorise your account.")
+            .setSubtitle(getString(R.string.fingerprint_make_sure))
+            .setDescription(getString(R.string.fingerprint_dialog_description))
             .setNegativeButtonText(getString(R.string.cancel))
             .build();
     }
