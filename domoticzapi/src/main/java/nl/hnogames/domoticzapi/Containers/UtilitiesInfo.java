@@ -55,7 +55,6 @@ public class UtilitiesInfo implements Comparable, Serializable {
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
-
         if (row.has("Favorite"))
             Favorite = row.getInt("Favorite");
         if (row.has("TypeImg"))
@@ -67,11 +66,13 @@ public class UtilitiesInfo implements Comparable, Serializable {
             HardwareName = row.getString("HardwareName");
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
-
         if (row.has("SetPoint")) {
-            setPoint = Double.parseDouble(row.getString("SetPoint"));
+            try {
+                setPoint = Double.parseDouble(row.getString("SetPoint"));
+            }catch(Exception ignored){
+                setPoint = 0;
+            }
         }
-
         if (row.has("Name"))
             Name = row.getString("Name");
         if (row.has("Description"))
@@ -84,16 +85,13 @@ public class UtilitiesInfo implements Comparable, Serializable {
             Counter = row.getString("Counter");
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
-
         if (row.has("Usage"))
             Usage = row.getString("Usage");
         if (row.has("UsageDeliv"))
             UsageDeliv = row.getString("UsageDeliv");
-
         if (row.has("SubType"))
             SubType = row.getString("SubType");
         idx = row.getInt("idx");
-
         if (row.has("SignalLevel")) {
             try {
                 signalLevel = row.getInt("SignalLevel");

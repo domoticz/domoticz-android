@@ -625,7 +625,7 @@ public class Preference extends PreferenceFragment {
                             return false;
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!fingerprintManager.isHardwareDetected()) {
+                            if (fingerprintManager == null || !fingerprintManager.isHardwareDetected()) {
                                 return false;
                             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
                                 UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
