@@ -1308,7 +1308,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
 
-        if (holder.signal_level != null) {
+        if (holder.signal_level != null && mDeviceInfo.getLastUpdateDateTime() != null) {
             text = context.getString(R.string.last_update)
                 + ": "
                 + UsefulBits.getFormattedDate(context,

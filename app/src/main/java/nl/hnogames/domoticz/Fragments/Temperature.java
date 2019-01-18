@@ -104,8 +104,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        //if (getActionBar() != null)
-        //    getActionBar().setTitle(R.string.title_temperature);
     }
 
     @Override
@@ -417,11 +415,10 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                 return false;
             if (mPhoneConnectionUtil == null)
                 mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (!mPhoneConnectionUtil.isNetworkAvailable()) {
+            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
-                } catch (Exception ex) {
-                }
+                } catch (Exception ignored) {}
             }
             return true;
         }
