@@ -254,7 +254,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
                 case DomoticzValues.Device.Type.Value.DOORLOCKINVERTED:
-                case DomoticzValues.Device.Type.Value.DOORCONTACT:
                     switch (mDeviceInfo.getSwitchType()) {
                         case DomoticzValues.Device.Type.Name.SECURITY:
                             if (mDeviceInfo.getSubType().equals(DomoticzValues.Device.SubType.Name.SECURITYPANEL)) {
@@ -303,6 +302,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, false);
+                    break;
+
+                case DomoticzValues.Device.Type.Value.DOORCONTACT:
+                    setButtons(holder, SwitchesAdapter.Buttons.NOTHING);
+                    setDefaultRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.DIMMER:
@@ -386,11 +390,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             windSign = mConfigInfo.getWindSign();
         }
 
-        if (holder.signal_level != null && mDeviceInfo.getLastUpdateDateTime() != null) {
+        if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                + ": ";
+            if (mDeviceInfo.getLastUpdateDateTime() != null) {
+                text += UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            }
             holder.signal_level.setText(text);
         }
 

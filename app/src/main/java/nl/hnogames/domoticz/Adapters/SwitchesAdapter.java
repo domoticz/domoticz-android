@@ -288,7 +288,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
                 case DomoticzValues.Device.Type.Value.DOORLOCKINVERTED:
-                case DomoticzValues.Device.Type.Value.DOORCONTACT:
                     switch (mDeviceInfo.getSwitchType()) {
                         case DomoticzValues.Device.Type.Name.SECURITY:
                             if (mDeviceInfo.getSubType().equals(DomoticzValues.Device.SubType.Name.SECURITYPANEL)) {
@@ -332,6 +331,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                     setButtons(holder, Buttons.BUTTON_ON);
                     setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
+                    break;
+
+                case DomoticzValues.Device.Type.Value.DOORCONTACT:
+                    setButtons(holder, Buttons.NOTHING);
+                    setDefaultRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
@@ -422,9 +426,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
-                + ": "
-                + UsefulBits.getFormattedDate(context,
-                mDeviceInfo.getLastUpdateDateTime().getTime());
+                + ": ";
+            if (mDeviceInfo.getLastUpdateDateTime() != null) {
+                text += UsefulBits.getFormattedDate(context,
+                    mDeviceInfo.getLastUpdateDateTime().getTime());
+            }
             holder.signal_level.setText(text);
         }
 
