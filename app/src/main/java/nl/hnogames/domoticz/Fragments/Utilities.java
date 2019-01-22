@@ -434,8 +434,15 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     @Override
                     @DebugLog
                     public void onReceiveResult(String result) {
-                        updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
-                        successHandling(result, false);
+                        if (result.contains("WRONG CODE")) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        }
+                        else {
+                            updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
+                            successHandling(result, false);
+                        }
                     }
 
                     @Override

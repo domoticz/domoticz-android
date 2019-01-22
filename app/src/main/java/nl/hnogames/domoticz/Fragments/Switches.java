@@ -362,8 +362,15 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                successHandling(result, false);
-                mSwitch.setFavoriteBoolean(isFavorite);
+                if (result.contains("WRONG CODE")) {
+                    UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    if (getActivity() instanceof MainActivity)
+                        ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                }
+                else {
+                    successHandling(result, false);
+                    mSwitch.setFavoriteBoolean(isFavorite);
+                }
             }
 
             @Override
@@ -537,12 +544,19 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     @Override
                     @DebugLog
                     public void onReceiveResult(String result) {
-                        if (getSwitch(idx) == null)
-                            return;
-                        if (selected) {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT);
+                        if (result.contains("WRONG CODE")) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
-                                ((MainActivity) getActivity()).Talk(R.string.color_set);
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        }
+                        else {
+                            if (getSwitch(idx) == null)
+                                return;
+                            if (selected) {
+                                UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getSwitch(idx).getName(), Snackbar.LENGTH_SHORT);
+                                if (getActivity() instanceof MainActivity)
+                                    ((MainActivity) getActivity()).Talk(R.string.color_set);
+                            }
                         }
                     }
 
@@ -884,8 +898,15 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 @Override
                 @DebugLog
                 public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    getSwitchesData();
+                    if (result.contains("WRONG CODE")) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                    }
+                    else {
+                        successHandling(result, false);
+                        getSwitchesData();
+                    }
                 }
 
                 @Override
@@ -960,8 +981,15 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                successHandling(result, false);
-                getSwitchesData();
+                if (result.contains("WRONG CODE")) {
+                    UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    if (getActivity() instanceof MainActivity)
+                        ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                }
+                else {
+                    successHandling(result, false);
+                    getSwitchesData();
+                }
             }
 
             @Override
@@ -1047,8 +1075,15 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                successHandling(result, false);
-                getSwitchesData();
+                if (result.contains("WRONG CODE")) {
+                    UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    if (getActivity() instanceof MainActivity)
+                        ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                }
+                else {
+                    successHandling(result, false);
+                    getSwitchesData();
+                }
             }
 
 
@@ -1117,9 +1152,16 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 @Override
                 @DebugLog
                 public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    if (selector)
-                        getSwitchesData();
+                    if (result.contains("WRONG CODE")) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                    }
+                    else {
+                        successHandling(result, false);
+                        if (selector)
+                            getSwitchesData();
+                    }
                 }
 
                 @Override

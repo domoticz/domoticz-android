@@ -362,8 +362,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                successHandling(result, false);
-                processDashboard();
+                    successHandling(result, false);
+                    processDashboard();
             }
 
             @Override
@@ -445,11 +445,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    //processDashboard();
-                    // Change the clicked switch status
-                    clickedSwitch.setStatusBoolean(checked);
-                    changeAdapterData(clickedSwitch);
+                    if (result.contains("WRONG CODE")) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                    }
+                    else {
+                        successHandling(result, false);
+                        clickedSwitch.setStatusBoolean(checked);
+                        changeAdapterData(clickedSwitch);
+                    }
                 }
 
                 @Override
@@ -551,10 +556,17 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                successHandling(result, false);
-                clickedSwitch.setStatusBoolean(checked);
-                changeAdapterData(clickedSwitch);
-                //processDashboard();
+                if (result.contains("WRONG CODE")) {
+                    UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    if (getActivity() instanceof MainActivity)
+                        ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                }
+                else {
+                    successHandling(result, false);
+                    clickedSwitch.setStatusBoolean(checked);
+                    changeAdapterData(clickedSwitch);
+                    //processDashboard();
+                }
             }
 
             @Override
@@ -724,10 +736,17 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     @Override
                     @DebugLog
                     public void onReceiveResult(String result) {
-                        if (selected) {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT);
+                        if (result.contains("WRONG CODE")) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
-                                ((MainActivity) getActivity()).Talk(R.string.color_set);
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        }
+                        else {
+                            if (selected) {
+                                UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT);
+                                if (getActivity() instanceof MainActivity)
+                                    ((MainActivity) getActivity()).Talk(R.string.color_set);
+                            }
                         }
                     }
 
@@ -861,8 +880,15 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                                 @Override
                                                 @DebugLog
                                                 public void onReceiveResult(String result) {
-                                                    successHandling(result, false);
-                                                    processDashboard();
+                                                    if (result.contains("WRONG CODE")) {
+                                                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        if (getActivity() instanceof MainActivity)
+                                                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                                                    }
+                                                    else {
+                                                        successHandling(result, false);
+                                                        processDashboard();
+                                                    }
                                                 }
 
                                                 @Override
@@ -889,8 +915,15 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                         @Override
                                         @DebugLog
                                         public void onReceiveResult(String result) {
-                                            successHandling(result, false);
-                                            processDashboard();
+                                            if (result.contains("WRONG CODE")) {
+                                                UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                if (getActivity() instanceof MainActivity)
+                                                    ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                                            }
+                                            else {
+                                                successHandling(result, false);
+                                                processDashboard();
+                                            }
                                         }
 
                                         @Override
@@ -1200,9 +1233,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                successHandling(result, false);
-                //processDashboard();
-                changeAdapterData(clickedSwitch);
+                if (result.contains("WRONG CODE")) {
+                    UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    if (getActivity() instanceof MainActivity)
+                        ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                }
+                else {
+                    successHandling(result, false);
+                    //processDashboard();
+                    changeAdapterData(clickedSwitch);
+                }
             }
 
             @Override
@@ -1293,9 +1333,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    if (selector)
-                        processDashboard();
+                    if (result.contains("WRONG CODE")) {
+                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                    }
+                    else {
+                        successHandling(result, false);
+                        if (selector)
+                            processDashboard();
+                    }
                 }
 
                 @Override
