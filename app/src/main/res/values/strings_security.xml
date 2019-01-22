@@ -33,4 +33,5 @@
     <string name="show_password">Show password</string>
     <string name="fingerprint_make_sure">We need to make sure its you</string>
     <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <string name="security_password_fallback">Fallback</string>
 </resources>

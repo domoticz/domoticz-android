@@ -170,7 +170,8 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                                     ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
                             }
                         }
-                    }catch(Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                 }
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
@@ -183,7 +184,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
-                false));
+                    false));
         }
         if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
