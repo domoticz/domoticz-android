@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.camera_row, parent, false);
+                .inflate(R.layout.camera_row, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -131,21 +132,25 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             String imageUrl = cameraInfo.getSnapShotURL();
 
             int numberOfDevices = cameraInfo.getDevices();
-            String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
-            holder.name.setText(name);
+            try {
+                String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
+                holder.name.setText(name);
 
-            if (holder.camera.getDrawable() == null) {
-                picasso.load(imageUrl)
-                    .placeholder(R.drawable.placeholder)
-                    //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
-                    .into(holder.camera);
-            } else
-                picasso.load(imageUrl)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .noFade()
-                    .noPlaceholder()
-                    //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
-                    .into(holder.camera);
+                if (holder.camera.getDrawable() == null) {
+                    picasso.load(imageUrl)
+                            .placeholder(R.drawable.placeholder)
+                            //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                            .into(holder.camera);
+                } else
+                    picasso.load(imageUrl)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .noFade()
+                            .noPlaceholder()
+                            //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                            .into(holder.camera);
+            } catch (Exception ex) {
+                Log.i("CameraAdapter", ex.getMessage());
+            }
         }
     }
 
@@ -185,7 +190,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener, RVHViewHolder {
+            implements View.OnClickListener, RVHViewHolder {
         TextView name;
         ImageView camera;
 

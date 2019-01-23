@@ -20,8 +20,8 @@ public class BasicAuthInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         String credential = Credentials.basic(username, password);
         Request compressedRequest = chain.request().newBuilder()
-            .header("Authorization", credential)
-            .build();
+                .header("Authorization", credential)
+                .build();
         return chain.proceed(compressedRequest);
     }
 }

@@ -21,13 +21,16 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Turvapaneeli</string>
-  <string name="security_pin">PIN-koodi</string>
-  <string name="security_disarm">Kytke pois päältä</string>
-  <string name="security_arm_home">Aseta kotona</string>
-  <string name="security_arm_away">Aseta poissa</string>
-  <string name="security_wrong_code">Väärä koodi!</string>
-  <string name="security_generic_error">Tilaa ei voitu muuttaa</string>
-  <string name="security_wrong_password_fingerprint">Väärä salasana syötetty, sinun Domoticz-tilisi salasana on sormenjälkitunnistuksen varasalasana...!</string>
-  <string name="show_password">Näytä salasana</string>
+    <string name="title_security_panel">Turvapaneeli</string>
+    <string name="security_pin">PIN-koodi</string>
+    <string name="security_disarm">Kytke pois päältä</string>
+    <string name="security_arm_home">Aseta kotona</string>
+    <string name="security_arm_away">Aseta poissa</string>
+    <string name="security_wrong_code">Väärä koodi!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Tilaa ei voitu muuttaa</string>
+    <string name="security_wrong_password_fingerprint">Väärä salasana syötetty, sinun Domoticz-tilisi salasana on sormenjälkitunnistuksen varasalasana...!</string>
+    <string name="show_password">Näytä salasana</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
 </resources>

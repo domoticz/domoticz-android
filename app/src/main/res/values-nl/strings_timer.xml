@@ -63,23 +63,4 @@
     <string name="third">Derde</string>
     <string name="fourth">Vierde</string>
     <string name="last">Laatste</string>
-    <string name="monday">Maandag</string>
-    <string name="tuesday">Dinsdag</string>
-    <string name="wednesday">Woensdag</string>
-    <string name="thursday">Donderdag</string>
-    <string name="friday">Vrijdag</string>
-    <string name="saturday">Zaterdag</string>
-    <string name="sunday">Zondag</string>
-    <string name="January">Januari</string>
-    <string name="February">Februari</string>
-    <string name="March">Maart</string>
-    <string name="April">April</string>
-    <string name="May">Mei</string>
-    <string name="June">Juni</string>
-    <string name="July">Juli</string>
-    <string name="August">Augustus</string>
-    <string name="September">September</string>
-    <string name="October">Oktober</string>
-    <string name="November">November</string>
-    <string name="December">December</string>
 </resources>

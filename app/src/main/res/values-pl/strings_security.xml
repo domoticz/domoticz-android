@@ -27,7 +27,10 @@
     <string name="security_arm_home">Uzbrój dom</string>
     <string name="security_arm_away">Uzbrój się</string>
     <string name="security_wrong_code">Wpisano niepoprawny kod!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
     <string name="security_generic_error">Nie można zmienić statusu panelu zabezpieczeń</string>
     <string name="security_wrong_password_fingerprint">Błędne hasło, hasło do konta domoticz jest awaryjne dla odcisku palca...!</string>
     <string name="show_password">Pokaż hasło</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
 </resources>

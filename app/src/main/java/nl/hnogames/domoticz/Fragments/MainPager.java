@@ -67,8 +67,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void RefreshFragment() {
         try {
             Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).refreshFragment();
                 ((DomoticzRecyclerFragment) f).showViews();
@@ -88,8 +88,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void Filter(String newText) {
         try {
             Fragment n = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (n instanceof DomoticzDashboardFragment) {
                 ((DomoticzDashboardFragment) n).Filter(newText);
             } else if (n instanceof DomoticzRecyclerFragment) {
@@ -105,8 +105,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void sortFragment(String selectedSort) {
         try {
             Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
             } else if (f instanceof DomoticzDashboardFragment) {
@@ -136,7 +136,7 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
         if (mSharedPrefs.darkThemeEnabled()) {
             bottomNavigation.setBackgroundColor(getResources().getColor(R.color.background_dark));
             bottomNavigation.setItemIconTintList(ContextCompat.getColorStateList(bottomNavigation.getContext(), R.color.material_grey_500_));
-            bottomNavigation.setItemTextColor(ContextCompat.getColorStateList(bottomNavigation.getContext(), R.color.white_alpha));
+            bottomNavigation.setItemTextColor(ContextCompat.getColorStateList(bottomNavigation.getContext(), R.color.white));
         }
         adapterViewPager = new MainPagerAdapter(((AppCompatActivity) context), 3);
         vpPager.setAdapter(adapterViewPager);

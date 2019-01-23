@@ -59,23 +59,23 @@ public class FingerprintPasswordDialog implements DialogInterface.OnDismissListe
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
-            .positiveText(android.R.string.ok)
-            .negativeText(android.R.string.cancel)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if (dismissListener != null)
-                        dismissListener.onDismiss(editPassword.getText().toString());
-                }
-            })
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if (dismissListener != null)
-                        dismissListener.onCancel();
-                }
-            });
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        if (dismissListener != null)
+                            dismissListener.onDismiss(editPassword.getText().toString());
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        if (dismissListener != null)
+                            dismissListener.onCancel();
+                    }
+                });
         mdb.dismissListener(this);
     }
 

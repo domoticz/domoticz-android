@@ -73,7 +73,7 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) //&&
                         //appSupportedSwitchesValues.contains(switchTypeVal) &&
                         //appSupportedSwitchesNames.contains(switchType)
-                        ) {
+                    ) {
                         supportedSwitches.add(mExtendedStatusInfo);
                     }
                 }

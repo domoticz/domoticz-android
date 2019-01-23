@@ -27,6 +27,7 @@
     <item
         android:id="@+id/action_scan_qrcode"
         android:orderInCategory="100"
+        android:icon="@drawable/baseline_add_white_24"
         android:title="@string/action_qrcode_scan"
         app:showAsAction="always"/>
 
