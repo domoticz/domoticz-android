@@ -155,495 +155,495 @@ public class Wizard extends Fragment {
         for (String card : cardsToGenerate) {
             if (card.equalsIgnoreCase(WELCOME)) {
                 cards.add((new Card.Builder(context)
-                    .setTag(WELCOME)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_welcome_card_layout)
-                    .setTitle(context.getString(R.string.wizard_welcome))
-                    .setTitleColor(titleColorLight)
-                    .setDescription(context.getString(R.string.wizard_welcome_description))
-                    .setDescriptionColor(titleColorLight)
-                    .setSubtitleColor(titleColorLight)
-                    .setBackgroundColor(blueColor)
-                    .addAction(R.id.ok_button, new WelcomeButtonAction(context)
-                        .setText(context.getString(R.string.wizard_button_nice))
-                        .setTextColor(titleColorLight)
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))).endConfig().build());
+                        .setTag(WELCOME)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_welcome_card_layout)
+                        .setTitle(context.getString(R.string.wizard_welcome))
+                        .setTitleColor(titleColorLight)
+                        .setDescription(context.getString(R.string.wizard_welcome_description))
+                        .setDescriptionColor(titleColorLight)
+                        .setSubtitleColor(titleColorLight)
+                        .setBackgroundColor(blueColor)
+                        .addAction(R.id.ok_button, new WelcomeButtonAction(context)
+                                .setText(context.getString(R.string.wizard_button_nice))
+                                .setTextColor(titleColorLight)
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))).endConfig().build());
             }
 
             if (card.equalsIgnoreCase(FAVORITE)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(FAVORITE)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setBackgroundColor(otherColor)
-                    .setTitle(context.getString(R.string.wizard_favorites))
-                    .setTitleColor(titleColorOther)
-                    .setDescription(context.getString(R.string.wizard_favorites_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_switches))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(FAVORITE)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setBackgroundColor(otherColor)
+                        .setTitle(context.getString(R.string.wizard_favorites))
+                        .setTitleColor(titleColorOther)
+                        .setDescription(context.getString(R.string.wizard_favorites_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_switches))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(STARTUP)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(STARTUP)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_startup))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_startup_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(STARTUP)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_startup))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_startup_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(GEOFENCE)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(GEOFENCE)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_geo))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_geo_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(GEOFENCE)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_geo))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_geo_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(NFC)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(NFC)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_nfc))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_nfc_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(NFC)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_nfc))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_nfc_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(QRCODE)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(QRCODE)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_qrcode))
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_qrcode_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(QRCODE)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_qrcode))
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_qrcode_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(SPEECH)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(SPEECH)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_speech))
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_speech_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(SPEECH)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_speech))
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_speech_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(WEAR)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(WEAR)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setTitleColor(titleColorOther)
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_wear))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_wear_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(WEAR)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setTitleColor(titleColorOther)
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_wear))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_wear_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(AUTO)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(AUTO)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setBackgroundColor(otherColor)
-                    .setTitle(context.getString(R.string.wizard_auto))
-                    .setTitleColor(titleColorOther)
-                    .setDescription(context.getString(R.string.wizard_auto_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(AUTO)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setBackgroundColor(otherColor)
+                        .setTitle(context.getString(R.string.wizard_auto))
+                        .setTitleColor(titleColorOther)
+                        .setDescription(context.getString(R.string.wizard_auto_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(NOTIFICATIONS)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(NOTIFICATIONS)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_notifications))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_notifications_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(NOTIFICATIONS)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_notifications))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_notifications_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(MULTISERVER)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(MULTISERVER)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_multiserver))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_multiserver_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_settings))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(MULTISERVER)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_multiserver))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_multiserver_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(GRAPH)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(GRAPH)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_graph))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_graph_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_utilities))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(GRAPH)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_graph))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_graph_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_utilities))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(FILTER)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(FILTER)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_filter))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_filter_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_nice))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(FILTER)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_filter))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_filter_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_nice))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(WIDGETS)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(WIDGETS)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_widgets))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_widgets_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText("")
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
+                        .setTag(WIDGETS)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_widgets))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_widgets_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText("")
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
 
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_done))
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                card.dismiss();
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
             if (card.equalsIgnoreCase(FINISH)) {
                 cards.add(new Card.Builder(context)
-                    .setTag(FINISH)
-                    .setDismissible()
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_buttons_card)
-                    .setTitle(context.getString(R.string.wizard_menuitem))
-                    .setTitleColor(titleColorOther)
-                    .setBackgroundColor(otherColor)
-                    .setDescription(context.getString(R.string.wizard_menuitem_description))
-                    .addAction(R.id.left_text_button, new TextViewAction(context)
-                        .setText(context.getString(R.string.wizard_button_wizard))
-                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                mSharedPrefs.removeWizard();
-                                ((MainActivity) getActivity()).drawNavigationMenu(null);
-                                ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
-                            }
-                        }))
-                    .addAction(R.id.right_text_button, new TextViewAction(context)
-                        .setText("")
-                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            @DebugLog
-                            public void onActionClicked(View view, Card card) {
-                                mSharedPrefs.removeWizard();
-                                ((MainActivity) getActivity()).drawNavigationMenu(null);
-                                ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
-                            }
-                        }))
-                    .endConfig()
-                    .build());
+                        .setTag(FINISH)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.wizard_menuitem))
+                        .setTitleColor(titleColorOther)
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_menuitem_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_wizard))
+                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        mSharedPrefs.removeWizard();
+                                        ((MainActivity) getActivity()).drawNavigationMenu(null);
+                                        ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
+                                        ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText("")
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        mSharedPrefs.removeWizard();
+                                        ((MainActivity) getActivity()).drawNavigationMenu(null);
+                                        ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
+                                        ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
             }
 
         }

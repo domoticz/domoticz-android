@@ -27,7 +27,10 @@
     <string name="security_arm_home">Deels inschakelen</string>
     <string name="security_arm_away">Volledig inschakelen</string>
     <string name="security_wrong_code">Verkeerde pincode ingevoerd!</string>
+    <string name="security_no_rights">U heeft niet de juiste rechten voor deze actie!</string>
     <string name="security_generic_error">Kan de beveiligings-status niet aanpassen</string>
     <string name="security_wrong_password_fingerprint">Verkeerd wachtwoord ingevoerd, uw wachtwoord het domoticz account is de failover voor uw vingerafdruk...!</string>
     <string name="show_password">Toon wachtwoord</string>
+    <string name="fingerprint_make_sure">Ben u het echt?</string>
+    <string name="fingerprint_dialog_description">Log in met je vingerafdruk.</string>
 </resources>

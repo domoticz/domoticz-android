@@ -21,14 +21,16 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">Güvenlik paneli</string>
-  <string name="security_pin">Şifre</string>
-  <string name="security_disarm">Devredışı</string>
-  <string name="security_arm_home">Kur Evde</string>
-  <string name="security_arm_away">Kur Uzakta</string>
-  <string name="security_wrong_code">Yanlış kod girildi!</string>
-  <string name="security_generic_error">Güvenlik durumu değiştirilemedi</string>
-  <string name="security_wrong_password_fingerprint">Yanlış şifre girildiğinde, domoticz hesap şifresi parmak izinin yerine oturması!
-</string>
-  <string name="show_password">Şifreyi göster</string>
+    <string name="title_security_panel">Güvenlik paneli</string>
+    <string name="security_pin">Şifre</string>
+    <string name="security_disarm">Devredışı</string>
+    <string name="security_arm_home">Kur Evde</string>
+    <string name="security_arm_away">Kur Uzakta</string>
+    <string name="security_wrong_code">Yanlış kod girildi!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Güvenlik durumu değiştirilemedi</string>
+    <string name="security_wrong_password_fingerprint">Yanlış şifre girildiğinde, domoticz hesap şifresi parmak izinin yerine oturması!</string>
+    <string name="show_password">Şifreyi göster</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
 </resources>

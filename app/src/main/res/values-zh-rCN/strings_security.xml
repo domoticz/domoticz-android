@@ -21,13 +21,16 @@
   ~  under the License.
   -->
 <resources>
-  <string name="title_security_panel">安全面板</string>
-  <string name="security_pin">Pin码</string>
-  <string name="security_disarm">解除</string>
-  <string name="security_arm_home">到家</string>
-  <string name="security_arm_away">离家</string>
-  <string name="security_wrong_code">输入错误！</string>
-  <string name="security_generic_error">无法更改安全状态</string>
-  <string name="security_wrong_password_fingerprint">密码错误，你的Domoticz账户密码是指纹识别失败时的备用验证！</string>
-  <string name="show_password">显示密码</string>
+    <string name="title_security_panel">安全面板</string>
+    <string name="security_pin">Pin码</string>
+    <string name="security_disarm">解除</string>
+    <string name="security_arm_home">到家</string>
+    <string name="security_arm_away">离家</string>
+    <string name="security_wrong_code">输入错误！</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">无法更改安全状态</string>
+    <string name="security_wrong_password_fingerprint">密码错误，你的Domoticz账户密码是指纹识别失败时的备用验证！</string>
+    <string name="show_password">显示密码</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
 </resources>

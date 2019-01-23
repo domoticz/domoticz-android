@@ -84,6 +84,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
 
@@ -410,8 +411,7 @@
         <activity
             android:name=".Welcome.WelcomeViewActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/welcome_title_activity_welcome"
-            android:theme="@style/AppThemeIntro"/>
+            android:label="@string/welcome_title_activity_welcome"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

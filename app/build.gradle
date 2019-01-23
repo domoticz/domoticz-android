@@ -165,6 +165,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.biometric:biometric:1.0.0-alpha03'
     implementation 'com.google.android.material:material:1.1.0-alpha02'
 
     implementation "com.google.firebase:firebase-core:16.0.6"
@@ -184,6 +185,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-places:16.0.0"
     implementation "com.google.android.gms:play-services-ads:17.1.2"
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
+
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
 
     implementation('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
         exclude group: 'org.json', module: 'json'
@@ -216,11 +220,10 @@ dependencies {
     implementation 'com.schibstedspain.android:leku:3.3.0'
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
-    implementation 'com.afollestad:digitus:0.3.0'
     implementation "com.github.skydoves:colorpickerview:2.0.1"
+    implementation 'com.github.paolorotolo:appintro:v5.1.0'
 
     implementation project(':libs:MemorizingTrustManager')
-    implementation project(path: ':materialIntro_library')
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
     implementation project(path: ':materialList')

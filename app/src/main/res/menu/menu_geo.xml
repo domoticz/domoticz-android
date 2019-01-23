@@ -27,7 +27,9 @@
     <item
         android:id="@+id/action_add"
         android:orderInCategory="100"
+        android:icon="@drawable/baseline_add_white_24"
         android:title="@string/add"
         app:showAsAction="always"/>
+
 
 </menu>

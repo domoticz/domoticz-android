@@ -56,9 +56,9 @@ public class WelcomePage4 extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_welcome4, container, false);
 
-        please_wait_layout = (LinearLayout) v.findViewById(R.id.layout_please_wait);
-        result_layout = (LinearLayout) v.findViewById(R.id.layout_result);
-        result = (TextView) v.findViewById(R.id.result);
+        please_wait_layout = v.findViewById(R.id.layout_please_wait);
+        result_layout = v.findViewById(R.id.layout_result);
+        result = v.findViewById(R.id.result);
 
         return v;
     }
@@ -80,10 +80,10 @@ public class WelcomePage4 extends Fragment {
 
         if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else {
             mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override

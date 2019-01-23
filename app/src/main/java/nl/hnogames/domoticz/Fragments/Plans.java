@@ -157,17 +157,20 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             mAdapter.setOnItemClickListener(new PlansAdapter.onClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-                    if (mPhoneConnectionUtil.isNetworkAvailable()) {
-                        Intent intent = new Intent(mContext, PlanActivity.class);
-                        intent.putExtra("PLANNAME", mPlans.get(position).getName());
-                        intent.putExtra("PLANID", mPlans.get(position).getIdx());
-                        startActivity(intent);
-                    } else {
-                        if (coordinatorLayout != null) {
-                            UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                            if (getActivity() instanceof MainActivity)
-                                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                    try {
+                        if (mPhoneConnectionUtil != null && mPhoneConnectionUtil.isNetworkAvailable()) {
+                            Intent intent = new Intent(mContext, PlanActivity.class);
+                            intent.putExtra("PLANNAME", mPlans.get(position).getName());
+                            intent.putExtra("PLANID", mPlans.get(position).getIdx());
+                            startActivity(intent);
+                        } else {
+                            if (coordinatorLayout != null) {
+                                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                                if (getActivity() instanceof MainActivity)
+                                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+                            }
                         }
+                    } catch (Exception ignored) {
                     }
                 }
             });
@@ -181,7 +184,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
-                false));
+                    false));
         }
         if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
