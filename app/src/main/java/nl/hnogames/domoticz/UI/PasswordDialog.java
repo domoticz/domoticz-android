@@ -63,7 +63,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         if (dismissListener != null)
-                            dismissListener.onDismiss(null);
+                            dismissListener.onCancel();
                     }
                 })
                 .dismissListener(new DialogInterface.OnDismissListener() {
