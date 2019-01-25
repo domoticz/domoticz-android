@@ -39,6 +39,7 @@ import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
@@ -98,34 +99,54 @@ public class UpdateActivity extends AppCompatAssistActivity {
             }
         });
 
-        if (serverUtil.getActiveServer() != null &&
-                serverUtil.getActiveServer().getServerUpdateInfo(this) != null) {
-            currentServerVersionValue.setText(serverUtil.getActiveServer()
-                    .getServerUpdateInfo(this)
-                    .getCurrentServerVersion());
+        // Get latest Domoticz server version
+        mDomoticz.getServerVersion(new VersionReceiver() {
+            @Override
+            public void onReceiveVersion(VersionInfo serverVersion) {
+                if(serverVersion == null)
+                    return;
+                if (serverUtil.getActiveServer() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null) {
+                    currentServerVersionValue.setText(serverVersion.getVersion());
 
-            if (serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()) {
-                updateSummary.setText(R.string.server_update_available);
-                updateServerVersionValue.setText(serverUtil.getActiveServer()
-                        .getServerUpdateInfo(this)
-                        .getUpdateRevisionNumber());
-            } else if (mSharedPrefs.isDebugEnabled()) {
-                String message = "Debugging: " + getString(R.string.server_update_available);
-                updateSummary.setText(message);
-            } else
-                updateSummary.setText(R.string.server_update_not_available);
+                    if (serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()) {
+                        updateSummary.setText(R.string.server_update_available);
+                        updateServerVersionValue.setText(serverUtil.getActiveServer()
+                            .getServerUpdateInfo(UpdateActivity.this)
+                            .getUpdateRevisionNumber());
+                    } else if (mSharedPrefs.isDebugEnabled()) {
+                        String message = "Debugging: " + getString(R.string.server_update_available);
+                        updateSummary.setText(message);
+                    } else
+                        updateSummary.setText(R.string.server_update_not_available);
 
-            buttonUpdateServer = findViewById(R.id.buttonUpdateServer);
-            buttonUpdateServer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showServerUpdateWarningDialog();
+                    buttonUpdateServer = findViewById(R.id.buttonUpdateServer);
+                    buttonUpdateServer.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showServerUpdateWarningDialog();
+                        }
+                    });
+                    if (!serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()
+                        && !mSharedPrefs.isDebugEnabled())
+                        buttonUpdateServer.setEnabled(false);
                 }
-            });
-            if (!serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()
-                    && !mSharedPrefs.isDebugEnabled())
-                buttonUpdateServer.setEnabled(false);
-        }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                String message = String.format(
+                    getString(R.string.error_couldNotCheckForUpdates),
+                    mDomoticz.getErrorMessage(error));
+                showSnackbar(message);
+                if (serverUtil != null &&
+                    serverUtil.getActiveServer() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
+                currentServerVersionValue.setText(R.string.not_available);
+            }
+        });
     }
 
     private void refreshData() {
@@ -223,22 +244,6 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 .getServerUpdateInfo(this)
                 .isUpdateAvailable()) {
             mDomoticz.updateDomoticzServer(null);
-            // No feedback is provided when updating
-
-            /*
-                    new UpdateDomoticzServerReceiver() {
-                @Override
-                public void onUpdateFinish(boolean updateSuccess) {
-                    if (!updateSuccess) showMessageUpdateFailed();
-                    else showMessageUpdateSuccess();
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    showMessageUpdateNotStarted();
-                }
-            });
-            */
         }
     }
 
@@ -304,32 +309,28 @@ public class UpdateActivity extends AppCompatAssistActivity {
         // Get latest Domoticz server version
         mDomoticz.getServerVersion(new VersionReceiver() {
             @Override
-            public void onReceiveVersion(String serverVersion) {
+            public void onReceiveVersion(VersionInfo serverVersion) {
                 mSwipeRefreshLayout.setRefreshing(false);
-
-                if (!UsefulBits.isEmpty(serverVersion)) {
+                if (serverVersion != null && !UsefulBits.isEmpty(serverVersion.getVersion())) {
                     if (serverUtil != null &&
                             serverUtil.getActiveServer() != null &&
                             serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion);
-                    currentServerVersionValue.setText(serverVersion);
+                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion.getVersion());
+                    currentServerVersionValue.setText(serverVersion.getVersion());
                 } else currentServerVersionValue.setText(R.string.not_available);
             }
 
             @Override
             public void onError(Exception error) {
                 mSwipeRefreshLayout.setRefreshing(false);
-
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
                 showSnackbar(message);
-
                 if (serverUtil != null &&
                         serverUtil.getActiveServer() != null &&
                         serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
                     serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
-
                 currentServerVersionValue.setText(R.string.not_available);
             }
         });

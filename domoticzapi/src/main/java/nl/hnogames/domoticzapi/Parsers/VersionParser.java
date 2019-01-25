@@ -23,6 +23,11 @@ package nl.hnogames.domoticzapi.Parsers;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 
@@ -37,7 +42,13 @@ public class VersionParser implements JSONParserInterface {
 
     @Override
     public void parseResult(String result) {
-        receiver.onReceiveVersion(result);
+        try {
+            JSONObject response = new JSONObject(result);
+            VersionInfo versionInfo = new VersionInfo(response);
+            receiver.onReceiveVersion(versionInfo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

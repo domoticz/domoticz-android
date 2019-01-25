@@ -435,7 +435,7 @@ public class Domoticz {
     public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.VERSION);
-        RequestUtil.makeJsonVersionRequest(parser,
+        RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
                 url, getSessionUtil(), true, 3, queue);

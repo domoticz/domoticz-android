@@ -193,6 +193,7 @@
 
     <!--        Server update category       -->
     <string name="title_activity_update">Update server</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
     <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>
