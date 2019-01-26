@@ -217,6 +217,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
         addDebugText("changeFavorite");
@@ -361,6 +362,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -415,6 +417,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 

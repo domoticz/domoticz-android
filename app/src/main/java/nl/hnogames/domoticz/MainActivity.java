@@ -160,6 +160,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
         return mServerUtil;
     }
 
+    @DebugLog
+    public ConfigInfo getConfig() {
+        return mConfigInfo;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,7 +220,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             mSharedPrefs.setFirstStart(false);
         } else {
             new GeoUtils(this, this).AddGeofences();
-            buildScreen(true);
+            buildScreen();
         }
     }
 
@@ -311,7 +316,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @DebugLog
-    public void buildScreen(boolean forceConfig) {
+    public void buildScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
             TextView usingTabletLayout = findViewById(R.id.tabletLayout);
@@ -344,7 +349,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
                     drawNavigationMenu(mConfigInfo);
 
-                    UsefulBits.getServerConfigForActiveServer(this, forceConfig, new ConfigReceiver() {
+                    UsefulBits.getServerConfigForActiveServer(this, new ConfigReceiver() {
                         @Override
                         @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
@@ -391,7 +396,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             setTheme(R.style.AppThemeDarkMain);
                         else
                             setTheme(R.style.AppThemeMain);
-                        buildScreen(false);
+                        buildScreen();
                     }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
@@ -848,7 +853,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                                 if (md5Pass.equals(user.getPassword())) {
                                                     domoticz.LogOff();
                                                     domoticz.setUserCredentials(user.getUsername(), password);
-                                                    buildScreen(true);
+                                                    buildScreen();
                                                 } else {
                                                     UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                     drawNavigationMenu(finalConfig);
@@ -1044,11 +1049,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             @Override
             @DebugLog
             public void onError(Exception error) {
-                String message = String.format(
-                    getString(R.string.error_couldNotCheckForUpdates),
-                    domoticz.getErrorMessage(error));
-                showSnackbar(message);
-
                 if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
                     mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
                 mServerUtil.saveDomoticzServers(true);
@@ -1079,32 +1079,29 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             .getUpdateRevisionNumber() :
                         version[0];
 
-                    String message = String.format(getString(R.string.update_available_enhanced), serverVersion.getVersion(), updateVersion);
-                    if (mSharedPrefs.checkForUpdatesEnabled() && !mSharedPrefs.getLastUpdateShown().equals(updateVersion)) {
-                        if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).getSystemName().equalsIgnoreCase("linux")) {
-                            // Great! We can remote/auto update Linux systems
-                            showSnackBarToUpdateServer(message);
-                            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                        } else {
-                            // No remote/auto updating available for other systems (like Windows, Synology)
-                            showSnackbar(getString(R.string.server_update_available));
-                            Toast.makeText(MainActivity.this, getString(R.string.server_update_available), Toast.LENGTH_SHORT).show();
+                    if(!serverVersion.getVersion().equals(updateVersion) && serverVersion.isHaveUpdate()) {
+                        String message = String.format(getString(R.string.update_available_enhanced), serverVersion.getVersion(), updateVersion);
+                        if (mSharedPrefs.checkForUpdatesEnabled() && !mSharedPrefs.getLastUpdateShown().equals(updateVersion)) {
+                            if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).getSystemName().equalsIgnoreCase("linux")) {
+                                // Great! We can remote/auto update Linux systems
+                                showSnackBarToUpdateServer(message);
+                                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                            } else {
+                                // No remote/auto updating available for other systems (like Windows, Synology)
+                                showSnackbar(getString(R.string.server_update_available));
+                                Toast.makeText(MainActivity.this, getString(R.string.server_update_available), Toast.LENGTH_SHORT).show();
+                            }
+                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setUpdateAvailable(true);
+                            mSharedPrefs.setLastUpdateShown(updateVersion);
                         }
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setUpdateAvailable(true);
-                        mSharedPrefs.setLastUpdateShown(updateVersion);
+                        mServerUtil.saveDomoticzServers(true);
                     }
-                    mServerUtil.saveDomoticzServers(true);
                 }
             }
 
             @Override
             @DebugLog
-            public void onError(Exception error) {
-                String message = String.format(
-                    getString(R.string.error_couldNotCheckForUpdates),
-                    domoticz.getErrorMessage(error));
-                showSnackbar(message);
-            }
+            public void onError(Exception error) {}
         });
     }
 

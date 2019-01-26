@@ -217,7 +217,7 @@ public class Preference extends PreferenceFragment {
         });
 
         if (mConfigInfo == null) {
-            UsefulBits.getServerConfigForActiveServer(mContext, false, new ConfigReceiver() {
+            UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
                 @Override
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
@@ -227,8 +227,7 @@ public class Preference extends PreferenceFragment {
 
                 @Override
                 @DebugLog
-                public void onError(Exception error) {
-                }
+                public void onError(Exception error) {}
             }, mServerUtil.getActiveServer().getConfigInfo(mContext));
         } else {
             setupDefaultValues();
@@ -329,7 +328,7 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.getServerConfigForActiveServer(mContext, true, new ConfigReceiver() {
+                UsefulBits.getServerConfigForActiveServer(mContext,  new ConfigReceiver() {
                     @Override
                     public void onReceiveConfig(ConfigInfo settings) {
                         showSnackbar(mContext.getString(R.string.fetched_server_config_success));

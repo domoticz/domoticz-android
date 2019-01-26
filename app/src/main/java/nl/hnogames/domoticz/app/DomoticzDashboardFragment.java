@@ -142,9 +142,9 @@ public class DomoticzDashboardFragment extends Fragment {
         try {
             Activity activity = getActivity();
             if (activity instanceof MainActivity) {
-                return ((MainActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+                return ((MainActivity) getActivity()).getConfig();
             } else if (activity instanceof PlanActivity) {
-                return ((PlanActivity) getActivity()).getServerUtil().getActiveServer().getConfigInfo(context);
+                return ((PlanActivity) getActivity()).getConfig();
             } else return null;
         } catch (Exception ex) {
         }

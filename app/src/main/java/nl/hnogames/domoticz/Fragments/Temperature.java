@@ -216,6 +216,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -296,6 +297,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 

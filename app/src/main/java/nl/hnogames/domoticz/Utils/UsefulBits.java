@@ -436,20 +436,9 @@ public class UsefulBits {
      * @param forced  Force update the config
      */
     @DebugLog
-    public static void getServerConfigForActiveServer(final Context context, boolean forced, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
+    public static void getServerConfigForActiveServer(final Context context, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
         final ServerUtil mServerUtil = new ServerUtil(context);
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-        final long currentTime = Calendar.getInstance().getTimeInMillis();
-
-        if (currentConfig != null && !forced) {
-            final long dateOfConfig = currentConfig.getDateOfConfig();
-            int age = UsefulBits.differenceInDays(dateOfConfig, currentTime);
-            if (age < DAYS_TO_CHECK_FOR_SERVER_CONFIG) {
-                Log.i(TAG, "Skipping ConfigInfo fetch which is " + String.valueOf(age) + " days old");
-                receiver.onReceiveConfig(currentConfig);
-                return;
-            }
-        }
 
         // Get Domoticz server configuration
         domoticz.getConfig(new ConfigReceiver() {
@@ -457,52 +446,17 @@ public class UsefulBits {
             @DebugLog
             public void onReceiveConfig(final ConfigInfo configInfo) {
                 if (configInfo != null) {
-                    configInfo.setDateOfConfig(currentTime);
-                    domoticz.getUsers(new UsersReceiver() {
+                    domoticz.getUserAuthenticationRights(new AuthReceiver() {
                         @Override
                         @DebugLog
-                        public void onReceiveUsers(final ArrayList<UserInfo> mUserInfo) {
-                            if (mUserInfo != null) {
-                                domoticz.getUserAuthenticationRights(new AuthReceiver() {
-                                    @Override
-                                    @DebugLog
-                                    public void onReceiveAuthentication(AuthInfo auth) {
-                                        ArrayList<UserInfo> mDetailUserInfo = mUserInfo;
-                                        //also add current user
-                                        UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
-                                                UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
-                                                auth.getRights());
-
-                                        mDetailUserInfo.add(currentUser);
-                                        configInfo.setUsers(mDetailUserInfo);
-                                        mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
-                                        mServerUtil.saveDomoticzServers(true);
-
-                                        if (receiver != null)
-                                            receiver.onReceiveConfig(configInfo);
-                                    }
-
-                                    @Override
-                                    @DebugLog
-                                    public void onError(Exception error) {
-                                    }
-                                });
-                            } else {
-                                mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
-                                mServerUtil.saveDomoticzServers(true);
-                            }
+                        public void onReceiveAuthentication(AuthInfo auth) {
+                            GetServerUserInfo(domoticz, auth, mServerUtil, context, configInfo, currentConfig, receiver);
                         }
 
                         @Override
                         @DebugLog
                         public void onError(Exception error) {
-                            if (currentConfig != null) {
-                                configInfo.setUsers(currentConfig.getUsers());
-                            }
-                            mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
-                            mServerUtil.saveDomoticzServers(true);
-                            if (receiver != null)
-                                receiver.onReceiveConfig(configInfo);
+                            GetServerUserInfo(domoticz, null, mServerUtil, context, configInfo, currentConfig, receiver);
                         }
                     });
                 }
@@ -515,9 +469,65 @@ public class UsefulBits {
                     showSimpleToast(context, String.format(
                             context.getString(R.string.error_couldNotCheckForConfig),
                             domoticz.getErrorMessage(error)), Toast.LENGTH_SHORT);
-
                 if (receiver != null)
                     receiver.onError(error);
+            }
+        });
+    }
+
+    public static void GetServerUserInfo(final Domoticz domoticz, final AuthInfo auth, final ServerUtil mServerUtil, final Context context, final ConfigInfo configInfo, final ConfigInfo currentConfig, final ConfigReceiver receiver)
+    {
+        if(domoticz == null)
+            return;
+
+        ArrayList<UserInfo> mDetailUserInfo = new ArrayList<>();
+        UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
+                auth != null ? auth.getRights() : 0);
+        if(currentConfig != null && currentConfig.getUsers() != null) {
+            for (UserInfo user : currentConfig.getUsers()) {
+                if (!user.getUsername().equals(currentUser.getUsername()))
+                    mDetailUserInfo.add(user);
+            }
+        }
+        mDetailUserInfo.add(currentUser);
+        configInfo.setUsers(mDetailUserInfo);
+        mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
+        mServerUtil.saveDomoticzServers(true);
+
+        domoticz.getUsers(new UsersReceiver() {
+            @Override
+            @DebugLog
+            public void onReceiveUsers(final ArrayList<UserInfo> mUserInfo) {
+                if (mUserInfo != null) {
+                    ArrayList<UserInfo> mDetailUserInfo = new ArrayList<>();
+                    //also add current user
+                    UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                            UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
+                            auth != null ? auth.getRights() : 0);
+                    for(UserInfo user : mUserInfo)
+                    {
+                        if(!user.getUsername().equals(currentUser.getUsername()))
+                            mDetailUserInfo.add(user);
+                    }
+                    mDetailUserInfo.add(currentUser);
+                    configInfo.setUsers(mDetailUserInfo);
+                    mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
+                    mServerUtil.saveDomoticzServers(true);
+                } else {
+                    mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
+                    mServerUtil.saveDomoticzServers(true);
+                }
+                if (receiver != null)
+                    receiver.onReceiveConfig(configInfo);
+            }
+
+            @Override
+            @DebugLog
+            public void onError(Exception error) {
+                //Toast.makeText(context, "Could not get user info", Toast.LENGTH_LONG).show();
+                if (receiver != null)
+                    receiver.onReceiveConfig(configInfo);
             }
         });
     }
