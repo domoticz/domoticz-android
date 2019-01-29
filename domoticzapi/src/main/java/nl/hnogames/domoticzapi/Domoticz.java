@@ -52,6 +52,7 @@ import nl.hnogames.domoticzapi.Interfaces.AuthReceiver;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
@@ -81,6 +82,7 @@ import nl.hnogames.domoticzapi.Parsers.AuthParser;
 import nl.hnogames.domoticzapi.Parsers.CameraParser;
 import nl.hnogames.domoticzapi.Parsers.ConfigParser;
 import nl.hnogames.domoticzapi.Parsers.DevicesParser;
+import nl.hnogames.domoticzapi.Parsers.DownloadUpdateParser;
 import nl.hnogames.domoticzapi.Parsers.EventsParser;
 import nl.hnogames.domoticzapi.Parsers.GraphDataParser;
 import nl.hnogames.domoticzapi.Parsers.LanguageParser;
@@ -461,6 +463,20 @@ public class Domoticz {
 
     /**
      * Get's if the update is downloaded and ready
+     *
+     * @param receiver to get the callback on
+     */
+    public void getDownloadUpdate(DownloadUpdateServerReceiver receiver) {
+        DownloadUpdateParser parser = new DownloadUpdateParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1, queue);
+    }
+
+    /**
+     * Download the update file
      *
      * @param receiver to get the callback on
      */

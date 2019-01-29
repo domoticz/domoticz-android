@@ -26,6 +26,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,6 +42,8 @@ import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
+import nl.hnogames.domoticzapi.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
@@ -238,12 +241,48 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 refreshData();
             }
         };
-
         mCountDownTimer.start();
-        if (!mSharedPrefs.isDebugEnabled() || serverUtil.getActiveServer()
-                .getServerUpdateInfo(this)
-                .isUpdateAvailable()) {
-            mDomoticz.updateDomoticzServer(null);
+
+        if (mSharedPrefs.isDebugEnabled() || serverUtil.getActiveServer().getServerUpdateInfo(this) .isUpdateAvailable()) {
+            mDomoticz.getDownloadUpdate(new DownloadUpdateServerReceiver() {
+                @Override
+                public void onDownloadStarted(boolean updateSuccess) {
+                    if(updateSuccess) {
+                        mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
+                            @Override
+                            public void onUpdateDownloadReady(boolean downloadOk) {
+                                if (downloadOk) {
+                                    mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
+                                        @Override
+                                        public void onUpdateFinish(boolean updateSuccess) {
+                                            dialog.cancel();
+                                            showMessageUpdateSuccess();
+                                            refreshData();
+                                        }
+
+                                        @Override
+                                        public void onError(Exception error) {}
+                                    });
+                                }
+                                else
+                                    showSnackbar(getString(R.string.update_not_started_unknown_error));
+                            }
+
+                            @Override
+                            public void onError(Exception error) {
+                                showSnackbar(getString(R.string.update_server_downloadNotReady1));
+                            }
+                        });
+                    }
+                    else
+                        showSnackbar(getString(R.string.update_not_started_unknown_error));
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    showSnackbar(getString(R.string.update_not_started_unknown_error));
+                }
+            });
         }
     }
 

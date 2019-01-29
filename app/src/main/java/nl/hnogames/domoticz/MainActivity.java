@@ -1085,11 +1085,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).getSystemName().equalsIgnoreCase("linux")) {
                                 // Great! We can remote/auto update Linux systems
                                 showSnackBarToUpdateServer(message);
-                                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                             } else {
                                 // No remote/auto updating available for other systems (like Windows, Synology)
                                 showSnackbar(getString(R.string.server_update_available));
-                                Toast.makeText(MainActivity.this, getString(R.string.server_update_available), Toast.LENGTH_SHORT).show();
                             }
                             mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setUpdateAvailable(true);
                             mSharedPrefs.setLastUpdateShown(updateVersion);
