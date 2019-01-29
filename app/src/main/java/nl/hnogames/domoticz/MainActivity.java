@@ -968,7 +968,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++) {
-            if ((fragments[i].contains("Fragments.Plans") && (mConfigInfo != null && mConfigInfo.isEnableTabFloorplans())) ||
+            if ((fragments[i].contains("Fragments.Plans")) ||
                 (fragments[i].contains("Fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
