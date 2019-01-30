@@ -52,7 +52,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class UpdateActivity extends AppCompatAssistActivity {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final int SERVER_UPDATE_TIME = 2;                       // Time in minutes
+    private final int SERVER_UPDATE_TIME = 3; // Time in minutes
     @SuppressWarnings("unused")
     private String TAG = UpdateActivity.class.getSimpleName();
     private Domoticz mDomoticz;
@@ -159,73 +159,36 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
     private void showServerUpdateWarningDialog() {
         new MaterialDialog.Builder(this)
-                .title(R.string.server_update)
-                .content(getString(R.string.update_server_warning)
-                        + UsefulBits.newLine()
-                        + UsefulBits.newLine()
-                        + getString(R.string.continue_question))
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        updateServer();
-                    }
-                })
-                .show();
-    }
-
-    @SuppressWarnings("unused")
-    private void checkForUpdatePrerequisites() {
-        MaterialDialog.Builder mdb = new MaterialDialog.Builder(this);
-        mdb.title(R.string.msg_please_wait)
-                .content(R.string.please_wait_while_we_check)
-                .progress(true, 0);
-        progressDialog = mdb.build();
-        progressDialog.show();
-
-        mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
-            @Override
-            public void onUpdateDownloadReady(boolean downloadOk) {
-                if (downloadOk || mSharedPrefs.isDebugEnabled()) updateServer();
-                else {
-                    progressDialog.cancel();
-                    showMessageUpdateNotReady();
-                }
-            }
-
-            @Override
-            public void onError(Exception error) {
-                progressDialog.cancel();
-                String message = String.format(
-                        getString(R.string.error_couldNotCheckForConfig),
-                        mDomoticz.getErrorMessage(error));
-                showSnackbar(message);
-            }
-        });
-    }
-
-    private void showMessageUpdateNotReady() {
-        String title = getString(R.string.server_update_not_ready);
-        String message = getString(R.string.update_server_downloadNotReady1)
+            .title(R.string.server_update)
+            .content(getString(R.string.update_server_warning)
                 + UsefulBits.newLine()
-                + getString(R.string.update_server_downloadNotReady2);
-        showSimpleDialog(title, message);
+                + UsefulBits.newLine()
+                + getString(R.string.continue_question))
+            .positiveText(R.string.yes)
+            .negativeText(R.string.no)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    updateServer();
+                }
+            })
+            .show();
     }
 
     private void updateServer() {
         // Cancel the check prerequisites dialog
-        if (progressDialog != null) progressDialog.cancel();
+        if (progressDialog != null)
+            progressDialog.cancel();
 
         final boolean showMinMax = false;
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(R.string.msg_please_wait)
-                .content(getString(R.string.please_wait_while_server_updated)
-                        + UsefulBits.newLine()
-                        + getString(R.string.this_take_minutes))
-                .cancelable(false)
-                .progress(false, SERVER_UPDATE_TIME * 60, showMinMax)
-                .show();
+            .title(R.string.msg_please_wait)
+            .content(getString(R.string.please_wait_while_server_updated)
+                + UsefulBits.newLine()
+                + getString(R.string.this_take_minutes))
+            .cancelable(false)
+            .progress(false, SERVER_UPDATE_TIME * 60, showMinMax)
+            .show();
 
         CountDownTimer mCountDownTimer = new CountDownTimer(SERVER_UPDATE_TIME * 60 * 1000, 1000) {
 
@@ -248,39 +211,65 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 @Override
                 public void onDownloadStarted(boolean updateSuccess) {
                     if(updateSuccess) {
+                        showSnackbar("Downloading the new update for the server");
                         mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
                             @Override
                             public void onUpdateDownloadReady(boolean downloadOk) {
                                 if (downloadOk) {
+                                    showSnackbar("Download finished, starting to update Domoticz");
                                     mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
                                         @Override
                                         public void onUpdateFinish(boolean updateSuccess) {
-                                            dialog.cancel();
-                                            showMessageUpdateSuccess();
-                                            refreshData();
+                                            if(updateSuccess)
+                                                showSnackbar("Your system is updating at this moment");
+                                            else {
+                                                showSnackbar(getString(R.string.update_not_started_unknown_error));
+                                                dialog.cancel();
+                                                showMessageUpdateFailed();
+                                                refreshData();
+                                            }
                                         }
 
                                         @Override
-                                        public void onError(Exception error) {}
+                                        public void onError(Exception error) {
+                                            showSnackbar(getString(R.string.update_not_started_unknown_error));
+                                            dialog.cancel();
+                                            showMessageUpdateFailed();
+                                            refreshData();
+                                        }
                                     });
                                 }
-                                else
+                                else {
                                     showSnackbar(getString(R.string.update_not_started_unknown_error));
+                                    dialog.cancel();
+                                    showMessageUpdateFailed();
+                                    refreshData();
+                                }
                             }
 
                             @Override
                             public void onError(Exception error) {
                                 showSnackbar(getString(R.string.update_server_downloadNotReady1));
+                                dialog.cancel();
+                                showMessageUpdateFailed();
+                                refreshData();
                             }
                         });
                     }
-                    else
+                    else {
                         showSnackbar(getString(R.string.update_not_started_unknown_error));
+                        dialog.cancel();
+                        showMessageUpdateFailed();
+                        refreshData();
+                    }
                 }
 
                 @Override
                 public void onError(Exception error) {
                     showSnackbar(getString(R.string.update_not_started_unknown_error));
+                    dialog.cancel();
+                    showMessageUpdateFailed();
+                    refreshData();
                 }
             });
         }
@@ -331,8 +320,8 @@ public class UpdateActivity extends AppCompatAssistActivity {
             @Override
             public void onError(Exception error) {
                 String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                    getString(R.string.error_couldNotCheckForUpdates),
+                    mDomoticz.getErrorMessage(error));
                 showSnackbar(message);
                 serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setUpdateRevisionNumber("");
                 updateServerVersionValue.setText(R.string.not_available);
@@ -352,8 +341,8 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (serverVersion != null && !UsefulBits.isEmpty(serverVersion.getVersion())) {
                     if (serverUtil != null &&
-                            serverUtil.getActiveServer() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                        serverUtil.getActiveServer() != null &&
+                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
                         serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion.getVersion());
                     currentServerVersionValue.setText(serverVersion.getVersion());
                 } else currentServerVersionValue.setText(R.string.not_available);
@@ -363,12 +352,12 @@ public class UpdateActivity extends AppCompatAssistActivity {
             public void onError(Exception error) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                    getString(R.string.error_couldNotCheckForUpdates),
+                    mDomoticz.getErrorMessage(error));
                 showSnackbar(message);
                 if (serverUtil != null &&
-                        serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    serverUtil.getActiveServer() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
                     serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
                 currentServerVersionValue.setText(R.string.not_available);
             }
@@ -376,8 +365,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
     }
 
     private void showSnackbar(String message) {
-        CoordinatorLayout fragmentCoordinatorLayout =
-                findViewById(R.id.coordinatorLayout);
+        CoordinatorLayout fragmentCoordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (fragmentCoordinatorLayout != null) {
             UsefulBits.showSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
         }
@@ -385,9 +373,9 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
     private void showSimpleDialog(String title, String message) {
         new MaterialDialog.Builder(this)
-                .title(title)
-                .content(message)
-                .positiveText(R.string.ok)
-                .show();
+            .title(title)
+            .content(message)
+            .positiveText(R.string.ok)
+            .show();
     }
 }
