@@ -332,6 +332,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -419,6 +420,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -549,6 +551,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -602,6 +605,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -724,6 +728,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -775,6 +780,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -849,6 +855,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -949,6 +956,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -1039,6 +1047,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -1080,6 +1089,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
         new MaterialDialog.Builder(mContext)
@@ -1123,6 +1133,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
         mDomoticz.setModalAction(idx,
@@ -1225,6 +1236,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -1317,6 +1329,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+                refreshFragment();
                 return;
             }
             String text = String.format(mContext.getString(R.string.set_level_switch),

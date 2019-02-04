@@ -307,11 +307,14 @@ public class DomoticzUrls {
             case DomoticzValues.Json.Url.Request.LANGUAGE:
                 url = DomoticzValues.Url.System.LANGUAGE_TRANSLATIONS;
                 break;
+            case DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE:
+                url = DomoticzValues.Url.System.UPDATE_DOWNLOAD_UPDATE;
+                break;
             case DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
                 url = DomoticzValues.Url.System.UPDATE_DOMOTICZ_SERVER;
                 break;
             case DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY:
-                url = DomoticzValues.Url.System.DOWNLOAD_READY;
+                url = DomoticzValues.Url.System.UPDATE_DOWNLOAD_READY;
                 break;
             case DomoticzValues.Json.Url.Request.VERSION:
                 url = DomoticzValues.Url.Category.VERSION;

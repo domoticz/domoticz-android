@@ -81,7 +81,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private boolean showAsList;
-    private Domoticz domoticz;
     private Context context;
     private switchesClickListener listener;
     private int previousDimmerValue;
@@ -98,7 +97,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.showAsList = showAsList;
         mSharedPrefs = new SharedPrefUtil(context);
         this.context = context;
-        domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
         if (mCustomSorting == null)
@@ -444,6 +442,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
             if (mDeviceInfo.getDewPoint() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
+
             if ((mDeviceInfo.getType() != null && mDeviceInfo.getType().equals(DomoticzValues.Device.Type.Value.TEMP)) ||
                     !Double.isNaN(mDeviceInfo.getTemperature())) {
                 holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
@@ -461,9 +460,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);
                 holder.pieView.startAnimation(animation);
-            } else {
+                if(!mSharedPrefs.showExtraData())
+                    holder.switch_battery_level.setVisibility(View.GONE);
+            } else
                 holder.pieView.setVisibility(View.GONE);
-            }
 
             if (mDeviceInfo.getBarometer() > 0)
                 holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
@@ -832,11 +832,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
             Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                    (mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
                     true, "Freezing")).into(holder.iconRow);
         } else {
             Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                    (mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature()) ? true : false,
+                mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
                     false, null)).into(holder.iconRow);
         }
     }

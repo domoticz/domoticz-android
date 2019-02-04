@@ -333,6 +333,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -532,6 +533,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
 
@@ -866,6 +868,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
         if (checked) {
@@ -958,6 +961,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
         if (checked) {
@@ -1041,6 +1045,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
             return;
         }
         if ((jsonAction == DomoticzValues.Device.Blind.Action.UP || jsonAction == DomoticzValues.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
@@ -1136,6 +1141,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+                refreshFragment();
                 return;
             }
             String text = String.format(mContext.getString(R.string.set_level_switch),

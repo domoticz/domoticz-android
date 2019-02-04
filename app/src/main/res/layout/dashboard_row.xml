@@ -22,6 +22,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -79,9 +80,9 @@
                             android:id="@+id/rowIcon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
                             android:layout_gravity="center_horizontal"
                             android:contentDescription="@string/error_image_description"
-                            android:paddingTop="-10dp"
                             android:src="@drawable/clock48"/>
 
                         <TextView
@@ -92,29 +93,17 @@
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
                             android:maxLines="2"
-                            android:paddingLeft="10dp"
-                            android:paddingBottom="7dp"
-                            android:text="Switch"/>
+                            android:paddingBottom="7dp"/>
 
                         <TextView
                             android:id="@+id/switch_battery_level"
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="-10dp"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
-                            android:paddingLeft="10dp"
                             android:text="@string/battery_level"/>
-
-                        <TextView
-                            android:id="@+id/switch_signal_level"
-                            style="@style/row_body2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:paddingLeft="10dp"
-                            android:text="@string/signal_level"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -125,20 +114,20 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal"
-                        android:paddingBottom="10dp">
+                        android:paddingBottom="5dp">
 
                         <az.plainpie.PieView
-                            xmlns:plainpie="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/pieView"
-                            android:layout_width="72dp"
-                            android:layout_height="73dp"
-                            plainpie:inner_pie_padding="10"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="7dp"
+                            plainpie:inner_pie_padding="5"
                             plainpie:inner_text_visibility="true"
-                            plainpie:percentage="75"
-                            plainpie:percentage_size="15"/>
+                            plainpie:percentage="50"
+                            plainpie:percentage_size="8"/>
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
+                            app:useMaterialThemeColors="false"
                             android:id="@+id/switch_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -217,10 +206,8 @@ app:useMaterialThemeColors="false"
                         <TextView
                             android:id="@+id/switch_dimmer_level"
                             android:layout_width="wrap_content"
-                            android:layout_height="22dp"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="6dp"
-                            android:text="55%"/>
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"/>
 
                         <SeekBar
                             android:id="@+id/switch_dimmer"
@@ -237,7 +224,7 @@ app:useMaterialThemeColors="false"
                             android:minWidth="150dp"/>
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
+                            app:useMaterialThemeColors="false"
                             android:id="@+id/switch_dimmer_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -257,6 +244,19 @@ app:useMaterialThemeColors="false"
                             android:textSize="10dp"/>
                     </LinearLayout>
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/switch_signal_level"
+                    style="@style/row_dash_body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textSize="8sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_margin="3dp"
+                    android:textStyle="italic"
+                    android:gravity="end"
+                    android:text="@string/signal_level"/>
             </LinearLayout>
         </LinearLayout>
 

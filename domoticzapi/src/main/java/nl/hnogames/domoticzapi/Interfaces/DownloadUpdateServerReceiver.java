@@ -21,12 +21,10 @@
 
 package nl.hnogames.domoticzapi.Interfaces;
 
-import nl.hnogames.domoticzapi.Containers.VersionInfo;
-
 /**
- * Receiver which returns the version of the Domoticz server
+ * Receiver which returns if the update of the server is a success
  */
-public interface VersionReceiver {
-    void onReceiveVersion(VersionInfo version);
+public interface DownloadUpdateServerReceiver {
+    void onDownloadStarted(boolean updateSuccess);
     void onError(Exception error);
 }

@@ -45,6 +45,7 @@ public class ServerUpdateInfo implements Serializable {
     private final String STRING_CHANNEL = "channel=";
     @SuppressWarnings("FieldCanBeLocal")
     private final String STRING_TYPE = "&type=";
+
     String revision = "";
     String currentServerVersion = "";
     String systemName = "";
@@ -54,7 +55,6 @@ public class ServerUpdateInfo implements Serializable {
     boolean haveUpdate;
 
     public ServerUpdateInfo(JSONObject row) throws JSONException {
-
         if (row.has(RESPONSE_REVISION))
             revision = row.getString(RESPONSE_REVISION);
         else if (row.has(RESPONSE_REVISION_NEW))
@@ -84,7 +84,6 @@ public class ServerUpdateInfo implements Serializable {
     private String extractUpdateChannel(String string) {
         if (UsefulBits.isEmpty(string))
             return null;
-
         if (string.contains(STRING_CHANNEL) && string.contains(STRING_TYPE))
             return string.substring(string.indexOf(STRING_CHANNEL) + STRING_CHANNEL.length(), string.indexOf(STRING_TYPE));
         else if (string.contains(STRING_CHANNEL))

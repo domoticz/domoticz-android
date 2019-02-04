@@ -291,6 +291,7 @@ public class DomoticzValues {
                 int UPDATEVAR = 40;
                 int IMAGE = 41;
                 int CHECKLOGIN = 42;
+                int UPDATE_DOWNLOAD_UPDATE = 43;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -504,7 +505,8 @@ public class DomoticzValues {
             String SETTINGS = "/json.htm?type=settings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
-            String DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
+            String UPDATE_DOWNLOAD_UPDATE = "/json.htm?type=command&param=downloadupdate";
+            String UPDATE_DOWNLOAD_READY = "/json.htm?type=command&param=downloadready";
             String UPDATE_DOMOTICZ_SERVER = "/json.htm?type=command&param=execute_script&scriptname=update_domoticz&direct=true";
             String ADD_MOBILE_DEVICE = "/json.htm?type=command&param=addmobiledevice";
             String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
