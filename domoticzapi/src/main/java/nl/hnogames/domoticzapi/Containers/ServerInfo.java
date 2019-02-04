@@ -350,7 +350,6 @@ public class ServerInfo {
                 context,
                 serverUpdateInfo,
                 SERIALIZE_UPDATE_FILE_PREFIX + uniqueServerId + SERIALIZE_CONFIG_FILE_EXTENSION);
-
     }
 
     /**

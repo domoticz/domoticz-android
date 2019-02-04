@@ -20,7 +20,9 @@
   ~  under the License.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+                                                    android:id="@+id/coordinatorLayout"
+                                                    xmlns:android="http://schemas.android.com/apk/res/android"
                                                      xmlns:tools="http://schemas.android.com/tools"
                                                      android:layout_width="match_parent"
                                                      android:layout_height="match_parent"
@@ -48,7 +50,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp"
                 android:contentDescription="@string/domoticz_logo"
-                android:src="@drawable/ic_domoticz_logo_white"/>
+                android:src="@drawable/ic_launcher"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,14 +63,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="75"
                     android:text="@string/server_version"
-                    android:textSize="@dimen/text_size_large"/>
+                    android:textSize="@dimen/text_size_small"/>
 
                 <TextView
                     android:id="@+id/currentServerVersion_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="25"
-                    android:textSize="@dimen/text_size_large"
+                    android:textSize="@dimen/text_size_small"
                     tools:text="2.4321"/>
 
             </LinearLayout>
@@ -84,14 +86,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="75"
                     android:text="@string/server_update_revision"
-                    android:textSize="@dimen/text_size_large"/>
+                    android:textSize="@dimen/text_size_small"/>
 
                 <TextView
                     android:id="@+id/updateServerVersion_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="25"
-                    android:textSize="@dimen/text_size_large"
+                    android:textSize="@dimen/text_size_small"
                     tools:text="2.5432"/>
 
             </LinearLayout>
@@ -107,12 +109,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonUpdateServer"
-                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginRight="15dp"
-                android:text="@string/update_server"/>
+                android:layout_gravity="center"
+                android:background="@drawable/button_status"
+                android:text="@string/update_server"
+                android:textSize="10dp"/>
+
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

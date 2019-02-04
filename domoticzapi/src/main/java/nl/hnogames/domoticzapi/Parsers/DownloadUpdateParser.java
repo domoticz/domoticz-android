@@ -26,34 +26,37 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Containers.VersionInfo;
+import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
-import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
+import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
+import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
-public class VersionParser implements JSONParserInterface {
+public class DownloadUpdateParser implements JSONParserInterface {
 
-    private static final String TAG = VersionParser.class.getSimpleName();
-    private VersionReceiver receiver;
+    private static final String TAG = DownloadUpdateParser.class.getSimpleName();
+    private DownloadUpdateServerReceiver receiver;
 
-    public VersionParser(VersionReceiver receiver) {
+    public DownloadUpdateParser(DownloadUpdateServerReceiver receiver) {
         this.receiver = receiver;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public void parseResult(String result) {
         try {
-            JSONObject response = new JSONObject(result);
-            VersionInfo versionInfo = new VersionInfo(response);
-            receiver.onReceiveVersion(versionInfo);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if(!UsefulBits.isEmpty(result) && result.contains("ERR"))
+                receiver.onDownloadStarted(false);
+            else
+                receiver.onDownloadStarted(true);
+        } catch (Exception error) {
+            receiver.onError(error);
+            error.printStackTrace();
         }
     }
 
     @Override
     public void onError(Exception error) {
-        Log.e(TAG, "VersionParser of JSONParserInterface exception");
+        Log.e(TAG, "DownloadUpdateParser of Exception");
         receiver.onError(error);
     }
 }

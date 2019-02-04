@@ -997,7 +997,7 @@ public class SharedPrefUtil {
     }
 
     public ArrayList<LocationInfo> getLocations() {
-        List<LocationInfo> returnValue = new ArrayList<>();
+        ArrayList<LocationInfo> returnValue = new ArrayList<>();
         List<LocationInfo> locations;
         boolean incorrectDetected = false;
 
@@ -1007,7 +1007,6 @@ public class SharedPrefUtil {
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
                     LocationInfo[].class);
             locations = Arrays.asList(locationItem);
-
             for (LocationInfo l : locations) {
                 if (l.toGeofence() != null) {
                     returnValue.add(l);
@@ -1023,8 +1022,7 @@ public class SharedPrefUtil {
             }
         } else
             return null;
-
-        return (ArrayList<LocationInfo>) returnValue;
+        return returnValue;
     }
 
     public LocationInfo getLocation(int id) {
@@ -1033,7 +1031,6 @@ public class SharedPrefUtil {
             if (l.getID() == id)
                 return l;
         }
-
         return null;
     }
 
@@ -1071,7 +1068,6 @@ public class SharedPrefUtil {
             for (LocationInfo l : removeLocations) {
                 locations.remove(l);
             }
-
             saveLocations(locations);
         }
     }

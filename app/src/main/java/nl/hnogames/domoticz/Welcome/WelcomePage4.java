@@ -35,6 +35,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
@@ -87,10 +88,9 @@ public class WelcomePage4 extends Fragment {
         } else {
             mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override
-                public void onReceiveVersion(String version) {
+                public void onReceiveVersion(VersionInfo version) {
                     if (isAdded()) {
-                        tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version;
-
+                        tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version.getVersion();
                         mDomoticz.getDevices(new DevicesReceiver() {
                             @Override
                             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
@@ -103,8 +103,7 @@ public class WelcomePage4 extends Fragment {
                             }
 
                             @Override
-                            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                            }
+                            public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
 
                             @Override
                             public void onError(Exception error) {
