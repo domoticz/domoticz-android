@@ -885,10 +885,12 @@ public class Preference extends PreferenceFragment {
             @Override
             @DebugLog
             public void onError(Exception error) {
-                String message = String.format(
-                    getString(R.string.error_couldNotCheckForUpdates),
-                    mDomoticz.getErrorMessage(error));
-                showSnackbar(message);
+                try {
+                    String message = String.format(
+                        getString(R.string.error_couldNotCheckForUpdates),
+                        mDomoticz.getErrorMessage(error));
+                    showSnackbar(message);
+                }catch(Exception ignored){}
             }
         });
     }

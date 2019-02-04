@@ -460,8 +460,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                                 }
                         } else {
                             mSharedPrefs.addLocation(finalLocation);
-                            locations.add(finalLocation);
-
+                            locations = mSharedPrefs.getLocations();
                             GeoUtils.geofencesAlreadyRegistered = false;
                             oGeoUtils.AddGeofences();
                         }
