@@ -240,6 +240,15 @@ public class DomoticzValues {
         }
     }
 
+    public interface Log {
+        interface LOGLEVEL {
+            int ALL = 268435455;
+            int NORMAL = 1;
+            int STATUS = 2;
+            int ERROR = 4;
+        }
+    }
+
     public interface Json {
         interface Field {
             String RESULT = "result";
@@ -472,7 +481,7 @@ public class DomoticzValues {
             String GRAPH_RANGE = "&range=";
             String GRAPH_TYPE = "&sensor=";
 
-            String GET_LOG = "/json.htm?type=command&param=getlog";
+            String GET_LOG = "/json.htm?type=command&param=getlog&loglevel=";
             String GET_FROMLASTLOGTIME = "/json.htm?type=command&param=getlog&lastlogtime=";
         }
 

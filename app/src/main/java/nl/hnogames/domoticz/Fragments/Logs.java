@@ -36,6 +36,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
@@ -64,8 +65,13 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
+        SetTitle(getString(R.string.title_logs));
+    }
+
+    public void SetTitle(String title)
+    {
         if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_logs);
+            getActionBar().setTitle(title);
     }
 
     @Override
@@ -97,7 +103,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private void processLogs() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-
         new GetCachedDataTask().execute();
     }
 
@@ -155,7 +160,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
             if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
                 try {
                     cacheLogs = (ArrayList<LogInfo>) SerializableManager.readSerializedObject(mContext, "Logs");
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                 }
             }
             return true;
@@ -164,6 +169,16 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         protected void onPostExecute(Boolean result) {
             if (cacheLogs != null)
                 createListView(cacheLogs);
+
+            int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
+            if(getSort().equals(getString(R.string.filter_normal)))
+                LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
+            if(getSort().equals(getString(R.string.filter_status)))
+                LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
+            if(getSort().equals(getString(R.string.filter_error)))
+                LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
+
+            SetTitle(LogLevel != DomoticzValues.Log.LOGLEVEL.ALL ? getString(R.string.title_logs) + " (" + getSort() + ")" : getString(R.string.title_logs));
 
             mDomoticz.getLogs(new LogsReceiver() {
                 @Override
@@ -179,7 +194,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 public void onError(Exception error) {
                     errorHandling(error);
                 }
-            });
+            }, LogLevel);
         }
     }
 }

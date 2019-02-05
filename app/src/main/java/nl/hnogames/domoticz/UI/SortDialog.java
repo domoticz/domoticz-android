@@ -40,10 +40,13 @@ public class SortDialog implements DialogInterface.OnDismissListener {
     private String[] names;
 
     public SortDialog(Context c,
-                      int layout) {
+                      int layout,
+                      String[] n) {
         this.mContext = c;
-
-        names = new String[]{mContext.getString(R.string.filterOn_on), mContext.getString(R.string.filterOn_off), mContext.getString(R.string.filterOn_static), mContext.getString(R.string.filterOn_all)};
+        if (n != null)
+            names = n;
+        else
+            names = new String[]{mContext.getString(R.string.filterOn_on), mContext.getString(R.string.filterOn_off), mContext.getString(R.string.filterOn_static), mContext.getString(R.string.filterOn_all)};
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
                 .negativeText(android.R.string.cancel);

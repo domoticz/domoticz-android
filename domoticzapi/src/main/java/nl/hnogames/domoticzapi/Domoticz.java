@@ -901,9 +901,9 @@ public class Domoticz {
                 url, mSessionUtil, true, 3, queue);
     }
 
-    public void getLogs(LogsReceiver receiver) {
+    public void getLogs(LogsReceiver receiver, int logLevel) {
         LogsParser parser = new LogsParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG) + logLevel;
         Log.i("Logs", "url: " + url);
         RequestUtil.makeJsonGetResultRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
