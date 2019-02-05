@@ -57,10 +57,8 @@ import nl.hnogames.domoticz.Interfaces.switchesClickListener;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
@@ -460,7 +458,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);
                 holder.pieView.startAnimation(animation);
-                if(!mSharedPrefs.showExtraData())
+                if (!mSharedPrefs.showExtraData())
                     holder.switch_battery_level.setVisibility(View.GONE);
             } else
                 holder.pieView.setVisibility(View.GONE);
@@ -832,11 +830,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
             Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
+                    mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
                     true, "Freezing")).into(holder.iconRow);
         } else {
             Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
+                    mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
                     false, null)).into(holder.iconRow);
         }
     }

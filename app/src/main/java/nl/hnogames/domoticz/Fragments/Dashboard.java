@@ -363,8 +363,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             @DebugLog
             public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    processDashboard();
+                successHandling(result, false);
+                processDashboard();
             }
 
             @Override
@@ -451,8 +451,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    }
-                    else {
+                    } else {
                         successHandling(result, false);
                         clickedSwitch.setStatusBoolean(checked);
                         changeAdapterData(clickedSwitch);
@@ -563,8 +562,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                }
-                else {
+                } else {
                     successHandling(result, false);
                     clickedSwitch.setStatusBoolean(checked);
                     changeAdapterData(clickedSwitch);
@@ -745,8 +743,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                        }
-                        else {
+                        } else {
                             if (selected) {
                                 UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.color_set) + ": " + getDevice(idx).getName(), Snackbar.LENGTH_SHORT);
                                 if (getActivity() instanceof MainActivity)
@@ -891,8 +888,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                                         UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                         if (getActivity() instanceof MainActivity)
                                                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         successHandling(result, false);
                                                         processDashboard();
                                                     }
@@ -926,8 +922,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                                 UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                 if (getActivity() instanceof MainActivity)
                                                     ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                                            }
-                                            else {
+                                            } else {
                                                 successHandling(result, false);
                                                 processDashboard();
                                             }
@@ -1249,8 +1244,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                }
-                else {
+                } else {
                     successHandling(result, false);
                     //processDashboard();
                     changeAdapterData(clickedSwitch);
@@ -1350,8 +1344,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    }
-                    else {
+                    } else {
                         successHandling(result, false);
                         if (selector)
                             processDashboard();

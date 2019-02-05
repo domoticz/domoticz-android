@@ -62,7 +62,6 @@ import androidx.legacy.app.ActivityCompat;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GeoSettingsActivity;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.QRCodeSettingsActivity;
 import nl.hnogames.domoticz.R;
@@ -79,7 +78,6 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -227,7 +225,8 @@ public class Preference extends PreferenceFragment {
 
                 @Override
                 @DebugLog
-                public void onError(Exception error) {}
+                public void onError(Exception error) {
+                }
             }, mServerUtil.getActiveServer().getConfigInfo(mContext));
         } else {
             setupDefaultValues();
@@ -328,7 +327,7 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.getServerConfigForActiveServer(mContext,  new ConfigReceiver() {
+                UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
                     @Override
                     public void onReceiveConfig(ConfigInfo settings) {
                         showSnackbar(mContext.getString(R.string.fetched_server_config_success));
@@ -857,10 +856,10 @@ public class Preference extends PreferenceFragment {
                             if (updateInfo.isUpdateAvailable() || mSharedPrefs.isDebugEnabled()) {
                                 String version = updateInfo.getUpdateRevisionNumber();
                                 message = String.format(getString(R.string.update_available_enhanced),
-                                    serverVersion.getVersion(),
-                                    version);
+                                        serverVersion.getVersion(),
+                                        version);
                                 if (updateInfo.getSystemName() != null &&
-                                    updateInfo.getSystemName().equalsIgnoreCase("linux")) {
+                                        updateInfo.getSystemName().equalsIgnoreCase("linux")) {
                                     message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
                                     domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
                                         @Override
@@ -887,10 +886,11 @@ public class Preference extends PreferenceFragment {
             public void onError(Exception error) {
                 try {
                     String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                            getString(R.string.error_couldNotCheckForUpdates),
+                            mDomoticz.getErrorMessage(error));
                     showSnackbar(message);
-                }catch(Exception ignored){}
+                } catch (Exception ignored) {
+                }
             }
         });
     }

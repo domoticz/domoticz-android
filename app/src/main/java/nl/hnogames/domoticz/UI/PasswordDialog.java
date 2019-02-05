@@ -134,6 +134,7 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
 
     public interface DismissListener {
         void onDismiss(String password);
+
         void onCancel();
     }
 }

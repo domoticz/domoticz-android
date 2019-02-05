@@ -56,7 +56,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -475,16 +474,15 @@ public class UsefulBits {
         });
     }
 
-    public static void GetServerUserInfo(final Domoticz domoticz, final AuthInfo auth, final ServerUtil mServerUtil, final Context context, final ConfigInfo configInfo, final ConfigInfo currentConfig, final ConfigReceiver receiver)
-    {
-        if(domoticz == null)
+    public static void GetServerUserInfo(final Domoticz domoticz, final AuthInfo auth, final ServerUtil mServerUtil, final Context context, final ConfigInfo configInfo, final ConfigInfo currentConfig, final ConfigReceiver receiver) {
+        if (domoticz == null)
             return;
 
         ArrayList<UserInfo> mDetailUserInfo = new ArrayList<>();
         UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                 UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
                 auth != null ? auth.getRights() : 0);
-        if(currentConfig != null && currentConfig.getUsers() != null) {
+        if (currentConfig != null && currentConfig.getUsers() != null) {
             for (UserInfo user : currentConfig.getUsers()) {
                 if (!user.getUsername().equals(currentUser.getUsername()))
                     mDetailUserInfo.add(user);
@@ -505,9 +503,8 @@ public class UsefulBits {
                     UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                             UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
                             auth != null ? auth.getRights() : 0);
-                    for(UserInfo user : mUserInfo)
-                    {
-                        if(!user.getUsername().equals(currentUser.getUsername()))
+                    for (UserInfo user : mUserInfo) {
+                        if (!user.getUsername().equals(currentUser.getUsername()))
                             mDetailUserInfo.add(user);
                     }
                     mDetailUserInfo.add(currentUser);

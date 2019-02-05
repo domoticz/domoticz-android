@@ -441,8 +441,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                             UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                        }
-                        else {
+                        } else {
                             updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
                             successHandling(result, false);
                         }

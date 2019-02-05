@@ -156,7 +156,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             WidgetUtils.RefreshWidgets(mContext);
 
             new GetCachedDataTask().execute();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void createListView(final ArrayList<SceneInfo> scenes) {
@@ -433,8 +434,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                     UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                } else {
+                    processScenes();
                 }
-                else {processScenes();}
             }
 
             @Override

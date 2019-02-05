@@ -103,7 +103,8 @@ public class WelcomePage4 extends Fragment {
                             }
 
                             @Override
-                            public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
+                            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                            }
 
                             @Override
                             public void onError(Exception error) {
