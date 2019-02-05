@@ -98,7 +98,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
             String message = "";
             String name = "";
 
-            if (mLogInfo.getMessage().indexOf("  ") >= 0) {
+            if (mLogInfo.getMessage().contains("  ")) {
                 dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
                 message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
             } else

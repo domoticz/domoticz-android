@@ -214,7 +214,6 @@ public class UpdateActivity extends AppCompatAssistActivity {
                         mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
                             @Override
                             public void onUpdateDownloadReady(boolean downloadOk) {
-                                if (downloadOk) {
                                     showSnackbar("Download finished, starting to update Domoticz");
                                     mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
                                         @Override
@@ -231,18 +230,16 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
                                         @Override
                                         public void onError(Exception error) {
-                                            showSnackbar(getString(R.string.update_not_started_unknown_error));
-                                            dialog.cancel();
-                                            showMessageUpdateFailed();
-                                            refreshData();
+                                            if(error.getMessage().contains("Time"))
+                                                showSnackbar("Your system is updating at this moment");
+                                            else {
+                                                showSnackbar("Could not update the domoticz server via the script " + error.getMessage());
+                                                dialog.cancel();
+                                                showMessageUpdateFailed();
+                                                refreshData();
+                                            }
                                         }
                                     });
-                                } else {
-                                    showSnackbar(getString(R.string.update_not_started_unknown_error));
-                                    dialog.cancel();
-                                    showMessageUpdateFailed();
-                                    refreshData();
-                                }
                             }
 
                             @Override
@@ -263,7 +260,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
                 @Override
                 public void onError(Exception error) {
-                    showSnackbar(getString(R.string.update_not_started_unknown_error));
+                    showSnackbar("Could not download the update " + error.getMessage());
                     dialog.cancel();
                     showMessageUpdateFailed();
                     refreshData();
@@ -364,7 +361,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
     private void showSnackbar(String message) {
         CoordinatorLayout fragmentCoordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (fragmentCoordinatorLayout != null) {
-            UsefulBits.showSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_LONG);
         }
     }
 
