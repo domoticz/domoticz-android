@@ -58,10 +58,10 @@ public class SortDialog implements DialogInterface.OnDismissListener {
     }
 
     public void show() {
-        mdb.title(R.string.filter_devices);
+        mdb.title(R.string.filter);
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, names);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
