@@ -336,11 +336,12 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 .replace("Lux", "counter")
                 .replace("BWR102", "counter")
                 .replace("Sound Level", "counter")
+                .replace("Managed Counter", "counter")
                 .replace("Pressure", "counter")
                 .replace("Custom Sensor", "Percentage")
                 .replace("YouLess counter", "counter");
 
-        if (graphType.contains("counter"))
+        if (graphType.toLowerCase().contains("counter"))
             graphType = "counter";
         if (utility.getSubType().equals("Gas"))
             steps = 1;
