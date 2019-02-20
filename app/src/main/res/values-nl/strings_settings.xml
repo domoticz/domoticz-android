@@ -42,6 +42,7 @@
     <string name="category_startup_security">Beveiliging</string>
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR-Code</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Spraak</string>
     <string name="category_Reset">Opnieuw instellen</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">QR-Codes instellen</string>
     <string name="enable_qrcode">QR-Code scanner</string>
     <string name="qrcode_enable_settings">QR-Code scanner inschakelen</string>
+    <string name="bluetooth_settings">Stel bluetooth apparaten in</string>
+    <string name="enable_bluetooth">Inschakelen van de bluetooth functionaliteit</string>
     <string name="security_settings">Beveiligingsinstellingen</string>
     <string name="enable_security">Vingerafdruk nodig bij opstarten van de app</string>
     <string name="disable_security">Vingerafdruk controle uitschakelen</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">U moet minstens één item geladen hebben</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Server updaten</string>
+    <string name="error_couldNotCheckForVersion">"Kan versie niet controleren: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Kan niet controleren op updates: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"De Domoticz server configuratie kan niet worden opgehaald: %1$s"</string>
     <string name="update_available_enhanced">Server update beschikbaar: %1$s naar versie: %2$s</string>

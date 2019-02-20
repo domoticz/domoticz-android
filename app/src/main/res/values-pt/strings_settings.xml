@@ -42,6 +42,7 @@
     <string name="category_startup_security">Segurança</string>
     <string name="category_account">Contas</string>
     <string name="category_QRCode">Código QR</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Comando de voz</string>
     <string name="category_Reset">Reset</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Configurar códigos QR</string>
     <string name="enable_qrcode">Habilitar os códigos QR</string>
     <string name="qrcode_enable_settings">Habilitar a funcionalidade de códigos QR</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Configuração de segurança</string>
     <string name="enable_security">Ativar a proteção de impressão digital ao iniciar</string>
     <string name="disable_security">Desativar a proteção de impressão digital ao iniciar</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Você precisa de pelo menos um item na lista</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Servidor de atualização</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Poderá não verificar se há atualizações: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Poderá não conseguir a configuração do servidor Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Atualização de servidor disponível: %1$s para versão: %2$s</string>

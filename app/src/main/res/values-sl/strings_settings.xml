@@ -42,6 +42,7 @@
     <string name="category_startup_security">Varnost</string>
     <string name="category_account">Računi</string>
     <string name="category_QRCode">QR koda</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Govor</string>
     <string name="category_Reset">Ponastavitev</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Nastavitev QR kod</string>
     <string name="enable_qrcode">Omogoči QR kode</string>
     <string name="qrcode_enable_settings">Omogoči funkcionalnost QR kod</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Nastavitev varnosti</string>
     <string name="enable_security">Omogoči prstni odtis ob zagonu</string>
     <string name="disable_security">Onemogoči prstni odtis ob zagonu</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Vsa en predmet mora biti v predalniku</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Posodobi strežnik</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Ni bilo mogoče preveriti posodobitve: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Ne morem naložiti nastavitev Domoticz strežnika: %1$s"</string>
     <string name="update_available_enhanced">Mogoča nadgradnja strežnika: %1$s na %2$s</string>

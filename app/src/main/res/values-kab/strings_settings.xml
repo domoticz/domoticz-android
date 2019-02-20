@@ -42,6 +42,7 @@
     <string name="category_startup_security">Taɣellist</string>
     <string name="category_account">Imiḍanen</string>
     <string name="category_QRCode">Tangalt QR</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Ameslay</string>
     <string name="category_Reset">Ales awennez</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Tawila n tangalin QR</string>
     <string name="enable_qrcode">Rmed tangalin n QR</string>
     <string name="qrcode_enable_settings">Rmed tangalin n tamseɣnat  n QR</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Taɣlist n userkeb</string>
     <string name="enable_security">Rmed amesten n tarkit n talfaft deg wasekkar</string>
     <string name="disable_security">Ssens amesten n tarkit n talfaft mara tesekkar-eḍ</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Teḥwaǧǧ-eḍ uma yiwen uferdis deg leqjeṛ</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Update server</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Amucceḍ n uqeddac yella: %1$s ɣer lqem: %2$s</string>

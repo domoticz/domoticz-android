@@ -117,4 +117,8 @@
     <string name="continue_question">Doorgaan?</string>
     <string name="cant_remove_default_server">We kunnen de standaard server instellingen niet verwijderen</string>
     <string name="restart_required_msg">Om the taal instellingen op te slaan is opnieuw opstarten vereist</string>
+    <string name="filter_all">Alle</string>
+    <string name="filter_normal">Normaal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

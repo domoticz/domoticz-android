@@ -117,4 +117,8 @@
     <string name="continue_question">继续？</string>
     <string name="cant_remove_default_server">不能删除默认服务器</string>
     <string name="restart_required_msg">更改语言后需要重新启动程序以生效</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

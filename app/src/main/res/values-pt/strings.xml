@@ -117,4 +117,8 @@
     <string name="continue_question">Continuar?</string>
     <string name="cant_remove_default_server">Não é possível remover o servidor padrão</string>
     <string name="restart_required_msg">Configurações da linguagem alteradas apenas após reinicio da aplicação</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

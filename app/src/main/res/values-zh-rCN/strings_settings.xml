@@ -42,6 +42,7 @@
     <string name="category_startup_security">安全</string>
     <string name="category_account">账户</string>
     <string name="category_QRCode">二维码</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">语音</string>
     <string name="category_Reset">重置</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">设置二维码</string>
     <string name="enable_qrcode">启用二维码</string>
     <string name="qrcode_enable_settings">启用二维码功能</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">设置安全性</string>
     <string name="enable_security">启动时启用指纹保护</string>
     <string name="disable_security">启动时禁用指纹保护</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">你需要开启至少一个项目</string>
     <!--        Server update category       -->
     <string name="title_activity_update">更新服务器</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"无法检查更新︰ %1$s"</string>
     <string name="error_couldNotCheckForConfig">"无法获取Domoticz服务器配置︰%1$s"</string>
     <string name="update_available_enhanced">可用的服务器更新︰ %1$s -> %2$s</string>

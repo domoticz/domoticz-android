@@ -42,6 +42,7 @@
     <string name="category_startup_security">Bezpečnosť</string>
     <string name="category_account">Účty</string>
     <string name="category_QRCode">QR kód</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Reč</string>
     <string name="category_Reset">Reset</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Nastaviť QR kódy</string>
     <string name="enable_qrcode">Povoliť QR kódy</string>
     <string name="qrcode_enable_settings">Povoliť funkcie QR kódov</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Nastavenie zabezpečenia</string>
     <string name="enable_security">Zapnúť ochranu odtlačkov prstov na štarte</string>
     <string name="disable_security">Vypnúť ochranu odtlačkov prstov na štarte</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Musíte mať aspoň jednu položku</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Aktualizovať server</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Nepodarilo sa skontrolovať aktualizácie: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Nepodarilo sa získať konfiguráciu zo servera Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Aktualizácia servera k dispozícii: %1$s na verziu: %2$s</string>
