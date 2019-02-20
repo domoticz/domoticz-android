@@ -64,6 +64,7 @@ public class Wizard extends Fragment {
     private final String NOTIFICATIONS = "NOTIFICATIONS_CARD";
     private final String MULTISERVER = "MULTISERVER_CARD";
     private final String NFC = "NFC_CARD";
+    private final String BLUETOOTH = "BLUETOOTH_CARD";
     private final String QRCODE = "QRCODE_CARD";
     private final String FINISH = "FINISH";
     private final String SPEECH = "SPEECH";
@@ -132,6 +133,7 @@ public class Wizard extends Fragment {
         if (!mSharedPrefs.isCardCompleted(MULTISERVER)) cardsToGenerate.add(MULTISERVER);
         if (!mSharedPrefs.isCardCompleted(QRCODE)) cardsToGenerate.add(QRCODE);
         if (!mSharedPrefs.isCardCompleted(NFC)) cardsToGenerate.add(NFC);
+        if (!mSharedPrefs.isCardCompleted(BLUETOOTH)) cardsToGenerate.add(BLUETOOTH);
         if (!mSharedPrefs.isCardCompleted(SPEECH)) cardsToGenerate.add(SPEECH);
         if (!mSharedPrefs.isCardCompleted(AUTO)) cardsToGenerate.add(AUTO);
 
@@ -278,36 +280,36 @@ public class Wizard extends Fragment {
             }
             if (card.equalsIgnoreCase(NFC)) {
                 cards.add(new Card.Builder(context)
-                        .setTag(NFC)
-                        .setDismissible()
-                        .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
-                        .setTitle(context.getString(R.string.wizard_nfc))
-                        .setTitleColor(titleColorOther)
-                        .setBackgroundColor(otherColor)
-                        .setDescription(context.getString(R.string.wizard_nfc_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
-                                .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
-                                .setListener(new OnActionClickListener() {
-                                    @Override
-                                    @DebugLog
-                                    public void onActionClicked(View view, Card card) {
-                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
-                                    }
-                                }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
-                                .setText(context.getString(R.string.wizard_button_done))
-                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
-                                .setListener(new OnActionClickListener() {
-                                    @Override
-                                    @DebugLog
-                                    public void onActionClicked(View view, Card card) {
-                                        card.dismiss();
-                                    }
-                                }))
-                        .endConfig()
-                        .build());
+                    .setTag(NFC)
+                    .setDismissible()
+                    .withProvider(new CardProvider())
+                    .setLayout(R.layout.material_basic_buttons_card)
+                    .setTitle(context.getString(R.string.wizard_nfc))
+                    .setTitleColor(titleColorOther)
+                    .setBackgroundColor(otherColor)
+                    .setDescription(context.getString(R.string.wizard_nfc_description))
+                    .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .setText(context.getString(R.string.wizard_button_settings))
+                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                        .setListener(new OnActionClickListener() {
+                            @Override
+                            @DebugLog
+                            public void onActionClicked(View view, Card card) {
+                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                            }
+                        }))
+                    .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .setText(context.getString(R.string.wizard_button_done))
+                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                        .setListener(new OnActionClickListener() {
+                            @Override
+                            @DebugLog
+                            public void onActionClicked(View view, Card card) {
+                                card.dismiss();
+                            }
+                        }))
+                    .endConfig()
+                    .build());
             }
             if (card.equalsIgnoreCase(QRCODE)) {
                 cards.add(new Card.Builder(context)
@@ -340,6 +342,39 @@ public class Wizard extends Fragment {
                                 }))
                         .endConfig()
                         .build());
+            }
+            if (card.equalsIgnoreCase(BLUETOOTH)) {
+                cards.add(new Card.Builder(context)
+                    .setTag(BLUETOOTH)
+                    .setDismissible()
+                    .withProvider(new CardProvider())
+                    .setLayout(R.layout.material_basic_buttons_card)
+                    .setTitle(context.getString(R.string.bluetooth))
+                    .setTitleColor(titleColorOther)
+                    .setBackgroundColor(otherColor)
+                    .setDescription(context.getString(R.string.wizard_bluetooth_description))
+                    .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .setText(context.getString(R.string.wizard_button_settings))
+                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                        .setListener(new OnActionClickListener() {
+                            @Override
+                            @DebugLog
+                            public void onActionClicked(View view, Card card) {
+                                startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                            }
+                        }))
+                    .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .setText(context.getString(R.string.wizard_button_done))
+                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                        .setListener(new OnActionClickListener() {
+                            @Override
+                            @DebugLog
+                            public void onActionClicked(View view, Card card) {
+                                card.dismiss();
+                            }
+                        }))
+                    .endConfig()
+                    .build());
             }
             if (card.equalsIgnoreCase(SPEECH)) {
                 cards.add(new Card.Builder(context)

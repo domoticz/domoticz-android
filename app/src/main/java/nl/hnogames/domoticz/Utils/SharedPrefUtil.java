@@ -84,7 +84,7 @@ public class SharedPrefUtil {
     private static final String PREF_EXTRA_DATA = "extradata";
     private static final String PREF_STARTUP_SCREEN = "startup_nav";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
-    private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
+    private static final String PREF_NAVIGATION_ITEMS = "show_nav_items2";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_BLUETOOTH = "bluetooth";
     private static final String PREF_QR_CODES = "qr_codes";
