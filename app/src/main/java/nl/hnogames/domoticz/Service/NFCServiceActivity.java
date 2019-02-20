@@ -102,8 +102,13 @@ public class NFCServiceActivity extends AppCompatActivity {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                                 mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                            if (!mDevicesInfo.getStatusBoolean())
+                            if (!mDevicesInfo.getStatusBoolean()) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                             else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                 if (!UsefulBits.isEmpty(value)) {
@@ -118,15 +123,24 @@ public class NFCServiceActivity extends AppCompatActivity {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                                     jsonValue = getSelectorValue(mDevicesInfo, value);
                                 }
-                            } else
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                                 mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                            if (inputJSONAction == 1)
+                            if (inputJSONAction == 1) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                            else {
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                 if (!UsefulBits.isEmpty(value)) {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
@@ -140,8 +154,13 @@ public class NFCServiceActivity extends AppCompatActivity {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                                     jsonValue = getSelectorValue(mDevicesInfo, value);
                                 }
-                            } else
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                         }
                     }
 

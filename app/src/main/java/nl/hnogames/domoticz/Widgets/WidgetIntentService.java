@@ -342,7 +342,13 @@ public class WidgetIntentService extends Service {
             int jsonValue = 0;
             if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                     clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                if (checked) {
+                    jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    if (!UsefulBits.isEmpty(value)) {
+                        jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                        jsonValue = 0;
+                    }
+                }
                 else {
                     jsonAction = DomoticzValues.Device.Switch.Action.ON;
                     if (!UsefulBits.isEmpty(value)) {
@@ -357,7 +363,13 @@ public class WidgetIntentService extends Service {
                         jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                         jsonValue = getSelectorValue(clickedSwitch, value);
                     }
-                } else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                } else {
+                    jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    if (!UsefulBits.isEmpty(value)) {
+                        jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                        jsonValue = 0;
+                    }
+                }
             }
 
             mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
