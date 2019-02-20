@@ -141,7 +141,6 @@ public class WidgetIntentService extends Service {
                         return true;
             }
         }
-
         return false;
     }
 
@@ -188,7 +187,6 @@ public class WidgetIntentService extends Service {
     }
 
     private void processSwitch(final Context context, int idx) {
-
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
         if (smallWidget)

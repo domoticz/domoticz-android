@@ -51,7 +51,12 @@ public class PermissionsUtil {
     };
     //these permissions are needed for scanning qrcodes
     public static final String[] INITIAL_CAMERA_PERMS = {
-            Manifest.permission.CAMERA
+        Manifest.permission.CAMERA
+    };
+    //these permissions are needed for bluetooth
+    public static final String[] INITIAL_BLUETOOTH_PERMS = {
+        Manifest.permission.BLUETOOTH,
+        Manifest.permission.BLUETOOTH_ADMIN
     };
     //these permissions are needed for recording audio
     public static final String[] INITIAL_AUDIO_PERMS = {
@@ -88,6 +93,9 @@ public class PermissionsUtil {
 
     public static boolean canAccessCamera(Context context) {
         return (hasPermission(Manifest.permission.CAMERA, context));
+    }
+    public static boolean canAccessBluetooth(Context context) {
+        return (hasPermission(Manifest.permission.BLUETOOTH, context)) && (hasPermission(Manifest.permission.BLUETOOTH_ADMIN, context));
     }
 
     public static boolean canAccessDeviceState(Context context) {

@@ -60,6 +60,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.legacy.app.ActivityCompat;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GeoSettingsActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
@@ -175,9 +176,11 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference WidgetsEnablePreference = (android.preference.SwitchPreference) findPreference("enableWidgets");
         android.preference.Preference NFCPreference = findPreference("nfc_settings");
         android.preference.Preference QRCodePreference = findPreference("qrcode_settings");
+        android.preference.Preference BluetoothPreference = findPreference("bluetooth_settings");
         android.preference.Preference SpeechPreference = findPreference("speech_settings");
         android.preference.SwitchPreference EnableNFCPreference = (android.preference.SwitchPreference) findPreference("enableNFC");
         android.preference.SwitchPreference EnableQRCodePreference = (android.preference.SwitchPreference) findPreference("enableQRCode");
+        android.preference.SwitchPreference EnableBluetoothPreference = (android.preference.SwitchPreference) findPreference("enableBluetooth");
         android.preference.SwitchPreference EnableSpeechPreference = (android.preference.SwitchPreference) findPreference("enableSpeech");
         android.preference.SwitchPreference EnableTalkBackPreference = (android.preference.SwitchPreference) findPreference("talkBack");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("show_nav_items");
@@ -404,6 +407,17 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        EnableBluetoothPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_bluetooth));
+                    return false;
+                }
+                return true;
+            }
+        });
+
         EnableQRCodePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -460,6 +474,20 @@ public class Preference extends PreferenceFragment {
                     return false;
                 } else {
                     Intent intent = new Intent(mContext, QRCodeSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
+        BluetoothPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_bluetooth));
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, BluetoothSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }
