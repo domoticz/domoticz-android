@@ -28,7 +28,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,8 +109,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         for (BluetoothDevice bt : pairedDevices)
             bluetoothDevices.add(bt.getName());
         CharSequence[] items = bluetoothDevices.toArray(new CharSequence[bluetoothDevices.size()]);
-        if (items == null || items.length <= 0)
-        {
+        if (items == null || items.length <= 0) {
             UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.bluetooth_turned_off, Snackbar.LENGTH_SHORT);
             return;
         }

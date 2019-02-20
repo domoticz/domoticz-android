@@ -68,8 +68,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         SetTitle(getString(R.string.title_logs));
     }
 
-    public void SetTitle(String title)
-    {
+    public void SetTitle(String title) {
         if (getActionBar() != null)
             getActionBar().setTitle(title);
     }
@@ -171,11 +170,11 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 createListView(cacheLogs);
 
             int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
-            if(getSort().equals(getString(R.string.filter_normal)))
+            if (getSort().equals(getString(R.string.filter_normal)))
                 LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
-            if(getSort().equals(getString(R.string.filter_status)))
+            if (getSort().equals(getString(R.string.filter_status)))
                 LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
-            if(getSort().equals(getString(R.string.filter_error)))
+            if (getSort().equals(getString(R.string.filter_error)))
                 LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
             SetTitle(LogLevel != DomoticzValues.Log.LOGLEVEL.ALL ? getString(R.string.title_logs) + " (" + getSort() + ")" : getString(R.string.title_logs));

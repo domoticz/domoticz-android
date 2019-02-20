@@ -81,10 +81,10 @@ public class WelcomePage4 extends Fragment {
 
         if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
-                    + getString(R.string.welcome_msg_correctOnPreviousPage));
+                + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
-                    + getString(R.string.welcome_msg_correctOnPreviousPage));
+                + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else {
             mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override

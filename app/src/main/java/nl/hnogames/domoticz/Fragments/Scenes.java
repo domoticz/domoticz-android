@@ -62,7 +62,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-        ScenesClickListener {
+    ScenesClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Scenes.class.getSimpleName();
@@ -107,11 +107,11 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                            false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -197,10 +197,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
             if (mItemTouchHelper == null) {
                 mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                        false));
+                    false));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                 mItemTouchHelper.attachToRecyclerView(gridView);
             } else {
                 if (mItemTouchHelper != null)
@@ -238,9 +238,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void showInfoDialog(final SceneInfo mSceneInfo) {
         SceneInfoDialog infoDialog = new SceneInfoDialog(
-                getActivity(),
-                mSceneInfo,
-                R.layout.dialog_scene_info);
+            getActivity(),
+            mSceneInfo,
+            R.layout.dialog_scene_info);
         infoDialog.setIdx(String.valueOf(mSceneInfo.getIdx()));
         infoDialog.setLastUpdate(mSceneInfo.getLastUpdate());
         infoDialog.setIsFavorite(mSceneInfo.getFavoriteBoolean());
@@ -310,7 +310,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity(), mDomoticz);
+                getActivity(), mDomoticz);
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -392,9 +392,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             Toast.makeText(getContext(), "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                    getActivity(),
-                    switchLogs,
-                    R.layout.dialog_switch_logs);
+                getActivity(),
+                switchLogs,
+                R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }

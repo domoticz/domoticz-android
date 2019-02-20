@@ -25,24 +25,25 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
 
-    public BluetoothConnectionReceiver(){}
+    public BluetoothConnectionReceiver() {
+    }
 
     @Override
-    public void onReceive(Context context, Intent intent){
+    public void onReceive(Context context, Intent intent) {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
 
-        if(!mSharedPrefs.isBluetoothEnabled())
+        if (!mSharedPrefs.isBluetoothEnabled())
             return;
 
         List<BluetoothInfo> connectedDevices = mSharedPrefs.getBluetoothList();
-        if(connectedDevices == null)
+        if (connectedDevices == null)
             return;
 
         BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         BluetoothInfo connectedDevice = null;
-        for (BluetoothInfo b: connectedDevices) {
-            if(b.getName().equals(bluetoothDevice.getName()))
+        for (BluetoothInfo b : connectedDevices) {
+            if (b.getName().equals(bluetoothDevice.getName()))
                 connectedDevice = b;
         }
 
@@ -55,13 +56,14 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         }
     }
 
-    private void handleSwitch(Context context, final int idx, final String password,final boolean checked, final String value, final boolean isSceneOrGroup) {
+    private void handleSwitch(Context context, final int idx, final String password, final boolean checked, final String value, final boolean isSceneOrGroup) {
         if (domoticz == null)
             domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         domoticz.getDevice(new DevicesReceiver() {
             @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
@@ -73,37 +75,36 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                 int jsonValue = 0;
 
                 if (!isSceneOrGroup) {
-                        if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                            if (checked) {
-                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                if (!UsefulBits.isEmpty(value)) {
-                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                    jsonValue = 0;
-                                }
-                            }
-                            else {
-                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                if (!UsefulBits.isEmpty(value)) {
-                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                    jsonValue = getSelectorValue(mDevicesInfo, value);
-                                }
+                    if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        if (checked) {
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = 0;
                             }
                         } else {
-                            if (checked) {
-                                jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                                if (!UsefulBits.isEmpty(value)) {
-                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                    jsonValue = getSelectorValue(mDevicesInfo, value);
-                                }
-                            } else {
-                                jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                                if (!UsefulBits.isEmpty(value)) {
-                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
-                                    jsonValue = 0;
-                                }
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = getSelectorValue(mDevicesInfo, value);
                             }
                         }
+                    } else {
+                        if (checked) {
+                            jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = getSelectorValue(mDevicesInfo, value);
+                            }
+                        } else {
+                            jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                            if (!UsefulBits.isEmpty(value)) {
+                                jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                jsonValue = 0;
+                            }
+                        }
+                    }
 
                     switch (mDevicesInfo.getSwitchTypeVal()) {
                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
@@ -115,10 +116,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                     }
                 } else {
                     jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
-                        if (!checked) {
-                            jsonAction = DomoticzValues.Scene.Action.ON;
-                        } else
-                            jsonAction = DomoticzValues.Scene.Action.OFF;
+                    if (!checked) {
+                        jsonAction = DomoticzValues.Scene.Action.ON;
+                    } else
+                        jsonAction = DomoticzValues.Scene.Action.OFF;
                     if (mDevicesInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                         jsonAction = DomoticzValues.Scene.Action.ON;
                 }

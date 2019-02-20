@@ -25,5 +25,6 @@ import nl.hnogames.domoticz.Containers.BluetoothInfo;
 
 public interface BluetoothClickListener {
     boolean onEnableClick(BluetoothInfo device, boolean checked);
+
     void onRemoveClick(BluetoothInfo device);
 }
