@@ -115,10 +115,13 @@
 
                             <TextView
                                 android:id="@+id/switch_signal_level"
-                                style="@style/row_body2"
+                                style="@style/row_body1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="8sp"
                                 android:layout_below="@id/switch_battery_level"
+                                android:layout_marginBottom="5dp"
+                                android:textStyle="italic"
                                 android:text="@string/signal_level"/>
                         </LinearLayout>
 
