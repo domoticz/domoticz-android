@@ -47,7 +47,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         }
 
         if (connectedDevice != null && connectedDevice.isEnabled()) {
-            handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction()),
+            handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction())),
                 connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
             Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
         } else {
@@ -75,8 +75,13 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                 if (!isSceneOrGroup) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                             mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                            if (!checked)
+                            if (checked) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                             else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                 if (!UsefulBits.isEmpty(value)) {
@@ -85,14 +90,19 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                                 }
                             }
                         } else {
-                            if (!checked) {
+                            if (checked) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                 if (!UsefulBits.isEmpty(value)) {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                                     jsonValue = getSelectorValue(mDevicesInfo, value);
                                 }
-                            } else
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                         }
 
                     switch (mDevicesInfo.getSwitchTypeVal()) {

@@ -120,10 +120,11 @@
         <receiver
             android:name=".Service.BluetoothConnectionReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.bluetooth.adapter.action.ACL_CONNECTED" />
-                <action android:name="android.bluetooth.adapter.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECT_REQUESTED" />
             </intent-filter>
         </receiver>
 
