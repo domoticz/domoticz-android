@@ -49,7 +49,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         if (connectedDevice != null && connectedDevice.isEnabled()) {
             handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction()),
                 connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
-            Toast.makeText(context, context.getString(R.string.qrcode) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, context.getString(R.string.bluetooth_disabled), Toast.LENGTH_SHORT).show();
         }
