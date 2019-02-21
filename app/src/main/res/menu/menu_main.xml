@@ -29,7 +29,7 @@
         android:title="@string/filter"
         android:icon="@drawable/baseline_search_white_24"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="always|collapseActionView"/>
 
     <item
         android:id="@+id/action_speech"
@@ -37,7 +37,7 @@
         android:orderInCategory="99"
         android:title="@string/action_speech"
         android:visible="false"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_switch_server"

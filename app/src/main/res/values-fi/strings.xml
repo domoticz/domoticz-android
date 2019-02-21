@@ -117,4 +117,8 @@
     <string name="continue_question">Haluatko jatkaa?</string>
     <string name="cant_remove_default_server">Oletuspalvelinta ei voi poistaa</string>
     <string name="restart_required_msg">Sovellus on käynnistettävä uudelleen, jotta uudet kieliasetukset tulevat voimaan</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

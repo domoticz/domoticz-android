@@ -117,4 +117,8 @@
     <string name="continue_question">Pokračovať?</string>
     <string name="cant_remove_default_server">Nemôžete odstrániť predvolený server</string>
     <string name="restart_required_msg">Pre použitie zmeny nastavenia jazyka je potrebné reštartovať aplikáciu.</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

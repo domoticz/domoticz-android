@@ -117,4 +117,8 @@
     <string name="continue_question">Fortsæt?</string>
     <string name="cant_remove_default_server">Kan ikke fjerne standardserveren</string>
     <string name="restart_required_msg">For at skifte sprog indstillinger skal programmet genstartes</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

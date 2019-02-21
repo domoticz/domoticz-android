@@ -117,4 +117,8 @@
     <string name="continue_question">Folytatod?</string>
     <string name="cant_remove_default_server">Nem lehet eltávolítani az alapértelmezett kiszolgálót</string>
     <string name="restart_required_msg">A nyelvi beállítások életbe léptetéséhez az alkalmazás újraindítása szükséges</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

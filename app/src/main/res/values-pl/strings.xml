@@ -117,4 +117,8 @@
     <string name="continue_question">Kontynuować?</string>
     <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
     <string name="restart_required_msg">Aby zmiany ustawień języka zadziałały wymagane jest ponowne uruchomienie aplikacji</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

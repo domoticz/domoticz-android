@@ -42,6 +42,7 @@
     <string name="category_startup_security">Turvallisuus</string>
     <string name="category_account">Tilit</string>
     <string name="category_QRCode">QR-koodit</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Puhe</string>
     <string name="category_Reset">Palauta asetukset</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Määritä QR-koodit</string>
     <string name="enable_qrcode">Ota QR-koodit käyttöön</string>
     <string name="qrcode_enable_settings">Kytke QR-koodien toiminnallisuudet päälle</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Asetusten suojaus</string>
     <string name="enable_security">Ota sormenjälkitunnistus käynnistyksessä käyttöön</string>
     <string name="disable_security">Kytke sormenjälkitunnistus pois käynnistyksessä</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Tarvitset vähintään yhden kohteen valikkoon</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Päivitä palvelin</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Päivityksiä ei voitu tarkistaa: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Domoticz-palvelimen asetuksia ei voitu hakea: %1$s"</string>
     <string name="update_available_enhanced">Palvelimen päivitys saatavilla versiosta %1$s versioon %2$s</string>

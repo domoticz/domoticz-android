@@ -131,23 +131,23 @@ public class LocationInfo {
         try {
             // Build a new Geofence object.
             return new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this
-                    // geofence.
-                    .setRequestId(String.valueOf(id))
-                    // Set the circular region of this geofence.
-                    .setCircularRegion(
-                            latLng.latitude, latLng.longitude, radius
-                    )
-                    // Set the expiration duration of the geofence. This geofence gets automatically
-                    // removed after this period of time.
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    // Set the transition types of interest. Alerts are only generated for these
-                    // transition. We track entry and exit transitions in this sample.
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .setLoiteringDelay(3000)
-                    // Create the geofence.
-                    .build();
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+                .setRequestId(String.valueOf(id))
+                // Set the circular region of this geofence.
+                .setCircularRegion(
+                    latLng.latitude, latLng.longitude, radius
+                )
+                // Set the expiration duration of the geofence. This geofence gets automatically
+                // removed after this period of time.
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                // Set the transition types of interest. Alerts are only generated for these
+                // transition. We track entry and exit transitions in this sample.
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL |
+                    Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setLoiteringDelay(3000)
+                // Create the geofence.
+                .build();
         } catch (Exception ex) {
             // Wrong LocationInfo data detected
             return null;

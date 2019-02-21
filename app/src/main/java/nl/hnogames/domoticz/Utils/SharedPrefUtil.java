@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.Containers.BluetoothInfo;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.Containers.NFCInfo;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
@@ -69,6 +70,7 @@ public class SharedPrefUtil {
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
     private static final String PREF_CUSTOM_AUTO = "enableAutoNotifications";
     private static final String PREF_ENABLE_NFC = "enableNFC";
+    private static final String PREF_ENABLE_Bluetooth = "enableBluetooth";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
@@ -84,6 +86,7 @@ public class SharedPrefUtil {
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
     private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
+    private static final String PREF_BLUETOOTH = "bluetooth";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
@@ -695,7 +698,7 @@ public class SharedPrefUtil {
 
     public void setStartupScreenIndex(int position) {
         String[] startupScreenValues =
-                mContext.getResources().getStringArray(R.array.startup_actions);
+            mContext.getResources().getStringArray(R.array.startup_actions);
         String startupScreenValue;
 
         try {
@@ -857,6 +860,10 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_NFC, false);
     }
 
+    public boolean isBluetoothEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
+    }
+
     public boolean isServerUpdateAvailable() {
         return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     }
@@ -930,7 +937,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
             Gson gson = new Gson();
             NFCInfo[] item = gson.fromJson(jsonNFCs,
-                    NFCInfo[].class);
+                NFCInfo[].class);
             nfcs = Arrays.asList(item);
             for (NFCInfo n : nfcs) {
                 oReturnValue.add(n);
@@ -938,6 +945,29 @@ public class SharedPrefUtil {
         } else
             return null;
 
+        return oReturnValue;
+    }
+
+    public void saveBluetoothList(List<BluetoothInfo> list) {
+        Gson gson = new Gson();
+        editor.putString(PREF_BLUETOOTH, gson.toJson(list));
+        editor.commit();
+    }
+
+    public ArrayList<BluetoothInfo> getBluetoothList() {
+        ArrayList<BluetoothInfo> oReturnValue = new ArrayList<>();
+        List<BluetoothInfo> Bluetooths;
+        if (prefs.contains(PREF_BLUETOOTH)) {
+            String jsonBluetooths = prefs.getString(PREF_BLUETOOTH, null);
+            Gson gson = new Gson();
+            BluetoothInfo[] item = gson.fromJson(jsonBluetooths,
+                BluetoothInfo[].class);
+            Bluetooths = Arrays.asList(item);
+            for (BluetoothInfo n : Bluetooths) {
+                oReturnValue.add(n);
+            }
+        } else
+            return null;
         return oReturnValue;
     }
 
@@ -954,7 +984,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_QR_CODES, null);
             Gson gson = new Gson();
             QRCodeInfo[] item = gson.fromJson(jsonNFCs,
-                    QRCodeInfo[].class);
+                QRCodeInfo[].class);
             qrs = Arrays.asList(item);
             for (QRCodeInfo n : qrs) {
                 oReturnValue.add(n);
@@ -978,7 +1008,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_SPEECH_COMMANDS, null);
             Gson gson = new Gson();
             SpeechInfo[] item = gson.fromJson(jsonNFCs,
-                    SpeechInfo[].class);
+                SpeechInfo[].class);
             qrs = Arrays.asList(item);
             for (SpeechInfo n : qrs) {
                 oReturnValue.add(n);
@@ -1005,7 +1035,7 @@ public class SharedPrefUtil {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
             Gson gson = new Gson();
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
-                    LocationInfo[].class);
+                LocationInfo[].class);
             locations = Arrays.asList(locationItem);
             for (LocationInfo l : locations) {
                 if (l.toGeofence() != null) {
@@ -1017,8 +1047,8 @@ public class SharedPrefUtil {
             if (incorrectDetected) {
                 saveLocations(returnValue);
                 Toast.makeText(mContext,
-                        R.string.geofence_error_recreateLocations,
-                        Toast.LENGTH_LONG).show();
+                    R.string.geofence_error_recreateLocations,
+                    Toast.LENGTH_LONG).show();
             }
         } else
             return null;

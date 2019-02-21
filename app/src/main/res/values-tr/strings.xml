@@ -117,4 +117,8 @@
     <string name="continue_question">Devam</string>
     <string name="cant_remove_default_server">Varsayılan sunucuyu kaldıramazsınız</string>
     <string name="restart_required_msg">Dil ayarlarının etkin olması için  yeniden başlatma gereklidir.</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

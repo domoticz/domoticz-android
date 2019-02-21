@@ -42,6 +42,7 @@
     <string name="category_startup_security">Sikkerhet</string>
     <string name="category_account">Kontoer</string>
     <string name="category_QRCode">QR-kode</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Tale</string>
     <string name="category_Reset">Reset</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Oppsettskoder QR</string>
     <string name="enable_qrcode">Aktiver QR-koder</string>
     <string name="qrcode_enable_settings">Aktivere funksjonaliteten for QR-koder</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Konfigurere sikkerhet</string>
     <string name="enable_security">Aktivere fingeravtrykksbeskyttelse ved oppstart</string>
     <string name="disable_security">Deaktivere fingeravtrykksbeskyttelse ved oppstart</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Du trenger minst ett element i skuffen</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Oppdater serveren</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Kan ikke søke etter oppdateringer: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Kan ikke hente Domoticz server konfigurasjon: %1$s"</string>
     <string name="update_available_enhanced">Server-oppdatering tilgjengelig: %1$s til versjon: %2$s</string>

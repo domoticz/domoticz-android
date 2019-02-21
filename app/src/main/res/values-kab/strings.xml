@@ -117,4 +117,8 @@
     <string name="continue_question">An-kemmel?</string>
     <string name="cant_remove_default_server">Dawezɣi tukksa n uqeddac s lexṣas</string>
     <string name="restart_required_msg">Iw akken aslugen n tutlayt ad ddun,yesefkk askar n wasnas</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>
